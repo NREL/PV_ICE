@@ -11,7 +11,7 @@ Alliance for Sustainable Energy, LLC (“Alliance”). The intent of the
 Agreement is to clarify your responsibilities as a Contributor.
 
 The Agreement is meant to protect You, the Users, the Contributors,
-and A Medium Corporation from the malicious misdeeds of others.
+and Alliance from the malicious misdeeds of others.
 The Agreement is *not* intended to restrict how You use Your own
 Contributions.
 
