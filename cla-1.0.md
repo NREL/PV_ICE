@@ -30,8 +30,8 @@ and the singular shall include the plural.
 3. "Alliance" &mdash; The company which manages the
    Projects. The company's website is at <http://nrel.gov/>.
 
-4. "Project" &mdash; Circular Economy - Mass Flow Calculator open-source projects
-    being managed by Alliance. The Projects may all be found at
+4. "Project" &mdash; Circular Economy - Mass Flow Calculator open-source project
+    being managed by Alliance. The Project may be found at
    <https://github.com/NREL/CircularEconomy-MassFlowCalculator>.
 
 5. "Contribution" &mdash; Code, content, and ideas
