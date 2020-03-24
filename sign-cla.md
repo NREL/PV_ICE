@@ -76,8 +76,10 @@ Sending the Email
 -----------------
 
 Send an email to CE-MFC's official Open Sourceror
-at [silvana.ayala@nrel.gov](mailto:silvana.ayala@nrel.gov),
-with the subject "CLA" and the following body:
+at [silvana.ayala@nrel.gov](mailto:silvana.ayala@nrel.gov), 
+cc-ing [Alberta.Carpenter@nrel.gov](mailto:Alberta.Carpenter@nrel.gov),
+with the subject "CLA Circular Economy - Mass Flow Calculator (CE-MFC)" 
+and the following body:
 
 ```
 I submitted a pull request to indicate agreement to the terms
