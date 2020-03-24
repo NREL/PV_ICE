@@ -32,8 +32,8 @@ document about it](https://help.github.com/articles/using-pull-requests).
 Make your pull request be the addition of a single file to the
 [contributors](contributors) directory of this project. Name the file
 with the same name as your GitHub userid, with `.md` appended to the
-end. For example, for the user `danfuzz`, the full path to the file
-would be `contributors/danfuzz.md`.
+end. For example, for the user `shirubana`, the full path to the file
+would be `contributors/shirubana.md`.
 
 Put the following in the file:
 
@@ -42,7 +42,7 @@ Put the following in the file:
 
 I hereby agree to the terms of the Contributors License
 Agreement, version 1.0, with MD5 checksum
-143da42902fd29612270cc1e4c7b5296.
+6e53acc1506fff5cf4335e0fee943da4.
 
 I furthermore declare that I am authorized and able to make this
 agreement and sign this declaration.
@@ -63,7 +63,7 @@ You can confirm the MD5 checksum of the CLA by running the md5 program over `cla
 
 ```
 md5 cla-1.0.md
-MD5 (cla-1.0.md) = 143da42902fd29612270cc1e4c7b5296
+MD5 (cla-1.0.md) = 6e53acc1506fff5cf4335e0fee943da4
 ```
 
 If the output is different from above, do not sign the CLA and let us know.
@@ -87,12 +87,10 @@ Signed,
 
 [your name]
 https://github.com/[your github userid]
-[your address]
 ```
 
 Replace the bracketed text as follows:
 
 * `[your name]` with your name.
 * `[your github userid]` with your GitHub userid.
-* `[your address]` with a physical mailing address at which you can be
-  contacted.
+
