@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# # MASS FLOW CALCULATOR
+# 
+# -Adding Glass CE metric.
+# 
+
 # # Preamble and definitions
 
 # In[5]:
