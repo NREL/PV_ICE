@@ -8,7 +8,7 @@
 
 # # Preamble and definitions
 
-# In[5]:
+# In[2]:
 
 
 import numpy as np
@@ -16,8 +16,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 get_ipython().run_line_magic('matplotlib', 'inline')
 
+font = {'family' : 'arial',
+        'weight' : 'bold',
+        'size'   : 22}
 
-# In[6]:
+matplotlib.rc('font', **font)
+
+
+# In[3]:
 
 
 def weibull_params(keypoints):
@@ -40,7 +46,7 @@ def weibull_params(keypoints):
     return {'alpha': alpha, 'beta': beta}
 
 
-# In[7]:
+# In[4]:
 
 
 def weibull_cdf(alpha, beta):
@@ -54,7 +60,7 @@ def weibull_cdf(alpha, beta):
 
 # # Waste projection
 
-# In[8]:
+# In[ ]:
 
 
 # Dangerous assumptions (which need to be fixed or explained before publication) are marked with 'warning'
@@ -62,7 +68,7 @@ def weibull_cdf(alpha, beta):
 
 # ## Inputs
 
-# In[9]:
+# In[5]:
 
 
 # The simulation is for this range of years
@@ -71,7 +77,7 @@ df = pd.DataFrame(index=np.arange(1995, 2024+1, 1))
 
 # ### Installed capacity
 
-# In[10]:
+# In[6]:
 
 
 # US annual installed capacity (watts)
@@ -98,47 +104,10 @@ share_silicon = share_mono + share_multi
 df['new_capacity_silicon'] = df['new_capacity_total']*share_silicon
 
 
-# In[11]:
+# In[10]:
 
 
-df['new_capacity_silicon'].iloc[29]
-
-
-# In[12]:
-
-
-# to project capacity into the future without economic, policy or behavior analysis:
-# assume cumulative capacity follows a logistic sigmoid function:
-# capacityscale/(1 + np.exp(-timescale * (-midtime + t)))
-# these parameters fit well:
-# capacityscale: 8.44466e10
-# timescale: 0.560261
-# midtime: 2016.45
-# This is kind of pessimistic, saying annual installations began slowing down permanently in 2016 and we'll only ever have a total of 84 GW installed in the US
-# Cutting off the last two years changes the parameters so we get >400 GW installed with a 2021 turning point
-
-
-# In[13]:
-
-
-fig, ax = plt.subplots()
-ax.scatter(df.index, df['new_capacity_silicon'])
-ax.set_ylabel('new crystalline silicon capacity [W]')
-ax.set_yscale('log')
-pass
-
-
-# In[14]:
-
-
-import matplotlib.pyplot as plt
-import matplotlib
-
-font = {'family' : 'arial',
-        'weight' : 'bold',
-        'size'   : 22}
-
-matplotlib.rc('font', **font)
+# Plotting Installed Capacity of Silicon
 
 fig, ax = plt.subplots(figsize=(9, 5))
 plt.plot(df.index, df['new_capacity_silicon']/1e6, linewidth=4)
@@ -147,9 +116,23 @@ ax.set_yscale('log')
 pass
 
 
+# ### PROJECTING CAPACITY
+# 
+# To project capacity into the future without economic, policy or behavior analysis:
+# assume cumulative capacity follows a logistic sigmoid function:
+# capacityscale/(1 + np.exp(-timescale * (-midtime + t)))
+# these parameters fit well:
+# 
+# capacityscale: 8.44466e10
+# timescale: 0.560261
+# midtime: 2016.45
+# 
+# his is kind of pessimistic, saying annual installations began slowing down permanently in 2016 and we'll only ever have a total of 84 GW installed in the US
+# Cutting off the last two years changes the parameters so we get >400 GW installed with a 2021 turning point
+
 # ### Efficiency and area
 
-# In[15]:
+# In[11]:
 
 
 # estimating efficiency
@@ -170,43 +153,15 @@ irradiance_stc = 1000 # W/m^2
 df['area'] = df['new_capacity_silicon']/df['efficiency']/irradiance_stc # m^2
 
 
-# In[16]:
+# In[23]:
 
 
-fig, ax = plt.subplots()
-ax.scatter(df.index, df['efficiency'])
-ax.set_ylabel('average efficiency')
-pass
-
-
-# In[17]:
-
-
-fig, ax = plt.subplots()
-ax.scatter(df.index, df['area'])
-ax.set_ylabel('new installed area / m^2')
-pass
-
-
-# In[18]:
-
-
-font = {'family' : 'arial',
-        'weight' : 'bold',
-        'size'   : 22}
-
-matplotlib.rc('font', **font)
+# Ploting Silicon Installations vs New Installed Area
 
 fig, ax = plt.subplots(figsize=(9, 5))
-plt.plot(df.index, df['new_capacity_silicon']/1e6, linewidth=4)
-plt.ylabel('Silicon installations [MW]')
-ax.set_yscale('log')
+plt.plot(df.index, df['efficiency']*100, 'g', linewidth=4)
+plt.ylabel('Average Module Efficiency [%]')
 
-ax2=ax.twinx()
-ax2.plot(df.index, df['area'], 'r', linewidth=4)
-ax2.set_ylabel('New Installed Area [$m^2$]')
-ax2.set_yscale('log')
-plt.show()
 
 fig, ax = plt.subplots(figsize=(9, 5))
 plt.plot(df.index, df['new_capacity_silicon']/1e6, linewidth=4)
@@ -220,22 +175,30 @@ ax.set_yscale('log')
 plt.show()
 
 fig, ax = plt.subplots(figsize=(9, 5))
-plt.plot(df.index, df['efficiency']*100, 'g', linewidth=4)
-plt.ylabel('Average Module Efficiency [%]')
+plt.plot(df.index, df['new_capacity_silicon']/1e6, linewidth=4)
+plt.ylabel('Silicon installations [MW]')
+ax.set_yscale('log')
+
+ax2=ax.twinx()
+ax2.plot(df.index, df['area'], 'r', linewidth=4)
+ax2.set_ylabel('New Installed Area [$m^2$]')
+ax2.set_yscale('log')
+plt.show()
 
 pass
 
 
 # ### Component mass
 
-# In[23]:
+# In[28]:
 
 
 # mass of glass
 # for now, assume that everything uses the equivalent of a single piece of glass of the same thickness
 # warning: as of recently, this isn't true anymore and needs to be quantified (check ITRPV 2019 for future projections)
 density_glass = 2500 # kg/m^3
-thickness_glass = 6.5e-3 # m
+thickness_glass = 3.5e-3 # m
+print("Weight per m2 of glass ", thickness_glass*density_glass)
 # in kg
 df['mass_glass'] = df['area']*thickness_glass*density_glass
 
@@ -255,16 +218,19 @@ df['mass_silver'] = df['mass_silver_per_cell']*df['n_cells']
 # warning: need do the same thing for silicon, copper, etc.
 
 
-# In[24]:
+# In[37]:
 
 
-thickness_glass*density_glass
+fig, ax = plt.subplots(figsize=(9, 5))
+plt.plot(df.index, df['mass_silver_per_cell']*1000, 'r', label='Silver', linewidth=4)
+ax.set_ylabel('Silver per cell [g]', color='r')
+ax.tick_params(axis='y', colors='r')
 
 
 # ## Mass of GLASS
 # (Still in development)
 
-# In[15]:
+# In[ ]:
 
 
 '''
@@ -365,36 +331,31 @@ print("")
 
 # ## New Installed Material Plots
 
-# In[16]:
-
-
-# if I did the math right, this isn't cumulative waste, it's each individual year's waste
-fig, axa = plt.subplots(nrows=2)
-for index, waste_ingredient in enumerate(['glass', 'silver']):
-    ax = axa[index]
-    ax.scatter(df.index, df[f'mass_{waste_ingredient}'], label=waste_ingredient)
-    ax.set_ylabel(f'new installed {waste_ingredient} mass / kg')
-pass
-
-
-# In[ ]:
-
-
-
-
-
-# In[17]:
+# In[40]:
 
 
 fig, ax = plt.subplots(figsize=(9, 5))
 plt.plot(df.index, df['mass_glass']/1000000, color='blue', label='Glass', linewidth=4)
-ax.set_ylabel('Glass [Mkg]', color='blue')
+ax.set_ylabel('Glass x 10$^6$ [kg]', color='blue')
 ax.tick_params(axis='y', colors='blue')
 ax2=ax.twinx()
 plt.title("Installed materials' mass")
 ax2.plot(df.index, df['mass_silver']/1000000, 'r', label='Silver', linewidth=4)
-ax2.set_ylabel('Silver [Mkg]', color='red')
+ax2.set_ylabel('Silver  x 10$^6$ [kg]', color='red')
 ax2.tick_params(axis='y', colors='red')
+
+
+fig, ax = plt.subplots(figsize=(9, 5))
+plt.plot(df.index, df['mass_glass'], color='blue', label='Glass', linewidth=4)
+ax.set_ylabel('Glass [kg]', color='blue')
+ax.tick_params(axis='y', colors='blue')
+ax.set_yscale('log')
+ax2=ax.twinx()
+plt.title("Installed materials' mass")
+ax2.plot(df.index, df['mass_silver'], 'r', label='Silver', linewidth=4)
+ax2.set_ylabel('Silver [kg]', color='red')
+ax2.tick_params(axis='y', colors='red')
+ax.set_yscale('log')
 pass
 
 
@@ -402,7 +363,7 @@ pass
 # 
 # ### Reliability
 
-# In[18]:
+# In[35]:
 
 
 # warning: these are wild guesses
@@ -412,19 +373,8 @@ df['t50'] = [15, 15, 16, 16, 17, 17, 18, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22,
 df['t90'] = [20, 20, 21, 21, 22, 22, 23, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 27, 28, 28, 29, 29, 30, 30, 30, 30, 37.5, 37.5, 37.5, 37.5]
 
 
-# In[ ]:
+# In[41]:
 
-
-
-
-
-# In[19]:
-
-
-fig, ax = plt.subplots(figsize=(9, 5))
-plt.plot(df.index, df['mass_silver_per_cell']*1000, 'r', label='Silver', linewidth=4)
-ax.set_ylabel('Silver per cell [g]', color='r')
-ax.tick_params(axis='y', colors='r')
 
 from matplotlib.offsetbox import AnchoredOffsetbox, TextArea, HPacker, VPacker
 
@@ -449,7 +399,23 @@ ax.add_artist(anchored_ybox)
 pass
 
 
-# In[20]:
+# ## Eliminating Modules through Weibull
+# 
+
+# ### Calculating Weibull PArameters Example
+
+# In[50]:
+
+
+test_t50 = 30
+test_t90 = 25
+test = weibull_params({test_t50: 0.50, test_t90: 0.90})
+print("WEIBULL Parameters for a t50 and t90 of ", test_t50, " & ", test_t90, " years are Alpha: ", test['alpha'], " Beta: ", test['beta'])
+
+
+# ### Cumulative Distribution Function for each Generation
+
+# In[42]:
 
 
 fig, ax = plt.subplots(figsize=(10, 8))
@@ -466,15 +432,9 @@ ax.set_ylabel('Fraction Disposed')
 pass
 
 
-# In[46]:
+# ### Disposing of Modules with the Weibull paramaeters for each generation
 
-
-print(weibull_params({t50: 0.50, t90: 0.90}))
-print(t50)
-print(t90)
-
-
-# In[21]:
+# In[54]:
 
 
 df['disposal_function'] = [
@@ -484,9 +444,36 @@ df['disposal_function'] = [
 ]
 
 
-# In[22]:
+# In[79]:
 
 
+df['year'] = df.index
+
+for year, row in df.iterrows():
+    print(year, row['year'])
+
+df.index
+
+
+# In[97]:
+
+
+#foo.diff().fillna(0)
+
+res = [j - i for i, j in zip(foo[: -1], foo[1 :])] 
+res
+
+
+# In[ ]:
+
+
+
+
+
+# In[127]:
+
+
+df['cdf_weibull'] = 0
 fig, ax = plt.subplots()
 for year, row in df.iterrows():
     if year%2 != 1:
@@ -497,25 +484,35 @@ for year, row in df.iterrows():
     y = list(map(f, x))
     ax.plot(x + year, np.array(y)*row['area'], label=year)
 ax.legend(frameon=False, title='year installed')
-ax.set_ylabel('area disposed / m^2')
+ax.set_ylabel('Cumulative Area Disposed [m$^2$]')
 pass
 
 
-# In[23]:
+# In[128]:
 
 
+i=1
 fig, ax = plt.subplots()
-for year, row in df.iterrows():
-    if year%3 != 1:
+for year, row in df.iterrows(): 
+    if year%2 != 1:
         continue
     t50, t90 = row['t50'], row['t90']
     f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
     x = np.clip(df.index - year, 0, np.inf)
     y = list(map(f, x))
-    ax.plot(x + year, np.array(y)*row['area'], label=year)
+    row['y'] = y
+    res = [j - i for i, j in zip(y[: -1], y[i :])]
+    i = i+2
+    ax.plot(x + year, row['area']*res, label=year)
 ax.legend(frameon=False, title='year installed')
 ax.set_ylabel('area disposed / m^2')
 pass
+
+
+# In[129]:
+
+
+
 
 
 # In[ ]:
@@ -528,7 +525,25 @@ pass
 
 # ### Mass of waste ingredients
 
-# In[24]:
+# In[ ]:
+
+
+for waste_ingredient in ['glass', 'silver']:
+    df[f'waste_{waste_ingredient}'] = 0
+    for year, row in df.iterrows():
+        df[f'waste_{waste_ingredient}'] += row[f'mass_{waste_ingredient}']*row['disposal_function'](np.clip(df.index - year, 0, np.inf))
+
+
+# In[138]:
+
+
+for waste_ingredient in ['glass', 'silver']:
+    df[f'waste_{waste_ingredient}'] = 0
+    for year, row in df.iterrows():
+        df[f'waste_{waste_ingredient}'] += row[f'mass_{waste_ingredient}']*row['disposal_function'](np.clip(df.index - year, 0, np.inf))
+
+
+# In[ ]:
 
 
 for waste_ingredient in ['glass', 'silver']:
@@ -543,7 +558,13 @@ for waste_ingredient in ['glass', 'silver']:
 
 
 
-# In[25]:
+# In[ ]:
+
+
+
+
+
+# In[ ]:
 
 
 # if I did the math right, this isn't cumulative waste, it's each individual year's waste
@@ -555,7 +576,7 @@ for index, waste_ingredient in enumerate(['glass', 'silver']):
 pass
 
 
-# In[26]:
+# In[139]:
 
 
 fig, ax = plt.subplots(figsize=(9, 5))
@@ -574,7 +595,7 @@ pass
 # 
 # Installed Capacity for each year is the Existing Installations + New Installations - Decommisionings 
 
-# In[27]:
+# In[ ]:
 
 
 '''
@@ -589,7 +610,7 @@ for installedCapacity_ingredient in ['glass', 'silver']:
 '''
 
 
-# In[28]:
+# In[ ]:
 
 
 df['installedCapacity_glass'] = 0.0
@@ -609,7 +630,7 @@ for i in range (1, len(df)):
                                            df[f'mass_silver'][year] - df['waste_silver'][year])
 
 
-# In[29]:
+# In[ ]:
 
 
 # if I did the math right, this isn't cumulative waste, it's each individual year's waste
@@ -621,7 +642,7 @@ for index, installedCapacity_ingredient in enumerate(['glass', 'silver']):
 pass
 
 
-# In[30]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(figsize=(9, 5))
@@ -636,7 +657,7 @@ ax2.tick_params(axis='y', colors='red')
 pass
 
 
-# In[31]:
+# In[ ]:
 
 
 df[f'installedCapacity_{installedCapacity_ingredient}'] = 0
@@ -651,7 +672,7 @@ for i in range (1, len(df)):
 # 
 # In development
 
-# In[32]:
+# In[ ]:
 
 
 df['efficiency_manufacturing_glass'] = []   # in %
