@@ -8,7 +8,7 @@
 
 # # Preamble and definitions
 
-# In[2]:
+# In[25]:
 
 
 import numpy as np
@@ -17,6 +17,11 @@ import matplotlib.pyplot as plt
 import matplotlib
 get_ipython().run_line_magic('matplotlib', 'inline')
 
+
+# In[26]:
+
+
+
 font = {'family' : 'arial',
         'weight' : 'bold',
         'size'   : 22}
@@ -24,7 +29,7 @@ font = {'family' : 'arial',
 matplotlib.rc('font', **font)
 
 
-# In[3]:
+# In[27]:
 
 
 def weibull_params(keypoints):
@@ -47,7 +52,7 @@ def weibull_params(keypoints):
     return {'alpha': alpha, 'beta': beta}
 
 
-# In[4]:
+# In[28]:
 
 
 def weibull_cdf(alpha, beta):
@@ -67,7 +72,7 @@ def weibull_cdf(alpha, beta):
 
 # # Waste projection
 
-# In[6]:
+# In[29]:
 
 
 # Dangerous assumptions (which need to be fixed or explained before publication) are marked with 'warning'
@@ -75,7 +80,7 @@ def weibull_cdf(alpha, beta):
 
 # ## Inputs
 
-# In[7]:
+# In[30]:
 
 
 # The simulation is for this range of years
@@ -84,7 +89,7 @@ df = pd.DataFrame(index=np.arange(1995, 2024+1, 1))
 
 # ### Installed capacity
 
-# In[8]:
+# In[31]:
 
 
 # US annual installed capacity (watts)
@@ -111,7 +116,7 @@ share_silicon = share_mono + share_multi
 df['new_capacity_silicon'] = df['new_capacity_total']*share_silicon
 
 
-# In[9]:
+# In[32]:
 
 
 # Plotting Installed Capacity of Silicon
@@ -139,7 +144,7 @@ pass
 
 # ### Efficiency and area
 
-# In[10]:
+# In[33]:
 
 
 # estimating efficiency
@@ -160,7 +165,7 @@ irradiance_stc = 1000 # W/m^2
 df['area'] = df['new_capacity_silicon']/df['efficiency']/irradiance_stc # m^2
 
 
-# In[11]:
+# In[34]:
 
 
 # Ploting Silicon Installations vs New Installed Area
@@ -197,7 +202,7 @@ pass
 
 # ### Component mass
 
-# In[12]:
+# In[35]:
 
 
 # mass of glass
@@ -225,7 +230,7 @@ df['mass_silver'] = df['mass_silver_per_cell']*df['n_cells']
 # warning: need do the same thing for silicon, copper, etc.
 
 
-# In[13]:
+# In[36]:
 
 
 fig, ax = plt.subplots(figsize=(9, 5))
@@ -237,7 +242,7 @@ ax.tick_params(axis='y', colors='r')
 # ## Mass of GLASS
 # (Still in development)
 
-# In[14]:
+# In[37]:
 
 
 '''
@@ -338,7 +343,7 @@ print("")
 
 # ## New Installed Material Plots
 
-# In[15]:
+# In[38]:
 
 
 fig, ax = plt.subplots(figsize=(9, 5))
@@ -370,7 +375,7 @@ pass
 # 
 # ### Reliability
 
-# In[16]:
+# In[39]:
 
 
 # warning: these are wild guesses
@@ -380,7 +385,7 @@ df['t50'] = [15, 15, 16, 16, 17, 17, 18, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22,
 df['t90'] = [20, 20, 21, 21, 22, 22, 23, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 27, 28, 28, 29, 29, 30, 30, 30, 30, 37.5, 37.5, 37.5, 37.5]
 
 
-# In[17]:
+# In[40]:
 
 
 from matplotlib.offsetbox import AnchoredOffsetbox, TextArea, HPacker, VPacker
@@ -409,9 +414,19 @@ pass
 # ## Eliminating Modules through Weibull
 # 
 
-# ### Calculating Weibull PArameters Example
+# In[41]:
 
-# In[18]:
+
+df['disposal_function'] = [
+    weibull_cdf(**weibull_params({t50: 0.5, t90: 0.9}))
+    for t50, t90
+    in zip(df['t50'], df['t90'])
+]
+
+
+# ### Example: Calculating Weibull Parameters
+
+# In[42]:
 
 
 test_t50 = 30
@@ -420,9 +435,9 @@ test = weibull_params({test_t50: 0.50, test_t90: 0.90})
 print("WEIBULL Parameters for a t50 and t90 of ", test_t50, " & ", test_t90, " years are Alpha: ", test['alpha'], " Beta: ", test['beta'])
 
 
-# ### Cumulative Distribution Function for each Generation
+# ### Plot: Weibull CDF (Cumulative Distribution Function) for each Generation
 
-# In[130]:
+# In[43]:
 
 
 fig, ax = plt.subplots(figsize=(10, 8))
@@ -439,31 +454,21 @@ ax.set_ylabel('Fraction Disposed')
 pass
 
 
-# ### Disposing of Modules with the Weibull paramaeters for each generation
+# ### Plot: Weibull CDF for each Generation
 
-# In[120]:
-
-
-df['disposal_function'] = [
-    weibull_cdf(**weibull_params({t50: 0.5, t90: 0.9}))
-    for t50, t90
-    in zip(df['t50'], df['t90'])
-]
-
-
-# In[129]:
-
+# In[44]:
 
 
 fig, ax = plt.subplots(figsize=(20,10))
 for year, row in df.iterrows():
-    if year%2 != 1:
-        continue
     t50, t90 = row['t50'], row['t90']
     f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
     x = np.clip(df.index - year, 0, np.inf)
     y = list(map(f, x))
+    if year%3 != 1:
+        continue
     ax.plot(x + year, np.array(y)*row['area'], label=str(year) + ', ' + str(round(row['area'])))
+plt.ylim(0, 0.05E7)
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(title='Installation Year, Area [m$^2$]', loc='center left', fontsize='small', ncol=2, shadow=True, fancybox=True, bbox_to_anchor=(1, 0.5))
@@ -472,41 +477,175 @@ ax.set_ylabel('Cumulative Area Disposed [m$^2$]')
 pass
 
 
-# In[122]:
+# ## PDF Waste by Generation
+# 
+
+# ### Math Check of Tim's Original Function. 
+# 
+
+# In[45]:
 
 
-year = 1995
-row = df.loc[year]
-t50, t90 = row['t50'], row['t90']
-f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
-x = np.clip(df.index - year, 0, np.inf)
-y = list(map(f, x))
-res = [0]  # Assuming there is no trash that first year
-i = 1 # Counting from year 1 
-res = res + [j - i for i, j in zip(y[: -1], y[i :])]
+'''
+# TIM's Original:
 
-fig, ax = plt.subplots(figsize=(20,10))
-ax.plot(x + year, [element*row['area'] for element in res], label=year)
-ax.legend(frameon=False, title='year installed')
-box = ax.get_position()
-ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-ax.legend(title='year installed', loc='center left', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(1, 0.5))
-#ax.legend(title='year installed', loc='upper center', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(0.5, 1.05))
-ax.set_ylabel('Area disposed by year [m$^2$]')
+
+for waste_ingredient in ['glass', 'silver']:
+    df[f'waste_{waste_ingredient}'] = 0
+    for year, row in df.iterrows():
+        df[f'waste_{waste_ingredient}'] += row[f'mass_{waste_ingredient}']*row['disposal_function'](np.clip(df.index - year, 0, np.inf))
+
+#### if I did the math right, this isn't cumulative waste, it's each individual year's waste
+fig, axa = plt.subplots(nrows=2)
+for index, waste_ingredient in enumerate(['glass', 'silver']):
+    ax = axa[index]
+    ax.scatter(df.index, df[f'waste_{waste_ingredient}'], label=waste_ingredient)
+    ax.set_ylabel(f'{waste_ingredient} waste / kg')
+
+'''
 pass
 
 
-# ### Calculating Waste per Generation for Each Year 
+# ### Changing t[50] and t90 to make hte modules die faster on this test.
 
-# In[132]:
+# In[46]:
 
+
+df['original_t50'] = df['t50']
+df['original_t90'] = df['t90']
+df['original_disposal_function'] = df['disposal_function']
+df['t50'] = 10
+df['t90'] = 12
+
+df['disposal_function'] = [
+    weibull_cdf(**weibull_params({t50: 0.5, t90: 0.9}))
+    for t50, t90
+    in zip(df['t50'], df['t90'])
+]
+  
+# Cumulative Results Area
+df['TIM_Cum_waste_Area'] = 0
+for year, row in df.iterrows():
+    df['TIM_Cum_waste_Area'] += row['area']*row['disposal_function'](np.clip(df.index - year, 0, np.inf))
+
+# Yearly results
+test = []
+for year, row in df.iterrows():
+    test.append(row['area']*row['disposal_function'](np.clip(df.index - year, 0, np.inf)))
+
+'''
+print("Cumulative Area trash")
+for i in range (0, len(test[0])):
+    print(df['waste_Area'][df.index[i]])
+    
+'''
+
+# PLOTTING Tim's results
+fig, ax = plt.subplots(figsize=(9, 5))
+plt.plot(df.index, df['TIM_Cum_waste_Area'], 'blue', label='Area Waste', linewidth=4)
+ax.set_ylabel('Glass [ * $10^6$ kg]', color='blue')
+ax.tick_params(axis='y', colors='blue')
+plt.title("Tim Cumulative Disposal by Year, t50 and t90 at " + str(df['t50'].iloc[0])  +  " & "  +  str(df['t90'].iloc[0]))
+
+pass
+
+# Printing Observatinos
+print("Sanity Check for Tim's Method")
+print("Rows are each generation. Columns are how that generation produces trash as it ages.")
+print("Row [-1] is Tim's original Cumluative Waste on each year from all generations disposed")
+print("Row [0] is the sum from each generation's waste calculated independently")
+print("Column 2 should be 0, because you can't dispose more trash over all the years for a generation than the original generation installation")
+print("")
+print("In conclusion this Math is not right. It's considering WEIBULL'S CDF and not PDF ")
+
+# Making Table to Show Observations
+foo = pd.DataFrame(test, columns = df.index, index = df.index)
+foo.loc[0] = foo.sum()
+foo.loc[-1] = df['TIM_Cum_waste_Area'].T   # Yearly Cumulative Generation Waste
+foo.sort_index(inplace=True)
+foo.insert(0, 'Generation Disposed Area through Years', foo.sum(axis=1))
+foo.insert(0, 'Generation Original Area', df['area'])
+foo.insert(0, 'Original Area - Disposed Area (should be 0)', foo['Generation Disposed Area through Years']-foo['Generation Original Area'])
+
+
+# CLEANUP
+# Revert change to avoid issues later on
+df['t50'] = df['original_t50']
+df['t90'] = df['original_t90']
+df['disposal_function'] = df['original_disposal_function']
+
+print(df.keys())
+df.drop(columns=['original_t50', 'original_t90', 'original_disposal_function', 'TIM_Cum_waste_Area'], inplace=True)
+
+
+# Printing table of observations 
+foo
+
+
+
+# ## FIXED PDF Procedure: Sanity Check Plot of Procedure
+# 
+
+# In[47]:
+
+
+years = [1995, 1997, 1999]
+t50 = 10
+t90 = 12
+
+print("Sanity Check of PDF for each Generation, with TEST t50 and t90 of ", t50, " & ", t90, "years")
+
+fig, ax = plt.subplots(figsize=(20,10))
+
+for i in range(len(years)):
+    year = years[i]
+    row = df.loc[year]
+    t50, t90 = row['t50'], row['t90']
+    f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
+    x = np.clip(df.index - year, 0, np.inf)
+    y = list(map(f, x))
+    res = [0]  # Assuming there is no trash that first year
+    i = 1 # Counting from year 1 
+    res = res + [j - i for i, j in zip(y[: -1], y[i :])]
+
+    ax.plot(x + year, [element*row['area'] for element in res], label=year)
+    ax.legend(frameon=False, title='year installed')
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    ax.legend(title='year installed', loc='center left', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(1, 0.5))
+    #ax.legend(title='year installed', loc='upper center', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(0.5, 1.05))
+    ax.set_ylabel('Area disposed by year [m$^2$]')
+    pass
+
+    print ("Diference with original area: ", np.sum([element*row['area'] for element in res])-row['area'])
+
+
+# ### Sanity Check: Calculating Waste per Generation for Each Year 
+
+# In[48]:
+
+
+df['original_t50'] = df['t50']
+df['original_t90'] = df['t90']
+df['original_disposal_function'] = df['disposal_function']
+df['t50'] = 10
+df['t90'] = 12
+
+df['disposal_function'] = [
+    weibull_cdf(**weibull_params({t50: 0.5, t90: 0.9}))
+    for t50, t90
+    in zip(df['t50'], df['t90'])
+]
+  
 
 i=1
 j=[0]
 CDF = []
 PDF = []
 Area_Disposed_GenbyYear = []
+df['SILVANA_Cum_waste_Area'] = 0
+
 fig, ax = plt.subplots(figsize=(20,10))
 for year, row in df.iterrows(): 
 
@@ -515,11 +654,9 @@ for year, row in df.iterrows():
     x = np.clip(df.index - year, 0, np.inf)
     cdf = list(map(f, x))
     pdf = j
-    pdf = pdf + [j - i for i, j in zip(cdf[: -1], cdf[i :])]
-    i = i+1
-    j.append(0)
+    pdf = pdf + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
     area_disposed_of_generation_by_year = [element*row['area'] for element in pdf]
-
+    df['SILVANA_Cum_waste_Area'] += area_disposed_of_generation_by_year
     # 
     CDF.append(cdf)
     PDF.append(pdf)
@@ -528,114 +665,200 @@ for year, row in df.iterrows():
     if year%3 != 1:
         continue
     ax.plot(x + year, area_disposed_of_generation_by_year, label=year)
-    
+
+#plt.yscale("log")
+plt.ylim(0, 0.25E7)
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(title='Year installed', loc='center left', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(1, 0.5))
 #ax.legend(title='year installed', loc='upper center', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(0.5, 1.05))
 ax.set_ylabel('Area disposed by year [m$^2$]')
+plt.title("Disposal of each Generation by Year, t50 and t90 at " + str(df['t50'].iloc[0])  +  " & "  +  str(df['t90'].iloc[0]))
 pass
 
 
-# In[115]:
+
+# Printing Observatinos
+print("Sanity Check for Silvana's Method")
+print("Rows are each generation. Columns are how that generation produces trash as it ages.")
+print("Row [-1] is Silvana's Cumluative Waste on each year from all generations disposed")
+print("Row [0] is the sum from each generation's waste calculated independently")
+print("Column 2 should be 0, because you can't dispose more trash over all the years for a generation than the original generation installation")
+print("Later years do not 0 out because generations still have modules Alive by end of 2025")
+print("")
+print("In conclusion this Math IS right. It's considering WEIBULL'S PDF properly ")
+
+# Making Table to Show Observations
+foo = pd.DataFrame(Area_Disposed_GenbyYear, columns = df.index, index = df.index)
+foo.loc[0] = foo.sum()
+foo.loc[-1] = df['SILVANA_Cum_waste_Area'].T   # Yearly Cumulative Generation Waste
+foo.sort_index(inplace=True)
+foo.insert(0, 'Generation Disposed Area through Years', foo.sum(axis=1))
+foo.insert(0, 'Generation Original Area', df['area'])
+foo.insert(0, 'Original Area - Disposed Area (should be 0)', foo['Generation Disposed Area through Years']-foo['Generation Original Area'])
+foo=foo.round(3)
+
+fig, ax = plt.subplots(figsize=(20,10))
+plt.plot(df.index, df['SILVANA_Cum_waste_Area'])
+#plt.ylim(0, 0.25E7)
+plt.yscale("log")
+ax.set_ylabel('All Generations Area disposed Each Year [m$^2$]')
+plt.title("Disposal of All Generation Each Year, t50 and t90 at " + str(df['t50'].iloc[0])  +  " & "  +  str(df['t90'].iloc[0]))
+pass
+
+# CLEANUP
+# Revert change to avoid issues later on
+df['t50'] = df['original_t50']
+df['t90'] = df['original_t90']
+df['disposal_function'] = df['original_disposal_function']
+print(df.keys())
+df.drop(columns=['original_t50', 'original_t90', 'original_disposal_function'], inplace=True)
+
+# Printing Table
+foo.round({'Original Area - Disposed Area (should be 0)':0})
 
 
-df['Area_Disposed_GenbyYear'] = Area_Disposed_GenbyYear
-df['PDF'] = PDF
-df['Area_Disposed_GenbyYear'] = Area_Disposed_GenbyYear
+# # Calculating Waste Correctly for each Generation and Cumulative
+
+# In[49]:
 
 
-# In[195]:
+CDF = []
+PDF = []
+Area_Disposed_GenbyYear = []
+df['Cumulative_Waste_Area'] = 0
+
+fig, ax = plt.subplots(figsize=(20,10))
+for year, row in df.iterrows(): 
+
+    t50, t90 = row['t50'], row['t90']
+    f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
+    x = np.clip(df.index - year, 0, np.inf)
+    cdf = list(map(f, x))
+    pdf = [0]
+    pdf = pdf + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
+    area_disposed_of_generation_by_year = [element*row['area'] for element in pdf]
+    df['Cumulative_Waste_Area'] += area_disposed_of_generation_by_year
+    # 
+    CDF.append(cdf)
+    PDF.append(pdf)
+    Area_Disposed_GenbyYear.append(area_disposed_of_generation_by_year)
+
+    if year%3 != 1:
+        continue
+    ax.plot(x + year, area_disposed_of_generation_by_year, label=year)
+
+#plt.yscale("log")
+plt.ylim(0, 0.05E6)
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+ax.legend(title='Year installed', loc='center left', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(1, 0.5))
+#ax.legend(title='year installed', loc='upper center', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(0.5, 1.05))
+ax.set_ylabel('Area disposed by year [m$^2$]')
+
+pass
+
+fig, ax = plt.subplots(figsize=(20,10))
+plt.plot(df.index, df['SILVANA_Cum_waste_Area'])
+#plt.ylim(0, 0.25E7)
+plt.yscale("log")
+ax.set_ylabel('All Generations Area disposed Each Year [m$^2$]')
+plt.title("Disposal of All Generation Each Year, t50 and t90 at " + str(df['t50'].iloc[0])  +  " & "  +  str(df['t90'].iloc[0]))
+pass
+
+# Making Table to Show Observations
+WasteGenerationbyYear = pd.DataFrame(Area_Disposed_GenbyYear, columns = df.index, index = df.index)
+WasteGenerationbyYear = WasteGenerationbyYear.add_prefix("Disposed_on_Year_")
+df.join(WasteGenerationbyYear)
 
 
-df['Area_Disposed_GenbyYear'][1995]
+# In[51]:
 
 
-# In[194]:
+print("SANITY CHECK OF RESULTS")
+print("Sum of WasteGenerationbyYear")
+print(WasteGenerationbyYear.sum(axis=0))
+print("df [ 'Cumulative_Waste_Area']")
+print(df['Cumulative_Waste_Area'])
 
 
-df['Area_Disposed_GenbyYear']
+# In[52]:
+
+
+df.keys()
+
+
+# In[ ]:
+
+
+CDF = []
+PDF = []
+Area_Disposed_GenbyYear = []
+df['Cumulative_Waste_Glass'] = 0
+
+fig, ax = plt.subplots(figsize=(20,10))
+for year, row in df.iterrows(): 
+
+    t50, t90 = row['t50'], row['t90']
+    f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
+    x = np.clip(df.index - year, 0, np.inf)
+    cdf = list(map(f, x))
+    pdf = [0]
+    pdf = pdf + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
+    area_disposed_of_generation_by_year = [element*row['mass_glass'] for element in pdf]
+    df['Cumulative_Waste_Glass'] += area_disposed_of_generation_by_year
+    # 
+    CDF.append(cdf)
+    PDF.append(pdf)
+    Area_Disposed_GenbyYear.append(area_disposed_of_generation_by_year)
+
+
+    ax.plot(x + year, area_disposed_of_generation_by_year, label=year)
+
+#plt.yscale("log")
+plt.ylim(0, 0.05E6)
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+ax.legend(title='Year installed', loc='center left', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(1, 0.5))
+#ax.legend(title='year installed', loc='upper center', fontsize='small', ncol=3, shadow=True, fancybox=True, bbox_to_anchor=(0.5, 1.05))
+ax.set_ylabel('Area disposed by year [m$^2$]')
+
+pass
+
+fig, ax = plt.subplots(figsize=(20,10))
+plt.plot(df.index, df['SILVANA_Cum_waste_Area'])
+#plt.ylim(0, 0.25E7)
+plt.yscale("log")
+ax.set_ylabel('All Generations Area disposed Each Year [m$^2$]')
+plt.title("Disposal of All Generation Each Year, t50 and t90 at " + str(df['t50'].iloc[0])  +  " & "  +  str(df['t90'].iloc[0]))
+pass
+
+# Making Table to Show Observations
+WasteGenerationbyYear = pd.DataFrame(Area_Disposed_GenbyYear, columns = df.index, index = df.index)
+WasteGenerationbyYear = WasteGenerationbyYear.add_prefix("Disposed_on_Year_")
+df.join(WasteGenerationbyYear)
 
 
 # ## Waste calculations
 
 # ### Mass of waste ingredients
 
-# In[165]:
-
-
-for waste_ingredient in ['glass', 'silver']:
-    df[f'waste_{waste_ingredient}'] = 0
-    for year, row in df.iterrows():
-        df[f'waste_{waste_ingredient}'] += row[f'mass_{waste_ingredient}']*row['disposal_function'](np.clip(df.index - year, 0, np.inf))
-
-
-# In[168]:
-
-
-print("Total disposed Year 1995", df['Area_Disposed_GenbyYear'][1995][1]+df['Area_Disposed_GenbyYear'][1996][1])
-print("Total disposed Year 1996", df['Area_Disposed_GenbyYear'][1995][2]+df['Area_Disposed_GenbyYear'][1996][2]+df['Area_Disposed_GenbyYear'][1995][3])
-
-
-# In[172]:
-
-
-df['waste_Area'] = 0
-for year, row in df.iterrows():
-    df['waste_Area'] += row['area']*row['disposal_function'](np.clip(df.index - year, 0, np.inf))
-
-
-# In[173]:
+# In[ ]:
 
 
 
 
 
-# In[174]:
+# In[ ]:
 
 
-test = []
-for year, row in df.iterrows():
-    test.append(row['area']*row['disposal_function'](np.clip(df.index - year, 0, np.inf)))
-    
 
 
-# In[199]:
+
+# In[ ]:
 
 
-for i in range (0, len(test[0])):
-    print(df['waste_Area'][df.index[i]])
 
-
-# In[200]:
-
-
-for i in range (0, len(test[0])):
-    print(df['area'][df.index[i]])
-
-
-# In[189]:
-
-
-for i in range (0, len(test[0])):
-    print(test[2][i])
-
-
-# In[184]:
-
-
-import pprint
-
-pprint.pprint(test[0])
-'{:f}'.format(test[0])
-
-
-# In[169]:
-
-
-print(df['waste_glass'][1995])
-print(df['waste_glass'][1996])
-print(df['waste_glass'][1997]) 
 
 
 # In[ ]:
@@ -656,7 +879,61 @@ print(df['waste_glass'][1997])
 
 
 
-# In[155]:
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
 
 
 # if I did the math right, this isn't cumulative waste, it's each individual year's waste
@@ -671,16 +948,7 @@ pass
 # In[ ]:
 
 
-fig, ax = plt.subplots(figsize=(9, 5))
-plt.plot(df.index, df['waste_glass']/1000000, 'blue', label='Glass', linewidth=4)
-ax.set_ylabel('Glass [ * $10^6$ kg]', color='blue')
-ax.tick_params(axis='y', colors='blue')
-ax2=ax.twinx()
-plt.title("Waste materials' mass")
-ax2.plot(df.index, df['waste_silver']/1000000, 'red', label='silver', linewidth=4)
-ax2.set_ylabel('Silver [ * $10^6$ kg]', color='red')
-ax2.tick_params(axis='y', colors='red')
-pass
+
 
 
 # ## Installed Capacity
