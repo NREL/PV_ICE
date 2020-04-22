@@ -22,7 +22,6 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # In[10]:
 
 
-
 font = {'family' : 'arial',
         'weight' : 'bold',
         'size'   : 22}
@@ -163,16 +162,6 @@ for i in range (1, len(df)):
     
 
 
-# In[ ]:
-
-
-
-
-
-# ## Waste from Feedstock
-# 
-# In development
-
 # ## Waste from Recycling
 # Also in development
 
@@ -239,6 +228,12 @@ df['Virgin_Stock'] = df['Manufactured_Input'] - df['EoL_Recycled_HQ_into_Manufac
 
 df['Total_EoL_Landfilled_Waste'] = df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled']
 
+df['Total_Manufacturing_Landfilled_Waste'] = df['Manufacturing_Scrap_Landfilled'] + df['Manufacturing_Scrap_Recycled_Losses_Landfilled']
+
+df['Total_Landfilled_Waste'] = (df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled'] +
+                                df['Total_Manufacturing_Landfilled_Waste'])
+
+# NtS: Change EoL name in this one.
 df['Total_EoL_Recycled_OtherUses'] = (df['EoL_Recycled_into_Secondary'] + df['EoL_Recycled_HQ_into_OtherUses'] + 
                                       df['Manufacturing_Recycled_into_Secondary'] + df['Manufacutring_Recycled_HQ_into_OtherUses'])
 
