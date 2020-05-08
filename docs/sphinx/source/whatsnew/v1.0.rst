@@ -13,3 +13,8 @@ First official release. Although functions work, some of the support functions f
 * Added baseline_World_glass.xlsx baseline file.
 
 
+Contributors
+~~~~~~~~~~~~
+* Silvana Ayala (:ghuser:`shirubana`)
+* Heather Mirletz (:ghuser:`heathermirletz`)
+* Dirk Jordan (:ghuser:`dirkjordan`)
