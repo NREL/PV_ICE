@@ -42,8 +42,8 @@ def get_config():
     cfg.VCS = "git"
     cfg.style = "pep440"
     cfg.tag_prefix = ""
-    cfg.parentdir_prefix = "bifacial_radiance-"
-    cfg.versionfile_source = "bifacial_radiance/_version.py"
+    cfg.parentdir_prefix = "CEMFC"
+    cfg.versionfile_source = "CEMFC/_version.py"
     cfg.verbose = False
     return cfg
 
