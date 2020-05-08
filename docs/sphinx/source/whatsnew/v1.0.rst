@@ -16,6 +16,7 @@ First official release. Although functions work, some of the support functions f
 Contributors
 ~~~~~~~~~~~~
 * Silvana Ayala (:ghuser:`shirubana`)
+* Tim Silverman (:ghuser:`silverman`)
 * Heather Mirletz (:ghuser:`heathermirletz`)
 * Dirk Jordan (:ghuser:`dirkjordan`)
 * Chris Deline (:ghuser:`cdeline`)
