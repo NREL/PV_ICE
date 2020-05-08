@@ -23,7 +23,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='CircularEconomy-MassFlowCalculator',
+    name='CEMFC',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -75,7 +75,7 @@ setup(
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     #packages=find_packages(exclude=['contrib', 'docs', 'tests']) + ['data'],
-    packages = ['CircularEconomy-MassFlowCalculator'],
+    packages = ['CEMFC'],
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
     #py_modules=["CircularEconomy-MassFlowCalculator"],
@@ -84,8 +84,10 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['numpy',
-                      'tqdm >= 4.32.1'		
+    install_requires=['matplotlib',
+                       'numpy',
+                      'pandas',
+                      'tqdm >= 4.32.1'
                       ],
 
     # List additional groups of dependencies here (e.g. development
@@ -102,7 +104,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'CircularEconomy-MassFlowCalculator': ['baselines/baseline_US_glass.XLSX',
+        'CEMFC': ['baselines/baseline_US_glass.XLSX',
                        'baselines/baseline_World_glass.XLSX'],
     },
 

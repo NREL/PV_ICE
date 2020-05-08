@@ -1,9 +1,0 @@
-README.md
-setup.py
-CircularEconomy-MassFlowCalculator/__init__.py
-CircularEconomy-MassFlowCalculator/main.py
-CircularEconomy-MassFlowCalculator.egg-info/PKG-INFO
-CircularEconomy-MassFlowCalculator.egg-info/SOURCES.txt
-CircularEconomy-MassFlowCalculator.egg-info/dependency_links.txt
-CircularEconomy-MassFlowCalculator.egg-info/requires.txt
-CircularEconomy-MassFlowCalculator.egg-info/top_level.txt
