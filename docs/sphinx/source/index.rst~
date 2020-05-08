@@ -1,5 +1,5 @@
 .. image:: ../../images_wiki/CE-MFC.png
-  :width: 600
+  :width: 400
 
 Welcome to CircularEconomy-MassFlowCalculator's documentation!
 ==============================================================
@@ -20,7 +20,7 @@ Please see the :ref:`installation` page for installation help.
 Citing CF-MFC
 ==============
 
-f you use the Circular Economy - Mass Flow Calculator in a published work, please cite:
+If you use this calculator in a published work, please cite:
 
         Ayala Pelaez, Silvana; Mirletz, Heather; Silverman, Timothy; Carpenter, Alberta; Barnes, Teresa. "De-fluffing Circular Economy Metrics with Open-Source Calculator for PV" 2020 PV Reliability Workshop, Denver CO.
 
@@ -33,7 +33,7 @@ Contents
 
    whatsnew
    installation
-   #api
+   api
    
 
 

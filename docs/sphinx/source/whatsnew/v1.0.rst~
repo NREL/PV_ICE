@@ -1,17 +1,15 @@
 .. _whatsnew_0108:
 
-v1.8 (24 / 04 / 2020)
+v0.1 (08 / 05 / 2020)
 =====================
 
-Important bug fix on Sunset hour position calculation.
-Sphinx documentation.
-SUnposition now calculated from PVLib.
-Sunposition can now be calculated at the timestamp, or with a delta of time before or after the timestamp.
-Input can be TMY, EPW, or a dataframe with the right column headings. See documentation for the needed headings.
-Albedo gets read from a column for every timepoint provided.
-Bilinear Interpolation 
-Input to main bifacialvf function to run mismatch analysis
-PVMismatch routines
-Biliniear Interpolation routines
-Deprecated "D" (spacing from module edge to next row module edge) deprecated
+First official release. Although functions work, some of the support functions for automatic setup are still being installed.
+
+* Re-structured folders to include Documentation, Versioning and Setup.
+* main.py populated with functions developed
+* Development journals and examples moved to tutorials folder
+* Added Sphinx Documentation
+* Added Versioneer
+* Added baseline_World_glass.xlsx baseline file.
+
 
