@@ -37,3 +37,55 @@ The CE-MFC is leveraging published data from different sources on PV manufacturi
 
 This tool will help implement circularity metrics, quantify and assign a value framework to efforts on re-design, reduction, replacement, reusage, recycling, and lifetime and reliability increases on PV.
 
+
+Documentation
+=============
+
+Full documentation can be found at [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/stable/).
+
+
+Installation
+============
+
+CircularEconomy-MassFlowCalculator releases may be installed using the ``pip`` and ``conda`` tools.
+Please see the [Installation page](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/stable/installation.html) of the documentation for complete instructions.
+
+CircularEconomy-MassFlowCalculator is compatible with Python 3.5 and above.
+
+
+Contributing
+============
+
+We need your help to make CE-MFC a great tool!
+Please see the [Contributing page](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/stable/contributing.html) for more on how you can contribute.
+The long-term success of CircularEconomy-MassFlowCalculator requires substantial community support.
+
+
+License
+=======
+
+BSD 3-clause
+
+
+Getting support
+===============
+
+If you suspect that you may have discovered a bug or if you'd like to
+change something about CF-MFA, then please make an issue on our
+[GitHub issues page](https://github.com/NREL/CircularEconomy-MassFlowCalculator/issues).
+
+
+Citing
+======
+
+If you use CF-MFA in a published work, please cite:
+
+	Ayala Pelaez, Silvana; Mirletz, Heather; Silverman, Timothy; 
+	Carpenter, Alberta; Barnes, Teresa. “De-fluffing Circular 
+	Economy Metrics with Open-Source Calculator for PV” 
+	2020 PV Reliability Workshop, Denver CO.
+
+Please also cite the DOI corresponding to the specific version of
+CF-MFA that you used. CF-MFA DOIs are listed at
+[Zenodo.org](https://zenodo.org/)
+
