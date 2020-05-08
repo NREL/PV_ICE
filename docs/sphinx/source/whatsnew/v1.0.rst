@@ -18,3 +18,4 @@ Contributors
 * Silvana Ayala (:ghuser:`shirubana`)
 * Heather Mirletz (:ghuser:`heathermirletz`)
 * Dirk Jordan (:ghuser:`dirkjordan`)
+* Chris Deline (:ghuser:`cdeline`)
