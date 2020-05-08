@@ -1,26 +1,28 @@
-.. image:: ../../images_wiki/bifacialVF.png
+.. image:: ../../images_wiki/CE-MFC.png
   :width: 600
 
-Welcome to bifacialvf's documentation!
-======================================
+Welcome to CircularEconomy-MassFlowCalculator's documentation!
+==============================================================
 
-bifacialvf is a NREL supported tool that provides a set of functions and casses for simulating the performance of bifacial PV systems through view factor method. 
+Circular Economy - Mass Flow Calculator (CE-MFC) is a NREL supported tool to help quantify and assign a value framework to efforts on re-design, reduction, replacement, reusage, recycling, and lifetime and reliability increases on PV, implementing Circular Economy metrics for PV materials.
 
-The intended audience ranges from PV performance researchers, Engineering Procurement Construction (EPC) companies, installers, investors, consumers and analysts of the PV industry interested in predicting and evaluating bifacial photovoltaic systems. 
+The CE-MFC leverages published data from different sources on PV manufacturing and predicted technological changes.
 
-The source code for bifacial_radiance is hosted on `github
-<https://github.com/NREL/bifacial_radiance>`_.
+This tool will help implement circularity metrics, quantify and assign a value framework to efforts on re-design, reduction, replacement, reusage, recycling, and lifetime and reliability increases on PV.
+
+The intended audience ranges from PV performance and analyst researchers, Engineering Procurement Construction (EPC) companies, installers, investors, consumers and analysts of the PV industry interested in predicting and evaluating the impact of PV growth in our environment and how the improvements towards Circularity affect waste.
+
+The source code for CE-MFC is hosted on `github
+<https://github.com/NREL/CircularEconomy-MassFlowCalculator>`_.
 
 Please see the :ref:`installation` page for installation help.
 
-Citing bifacialvf
-=================
+Citing CF-MFC
+==============
 
-Many of the contributors to bifacial_radiance work in institutions where
-citation metrics are used in performance or career evaluations. If you
-use bifacial_radiance in a published work, please cite:
+f you use the Circular Economy - Mass Flow Calculator in a published work, please cite:
 
-        Marion, Bill, MacAlpine, S, Deline, Chris, Asgharzadeh, Amir, Toor, Fatima, Riley, D., Stein, Joshua S., Hansen, C. A practical Irradiance Model for Bifacial PV Modules. 2017 IEEE Photovoltaic Specialists Conference, Washington DC, 2017. URL: https://www.nrel.gov/docs/fy17osti/67847.pdf
+        Ayala Pelaez, Silvana; Mirletz, Heather; Silverman, Timothy; Carpenter, Alberta; Barnes, Teresa. "De-fluffing Circular Economy Metrics with Open-Source Calculator for PV" 2020 PV Reliability Workshop, Denver CO.
 
 Contents
 ========
@@ -31,7 +33,7 @@ Contents
 
    whatsnew
    installation
-   api
+   #api
    
 
 
