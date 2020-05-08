@@ -7,5 +7,5 @@ Modules, methods, classes and attributes are explained here.
 CE - MFC Package
 -----------------
 
-.. automodule:: CircularEconomy-MassFlowCalculator
+.. automodule:: CEMFC
 
