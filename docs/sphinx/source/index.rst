@@ -34,6 +34,7 @@ Contents
    :maxdepth: 3
    :caption: Contents:
 
+   package_overview
    whatsnew
    installation
    contributing

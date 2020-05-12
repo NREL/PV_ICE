@@ -24,6 +24,9 @@ If you use this calculator in a published work, please cite:
 
         Ayala Pelaez, Silvana; Mirletz, Heather; Silverman, Timothy; Carpenter, Alberta; Barnes, Teresa. "De-fluffing Circular Economy Metrics with Open-Source Calculator for PV" 2020 PV Reliability Workshop, Denver CO.
 
+Please also cite the DOI corresponding to the specific version of CE-MFC that you used. pvlib-python DOIs are listed at Zenodo.org
+
+
 Contents
 ========
 
@@ -33,6 +36,7 @@ Contents
 
    whatsnew
    installation
+   contributing
    api
    
 
