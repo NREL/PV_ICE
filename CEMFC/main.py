@@ -291,32 +291,47 @@ def sens_PanelEff(df, target_panel_eff= 25.0, goal_year = 2030):
 
     return df
 
-def sens_ManufacturingRecyclingEff(df, target_recycling_eff = 95.0, goal_year = 2030):
+def sens_ManufacturingRecyclingEff(df, target_recycling_eff = 95.0, goal_year = 2030, start_year = None):
     '''
     Modifies baseline scenario for evaluatig sensitivity to increase of manufacturing scrap recycling efficiency.  
-    Increases Manufacturing_Scrap_Recycling_Efficiency_[%] from current year until goal_year by linear interpolation until
-    reaching the target_recycling_eff.
+    Increases ``Manufacturing_Scrap_Recycling_Efficiency_[%]`` from current year until ``goal_year`` by linear interpolation until
+    reaching the ``target_recycling_eff``.
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_recycling_eff (float) : target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe
+        Dataframe to be modified
+    target_recycling_eff : float
+        Target recovery value in percentage to be reached. i.e., 95.0 .
+    goal_year : int
+        Year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe
+        Modified dataframe.
     
     '''
-   
-    current_year = int(datetime.datetime.now().year)
+
+    if start_year is None:
+        start_year = int(datetime.datetime.now().year) # Setting to current_year
     
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
+    if start_year > goal_year:
+        print("Error. Goal Year is before start of the change requested.")
         return
      
+    if 0 < abs(target_recycling_eff) < 1:  # checking it is not 0.95 but 95% i.e.
+        print("Warning: target_recyling_eff value is between 0 and 1; it has been"
+              "multiplied by 100% assuming it was a percentage in decimal form.")
+        target_recycling_eff = target_recycling_eff*100
+        
+    if target_recycling_eff > 100 or target_recycling_eff < 0:
+        print("Warning: target_recycling_eff is out of range. Input value between"
+              "0 and 100")
+        return
+        
     df['Manufacturing_Scrap_Recycling_Efficiency_[%]']=df['Manufacturing_Scrap_Recycling_Efficiency_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'Manufacturing_Scrap_Recycling_Efficiency_[%]'] = np.nan
+    df.loc[(df.index < goal_year) & (df.index > start_year), 'Manufacturing_Scrap_Recycling_Efficiency_[%]'] = np.nan
     df.loc[df.index >= goal_year , 'Manufacturing_Scrap_Recycling_Efficiency_[%]'] = target_recycling_eff
     df['Manufacturing_Scrap_Recycling_Efficiency_[%]'] = df['Manufacturing_Scrap_Recycling_Efficiency_[%]'].interpolate()
 
@@ -327,6 +342,8 @@ def sens_ManufacturingHQRecycling(df, target_hq_recycling = 95.0, goal_year = 20
     Modifies baseline scenario for evaluating sensitivity to increasing the percentage of manufacturing scrap recyclied into high quality material.  
     Increases Manufacturing_Scrap_Recycled_into_HighQuality_[%] from current year until goal_year by linear interpolation until
     reaching the target_hq_recycling.
+
+    Datafframe is obtiane from :py:func:`~CEMFC.calculateMF`      
     
     Inputs
     ------
