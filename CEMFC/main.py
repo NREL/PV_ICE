@@ -109,10 +109,15 @@ def calculateMassFlow(df, thickness_glass = 3.5e-3, debugflag=False):
     for i in range (1, len(df)):
         year = df.index[i]
         prevyear = df.index[i-1]
-        df[f'installedCapacity_glass'][year] = (df[f'installedCapacity_glass'][prevyear]+
+        df['installedCapacity_glass'][year] = (df[f'installedCapacity_glass'][prevyear]+
                                                df[f'Mass_Glass'][year] - 
                                                 df['EoL_Waste_Glass'][year] )
 
+#    df['Area'] = df['New_Installed_Capacity_[MW]']/(df['Efficiency_[%]']*0.01)/irradiance_stc # m^2
+#    df['Mass_Glass'] = df['Area']*thickness_glass*density_glass
+    df['installedCapacity_MW_glass'] = ( df['installedCapacity_glass'] / (thickness_glass*density_glass) ) *  (df['Efficiency_[%]']*0.01) * irradiance_stc / 1e6
+
+    
     # Other calculations of the Mass Flow
     df['EoL_CollectionLost_Glass'] =  df['EoL_Waste_Glass']* df['EOL_Collection_Losses_[%]'] * 0.01
 
@@ -173,6 +178,8 @@ def calculateMassFlow(df, thickness_glass = 3.5e-3, debugflag=False):
 
     df['Total_EoL_Recycled_OtherUses'] = (df['EoL_Recycled_into_Secondary'] + df['EoL_Recycled_HQ_into_OtherUses'] + 
                                           df['Manufacturing_Recycled_into_Secondary'] + df['Manufacutring_Recycled_HQ_into_OtherUses'])
+
+    df['New_Installed_Capacity_[MW]'] = df['New_Installed_Capacity_[MW]']/1e6
 
     return df
 
