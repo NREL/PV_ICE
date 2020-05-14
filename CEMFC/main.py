@@ -302,13 +302,13 @@ def sens_ManufacturingYield(df, target_efficiency = 95.0, goal_year = 2030):
 def sens_ManufacturingRecycling(df, target_recycling = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluatig sensitivity to increase of Manfuacturing loss percentage recycled.  
-    Increases Manufacturing_Scrap_Percentage_Recycled_[%] from current year until goal_year by linear interpolation until
-    reaching the target_recovery.
+    Increases ''Manufacturing_Scrap_Percentage_Recycled_[%]'' from current year until ''goal_year'' by linear interpolation until
+    reaching the ''target_recovery''.
     
     Inputs
     --------
     df (dataframe) : dataframe to be modified
-    target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 .
+    target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 %.
     goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
