@@ -47,8 +47,18 @@ def weibull_cdf(alpha, beta):
 
 def calculateMassFlow(df, thickness_glass = 3.5e-3, debugflag=False):
     '''
-    Function takes as input a baseline dataframe already imported, with the right number of columns and content. It returns the dataframe
-    with all the added calculation columns.
+    Function takes as input a baseline dataframe already imported, 
+    with the right number of columns and content.
+    It returns the dataframe with all the added calculation columns.
+    
+    Parameters
+    ------------
+    thickness_glass: '##.##e-#' glass thickness in m
+    
+    Returns
+    --------
+    df: dataframe based on baseline input that adds columns for the area, mass of glass installed
+        per that baseline scenario
     
     '''
 
@@ -185,9 +195,20 @@ def calculateMassFlow(df, thickness_glass = 3.5e-3, debugflag=False):
 
 def sens_lifetime(df, lifetime_increase=1.3, year_increase=2025):
     '''
-    Modifies baseline scenario for evaluatig sensitivity of lifetime parameter.
-    t50 and t90 reliability years get incresed by lifetime_increase parameter
-    starting the year_increase year specified. 
+    Modifies baseline scenario for evaluating sensitivity of lifetime parameter.
+    t50 and t90 reliability years get incresed by 'lifetime_increase' parameter
+    starting the 'year_increase' year specified. 
+    
+    Inputs
+    -------
+    df (dataframe): dataframe to be modified
+    lifetime_increase( decimal): Percent increase (i.e. "1.#") or percent decrease (i.e. "0.#") in expected
+        panel lifetime, relative to the baseline scenario of 30 years
+    'year_increase': the year at which the lifetime increase or decrease occurs
+    
+    Returns
+    --------
+    df with expected module lifetime increased or decreased at specified year
     '''
 
     current_year = int(datetime.datetime.now().year)
@@ -202,69 +223,6 @@ def sens_lifetime(df, lifetime_increase=1.3, year_increase=2025):
     df.loc[df.index > year_increase, 'Reliability_t50_[years]'] = df[df.index > current_year]['Reliability_t50_[years]'].apply(lambda x: x*lifetime_increase)
     df.loc[df.index > year_increase, 'Reliability_t90_[years]'] = df[df.index > current_year]['Reliability_t90_[years]'].apply(lambda x: x*lifetime_increase)
     
-    return df
-
-def sens_ManufacturingYield(df, target_efficiency = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluatig sensitivity to increase of Manufacturing Yield efficiency. 
-    Increases Manufacturing Yield efficiecny from current year until goal_year by linear interpolation until
-    reaching the target_efficiency.
-    
-    Inputs
-    ------
-    df (dataframe) : dataframe to be modified
-    target_efficiency (float) : target efficiency value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df (dataframe) : modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['Manufacturing_Material_Efficiency_[%]']=df['Manufacturing_Material_Efficiency_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'Manufacturing_Material_Efficiency_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'Manufacturing_Material_Efficiency_[%]'] = target_efficiency
-    df['Manufacturing_Material_Efficiency_[%]'] = df['Manufacturing_Material_Efficiency_[%]'].interpolate()
-
-    return df
-
-
-def sens_ManufacturingRecycling(df, target_recycling = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluatig sensitivity to increase of Manfuacturing loss percentage recycled.  
-    Increases Manufacturing_Scrap_Percentage_Recycled_[%] from current year until goal_year by linear interpolation until
-    reaching the target_recovery.
-    
-    Inputs
-    ------
-    df (dataframe) : dataframe to be modified
-    target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df (dataframe) : modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['Manufacturing_Scrap_Percentage_Recycled_[%]']=df['Manufacturing_Scrap_Percentage_Recycled_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'Manufacturing_Scrap_Percentage_Recycled_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'Manufacturing_Scrap_Percentage_Recycled_[%]'] = target_recycling
-    df['Manufacturing_Scrap_Percentage_Recycled_[%]'] = df['Manufacturing_Scrap_Percentage_Recycled_[%]'].interpolate()
-
     return df
 
 def sens_PanelEff(df, target_panel_eff= 25.0, goal_year = 2030):
@@ -295,6 +253,68 @@ def sens_PanelEff(df, target_panel_eff= 25.0, goal_year = 2030):
     df.loc[(df.index < goal_year) & (df.index > current_year), 'Efficiency_[%]'] = np.nan
     df.loc[df.index >= goal_year , 'Efficiency_[%]'] = target_panel_eff
     df['Efficiency_[%]'] = df['Efficiency_[%]'].interpolate()
+
+    return df
+
+def sens_ManufacturingYield(df, target_efficiency = 95.0, goal_year = 2030):
+    '''
+    Modifies baseline scenario for evaluating sensitivity to increasing Manufacturing Yield efficiency. 
+    Increases 'Manufacturing_Material_Efficiency_[%]' from current year until 'goal_year' by linear interpolation until
+    reaching the 'target_efficiency'.
+    
+    Inputs
+    -------
+    df (dataframe) : dataframe to be modified
+    target_efficiency (float) : target efficiency value in percentage to be reached. i.e., 95.0 .
+    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    
+    Returns
+    -------
+    df (dataframe) : modified dataframe.
+    
+    '''
+   
+    current_year = int(datetime.datetime.now().year)
+    
+    if current_year > goal_year:
+        print("Error. Goal Year is before current year")
+        return
+     
+    df['Manufacturing_Material_Efficiency_[%]']=df['Manufacturing_Material_Efficiency_[%]'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'Manufacturing_Material_Efficiency_[%]'] = np.nan
+    df.loc[df.index >= goal_year , 'Manufacturing_Material_Efficiency_[%]'] = target_efficiency
+    df['Manufacturing_Material_Efficiency_[%]'] = df['Manufacturing_Material_Efficiency_[%]'].interpolate()
+
+    return df
+
+def sens_ManufacturingRecycling(df, target_recycling = 95.0, goal_year = 2030):
+    '''
+    Modifies baseline scenario for evaluatig sensitivity to increase of Manfuacturing loss percentage recycled.  
+    Increases Manufacturing_Scrap_Percentage_Recycled_[%] from current year until goal_year by linear interpolation until
+    reaching the target_recovery.
+    
+    Inputs
+    ------
+    df (dataframe) : dataframe to be modified
+    target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 .
+    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    
+    Returns
+    -------
+    df (dataframe) : modified dataframe.
+    
+    '''
+   
+    current_year = int(datetime.datetime.now().year)
+    
+    if current_year > goal_year:
+        print("Error. Goal Year is before current year")
+        return
+     
+    df['Manufacturing_Scrap_Percentage_Recycled_[%]']=df['Manufacturing_Scrap_Percentage_Recycled_[%]'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'Manufacturing_Scrap_Percentage_Recycled_[%]'] = np.nan
+    df.loc[df.index >= goal_year , 'Manufacturing_Scrap_Percentage_Recycled_[%]'] = target_recycling
+    df['Manufacturing_Scrap_Percentage_Recycled_[%]'] = df['Manufacturing_Scrap_Percentage_Recycled_[%]'].interpolate()
 
     return df
 

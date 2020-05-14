@@ -20,7 +20,15 @@ Reliability and Failure Functions
 Modifying Baseline Functions
 ----------------------------
 .. autofunction:: sens_lifetime
+.. autofunction:: sens_PanelEff
 .. autofunction:: sens_ManufacturingYield
 .. autofunction:: sens_ManufacturingRecycling
-
-
+.. autofunction:: sens_ManufacturingRecyclingEff
+.. autofunction:: sens_ManufacturingHQRecycling
+.. autofunction:: sens_ManufacturingHQRecyclingEff
+.. autofunction:: sens_EOLCollection
+.. autofunction:: sens_EOLRecycling
+.. autofunction:: sens_EOLRecyclingYield
+.. autofunction:: sens_EOLHQRecycling
+.. autofunction:: sens_EOLHQRecyclingYield
+.. autofunction:: sens_ReUse
