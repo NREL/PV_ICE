@@ -196,19 +196,23 @@ def calculateMassFlow(df, thickness_glass = 3.5e-3, debugflag=False):
 def sens_lifetime(df, lifetime_increase=1.3, year_increase=2025):
     '''
     Modifies baseline scenario for evaluating sensitivity of lifetime parameter.
-    t50 and t90 reliability years get incresed by 'lifetime_increase' parameter
-    starting the 'year_increase' year specified. 
+    t50 and t90 reliability years get incresed by ''lifetime_increase'' parameter
+    starting the ''year_increase'' year specified. 
     
     Inputs
     -------
-    df (dataframe): dataframe to be modified
-    lifetime_increase( decimal): Percent increase (i.e. "1.#") or percent decrease (i.e. "0.#") in expected
+    df : dataframe
+        dataframe to be modified
+    lifetime_increase : decimal
+        Percent increase (i.e. "1.#") or percent decrease (i.e. "0.#") in expected
         panel lifetime, relative to the baseline scenario of 30 years
-    'year_increase': the year at which the lifetime increase or decrease occurs
+    year_increase : 
+        the year at which the lifetime increase or decrease occurs
     
     Returns
     --------
-    df with expected module lifetime increased or decreased at specified year
+    df : dataframe
+        dataframe of expected module lifetime increased or decreased at specified year
     '''
 
     current_year = int(datetime.datetime.now().year)
@@ -228,14 +232,17 @@ def sens_lifetime(df, lifetime_increase=1.3, year_increase=2025):
 def sens_PanelEff(df, target_panel_eff= 25.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluatig sensitivity to increase in panel efficiencies.  
-    Increases Efficiency_[%] from current year until goal_year by linear interpolation until
-    reaching the target_panel_eff.
+    Increases ''Efficiency_[%]'' from current year until goal_year by linear interpolation until
+    reaching the ''target_panel_eff''.
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_panel_eff (float) : target panel efficiency in percentage to be reached. i.e., 25.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe
+        dataframe to be modified
+    target_panel_eff : float
+        target panel efficiency in percentage to be reached. i.e., 25.0 .
+    goal_year : float
+        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
@@ -259,18 +266,23 @@ def sens_PanelEff(df, target_panel_eff= 25.0, goal_year = 2030):
 def sens_ManufacturingYield(df, target_efficiency = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increasing Manufacturing Yield efficiency. 
-    Increases 'Manufacturing_Material_Efficiency_[%]' from current year until 'goal_year' by linear interpolation until
-    reaching the 'target_efficiency'.
+    Increases 'Manufacturing_Material_Efficiency_[%]'' from current year until
+   ''goal_year' by linear interpolation until
+    reaching the ''target_efficiency''.
     
     Inputs
     -------
-    df (dataframe) : dataframe to be modified
-    target_efficiency (float) : target efficiency value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe 
+        dataframe to be modified
+    target_efficiency: float
+        target efficiency value in percentage to be reached. i.e. 95.0 %.
+    goal_year : float
+        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe
+        modified dataframe
     
     '''
    
@@ -367,20 +379,24 @@ def sens_ManufacturingRecyclingEff(df, target_recycling_eff = 95.0, goal_year = 
 def sens_ManufacturingHQRecycling(df, target_hq_recycling = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increasing the percentage of manufacturing scrap recyclied into high quality material.  
-    Increases Manufacturing_Scrap_Recycled_into_HighQuality_[%] from current year until goal_year by linear interpolation until
-    reaching the target_hq_recycling.
+    Increases ''Manufacturing_Scrap_Recycled_into_HighQuality_[%]'' from current year until ''goal_year'' by linear interpolation until
+    reaching the ''target_hq_recycling''.
 
-    Datafframe is obtiane from :py:func:`~CEMFC.calculateMF`      
+    Datafframe is obtianed from :py:func:`~CEMFC.calculateMassFlow`      
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe
+        dataframe to be modified
+    target_recycling : float
+        target recovery value in percentage to be reached. i.e., 95.0 .
+    goal_year : float
+        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe
+        modified dataframe.
     
     '''
    
@@ -399,19 +415,23 @@ def sens_ManufacturingHQRecycling(df, target_hq_recycling = 95.0, goal_year = 20
 
 def sens_ManufacturingHQRecyclingEff(df, target_hq_efficiency = 95.0, goal_year = 2030):
     '''
-    Modifies baseline scenario for evaluatig sensitivity to increase of Manufacturing scrap recycling into high quality yeild efficiency. 
-    Increases Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%] from current year until goal_year by linear interpolation until
-    reaching the target_hq_efficiency.
+    Modifies baseline scenario for evaluating sensitivity to increase of Manufacturing scrap recycling into high quality yeild efficiency. 
+    Increases ''Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]'' from current year until ''goal_year'' by linear interpolation until
+    reaching the ''target_hq_efficiency''.
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_efficiency (float) : target efficiency value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe
+        dataframe to be modified
+    target_efficiency : float
+        target efficiency value in percentage to be reached. i.e., 95.0 .
+    goal_year : float
+        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe 
+        modified dataframe.
     
     '''
    
@@ -430,19 +450,23 @@ def sens_ManufacturingHQRecyclingEff(df, target_hq_efficiency = 95.0, goal_year 
 
 def sens_EOLCollection(df, target_loss = 0.0, goal_year = 2030):
     '''
-    Modifies baseline scenario for evaluatig sensitivity to decrease of end of life collection loss percentage.  
-    Decreases EOL_Collection_Losses_[%] from current year until goal_year by linear interpolation until
-    reaching the target_loss.
+    Modifies baseline scenario for evaluating sensitivity to decrease of end of life collection loss percentage.  
+    Decreases ''EOL_Collection_Losses_[%]'' from current year until ''goal_year'' by linear interpolation until
+    reaching the ''target_loss''.
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe 
+        dataframe to be modified
+    target_recycling : float
+        target losses in percentage to be reached. i.e. 5.0 % (lower is more is collected).
+    goal_year : float
+        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe
+        modified dataframe.
     
     '''
    
@@ -462,18 +486,23 @@ def sens_EOLCollection(df, target_loss = 0.0, goal_year = 2030):
 def EOLRecycling(df, target_recycling = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increase of EOL percentage recycled.  
-    Increases EOL_Collected_Material_Percentage_Recycled_[%] from current year until goal_year by linear interpolation until
-    reaching the target_recovery.
+    Increases ''EOL_Collected_Material_Percentage_Recycled_[%]'' from current year until ''goal_year'' by linear interpolation until
+    reaching the ''target_recovery''.
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe
+        dataframe to be modified
+    target_recycling : float
+        target percent recycled value in percentage to be reached. i.e., 95.0 %.
+        Higher is more of the end of life collection percentage is recycled.
+    goal_year : float
+        year by which target percent recycled will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe 
+        modified dataframe.
     
     '''
    
@@ -492,19 +521,23 @@ def EOLRecycling(df, target_recycling = 95.0, goal_year = 2030):
 
 def sens_EOLRecyclingYield(df, target_efficiency = 95.0, goal_year = 2030):
     '''
-    Modifies baseline scenario for evaluatig sensitivity to increase of end of life recycling yeild. 
-    Increases EOL_Recycling_Efficiency_[%] from current year until goal_year by linear interpolation until
-    reaching the target_efficiency.
+    Modifies baseline scenario for evaluating sensitivity to increase of end of life recycling yeild. 
+    Increases ''EOL_Recycling_Efficiency_[%]'' from current year until ''goal_year'' by linear interpolation until
+    reaching the ''target_efficiency''.
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_efficiency (float) : target efficiency value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe
+        dataframe to be modified
+    target_efficiency : float
+        target recycling efficiency value in percentage to be reached. i.e., 95.0 % of material is recovered.
+    goal_year : float
+        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe 
+        modified dataframe.
     
     '''
    
@@ -524,18 +557,22 @@ def sens_EOLRecyclingYield(df, target_efficiency = 95.0, goal_year = 2030):
 def sens_EOLHQRecycling(df, target_recycling = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluatig sensitivity to increase of end of life high quality recycling percentage.  
-    Increases EOL_Recycled_Material_into_HighQuality_[%] from current year until goal_year by linear interpolation until
-    reaching the target_recovery.
+    Increases ''EOL_Recycled_Material_into_HighQuality_[%]'' from current year until ''goal_year'' by linear interpolation until
+    reaching the ''target_recovery''.
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe
+        dataframe to be modified
+    target_recycling : float
+        target recycling percentage to be reached. i.e. 95.0 % of recycled material is recycled into high quality.
+    goal_year : float 
+        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe
+        modified dataframe.
     
     '''
    
@@ -555,18 +592,22 @@ def sens_EOLHQRecycling(df, target_recycling = 95.0, goal_year = 2030):
 def sens_EOLHQRecyclingYield(df, target_efficiency = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluatig sensitivity to increase of end of life high quality recycling efficiency. 
-    Increases EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%] efficiecny from current year until goal_year by linear interpolation until
-    reaching the target_efficiency.
+    Increases ''EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]'' efficiecny from current year until ''goal_year'' by linear interpolation until
+    reaching the ''target_efficiency''.
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_efficiency (float) : target efficiency value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe
+        dataframe to be modified
+    target_efficiency : float 
+        target efficiency value in percentage to be reached. i.e., 95.0 %.
+    goal_year : float
+        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe 
+        modified dataframe.
     
     '''
    
@@ -586,18 +627,22 @@ def sens_EOLHQRecyclingYield(df, target_efficiency = 95.0, goal_year = 2030):
 def sens_ReUse(df, target_reuse = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increase of percent of end of life panels that find a second life.  
-    Increases Repowering_of_Failed_Modules_[%] from current year until goal_year by linear interpolation until
-    reaching the target_reuse.
+    Increases ''Repowering_of_Failed_Modules_[%]'' from current year until ''goal_year'' by linear interpolation until
+    reaching the ''target_reuse''.
     
     Inputs
     ------
-    df (dataframe) : dataframe to be modified
-    target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
+    df : dataframe
+        dataframe to be modified
+    target_recycling : float
+        target recovery value in percentage to be reached. i.e., 95.0 .
+    goal_year : float
+        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
-    df (dataframe) : modified dataframe.
+    df : dataframe 
+        modified dataframe.
     
     '''
    
