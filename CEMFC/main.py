@@ -200,7 +200,7 @@ def sens_lifetime(df, lifetime_increase=1.3, year_increase=2025):
     starting the ''year_increase'' year specified. 
     
     Inputs
-    -------
+    --------
     df : dataframe
         dataframe to be modified
     lifetime_increase : decimal
@@ -236,7 +236,7 @@ def sens_PanelEff(df, target_panel_eff= 25.0, goal_year = 2030):
     reaching the ''target_panel_eff''.
     
     Inputs
-    ------
+    --------
     df : dataframe
         dataframe to be modified
     target_panel_eff : float
@@ -271,7 +271,7 @@ def sens_ManufacturingYield(df, target_efficiency = 95.0, goal_year = 2030):
     reaching the ''target_efficiency''.
     
     Inputs
-    -------
+    --------
     df : dataframe 
         dataframe to be modified
     target_efficiency: float
@@ -306,13 +306,13 @@ def sens_ManufacturingRecycling(df, target_recycling = 95.0, goal_year = 2030):
     reaching the target_recovery.
     
     Inputs
-    ------
+    --------
     df (dataframe) : dataframe to be modified
     target_recycling (float) : target recovery value in percentage to be reached. i.e., 95.0 .
     goal_year : year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
-    -------
+    --------
     df (dataframe) : modified dataframe.
     
     '''
