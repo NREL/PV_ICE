@@ -494,7 +494,7 @@ def sens_EOLCollection(df, target_loss = 0.0, goal_year = 2030):
 
     return df
 
-def EOLRecycling(df, target_recycling = 95.0, goal_year = 2030):
+def sens_EOLRecycling(df, target_recycling = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increase of EOL percentage recycled.  
     Increases `EOL_Collected_Material_Percentage_Recycled_[%]` from current year until `goal_year` by linear interpolation until
