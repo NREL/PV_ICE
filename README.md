@@ -41,7 +41,7 @@ This tool will help implement circularity metrics, quantify and assign a value f
 Documentation
 =============
 
-The calculator follows the following diagram for calculating Mass Flow. Baseline inputs are available in the CEMFC \ baselines folder for US and World past and projected values. Full documentation can be found at [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/stable/).
+The calculator follows the following diagram for calculating Mass Flow. Baseline inputs are available in the CEMFC \ baselines folder for US and World past and projected values. Full documentation can be found at [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/latest/).
 
 <img src="docs/images_wiki/MFC-Diagram.PNG" width="550">
 
@@ -50,9 +50,19 @@ Installation
 ============
 
 CircularEconomy-MassFlowCalculator releases may be installed using the ``pip`` and ``conda`` tools.
-Please see the [Installation page](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/stable/installation.html) of the documentation for complete instructions.
+Please see the [Installation page](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/latest/installation.html) of the documentation for complete instructions.
 
 CircularEconomy-MassFlowCalculator is compatible with Python 3.5 and above.
+
+Install with:
+
+.. code::
+	pip install CEMFC
+
+For developer installation, download the repository, navigate to the folder location and install as:
+
+.. code::
+	pip install -e .
 
 
 Contributing
