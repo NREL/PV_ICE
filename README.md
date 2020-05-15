@@ -56,13 +56,11 @@ CircularEconomy-MassFlowCalculator is compatible with Python 3.5 and above.
 
 Install with:
 
-.. code::
-	pip install CEMFC
+    pip install CEMFC
 
 For developer installation, download the repository, navigate to the folder location and install as:
 
-.. code::
-	pip install -e .
+    pip install -e .
 
 
 Contributing
