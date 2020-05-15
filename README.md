@@ -43,7 +43,7 @@ Documentation
 
 The calculator follows the following diagram for calculating Mass Flow. Baseline inputs are available in the CEMFC \ baselines folder for US and World past and projected values. Full documentation can be found at [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/stable/).
 
-<img src="docs/images_wiki/MFC-Diagram.png" width="400">
+<img src="docs/images_wiki/MFC-Diagram.PNG" width="400">
 
 
 Installation
