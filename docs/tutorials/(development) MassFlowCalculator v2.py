@@ -52,7 +52,7 @@ def weibull_params(keypoints):
     return {'alpha': alpha, 'beta': beta}
 
 
-# In[12]:
+# In[6]:
 
 
 def weibull_cdf(alpha, beta):
@@ -61,6 +61,7 @@ def weibull_cdf(alpha, beta):
     scale parameter `beta`'''
     def cdf(x):
         return 1 - np.exp(-(np.array(x)/beta)**alpha)
+    print(alpha, beta)
     return cdf
 
 
@@ -435,16 +436,4 @@ plt.subplots(figsize=(9, 15))
 plt.plot(df['installedCapacity_glass'])
 plt.yscale("log")
 plt.ylabel("Installed Capacity of Glass, \n Considering new additions and Decommissions [kg]")
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 

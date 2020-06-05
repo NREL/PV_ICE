@@ -5,7 +5,7 @@
 # 
 # Comparison case using the functions in CE-MFC to compare 15 year module reliability vs 50 year module reliability.
 
-# In[1]:
+# In[37]:
 
 
 import CEMFC
@@ -13,7 +13,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-# In[2]:
+# In[38]:
 
 
 import os
@@ -30,14 +30,14 @@ df = pd.read_excel(os.path.join(baselinefolder,'baseline_US_glass.xlsx'), index_
 df2 = df.copy()
 
 
-# In[22]:
+# In[39]:
 
 
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[4]:
+# In[40]:
 
 
 df = CEMFC.calculateMassFlow(df)
@@ -45,7 +45,17 @@ df['Reliability_t50_[years]'] = 50
 df['Reliability_t90_[years]'] = 60
 
 
-# In[5]:
+# In[56]:
+
+
+#checking weibull shape parameter values
+test_t50 = 50
+test_t90 = 60
+test = CEMFC.main.weibull_params({test_t50: 0.50, test_t90: 0.90})
+print("WEIBULL Parameters for a t50 and t90 of ", test_t50, " & ", test_t90, " years are Alpha: ", test['alpha'], " Beta: ", test['beta'])
+
+
+# In[41]:
 
 
 # df2 = main.sens_lifetime(df2, 19.5, 2025)
@@ -54,7 +64,17 @@ df2['Reliability_t90_[years]'] = 15
 df2 = CEMFC.calculateMassFlow(df2)
 
 
-# In[7]:
+# In[55]:
+
+
+#checking weibull shape parameter values
+test_t50 = 8
+test_t90 = 15
+test = CEMFC.main.weibull_params({test_t50: 0.50, test_t90: 0.90})
+print("WEIBULL Parameters for a t50 and t90 of ", test_t50, " & ", test_t90, " years are Alpha: ", test['alpha'], " Beta: ", test['beta'])
+
+
+# In[43]:
 
 
 plt.plot(df['Total_Landfilled_Waste'],'r', label='50 Year Module')
