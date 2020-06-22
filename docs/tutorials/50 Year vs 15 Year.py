@@ -5,7 +5,7 @@
 # 
 # Comparison case using the functions in CE-MFC to compare 15 year module reliability vs 50 year module reliability.
 
-# In[24]:
+# In[79]:
 
 
 import CEMFC
@@ -13,7 +13,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-# In[25]:
+# In[80]:
 
 
 import os
@@ -30,14 +30,14 @@ df = pd.read_excel(os.path.join(baselinefolder,'baseline_US_glass.xlsx'), index_
 df2 = df.copy()
 
 
-# In[26]:
+# In[81]:
 
 
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[27]:
+# In[82]:
 
 
 df = CEMFC.calculateMassFlow(df)
@@ -45,7 +45,7 @@ df['Reliability_t50_[years]'] = 50
 df['Reliability_t90_[years]'] = 60
 
 
-# In[28]:
+# In[83]:
 
 
 #checking weibull shape parameter values
@@ -55,7 +55,7 @@ test = CEMFC.main.weibull_params({test_t50: 0.50, test_t90: 0.90})
 print("WEIBULL Parameters for a t50 and t90 of ", test_t50, " & ", test_t90, " years are Alpha: ", test['alpha'], " Beta: ", test['beta'])
 
 
-# In[29]:
+# In[84]:
 
 
 # df2 = main.sens_lifetime(df2, 19.5, 2025)
@@ -64,7 +64,7 @@ df2['Reliability_t90_[years]'] = 15
 df2 = CEMFC.calculateMassFlow(df2)
 
 
-# In[30]:
+# In[85]:
 
 
 #checking weibull shape parameter values
@@ -74,7 +74,7 @@ test = CEMFC.main.weibull_params({test_t50: 0.50, test_t90: 0.90})
 print("WEIBULL Parameters for a t50 and t90 of ", test_t50, " & ", test_t90, " years are Alpha: ", test['alpha'], " Beta: ", test['beta'])
 
 
-# In[31]:
+# In[86]:
 
 
 plt.plot(df['Total_Landfilled_Waste'],'r', label='50 Year Module')
@@ -84,7 +84,7 @@ plt.legend()
 #plt.title('Total Landfilled Waste with baseline assumptions ')
 
 
-# In[32]:
+# In[87]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -93,13 +93,13 @@ plt.ylabel("Installed Capacity [MW]")
 #plt.legend()
 
 
-# In[33]:
+# In[88]:
 
 
 df3 = df2.copy()
 
 
-# In[34]:
+# In[89]:
 
 
 # Modifing the installed capacity requiremetns according to t50. 
@@ -111,7 +111,7 @@ for i in range (1995, 2050):
     df3 = CEMFC.calculateMassFlow(df3)
 
 
-# In[35]:
+# In[90]:
 
 
 # Not pretty, but I wanted to plot what's the instaleld capacity if there are NO DEATHS. ZERO. NIL.
@@ -175,7 +175,7 @@ df4['installedCapacity_MW_glass'] = [9,
 ]
 
 
-# In[36]:
+# In[91]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -187,7 +187,7 @@ plt.ylabel("Installed Capacity [MW]")
 plt.legend()
 
 
-# In[37]:
+# In[92]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -199,19 +199,19 @@ plt.ylabel("Installed Capacity [MW]")
 plt.legend()
 
 
-# In[38]:
+# In[93]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
 plt.plot(df2['installedCapacity_MW_glass'],'b', label='15 Year Module')
-plt.plot(df3['installedCapacity_MW_glass'],'b*', label='15 Year Module, with extra installations')
+plt.plot(df3['installedCapacity_MW_glass'][0:len(df3['installedCapacity_MW_glass'])-1],'b*', label='15 Year Module, with extra installations')
 plt.plot()
 plt.ylim([0, 1.7e6])
 plt.ylabel("Installed Capacity [MW]")
 plt.legend()
 
 
-# In[39]:
+# In[94]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -226,26 +226,26 @@ plt.legend()
 
 # ### Back to plotting landfilled mass for the various scenarios
 
-# In[40]:
+# In[95]:
 
 
 import numpy as np
 
 
-# In[41]:
+# In[96]:
 
 
 # Setting the last value to 0 because it has a dip since there is no 
 # difference with installments next year becuase it's all 0.
-df3['Total_Landfilled_Waste'][2050] = np.nan
+#df3['Total_Landfilled_Waste'][2050] = np.nan
 
 
-# In[42]:
+# In[97]:
 
 
 plt.plot(df['Total_Landfilled_Waste'],'r', label='50 Year Module')
 plt.plot(df2['Total_Landfilled_Waste'],'b', label='15 Year Module')
-plt.plot(df3['Total_Landfilled_Waste'],'b--', label='15 Year Module w. 50 y capacity')
+plt.plot(df3['Total_Landfilled_Waste'][0:len(df3['Total_Landfilled_Waste'])-1],'b--', label='15 Year Module w. 50 y capacity')
 
 plt.ylabel("Glass [kg]")
 plt.legend()
@@ -254,7 +254,7 @@ plt.title('Total Landfilled Waste with baseline assumptions for ')
 
 # # # modification of 15-year for high recycling
 
-# In[51]:
+# In[98]:
 
 
 #modify df2, with no compensation for capacity
@@ -280,25 +280,41 @@ df3['Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] = 1
 df3 = CEMFC.calculateMassFlow(df3)
 
 plt.plot(df['Virgin_Stock'],'r', label='50 Year Module')
-plt.plot(df2['Virgin_Stock'],'b', label='15 Year Module')
-plt.plot(df3['Virgin_Stock'],'b--', label='15 Year Module w. 50 y capacity')
+plt.plot(df2['Virgin_Stock'],'b', label='15 Year Module (a)')
+plt.plot(df3['Virgin_Stock'][0:len(df3['Virgin_Stock'])-1],'b--', label='15 Year Module w. 50 y capacity (b)')
 
 plt.ylabel("Virgin Glass [kg]")
 plt.legend()
-plt.title('Total Virgin Material Input')
+plt.title('Annual Virgin Input: Glass')
 
 
-# In[52]:
+# In[99]:
 
 
 #check that I did the above bit right
 plt.plot(df['Total_Landfilled_Waste'],'r', label='50 Year Module')
-plt.plot(df2['Total_Landfilled_Waste'],'b', label='15 Year Module')
-plt.plot(df3['Total_Landfilled_Waste'],'b--', label='15 Year Module w. 50 y capacity')
+plt.plot(df2['Total_Landfilled_Waste'],'b', label='15 Year Module (a)')
+plt.plot(df3['Total_Landfilled_Waste'][0:len(df3['Total_Landfilled_Waste'])-1],'b--', label='15 Year Module w. 50 y capacity (b)')
 
 plt.ylabel("Glass [kg]")
 plt.legend()
-plt.title('Total Landfilled Waste with baseline assumptions for ')
+plt.title('Annual Waste Output: Glass ')
+
+
+# In[100]:
+
+
+#plot installed capacity in GW
+df['installedCapacity_MW_glass']/=(1000)
+df2['installedCapacity_MW_glass']/=(1000)
+df3['installedCapacity_MW_glass']/=(1000)
+plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
+plt.plot(df2['installedCapacity_MW_glass'],'b', label='15 Year Module (a)')
+plt.plot(df3['installedCapacity_MW_glass'][0:len(df3['installedCapacity_MW_glass'])-1],'b*', label='15 Year Module, with extra installations (b)')
+plt.plot()
+#plt.ylim([0, 1.7e6])
+plt.ylabel("Installed Capacity [GW]")
+plt.legend()
 
 
 # In[ ]:
