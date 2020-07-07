@@ -677,3 +677,118 @@ def sens_ReUse(df, target_reuse = 95.0, goal_year = 2030):
 
     return df
 
+
+def _modDict(originaldict, moddict):
+    '''
+    Compares keys in originaldict with moddict and updates values of 
+    originaldict to moddict if existing.
+    
+    Parameters
+    ----------
+    originaldict : dictionary
+        Original dictionary calculated, for example frontscan or backscan dictionaries.
+    moddict : dictionary
+        Modified dictinoary, for example modscan['x'] = 0 to change position of x.
+    
+    Returns
+    -------
+    originaldict : dictionary
+        Updated original dictionary with values from moddict.
+    '''
+    for key in moddict:
+        try:
+            originaldict[key] = moddict[key]
+        except:
+            print("Wrong key in modified dictionary")
+                
+    return originaldict
+
+
+def calculateLCA(PVarea, modified_impacts=None, printflag = False):
+    '''
+
+
+    '''
+    
+    if printflag:
+        print("Doing calculations of LCA analysis for Silicon Photovoltaic Panels")
+    
+    
+
+    impacts = {'Acidification':{'UUID':  '75d0c8a2-e466-3bd7-813b-5beef2209330',
+                                'Result':  1.29374135667815,
+                                'Unit': 'kg SO2' },
+                'Carcinogenics':{'UUID':  'a6e5e5d8-a1e5-3c77-8170-586c4fe37514',
+                                            'Result':  0.0000231966690476102,
+                                            'Unit': 'CTUh' },
+                'Ecotoxicity':{'UUID': '338e9370-ceb0-3d18-9d87-5f91feb7829c',
+                                            'Result':  5933.77859696668,
+                                            'Unit': 'CTUe' },
+                'Eutrophication':{'UUID':  '45b8cd56-498a-3c6f-9488-134e951d8c02',
+                                'Result':  1.34026194777363,
+                                'Unit': 'kg N eq' },
+                
+                'Fossil fuel depletion':{'UUID': '0e45786f-67fa-3b8a-b8a3-73a7c316434c',
+                                'Result': 249.642261689385,
+                                'Unit': 'MJ surplus' },
+                
+                'Global warming':{'UUID':  '31967441-d687-313d-9910-13da3a584ab7',
+                                'Result': 268.548841324818,
+                                'Unit': 'kg CO2 eq' },
+                
+                'Non carcinogenics':{'UUID':  'd4827ae3-c873-3ea4-85fb-860b7f3f2dee',
+                                'Result': 0.000135331806321799,
+                                'Unit': 'CTUh' },
+                
+                'Ozone depletion':{'UUID': '6c05dad1-6661-35f2-82aa-6e8e6a498aec',
+                                'Result':  0.0000310937628622019,
+                                'Unit': 'kg CFC-11 eq' },
+                
+                'Respiratory effects':{'UUID':  'e0916d62-7fbd-3d0a-a4a5-52659b0ac9c1',
+                                'Result':  0.373415542664206,
+                                'Unit': 'kg PM2.5 eq' },
+                'Smog':{'UUID':  '7a149078-e2fd-3e07-a5a3-79035c60e7c3',
+                                'Result':  15.35483065, 
+                                'Unit': 'kg O3 eq' },
+            }
+    
+    if modified_impacts is not None:
+        impacts = _modDict(impacts, modified_impacts)
+        if printflag:
+            print("Following Modified impacts provided instead of TRACI 2.1 default")
+            print(impacts)
+            print("")
+    else:
+        if printflag:
+            print("Following TRACI 2.1")
+
+    acidification = impacts['Acidification']['Result']*PVarea
+    carcinogenics = impacts['Carcinogenics']['Result']*PVarea
+    ecotoxicity  = impacts['Ecotoxicity']['Result']*PVarea
+    eutrophication = impacts['Eutrophication']['Result']*PVarea
+    fossil_fuel_depletion = impacts['Fossil fuel depletion']['Result']*PVarea
+    global_warming = impacts['Global warming']['Result']*PVarea
+    non_carcinogenics = impacts['Non carcinogenics']['Result']*PVarea
+    ozone_depletion = impacts['Ozone depletion']['Result']*PVarea
+    respiratory_effects = impacts['Respiratory effects']['Result']*PVarea
+    smog = impacts['Smog']['Result']*PVarea
+    
+
+    
+    if printflag:
+        print("RESULTS FOR PV AREA ", PVarea, " m2 ")
+        print("****************************************")
+        print('Acidification: ', round(impacts['Acidification']['Result']*PVarea, 2), ' ', impacts['Acidification']['Unit'])
+        print('Carcinogenics: ', round(impacts['Carcinogenics']['Result']*PVarea, 2), ' ', impacts['Carcinogenics']['Unit'])
+        print('Ecotoxicity: ', round(impacts['Ecotoxicity']['Result']*PVarea, 2), ' ', impacts['Ecotoxicity']['Unit'])
+        print('Eutrophication: ', round(impacts['Eutrophication']['Result']*PVarea, 2), ' ', impacts['Eutrophication']['Unit'])
+        print('Fossil fuel depletion: ', round(impacts['Fossil fuel depletion']['Result']*PVarea, 2), ' ', impacts['Fossil fuel depletion']['Unit'])
+        print('Global warming: ', round(impacts['Global warming']['Result']*PVarea, 2), ' ', impacts['Global warming']['Unit'])
+        print('Non carcinogenics: ', round(impacts['Non carcinogenics']['Result']*PVarea, 2), ' ', impacts['Non carcinogenics']['Unit'])
+        print('Ozone depletion: ', round(impacts['Ozone depletion']['Result']*PVarea, 2), ' ', impacts['Ozone depletion']['Unit'])
+        print('Respiratory effects: ', round(impacts['Respiratory effects']['Result']*PVarea, 2), ' ', impacts['Respiratory effects']['Unit'])
+        print('Smog: ', round(impacts['Smog']['Result']*PVarea, 2), ' ', impacts['Smog']['Unit'])
+        
+    return (acidification, carcinogenics, ecotoxicity, eutrophication, 
+                fossil_fuel_depletion, global_warming,
+                non_carcinogenics, ozone_depletion, respiratory_effects, smog)

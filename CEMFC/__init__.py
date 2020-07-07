@@ -1,4 +1,4 @@
-from CEMFC.main import weibull_params, weibull_cdf, calculateMassFlow
+from CEMFC.main import weibull_params, weibull_cdf, calculateMassFlow, calculateLCA
 from CEMFC.main import sens_lifetime, sens_ManufacturingYield, sens_ManufacturingRecycling
 from CEMFC.main import sens_PanelEff, sens_ManufacturingRecyclingEff, sens_ManufacturingHQRecycling
 from CEMFC.main import sens_ManufacturingHQRecyclingEff, sens_EOLCollection, sens_EOLRecyclingYield

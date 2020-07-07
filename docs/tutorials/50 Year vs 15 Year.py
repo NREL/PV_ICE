@@ -5,7 +5,7 @@
 # 
 # Comparison case using the functions in CE-MFC to compare 15 year module reliability vs 50 year module reliability.
 
-# In[79]:
+# In[1]:
 
 
 import CEMFC
@@ -13,7 +13,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-# In[80]:
+# In[2]:
 
 
 import os
@@ -30,14 +30,14 @@ df = pd.read_excel(os.path.join(baselinefolder,'baseline_US_glass.xlsx'), index_
 df2 = df.copy()
 
 
-# In[81]:
+# In[3]:
 
 
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[82]:
+# In[4]:
 
 
 df = CEMFC.calculateMassFlow(df)
@@ -45,7 +45,7 @@ df['Reliability_t50_[years]'] = 50
 df['Reliability_t90_[years]'] = 60
 
 
-# In[83]:
+# In[5]:
 
 
 #checking weibull shape parameter values
@@ -55,7 +55,7 @@ test = CEMFC.main.weibull_params({test_t50: 0.50, test_t90: 0.90})
 print("WEIBULL Parameters for a t50 and t90 of ", test_t50, " & ", test_t90, " years are Alpha: ", test['alpha'], " Beta: ", test['beta'])
 
 
-# In[84]:
+# In[6]:
 
 
 # df2 = main.sens_lifetime(df2, 19.5, 2025)
@@ -64,7 +64,7 @@ df2['Reliability_t90_[years]'] = 15
 df2 = CEMFC.calculateMassFlow(df2)
 
 
-# In[85]:
+# In[7]:
 
 
 #checking weibull shape parameter values
@@ -74,7 +74,7 @@ test = CEMFC.main.weibull_params({test_t50: 0.50, test_t90: 0.90})
 print("WEIBULL Parameters for a t50 and t90 of ", test_t50, " & ", test_t90, " years are Alpha: ", test['alpha'], " Beta: ", test['beta'])
 
 
-# In[86]:
+# In[8]:
 
 
 plt.plot(df['Total_Landfilled_Waste'],'r', label='50 Year Module')
@@ -84,7 +84,7 @@ plt.legend()
 #plt.title('Total Landfilled Waste with baseline assumptions ')
 
 
-# In[87]:
+# In[9]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -93,13 +93,13 @@ plt.ylabel("Installed Capacity [MW]")
 #plt.legend()
 
 
-# In[88]:
+# In[10]:
 
 
 df3 = df2.copy()
 
 
-# In[89]:
+# In[11]:
 
 
 # Modifing the installed capacity requiremetns according to t50. 
@@ -111,7 +111,7 @@ for i in range (1995, 2050):
     df3 = CEMFC.calculateMassFlow(df3)
 
 
-# In[90]:
+# In[12]:
 
 
 # Not pretty, but I wanted to plot what's the instaleld capacity if there are NO DEATHS. ZERO. NIL.
@@ -175,7 +175,7 @@ df4['installedCapacity_MW_glass'] = [9,
 ]
 
 
-# In[91]:
+# In[13]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -187,7 +187,7 @@ plt.ylabel("Installed Capacity [MW]")
 plt.legend()
 
 
-# In[92]:
+# In[14]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -199,7 +199,7 @@ plt.ylabel("Installed Capacity [MW]")
 plt.legend()
 
 
-# In[93]:
+# In[15]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -211,7 +211,7 @@ plt.ylabel("Installed Capacity [MW]")
 plt.legend()
 
 
-# In[94]:
+# In[16]:
 
 
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -226,13 +226,13 @@ plt.legend()
 
 # ### Back to plotting landfilled mass for the various scenarios
 
-# In[95]:
+# In[17]:
 
 
 import numpy as np
 
 
-# In[96]:
+# In[18]:
 
 
 # Setting the last value to 0 because it has a dip since there is no 
@@ -240,7 +240,7 @@ import numpy as np
 #df3['Total_Landfilled_Waste'][2050] = np.nan
 
 
-# In[97]:
+# In[19]:
 
 
 plt.plot(df['Total_Landfilled_Waste'],'r', label='50 Year Module')
@@ -252,9 +252,81 @@ plt.legend()
 plt.title('Total Landfilled Waste with baseline assumptions for ')
 
 
-# # # modification of 15-year for high recycling
+# ## LCA Analysis of 15 vs 50 Year Module
+# 
+# We have previously obtained results for ladnfilled waste for 50 year module, 15 year module, and 15 year module with increased installations to reach to 50 year module installed capacity. This is applies the LCA methodology to evaluate environmetnal impacts based on landfilled area.
 
-# In[98]:
+# In[20]:
+
+
+# Default values
+density_glass = 2500 # kg/m^3   
+thickness_glass = 0.0035 # m
+
+
+# #### First we calculate the Area, based on the glass thickness and glass density and the Total Landfilled Waste [kg]. The PV panel area will be equal to the Glass Area for our modeled scenarios so far.
+
+# In[21]:
+
+
+df['Total_Landfilled_Waste_Area'] = df['Total_Landfilled_Waste']/(thickness_glass*density_glass)
+df2['Total_Landfilled_Waste_Area'] = df2['Total_Landfilled_Waste']/(thickness_glass*density_glass)
+df3['Total_Landfilled_Waste_Area'] = df3['Total_Landfilled_Waste']/(thickness_glass*density_glass)
+
+
+# In[22]:
+
+
+plt.plot(df['Total_Landfilled_Waste_Area'],'r', label='50 Year Module')
+plt.plot(df2['Total_Landfilled_Waste_Area'],'b', label='15 Year Module (a)')
+plt.plot(df3['Total_Landfilled_Waste_Area'][0:len(df3['Total_Landfilled_Waste'])-1],'b--', label='15 Year Module w. 50 y capacity (b)')
+
+plt.ylabel("Glass Area [m$^3$]")
+plt.legend()
+plt.title('Annual Waste Output: Glass ')
+
+
+# In[41]:
+
+
+[acidification, carcinogenics, ecotoxicity, eutrophication, 
+fossil_fuel_depletion, global_warming,
+non_carcinogenics, ozone_depletion, respiratory_effects, smog] = CEMFC.calculateLCA(df['Total_Landfilled_Waste_Area'].sum())
+
+
+# In[42]:
+
+
+[acidification2, carcinogenics2, ecotoxicity2, eutrophication2, 
+fossil_fuel_depletion2, global_warming2,
+non_carcinogenics2, ozone_depletion2, respiratory_effects2, smog2] = CEMFC.calculateLCA(df2['Total_Landfilled_Waste_Area'].sum())
+
+
+# In[43]:
+
+
+[acidification3, carcinogenics3, ecotoxicity3, eutrophication3, 
+fossil_fuel_depletion3, global_warming3,
+non_carcinogenics3, ozone_depletion3, respiratory_effects3, smog3] = CEMFC.calculateLCA(df3['Total_Landfilled_Waste_Area'].sum())
+
+
+# In[44]:
+
+
+global_warming = pd.DataFrame({'Global warming':['50 year', '15 year', '15 year*'], 
+                               'val':[global_warming, global_warming2, global_warming3]})
+
+
+# In[46]:
+
+
+ax = global_warming.plot.bar(x='Global warming', y='val', rot=0)
+plt.title('Global Warming Effect, in kg CO2 eq')
+
+
+# ## SCENARIO: Modification of 15-year for high recycling
+
+# In[ ]:
 
 
 #modify df2, with no compensation for capacity
@@ -288,7 +360,7 @@ plt.legend()
 plt.title('Annual Virgin Input: Glass')
 
 
-# In[99]:
+# In[ ]:
 
 
 #check that I did the above bit right
@@ -301,7 +373,7 @@ plt.legend()
 plt.title('Annual Waste Output: Glass ')
 
 
-# In[100]:
+# In[ ]:
 
 
 #plot installed capacity in GW
@@ -315,10 +387,4 @@ plt.plot()
 #plt.ylim([0, 1.7e6])
 plt.ylabel("Installed Capacity [GW]")
 plt.legend()
-
-
-# In[ ]:
-
-
-
 
