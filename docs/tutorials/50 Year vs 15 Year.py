@@ -286,7 +286,7 @@ plt.legend()
 plt.title('Annual Waste Output: Glass ')
 
 
-# In[41]:
+# In[23]:
 
 
 [acidification, carcinogenics, ecotoxicity, eutrophication, 
@@ -294,7 +294,7 @@ fossil_fuel_depletion, global_warming,
 non_carcinogenics, ozone_depletion, respiratory_effects, smog] = CEMFC.calculateLCA(df['Total_Landfilled_Waste_Area'].sum())
 
 
-# In[42]:
+# In[24]:
 
 
 [acidification2, carcinogenics2, ecotoxicity2, eutrophication2, 
@@ -302,7 +302,7 @@ fossil_fuel_depletion2, global_warming2,
 non_carcinogenics2, ozone_depletion2, respiratory_effects2, smog2] = CEMFC.calculateLCA(df2['Total_Landfilled_Waste_Area'].sum())
 
 
-# In[43]:
+# In[25]:
 
 
 [acidification3, carcinogenics3, ecotoxicity3, eutrophication3, 
@@ -310,14 +310,14 @@ fossil_fuel_depletion3, global_warming3,
 non_carcinogenics3, ozone_depletion3, respiratory_effects3, smog3] = CEMFC.calculateLCA(df3['Total_Landfilled_Waste_Area'].sum())
 
 
-# In[44]:
+# In[26]:
 
 
 global_warming = pd.DataFrame({'Global warming':['50 year', '15 year', '15 year*'], 
                                'val':[global_warming, global_warming2, global_warming3]})
 
 
-# In[46]:
+# In[27]:
 
 
 ax = global_warming.plot.bar(x='Global warming', y='val', rot=0)
@@ -329,7 +329,18 @@ plt.title('Global Warming Effect, in kg CO2 eq')
 # In[ ]:
 
 
-#modify df2, with no compensation for capacity
+#This scenario is a though experiment comparing a 15-year 95% recyclable module versus a 50-year module 30% recyclable module.
+#This is done to understand potential tradeoffs in PV technology evolution - is it better to create
+#a completely recyclable PV panel, or to extend the module lifetime.
+#This scenario assumes that the 15-year module is 95% recyclable into high quality material, i.e. it will be used to create new modules.
+#95% recyclability is represented by a 100% collection rate and a 95% efficient recycling process.
+#The 50-year module uses the previous settings.
+
+
+# In[28]:
+
+
+#modify 15-year module attributes df2, with no compensation for capacity
 df2['EOL_Collected_Material_Percentage_Recycled_[%]'] = 100 #100% collection
 df2['EOL_Collection_Losses_[%]'] = 0
 df2['EOL_Recycling_Efficiency_[%]'] = 100 #100% efficiency of recycling
@@ -351,6 +362,10 @@ df3['Manufacturing_Scrap_Recycled_into_HighQuality_[%]'] = 100
 df3['Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] = 100
 df3 = CEMFC.calculateMassFlow(df3)
 
+#Graph the virgin material input required annually
+#the virgin material is offset by high quality recycling of the 15-year panel
+#this results in lower virgin material input IF identical annual installations are assumed
+#however, if identical installed field capacity is assumed, the 15-year module requires more virgin material
 plt.plot(df['Virgin_Stock'],'r', label='50 Year Module')
 plt.plot(df2['Virgin_Stock'],'b', label='15 Year Module (a)')
 plt.plot(df3['Virgin_Stock'][0:len(df3['Virgin_Stock'])-1],'b--', label='15 Year Module w. 50 y capacity (b)')
@@ -360,10 +375,13 @@ plt.legend()
 plt.title('Annual Virgin Input: Glass')
 
 
-# In[ ]:
+# In[29]:
 
 
-#check that I did the above bit right
+#Plot the annual waste glass sent to the landfill for this scenario.
+#Here, because the 15-module is 100% collected and only 5% is landfilled during the recycling process
+#the landfilled glass is very low regardless of capacity assumptions.
+#Thus, if the intent is to avoid landfilled material, a 95% recyclable module is the best technology evolution.
 plt.plot(df['Total_Landfilled_Waste'],'r', label='50 Year Module')
 plt.plot(df2['Total_Landfilled_Waste'],'b', label='15 Year Module (a)')
 plt.plot(df3['Total_Landfilled_Waste'][0:len(df3['Total_Landfilled_Waste'])-1],'b--', label='15 Year Module w. 50 y capacity (b)')
@@ -373,11 +391,11 @@ plt.legend()
 plt.title('Annual Waste Output: Glass ')
 
 
-# In[ ]:
+# In[30]:
 
 
-#plot installed capacity in GW
-df['installedCapacity_MW_glass']/=(1000)
+#plot installed capacity in GW instead of MW
+df['installedCapacity_MW_glass']/=(1000) #this is a kludgey, non-robust way to accomplish this graph - needs updating.
 df2['installedCapacity_MW_glass']/=(1000)
 df3['installedCapacity_MW_glass']/=(1000)
 plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
@@ -387,4 +405,10 @@ plt.plot()
 #plt.ylim([0, 1.7e6])
 plt.ylabel("Installed Capacity [GW]")
 plt.legend()
+
+
+# In[ ]:
+
+
+
 
