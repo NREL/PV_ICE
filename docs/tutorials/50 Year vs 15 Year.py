@@ -326,16 +326,14 @@ plt.title('Global Warming Effect, in kg CO2 eq')
 
 # ## SCENARIO: Modification of 15-year for high recycling
 
-# In[ ]:
-
-
-#This scenario is a though experiment comparing a 15-year 95% recyclable module versus a 50-year module 30% recyclable module.
-#This is done to understand potential tradeoffs in PV technology evolution - is it better to create
-#a completely recyclable PV panel, or to extend the module lifetime.
-#This scenario assumes that the 15-year module is 95% recyclable into high quality material, i.e. it will be used to create new modules.
-#95% recyclability is represented by a 100% collection rate and a 95% efficient recycling process.
-#The 50-year module uses the previous settings.
-
+# This scenario is a though experiment comparing a 15-year 95% recyclable module versus a 50-year module 30% recyclable module.
+# This is done to understand potential tradeoffs in PV technology evolution - is it better to create
+# a completely recyclable PV panel, or to extend the module lifetime.
+# This scenario assumes that the 15-year module is 95% recyclable into high quality material, i.e. it will be used to create new modules.
+# 
+# 95% recyclability is represented by a 100% collection rate and a 95% efficient recycling process.
+# 
+# The 50-year module uses the previous settings.
 
 # In[28]:
 
@@ -375,13 +373,14 @@ plt.legend()
 plt.title('Annual Virgin Input: Glass')
 
 
+# Plot the annual waste glass sent to the landfill for this scenario. 
+# Here, because the 15-module is 100% collected and only 5% is landfilled during the recycling process
+# the landfilled glass is very low regardless of capacity assumptions.
+# Thus, if the intent is to avoid landfilled material, a 95% recyclable module is the best technology evolution.
+
 # In[29]:
 
 
-#Plot the annual waste glass sent to the landfill for this scenario.
-#Here, because the 15-module is 100% collected and only 5% is landfilled during the recycling process
-#the landfilled glass is very low regardless of capacity assumptions.
-#Thus, if the intent is to avoid landfilled material, a 95% recyclable module is the best technology evolution.
 plt.plot(df['Total_Landfilled_Waste'],'r', label='50 Year Module')
 plt.plot(df2['Total_Landfilled_Waste'],'b', label='15 Year Module (a)')
 plt.plot(df3['Total_Landfilled_Waste'][0:len(df3['Total_Landfilled_Waste'])-1],'b--', label='15 Year Module w. 50 y capacity (b)')
@@ -395,12 +394,9 @@ plt.title('Annual Waste Output: Glass ')
 
 
 #plot installed capacity in GW instead of MW
-df['installedCapacity_MW_glass']/=(1000) #this is a kludgey, non-robust way to accomplish this graph - needs updating.
-df2['installedCapacity_MW_glass']/=(1000)
-df3['installedCapacity_MW_glass']/=(1000)
-plt.plot(df['installedCapacity_MW_glass'],'r', label='50 Year Module')
-plt.plot(df2['installedCapacity_MW_glass'],'b', label='15 Year Module (a)')
-plt.plot(df3['installedCapacity_MW_glass'][0:len(df3['installedCapacity_MW_glass'])-1],'b*', label='15 Year Module, with extra installations (b)')
+plt.plot(df['installedCapacity_MW_glass']/(1000),'r', label='50 Year Module')
+plt.plot(df2['installedCapacity_MW_glass']/(1000),'b', label='15 Year Module (a)')
+plt.plot(df3['installedCapacity_MW_glass'][0:len(df3['installedCapacity_MW_glass'])-1]/(1000),'b*', label='15 Year Module, with extra installations (b)')
 plt.plot()
 #plt.ylim([0, 1.7e6])
 plt.ylabel("Installed Capacity [GW]")
