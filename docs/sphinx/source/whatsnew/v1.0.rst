@@ -1,6 +1,6 @@
 .. _whatsnew_0100:
 
-v0.1 (08 / 05 / 2020)
+v0.1.0 (08 / 05 / 2020)
 =====================
 
 First official release. Although functions work, some of the support functions for automatic setup are still being installed.
