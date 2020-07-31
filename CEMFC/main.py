@@ -141,7 +141,7 @@ def calculateMassFlow(df, thickness_glass = 0.0035, debugflag=False):
 
     df['EoL_Collected_Recycled'] = df['EoL_Collected_Glass'] * df['EOL_Collected_Material_Percentage_Recycled_[%]'] * 0.01
 
-    df['EoL_Collected_Landfilled'] = df['EoL_Collected_Glass'] - df['EoL_Collected_Glass']
+    df['EoL_Collected_Landfilled'] = df['EoL_Collected_Glass'] - df['EoL_Collected_Recycled']
 
 
     df['EoL_Recycled_Succesfully'] = df['EoL_Collected_Recycled'] * df['EOL_Recycling_Efficiency_[%]'] * 0.01
