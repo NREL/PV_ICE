@@ -49,7 +49,7 @@ def weibull_cdf(alpha, beta):
         return 1 - np.exp(-(np.array(x)/beta)**alpha)
     return cdf
 
-def calculateMassFlow(df, thickness_glass = 0.0035, debugflag=False):
+def calculateMassFlow(mod, mat, debugflag=False):
     '''
     Function takes as input a baseline dataframe already imported, 
     with the right number of columns and content.
@@ -68,19 +68,20 @@ def calculateMassFlow(df, thickness_glass = 0.0035, debugflag=False):
     
     '''
 
-    
+    df = pd.concat([mod, mat], axis=1, sort=False)
     # Constants
     irradiance_stc = 1000 # W/m^2
     density_glass = 2500 # kg/m^3    
+    thickness_glass = 0.0035
 
     # Renaming and re-scaling
-    df['New_Installed_Capacity_[MW]'] = df['New_Installed_Capacity_[MW]']*1e6
-    df['t50'] = df['Reliability_t50_[years]']
-    df['t90'] = df['Reliability_t90_[years]']
+    df['new_Installed_Capacity_[MW]'] = df['new_Installed_Capacity_[MW]']*1e6
+    df['t50'] = df['mod_reliability_t50']
+    df['t90'] = df['mod_reliability_t90']
     
     # Calculating Area and Mass
-    df['Area'] = df['New_Installed_Capacity_[MW]']/(df['Efficiency_[%]']*0.01)/irradiance_stc # m^2
-    df['Mass_Glass'] = df['Area']*thickness_glass*density_glass
+    df['Area'] = df['new_Installed_Capacity_[MW]']/(df['mod_eff']*0.01)/irradiance_stc # m^2
+    df['mat_Mass'] = df['Area']*df['mat_massperm2']
     
     # Applying Weibull Disposal Function
     df['disposal_function'] = [
@@ -100,7 +101,7 @@ def calculateMassFlow(df, thickness_glass = 0.0035, debugflag=False):
         x = np.clip(df.index - year, 0, np.inf)
         cdf = list(map(f, x))
         pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
-        area_disposed_of_generation_by_year = [element*row['Mass_Glass'] for element in pdf]
+        area_disposed_of_generation_by_year = [element*row['mat_Mass'] for element in pdf]
         df['Cumulative_Waste_Glass'] += area_disposed_of_generation_by_year
         Area_Disposed_GenbyYear.append(area_disposed_of_generation_by_year)
 
@@ -113,89 +114,89 @@ def calculateMassFlow(df, thickness_glass = 0.0035, debugflag=False):
     
     
     # Calculations of Repowering and Adjusted EoL Waste Glass
-    df['Repowered_Modules_Glass'] = df['Cumulative_Waste_Glass'] * df['Repowering_of_Failed_Modules_[%]'] * 0.01
+    df['Repowered_Modules_Glass'] = df['Cumulative_Waste_Glass'] * df['mod_repowering'] * 0.01
     df['EoL_Waste_Glass'] = df['Cumulative_Waste_Glass'] - df['Repowered_Modules_Glass']
 
     
     # Installed Capacity
     df['installedCapacity_glass'] = 0.0
-    df['installedCapacity_glass'][df.index[0]] = ( df['Mass_Glass'][df.index[0]] - 
+    df['installedCapacity_glass'][df.index[0]] = ( df['mat_Mass'][df.index[0]] - 
                                                  df['EoL_Waste_Glass'][df.index[0]] )
 
     for i in range (1, len(df)):
         year = df.index[i]
         prevyear = df.index[i-1]
         df['installedCapacity_glass'][year] = (df[f'installedCapacity_glass'][prevyear]+
-                                               df[f'Mass_Glass'][year] - 
+                                               df[f'mat_Mass'][year] - 
                                                 df['EoL_Waste_Glass'][year] )
 
-#    df['Area'] = df['New_Installed_Capacity_[MW]']/(df['Efficiency_[%]']*0.01)/irradiance_stc # m^2
-#    df['Mass_Glass'] = df['Area']*thickness_glass*density_glass
-    df['installedCapacity_MW_glass'] = ( df['installedCapacity_glass'] / (thickness_glass*density_glass) ) *  (df['Efficiency_[%]']*0.01) * irradiance_stc / 1e6
+#    df['Area'] = df['new_Installed_Capacity_[MW]']/(df['mod_eff']*0.01)/irradiance_stc # m^2
+#    df['mat_Mass'] = df['Area']*thickness_glass*density_glass
+    df['installedCapacity_MW_glass'] = ( df['installedCapacity_glass'] / (thickness_glass*density_glass) ) *  (df['mod_eff']*0.01) * irradiance_stc / 1e6
 
     
     # Other calculations of the Mass Flow
-    df['EoL_CollectionLost_Glass'] =  df['EoL_Waste_Glass']* df['EOL_Collection_Losses_[%]'] * 0.01
+    df['EoL_CollectionLost_Glass'] =  df['EoL_Waste_Glass']* df['mod_EOL_collection_losses'] * 0.01
 
     df['EoL_Collected_Glass'] =  df['EoL_Waste_Glass'] - df['EoL_CollectionLost_Glass']
 
-    df['EoL_Collected_Recycled'] = df['EoL_Collected_Glass'] * df['EOL_Collected_Material_Percentage_Recycled_[%]'] * 0.01
+    df['EoL_Collected_Recycled'] = df['EoL_Collected_Glass'] * df['mod_EOL_collected_recycled'] * 0.01
 
     df['EoL_Collected_Landfilled'] = df['EoL_Collected_Glass'] - df['EoL_Collected_Recycled']
 
 
-    df['EoL_Recycled_Succesfully'] = df['EoL_Collected_Recycled'] * df['EOL_Recycling_Efficiency_[%]'] * 0.01
+    df['EoL_Recycled_Succesfully'] = df['EoL_Collected_Recycled'] * df['mat_EOL_Recycling_eff'] * 0.01
 
     df['EoL_Recycled_Losses_Landfilled'] = df['EoL_Collected_Recycled'] - df['EoL_Recycled_Succesfully'] 
 
-    df['EoL_Recycled_into_HQ'] = df['EoL_Recycled_Succesfully'] * df['EOL_Recycled_Material_into_HighQuality_[%]'] * 0.01
+    df['EoL_Recycled_into_HQ'] = df['EoL_Recycled_Succesfully'] * df['mat_EOL_Recycled_into_HQ'] * 0.01
 
     df['EoL_Recycled_into_Secondary'] = df['EoL_Recycled_Succesfully'] - df['EoL_Recycled_into_HQ']
 
-    df['EoL_Recycled_HQ_into_Manufacturing'] = (df['EoL_Recycled_into_HQ'] * 
-                                                      df['EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] * 0.01)
+    df['EoL_Recycled_HQ_into_MFG'] = (df['EoL_Recycled_into_HQ'] * 
+                                                      df['mat_EOL_RecycledHQ_Reused4MFG'] * 0.01)
 
-    df['EoL_Recycled_HQ_into_OtherUses'] = df['EoL_Recycled_into_HQ'] - df['EoL_Recycled_HQ_into_Manufacturing']
-
-
-    df['Manufactured_Input'] = df['Mass_Glass'] / (df['Manufacturing_Material_Efficiency_[%]'] * 0.01)
-
-    df['Manufacturing_Scrap'] = df['Manufactured_Input'] - df['Mass_Glass']
-
-    df['Manufacturing_Scrap_Recycled'] = df['Manufacturing_Scrap'] * df['Manufacturing_Scrap_Percentage_Recycled_[%]'] * 0.01
-
-    df['Manufacturing_Scrap_Landfilled'] = df['Manufacturing_Scrap'] - df['Manufacturing_Scrap_Recycled'] 
-
-    df['Manufacturing_Scrap_Recycled_Succesfully'] = (df['Manufacturing_Scrap_Recycled'] *
-                                                     df['Manufacturing_Scrap_Recycling_Efficiency_[%]'] * 0.01)
-
-    df['Manufacturing_Scrap_Recycled_Losses_Landfilled'] = (df['Manufacturing_Scrap_Recycled'] - 
-                                                              df['Manufacturing_Scrap_Recycled_Succesfully'])
-
-    df['Manufacturing_Recycled_into_HQ'] = (df['Manufacturing_Scrap_Recycled_Succesfully'] * 
-                                            df['Manufacturing_Scrap_Recycled_into_HighQuality_[%]'] * 0.01)
-
-    df['Manufacturing_Recycled_into_Secondary'] = df['Manufacturing_Scrap_Recycled_Succesfully'] - df['Manufacturing_Recycled_into_HQ']
-
-    df['Manufacturing_Recycled_HQ_into_Manufacturing'] = (df['Manufacturing_Recycled_into_HQ'] * 
-                              df['Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] * 0.01)
-
-    df['Manufacutring_Recycled_HQ_into_OtherUses'] = df['Manufacturing_Recycled_into_HQ'] - df['Manufacturing_Recycled_HQ_into_Manufacturing']
+    df['EoL_Recycled_HQ_into_OtherUses'] = df['EoL_Recycled_into_HQ'] - df['EoL_Recycled_HQ_into_MFG']
 
 
-    df['Virgin_Stock'] = df['Manufactured_Input'] - df['EoL_Recycled_HQ_into_Manufacturing'] - df['Manufacturing_Recycled_HQ_into_Manufacturing']
+    df['Manufactured_Input'] = df['mat_Mass'] / (df['mat_MFG_eff'] * 0.01)
+
+    df['MFG_Scrap'] = df['Manufactured_Input'] - df['mat_Mass']
+
+    df['MFG_Scrap_Recycled'] = df['MFG_Scrap'] * df['mat_MFG_scrap_recycled'] * 0.01
+
+    df['MFG_Scrap_Landfilled'] = df['MFG_Scrap'] - df['MFG_Scrap_Recycled'] 
+
+    df['MFG_Scrap_Recycled_Succesfully'] = (df['MFG_Scrap_Recycled'] *
+                                                     df['mat_MFG_scrap_recycling_eff'] * 0.01)
+
+    df['MFG_Scrap_Recycled_Losses_Landfilled'] = (df['MFG_Scrap_Recycled'] - 
+                                                              df['MFG_Scrap_Recycled_Succesfully'])
+
+    df['MFG_Recycled_into_HQ'] = (df['MFG_Scrap_Recycled_Succesfully'] * 
+                                            df['mat_MFG_scrap_Recycled_into_HQ'] * 0.01)
+
+    df['MFG_Recycled_into_Secondary'] = df['MFG_Scrap_Recycled_Succesfully'] - df['MFG_Recycled_into_HQ']
+
+    df['MFG_Recycled_HQ_into_MFG'] = (df['MFG_Recycled_into_HQ'] * 
+                              df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
+
+    df['MFG_Recycled_HQ_into_OtherUses'] = df['MFG_Recycled_into_HQ'] - df['MFG_Recycled_HQ_into_MFG']
+
+
+    df['Virgin_Stock'] = df['Manufactured_Input'] - df['EoL_Recycled_HQ_into_MFG'] - df['MFG_Recycled_HQ_into_MFG']
 
     df['Total_EoL_Landfilled_Waste'] = df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled']
 
-    df['Total_Manufacturing_Landfilled_Waste'] = df['Manufacturing_Scrap_Landfilled'] + df['Manufacturing_Scrap_Recycled_Losses_Landfilled']
+    df['Total_MFG_Landfilled_Waste'] = df['MFG_Scrap_Landfilled'] + df['MFG_Scrap_Recycled_Losses_Landfilled']
 
     df['Total_Landfilled_Waste'] = (df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled'] +
-                                    df['Total_Manufacturing_Landfilled_Waste'])
+                                    df['Total_MFG_Landfilled_Waste'])
 
     df['Total_EoL_Recycled_OtherUses'] = (df['EoL_Recycled_into_Secondary'] + df['EoL_Recycled_HQ_into_OtherUses'] + 
-                                          df['Manufacturing_Recycled_into_Secondary'] + df['Manufacutring_Recycled_HQ_into_OtherUses'])
+                                          df['MFG_Recycled_into_Secondary'] + df['MFG_Recycled_HQ_into_OtherUses'])
 
-    df['New_Installed_Capacity_[MW]'] = df['New_Installed_Capacity_[MW]']/1e6
+    df['new_Installed_Capacity_[MW]'] = df['new_Installed_Capacity_[MW]']/1e6
 
     return df
 
@@ -228,18 +229,18 @@ def sens_lifetime(df, lifetime_increase=1.3, year_increase=2025):
         print("Error. Increase Year is before current year")
         return
     
-    #df[df.index > 2000]['Reliability_t50_[years]'].apply(lambda x: x*1.3)
-    df['Reliability_t50_[years]'] = df['Reliability_t50_[years]'].astype(float)
-    df['Reliability_t90_[years]'] = df['Reliability_t90_[years]'].astype(float)
-    df.loc[df.index > year_increase, 'Reliability_t50_[years]'] = df[df.index > current_year]['Reliability_t50_[years]'].apply(lambda x: x*lifetime_increase)
-    df.loc[df.index > year_increase, 'Reliability_t90_[years]'] = df[df.index > current_year]['Reliability_t90_[years]'].apply(lambda x: x*lifetime_increase)
+    #df[df.index > 2000]['mod_reliability_t50'].apply(lambda x: x*1.3)
+    df['mod_reliability_t50'] = df['mod_reliability_t50'].astype(float)
+    df['mod_reliability_t90'] = df['mod_reliability_t90'].astype(float)
+    df.loc[df.index > year_increase, 'mod_reliability_t50'] = df[df.index > current_year]['mod_reliability_t50'].apply(lambda x: x*lifetime_increase)
+    df.loc[df.index > year_increase, 'mod_reliability_t90'] = df[df.index > current_year]['mod_reliability_t90'].apply(lambda x: x*lifetime_increase)
     
     return df
 
 def sens_PanelEff(df, target_panel_eff= 25.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluatig sensitivity to increase in panel efficiencies.  
-    Increases `Efficiency_[%]` from current year until goal_year by linear interpolation until
+    Increases `mod_eff` from current year until goal_year by linear interpolation until
     reaching the `target_panel_eff`.
     
     Parameters
@@ -263,26 +264,26 @@ def sens_PanelEff(df, target_panel_eff= 25.0, goal_year = 2030):
         print("Error. Goal Year is before current year")
         return
      
-    df['Efficiency_[%]']=df['Efficiency_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'Efficiency_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'Efficiency_[%]'] = target_panel_eff
-    df['Efficiency_[%]'] = df['Efficiency_[%]'].interpolate()
+    df['mod_eff']=df['mod_eff'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mod_eff'] = np.nan
+    df.loc[df.index >= goal_year , 'mod_eff'] = target_panel_eff
+    df['mod_eff'] = df['mod_eff'].interpolate()
 
     return df
 
-def sens_ManufacturingYield(df, target_efficiency = 95.0, goal_year = 2030):
+def sens_MFGYield(df, target_eff = 95.0, goal_year = 2030):
     '''
-    Modifies baseline scenario for evaluating sensitivity to increasing Manufacturing Yield efficiency. 
-    Increases `Manufacturing_Material_Efficiency_[%]` from current year 
+    Modifies baseline scenario for evaluating sensitivity to increasing MFG Yield efficiency. 
+    Increases `MFG_Material_eff` from current year 
     until `goal_year` by linear interpolation until
-    reaching the `target_efficiency`.
+    reaching the `target_eff`.
     
     Parameters
     ----------
     df : dataframe 
         dataframe to be modified
-    target_efficiency: float
-        target efficiency value in percentage to be reached. i.e. 95.0 %.
+    target_eff: float
+        target eff value in percentage to be reached. i.e. 95.0 %.
     goal_year : float
         year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
@@ -299,17 +300,17 @@ def sens_ManufacturingYield(df, target_efficiency = 95.0, goal_year = 2030):
         print("Error. Goal Year is before current year")
         return
      
-    df['Manufacturing_Material_Efficiency_[%]']=df['Manufacturing_Material_Efficiency_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'Manufacturing_Material_Efficiency_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'Manufacturing_Material_Efficiency_[%]'] = target_efficiency
-    df['Manufacturing_Material_Efficiency_[%]'] = df['Manufacturing_Material_Efficiency_[%]'].interpolate()
+    df['mat_MFG_eff']=df['mat_MFG_eff'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_MFG_eff'] = np.nan
+    df.loc[df.index >= goal_year , 'mat_MFG_eff'] = target_eff
+    df['mat_MFG_eff'] = df['mat_MFG_eff'].interpolate()
 
     return df
 
-def sens_ManufacturingRecycling(df, target_recycling = 95.0, goal_year = 2030):
+def sens_MFGRecycling(df, target_recycling = 95.0, goal_year = 2030):
     '''
-    Modifies baseline scenario for evaluatig sensitivity to increase of Manfuacturing loss percentage recycled.  
-    Increases `Manufacturing_Scrap_Percentage_Recycled_[%]` from current year until `goal_year` by linear interpolation until
+    Modifies baseline scenario for evaluatig sensitivity to increase of Manufacturing loss percentage recycled.  
+    Increases `MFG_Scrap_Percentage_Recycled` from current year until `goal_year` by linear interpolation until
     reaching the `target_recovery`.
     
     Parameters
@@ -334,17 +335,17 @@ def sens_ManufacturingRecycling(df, target_recycling = 95.0, goal_year = 2030):
         print("Error. Goal Year is before current year")
         return
      
-    df['Manufacturing_Scrap_Percentage_Recycled_[%]']=df['Manufacturing_Scrap_Percentage_Recycled_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'Manufacturing_Scrap_Percentage_Recycled_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'Manufacturing_Scrap_Percentage_Recycled_[%]'] = target_recycling
-    df['Manufacturing_Scrap_Percentage_Recycled_[%]'] = df['Manufacturing_Scrap_Percentage_Recycled_[%]'].interpolate()
+    df['mat_MFG_scrap_recycled']=df['mat_MFG_scrap_recycled'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_MFG_scrap_recycled'] = np.nan
+    df.loc[df.index >= goal_year , 'mat_MFG_scrap_recycled'] = target_recycling
+    df['mat_MFG_scrap_recycled'] = df['mat_MFG_scrap_recycled'].interpolate()
 
     return df
 
-def sens_ManufacturingRecyclingEff(df, target_recycling_eff = 95.0, goal_year = 2030, start_year = None):
+def sens_MFGRecyclingEff(df, target_recycling_eff = 95.0, goal_year = 2030, start_year = None):
     '''
     Modifies baseline scenario for evaluatig sensitivity to increase of manufacturing scrap recycling efficiency.  
-    Increases `Manufacturing_Scrap_Recycling_Efficiency_[%]` from current year until `goal_year` by linear interpolation until
+    Increases `MFG_Scrap_Recycling_eff` from current year until `goal_year` by linear interpolation until
     reaching the `target_recycling_eff`.
     
     Parameters
@@ -380,17 +381,17 @@ def sens_ManufacturingRecyclingEff(df, target_recycling_eff = 95.0, goal_year = 
               "0 and 100")
         return
         
-    df['Manufacturing_Scrap_Recycling_Efficiency_[%]']=df['Manufacturing_Scrap_Recycling_Efficiency_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > start_year), 'Manufacturing_Scrap_Recycling_Efficiency_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'Manufacturing_Scrap_Recycling_Efficiency_[%]'] = target_recycling_eff
-    df['Manufacturing_Scrap_Recycling_Efficiency_[%]'] = df['Manufacturing_Scrap_Recycling_Efficiency_[%]'].interpolate()
+    df['mat_MFG_scrap_recycling_eff']=df['mat_MFG_scrap_recycling_eff'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > start_year), 'mat_MFG_scrap_recycling_eff'] = np.nan
+    df.loc[df.index >= goal_year , 'mat_MFG_scrap_recycling_eff'] = target_recycling_eff
+    df['mat_MFG_scrap_recycling_eff'] = df['mat_MFG_scrap_recycling_eff'].interpolate()
 
     return df
 
-def sens_ManufacturingHQRecycling(df, target_hq_recycling = 95.0, goal_year = 2030):
+def sens_MFGHQRecycling(df, target_hq_recycling = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increasing the percentage of manufacturing scrap recyclied into high quality material.  
-    Increases `Manufacturing_Scrap_Recycled_into_HighQuality_[%]` from current year until `goal_year` by linear interpolation until
+    Increases `MFG_Scrap_Recycled_into_HighQuality` from current year until `goal_year` by linear interpolation until
     reaching the `target_hq_recycling`.
 
     Datafframe is obtained from :py:func:`~CEMFC.calculateMassFlow`      
@@ -417,24 +418,24 @@ def sens_ManufacturingHQRecycling(df, target_hq_recycling = 95.0, goal_year = 20
         print("Error. Goal Year is before current year")
         return
      
-    df['Manufacturing_Scrap_Recycled_into_HighQuality_[%]']=df['Manufacturing_Scrap_Recycled_into_HighQuality_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'Manufacturing_Scrap_Recycled_into_HighQuality_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'Manufacturing_Scrap_Recycled_into_HighQuality_[%]'] = target_hq_recycling
-    df['Manufacturing_Scrap_Recycled_into_HighQuality_[%]'] = df['Manufacturing_Scrap_Recycled_into_HighQuality_[%]'].interpolate()
+    df['mat_MFG_scrap_Recycled_into_HQ']=df['mat_MFG_scrap_Recycled_into_HQ'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_MFG_scrap_Recycled_into_HQ'] = np.nan
+    df.loc[df.index >= goal_year , 'mat_MFG_scrap_Recycled_into_HQ'] = target_hq_recycling
+    df['mat_MFG_scrap_Recycled_into_HQ'] = df['mat_MFG_scrap_Recycled_into_HQ'].interpolate()
 
     return df
 
-def sens_ManufacturingHQRecyclingEff(df, target_hq_efficiency = 95.0, goal_year = 2030):
+def sens_MFGHQRecyclingEff(df, target_hq_eff = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increase of Manufacturing scrap recycling into high quality yeild efficiency. 
-    Increases `Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]` from current year until `goal_year` by linear interpolation until
-    reaching the `target_hq_efficiency`.
+    Increases `MFG_Scrap_Recycled_HighQuality_Reused_for_MFG` from current year until `goal_year` by linear interpolation until
+    reaching the `target_hq_eff`.
     
     Parameters
     -----------
     df : dataframe
         dataframe to be modified
-    target_efficiency : float
+    target_eff : float
         target efficiency value in percentage to be reached. i.e., 95.0 .
     goal_year : float
         year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
@@ -452,17 +453,17 @@ def sens_ManufacturingHQRecyclingEff(df, target_hq_efficiency = 95.0, goal_year 
         print("Error. Goal Year is before current year")
         return
      
-    df['Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]']=df['Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] = target_hq_efficiency
-    df['Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] = df['Manufacturing_Scrap_Recycled_HighQuality_Reused_for_Manufacturing_[%]'].interpolate()
+    df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG']=df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = np.nan
+    df.loc[df.index >= goal_year , 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = target_hq_eff
+    df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'].interpolate()
 
     return df
 
 def sens_EOLCollection(df, target_loss = 0.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to decrease of end of life collection loss percentage.  
-    Decreases `EOL_Collection_Losses_[%]` from current year until `goal_year` by linear interpolation until
+    Decreases `EOL_Collection_Losses` from current year until `goal_year` by linear interpolation until
     reaching the `target_loss`.
     
     Parameters
@@ -487,17 +488,17 @@ def sens_EOLCollection(df, target_loss = 0.0, goal_year = 2030):
         print("Error. Goal Year is before current year")
         return
      
-    df['EOL_Collection_Losses_[%]']=df['EOL_Collection_Losses_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'EOL_Collection_Losses_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'EOL_Collection_Losses_[%]'] = target_loss
-    df['EOL_Collection_Losses_[%]'] = df['EOL_Collection_Losses_[%]'].interpolate()
+    df['mod_EOL_collection_losses']=df['mod_EOL_collection_losses'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mod_EOL_collection_losses'] = np.nan
+    df.loc[df.index >= goal_year , 'mod_EOL_collection_losses'] = target_loss
+    df['mod_EOL_collection_losses'] = df['mod_EOL_collection_losses'].interpolate()
 
     return df
 
 def sens_EOLRecycling(df, target_recycling = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increase of EOL percentage recycled.  
-    Increases `EOL_Collected_Material_Percentage_Recycled_[%]` from current year until `goal_year` by linear interpolation until
+    Increases `EOL_Collected_Material_Percentage_Recycled` from current year until `goal_year` by linear interpolation until
     reaching the `target_recovery`.
     
     Parameters
@@ -523,25 +524,25 @@ def sens_EOLRecycling(df, target_recycling = 95.0, goal_year = 2030):
         print("Error. Goal Year is before current year")
         return
      
-    df['EOL_Collected_Material_Percentage_Recycled_[%]']=df['EOL_Collected_Material_Percentage_Recycled_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'EOL_Collected_Material_Percentage_Recycled_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'EOL_Collected_Material_Percentage_Recycled_[%]'] = target_recycling
-    df['EOL_Collected_Material_Percentage_Recycled_[%]'] = df['EOL_Collected_Material_Percentage_Recycled_[%]'].interpolate()
+    df['mod_EOL_collected_recycled']=df['mod_EOL_collected_recycled'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mod_EOL_collected_recycled'] = np.nan
+    df.loc[df.index >= goal_year , 'mod_EOL_collected_recycled'] = target_recycling
+    df['mod_EOL_collected_recycled'] = df['mod_EOL_collected_recycled'].interpolate()
 
     return df
 
-def sens_EOLRecyclingYield(df, target_efficiency = 95.0, goal_year = 2030):
+def sens_EOLRecyclingYield(df, target_eff = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increase of end of 
-    life recycling yeild.     Increases `EOL_Recycling_Efficiency_[%]` from 
+    life recycling yeild.     Increases `EOL_Recycling_eff` from 
     current year until `goal_year` by linear interpolation until
-    reaching the `target_efficiency`.
+    reaching the `target_eff`.
     
     Parameters
     ----------
     df : dataframe
         dataframe to be modified
-    target_efficiency : float
+    target_eff : float
         target recycling efficiency value in percentage to be reached. i.e., 95.0 % of material is recovered.
     goal_year : float
         year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
@@ -559,10 +560,10 @@ def sens_EOLRecyclingYield(df, target_efficiency = 95.0, goal_year = 2030):
         print("Error. Goal Year is before current year")
         return
      
-    df['EOL_Recycling_Efficiency_[%]']=df['EOL_Recycling_Efficiency_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'EOL_Recycling_Efficiency_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'EOL_Recycling_Efficiency_[%]'] = target_efficiency
-    df['EOL_Recycling_Efficiency_[%]'] = df['EOL_Recycling_Efficiency_[%]'].interpolate()
+    df['mat_EOL_Recycling_eff']=df['mat_EOL_Recycling_eff'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_EOL_Recycling_eff'] = np.nan
+    df.loc[df.index >= goal_year , 'mat_EOL_Recycling_eff'] = target_eff
+    df['mat_EOL_Recycling_eff'] = df['mat_EOL_Recycling_eff'].interpolate()
 
     return df
 
@@ -570,7 +571,7 @@ def sens_EOLHQRecycling(df, target_recycling = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluatig sensitivity to increase of end of 
     life high quality recycling percentage. 
-    Increases `EOL_Recycled_Material_into_HighQuality_[%]` from current year 
+    Increases `EOL_Recycled_Material_into_HighQuality` from current year 
     until `goal_year` by linear interpolation until
     reaching the `target_recovery`.
     
@@ -596,26 +597,26 @@ def sens_EOLHQRecycling(df, target_recycling = 95.0, goal_year = 2030):
         print("Error. Goal Year is before current year")
         return
      
-    df['EOL_Recycled_Material_into_HighQuality_[%]']=df['EOL_Recycled_Material_into_HighQuality_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'EOL_Recycled_Material_into_HighQuality_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'EOL_Recycled_Material_into_HighQuality_[%]'] = target_recycling
-    df['EOL_Recycled_Material_into_HighQuality_[%]'] = df['EOL_Recycled_Material_into_HighQuality_[%]'].interpolate()
+    df['mat_EOL_Recycled_into_HQ']=df['mat_EOL_Recycled_into_HQ'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_EOL_Recycled_into_HQ'] = np.nan
+    df.loc[df.index >= goal_year , 'mat_EOL_Recycled_into_HQ'] = target_recycling
+    df['mat_EOL_Recycled_into_HQ'] = df['mat_EOL_Recycled_into_HQ'].interpolate()
 
     return df
 
-def sens_EOLHQRecyclingYield(df, target_efficiency = 95.0, goal_year = 2030):
+def sens_EOLHQRecyclingYield(df, target_eff = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluatig sensitivity to increase of end of 
     life high quality recycling efficiency. 
-    Increases `EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]` efficiecny 
+    Increases `EOL_Recycled_HighQuality_Reused_for_MFG` efficiecny 
     from current year until `goal_year` by linear interpolation until
-    reaching the `target_efficiency`.
+    reaching the `target_eff`.
     
     Parameters
     ----------
     df : dataframe
         dataframe to be modified
-    target_efficiency : float 
+    target_eff : float 
         target efficiency value in percentage to be reached. i.e., 95.0 %.
     goal_year : float
         year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
@@ -633,10 +634,10 @@ def sens_EOLHQRecyclingYield(df, target_efficiency = 95.0, goal_year = 2030):
         print("Error. Goal Year is before current year")
         return
      
-    df['EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]']=df['EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] = target_efficiency
-    df['EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]'] = df['EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]'].interpolate()
+    df['mat_EOL_RecycledHQ_Reused4MFG']=df['mat_EOL_RecycledHQ_Reused4MFG'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_EOL_RecycledHQ_Reused4MFG'] = np.nan
+    df.loc[df.index >= goal_year , 'mat_EOL_RecycledHQ_Reused4MFG'] = target_eff
+    df['mat_EOL_RecycledHQ_Reused4MFG'] = df['mat_EOL_RecycledHQ_Reused4Manufacturing'].interpolate()
 
     return df
 
@@ -644,7 +645,7 @@ def sens_ReUse(df, target_reuse = 95.0, goal_year = 2030):
     '''
     Modifies baseline scenario for evaluating sensitivity to increase of percent 
     of end of life panels that find a second life.  
-    Increases `Repowering_of_Failed_Modules_[%]` from current year 
+    Increases `mod_Repowering` from current year 
     until `goal_year` by linear interpolation until
     reaching the `target_reuse`.
     
@@ -670,10 +671,10 @@ def sens_ReUse(df, target_reuse = 95.0, goal_year = 2030):
         print("Error. Goal Year is before current year")
         return
      
-    df['Repowering_of_Failed_Modules_[%]']=df['Repowering_of_Failed_Modules_[%]'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'Repowering_of_Failed_Modules_[%]'] = np.nan
-    df.loc[df.index >= goal_year , 'Repowering_of_Failed_Modules_[%]'] = target_reuse
-    df['Repowering_of_Failed_Modules_[%]'] = df['Repowering_of_Failed_Modules_[%]'].interpolate()
+    df['mod_repowering']=df['mod_repowering'].astype(float)
+    df.loc[(df.index < goal_year) & (df.index > current_year), 'mod_repowering'] = np.nan
+    df.loc[df.index >= goal_year , 'mod_repowering'] = target_reuse
+    df['mod_repowering'] = df['mod_repowering'].interpolate()
 
     return df
 
