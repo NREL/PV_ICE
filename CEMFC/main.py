@@ -136,9 +136,11 @@ def calculateMassFlow(mod, mat, debugflag=False):
 
     
     # Other calculations of the Mass Flow
-    df['EoL_CollectionLost_Glass'] =  df['EoL_Waste_Glass']* df['mod_EOL_collection_losses'] * 0.01
 
-    df['EoL_Collected_Glass'] =  df['EoL_Waste_Glass'] - df['EoL_CollectionLost_Glass']
+    df['EoL_Collected_Glass'] = df['EoL_Waste_Glass']* df['mod_EOL_collection_eff'] * 0.01
+    
+    df['EoL_CollectionLost_Glass'] =  df['EoL_Waste_Glass'] - df['EoL_Collected_Glass']
+
 
     df['EoL_Collected_Recycled'] = df['EoL_Collected_Glass'] * df['mod_EOL_collected_recycled'] * 0.01
 
