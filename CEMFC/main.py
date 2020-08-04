@@ -72,7 +72,7 @@ def calculateMassFlow(mod, mat, debugflag=False):
     # Constants
     irradiance_stc = 1000 # W/m^2
     density_glass = 2500 # kg/m^3    
-    thickness_glass = 0.0035
+    thickness_glass = 0.0035  # m
 
     # Renaming and re-scaling
     df['new_Installed_Capacity_[MW]'] = df['new_Installed_Capacity_[MW]']*1e6
