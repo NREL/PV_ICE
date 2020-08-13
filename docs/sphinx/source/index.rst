@@ -35,6 +35,7 @@ Contents
    :caption: Contents:
 
    package_overview
+   datareferences
    whatsnew
    installation
    contributing
