@@ -239,446 +239,76 @@ def sens_lifetime(df, lifetime_increase=1.3, year_increase=2025):
     
     return df
 
-def sens_PanelEff(df, target_panel_eff= 25.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluatig sensitivity to increase in panel efficiencies.  
-    Increases `mod_eff` from current year until goal_year by linear interpolation until
-    reaching the `target_panel_eff`.
-    
-    Parameters
-    ----------
-    df : dataframe
-        dataframe to be modified
-    target_panel_eff : float
-        target panel efficiency in percentage to be reached. i.e., 25.0 .
-    goal_year : float
-        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df (dataframe) : modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mod_eff']=df['mod_eff'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mod_eff'] = np.nan
-    df.loc[df.index >= goal_year , 'mod_eff'] = target_panel_eff
-    df['mod_eff'] = df['mod_eff'].interpolate()
 
-    return df
-
-def sens_MFGYield(df, target_eff = 95.0, goal_year = 2030):
+def sens_StageEfficiency(df, stage, target_eff = 95.0, start_year = None, 
+                         goal_year = 2030, plotflag = False):
     '''
-    Modifies baseline scenario for evaluating sensitivity to increasing MFG Yield efficiency. 
-    Increases `MFG_Material_eff` from current year 
-    until `goal_year` by linear interpolation until
-    reaching the `target_eff`.
+    Modifies baseline scenario for evaluating sensitivity to increasing a stage in the 
+    lifetime of the module's efficiency. It either increases or decreases from the 
+    start year until the goal year the value to the target efficiency by interpolation.
     
     Parameters
     ----------
     df : dataframe 
         dataframe to be modified
-    target_eff: float
+    stage : str
+        Stage that wants to be modified. This can be any of the module or 
+        material specified efficiencies, for example:'MFG_Material_eff', 
+        'mat_MFG_scrap_recycled', 'mat_MFG_scrap_recycling_eff', 
+        'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
+        'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
+        'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
+        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_repowering', 'mod_eff', etc.
+    start_year: int
+        Year to start modifying the value. This specifies the initial efficiency 
+        value that is going to be modified. If None is passed, current year is used.
+    target_eff: flat
         target eff value in percentage to be reached. i.e. 95.0 %.
-    goal_year : float
+    goal_year : int
         year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
     
     Returns
     -------
     df : dataframe
         modified dataframe
-    
     '''
-   
-    current_year = int(datetime.datetime.now().year)
     
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mat_MFG_eff']=df['mat_MFG_eff'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_MFG_eff'] = np.nan
-    df.loc[df.index >= goal_year , 'mat_MFG_eff'] = target_eff
-    df['mat_MFG_eff'] = df['mat_MFG_eff'].interpolate()
-
-    return df
-
-def sens_MFGRecycling(df, target_recycling = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluatig sensitivity to increase of Manufacturing loss percentage recycled.  
-    Increases `MFG_Scrap_Percentage_Recycled` from current year until `goal_year` by linear interpolation until
-    reaching the `target_recovery`.
-    
-    Parameters
-    --------
-    df : dataframe
-        dataframe to be modified
-    target_recycling : float 
-        target recovery value in percentage to be reached. i.e., 95.0 %.
-    goal_year : float
-        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    --------
-    df : dataframe
-        modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mat_MFG_scrap_recycled']=df['mat_MFG_scrap_recycled'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_MFG_scrap_recycled'] = np.nan
-    df.loc[df.index >= goal_year , 'mat_MFG_scrap_recycled'] = target_recycling
-    df['mat_MFG_scrap_recycled'] = df['mat_MFG_scrap_recycled'].interpolate()
-
-    return df
-
-def sens_MFGRecyclingEff(df, target_recycling_eff = 95.0, goal_year = 2030, start_year = None):
-    '''
-    Modifies baseline scenario for evaluatig sensitivity to increase of manufacturing scrap recycling efficiency.  
-    Increases `MFG_Scrap_Recycling_eff` from current year until `goal_year` by linear interpolation until
-    reaching the `target_recycling_eff`.
-    
-    Parameters
-    -----------
-    df : dataframe
-        Dataframe to be modified
-    target_recycling_eff : float
-        Target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : int
-        Year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df : dataframe
-        Modified dataframe.
-    
-    '''
-
     if start_year is None:
-        start_year = int(datetime.datetime.now().year) # Setting to current_year
+        start_year = int(datetime.datetime.now().year)
     
     if start_year > goal_year:
-        print("Error. Goal Year is before start of the change requested.")
+        print("Error. Goal Year is before start year")
         return
-     
-    if 0 < abs(target_recycling_eff) < 1:  # checking it is not 0.95 but 95% i.e.
-        print("Warning: target_recyling_eff value is between 0 and 1; it has been"
+    
+    if 0 < abs(target_eff) < 1:  # checking it is not 0.95 but 95% i.e.
+        print("Warning: target_eff value is between 0 and 1; it has been"
               "multiplied by 100% assuming it was a percentage in decimal form.")
-        target_recycling_eff = target_recycling_eff*100
+        target_eff = target_eff*100
         
-    if target_recycling_eff > 100 or target_recycling_eff < 0:
-        print("Warning: target_recycling_eff is out of range. Input value between"
+    if target_eff > 100 or target_eff < 0:
+        print("Warning: target_eff is out of range. Input value between"
               "0 and 100")
         return
+    
+    if stage in df.columns:
+        df2 = df.copy()
+        df2[stage]=df2[stage].astype(float)
+        df2.loc[(df2.index < goal_year) & (df2.index > start_year), stage] = np.nan
+        df2.loc[df2.index >= goal_year , stage] = target_eff
+        df2[stage] = df2[stage].interpolate()
         
-    df['mat_MFG_scrap_recycling_eff']=df['mat_MFG_scrap_recycling_eff'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > start_year), 'mat_MFG_scrap_recycling_eff'] = np.nan
-    df.loc[df.index >= goal_year , 'mat_MFG_scrap_recycling_eff'] = target_recycling_eff
-    df['mat_MFG_scrap_recycling_eff'] = df['mat_MFG_scrap_recycling_eff'].interpolate()
+        if plotflag:
+            plt.plot(df[stage], label='Original')
+            plt.plot(df2[stage], label='Modified')
+            plt.title('Updated values for '+stage)
+            plt.legend()
+        return df2
+    else:
+        print("Stage name incorrect.")
 
-    return df
 
-def sens_MFGHQRecycling(df, target_hq_recycling = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluating sensitivity to increasing the percentage of manufacturing scrap recyclied into high quality material.  
-    Increases `MFG_Scrap_Recycled_into_HighQuality` from current year until `goal_year` by linear interpolation until
-    reaching the `target_hq_recycling`.
 
-    Datafframe is obtained from :py:func:`~CEMFC.calculateMassFlow`      
-    
-    Parameters
-    -----------
-    df : dataframe
-        dataframe to be modified
-    target_recycling : float
-        target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : float
-        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df : dataframe
-        modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mat_MFG_scrap_Recycled_into_HQ']=df['mat_MFG_scrap_Recycled_into_HQ'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_MFG_scrap_Recycled_into_HQ'] = np.nan
-    df.loc[df.index >= goal_year , 'mat_MFG_scrap_Recycled_into_HQ'] = target_hq_recycling
-    df['mat_MFG_scrap_Recycled_into_HQ'] = df['mat_MFG_scrap_Recycled_into_HQ'].interpolate()
 
-    return df
-
-def sens_MFGHQRecyclingEff(df, target_hq_eff = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluating sensitivity to increase of Manufacturing scrap recycling into high quality yeild efficiency. 
-    Increases `MFG_Scrap_Recycled_HighQuality_Reused_for_MFG` from current year until `goal_year` by linear interpolation until
-    reaching the `target_hq_eff`.
-    
-    Parameters
-    -----------
-    df : dataframe
-        dataframe to be modified
-    target_eff : float
-        target efficiency value in percentage to be reached. i.e., 95.0 .
-    goal_year : float
-        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df : dataframe 
-        modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG']=df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = np.nan
-    df.loc[df.index >= goal_year , 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = target_hq_eff
-    df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'].interpolate()
-
-    return df
-
-def sens_EOLCollection(df, target_loss = 0.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluating sensitivity to decrease of end of life collection loss percentage.  
-    Decreases `EOL_Collection_Losses` from current year until `goal_year` by linear interpolation until
-    reaching the `target_loss`.
-    
-    Parameters
-    ----------
-    df : dataframe 
-        dataframe to be modified
-    target_recycling : float
-        target losses in percentage to be reached. i.e. 5.0 % (lower is more is collected).
-    goal_year : float
-        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df : dataframe
-        modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mod_EOL_collection_losses']=df['mod_EOL_collection_losses'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mod_EOL_collection_losses'] = np.nan
-    df.loc[df.index >= goal_year , 'mod_EOL_collection_losses'] = target_loss
-    df['mod_EOL_collection_losses'] = df['mod_EOL_collection_losses'].interpolate()
-
-    return df
-
-def sens_EOLRecycling(df, target_recycling = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluating sensitivity to increase of EOL percentage recycled.  
-    Increases `EOL_Collected_Material_Percentage_Recycled` from current year until `goal_year` by linear interpolation until
-    reaching the `target_recovery`.
-    
-    Parameters
-    -----------
-    df : dataframe
-        dataframe to be modified
-    target_recycling : float
-        target percent recycled value in percentage to be reached. i.e., 95.0 %.
-        Higher is more of the end of life collection percentage is recycled.
-    goal_year : float
-        year by which target percent recycled will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df : dataframe 
-        modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mod_EOL_collected_recycled']=df['mod_EOL_collected_recycled'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mod_EOL_collected_recycled'] = np.nan
-    df.loc[df.index >= goal_year , 'mod_EOL_collected_recycled'] = target_recycling
-    df['mod_EOL_collected_recycled'] = df['mod_EOL_collected_recycled'].interpolate()
-
-    return df
-
-def sens_EOLRecyclingYield(df, target_eff = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluating sensitivity to increase of end of 
-    life recycling yeild.     Increases `EOL_Recycling_eff` from 
-    current year until `goal_year` by linear interpolation until
-    reaching the `target_eff`.
-    
-    Parameters
-    ----------
-    df : dataframe
-        dataframe to be modified
-    target_eff : float
-        target recycling efficiency value in percentage to be reached. i.e., 95.0 % of material is recovered.
-    goal_year : float
-        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df : dataframe 
-        modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mat_EOL_Recycling_eff']=df['mat_EOL_Recycling_eff'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_EOL_Recycling_eff'] = np.nan
-    df.loc[df.index >= goal_year , 'mat_EOL_Recycling_eff'] = target_eff
-    df['mat_EOL_Recycling_eff'] = df['mat_EOL_Recycling_eff'].interpolate()
-
-    return df
-
-def sens_EOLHQRecycling(df, target_recycling = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluatig sensitivity to increase of end of 
-    life high quality recycling percentage. 
-    Increases `EOL_Recycled_Material_into_HighQuality` from current year 
-    until `goal_year` by linear interpolation until
-    reaching the `target_recovery`.
-    
-    Parameters
-    ----------
-    df : dataframe
-        dataframe to be modified
-    target_recycling : float
-        target recycling percentage to be reached. i.e. 95.0 % of recycled material is recycled into high quality.
-    goal_year : float 
-        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df : dataframe
-        modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mat_EOL_Recycled_into_HQ']=df['mat_EOL_Recycled_into_HQ'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_EOL_Recycled_into_HQ'] = np.nan
-    df.loc[df.index >= goal_year , 'mat_EOL_Recycled_into_HQ'] = target_recycling
-    df['mat_EOL_Recycled_into_HQ'] = df['mat_EOL_Recycled_into_HQ'].interpolate()
-
-    return df
-
-def sens_EOLHQRecyclingYield(df, target_eff = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluatig sensitivity to increase of end of 
-    life high quality recycling efficiency. 
-    Increases `EOL_Recycled_HighQuality_Reused_for_MFG` efficiecny 
-    from current year until `goal_year` by linear interpolation until
-    reaching the `target_eff`.
-    
-    Parameters
-    ----------
-    df : dataframe
-        dataframe to be modified
-    target_eff : float 
-        target efficiency value in percentage to be reached. i.e., 95.0 %.
-    goal_year : float
-        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df : dataframe 
-        modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mat_EOL_RecycledHQ_Reused4MFG']=df['mat_EOL_RecycledHQ_Reused4MFG'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mat_EOL_RecycledHQ_Reused4MFG'] = np.nan
-    df.loc[df.index >= goal_year , 'mat_EOL_RecycledHQ_Reused4MFG'] = target_eff
-    df['mat_EOL_RecycledHQ_Reused4MFG'] = df['mat_EOL_RecycledHQ_Reused4Manufacturing'].interpolate()
-
-    return df
-
-def sens_ReUse(df, target_reuse = 95.0, goal_year = 2030):
-    '''
-    Modifies baseline scenario for evaluating sensitivity to increase of percent 
-    of end of life panels that find a second life.  
-    Increases `mod_Repowering` from current year 
-    until `goal_year` by linear interpolation until
-    reaching the `target_reuse`.
-    
-    Parameters
-    ----------
-    df : dataframe
-        dataframe to be modified
-    target_recycling : float
-        target recovery value in percentage to be reached. i.e., 95.0 .
-    goal_year : float
-        year by which target efficiency will be reached. i.e. 2030. Must be higher than current year.
-    
-    Returns
-    -------
-    df : dataframe 
-        modified dataframe.
-    
-    '''
-   
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > goal_year:
-        print("Error. Goal Year is before current year")
-        return
-     
-    df['mod_repowering']=df['mod_repowering'].astype(float)
-    df.loc[(df.index < goal_year) & (df.index > current_year), 'mod_repowering'] = np.nan
-    df.loc[df.index >= goal_year , 'mod_repowering'] = target_reuse
-    df['mod_repowering'] = df['mod_repowering'].interpolate()
-
-    return df
 
 
 def _modDict(originaldict, moddict):
