@@ -26,7 +26,7 @@ The baselines folder in the CEMFC provides baseline scenarios for modules in the
 
 
 baseline_module
-==============
+~~~~~~~~~~~~~~~~
 year : int
 Year. 
 
@@ -62,8 +62,7 @@ Percentage of modules at EOL from failure that are repaired and go back to funct
 
 
 baseline_material
-==============
-
+~~~~~~~~~~~~~~~~~~~~
 *material_virgin_efficiency_[%]: float
 Efficiency of mining, extracting, and purifying the material up to the point of entry into the module manufacturing line. 
 
@@ -105,7 +104,7 @@ The CEMFC calculates virgin material, landfilled and recycled materials, and the
 
 
 CEMFC Outputs
-============
+~~~~~~~~~~~~~~~~
 module_installedCapacity_[MW]
 Summation of all cohorts of installed PV actively in the field in the specified year
 
