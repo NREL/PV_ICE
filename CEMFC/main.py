@@ -11,16 +11,119 @@ functions to modify baseline values and evaluate sensitivity to the parameters.
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib
-from matplotlib.offsetbox import AnchoredOffsetbox, TextArea, HPacker, VPacker
+import datetime
 import datetime
 
-font = {'family' : 'arial',
-        'weight' : 'bold',
-        'size'   : 22}
 
-matplotlib.rc('font', **font)
+
+def read_baseline_material(scenario, material='None', file=None):
+    
+    if file is None:
+        try:
+            file = _interactive_load('Select baseline file')
+        except:
+            raise Exception('Interactive load failed. Tkinter not supported'+
+                            'on this system. Try installing X-Quartz and reloading')
+    
+
+def _interactive_load(title=None):
+    # Tkinter file picker
+    import tkinter
+    from tkinter import filedialog
+    root = tkinter.Tk()
+    root.withdraw() #Start interactive file input
+    root.attributes("-topmost", True) #Bring window into foreground
+    return filedialog.askopenfilename(parent=root, title=title) #initialdir = data_dir
+
+
+class ScenarioObj:
+    """
+    The ScenarioObj top level class is used to work on Circular Economy scenario objects, 
+    keep track of filenames, data for module and materials, operations modifying
+    the baselines, etc.
+
+    Parameters
+    ----------
+    name : text to append to output files
+    nowstr : current date/time string
+    path : working directory with circular economy results
+
+    Methods
+    -------
+    __init__ : initialize the object
+    _setPath : change the working directory
+
+    """
+
+    def __init__(self, name=None, path=None):
+        '''
+        initialize ScenarioObj with path of Scenario's baseline of module and materials
+        as well as a basename to append to
+
+        Parameters
+        ----------
+        name: string, append temporary and output files with this value
+        path: location of Radiance materials and objects
+
+        Returns
+        -------
+        none
+        '''
+
+        self.metdata = {}        # data from epw met file
+        self.data = {}           # data stored at each timestep
+        self.path = ""             # path of working directory
+        self.name = ""         # basename to append
+        self.materialfiles = []    # material files for oconv
+        
+        now = datetime.datetime.now()
+        self.nowstr = str(now.date())+'_'+str(now.hour)+str(now.minute)+str(now.second)
+
+    def _setPath(self, path):
+        """
+        setPath - move path and working directory
+
+        """
+        self.path = os.path.abspath(path)
+
+        print('path = '+ path)
+        try:
+            os.chdir(self.path)
+        except OSError as exc:
+            LOGGER.error('Path doesn''t exist: %s' % (path))
+            LOGGER.exception(exc)
+            raise(exc)
+
+        # check for path in the new Radiance directory:
+        def _checkPath(path):  # create the file structure if it doesn't exist
+            if not os.path.exists(path):
+                os.makedirs(path)
+                print('Making path: '+path)
+
+    def set_baseline_module(self, file=None):
+        
+        if file is None:
+            try:
+                file = _interactive_load('Select baseline file')
+            except:
+                raise Exception('Interactive load failed. Tkinter not supported'+
+                                'on this system. Try installing X-Quartz and reloading')
+        
+        # file = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\CEMFC\baselines\baseline_modules_US.csv'
+        
+        csvdata = open(str(file), 'r', encoding="UTF-8")
+        firstline = csvdata.readline()
+        secondline = csvdata.readline()
+
+        head = firstline.rstrip('\n').split(",")
+        meta = dict(zip(head, secondline.rstrip('\n').split(",")))
+
+        data = pd.read_csv(csvdata, names=head)
+        
+        self.baselinefile = file
+        self.module = data
+        self.metdata['module'] = meta
+
 
 def weibull_params(keypoints):
     '''Returns shape parameter `alpha` and scale parameter `beta`
@@ -202,22 +305,30 @@ def calculateMassFlow(mod, mat, debugflag=False):
 
     return df
 
-def sens_lifetime(df, lifetime_increase=1.3, year_increase=2025):
+
+def sens_StageImprovement(df, stage, improvement=1.3, start_year=None):
     '''
     Modifies baseline scenario for evaluating sensitivity of lifetime parameter.
-    t50 and t90 reliability years get incresed by `lifetime_increase` parameter
+    t50 and t90 reliability years get incresed by `improvement` parameter
     starting the `year_increase` year specified. 
     
     Parameters
     ----------
     df : dataframe
         dataframe to be modified
-    lifetime_increase : decimal
+    stage : str
+        Stage that wants to be modified. This can be any of the module or 
+        material specified values, for example:'MFG_Material_eff', 
+        'mat_MFG_scrap_recycled', 'mat_MFG_scrap_recycling_eff', 
+        'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
+        'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
+        'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
+        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_repowering', 'mod_eff', etc.
+    improvement : decimal
         Percent increase in decimal (i.e. "1.3" for 30% increase in value) 
-        or percent decrease (i.e. "0.3") in expected panel lifetime, relative 
-        to the values in df.
-    year_increase : 
-        the year at which the lifetime increase or decrease occurs
+        or percent decrease (i.e. "0.3") relative to values in df.
+    start_year : 
+        the year at which the improvement occurs
     
     Returns
     --------
@@ -225,17 +336,13 @@ def sens_lifetime(df, lifetime_increase=1.3, year_increase=2025):
         dataframe of expected module lifetime increased or decreased at specified year
     '''
 
-    current_year = int(datetime.datetime.now().year)
-    
-    if current_year > year_increase:
-        print("Error. Increase Year is before current year")
-        return
-    
+
+    if start_year is None:
+        start_year = int(datetime.datetime.now().year)
+
     #df[df.index > 2000]['mod_reliability_t50'].apply(lambda x: x*1.3)
-    df['mod_reliability_t50'] = df['mod_reliability_t50'].astype(float)
-    df['mod_reliability_t90'] = df['mod_reliability_t90'].astype(float)
-    df.loc[df.index > year_increase, 'mod_reliability_t50'] = df[df.index > current_year]['mod_reliability_t50'].apply(lambda x: x*lifetime_increase)
-    df.loc[df.index > year_increase, 'mod_reliability_t90'] = df[df.index > current_year]['mod_reliability_t90'].apply(lambda x: x*lifetime_increase)
+    df[stage] = df[stage].astype(float)
+    df.loc[df.index > start_year, stage] = df[df.index > start_year][stage].apply(lambda x: x*improvement)
     
     return df
 
