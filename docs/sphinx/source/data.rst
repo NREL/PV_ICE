@@ -1,5 +1,8 @@
 .. _data:
 
+Data
+======
+
 Input Data
 ----------------
 At least two files of baselines are needed for the simulation: 1) one file with module parameters throughout the years, for example *baseline_US*, and 2) one or more files with process parameters for each material being analyzed in the module, for example *baseline_glass*. See **baseline_module** and **baseline_material** for more details on input columns needed and their definition. 
