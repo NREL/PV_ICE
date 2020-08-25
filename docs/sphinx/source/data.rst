@@ -177,9 +177,13 @@ Data References
 Installed Capacity - Past
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Installation data for solar pv installed in the US and globally from several IEA-PVPS T1 reports, Wood MacKenzie Power and Renewables Reports, and LBNL Utility-Scale Solar Reports. Note that installed capacity includes on and off grid, residential, commercial, and utility scale PV. Note that IEA PVPS data (US and global) pre-2009 data is assumed to be all silicon technology.
+
+US Installations
+1995 through 2005 (K. Bolcar and K. Ardani, "National Survey Report of PV Power Applications in the United States 2010," IEA-PVPS, National Survey T1-19:2010, 2010. [Online]. Available: https://iea-pvps.org/national-survey-reports/.)
+2007 through 
 (F. H. Morse, "IEA PVPS Task 1 1993," IEA-PVPS, IEA PVPS T1:1993, Mar. 1995. Accessed: Aug. 13, 2020. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/01/tr_1993.pdf.)
 ("IEA PVPS Task 1 1997," IEA-PVPS, IEA PVPS T1:1997, Mar. 1997. Accessed: Aug. 13, 2020. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/01/tr_1995_01.pdf.)
-(K. Bolcar and K. Ardani, "National Survey Report of PV Power Applications in the United States 2010," IEA-PVPS, National Survey T1-19:2010, 2010. [Online]. Available: https://iea-pvps.org/national-survey-reports/.)
+
 ("Trends in Photovoltaic Applications 2019," IEA-PVPS, IEA PVPS T1-36:2019, Aug. 2019. Accessed: Aug. 12, 2020. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/02/5319-iea-pvps-report-2019-08-lr.pdf.)
 (M. Bolinger, J. Seel, and D. Robson, "Utility-Scale Solar 2019," LBNL, Dec. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/lbnl_utility_scale_solar_2019_edition_final.pdf.)
 
@@ -200,6 +204,7 @@ Failure probability data, i.e. T50 and T90, in years
 
 Material Baselines
 ~~~~~~~~~~~~~~~~~~~~
-Glass thickness data 
-(ITRPV, "International Technology Roadmap for Photovoltaic (ITRPV) 2019," ITRPV, 10th, Oct. 2019.)
 
+Glass thickness data
+^^^^^^^^^^^^^^^^^^^^^^
+The ITRPV Results Reports for 2010 and forward provided glass thickness data, and where report data was missing, reasonable assumptions or interpolations were made. See jupyter journal "Glass per M2 Calculations" for each year's calculations (“ITRPV - VDMA.” https://itrpv.vdma.org/)
