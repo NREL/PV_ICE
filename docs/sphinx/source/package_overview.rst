@@ -24,7 +24,7 @@ PV Life Stages/Phases:
 We are setting the boundaries of the PV Life stages at mining/extraction and processing of the virgin materials, which are all represented as a single stage ("Extraction and Material Prep"). Subsequent stages are 
 "Manufacturing", where the processed materials are made into a module; 
 "Lifetime/UsePhase"; where the module is installed and used to generate electricity; and 
-"End of Life" (EOL), where the module has either failed or degraded beyond use. The "R’s" modify the linear life stages of a PV module.
+"End of Life" (EOL), where the module has either failed or degraded beyond use. The "R's" modify the linear life stages of a PV module.
 
 EOL
 ~~~~~
@@ -66,7 +66,7 @@ Module is at EOL (through degradation) and is demounted and removed from the fie
 
 Recycle
 ^^^^^^^^
-We are considering Recycle as a Circularity Pathway at two stages in the PV lifetime: during Manufacturing ("pre-consumer"), to salvage material losses due to the manufacturing inefficiencies, and EOL. When a module is at EOL and is not reused, repaired, refurbished, or sent directly to landfill it can be recycled into its constituent materials. These materials can be used to displace virgin materials for the manufacture of new modules or other products. Different quality products are considered from recycling; high quality is used for new modules (same-cycling) or for other products (o-cycling); low quality is considered down-cycled into products with less stringent material quality requirements.
+We are considering Recycle as a Circularity Pathway at two stages in the PV lifetime: during Manufacturing ("pre-consumer"), to salvage material losses due to the manufacturing inefficiencies, and EOL. When a module is at EOL and is not reused, repaired, refurbished, or sent directly to landfill it can be recycled into its constituent materials. These materials can be used to displace virgin materials for the manufacture of new modules or other products. Different quality products are considered from recycling; high quality is used for new modules (same-cycling) or for other products ("o-cycling"); low quality is considered down-cycled into products with less stringent material quality requirements.
 
-"The R’s" - different pathways for circular economy. The idea for the calculator is to capture the material and energy benefits of each of these pathways to help inform of their impact, as they might have different requirements and efficacy. This pathways can be improved through science (for example, improving recycling efficiency of a material), as well as with policy (for example, choosing to support refurbishment research).
+"The R's" - different pathways for circular economy. The idea for the calculator is to capture the material and energy benefits of each of these pathways to help inform of their impact, as they might have different requirements and efficacy. This pathways can be improved through science (for example, improving recycling efficiency of a material), as well as with policy (for example, choosing to support refurbishment research).
 

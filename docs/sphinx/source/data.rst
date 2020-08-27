@@ -28,7 +28,7 @@ module_reliability_t90_[years]: float
 (optional) The number of years after the installation year at which 90% of the cohort of  modules will be removed from the field
 
 module_degradation_[%]: float
-Percentage annual reduction of the module’s performance, relative to it’s nameplate. i.e. 0.5 %. 
+Percentage annual reduction of the module's performance, relative to it’s nameplate. i.e. 0.5 %. 
 
 *module_manufacturing_efficiency_[%]: float
 Efficiency of manufacturing modules (if there are losses of modules and all associated   products during production). 
@@ -179,13 +179,18 @@ Installed Capacity - Past
 Installation data for solar pv installed in the US and globally from several IEA-PVPS T1 reports, Wood MacKenzie Power and Renewables Reports, and LBNL Utility-Scale Solar Reports. Note that installed capacity includes on and off grid, residential, commercial, and utility scale PV. Note that IEA PVPS data (US and global) pre-2009 data is assumed to be all silicon technology.
 
 US Installations
-1995 through 2005 (K. Bolcar and K. Ardani, "National Survey Report of PV Power Applications in the United States 2010," IEA-PVPS, National Survey T1-19:2010, 2010. [Online]. Available: https://iea-pvps.org/national-survey-reports/.)
-2007 through 
+1995 through 2008 taken from (K. Bolcar and K. Ardani, "National Survey Report of PV Power Applications in the United States 2010," IEA-PVPS, National Survey T1-19:2010, 2010. [Online]. Available: https://iea-pvps.org/national-survey-reports/.)
+
+2009 taken from (M. Bolinger, J. Seel, and D. Robson, "Utility-Scale Solar 2019," LBNL, Dec. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/lbnl_utility_scale_solar_2019_edition_final.pdf.)
+
+2010 through 2019 taken from Wood Mackenzie Power & Renewables PV Forecasts Q2 of 2020 ("US PV Forecasts Q2 2020 Report," Wood Mackenzie Power & Renewables.)
+
+Other resources consulted include:
 (F. H. Morse, "IEA PVPS Task 1 1993," IEA-PVPS, IEA PVPS T1:1993, Mar. 1995. Accessed: Aug. 13, 2020. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/01/tr_1993.pdf.)
 ("IEA PVPS Task 1 1997," IEA-PVPS, IEA PVPS T1:1997, Mar. 1997. Accessed: Aug. 13, 2020. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/01/tr_1995_01.pdf.)
-
 ("Trends in Photovoltaic Applications 2019," IEA-PVPS, IEA PVPS T1-36:2019, Aug. 2019. Accessed: Aug. 12, 2020. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/02/5319-iea-pvps-report-2019-08-lr.pdf.)
-(M. Bolinger, J. Seel, and D. Robson, "Utility-Scale Solar 2019," LBNL, Dec. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/lbnl_utility_scale_solar_2019_edition_final.pdf.)
+IRENA Solar Energy Data (https://www.irena.org/solar, and https://irena.org/Statistics/Download-Data)
+
 
 Installed Capacity - Projections
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,11 +205,11 @@ Degradation rate (in percentage power loss per year)
 (D. C. Jordan, S. R. Kurtz, K. VanSant, and J. Newmiller, "Compendium of photovoltaic degradation rates," Progress in Photovoltaics: Research and Applications, vol. 24, no. 7, pp. 978–989, 2016, doi: 10.1002/pip.2744.)
 
 Failure probability data, i.e. T50 and T90, in years 
-(D. C. Jordan, B. Marion, C. Deline, T. Barnes, and M. Bolinger, "PV field reliability status—Analysis of 100 000 solar systems," Progress in Photovoltaics: Research and Applications, vol. n/a, no. n/a, Feb. 2020, doi: 10.1002/pip.3262.)
+(D. C. Jordan, B. Marion, C. Deline, T. Barnes, and M. Bolinger, "PV field reliability status - Analysis of 100 000 solar systems," Progress in Photovoltaics: Research and Applications, vol. n/a, no. n/a, Feb. 2020, doi: 10.1002/pip.3262.)
 
 Material Baselines
 ~~~~~~~~~~~~~~~~~~~~
 
 Glass thickness data
 ^^^^^^^^^^^^^^^^^^^^^^
-The ITRPV Results Reports for 2010 and forward provided glass thickness data, and where report data was missing, reasonable assumptions or interpolations were made. See jupyter journal "Glass per M2 Calculations" for each year's calculations (“ITRPV - VDMA.” https://itrpv.vdma.org/)
+The ITRPV Results Reports for 2010 and forward provided glass thickness data, and where report data was missing, reasonable assumptions or interpolations were made. See jupyter journal "Glass per M2 Calculations" for each year's calculations, and SupportingMaterial Glass_FrontThickness_ITRPV and Module_Conformation_ITRPV files for extracted data ("ITRPV - VDMA." https://itrpv.vdma.org/).
