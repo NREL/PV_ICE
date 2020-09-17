@@ -13099,10 +13099,393 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The mass of silicon contained in a PV module is dependent on the size, thickness and number of cells in an average module. Since there is a range of sizes and number of cells per module, we will attempt a weighted average. These weighted averages are based on ITRPV data, which goes back to 2010.</p>
+<p>The mass of silicon contained in a PV module is dependent on the size, thickness and number of cells in an average module. Since there is a range of sizes and number of cells per module, we will attempt a weighted average. These weighted averages are based on ITRPV data, which goes back to 2010, Fraunhofer data back to 1990, and</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
+
+<span class="n">density_si</span> <span class="o">=</span> <span class="mf">2.3290</span> <span class="c1">#g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/wiki/Silicon) </span>
+<span class="c1">#it might be better to have mono-Si and multi-Si densities, including dopants, </span>
+<span class="c1">#but that density is not readily available</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A Fraunhofer report indicates that in 1990, wafers were 400 micron thick, decreasing to the more modern 180 micron thickness by 2008. ITRPVs back to 2010 indicate that 156 mm x 156mm was the standard size wafer through 2015.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#weighted average for wafer size 2016 through 2030</span>
+<span class="c1">#2016</span>
+<span class="n">wafer2016mcsi</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.90</span><span class="o">*</span><span class="mi">156</span> <span class="o">+</span> <span class="mf">0.10</span><span class="o">*</span><span class="mf">156.75</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">wafer2016monosi</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.55</span><span class="o">*</span><span class="mi">156</span> <span class="o">+</span> <span class="mf">0.45</span><span class="o">*</span><span class="mf">156.75</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">wafer2016avg</span> <span class="o">=</span> <span class="mf">0.9</span><span class="o">*</span><span class="n">wafer2016mcsi</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">wafer2016monosi</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average Wafer size in 2016 was&quot;</span><span class="p">,</span> <span class="n">wafer2016avg</span><span class="p">,</span> <span class="s2">&quot;cm on a side&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Average Wafer size in 2016 was 1.5610125000000001 cm on a side
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now lets try to do this for 2019 through 2030 all at once with dataframes</span>
+<span class="c1">#taking the average of the ranges specified in ITRPVs</span>
+
+<span class="c1">#first we input the market share data for mcSi and monoSi</span>
+<span class="n">marketshare_mcSi</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;share156&#39;</span><span class="p">:[</span><span class="mf">0.9</span><span class="p">,</span><span class="mf">0.37</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+                   <span class="s1">&#39;share156.75&#39;</span><span class="p">:[</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.63</span><span class="p">,</span><span class="mf">0.9</span><span class="p">,</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.08</span><span class="p">,</span><span class="mf">0.03</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+                   <span class="s1">&#39;share157.75&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.24</span><span class="p">,</span><span class="mf">0.35</span><span class="p">,</span><span class="mf">0.30</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.04</span><span class="p">,</span><span class="mf">0.05</span><span class="p">],</span>
+                   <span class="s1">&#39;share163&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.04</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.32</span><span class="p">,</span><span class="mf">0.32</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.2</span><span class="p">],</span>
+                   <span class="s1">&#39;share166up&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.65</span><span class="p">,</span><span class="mf">0.75</span><span class="p">]}</span>
+<span class="n">marketshare_monoSi</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;share156&#39;</span><span class="p">:[</span><span class="mf">0.55</span><span class="p">,</span><span class="mf">0.21</span><span class="p">,</span><span class="mf">0.08</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+                   <span class="s1">&#39;share156.75&#39;</span><span class="p">:[</span><span class="mf">0.45</span><span class="p">,</span><span class="mf">0.78</span><span class="p">,</span><span class="mf">0.9</span><span class="p">,</span><span class="mf">0.68</span><span class="p">,</span><span class="mf">0.35</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+                   <span class="s1">&#39;share157.75&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.23</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.01</span><span class="p">],</span>
+                   <span class="s1">&#39;share163&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.07</span><span class="p">,</span><span class="mf">0.14</span><span class="p">,</span><span class="mf">0.18</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.08</span><span class="p">,</span><span class="mf">0.06</span><span class="p">],</span>
+                   <span class="s1">&#39;share166up&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.21</span><span class="p">,</span><span class="mf">0.37</span><span class="p">,</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.87</span><span class="p">,</span><span class="mf">0.93</span><span class="p">]}</span>
+<span class="c1">#then shove them into panda dataframes</span>
+<span class="n">dfmarketshare_mcSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">marketshare_mcSi</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;2016&#39;</span><span class="p">,</span><span class="s1">&#39;2017&#39;</span><span class="p">,</span><span class="s1">&#39;2018&#39;</span><span class="p">,</span><span class="s1">&#39;2019&#39;</span><span class="p">,</span><span class="s1">&#39;2020&#39;</span><span class="p">,</span><span class="s1">&#39;2022&#39;</span><span class="p">,</span><span class="s1">&#39;2024&#39;</span><span class="p">,</span><span class="s1">&#39;2027&#39;</span><span class="p">,</span><span class="s1">&#39;2030&#39;</span><span class="p">])</span>
+<span class="n">dfmarketshare_monoSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">marketshare_monoSi</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;2016&#39;</span><span class="p">,</span><span class="s1">&#39;2017&#39;</span><span class="p">,</span><span class="s1">&#39;2018&#39;</span><span class="p">,</span><span class="s1">&#39;2019&#39;</span><span class="p">,</span><span class="s1">&#39;2020&#39;</span><span class="p">,</span><span class="s1">&#39;2022&#39;</span><span class="p">,</span><span class="s1">&#39;2024&#39;</span><span class="p">,</span><span class="s1">&#39;2027&#39;</span><span class="p">,</span><span class="s1">&#39;2030&#39;</span><span class="p">])</span>
+    <span class="c1">#it is necessary to put the year as the row index </span>
+    <span class="c1">#because otherwise it gets added in the aggregation of columns</span>
+    <span class="c1">#later when we obtain the average cell size</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dfmarketshare_mcSi</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dfmarketshare_monoSi</span><span class="p">)</span>
+<span class="c1">#columns = dfmarketshare_monoSi.columns</span>
+<span class="c1">#print(columns)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>      share156  share156.75  share157.75  share163  share166up
+2016      0.90         0.10         0.00      0.00        0.00
+2017      0.37         0.63         0.00      0.00        0.00
+2018      0.10         0.90         0.00      0.02        0.00
+2019      0.00         0.70         0.24      0.04        0.02
+2020      0.00         0.30         0.35      0.20        0.15
+2022      0.00         0.08         0.30      0.32        0.30
+2024      0.00         0.03         0.15      0.32        0.40
+2027      0.00         0.01         0.04      0.30        0.65
+2030      0.00         0.00         0.05      0.20        0.75
+      share156  share156.75  share157.75  share163  share166up
+2016      0.55         0.45         0.00      0.00        0.00
+2017      0.21         0.78         0.00      0.01        0.00
+2018      0.08         0.90         0.00      0.02        0.00
+2019      0.00         0.68         0.23      0.07        0.02
+2020      0.00         0.35         0.30      0.14        0.21
+2022      0.00         0.15         0.30      0.18        0.37
+2024      0.00         0.00         0.15      0.15        0.70
+2027      0.00         0.00         0.05      0.08        0.87
+2030      0.00         0.00         0.01      0.06        0.93
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#multiply each marketshare dataframe column by it&#39;s respective size</span>
+<span class="c1">#dfmarketshare_mcSi.share156 *=156 #this is a manual way to multiply each column by its respective size</span>
+
+<span class="n">cellsizes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;share156&#39;</span><span class="p">:</span><span class="mi">156</span><span class="p">,</span>
+            <span class="s1">&#39;share156.75&#39;</span><span class="p">:</span><span class="mf">156.75</span><span class="p">,</span>
+            <span class="s1">&#39;share157.75&#39;</span><span class="p">:</span><span class="mf">157.75</span><span class="p">,</span>
+            <span class="s1">&#39;share163&#39;</span><span class="p">:</span><span class="mi">163</span><span class="p">,</span>
+            <span class="s1">&#39;share166up&#39;</span><span class="p">:</span><span class="mi">166</span><span class="p">}</span> <span class="c1">#dictionary of the average cell dimension for each market share option</span>
+
+<span class="c1">#multiply cell dimensions by their market share to get a weighted average</span>
+<span class="n">df_scalecell_mcSi</span> <span class="o">=</span> <span class="n">dfmarketshare_mcSi</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">cellsizes</span><span class="p">,</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span>
+<span class="n">df_scalecell_monoSi</span> <span class="o">=</span> <span class="n">dfmarketshare_monoSi</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">cellsizes</span><span class="p">,</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df_scalecell_mcSi</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_scalecell_monoSi</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>      share156  share156.75  share157.75  share163  share166up
+2016    140.40      15.6750       0.0000      0.00        0.00
+2017     57.72      98.7525       0.0000      0.00        0.00
+2018     15.60     141.0750       0.0000      3.26        0.00
+2019      0.00     109.7250      37.8600      6.52        3.32
+2020      0.00      47.0250      55.2125     32.60       24.90
+2022      0.00      12.5400      47.3250     52.16       49.80
+2024      0.00       4.7025      23.6625     52.16       66.40
+2027      0.00       1.5675       6.3100     48.90      107.90
+2030      0.00       0.0000       7.8875     32.60      124.50
+      share156  share156.75  share157.75  share163  share166up
+2016     85.80      70.5375       0.0000      0.00        0.00
+2017     32.76     122.2650       0.0000      1.63        0.00
+2018     12.48     141.0750       0.0000      3.26        0.00
+2019      0.00     106.5900      36.2825     11.41        3.32
+2020      0.00      54.8625      47.3250     22.82       34.86
+2022      0.00      23.5125      47.3250     29.34       61.42
+2024      0.00       0.0000      23.6625     24.45      116.20
+2027      0.00       0.0000       7.8875     13.04      144.42
+2030      0.00       0.0000       1.5775      9.78      154.38
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now add the columns together to get the weighted average cell size for each year for each technology</span>
+<span class="n">df_avgcell_mcSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_scalecell_mcSi</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;columns&quot;</span><span class="p">))</span>
+<span class="n">df_avgcell_monoSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_scalecell_monoSi</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;columns&quot;</span><span class="p">))</span> <span class="c1">#agg functions return a series not a dictionary</span>
+<span class="c1">#print(df_avgcell_mcSi)</span>
+
+<span class="c1">#join the two dataframes into single one with two columns</span>
+<span class="n">df_avgcell</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_avgcell_monoSi</span><span class="p">,</span><span class="n">df_avgcell_mcSi</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df_avgcell</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;monoSi&#39;</span><span class="p">,</span><span class="s1">&#39;mcSi&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_avgcell</span><span class="p">)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">df_avgcell</span><span class="o">.</span><span class="n">monoSi</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>        monoSi      mcSi
+2016  156.3375  156.0750
+2017  156.6550  156.4725
+2018  156.8150  159.9350
+2019  157.6025  157.4250
+2020  159.8675  159.7375
+2022  161.5975  161.8250
+2024  164.3125  146.9250
+2027  165.3475  164.6775
+2030  165.7375  164.9875
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[80]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>pandas.core.series.Series</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we have an average cell dimension for mc-Si and mono-Si for 2016 through 2030. Next, we apply the marketshare of mc-Si vs mono-Si to get the average cell dimension for the year. Market share of mc-Si vs mono-Si is taken from LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. &lt;5MW, and is from 2002-2018).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[74]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#read in a csv that was copied from CE Data google sheet</span>
+<span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
+<span class="n">techmarketshare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../CEMFC/baselines/SupportingMaterial/ModuleType_MarketShare_LBNL.csv&quot;</span><span class="p">)</span>
+<span class="c1">#this file path navigates from current working directory back up 2 folders, and over to the csv</span>
+<span class="n">techmarketshare</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">techmarketshare</span><span class="p">[</span><span class="s1">&#39;Year&#39;</span><span class="p">]</span> <span class="c1">#make the year column the row index</span>
+<span class="k">del</span> <span class="n">techmarketshare</span><span class="p">[</span><span class="s1">&#39;Year&#39;</span><span class="p">]</span> <span class="c1">#delete the year column</span>
+<span class="n">techmarketshare</span> <span class="o">/=</span><span class="mi">100</span> <span class="c1">#turn whole numbers into decimal percentages</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">techmarketshare</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>      monoSi  mcSi  otherSi
+Year                       
+2002    0.22  0.68     0.10
+2003    0.08  0.90     0.02
+2004    0.08  0.92     0.01
+2005    0.28  0.72     0.00
+2006    0.27  0.73     0.00
+2007    0.35  0.64     0.00
+2008    0.45  0.54     0.00
+2009    0.49  0.49     0.02
+2010    0.52  0.47     0.01
+2011    0.50  0.50     0.01
+2012    0.49  0.51     0.00
+2013    0.35  0.65     0.00
+2014    0.33  0.66     0.00
+2015    0.35  0.65     0.00
+2016    0.40  0.60     0.00
+2017    0.71  0.29     0.00
+2018    0.89  0.11     0.00
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now combine technology market share of mcSi and monoSi with their respective cell dimensions</span>
+<span class="c1">#which have already been marketshare weighted</span>
+<span class="c1">#going to ignore &quot;otherSi&quot; because for the most part less than 2%</span>
+
+<span class="c1">#join the mcSi together and the monoSi together in separate dataframes</span>
+<span class="n">monoSicell</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_avgcell</span><span class="o">.</span><span class="n">monoSi</span><span class="p">)</span>
+<span class="n">monoSimarket</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">techmarketshare</span><span class="o">.</span><span class="n">monoSi</span><span class="p">)</span>
+<span class="n">df_monoSi</span> <span class="o">=</span> <span class="n">monoSimarket</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">monoSicell</span><span class="p">,</span> <span class="n">lsuffix</span><span class="o">=</span><span class="s1">&#39;share&#39;</span><span class="p">,</span><span class="n">rsuffix</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">)</span> <span class="c1">#join is not the right command</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_monoSi</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>      monoSiboo  monoSieek
+Year                      
+2002       0.22        NaN
+2003       0.08        NaN
+2004       0.08        NaN
+2005       0.28        NaN
+2006       0.27        NaN
+2007       0.35        NaN
+2008       0.45        NaN
+2009       0.49        NaN
+2010       0.52        NaN
+2011       0.50        NaN
+2012       0.49        NaN
+2013       0.35        NaN
+2014       0.33        NaN
+2015       0.35        NaN
+2016       0.40        NaN
+2017       0.71        NaN
+2018       0.89        NaN
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13116,13 +13499,6 @@ div#notebook {
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Virgin-Material-Efficiency">Virgin Material Efficiency<a class="anchor-link" href="#Virgin-Material-Efficiency">&#182;</a></h2>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">

@@ -13084,21 +13084,16 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Based on ITRPV numbers. ITRPV 2014 sets thickness of glass to 3.5, so assuming that value for all previous modules since 1995.
-Starting 2015 ITRPV, transparent backside (both glass &amp; transparent sheets) starts at 2%. Assuming 50% is glass-glass.  same front thickness.</p>
-<p>Starting 2017, front thicknesses are indicated for front side. Thinner modules coincide with the values for expected bifacial modules with glass-glass backside, so assuming all thiner modules have a backside of same thickness.</p>
-<p>Glass backside thickness is not specified, so assuming for glass-glass backside is 2 mm thick for all cases
-where front side is between 2-3 mm (assuming 2 mm for front side), and 1.8mm for cases where front side is &lt; 2 mmm ( assuming 1.8mm for front side as well)</p>
-<p>So overall module per panel is 3.5 for single side glass to up 4 mm glass-glass</p>
-<p><b>Assumptions</b>:</p>
-<p>1 - Assuming nothing Glass-Glass before 2012 (not on ITRPV, bifacial not significant yet).</p>
+<p>Based on ITRPV numbers for the most part, this journal attempts to correlate front glass thickness values with the introduction of glass-glass modules.</p>
+<p>Standard front glass thickness is set to 3.2 mm, based on ITRPV 2014, 2012 and 2011. Starting 2017, front glass are divided into &gt;3 mm, 2-3 mm. Assuming that &gt;3mm is still 3.2 mm. Thinner modules in the range of 2-3mm coincide with the values of Glass-Glass modules, so we are assuming all thiner modules have a backside of same thickness as front of 2.5 mm</p>
+<p>So overall thickness of glass per panel goes from 3.2 to 5 mm for Glass-backsheet to Glass-Glass modules.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13113,18 +13108,16 @@ where front side is between 2-3 mm (assuming 2 mm for front side), and 1.8mm for
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Glass-Glass starts on ITRPV 2012, with 2 %. Since there is still no other record for Glass thickness, assuming same thickness for back than front.</p>
-
+<h4 id="Up-to-2012">Up to 2012<a class="anchor-link" href="#Up-to-2012">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Up to 2012</span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span>  <span class="c1"># m</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span>  <span class="c1"># m</span>
 <span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 up to 2012:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
 </pre></div>
@@ -13155,24 +13148,32 @@ where front side is between 2-3 mm (assuming 2 mm for front side), and 1.8mm for
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="2013---2016">2013 - 2016<a class="anchor-link" href="#2013---2016">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Glass-Glass percentage starts to increase over the following years.</p>
 <p>On ITRPV, percentage for 2013 is 98% glass-backsheet,
 percentage for 2014 is 96 % glass-backsheet
-percentage for 2015 is 98 % glass -backsheet.</p>
-<p>We deemed that this sudden shift in the industry from 98 to 96 and then up to 97 did not make sense, so we linearly interpolated for these years</p>
+percentage for 2016 is 97 % glass -backsheet.</p>
+<p>We think it's strange that the % of glass-glass modules went suddenly up in 2014 and then back down in 2016. However we're going ahead with this percentages and will quantify this disaprity as uncertainty with the MC analysis.</p>
+<p>Data is not available on Glass-Glass modules for 2015 so we're interpolating between previous year</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2013 - 2015</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2013</span>
 <span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.98</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.02</span> <span class="c1"># m</span>
 <span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 2013-2015:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 2013:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13200,7 +13201,39 @@ percentage for 2015 is 98 % glass -backsheet.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2014</span>
+<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.96</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.04</span> <span class="c1"># m</span>
+<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass for 2014:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2015</span>
+<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.96</span><span class="o">.</span><span class="mi">5</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.035</span> <span class="c1"># m</span>
+<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 2013-2015:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2016 </span>
@@ -13237,125 +13270,7 @@ percentage for 2015 is 98 % glass -backsheet.</p>
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#201</span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.98</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.02</span> <span class="c1"># m</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2013:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 2014 to 2016:</span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0035</span>  <span class="c1"># m</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 up 2014-2016:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Glass kg/m2 up 2014-2016: 8.75
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 2017:</span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0035</span> <span class="o">*</span> <span class="mf">0.94</span> <span class="o">+</span> <span class="mf">0.0025</span> <span class="o">*</span> <span class="mf">0.06</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 up 2014-2016:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Glass kg/m2 up 2014-2016: 8.6
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 2018:</span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0035</span> <span class="o">*</span> <span class="mf">0.93</span> <span class="o">+</span> <span class="mf">0.0025</span> <span class="o">*</span> <span class="mf">0.07</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 up 2014-2016:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Glass per m2 up to 2014: 8.7625
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2019 - 2020:</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
     </div>
@@ -13366,69 +13281,61 @@ percentage for 2015 is 98 % glass -backsheet.</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>All modules have front glass, consider front glass thickness.
-Some modules have back glass, calculate from G-G and G-B plots
-Assume thickness for back glasses</p>
-<p>Bifacial can be G-G or G-B. But there's also monofacial G-G and G-B.</p>
-<p>90 G-B, 10 G-G
-95 Monofacial, 5 Bifacial,</p>
-<p>then 100% of bifacial should be G-G, and 5% Monofaial GG...</p>
-<p>Bifacial modules are not a proxy for</p>
+<h4 id="2017-onwards">2017 onwards<a class="anchor-link" href="#2017-onwards">&#182;</a></h4><p>Starting 2017, ITRPV includes data on modules with Front glass between 2-3mm thick. Data is also available in various years for the percentage of modules that are Glass-Backsheet, vs Glass-Glass. The percentages for 2-3mm and Glass-Glass modules are very similar. We're assuming that 100% of the Glass-Glass modules are therefore 2-3mm thick for their front AND their back glass. Remaining percentage (if any) of 2-3mm front glasses are assumed to be Glass-backsheet.
+For example for 2017:</p>
+<p><img src="../images_wiki/ITRPV_GlassDeduction.PNG" alt="ITRPV Glass thicknesses deduction example"></p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2017</span>
+<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.94</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0025</span><span class="o">+</span><span class="mf">0.0025</span><span class="p">)</span><span class="o">*</span><span class="mf">0.05</span> <span class="c1"># m</span>
+<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2017:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
+<div class="output_wrapper">
+<div class="output">
 
-    </div>
-</div>
-</div>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
+<div class="output_area">
 
-    </div>
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2017: 8.225000000000001
+</pre>
 </div>
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Years afer 2017 that don't have values for any these two categories got interpolated.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Automatic-Calculation-from-SupportingMaterial-folder-to-create-baseline_material_Glass">Automatic Calculation from SupportingMaterial folder to create baseline_material_Glass<a class="anchor-link" href="#Automatic-Calculation-from-SupportingMaterial-folder-to-create-baseline_material_Glass">&#182;</a></h2>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
