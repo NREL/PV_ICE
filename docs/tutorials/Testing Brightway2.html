@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>(baseline development) Silicon per m2</title>
+<title>Testing Brightway2</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13074,48 +13074,12 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="(baseline-development)-Silicon-per-M2-Calculations">(baseline development) Silicon per M2 Calculations<a class="anchor-link" href="#(baseline-development)-Silicon-per-M2-Calculations">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>This journal documents the methods and assumptions made to create a baseline material file for silicon.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Mass-per-M2">Mass per M2<a class="anchor-link" href="#Mass-per-M2">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The mass of silicon contained in a PV module is dependent on the size, thickness and number of cells in an average module. Since there is a range of sizes and number of cells per module, we will attempt a weighted average. These weighted averages are based on ITRPV data, which goes back to 2010, Fraunhofer data back to 1990, and</p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
-
-<span class="n">density_si</span> <span class="o">=</span> <span class="mf">2.3290</span> <span class="c1">#g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/wiki/Silicon) </span>
-<span class="c1">#it might be better to have mono-Si and multi-Si densities, including dopants, </span>
-<span class="c1">#but that density is not readily available</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#To install bw2, use https://2.docs.brightway.dev/installation.html</span>
 </pre></div>
 
     </div>
@@ -13123,25 +13087,218 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>A Fraunhofer report indicates that in 1990, wafers were 400 micron thick, decreasing to the more modern 180 micron thickness by 2008. ITRPVs back to 2010 indicate that 156 mm x 156mm was the standard size wafer through 2015.</p>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#remember to launch this from the command line in the &quot;mytestenv&quot; environment</span>
+<span class="c1">#because currently bw2 is only installed in that environment?</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">brightway2</span> <span class="k">as</span> <span class="nn">bw2</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bw2</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="s1">&#39;bw2-seminar-tutorial&#39;</span><span class="p">)</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="s1">&#39;bw2-seminar-tutorial&#39;</span><span class="p">)</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">current</span> <span class="c1">#shows current project</span>
+<span class="c1">#also &quot;see what projects you have on your computer by running list(bw.projects)&quot;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;bw2-seminar-tutorial&#39;</pre>
+</div>
+
+</div>
 
 </div>
 </div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bw2</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">dir</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">bw2setup</span><span class="p">()</span> <span class="c1"># need this to create pathways, mapping, and methods - it creates biosphere3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Creating default biosphere
+
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Writing activities to SQLite3 database:
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Applying strategy: normalize_units
+Applying strategy: drop_unspecified_subcategories
+Applied 2 strategies in 0.02 seconds
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>0% [##############################] 100% | ETA: 00:00:00
+Total time elapsed: 00:00:01
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Title: Writing activities to SQLite3 database:
+  Started: 09/10/2020 16:14:50
+  Finished: 09/10/2020 16:14:51
+  Total time elapsed: 00:00:01
+  CPU %: 89.30
+  Memory %: 0.83
+Created database: biosphere3
+Creating default LCIA methods
+
+Applying strategy: normalize_units
+Applying strategy: set_biosphere_type
+Applying strategy: drop_unspecified_subcategories
+Applying strategy: link_iterable_by_fields
+Applied 4 strategies in 5.53 seconds
+Wrote 850 LCIA methods with 219059 characterization factors
+Creating core data migrations
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="#activities-in-the-database">#activities in the database<a class="anchor-link" href="##activities-in-the-database">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bw2</span><span class="o">.</span><span class="n">databases</span>
+<span class="n">mybio</span> <span class="o">=</span> <span class="n">bw2</span><span class="o">.</span><span class="n">Database</span><span class="p">(</span><span class="s1">&#39;biosphere3&#39;</span><span class="p">)</span>
+<span class="c1">#type(mybio)</span>
+<span class="c1">#len(mybio)</span>
+<span class="n">random</span> <span class="o">=</span> <span class="n">mybio</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="c1">#returns a random &quot;activity&quot; from the database, these can be assigned to a variable for use</span>
+<span class="c1">#LCA language for here; an &quot;activity&quot; is an elementary flow in LCA world. </span>
+<span class="c1">#here activities are linked by edges (exchanges)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">random</span><span class="p">)</span>
+<span class="n">random</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span> <span class="c1">#this shows what is contained in the activity</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[29]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;categories&#39;: (&#39;soil&#39;, &#39;agricultural&#39;),
+ &#39;code&#39;: &#39;50eebfd4-1b99-45d6-a149-68a6d4568cb4&#39;,
+ &#39;CAS number&#39;: &#39;099607-70-2&#39;,
+ &#39;name&#39;: &#39;Cloquintocet-mexyl&#39;,
+ &#39;database&#39;: &#39;biosphere3&#39;,
+ &#39;unit&#39;: &#39;kilogram&#39;,
+ &#39;type&#39;: &#39;emission&#39;}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#weighted average for wafer size 2016 through 2030</span>
-<span class="c1">#2016</span>
-<span class="n">wafer2016mcsi</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.90</span><span class="o">*</span><span class="mi">156</span> <span class="o">+</span> <span class="mf">0.10</span><span class="o">*</span><span class="mf">156.75</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
-<span class="n">wafer2016monosi</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.55</span><span class="o">*</span><span class="mi">156</span> <span class="o">+</span> <span class="mf">0.45</span><span class="o">*</span><span class="mf">156.75</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
-<span class="n">wafer2016avg</span> <span class="o">=</span> <span class="mf">0.9</span><span class="o">*</span><span class="n">wafer2016mcsi</span> <span class="o">+</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">wafer2016monosi</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average Wafer size in 2016 was&quot;</span><span class="p">,</span> <span class="n">wafer2016avg</span><span class="p">,</span> <span class="s2">&quot;cm on a side&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;biosphere3&#39;</span><span class="p">,</span> <span class="n">random</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">])</span> <span class="c1">#creates a tuple to pass to the get function</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">get_activity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="c1">#the get function takes in a sinple argument in the form of the tuple of a database name and it&#39;s code</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">key</span><span class="p">)</span> <span class="c1">#this is the better way to get the key of a a particular activity</span>
 </pre></div>
 
     </div>
@@ -13154,13 +13311,15 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[33]:</div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Average Wafer size in 2016 was 1.5610125000000001 cm on a side
-</pre>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>tuple</pre>
 </div>
+
 </div>
 
 </div>
@@ -13169,27 +13328,14 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now lets try to do this for 2019 through 2030 all at once with dataframes</span>
-<span class="c1">#taking the average of the ranges specified in ITRPVs</span>
-
-<span class="c1">#first we input the market share data for mcSi and monoSi, read in from csv</span>
-<span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
-<span class="n">mrktshr_cellsize</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../CEMFC/baselines/SupportingMaterial/MarketShare_CellSize.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
-<span class="n">mrktshr_cellsize</span> <span class="o">/=</span><span class="mi">100</span> <span class="c1">#turn whole numbers into decimal percentages</span>
-<span class="c1">#print(mrktshr_cellsize)</span>
-
-<span class="c1">#then split them into two dataframes for later computations</span>
-<span class="n">dfmarketshare_mcSi</span> <span class="o">=</span> <span class="n">mrktshr_cellsize</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span> <span class="o">=</span> <span class="s1">&#39;mcSi&#39;</span><span class="p">)</span>
-<span class="n">dfmarketshare_monoSi</span> <span class="o">=</span> <span class="n">mrktshr_cellsize</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span> <span class="o">=</span> <span class="s1">&#39;monoSi&#39;</span><span class="p">)</span>
-<span class="c1">#adjust column names for matching computation later</span>
-<span class="n">dfmarketshare_mcSi</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;share156&#39;</span><span class="p">,</span><span class="s1">&#39;share156.75&#39;</span><span class="p">,</span><span class="s1">&#39;share157.75&#39;</span><span class="p">,</span><span class="s1">&#39;share163&#39;</span><span class="p">,</span><span class="s1">&#39;share166up&#39;</span><span class="p">]</span>
-<span class="n">dfmarketshare_monoSi</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;share156&#39;</span><span class="p">,</span><span class="s1">&#39;share156.75&#39;</span><span class="p">,</span><span class="s1">&#39;share157.75&#39;</span><span class="p">,</span><span class="s1">&#39;share163&#39;</span><span class="p">,</span><span class="s1">&#39;share166up&#39;</span><span class="p">]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">dfmarketshare_mcSi</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dfmarketshare_monoSi</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#How to Search for an item in the database</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">Database</span><span class="p">(</span><span class="s1">&#39;biosphere3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">)</span> <span class="c1">#returns all with that title</span>
+<span class="c1">#filter down using</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">Database</span><span class="p">(</span><span class="s1">&#39;biosphere3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;carbon dioxide&#39;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;categories&#39;</span><span class="p">:</span><span class="s1">&#39;urban&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;fossil&#39;</span><span class="p">})</span>
+<span class="c1">#can use forloop iteration to search as well</span>
 </pre></div>
 
     </div>
@@ -13206,84 +13352,25 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>      share156  share156.75  share157.75  share163  share166up
-Year                                                          
-1995      1.00          NaN          NaN       NaN         NaN
-1996      1.00          NaN          NaN       NaN         NaN
-1997      1.00          NaN          NaN       NaN         NaN
-1998      1.00          NaN          NaN       NaN         NaN
-1999      1.00          NaN          NaN       NaN         NaN
-2000      1.00          NaN          NaN       NaN         NaN
-2001      1.00          NaN          NaN       NaN         NaN
-2002      1.00          NaN          NaN       NaN         NaN
-2003      1.00          NaN          NaN       NaN         NaN
-2004      1.00          NaN          NaN       NaN         NaN
-2005      1.00          NaN          NaN       NaN         NaN
-2006      1.00          NaN          NaN       NaN         NaN
-2007      1.00          NaN          NaN       NaN         NaN
-2008      1.00          NaN          NaN       NaN         NaN
-2009      1.00          NaN          NaN       NaN         NaN
-2010      1.00          NaN          NaN       NaN         NaN
-2011      1.00          NaN          NaN       NaN         NaN
-2012      1.00          NaN          NaN       NaN         NaN
-2013      1.00          NaN          NaN       NaN         NaN
-2014      1.00          NaN          NaN       NaN         NaN
-2015      1.00          NaN          NaN       NaN         NaN
-2016      0.90         0.10          NaN       NaN         NaN
-2017      0.37         0.63          NaN       NaN         NaN
-2018      0.10         0.90          NaN       NaN         NaN
-2019      0.00         0.70         0.24      0.04        0.02
-2020       NaN         0.30         0.35      0.20        0.15
-2021       NaN          NaN          NaN       NaN         NaN
-2022       NaN         0.08         0.30      0.32        0.30
-2023       NaN          NaN          NaN       NaN         NaN
-2024       NaN         0.03         0.15      0.32        0.40
-2025       NaN          NaN          NaN       NaN         NaN
-2026       NaN          NaN          NaN       NaN         NaN
-2027       NaN         0.01         0.04      0.30        0.65
-2028       NaN          NaN          NaN       NaN         NaN
-2029       NaN          NaN          NaN       NaN         NaN
-2030       NaN         0.00         0.05      0.20        0.75
-      share156  share156.75  share157.75  share163  share166up
-Year                                                          
-1995      1.00          NaN          NaN       NaN         NaN
-1996      1.00          NaN          NaN       NaN         NaN
-1997      1.00          NaN          NaN       NaN         NaN
-1998      1.00          NaN          NaN       NaN         NaN
-1999      1.00          NaN          NaN       NaN         NaN
-2000      1.00          NaN          NaN       NaN         NaN
-2001      1.00          NaN          NaN       NaN         NaN
-2002      1.00          NaN          NaN       NaN         NaN
-2003      1.00          NaN          NaN       NaN         NaN
-2004      1.00          NaN          NaN       NaN         NaN
-2005      1.00          NaN          NaN       NaN         NaN
-2006      1.00          NaN          NaN       NaN         NaN
-2007      1.00          NaN          NaN       NaN         NaN
-2008      1.00          NaN          NaN       NaN         NaN
-2009      1.00          NaN          NaN       NaN         NaN
-2010      1.00          NaN          NaN       NaN         NaN
-2011      1.00          NaN          NaN       NaN         NaN
-2012      1.00          NaN          NaN       NaN         NaN
-2013      1.00          NaN          NaN       NaN         NaN
-2014      1.00          NaN          NaN       NaN         NaN
-2015      1.00          NaN          NaN       NaN         NaN
-2016      0.55         0.45          NaN       NaN         NaN
-2017      0.21         0.78         0.00      0.01         NaN
-2018      0.08         0.90          NaN      0.02         NaN
-2019      0.00         0.68         0.23      0.07        0.02
-2020       NaN         0.35         0.30      0.14        0.21
-2021       NaN          NaN          NaN       NaN         NaN
-2022       NaN         0.15         0.30      0.18        0.37
-2023       NaN          NaN          NaN       NaN         NaN
-2024       NaN         0.00         0.15      0.15        0.70
-2025       NaN          NaN          NaN       NaN         NaN
-2026       NaN          NaN          NaN       NaN         NaN
-2027       NaN         0.00         0.05      0.08        0.87
-2028       NaN          NaN          NaN       NaN         NaN
-2029       NaN          NaN          NaN       NaN         NaN
-2030       NaN         0.00         0.01      0.06        0.93
+<pre>Excluding 18 filtered results
 </pre>
 </div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[39]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;Carbon dioxide, fossil&#39; (kilogram, None, (&#39;air&#39;, &#39;non-urban air or from high stacks&#39;)),
+ &#39;Carbon dioxide, fossil&#39; (kilogram, None, (&#39;air&#39;, &#39;urban air close to ground&#39;)),
+ &#39;Carbon dioxide, non-fossil&#39; (kilogram, None, (&#39;air&#39;, &#39;non-urban air or from high stacks&#39;)),
+ &#39;Carbon dioxide, non-fossil&#39; (kilogram, None, (&#39;air&#39;, &#39;urban air close to ground&#39;))]</pre>
+</div>
+
 </div>
 
 </div>
@@ -13293,839 +13380,9 @@ Year
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Interpolate-marketshare-for-missing-years-in-ITRPV-2020-predictions">Interpolate marketshare for missing years in ITRPV 2020 predictions<a class="anchor-link" href="#Interpolate-marketshare-for-missing-years-in-ITRPV-2020-predictions">&#182;</a></h2><p>choosing to interpolate market share of different sizes rather than cell size because this should be more basedin technology - i.e. crystals only grow certain sizes. Additionally, it is more helpful to understand the impact silicon usage by keeping cell size and marketshare seperate.</p>
-
+<h1 id="#methods">#methods<a class="anchor-link" href="##methods">&#182;</a></h1>
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#interpolate for missing marketshare data</span>
-<span class="c1">##the interpolate function returns a view of the df, doesn&#39;t modify the df itself</span>
-<span class="c1">##therefore you have to set the old df, or a new one = the df.interpolate function</span>
-<span class="n">dfmarketshare_mcSi</span><span class="o">=</span><span class="n">dfmarketshare_mcSi</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">limit_area</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">)</span>
-<span class="n">dfmarketshare_monoSi</span><span class="o">=</span><span class="n">dfmarketshare_monoSi</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">limit_area</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">)</span>
-
-<span class="c1">#fill remaining NaN/outside with 0 (i.e., no market share)</span>
-<span class="n">dfmarketshare_mcSi</span><span class="o">=</span><span class="n">dfmarketshare_mcSi</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">dfmarketshare_monoSi</span><span class="o">=</span><span class="n">dfmarketshare_monoSi</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">dfmarketshare_mcSi</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dfmarketshare_monoSi</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>      share156  share156.75  share157.75  share163  share166up
-Year                                                          
-1995      1.00     0.000000     0.000000  0.000000    0.000000
-1996      1.00     0.000000     0.000000  0.000000    0.000000
-1997      1.00     0.000000     0.000000  0.000000    0.000000
-1998      1.00     0.000000     0.000000  0.000000    0.000000
-1999      1.00     0.000000     0.000000  0.000000    0.000000
-2000      1.00     0.000000     0.000000  0.000000    0.000000
-2001      1.00     0.000000     0.000000  0.000000    0.000000
-2002      1.00     0.000000     0.000000  0.000000    0.000000
-2003      1.00     0.000000     0.000000  0.000000    0.000000
-2004      1.00     0.000000     0.000000  0.000000    0.000000
-2005      1.00     0.000000     0.000000  0.000000    0.000000
-2006      1.00     0.000000     0.000000  0.000000    0.000000
-2007      1.00     0.000000     0.000000  0.000000    0.000000
-2008      1.00     0.000000     0.000000  0.000000    0.000000
-2009      1.00     0.000000     0.000000  0.000000    0.000000
-2010      1.00     0.000000     0.000000  0.000000    0.000000
-2011      1.00     0.000000     0.000000  0.000000    0.000000
-2012      1.00     0.000000     0.000000  0.000000    0.000000
-2013      1.00     0.000000     0.000000  0.000000    0.000000
-2014      1.00     0.000000     0.000000  0.000000    0.000000
-2015      1.00     0.000000     0.000000  0.000000    0.000000
-2016      0.90     0.100000     0.000000  0.000000    0.000000
-2017      0.37     0.630000     0.000000  0.000000    0.000000
-2018      0.10     0.900000     0.000000  0.000000    0.000000
-2019      0.00     0.700000     0.240000  0.040000    0.020000
-2020      0.00     0.300000     0.350000  0.200000    0.150000
-2021      0.00     0.190000     0.325000  0.260000    0.225000
-2022      0.00     0.080000     0.300000  0.320000    0.300000
-2023      0.00     0.055000     0.225000  0.320000    0.350000
-2024      0.00     0.030000     0.150000  0.320000    0.400000
-2025      0.00     0.023333     0.113333  0.313333    0.483333
-2026      0.00     0.016667     0.076667  0.306667    0.566667
-2027      0.00     0.010000     0.040000  0.300000    0.650000
-2028      0.00     0.006667     0.043333  0.266667    0.683333
-2029      0.00     0.003333     0.046667  0.233333    0.716667
-2030      0.00     0.000000     0.050000  0.200000    0.750000
-      share156  share156.75  share157.75  share163  share166up
-Year                                                          
-1995      1.00        0.000     0.000000  0.000000    0.000000
-1996      1.00        0.000     0.000000  0.000000    0.000000
-1997      1.00        0.000     0.000000  0.000000    0.000000
-1998      1.00        0.000     0.000000  0.000000    0.000000
-1999      1.00        0.000     0.000000  0.000000    0.000000
-2000      1.00        0.000     0.000000  0.000000    0.000000
-2001      1.00        0.000     0.000000  0.000000    0.000000
-2002      1.00        0.000     0.000000  0.000000    0.000000
-2003      1.00        0.000     0.000000  0.000000    0.000000
-2004      1.00        0.000     0.000000  0.000000    0.000000
-2005      1.00        0.000     0.000000  0.000000    0.000000
-2006      1.00        0.000     0.000000  0.000000    0.000000
-2007      1.00        0.000     0.000000  0.000000    0.000000
-2008      1.00        0.000     0.000000  0.000000    0.000000
-2009      1.00        0.000     0.000000  0.000000    0.000000
-2010      1.00        0.000     0.000000  0.000000    0.000000
-2011      1.00        0.000     0.000000  0.000000    0.000000
-2012      1.00        0.000     0.000000  0.000000    0.000000
-2013      1.00        0.000     0.000000  0.000000    0.000000
-2014      1.00        0.000     0.000000  0.000000    0.000000
-2015      1.00        0.000     0.000000  0.000000    0.000000
-2016      0.55        0.450     0.000000  0.000000    0.000000
-2017      0.21        0.780     0.000000  0.010000    0.000000
-2018      0.08        0.900     0.115000  0.020000    0.000000
-2019      0.00        0.680     0.230000  0.070000    0.020000
-2020      0.00        0.350     0.300000  0.140000    0.210000
-2021      0.00        0.250     0.300000  0.160000    0.290000
-2022      0.00        0.150     0.300000  0.180000    0.370000
-2023      0.00        0.075     0.225000  0.165000    0.535000
-2024      0.00        0.000     0.150000  0.150000    0.700000
-2025      0.00        0.000     0.116667  0.126667    0.756667
-2026      0.00        0.000     0.083333  0.103333    0.813333
-2027      0.00        0.000     0.050000  0.080000    0.870000
-2028      0.00        0.000     0.036667  0.073333    0.890000
-2029      0.00        0.000     0.023333  0.066667    0.910000
-2030      0.00        0.000     0.010000  0.060000    0.930000
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#multiply each marketshare dataframe column by it&#39;s respective size</span>
-<span class="c1">#dfmarketshare_mcSi.share156 *=156 #this is a slow way to multiply each column by its respective size</span>
-
-<span class="n">cellsizes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;share156&#39;</span><span class="p">:</span><span class="mi">156</span><span class="p">,</span>
-            <span class="s1">&#39;share156.75&#39;</span><span class="p">:</span><span class="mf">156.75</span><span class="p">,</span>
-            <span class="s1">&#39;share157.75&#39;</span><span class="p">:</span><span class="mf">157.75</span><span class="p">,</span>
-            <span class="s1">&#39;share163&#39;</span><span class="p">:</span><span class="mf">163.875</span><span class="p">,</span>
-            <span class="s1">&#39;share166up&#39;</span><span class="p">:</span><span class="mi">166</span><span class="p">}</span> <span class="c1">#dictionary of the average cell dimension for each market share bin (ITRPV 2020)</span>
-
-<span class="c1">#multiply cell dimensions by their market share to get a weighted average</span>
-<span class="c1">##this is where the column names needed to match</span>
-<span class="n">df_scalecell_mcSi</span> <span class="o">=</span> <span class="n">dfmarketshare_mcSi</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">cellsizes</span><span class="p">,</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span>
-<span class="n">df_scalecell_monoSi</span> <span class="o">=</span> <span class="n">dfmarketshare_monoSi</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">cellsizes</span><span class="p">,</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">df_scalecell_mcSi</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">df_scalecell_monoSi</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>      share156  share156.75  share157.75  share163  share166up
-Year                                                          
-1995    156.00      0.00000     0.000000    0.0000    0.000000
-1996    156.00      0.00000     0.000000    0.0000    0.000000
-1997    156.00      0.00000     0.000000    0.0000    0.000000
-1998    156.00      0.00000     0.000000    0.0000    0.000000
-1999    156.00      0.00000     0.000000    0.0000    0.000000
-2000    156.00      0.00000     0.000000    0.0000    0.000000
-2001    156.00      0.00000     0.000000    0.0000    0.000000
-2002    156.00      0.00000     0.000000    0.0000    0.000000
-2003    156.00      0.00000     0.000000    0.0000    0.000000
-2004    156.00      0.00000     0.000000    0.0000    0.000000
-2005    156.00      0.00000     0.000000    0.0000    0.000000
-2006    156.00      0.00000     0.000000    0.0000    0.000000
-2007    156.00      0.00000     0.000000    0.0000    0.000000
-2008    156.00      0.00000     0.000000    0.0000    0.000000
-2009    156.00      0.00000     0.000000    0.0000    0.000000
-2010    156.00      0.00000     0.000000    0.0000    0.000000
-2011    156.00      0.00000     0.000000    0.0000    0.000000
-2012    156.00      0.00000     0.000000    0.0000    0.000000
-2013    156.00      0.00000     0.000000    0.0000    0.000000
-2014    156.00      0.00000     0.000000    0.0000    0.000000
-2015    156.00      0.00000     0.000000    0.0000    0.000000
-2016    140.40     15.67500     0.000000    0.0000    0.000000
-2017     57.72     98.75250     0.000000    0.0000    0.000000
-2018     15.60    141.07500     0.000000    0.0000    0.000000
-2019      0.00    109.72500    37.860000    6.5550    3.320000
-2020      0.00     47.02500    55.212500   32.7750   24.900000
-2021      0.00     29.78250    51.268750   42.6075   37.350000
-2022      0.00     12.54000    47.325000   52.4400   49.800000
-2023      0.00      8.62125    35.493750   52.4400   58.100000
-2024      0.00      4.70250    23.662500   52.4400   66.400000
-2025      0.00      3.65750    17.878333   51.3475   80.233333
-2026      0.00      2.61250    12.094167   50.2550   94.066667
-2027      0.00      1.56750     6.310000   49.1625  107.900000
-2028      0.00      1.04500     6.835833   43.7000  113.433333
-2029      0.00      0.52250     7.361667   38.2375  118.966667
-2030      0.00      0.00000     7.887500   32.7750  124.500000
-      share156  share156.75  share157.75   share163  share166up
-Year                                                           
-1995    156.00      0.00000     0.000000   0.000000    0.000000
-1996    156.00      0.00000     0.000000   0.000000    0.000000
-1997    156.00      0.00000     0.000000   0.000000    0.000000
-1998    156.00      0.00000     0.000000   0.000000    0.000000
-1999    156.00      0.00000     0.000000   0.000000    0.000000
-2000    156.00      0.00000     0.000000   0.000000    0.000000
-2001    156.00      0.00000     0.000000   0.000000    0.000000
-2002    156.00      0.00000     0.000000   0.000000    0.000000
-2003    156.00      0.00000     0.000000   0.000000    0.000000
-2004    156.00      0.00000     0.000000   0.000000    0.000000
-2005    156.00      0.00000     0.000000   0.000000    0.000000
-2006    156.00      0.00000     0.000000   0.000000    0.000000
-2007    156.00      0.00000     0.000000   0.000000    0.000000
-2008    156.00      0.00000     0.000000   0.000000    0.000000
-2009    156.00      0.00000     0.000000   0.000000    0.000000
-2010    156.00      0.00000     0.000000   0.000000    0.000000
-2011    156.00      0.00000     0.000000   0.000000    0.000000
-2012    156.00      0.00000     0.000000   0.000000    0.000000
-2013    156.00      0.00000     0.000000   0.000000    0.000000
-2014    156.00      0.00000     0.000000   0.000000    0.000000
-2015    156.00      0.00000     0.000000   0.000000    0.000000
-2016     85.80     70.53750     0.000000   0.000000    0.000000
-2017     32.76    122.26500     0.000000   1.638750    0.000000
-2018     12.48    141.07500    18.141250   3.277500    0.000000
-2019      0.00    106.59000    36.282500  11.471250    3.320000
-2020      0.00     54.86250    47.325000  22.942500   34.860000
-2021      0.00     39.18750    47.325000  26.220000   48.140000
-2022      0.00     23.51250    47.325000  29.497500   61.420000
-2023      0.00     11.75625    35.493750  27.039375   88.810000
-2024      0.00      0.00000    23.662500  24.581250  116.200000
-2025      0.00      0.00000    18.404167  20.757500  125.606667
-2026      0.00      0.00000    13.145833  16.933750  135.013333
-2027      0.00      0.00000     7.887500  13.110000  144.420000
-2028      0.00      0.00000     5.784167  12.017500  147.740000
-2029      0.00      0.00000     3.680833  10.925000  151.060000
-2030      0.00      0.00000     1.577500   9.832500  154.380000
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now add the columns together to get the weighted average cell size for each year for each technology</span>
-<span class="n">df_avgcell_mcSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_scalecell_mcSi</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;columns&quot;</span><span class="p">))</span>
-<span class="n">df_avgcell_monoSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_scalecell_monoSi</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;columns&quot;</span><span class="p">))</span> <span class="c1">#agg functions return a series not a dictionary</span>
-<span class="c1">#print(df_avgcell_mcSi)</span>
-
-<span class="c1">#join the two dataframes into single one with two columns</span>
-<span class="n">df_avgcell</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_avgcell_monoSi</span><span class="p">,</span><span class="n">df_avgcell_mcSi</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#concatinate on the columns axis</span>
-<span class="n">df_avgcell</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;monoSi&#39;</span><span class="p">,</span><span class="s1">&#39;mcSi&#39;</span><span class="p">]</span> <span class="c1">#name the columns</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">df_avgcell</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>          monoSi        mcSi
-Year                        
-1995  156.000000  156.000000
-1996  156.000000  156.000000
-1997  156.000000  156.000000
-1998  156.000000  156.000000
-1999  156.000000  156.000000
-2000  156.000000  156.000000
-2001  156.000000  156.000000
-2002  156.000000  156.000000
-2003  156.000000  156.000000
-2004  156.000000  156.000000
-2005  156.000000  156.000000
-2006  156.000000  156.000000
-2007  156.000000  156.000000
-2008  156.000000  156.000000
-2009  156.000000  156.000000
-2010  156.000000  156.000000
-2011  156.000000  156.000000
-2012  156.000000  156.000000
-2013  156.000000  156.000000
-2014  156.000000  156.000000
-2015  156.000000  156.000000
-2016  156.337500  156.075000
-2017  156.663750  156.472500
-2018  174.973750  156.675000
-2019  157.663750  157.460000
-2020  159.990000  159.912500
-2021  160.872500  161.008750
-2022  161.755000  162.105000
-2023  163.099375  154.655000
-2024  164.443750  147.205000
-2025  164.768333  153.116667
-2026  165.092917  159.028333
-2027  165.417500  164.940000
-2028  165.541667  165.014167
-2029  165.665833  165.088333
-2030  165.790000  165.162500
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Now we have an average cell dimension for mc-Si and mono-Si for 2016 through 2030. Next, we apply the marketshare of mc-Si vs mono-Si to get the average cell dimension for the year. Market share of mc-Si vs mono-Si is taken from LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. &lt;5MW, and is from 2002-2018), from Mints 2019 SPV report, from ITRPVs, and old papers (Costello &amp; Rappaport 1980, Maycock 2003 &amp; 2005).</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[60]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#read in a csv that was copied from CE Data google sheet</span>
-<span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
-<span class="n">techmarketshare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../CEMFC/baselines/SupportingMaterial/ModuleType_MarketShare.csv&quot;</span><span class="p">,</span><span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
-<span class="c1">#this file path navigates from current working directory back up 2 folders, and over to the csv</span>
-<span class="n">techmarketshare</span> <span class="o">/=</span><span class="mi">100</span> <span class="c1">#turn whole numbers into decimal percentages</span>
-<span class="n">techmarketshare</span><span class="p">[</span><span class="s1">&#39;Year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">techmarketshare</span><span class="o">.</span><span class="n">index</span> <span class="c1">#add the year back in for later merge</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">techmarketshare</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>      monoSi_LBNL  mcSi_LBNL  otherSi_LBNL  monoSi_Mints  mcSi_Mints  \
-Year                                                                   
-1980          NaN        NaN           NaN           NaN         NaN   
-1981          NaN        NaN           NaN           NaN         NaN   
-1982          NaN        NaN           NaN           NaN         NaN   
-1983          NaN        NaN           NaN           NaN         NaN   
-1984          NaN        NaN           NaN           NaN         NaN   
-1985          NaN        NaN           NaN           NaN         NaN   
-1986          NaN        NaN           NaN           NaN         NaN   
-1987          NaN        NaN           NaN           NaN         NaN   
-1988          NaN        NaN           NaN           NaN         NaN   
-1989          NaN        NaN           NaN           NaN         NaN   
-1990          NaN        NaN           NaN           NaN         NaN   
-1991          NaN        NaN           NaN           NaN         NaN   
-1992          NaN        NaN           NaN           NaN         NaN   
-1993          NaN        NaN           NaN           NaN         NaN   
-1994          NaN        NaN           NaN           NaN         NaN   
-1995          NaN        NaN           NaN           NaN         NaN   
-1996          NaN        NaN           NaN           NaN         NaN   
-1997          NaN        NaN           NaN           NaN         NaN   
-1998          NaN        NaN           NaN           NaN         NaN   
-1999          NaN        NaN           NaN           NaN         NaN   
-2000          NaN        NaN           NaN           NaN         NaN   
-2001          NaN        NaN           NaN           NaN         NaN   
-2002         0.22       0.68          0.10           NaN         NaN   
-2003         0.08       0.90          0.02           NaN         NaN   
-2004         0.08       0.92          0.01           NaN         NaN   
-2005         0.28       0.72          0.00           NaN         NaN   
-2006         0.27       0.73          0.00           NaN         NaN   
-2007         0.35       0.64          0.00           NaN         NaN   
-2008         0.45       0.54          0.00           NaN         NaN   
-2009         0.49       0.49          0.02           NaN         NaN   
-2010         0.52       0.47          0.01           NaN         NaN   
-2011         0.50       0.50          0.01           NaN         NaN   
-2012         0.49       0.51          0.00           NaN         NaN   
-2013         0.35       0.65          0.00           NaN         NaN   
-2014         0.33       0.66          0.00           NaN         NaN   
-2015         0.35       0.65          0.00        0.3763      0.6237   
-2016         0.40       0.60          0.00        0.4316      0.5684   
-2017         0.71       0.29          0.00        0.4688      0.5313   
-2018         0.89       0.11          0.00        0.4688      0.5313   
-2019          NaN        NaN           NaN           NaN         NaN   
-2020          NaN        NaN           NaN           NaN         NaN   
-2021          NaN        NaN           NaN           NaN         NaN   
-2022          NaN        NaN           NaN           NaN         NaN   
-2023          NaN        NaN           NaN           NaN         NaN   
-2024          NaN        NaN           NaN           NaN         NaN   
-2025          NaN        NaN           NaN           NaN         NaN   
-2026          NaN        NaN           NaN           NaN         NaN   
-2027          NaN        NaN           NaN           NaN         NaN   
-2028          NaN        NaN           NaN           NaN         NaN   
-2029          NaN        NaN           NaN           NaN         NaN   
-2030          NaN        NaN           NaN           NaN         NaN   
-
-      mono_Costello_Rappaport_1980  mcSi_Maycock  monoSi_Maycock  mono_ITRPV  \
-Year                                                                           
-1980                           1.0           NaN             NaN         NaN   
-1981                           NaN           NaN             NaN         NaN   
-1982                           NaN           NaN             NaN         NaN   
-1983                           NaN           NaN             NaN         NaN   
-1984                           NaN           NaN             NaN         NaN   
-1985                           NaN           NaN             NaN         NaN   
-1986                           NaN           NaN             NaN         NaN   
-1987                           NaN           NaN             NaN         NaN   
-1988                           NaN           NaN             NaN         NaN   
-1989                           NaN           NaN             NaN         NaN   
-1990                           NaN           NaN             NaN         NaN   
-1991                           NaN           NaN             NaN         NaN   
-1992                           NaN           NaN             NaN         NaN   
-1993                           NaN         0.380           0.620         NaN   
-1994                           NaN           NaN             NaN         NaN   
-1995                           NaN           NaN             NaN         NaN   
-1996                           NaN           NaN             NaN         NaN   
-1997                           NaN           NaN             NaN         NaN   
-1998                           NaN           NaN             NaN         NaN   
-1999                           NaN         0.534           0.466         NaN   
-2000                           NaN         0.611           0.389         NaN   
-2001                           NaN         0.575           0.425         NaN   
-2002                           NaN           NaN             NaN         NaN   
-2003                           NaN           NaN             NaN         NaN   
-2004                           NaN           NaN             NaN         NaN   
-2005                           NaN         0.662           0.338         NaN   
-2006                           NaN           NaN             NaN         NaN   
-2007                           NaN           NaN             NaN         NaN   
-2008                           NaN           NaN             NaN         NaN   
-2009                           NaN           NaN             NaN         NaN   
-2010                           NaN           NaN             NaN         NaN   
-2011                           NaN           NaN             NaN        0.40   
-2012                           NaN           NaN             NaN        0.40   
-2013                           NaN           NaN             NaN        0.38   
-2014                           NaN           NaN             NaN        0.35   
-2015                           NaN           NaN             NaN        0.35   
-2016                           NaN           NaN             NaN        0.35   
-2017                           NaN           NaN             NaN        0.40   
-2018                           NaN           NaN             NaN        0.51   
-2019                           NaN           NaN             NaN        0.65   
-2020                           NaN           NaN             NaN        0.78   
-2021                           NaN           NaN             NaN         NaN   
-2022                           NaN           NaN             NaN        0.84   
-2023                           NaN           NaN             NaN         NaN   
-2024                           NaN           NaN             NaN        0.88   
-2025                           NaN           NaN             NaN         NaN   
-2026                           NaN           NaN             NaN         NaN   
-2027                           NaN           NaN             NaN        0.92   
-2028                           NaN           NaN             NaN         NaN   
-2029                           NaN           NaN             NaN         NaN   
-2030                           NaN           NaN             NaN        0.94   
-
-      mcSi_ITRPV  Year  
-Year                    
-1980         NaN  1980  
-1981         NaN  1981  
-1982         NaN  1982  
-1983         NaN  1983  
-1984         NaN  1984  
-1985         NaN  1985  
-1986         NaN  1986  
-1987         NaN  1987  
-1988         NaN  1988  
-1989         NaN  1989  
-1990         NaN  1990  
-1991         NaN  1991  
-1992         NaN  1992  
-1993         NaN  1993  
-1994         NaN  1994  
-1995         NaN  1995  
-1996         NaN  1996  
-1997         NaN  1997  
-1998         NaN  1998  
-1999         NaN  1999  
-2000         NaN  2000  
-2001         NaN  2001  
-2002         NaN  2002  
-2003         NaN  2003  
-2004         NaN  2004  
-2005         NaN  2005  
-2006         NaN  2006  
-2007         NaN  2007  
-2008         NaN  2008  
-2009         NaN  2009  
-2010         NaN  2010  
-2011        0.60  2011  
-2012        0.60  2012  
-2013        0.62  2013  
-2014        0.65  2014  
-2015        0.65  2015  
-2016        0.65  2016  
-2017        0.60  2017  
-2018        0.49  2018  
-2019        0.35  2019  
-2020        0.22  2020  
-2021         NaN  2021  
-2022        0.16  2022  
-2023         NaN  2023  
-2024        0.12  2024  
-2025         NaN  2025  
-2026         NaN  2026  
-2027        0.08  2027  
-2028         NaN  2028  
-2029         NaN  2029  
-2030        0.06  2030  
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="create-a-harmonization-of-annual-market-share,-and-interpolate">create a harmonization of annual market share, and interpolate<a class="anchor-link" href="#create-a-harmonization-of-annual-market-share,-and-interpolate">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[62]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># first, create a single value of tech market share in each year or NaN</span>
-<span class="c1">#split mcSi and monoSi</span>
-<span class="n">mcSi_cols</span> <span class="o">=</span> <span class="n">techmarketshare</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span> <span class="o">=</span> <span class="s1">&#39;mcSi&#39;</span><span class="p">)</span>
-<span class="n">monoSi_cols</span> <span class="o">=</span> <span class="n">techmarketshare</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span> <span class="o">=</span> <span class="s1">&#39;mono&#39;</span><span class="p">)</span>
-<span class="c1">#print (mcSi_cols)</span>
-
-<span class="c1">#aggregate all the columns of mono or mcSi into one averaged market share</span>
-<span class="n">est_mktshr_mcSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mcSi_cols</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;columns&quot;</span><span class="p">))</span>
-<span class="c1">#print(est_mktshr_mcSi)</span>
-<span class="n">est_mktshr_monoSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">monoSi_cols</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;columns&quot;</span><span class="p">))</span>
-<span class="c1">#print(est_mktshr_monoSi)</span>
-
-<span class="c1">#Join the monoSi and mcSi back together as a dataframe</span>
-<span class="n">est_mrktshrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">est_mktshr_monoSi</span><span class="p">,</span><span class="n">est_mktshr_mcSi</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#concatinate on the columns axis</span>
-<span class="n">est_mrktshrs</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;monoSi&#39;</span><span class="p">,</span><span class="s1">&#39;mcSi&#39;</span><span class="p">]</span> <span class="c1">#name the columns</span>
-
-
-<span class="c1">#sanity check of market share data - does it add up?</span>
-<span class="n">est_mrktshrs</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">est_mrktshrs</span><span class="o">.</span><span class="n">monoSi</span><span class="o">+</span><span class="n">est_mrktshrs</span><span class="o">.</span><span class="n">mcSi</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">est_mrktshrs</span><span class="p">)</span>
-<span class="c1">#Warning: 2002, 10% of the silicon marketshare was &quot;other&quot;, including amorphous, etc.</span>
-<span class="k">del</span> <span class="n">est_mrktshrs</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span>
-
-<span class="c1">#interpolate marketshares for each year</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>        monoSi      mcSi     Total
-Year                              
-1980  1.000000       NaN       NaN
-1981       NaN       NaN       NaN
-1982       NaN       NaN       NaN
-1983       NaN       NaN       NaN
-1984       NaN       NaN       NaN
-1985       NaN       NaN       NaN
-1986       NaN       NaN       NaN
-1987       NaN       NaN       NaN
-1988       NaN       NaN       NaN
-1989       NaN       NaN       NaN
-1990       NaN       NaN       NaN
-1991       NaN       NaN       NaN
-1992       NaN       NaN       NaN
-1993  0.620000  0.380000  1.000000
-1994       NaN       NaN       NaN
-1995       NaN       NaN       NaN
-1996       NaN       NaN       NaN
-1997       NaN       NaN       NaN
-1998       NaN       NaN       NaN
-1999  0.466000  0.534000  1.000000
-2000  0.389000  0.611000  1.000000
-2001  0.425000  0.575000  1.000000
-2002  0.220000  0.680000  0.900000
-2003  0.080000  0.900000  0.980000
-2004  0.080000  0.920000  1.000000
-2005  0.309000  0.691000  1.000000
-2006  0.270000  0.730000  1.000000
-2007  0.350000  0.640000  0.990000
-2008  0.450000  0.540000  0.990000
-2009  0.490000  0.490000  0.980000
-2010  0.520000  0.470000  0.990000
-2011  0.450000  0.550000  1.000000
-2012  0.445000  0.555000  1.000000
-2013  0.365000  0.635000  1.000000
-2014  0.340000  0.655000  0.995000
-2015  0.358767  0.641233  1.000000
-2016  0.393867  0.606133  1.000000
-2017  0.526267  0.473767  1.000033
-2018  0.622933  0.377100  1.000033
-2019  0.650000  0.350000  1.000000
-2020  0.780000  0.220000  1.000000
-2021       NaN       NaN       NaN
-2022  0.840000  0.160000  1.000000
-2023       NaN       NaN       NaN
-2024  0.880000  0.120000  1.000000
-2025       NaN       NaN       NaN
-2026       NaN       NaN       NaN
-2027  0.920000  0.080000  1.000000
-2028       NaN       NaN       NaN
-2029       NaN       NaN       NaN
-2030  0.940000  0.060000  1.000000
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[66]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Interpolate for marketshare NaN values</span>
-<span class="n">est_mrktshrs</span><span class="p">[</span><span class="s1">&#39;mcSi&#39;</span><span class="p">][</span><span class="mi">1980</span><span class="p">]</span><span class="o">=</span><span class="mf">0.0</span>
-<span class="n">est_mrktshrs</span> <span class="o">=</span> <span class="n">est_mrktshrs</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">limit_area</span><span class="o">=</span><span class="s1">&#39;inside&#39;</span><span class="p">)</span>
-
-<span class="c1">#sanity check of market share data - does it add up?</span>
-<span class="n">est_mrktshrs</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">est_mrktshrs</span><span class="o">.</span><span class="n">monoSi</span><span class="o">+</span><span class="n">est_mrktshrs</span><span class="o">.</span><span class="n">mcSi</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">est_mrktshrs</span><span class="p">)</span>
-<span class="c1">#Warning: 2002, 10% of the silicon marketshare was &quot;other&quot;, including amorphous, etc.</span>
-<span class="k">del</span> <span class="n">est_mrktshrs</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>        monoSi      mcSi     Total
-Year                              
-1980  1.000000  0.000000  1.000000
-1981  0.970769  0.029231  1.000000
-1982  0.941538  0.058462  1.000000
-1983  0.912308  0.087692  1.000000
-1984  0.883077  0.116923  1.000000
-1985  0.853846  0.146154  1.000000
-1986  0.824615  0.175385  1.000000
-1987  0.795385  0.204615  1.000000
-1988  0.766154  0.233846  1.000000
-1989  0.736923  0.263077  1.000000
-1990  0.707692  0.292308  1.000000
-1991  0.678462  0.321538  1.000000
-1992  0.649231  0.350769  1.000000
-1993  0.620000  0.380000  1.000000
-1994  0.594333  0.405667  1.000000
-1995  0.568667  0.431333  1.000000
-1996  0.543000  0.457000  1.000000
-1997  0.517333  0.482667  1.000000
-1998  0.491667  0.508333  1.000000
-1999  0.466000  0.534000  1.000000
-2000  0.389000  0.611000  1.000000
-2001  0.425000  0.575000  1.000000
-2002  0.220000  0.680000  0.900000
-2003  0.080000  0.900000  0.980000
-2004  0.080000  0.920000  1.000000
-2005  0.309000  0.691000  1.000000
-2006  0.270000  0.730000  1.000000
-2007  0.350000  0.640000  0.990000
-2008  0.450000  0.540000  0.990000
-2009  0.490000  0.490000  0.980000
-2010  0.520000  0.470000  0.990000
-2011  0.450000  0.550000  1.000000
-2012  0.445000  0.555000  1.000000
-2013  0.365000  0.635000  1.000000
-2014  0.340000  0.655000  0.995000
-2015  0.358767  0.641233  1.000000
-2016  0.393867  0.606133  1.000000
-2017  0.526267  0.473767  1.000033
-2018  0.622933  0.377100  1.000033
-2019  0.650000  0.350000  1.000000
-2020  0.780000  0.220000  1.000000
-2021  0.810000  0.190000  1.000000
-2022  0.840000  0.160000  1.000000
-2023  0.860000  0.140000  1.000000
-2024  0.880000  0.120000  1.000000
-2025  0.893333  0.106667  1.000000
-2026  0.906667  0.093333  1.000000
-2027  0.920000  0.080000  1.000000
-2028  0.926667  0.073333  1.000000
-2029  0.933333  0.066667  1.000000
-2030  0.940000  0.060000  1.000000
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[146]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now combine technology market share of mcSi and monoSi with their respective cell dimensions</span>
-<span class="c1">#which have already been cell size marketshare weighted</span>
-<span class="c1">#going to ignore &quot;otherSi&quot; because for the most part less than 2%, except 2002</span>
-
-<span class="c1">#join the mcSi together and the monoSi together in separate dataframes</span>
-<span class="n">monoSicell</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_avgcell</span><span class="o">.</span><span class="n">monoSi</span><span class="p">)</span>
-<span class="n">monoSimarket</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">est_mrktshrs</span><span class="o">.</span><span class="n">monoSi</span><span class="p">)</span>
-
-<span class="n">df_monoSi</span> <span class="o">=</span> <span class="n">monoSimarket</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">monoSicell</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">lsuffix</span><span class="o">=</span><span class="s1">&#39;_share&#39;</span><span class="p">,</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s1">&#39;_cell&#39;</span><span class="p">)</span> 
-<span class="nb">print</span><span class="p">(</span><span class="n">df_monoSi</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>      monoSi_share  monoSi_cell
-Year                           
-1980      1.000000          NaN
-1981           NaN          NaN
-1982           NaN          NaN
-1983           NaN          NaN
-1984           NaN          NaN
-1985           NaN          NaN
-1986           NaN          NaN
-1987           NaN          NaN
-1988           NaN          NaN
-1989           NaN          NaN
-1990           NaN          NaN
-1991           NaN          NaN
-1992           NaN          NaN
-1993      0.620000          NaN
-1994           NaN          NaN
-1995           NaN          NaN
-1996           NaN          NaN
-1997           NaN          NaN
-1998           NaN          NaN
-1999      0.466000          NaN
-2000      0.389000          NaN
-2001      0.425000          NaN
-2002      0.220000          NaN
-2003      0.080000          NaN
-2004      0.080000          NaN
-2005      0.309000          NaN
-2006      0.270000          NaN
-2007      0.350000          NaN
-2008      0.450000          NaN
-2009      0.490000          NaN
-2010      0.520000          NaN
-2011      0.450000          NaN
-2012      0.445000          NaN
-2013      0.365000          NaN
-2014      0.340000          NaN
-2015      0.358767          NaN
-2016      0.393867          NaN
-2017      0.526267          NaN
-2018      0.622933          NaN
-2019      0.650000          NaN
-2020      0.780000          NaN
-2021           NaN          NaN
-2022      0.840000          NaN
-2023           NaN          NaN
-2024      0.880000          NaN
-2025           NaN          NaN
-2026           NaN          NaN
-2027      0.920000          NaN
-2028           NaN          NaN
-2029           NaN          NaN
-2030      0.940000          NaN
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
