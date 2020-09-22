@@ -9,7 +9,7 @@
 
 # The mass of silicon contained in a PV module is dependent on the size, thickness and number of cells in an average module. Since there is a range of sizes and number of cells per module, we will attempt a weighted average. These weighted averages are based on ITRPV data, which goes back to 2010, Fraunhofer data back to 1990, and 
 
-# In[69]:
+# In[114]:
 
 
 import numpy as np
@@ -23,7 +23,7 @@ density_si = 2.3290 #g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/
 
 # A Fraunhofer report indicates that in 1990, wafers were 400 micron thick, decreasing to the more modern 180 micron thickness by 2008. ITRPVs back to 2010 indicate that 156 mm x 156mm was the standard size wafer through 2015.
 
-# In[70]:
+# In[115]:
 
 
 #weighted average for wafer size 2016 through 2030
@@ -34,13 +34,13 @@ wafer2016avg = 0.9*wafer2016mcsi + 0.1*wafer2016monosi
 print("Average Wafer size in 2016 was", wafer2016avg, "cm on a side")
 
 
-# In[71]:
+# In[116]:
 
 
 #now lets try to do this for 2019 through 2030 all at once with dataframes
 #taking the average of the ranges specified in ITRPVs
 
-#first we input the market share data for mcSi and monoSi
+#first we input the market share data for mcSi and monoSi --> should turn this into a csv
 marketshare_mcSi = {'share156':[0.9,0.37,0.1,0,0,0,0,0,0],
                    'share156.75':[0.1,0.63,0.9,0.7,0.3,0.08,0.03,0.01,0],
                    'share157.75':[0,0,0,0.24,0.35,0.30,0.15,0.04,0.05],
@@ -63,7 +63,7 @@ print(dfmarketshare_monoSi)
 #print(columns)
 
 
-# In[72]:
+# In[117]:
 
 
 #multiply each marketshare dataframe column by it's respective size
@@ -83,7 +83,7 @@ print(df_scalecell_mcSi)
 print(df_scalecell_monoSi)
 
 
-# In[80]:
+# In[138]:
 
 
 #now add the columns together to get the weighted average cell size for each year for each technology
@@ -92,38 +92,74 @@ df_avgcell_monoSi = pd.DataFrame(df_scalecell_monoSi.agg("sum", axis="columns"))
 #print(df_avgcell_mcSi)
 
 #join the two dataframes into single one with two columns
-df_avgcell = pd.concat([df_avgcell_monoSi,df_avgcell_mcSi], axis=1)
-df_avgcell.columns = ['monoSi','mcSi']
+df_avgcell = pd.concat([df_avgcell_monoSi,df_avgcell_mcSi], axis=1) #concatinate on the columns axis
+df_avgcell.columns = ['monoSi','mcSi'] #name the columns
 print(df_avgcell)
-type(df_avgcell.monoSi)
+
+#extrapolate data back to 1980, assuming 100% marketshare of 156 mm cell size
+#i.e., input 156 for all years prior to 2016 for both technologies
 
 
-# Now we have an average cell dimension for mc-Si and mono-Si for 2016 through 2030. Next, we apply the marketshare of mc-Si vs mono-Si to get the average cell dimension for the year. Market share of mc-Si vs mono-Si is taken from LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. <5MW, and is from 2002-2018).
+# Now we have an average cell dimension for mc-Si and mono-Si for 2016 through 2030. Next, we apply the marketshare of mc-Si vs mono-Si to get the average cell dimension for the year. Market share of mc-Si vs mono-Si is taken from LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. <5MW, and is from 2002-2018), from Mints 2019 SPV report, from ITRPVs, and old papers (Costello & Rappaport 1980, Maycock 2003 & 2005).
 
-# In[74]:
+# In[134]:
 
 
 #read in a csv that was copied from CE Data google sheet
 cwd = os.getcwd() #grabs current working directory
-techmarketshare = pd.read_csv(cwd+"/../../CEMFC/baselines/SupportingMaterial/ModuleType_MarketShare_LBNL.csv")
+techmarketshare = pd.read_csv(cwd+"/../../CEMFC/baselines/SupportingMaterial/ModuleType_MarketShare.csv")
 #this file path navigates from current working directory back up 2 folders, and over to the csv
 techmarketshare.index = techmarketshare['Year'] #make the year column the row index
 del techmarketshare['Year'] #delete the year column
 techmarketshare /=100 #turn whole numbers into decimal percentages
+techmarketshare['Year'] = techmarketshare.index #add the year back in for later merge
 print(techmarketshare)
 
 
-# In[90]:
+# #### create a harmonization of annual market share, and interpolate
+
+# In[136]:
+
+
+# first, create a single value of tech market share in each year or NaN
+#split mcSi and monoSi
+mcSi_cols = techmarketshare.filter(regex = 'mcSi')
+monoSi_cols = techmarketshare.filter(regex = 'mono')
+#print (mcSi_cols)
+
+#aggregate all the columns of mono or mcSi into one averaged market share
+est_mktshr_mcSi = pd.DataFrame(mcSi_cols.agg("mean", axis="columns"))
+#print(est_mktshr_mcSi)
+est_mktshr_monoSi = pd.DataFrame(monoSi_cols.agg("mean", axis="columns"))
+#print(est_mktshr_monoSi)
+
+#Join the monoSi and mcSi back together as a dataframe
+est_mrktshrs = pd.concat([est_mktshr_monoSi,est_mktshr_mcSi], axis=1) #concatinate on the columns axis
+est_mrktshrs.columns = ['monoSi','mcSi'] #name the columns
+
+
+#sanity check of market share data - does it add up?
+est_mrktshrs['Total'] = est_mrktshrs.monoSi+est_mrktshrs.mcSi
+
+print(est_mrktshrs)
+#Warning: 2002, 10% of the silicon marketshare was "other", including amorphous, etc.
+del est_mrktshrs['Total']
+
+#interpolate marketshares for each year
+
+
+# In[146]:
 
 
 #now combine technology market share of mcSi and monoSi with their respective cell dimensions
-#which have already been marketshare weighted
-#going to ignore "otherSi" because for the most part less than 2%
+#which have already been cell size marketshare weighted
+#going to ignore "otherSi" because for the most part less than 2%, except 2002
 
 #join the mcSi together and the monoSi together in separate dataframes
 monoSicell = pd.DataFrame(df_avgcell.monoSi)
-monoSimarket = pd.DataFrame(techmarketshare.monoSi)
-df_monoSi = monoSimarket.join(monoSicell, lsuffix='share',rsuffix='size') #join is not the right command
+monoSimarket = pd.DataFrame(est_mrktshrs.monoSi)
+
+df_monoSi = monoSimarket.join(monoSicell, how='left',lsuffix='_share', rsuffix='_cell') 
 print(df_monoSi)
 
 
