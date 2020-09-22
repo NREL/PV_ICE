@@ -113,9 +113,13 @@ df_avgcell.columns = ['monoSi','mcSi'] #name the columns
 print(df_avgcell)
 
 
-# Now we have an average cell dimension for mc-Si and mono-Si for 2016 through 2030. Next, we apply the marketshare of mc-Si vs mono-Si to get the average cell dimension for the year. Market share of mc-Si vs mono-Si is taken from LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. <5MW, and is from 2002-2018), from Mints 2019 SPV report, from ITRPVs, and old papers (Costello & Rappaport 1980, Maycock 2003 & 2005).
+# Now we have an average cell dimension for mc-Si and mono-Si for 1995 through 2030. 
 
-# In[60]:
+# ## Marketshare Data Manipulation
+
+# Next, we apply the marketshare of mc-Si vs mono-Si to get the average cell dimension for the year. Market share of mc-Si vs mono-Si is taken from LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. <5MW, and is from 2002-2018), from Mints 2019 SPV report, from ITRPVs, and old papers (Costello & Rappaport 1980, Maycock 2003 & 2005).
+
+# In[68]:
 
 
 #read in a csv that was copied from CE Data google sheet
@@ -123,13 +127,12 @@ cwd = os.getcwd() #grabs current working directory
 techmarketshare = pd.read_csv(cwd+"/../../CEMFC/baselines/SupportingMaterial/ModuleType_MarketShare.csv",index_col='Year')
 #this file path navigates from current working directory back up 2 folders, and over to the csv
 techmarketshare /=100 #turn whole numbers into decimal percentages
-techmarketshare['Year'] = techmarketshare.index #add the year back in for later merge
 print(techmarketshare)
 
 
 # #### create a harmonization of annual market share, and interpolate
 
-# In[62]:
+# In[70]:
 
 
 # first, create a single value of tech market share in each year or NaN
@@ -159,7 +162,7 @@ del est_mrktshrs['Total']
 #interpolate marketshares for each year
 
 
-# In[66]:
+# In[71]:
 
 
 #Interpolate for marketshare NaN values
@@ -173,25 +176,41 @@ print(est_mrktshrs)
 del est_mrktshrs['Total']
 
 
-# In[146]:
+# Combining Cell Size shares and Market Share Data
+# ----------
+# Now we have separate mono and mcSi dataframes, which contain the average cell size, based on the market share of the cell size bin as enumerated in ITRPV 2020. The next step is to combine these technology specific (mono vs mc) based on the module technology market share.
+
+# In[83]:
 
 
-#now combine technology market share of mcSi and monoSi with their respective cell dimensions
+#now combine technology market share of mcSi and monoSi with their respective average cell dimensions
 #which have already been cell size marketshare weighted
 #going to ignore "otherSi" because for the most part less than 2%, except 2002
 
-#join the mcSi together and the monoSi together in separate dataframes
-monoSicell = pd.DataFrame(df_avgcell.monoSi)
-monoSimarket = pd.DataFrame(est_mrktshrs.monoSi)
+#trim the techmarketshare data to 1995 through 2030
+est_mrktshrs_sub = est_mrktshrs.loc[est_mrktshrs.index>=1995] #could also use a filter function instead
 
-df_monoSi = monoSimarket.join(monoSicell, how='left',lsuffix='_share', rsuffix='_cell') 
-print(df_monoSi)
+#multiply the share of each tech by the weighted average cell size
+mrkt_wtd_cells = est_mrktshrs_sub.mul(df_avgcell,'columns')
+#sum across monoSi and mcSi for the total market average cell size (x and y)
+market_average_cell_final = pd.DataFrame(mrkt_wtd_cells.agg("sum", axis="columns"))
+market_average_cell_final.columns = ['avg_cell']
+
+#print(mrkt_wtd_cells)
+print(market_average_cell_final)
 
 
-# In[ ]:
+# The annual average cell size should be 156 mm on a side through 2015, but due to marketshare weighting not always adding up to 100%, there are some deviations. For example, 2002 is missing 10% of the marketshare due to exclusion of amorphous silicon and other thin films. This is a direct result from averaging the marketshare data from multiple sources ( LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. <5MW, and is from 2002-2018), from Mints 2019 SPV report, from ITRPVs, and old papers (Costello & Rappaport 1980, Maycock 2003 & 2005)).
+# 
+# The years subject to this marketshare averaging problem are: 
+
+# In[86]:
 
 
-
+est_mrktshrs['Total'] = est_mrktshrs.monoSi+est_mrktshrs.mcSi
+est_mrktshrs_bad = est_mrktshrs.loc[est_mrktshrs.Total<1.0]
+Bad_years = est_mrktshrs_bad.index
+print(Bad_years)
 
 
 # In[ ]:
