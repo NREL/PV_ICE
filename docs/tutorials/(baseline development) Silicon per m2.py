@@ -9,12 +9,15 @@
 
 # The mass of silicon contained in a PV module is dependent on the size, thickness and number of cells in an average module. Since there is a range of sizes and number of cells per module, we will attempt a weighted average. These weighted averages are based on ITRPV data, which goes back to 2010, Fraunhofer data back to 1990, and 
 
-# In[32]:
+# In[175]:
 
 
 import numpy as np
 import pandas as pd
 import os,sys
+import matplotlib.pyplot as plt
+plt.rcParams.update({'font.size': 22})
+plt.rcParams['figure.figsize'] = (12, 8)
 
 density_si = 2.3290 #g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/wiki/Silicon) 
 #it might be better to have mono-Si and multi-Si densities, including dopants, 
@@ -23,7 +26,7 @@ density_si = 2.3290 #g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/
 
 # A Fraunhofer report indicates that in 1990, wafers were 400 micron thick, decreasing to the more modern 180 micron thickness by 2008. ITRPVs back to 2010 indicate that 156 mm x 156mm was the standard size wafer through 2015.
 
-# In[33]:
+# In[176]:
 
 
 #weighted average for wafer size 2016 through 2030
@@ -34,7 +37,7 @@ wafer2016avg = 0.9*wafer2016mcsi + 0.1*wafer2016monosi
 print("Average Wafer size in 2016 was", wafer2016avg, "cm on a side")
 
 
-# In[43]:
+# In[177]:
 
 
 #now lets try to do this for 2019 through 2030 all at once with dataframes
@@ -61,7 +64,7 @@ print(dfmarketshare_monoSi)
 # ----
 # choosing to interpolate market share of different sizes rather than cell size because this should be more basedin technology - i.e. crystals only grow certain sizes. Additionally, it is more helpful to understand the impact silicon usage by keeping cell size and marketshare seperate.
 
-# In[57]:
+# In[178]:
 
 
 #interpolate for missing marketshare data
@@ -78,7 +81,7 @@ print(dfmarketshare_mcSi)
 print(dfmarketshare_monoSi)
 
 
-# In[58]:
+# In[179]:
 
 
 #multiply each marketshare dataframe column by it's respective size
@@ -99,7 +102,7 @@ print(df_scalecell_mcSi)
 print(df_scalecell_monoSi)
 
 
-# In[59]:
+# In[180]:
 
 
 #now add the columns together to get the weighted average cell size for each year for each technology
@@ -119,7 +122,7 @@ print(df_avgcell)
 
 # Next, we apply the marketshare of mc-Si vs mono-Si to get the average cell dimension for the year. Market share of mc-Si vs mono-Si is taken from LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. <5MW, and is from 2002-2018), from Mints 2019 SPV report, from ITRPVs, and old papers (Costello & Rappaport 1980, Maycock 2003 & 2005).
 
-# In[68]:
+# In[181]:
 
 
 #read in a csv that was copied from CE Data google sheet
@@ -132,14 +135,25 @@ print(techmarketshare)
 
 # #### create a harmonization of annual market share, and interpolate
 
-# In[70]:
+# In[202]:
 
 
 # first, create a single value of tech market share in each year or NaN
 #split mcSi and monoSi
 mcSi_cols = techmarketshare.filter(regex = 'mcSi')
 monoSi_cols = techmarketshare.filter(regex = 'mono')
-#print (mcSi_cols)
+
+#show where the data is coming from graphically
+#plt.plot(mcSi_cols,'.')
+monoSikeys = monoSi_cols.columns
+labelnames = [e[7:] for e in monoSikeys] #e is a random variable to iterate through the elements of the array
+mcSikeys = mcSi_cols.columns
+labelnames_mcSi = [e[5:] for e in mcSikeys]
+#print(monoSikeys)
+
+
+# In[204]:
+
 
 #aggregate all the columns of mono or mcSi into one averaged market share
 est_mktshr_mcSi = pd.DataFrame(mcSi_cols.agg("mean", axis="columns"))
@@ -151,18 +165,31 @@ est_mktshr_monoSi = pd.DataFrame(monoSi_cols.agg("mean", axis="columns"))
 est_mrktshrs = pd.concat([est_mktshr_monoSi,est_mktshr_mcSi], axis=1) #concatinate on the columns axis
 est_mrktshrs.columns = ['monoSi','mcSi'] #name the columns
 
+#plot individuals AND average aggregate
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[0]],lw=2,marker='o',label=labelnames[0])
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[1]],lw=2,marker='D',label=labelnames[1])
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[2]],lw=2,marker='P',label=labelnames[2])
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[3]],lw=2,marker='^',label=labelnames[3])
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[4]],lw=2,marker='o',label=labelnames[4])
+plt.plot(est_mrktshrs.index,est_mrktshrs['monoSi'],'--k', marker='s',label='averaged marketshare of mono')
+plt.legend()
+plt.xlim([1979,2031])
 
-#sanity check of market share data - does it add up?
-est_mrktshrs['Total'] = est_mrktshrs.monoSi+est_mrktshrs.mcSi
 
-print(est_mrktshrs)
-#Warning: 2002, 10% of the silicon marketshare was "other", including amorphous, etc.
-del est_mrktshrs['Total']
-
-#interpolate marketshares for each year
+# In[203]:
 
 
-# In[71]:
+plt.plot(mcSi_cols.index,mcSi_cols[mcSikeys[0]],lw=2,marker='o',label=labelnames_mcSi[0])
+plt.plot(mcSi_cols.index,mcSi_cols[mcSikeys[1]],lw=2,marker='D',label=labelnames_mcSi[1])
+plt.plot(mcSi_cols.index,mcSi_cols[mcSikeys[2]],lw=2,marker='P',label=labelnames_mcSi[2])
+plt.plot(mcSi_cols.index,mcSi_cols[mcSikeys[3]],lw=2,marker='^',label=labelnames_mcSi[3])
+plt.plot(est_mrktshrs.index,est_mrktshrs['mcSi'],'--k', marker='s',label='averaged marketshare of mcSi')
+plt.legend()
+
+
+# ### Interpolate and Normalize
+
+# In[184]:
 
 
 #Interpolate for marketshare NaN values
@@ -171,16 +198,38 @@ est_mrktshrs = est_mrktshrs.interpolate(method='linear',axis=0,limit_area='insid
 
 #sanity check of market share data - does it add up?
 est_mrktshrs['Total'] = est_mrktshrs.monoSi+est_mrktshrs.mcSi
-print(est_mrktshrs)
+plt.plot(est_mrktshrs['monoSi'], label='MonoSi')
+plt.plot(est_mrktshrs['mcSi'], label='mcSi')
+plt.plot(est_mrktshrs['Total'],label='Total')
+plt.legend()
+#print(est_mrktshrs)
 #Warning: 2002, 10% of the silicon marketshare was "other", including amorphous, etc.
-del est_mrktshrs['Total']
+#del est_mrktshrs['Total']
+
+
+# In[185]:
+
+
+#normalize all marketshares each year to make sure everything adds to 100%
+est_mrktshrs['Scale'] = 1/est_mrktshrs['Total']
+est_mrktshrs['monoSi_scaled']= est_mrktshrs['Scale']*est_mrktshrs['monoSi']
+est_mrktshrs['mcSi_scaled']= est_mrktshrs['Scale']*est_mrktshrs['mcSi']
+
+scaled_marketshares = est_mrktshrs[['monoSi_scaled','mcSi_scaled']]
+scaled_marketshares.columns = ['monoSi','mcSi']
+scaled_marketshares['Total'] = scaled_marketshares['monoSi']+scaled_marketshares['mcSi']
+#print(scaled_marketshares)
+plt.plot(scaled_marketshares['monoSi'],label='MonoSi')
+plt.plot(scaled_marketshares['mcSi'],label='mcSi')
+plt.plot(scaled_marketshares['Total'],label='Total')
+plt.legend()
 
 
 # Combining Cell Size shares and Market Share Data
 # ----------
 # Now we have separate mono and mcSi dataframes, which contain the average cell size, based on the market share of the cell size bin as enumerated in ITRPV 2020. The next step is to combine these technology specific (mono vs mc) based on the module technology market share.
 
-# In[83]:
+# In[193]:
 
 
 #now combine technology market share of mcSi and monoSi with their respective average cell dimensions
@@ -188,33 +237,23 @@ del est_mrktshrs['Total']
 #going to ignore "otherSi" because for the most part less than 2%, except 2002
 
 #trim the techmarketshare data to 1995 through 2030
-est_mrktshrs_sub = est_mrktshrs.loc[est_mrktshrs.index>=1995] #could also use a filter function instead
+est_mrktshrs_sub = scaled_marketshares.loc[est_mrktshrs.index>=1995] #could also use a filter function instead
 
 #multiply the share of each tech by the weighted average cell size
 mrkt_wtd_cells = est_mrktshrs_sub.mul(df_avgcell,'columns')
 #sum across monoSi and mcSi for the total market average cell size (x and y)
-market_average_cell_final = pd.DataFrame(mrkt_wtd_cells.agg("sum", axis="columns"))
-market_average_cell_final.columns = ['avg_cell']
+market_average_cell_dims = pd.DataFrame(mrkt_wtd_cells.agg("sum", axis="columns"))
+market_average_cell_dims.columns = ['avg_cell']
 
-#print(mrkt_wtd_cells)
-print(market_average_cell_final)
-
-
-# The annual average cell size should be 156 mm on a side through 2015, but due to marketshare weighting not always adding up to 100%, there are some deviations. For example, 2002 is missing 10% of the marketshare due to exclusion of amorphous silicon and other thin films. This is a direct result from averaging the marketshare data from multiple sources ( LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. <5MW, and is from 2002-2018), from Mints 2019 SPV report, from ITRPVs, and old papers (Costello & Rappaport 1980, Maycock 2003 & 2005)).
-# 
-# The years subject to this marketshare averaging problem are: 
-
-# In[86]:
+#print(market_average_cell_dims)
+plt.plot(market_average_cell_dims, label='annual average cell dimensions in mm')
+plt.legend()
 
 
-est_mrktshrs['Total'] = est_mrktshrs.monoSi+est_mrktshrs.mcSi
-est_mrktshrs_bad = est_mrktshrs.loc[est_mrktshrs.Total<1.0]
-Bad_years = est_mrktshrs_bad.index
-print(Bad_years)
-
+# The 2018 data jumps drastically on the cell size to 168 mm. This is likely due to a combination of increasing market share of larger cell sizes for mono beginning in ~2018, AND LBNL recording a large increase in monoSi market share in 2018 (89% monoSi). Mints and ITRPV have a lower monoSi market share at closer to 50:50. It might be reasonable to omit the LBNL data because it is residential market share, rather than utility scale, however, omitting all LBNL data will remove all values 2002 through 2004, and 2006 through 2010.
 
 # In[ ]:
 
 
-
+# calculate # cells/m^2 at this point, rather than using the # cells per module factor
 
