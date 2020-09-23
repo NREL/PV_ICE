@@ -12,9 +12,7 @@ functions to modify baseline values and evaluate sensitivity to the parameters.
 import numpy as np
 import pandas as pd
 import datetime
-import datetime
-
-
+import os
 
 def read_baseline_material(scenario, material='None', file=None):
     
@@ -36,7 +34,7 @@ def _interactive_load(title=None):
     return filedialog.askopenfilename(parent=root, title=title) #initialdir = data_dir
 
 
-class ScenarioObj:
+class Simulation:
     """
     The ScenarioObj top level class is used to work on Circular Economy scenario objects, 
     keep track of filenames, data for module and materials, operations modifying
@@ -54,7 +52,7 @@ class ScenarioObj:
     _setPath : change the working directory
 
     """
-
+    
     def __init__(self, name=None, path=None):
         '''
         initialize ScenarioObj with path of Scenario's baseline of module and materials
@@ -70,15 +68,25 @@ class ScenarioObj:
         none
         '''
 
-        self.metdata = {}        # data from epw met file
-        self.data = {}           # data stored at each timestep
         self.path = ""             # path of working directory
         self.name = ""         # basename to append
-        self.materialfiles = []    # material files for oconv
         
         now = datetime.datetime.now()
         self.nowstr = str(now.date())+'_'+str(now.hour)+str(now.minute)+str(now.second)
 
+        if path is None:
+            self._setPath(os.getcwd())
+        else:
+            self._setPath(path)
+
+        if name is None:
+            self.name = self.nowstr  # set default filename for output files
+        else:
+            self.name = name
+
+        self.scenario={}
+
+        
     def _setPath(self, path):
         """
         setPath - move path and working directory
@@ -99,12 +107,235 @@ class ScenarioObj:
             if not os.path.exists(path):
                 os.makedirs(path)
                 print('Making path: '+path)
-
-    def set_baseline_module(self, file=None):
+    
+    def createScenario(self, name, file=None):
         
+        self.scenario[name] = Scenario(name, file)
+        
+
+
+    def calculateMassFlow(self, debugflag=False):
+        '''
+        Function takes as input a baseline dataframe already imported, 
+        with the right number of columns and content.
+        It returns the dataframe with all the added calculation columns.
+        
+        Parameters
+        ------------
+        
+        Returns
+        --------
+        df: dataframe 
+            input dataframe with addeds columns for the calculations of recycled,
+            collected, waste, installed area, etc. 
+        
+        '''
+        for scenario in self.scenario:
+                
+#            df = pd.concat([self.scenario[scenario].data, self.scenario[scenario].material[material].materialdata], axis=1, sort=False)
+            df = self.scenario[scenario].data
+            # Constants
+            irradiance_stc = 1000 # W/m^2
+        
+            # Renaming and re-scaling
+            df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
+            df['t50'] = df['mod_reliability_t50']
+            df['t90'] = df['mod_reliability_t90']
+            
+            # Calculating Area and Mass
+            df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/irradiance_stc # m^2                
+
+            # Applying Weibull Disposal Function
+            df['disposal_function'] = [
+            weibull_cdf(**weibull_params({t50: 0.5, t90: 0.9}))
+            for t50, t90
+            in zip(df['t50'], df['t90'])
+            ]
+            
+            # Calculating Wast by Generation by Year, and Cumulative Waste by Year.
+            Generation_Disposed_byYear = []
+            Generation_Active_byYear= []
+            Generation_Power_byYear = []
+
+            df['Cumulative_Area_disposedby_Failure'] = 0
+            df['Cumulative_Area_disposedby_Degradation'] = 0
+            df['Cumulative_Area_disposed'] = 0
+            df['Cumulative_Active_Area'] = 0
+            df['Cumulative_Power_[W]'] = 0
+            for year, row in df.iterrows(): 
+                t50, t90 = row['t50'], row['t90']
+                f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
+                x = np.clip(df.index - year, 0, np.inf)
+                cdf = list(map(f, x))
+                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
+
+                activearea = row['Area']
+                activeareacount = []
+                areadisposed_failure = []
+                areadisposed_degradation = []
+
+                areapowergen = []
+                active=-1
+                activearea2=0
+                disposed_degradation=0
+                for prob in range(len(cdf)):
+                    disposed_degradation=0
+                    if cdf[prob] == 0.0:
+                        activeareacount.append(0)
+                        areadisposed_failure.append(0)
+                        areadisposed_degradation.append(0)
+                        areapowergen.append(0)
+                    else:
+                        active += 1
+                        activeareaprev = activearea                            
+                        activearea = activearea*(1-cdf[prob]*(1-df.iloc[prob]['mod_Repairing']))
+                        areadisposed_failure.append(activeareaprev-activearea)
+                        if prob == row['mod_lifetime']:
+                            activearea_temp = activearea
+                            activearea = 0+activearea*df.iloc[prob]['mod_Repowering']
+                            disposed_degradation = activearea_temp-activearea
+                        areadisposed_degradation.append(disposed_degradation)
+                        activeareacount.append(activearea)
+                        areapowergen.append(activearea*row['mod_eff']*0.01*irradiance_stc*(1-row['mod_degradation']/100)**active)                            
+                        
+                        # m^2 
+#                    area_disposed_of_generation_by_year = [element*row['Area'] for element in pdf]
+                df['Cumulative_Area_disposedby_Failure'] += areadisposed_failure
+                df['Cumulative_Area_disposedby_Degradation'] += areadisposed_degradation
+
+                df['Cumulative_Active_Area'] += activeareacount
+                df['Cumulative_Power_[W]'] += areapowergen
+                if debugflag:
+                    Generation_Disposed_byYear.append(areadisposed)
+                    Generation_Active_byYear.append(activeareacount)
+                    Generation_Power_byYear.append(areapowergen)
+        
+                # Making Table to Show Observations
+            if debugflag:
+                FailuredisposalbyYear = pd.DataFrame(Area_Disposed_GenbyYear, columns = df.index, index = df.index)
+                FailuredisposalbyYear = FailuredisposalbyYear.add_prefix("Failed_on_Year_")
+                df = df.join(FailuredisposalbyYear)
+            
+            self.scenario[scenario].data = df
+            
+            # collection losses here
+            
+            # Recyle % here
+            
+            
+            ################
+            # Material Loop#
+            ################
+
+            for material in self.scenario[scenario].material:
+
+                dm = self.scenario[scenario].material[material].materialdata
+                
+                
+#                df = pd.concat([self.scenario[scenario].data, self.scenario[scenario].material[material].materialdata], axis=1, sort=False)
+                # Calculations of Repowering and Adjusted EoL Waste Glass
+                dm['material_Waste'] = df
+                df['EoL_Waste_Glass'] = df['Cumulative_Area_disposedby_Failure'] - df['Repowered_Modules_Glass']
+            
+                
+                df['mat_Mass'] = df['Area']*df['mat_massperm2']
+
+
+                # Installed Capacity
+                df['installedCapacity_glass'] = 0.0
+                df['installedCapacity_glass'][df.index[0]] = ( df['mat_Mass'][df.index[0]] - 
+                                                             df['EoL_Waste_Glass'][df.index[0]] )
+            
+                for i in range (1, len(df)):
+                    year = df.index[i]
+                    prevyear = df.index[i-1]
+                    df['installedCapacity_glass'][year] = (df[f'installedCapacity_glass'][prevyear]+
+                                                           df[f'mat_Mass'][year] - 
+                                                            df['EoL_Waste_Glass'][year] )
+            
+            #    df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/irradiance_stc # m^2
+            #    df['mat_Mass'] = df['Area']*thickness_glass*density_glass
+                df['installedCapacity_MW_glass'] = ( df['installedCapacity_glass'] / (thickness_glass*density_glass) ) *  (df['mod_eff']*0.01) * irradiance_stc / 1e6
+            
+                
+                # Other calculations of the Mass Flow
+            
+                df['EoL_Collected_Glass'] = df['EoL_Waste_Glass']* df['mod_EOL_collection_eff'] * 0.01
+                
+                df['EoL_CollectionLost_Glass'] =  df['EoL_Waste_Glass'] - df['EoL_Collected_Glass']
+            
+            
+                df['EoL_Collected_Recycled'] = df['EoL_Collected_Glass'] * df['mod_EOL_collected_recycled'] * 0.01
+            
+                df['EoL_Collected_Landfilled'] = df['EoL_Collected_Glass'] - df['EoL_Collected_Recycled']
+            
+            
+                df['EoL_Recycled_Succesfully'] = df['EoL_Collected_Recycled'] * df['mat_EOL_Recycling_eff'] * 0.01
+            
+                df['EoL_Recycled_Losses_Landfilled'] = df['EoL_Collected_Recycled'] - df['EoL_Recycled_Succesfully'] 
+            
+                df['EoL_Recycled_into_HQ'] = df['EoL_Recycled_Succesfully'] * df['mat_EOL_Recycled_into_HQ'] * 0.01
+            
+                df['EoL_Recycled_into_Secondary'] = df['EoL_Recycled_Succesfully'] - df['EoL_Recycled_into_HQ']
+            
+                df['EoL_Recycled_HQ_into_MFG'] = (df['EoL_Recycled_into_HQ'] * 
+                                                                  df['mat_EOL_RecycledHQ_Reused4MFG'] * 0.01)
+            
+                df['EoL_Recycled_HQ_into_OtherUses'] = df['EoL_Recycled_into_HQ'] - df['EoL_Recycled_HQ_into_MFG']
+            
+            
+                df['Manufactured_Input'] = df['mat_Mass'] / (df['mat_MFG_eff'] * 0.01)
+            
+                df['MFG_Scrap'] = df['Manufactured_Input'] - df['mat_Mass']
+            
+                df['MFG_Scrap_Recycled'] = df['MFG_Scrap'] * df['mat_MFG_scrap_recycled'] * 0.01
+            
+                df['MFG_Scrap_Landfilled'] = df['MFG_Scrap'] - df['MFG_Scrap_Recycled'] 
+            
+                df['MFG_Scrap_Recycled_Succesfully'] = (df['MFG_Scrap_Recycled'] *
+                                                                 df['mat_MFG_scrap_recycling_eff'] * 0.01)
+            
+                df['MFG_Scrap_Recycled_Losses_Landfilled'] = (df['MFG_Scrap_Recycled'] - 
+                                                                          df['MFG_Scrap_Recycled_Succesfully'])
+            
+                df['MFG_Recycled_into_HQ'] = (df['MFG_Scrap_Recycled_Succesfully'] * 
+                                                        df['mat_MFG_scrap_Recycled_into_HQ'] * 0.01)
+            
+                df['MFG_Recycled_into_Secondary'] = df['MFG_Scrap_Recycled_Succesfully'] - df['MFG_Recycled_into_HQ']
+            
+                df['MFG_Recycled_HQ_into_MFG'] = (df['MFG_Recycled_into_HQ'] * 
+                                          df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
+            
+                df['MFG_Recycled_HQ_into_OtherUses'] = df['MFG_Recycled_into_HQ'] - df['MFG_Recycled_HQ_into_MFG']
+            
+            
+                df['Virgin_Stock'] = df['Manufactured_Input'] - df['EoL_Recycled_HQ_into_MFG'] - df['MFG_Recycled_HQ_into_MFG']
+            
+                df['Total_EoL_Landfilled_Waste'] = df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled']
+            
+                df['Total_MFG_Landfilled_Waste'] = df['MFG_Scrap_Landfilled'] + df['MFG_Scrap_Recycled_Losses_Landfilled']
+            
+                df['Total_Landfilled_Waste'] = (df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled'] +
+                                                df['Total_MFG_Landfilled_Waste'])
+            
+                df['Total_EoL_Recycled_OtherUses'] = (df['EoL_Recycled_into_Secondary'] + df['EoL_Recycled_HQ_into_OtherUses'] + 
+                                                      df['MFG_Recycled_into_Secondary'] + df['MFG_Recycled_HQ_into_OtherUses'])
+            
+                df['new_Installed_Capacity_[MW]'] = df['new_Installed_Capacity_[W]']/1e6
+            
+                return df
+        
+
+
+class Scenario(Simulation):
+    
+    def __init__(self, name, file=None):
+        self.name = name
+        self.material = {}
+                
         if file is None:
             try:
-                file = _interactive_load('Select baseline file')
+                file = _interactive_load('Select module baseline file')
             except:
                 raise Exception('Interactive load failed. Tkinter not supported'+
                                 'on this system. Try installing X-Quartz and reloading')
@@ -112,6 +343,7 @@ class ScenarioObj:
         # file = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\CEMFC\baselines\baseline_modules_US.csv'
         
         csvdata = open(str(file), 'r', encoding="UTF-8")
+        csvdata = open(str(file), 'r', encoding="UTF-8-sig")
         firstline = csvdata.readline()
         secondline = csvdata.readline()
 
@@ -121,8 +353,39 @@ class ScenarioObj:
         data = pd.read_csv(csvdata, names=head)
         
         self.baselinefile = file
-        self.module = data
-        self.metdata['module'] = meta
+        self.metdata = meta,
+        self.data = data
+    
+    def addMaterial(self, materialname, file=None):
+        self.material[materialname] = Material(materialname, file)
+
+
+class Material:
+    def __init__(self, materialname, file):
+        self.materialname = materialname
+        
+        if file is None:
+            try:
+                file = _interactive_load('Select material baseline file')
+            except:
+                raise Exception('Interactive load failed. Tkinter not supported'+
+                                'on this system. Try installing X-Quartz and reloading')
+        
+        # file = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\CEMFC\baselines\baseline_modules_US.csv'
+        
+        csvdata = open(str(file), 'r', encoding="UTF-8")
+        csvdata = open(str(file), 'r', encoding="UTF-8-sig")
+        firstline = csvdata.readline()
+        secondline = csvdata.readline()
+
+        head = firstline.rstrip('\n').split(",")
+        meta = dict(zip(head, secondline.rstrip('\n').split(",")))
+
+        data = pd.read_csv(csvdata, names=head)
+        
+        self.materialfile = file
+        self.materialmetdata = meta
+        self.materialdata = data
 
 
 def weibull_params(keypoints):
@@ -152,158 +415,6 @@ def weibull_cdf(alpha, beta):
         return 1 - np.exp(-(np.array(x)/beta)**alpha)
     return cdf
 
-def calculateMassFlow(mod, mat, debugflag=False):
-    '''
-    Function takes as input a baseline dataframe already imported, 
-    with the right number of columns and content.
-    It returns the dataframe with all the added calculation columns.
-    
-    Parameters
-    ------------
-    thickness_glass: float
-        Glass thickness in m
-    
-    Returns
-    --------
-    df: dataframe 
-        input dataframe with addeds columns for the calculations of recycled,
-        collected, waste, installed area, etc. 
-    
-    '''
-
-    df = pd.concat([mod, mat], axis=1, sort=False)
-    # Constants
-    irradiance_stc = 1000 # W/m^2
-    density_glass = 2500 # kg/m^3    
-    thickness_glass = 0.0035  # m
-
-    # Renaming and re-scaling
-    df['new_Installed_Capacity_[MW]'] = df['new_Installed_Capacity_[MW]']*1e6
-    df['t50'] = df['mod_reliability_t50']
-    df['t90'] = df['mod_reliability_t90']
-    
-    # Calculating Area and Mass
-    df['Area'] = df['new_Installed_Capacity_[MW]']/(df['mod_eff']*0.01)/irradiance_stc # m^2
-    df['mat_Mass'] = df['Area']*df['mat_massperm2']
-    
-    # Applying Weibull Disposal Function
-    df['disposal_function'] = [
-    weibull_cdf(**weibull_params({t50: 0.5, t90: 0.9}))
-    for t50, t90
-    in zip(df['t50'], df['t90'])
-    ]
-    
-    # Calculating Wast by Generation by Year, and Cumulative Waste by Year.
-    Area_Disposed_GenbyYear = []
-    df['Cumulative_Waste_Glass'] = 0
-
-    for year, row in df.iterrows(): 
-
-        t50, t90 = row['t50'], row['t90']
-        f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
-        x = np.clip(df.index - year, 0, np.inf)
-        cdf = list(map(f, x))
-        pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
-        area_disposed_of_generation_by_year = [element*row['mat_Mass'] for element in pdf]
-        df['Cumulative_Waste_Glass'] += area_disposed_of_generation_by_year
-        Area_Disposed_GenbyYear.append(area_disposed_of_generation_by_year)
-
-    
-    # Making Table to Show Observations
-    if debugflag:
-        WasteGenerationbyYear = pd.DataFrame(Area_Disposed_GenbyYear, columns = df.index, index = df.index)
-        WasteGenerationbyYear = WasteGenerationbyYear.add_prefix("Disposed_on_Year_")
-        df = df.join(WasteGenerationbyYear)
-    
-    
-    # Calculations of Repowering and Adjusted EoL Waste Glass
-    df['Repowered_Modules_Glass'] = df['Cumulative_Waste_Glass'] * df['mod_repowering'] * 0.01
-    df['EoL_Waste_Glass'] = df['Cumulative_Waste_Glass'] - df['Repowered_Modules_Glass']
-
-    
-    # Installed Capacity
-    df['installedCapacity_glass'] = 0.0
-    df['installedCapacity_glass'][df.index[0]] = ( df['mat_Mass'][df.index[0]] - 
-                                                 df['EoL_Waste_Glass'][df.index[0]] )
-
-    for i in range (1, len(df)):
-        year = df.index[i]
-        prevyear = df.index[i-1]
-        df['installedCapacity_glass'][year] = (df[f'installedCapacity_glass'][prevyear]+
-                                               df[f'mat_Mass'][year] - 
-                                                df['EoL_Waste_Glass'][year] )
-
-#    df['Area'] = df['new_Installed_Capacity_[MW]']/(df['mod_eff']*0.01)/irradiance_stc # m^2
-#    df['mat_Mass'] = df['Area']*thickness_glass*density_glass
-    df['installedCapacity_MW_glass'] = ( df['installedCapacity_glass'] / (thickness_glass*density_glass) ) *  (df['mod_eff']*0.01) * irradiance_stc / 1e6
-
-    
-    # Other calculations of the Mass Flow
-
-    df['EoL_Collected_Glass'] = df['EoL_Waste_Glass']* df['mod_EOL_collection_eff'] * 0.01
-    
-    df['EoL_CollectionLost_Glass'] =  df['EoL_Waste_Glass'] - df['EoL_Collected_Glass']
-
-
-    df['EoL_Collected_Recycled'] = df['EoL_Collected_Glass'] * df['mod_EOL_collected_recycled'] * 0.01
-
-    df['EoL_Collected_Landfilled'] = df['EoL_Collected_Glass'] - df['EoL_Collected_Recycled']
-
-
-    df['EoL_Recycled_Succesfully'] = df['EoL_Collected_Recycled'] * df['mat_EOL_Recycling_eff'] * 0.01
-
-    df['EoL_Recycled_Losses_Landfilled'] = df['EoL_Collected_Recycled'] - df['EoL_Recycled_Succesfully'] 
-
-    df['EoL_Recycled_into_HQ'] = df['EoL_Recycled_Succesfully'] * df['mat_EOL_Recycled_into_HQ'] * 0.01
-
-    df['EoL_Recycled_into_Secondary'] = df['EoL_Recycled_Succesfully'] - df['EoL_Recycled_into_HQ']
-
-    df['EoL_Recycled_HQ_into_MFG'] = (df['EoL_Recycled_into_HQ'] * 
-                                                      df['mat_EOL_RecycledHQ_Reused4MFG'] * 0.01)
-
-    df['EoL_Recycled_HQ_into_OtherUses'] = df['EoL_Recycled_into_HQ'] - df['EoL_Recycled_HQ_into_MFG']
-
-
-    df['Manufactured_Input'] = df['mat_Mass'] / (df['mat_MFG_eff'] * 0.01)
-
-    df['MFG_Scrap'] = df['Manufactured_Input'] - df['mat_Mass']
-
-    df['MFG_Scrap_Recycled'] = df['MFG_Scrap'] * df['mat_MFG_scrap_recycled'] * 0.01
-
-    df['MFG_Scrap_Landfilled'] = df['MFG_Scrap'] - df['MFG_Scrap_Recycled'] 
-
-    df['MFG_Scrap_Recycled_Succesfully'] = (df['MFG_Scrap_Recycled'] *
-                                                     df['mat_MFG_scrap_recycling_eff'] * 0.01)
-
-    df['MFG_Scrap_Recycled_Losses_Landfilled'] = (df['MFG_Scrap_Recycled'] - 
-                                                              df['MFG_Scrap_Recycled_Succesfully'])
-
-    df['MFG_Recycled_into_HQ'] = (df['MFG_Scrap_Recycled_Succesfully'] * 
-                                            df['mat_MFG_scrap_Recycled_into_HQ'] * 0.01)
-
-    df['MFG_Recycled_into_Secondary'] = df['MFG_Scrap_Recycled_Succesfully'] - df['MFG_Recycled_into_HQ']
-
-    df['MFG_Recycled_HQ_into_MFG'] = (df['MFG_Recycled_into_HQ'] * 
-                              df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
-
-    df['MFG_Recycled_HQ_into_OtherUses'] = df['MFG_Recycled_into_HQ'] - df['MFG_Recycled_HQ_into_MFG']
-
-
-    df['Virgin_Stock'] = df['Manufactured_Input'] - df['EoL_Recycled_HQ_into_MFG'] - df['MFG_Recycled_HQ_into_MFG']
-
-    df['Total_EoL_Landfilled_Waste'] = df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled']
-
-    df['Total_MFG_Landfilled_Waste'] = df['MFG_Scrap_Landfilled'] + df['MFG_Scrap_Recycled_Losses_Landfilled']
-
-    df['Total_Landfilled_Waste'] = (df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled'] +
-                                    df['Total_MFG_Landfilled_Waste'])
-
-    df['Total_EoL_Recycled_OtherUses'] = (df['EoL_Recycled_into_Secondary'] + df['EoL_Recycled_HQ_into_OtherUses'] + 
-                                          df['MFG_Recycled_into_Secondary'] + df['MFG_Recycled_HQ_into_OtherUses'])
-
-    df['new_Installed_Capacity_[MW]'] = df['new_Installed_Capacity_[MW]']/1e6
-
-    return df
 
 
 def sens_StageImprovement(df, stage, improvement=1.3, start_year=None):
