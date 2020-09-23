@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>(baseline development) Glass per M2 Calculations</title>
+<title>Testing Brightway2</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13074,140 +13074,12 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="(baseline-development)-Glass-per-M2-Calculations">(baseline development) Glass per M2 Calculations<a class="anchor-link" href="#(baseline-development)-Glass-per-M2-Calculations">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Based on ITRPV numbers for the most part, this journal attempts to correlate front glass thickness values with the introduction of glass-glass modules.</p>
-<p>Standard front glass thickness is set to 3.2 mm, based on ITRPV 2014, 2012 and 2011. Starting 2017, front glass are divided into &gt;3 mm, 2-3 mm. Assuming that &gt;3mm is still 3.2 mm. Thinner modules in the range of 2-3mm coincide with the values of Glass-Glass modules, so we are assuming all thiner modules have a backside of same thickness as front of 2.5 mm</p>
-<p>So overall thickness of glass per panel goes from 3.2 to 5 mm for Glass-backsheet to Glass-Glass modules.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">density_glass</span> <span class="o">=</span> <span class="mi">2500</span> <span class="c1"># kg/m^3    </span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Up-to-2012">Up to 2012<a class="anchor-link" href="#Up-to-2012">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span>  <span class="c1"># m</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 up to 2012:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Glass kg/m2 up to 2012: 8.0
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="2013---2016">2013 - 2016<a class="anchor-link" href="#2013---2016">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Glass-Glass percentage starts to increase over the following years.</p>
-<p>On ITRPV, percentage for 2013 is 98% glass-backsheet,
-percentage for 2014 is 96 % glass-backsheet
-percentage for 2016 is 97 % glass -backsheet.</p>
-<p>We think it's strange that the % of glass-glass modules went suddenly up in 2014 and then back down in 2016. However we're going ahead with this percentages and will quantify this disaprity as uncertainty with the MC analysis.</p>
-<p>Data is not available on Glass-Glass modules for 2015 so we're interpolating between previous year</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2013</span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.98</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.02</span> <span class="c1"># m</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 2013:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Glass kg/m2 2013-2015: 8.16
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2014</span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.96</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.04</span> <span class="c1"># m</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass for 2014:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#To install bw2, use https://2.docs.brightway.dev/installation.html</span>
 </pre></div>
 
     </div>
@@ -13217,86 +13089,65 @@ percentage for 2016 is 97 % glass -backsheet.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2015</span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.96</span><span class="o">.</span><span class="mi">5</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.035</span> <span class="c1"># m</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 2013-2015:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#remember to launch this from the command line in the &quot;mytestenv&quot; environment</span>
+<span class="c1">#because currently bw2 is only installed in that environment?</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">brightway2</span> <span class="k">as</span> <span class="nn">bw2</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2016 </span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.97</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.03</span> <span class="c1"># m</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 2013-2015:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Glass kg/m2 2013-2015: 8.24
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="2017-onwards">2017 onwards<a class="anchor-link" href="#2017-onwards">&#182;</a></h4><p>Starting 2017, ITRPV includes data on modules with Front glass between 2-3mm thick. Data is also available in various years for the percentage of modules that are Glass-Backsheet, vs Glass-Glass. The percentages for 2-3mm and Glass-Glass modules are very similar. We're assuming that 100% of the Glass-Glass modules are therefore 2-3mm thick for their front AND their back glass. Remaining percentage (if any) of 2-3mm front glasses are assumed to be Glass-backsheet.
-For example for 2017:</p>
-<p><img src="../images_wiki/ITRPV_GlassDeduction.PNG" alt="ITRPV Glass thicknesses deduction example"></p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2017</span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.94</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0025</span><span class="o">+</span><span class="mf">0.0025</span><span class="p">)</span><span class="o">*</span><span class="mf">0.05</span> <span class="c1"># m</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2017:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bw2</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="s1">&#39;bw2-seminar-tutorial&#39;</span><span class="p">)</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">set_current</span><span class="p">(</span><span class="s1">&#39;bw2-seminar-tutorial&#39;</span><span class="p">)</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">current</span> <span class="c1">#shows current project</span>
+<span class="c1">#also &quot;see what projects you have on your computer by running list(bw.projects)&quot;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;bw2-seminar-tutorial&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bw2</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">dir</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">bw2setup</span><span class="p">()</span> <span class="c1"># need this to create pathways, mapping, and methods - it creates biosphere3</span>
 </pre></div>
 
     </div>
@@ -13313,7 +13164,71 @@ For example for 2017:</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>2017: 8.225000000000001
+<pre>Creating default biosphere
+
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Writing activities to SQLite3 database:
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Applying strategy: normalize_units
+Applying strategy: drop_unspecified_subcategories
+Applied 2 strategies in 0.02 seconds
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>0% [##############################] 100% | ETA: 00:00:00
+Total time elapsed: 00:00:01
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Title: Writing activities to SQLite3 database:
+  Started: 09/10/2020 16:14:50
+  Finished: 09/10/2020 16:14:51
+  Total time elapsed: 00:00:01
+  CPU %: 89.30
+  Memory %: 0.83
+Created database: biosphere3
+Creating default LCIA methods
+
+Applying strategy: normalize_units
+Applying strategy: set_biosphere_type
+Applying strategy: drop_unspecified_subcategories
+Applying strategy: link_iterable_by_fields
+Applied 4 strategies in 5.53 seconds
+Wrote 850 LCIA methods with 219059 characterization factors
+Creating core data migrations
+
 </pre>
 </div>
 </div>
@@ -13325,15 +13240,147 @@ For example for 2017:</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Years afer 2017 that don't have values for any these two categories got interpolated.</p>
+<h1 id="#activities-in-the-database">#activities in the database<a class="anchor-link" href="##activities-in-the-database">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bw2</span><span class="o">.</span><span class="n">databases</span>
+<span class="n">mybio</span> <span class="o">=</span> <span class="n">bw2</span><span class="o">.</span><span class="n">Database</span><span class="p">(</span><span class="s1">&#39;biosphere3&#39;</span><span class="p">)</span>
+<span class="c1">#type(mybio)</span>
+<span class="c1">#len(mybio)</span>
+<span class="n">random</span> <span class="o">=</span> <span class="n">mybio</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="c1">#returns a random &quot;activity&quot; from the database, these can be assigned to a variable for use</span>
+<span class="c1">#LCA language for here; an &quot;activity&quot; is an elementary flow in LCA world. </span>
+<span class="c1">#here activities are linked by edges (exchanges)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">random</span><span class="p">)</span>
+<span class="n">random</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span> <span class="c1">#this shows what is contained in the activity</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[29]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;categories&#39;: (&#39;soil&#39;, &#39;agricultural&#39;),
+ &#39;code&#39;: &#39;50eebfd4-1b99-45d6-a149-68a6d4568cb4&#39;,
+ &#39;CAS number&#39;: &#39;099607-70-2&#39;,
+ &#39;name&#39;: &#39;Cloquintocet-mexyl&#39;,
+ &#39;database&#39;: &#39;biosphere3&#39;,
+ &#39;unit&#39;: &#39;kilogram&#39;,
+ &#39;type&#39;: &#39;emission&#39;}</pre>
+</div>
+
+</div>
 
 </div>
 </div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;biosphere3&#39;</span><span class="p">,</span> <span class="n">random</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">])</span> <span class="c1">#creates a tuple to pass to the get function</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">get_activity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="c1">#the get function takes in a sinple argument in the form of the tuple of a database name and it&#39;s code</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">key</span><span class="p">)</span> <span class="c1">#this is the better way to get the key of a a particular activity</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[33]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>tuple</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#How to Search for an item in the database</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">Database</span><span class="p">(</span><span class="s1">&#39;biosphere3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">)</span> <span class="c1">#returns all with that title</span>
+<span class="c1">#filter down using</span>
+<span class="n">bw2</span><span class="o">.</span><span class="n">Database</span><span class="p">(</span><span class="s1">&#39;biosphere3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;carbon dioxide&#39;</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;categories&#39;</span><span class="p">:</span><span class="s1">&#39;urban&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;fossil&#39;</span><span class="p">})</span>
+<span class="c1">#can use forloop iteration to search as well</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Excluding 18 filtered results
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[39]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;Carbon dioxide, fossil&#39; (kilogram, None, (&#39;air&#39;, &#39;non-urban air or from high stacks&#39;)),
+ &#39;Carbon dioxide, fossil&#39; (kilogram, None, (&#39;air&#39;, &#39;urban air close to ground&#39;)),
+ &#39;Carbon dioxide, non-fossil&#39; (kilogram, None, (&#39;air&#39;, &#39;non-urban air or from high stacks&#39;)),
+ &#39;Carbon dioxide, non-fossil&#39; (kilogram, None, (&#39;air&#39;, &#39;urban air close to ground&#39;))]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Automatic-Calculation-from-SupportingMaterial-folder-to-create-baseline_material_Glass">Automatic Calculation from SupportingMaterial folder to create baseline_material_Glass<a class="anchor-link" href="#Automatic-Calculation-from-SupportingMaterial-folder-to-create-baseline_material_Glass">&#182;</a></h2>
+<h1 id="#methods">#methods<a class="anchor-link" href="##methods">&#182;</a></h1>
 </div>
 </div>
 </div>
