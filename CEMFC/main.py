@@ -135,6 +135,8 @@ class Simulation:
 #            df = pd.concat([self.scenario[scenario].data, self.scenario[scenario].material[material].materialdata], axis=1, sort=False)
             df = self.scenario[scenario].data
             # Constants
+
+    # In[4] :
             irradiance_stc = 1000 # W/m^2
         
             # Renaming and re-scaling
@@ -163,6 +165,9 @@ class Simulation:
             df['Cumulative_Active_Area'] = 0
             df['Cumulative_Power_[W]'] = 0
             for year, row in df.iterrows(): 
+                #row=df.iloc[4]
+                #year=row.year  # 1999
+                
                 t50, t90 = row['t50'], row['t90']
                 f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
                 x = np.clip(df.index - year, 0, np.inf)
@@ -202,19 +207,21 @@ class Simulation:
 #                    area_disposed_of_generation_by_year = [element*row['Area'] for element in pdf]
                 df['Cumulative_Area_disposedby_Failure'] += areadisposed_failure
                 df['Cumulative_Area_disposedby_Degradation'] += areadisposed_degradation
-
+                df['Cumulative_Area_disposed'] += areadisposed_failure
+                df['Cumulative_Area_disposed'] += areadisposed_degradation
+                
                 df['Cumulative_Active_Area'] += activeareacount
                 df['Cumulative_Power_[W]'] += areapowergen
-                if debugflag:
-                    Generation_Disposed_byYear.append(areadisposed)
-                    Generation_Active_byYear.append(activeareacount)
-                    Generation_Power_byYear.append(areapowergen)
+                Generation_Disposed_byYear.append(areadisposed_failure)
+                Generation_Active_byYear.append(activeareacount)
+                Generation_Power_byYear.append(areapowergen)
         
                 # Making Table to Show Observations
-            if debugflag:
-                FailuredisposalbyYear = pd.DataFrame(Area_Disposed_GenbyYear, columns = df.index, index = df.index)
-                FailuredisposalbyYear = FailuredisposalbyYear.add_prefix("Failed_on_Year_")
-                df = df.join(FailuredisposalbyYear)
+            FailuredisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
+            FailuredisposalbyYear = FailuredisposalbyYear.add_prefix("Failed_on_Year_")
+            df = df.join(FailuredisposalbyYear)
+            
+            # In[5]:
             
             self.scenario[scenario].data = df
             
