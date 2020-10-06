@@ -164,14 +164,14 @@ class Simulation:
             df['Cumulative_Area_disposed'] = 0
             df['Cumulative_Active_Area'] = 0
             df['Cumulative_Power_[W]'] = 0
-            for year, row in df.iterrows(): 
-                #year is an int 0,1,2,.... etc.
-                #year=4
-                #row=df.iloc[year]
+            for generation, row in df.iterrows(): 
+                #generation is an int 0,1,2,.... etc.
+                #generation=4
+                #row=df.iloc[generation]
                 
                 t50, t90 = row['t50'], row['t90']
                 f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
-                x = np.clip(df.index - year, 0, np.inf)
+                x = np.clip(df.index - generation, 0, np.inf)
                 cdf = list(map(f, x))
                 pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
 
@@ -196,7 +196,7 @@ class Simulation:
                         activeareaprev = activearea                            
                         activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repairing']))
                         areadisposed_failure.append(activeareaprev-activearea)
-                        if age == row['mod_lifetime']+year:
+                        if age == row['mod_lifetime']+generation:
                             activearea_temp = activearea
                             activearea = 0+activearea*df.iloc[age]['mod_Repowering']
                             disposed_degradation = activearea_temp-activearea
