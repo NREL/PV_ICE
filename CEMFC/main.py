@@ -14,6 +14,7 @@ import pandas as pd
 import datetime
 import os
 
+
 def read_baseline_material(scenario, material='None', file=None):
     
     if file is None:
@@ -146,14 +147,8 @@ class Simulation:
             
             # Calculating Area and Mass
             df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/irradiance_stc # m^2                
+            df['Area'] = df['Area'].fillna(0) # Chagne na's to 0s.
 
-            # Applying Weibull Disposal Function
-            df['disposal_function'] = [
-            weibull_cdf(**weibull_params({t50: 0.5, t90: 0.9}))
-            for t50, t90
-            in zip(df['t50'], df['t90'])
-            ]
-            
             # Calculating Wast by Generation by Year, and Cumulative Waste by Year.
             Generation_Disposed_byYear = []
             Generation_Active_byYear= []
@@ -173,22 +168,24 @@ class Simulation:
                 f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
                 x = np.clip(df.index - generation, 0, np.inf)
                 cdf = list(map(f, x))
-                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
+#                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
 
                 activearea = row['Area']
+                if np.isnan(activearea):
+                    activearea=0
+                    
                 activeareacount = []
                 areadisposed_failure = []
                 areadisposed_degradation = []
-
+            
                 areapowergen = []
                 active=-1
-                activearea2=0
                 disposed_degradation=0
                 for age in range(len(cdf)):
                     disposed_degradation=0
                     if cdf[age] == 0.0:
                         activeareacount.append(0)
-                        aread isposed_failure.append(0)
+                        areadisposed_failure.append(0)
                         areadisposed_degradation.append(0)
                         areapowergen.append(0)
                     else:
@@ -203,9 +200,20 @@ class Simulation:
                         areadisposed_degradation.append(disposed_degradation)
                         activeareacount.append(activearea)
                         areapowergen.append(activearea*row['mod_eff']*0.01*irradiance_stc*(1-row['mod_degradation']/100)**active)                            
-                        
-                        # m^2 
-#                    area_disposed_of_generation_by_year = [element*row['Area'] for element in pdf]
+                
+                try:
+                    # becuase the clip starts with 0 for the installation year, identifying installation year
+                    # and adding initial area
+                    fixinitialareacount = next((i for i, e in enumerate(x) if e), None) - 1
+                    activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
+                    areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
+                                         row['Area'] * row['mod_eff'] *0.01 * irradiance_stc)
+                except:
+                    print("Issue on initial area fix")
+                    print("gen", generation)
+                    
+            
+            #   area_disposed_of_generation_by_year = [element*row['Area'] for element in pdf]
                 df['Cumulative_Area_disposedby_Failure'] += areadisposed_failure
                 df['Cumulative_Area_disposedby_Degradation'] += areadisposed_degradation
                 df['Cumulative_Area_disposed'] += areadisposed_failure
@@ -216,12 +224,11 @@ class Simulation:
                 Generation_Disposed_byYear.append(areadisposed_failure)
                 Generation_Active_byYear.append(activeareacount)
                 Generation_Power_byYear.append(areapowergen)
-        
-                # Making Table to Show Observations
+            
             FailuredisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
             FailuredisposalbyYear = FailuredisposalbyYear.add_prefix("Failed_on_Year_")
             df = df.join(FailuredisposalbyYear)
-            
+                        
             # In[5]:
             
             self.scenario[scenario].data = df
