@@ -165,8 +165,9 @@ class Simulation:
             df['Cumulative_Active_Area'] = 0
             df['Cumulative_Power_[W]'] = 0
             for year, row in df.iterrows(): 
-                #row=df.iloc[4]
-                #year=row.year  # 1999
+                #year is an int 0,1,2,.... etc.
+                #year=4
+                #row=df.iloc[year]
                 
                 t50, t90 = row['t50'], row['t90']
                 f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
@@ -183,21 +184,21 @@ class Simulation:
                 active=-1
                 activearea2=0
                 disposed_degradation=0
-                for prob in range(len(cdf)):
+                for age in range(len(cdf)):
                     disposed_degradation=0
-                    if cdf[prob] == 0.0:
+                    if cdf[age] == 0.0:
                         activeareacount.append(0)
-                        areadisposed_failure.append(0)
+                        aread isposed_failure.append(0)
                         areadisposed_degradation.append(0)
                         areapowergen.append(0)
                     else:
                         active += 1
                         activeareaprev = activearea                            
-                        activearea = activearea*(1-cdf[prob]*(1-df.iloc[prob]['mod_Repairing']))
+                        activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repairing']))
                         areadisposed_failure.append(activeareaprev-activearea)
-                        if prob == row['mod_lifetime']:
+                        if age == row['mod_lifetime']+year:
                             activearea_temp = activearea
-                            activearea = 0+activearea*df.iloc[prob]['mod_Repowering']
+                            activearea = 0+activearea*df.iloc[age]['mod_Repowering']
                             disposed_degradation = activearea_temp-activearea
                         areadisposed_degradation.append(disposed_degradation)
                         activeareacount.append(activearea)
