@@ -422,6 +422,13 @@ def weibull_cdf(alpha, beta):
         return 1 - np.exp(-(np.array(x)/beta)**alpha)
     return cdf
 
+def weibull_pdf(alpha, beta):
+    '''Return the PDF for a Weibull distribution having:
+        shape parameter `alpha`
+        scale parameter `beta`/'''
+    def pdf(x):
+        return (alpha/np.array(x)) * ((np.array(x)/beta)**alpha) * (np.exp(-(np.array(x)/beta)**alpha))
+    return pdf
 
 
 def sens_StageImprovement(df, stage, improvement=1.3, start_year=None):
