@@ -219,14 +219,21 @@ class Simulation:
                 df['Cumulative_Area_disposed'] += areadisposed_failure
                 df['Cumulative_Area_disposed'] += areadisposed_degradation
                 
+                
                 df['Cumulative_Active_Area'] += activeareacount
                 df['Cumulative_Power_[W]'] += areapowergen
-                Generation_Disposed_byYear.append(areadisposed_failure)
+                Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_degradation)])
                 Generation_Active_byYear.append(activeareacount)
                 Generation_Power_byYear.append(areapowergen)
             
             FailuredisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
             FailuredisposalbyYear = FailuredisposalbyYear.add_prefix("Failed_on_Year_")
+            
+            try:
+                df = df[df.columns.drop(list(df.filter(regex='Failed_on_Year_')))]
+            except:
+                print("First Run")
+            
             df = df.join(FailuredisposalbyYear)
                         
             # In[5]:
