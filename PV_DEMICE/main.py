@@ -214,6 +214,10 @@ class Simulation:
                     # Last value does not have a xclip value of nonzero so it goes
                     # to except. But it also means the loop finished for the calculations
                     # of Lifetime.
+                    fixinitialareacount = len(cdf)-1
+                    activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
+                    areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
+                                         row['Area'] * row['mod_eff'] *0.01 * irradiance_stc)                   
                     print("Finished Area+Power Generation Calculations")
                     
             
