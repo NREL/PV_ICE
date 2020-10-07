@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import datetime
 import os
-
+import matplotlib.pyplot as plt
 
 def read_baseline_material(scenario, material='None', file=None):
     
@@ -376,9 +376,7 @@ class Scenario(Simulation):
             except:
                 raise Exception('Interactive load failed. Tkinter not supported'+
                                 'on this system. Try installing X-Quartz and reloading')
-        
-        # file = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\CEMFC\baselines\baseline_modules_US.csv'
-        
+                
         csvdata = open(str(file), 'r', encoding="UTF-8")
         csvdata = open(str(file), 'r', encoding="UTF-8-sig")
         firstline = csvdata.readline()
@@ -407,8 +405,6 @@ class Material:
             except:
                 raise Exception('Interactive load failed. Tkinter not supported'+
                                 'on this system. Try installing X-Quartz and reloading')
-        
-        # file = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\CEMFC\baselines\baseline_modules_US.csv'
         
         csvdata = open(str(file), 'r', encoding="UTF-8")
         csvdata = open(str(file), 'r', encoding="UTF-8-sig")
