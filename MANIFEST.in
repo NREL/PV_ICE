@@ -1,2 +1,2 @@
 include versioneer.py
-include PV-DEMICE/_version.py
+include PV_DEMICE/_version.py

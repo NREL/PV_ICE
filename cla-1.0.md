@@ -4,25 +4,25 @@ The Contributors License Agreement
 Version 1.0
 -----------
 I agree to contribute to PV Dynamic Energy and Mass In Circular Economy 
-(PV-DEMICE) tool (previously known as Circular Economy - Mass Flow 
+(PV_DEMICE) tool (previously known as Circular Economy - Mass Flow 
 Calculator ("CE-MFC")).
 I agree to the following terms and conditions for my contributions: 
 First, I agree that I am licensing the copyright to my contributions 
-under the terms of the current PV-DEMICE license. 
+under the terms of the current PV_DEMICE license. 
 Second, I agree that, in order to conform to any future open source 
-software license(s) under which PV-DEMICE may be provided, the terms of 
+software license(s) under which PV_DEMICE may be provided, the terms of 
 my copyright license may be modified without any notice to me and 
 without my consent. 
 Third, I hereby grant to Alliance for Sustainable Energy, LLC, 
-to any successor manager and distributor of PV-DEMICE appointed by 
+to any successor manager and distributor of PV_DEMICE appointed by 
 the U.S. Department of Energy, and to all recipients of 
-a version of PV-DEMICE that includes my contributions, a non-exclusive, 
+a version of PV_DEMICE that includes my contributions, a non-exclusive, 
 worldwide, royalty-free, irrevocable patent license under any patent 
 claims owned by me, or owned by my employer and known to me, that 
 are or will be, necessarily infringed upon by my contributions alone, 
-or by combination of my contributions with the version of PV-DEMICE 
+or by combination of my contributions with the version of PV_DEMICE 
 to which they are contributed, to make, have made, use, offer to sell, 
-sell, import, and otherwise transfer any version of PV-DEMICE that 
+sell, import, and otherwise transfer any version of PV_DEMICE that 
 includes my contributions, in source code and object code form. 
 Fourth, I represent and warrant that I am authorized to make the 
 contributions and grant the foregoing license(s). 
