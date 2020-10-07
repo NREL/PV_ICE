@@ -132,7 +132,9 @@ class Simulation:
         
         '''
         for scenario in self.scenario:
-                
+            
+            print("Working on Scenario", scenario)
+            print("*********************")
             df = self.scenario[scenario].data
 
             # Constant
