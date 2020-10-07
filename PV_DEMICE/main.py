@@ -34,7 +34,54 @@ def _interactive_load(title=None):
     root.attributes("-topmost", True) #Bring window into foreground
     return filedialog.askopenfilename(parent=root, title=title) #initialdir = data_dir
 
+def _unitReferences(keyword):
+    '''
+    Specify units for variable in scenario or materials
+    
+    Parameters
+    ----------
+    keyword : str
+       String of scenario or material column label
+    
+    Returns
+    -------
+    yunits : str
+        Unit specific to the keyword provided
+    '''
+    
+    if 'Area' in keyword:
+        yunits = 'Area m$^2$'
+    
+    if 'eff' in keyword:
+        yunits = 'Efficiency $\eta$ [%]'
+    
+    if '[MW]' in keyword:
+        yunits = 'Power [MW]'
+        
+    if '[W]' in keyword:
+        yunits = 'Power [W]'
+    
+    if 'EOL_on_Year_' in keyword:
+        yunits = 'Area m$^2$'
+    
+    if 'EoL_Collected' or 'EoL_NotCollected' in keyword:
+        yunits = 'Area m$^2$'
 
+    if 'EoL_Recycled' or 'EoL_NotRecycled_Landfilled' in keyword:
+        yunits = 'Area m$^2$'
+
+    if 'mod_lifetime' or 't50' or 't90' in keyword:
+        yunits = 'Years'
+    
+    if 'mod_degradation' or 'mod_EOL_collected_recycled' in keyword:
+        yunits = 'Percentage [%]'
+        
+    if 'mod_Repowering' or 'mod_Repairing' in keyword: 
+        yunits = 'Percentage [%]'
+    
+    return yunits
+    
+    
 class Simulation:
     """
     The ScenarioObj top level class is used to work on Circular Economy scenario objects, 
@@ -375,8 +422,56 @@ class Simulation:
                 
                 self.scenario[scen].material[mat].materialdata = dm
 
+    
+    
+    def plotScenariosComparison(self, keyword=None):
+    
+        if keyword is None:
+            scens = list(self.scenario.keys())[0]
+            print("Choose one of the keywords: ", list(self.scenario[scens].data.keys())) 
+            return
+        
+        yunits = _unitReferences(keyword)
+       
+        plt.figure()
+    
+        for scen in self.scenario:
+            plt.plot(self.scenario[scen].data['year'],self.scenario[scen].data[keyword], label=scen)
+        plt.legend()
+        plt.xlabel('Year')
+        plt.title(keyword.replace('_', " "))
+        plt.ylabel(yunits)        
 
 
+
+
+    def plotMaterialComparisonAcrossScenarios(self, material = None, keyword=None):
+    
+        if keyword is None:
+            scens = list(self.scenario.keys())[0]
+            mats = list(self.scenario[scens].material.keys())[0]
+            print("Choose one of the keywords: ",  list(self.scenario[scens].material[mats].materialdata.keys())) 
+            return
+
+        if material is None:
+            scens = list(self.scenario.keys())[0]
+            mats = list(self.scenario[scens].material.keys())
+            print("Choose one of the Materials: ", mats) 
+            return
+        
+        yunits = _unitReferences(keyword)
+
+        plt.figure()
+    
+        for scen in self.scenario:
+            plt.plot(self.scenario[scen].data['year'], self.scenario[scen].material[material].materialdata[keyword], label=scen)
+            plt.legend()
+    
+        plt.xlabel('Year')
+        plt.title((material + ' ' + keyword.replace('_', " ")))
+        plt.ylabel(yunits)    
+        
+        
 class Scenario(Simulation):
     
     def __init__(self, name, file=None):
