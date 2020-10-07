@@ -12,9 +12,9 @@ Contributors License Agreement. It's easy and pretty painless!
    have one.
 
 3. File a pull request on this project (the PV Dynamic Energy and Materials in 
-   Circular Economy (PV-DEMICE) Project), as [outlined below](#filing-the-pull-request).
+   Circular Economy (PV_DEMICE) Project), as [outlined below](#filing-the-pull-request).
 
-4. Email the PV-DEMICE Sourceror, as [outlined below](#sending-the-email).
+4. Email the PV_DEMICE Sourceror, as [outlined below](#sending-the-email).
 
 5. Wait for an Alliance team member to merge your pull request. You may start
    opening pull requests for the project you're contributing to but we will
@@ -75,10 +75,10 @@ That's it!
 Sending the Email
 -----------------
 
-Send an email to PV-DEMICE's official Open Sourceror
+Send an email to PV_DEMICE's official Open Sourceror
 at [silvana.ayala@nrel.gov](mailto:silvana.ayala@nrel.gov), 
 cc-ing [Alberta.Carpenter@nrel.gov](mailto:Alberta.Carpenter@nrel.gov), with
-the subject "CLA PV Dynamic Energy and Materials in Circular Economy (PV-DEMICE)" 
+the subject "CLA PV Dynamic Energy and Materials in Circular Economy (PV_DEMICE)" 
 and the following body:
 
 ```
