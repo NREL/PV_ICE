@@ -106,8 +106,8 @@ df['t50'][1] = df['t50'][0]
 df['t90'][1] = df['t90'][0]
 df['mod_Repairing'] = .30
 df['mod_Repairing'][4] = .90
-df['mod_lifetime'] = 14
-df['mod_Repowering'] = 0
+df['mod_lifetime'] = 14.0
+df['mod_Repowering'] = 0.0
 
 # In[4]:
 #generation is an int 0,1,2,.... etc.
@@ -199,6 +199,126 @@ df = df.join(FailuredisposalbyYear)
 
 # In[5]:
     
-72615.8+500000
 filter_col = [col for col in df if col.startswith('Failed_on_Year_')]
 print(df[filter_col].sum(axis=1))
+
+# In[6]:
+    
+filter_col = [col for col in df if col.startswith('Failed_on_Year_')]
+EOL = df[filter_col]
+df['mod_EOL_collection_eff'] = 80.0 
+df['mod_EOL_collection_eff'][2] = 20.0 
+df['mod_EOL_collected_recycled'] = 50.0
+df['mod_EOL_collected_recycled'][2] = 100.0
+
+
+# This Multiplication pattern goes through Module and then material.
+# It is for processes that depend on each year as they improve, i.e. 
+# Collection Efficiency,
+#
+# [  G1_1   G1_2    G1_3   G2_4 ...]       [N1
+# [    0    G2_1    G2_2   G2_3 ...]   X    N2
+# [    0      0     G3_1   G3_2 ...]        N3
+#                                           N4]
+#
+#      EQUAL
+# EOL_Collected =
+# [  G1_1*N1   G1_2 *N2   G1_3 *N3   G2_4 *N4 ...]
+# [    0       G2_1 *N2   G2_2 *N3   G2_3 *N4 ...]
+# [    0        0         G3_1 *N3   G3_2 *N4 ...]        
+#
+
+EOL_Collected = EOL.mul(df['mod_EOL_collection_eff'].values*0.01)
+df['EoL_Collected'] = list(EOL_Collected.sum())
+landfill_Collection = EOL.mul(1-(df['mod_EOL_collection_eff'].values*0.01)) 
+df['EoL_NotCollected'] = list(landfill_Collection.sum())
+
+EOL_Recycled = EOL_Collected.mul(df['mod_EOL_collected_recycled'].values*0.01)
+df['EoL_Recycled'] = list(EOL_Recycled.sum())
+EOL_NotRecycled_Landfilled = EOL_Collected.mul((1-df['mod_EOL_collected_recycled'].values*0.01))
+df['EoL_NotRecycled_Landfilled'] = list(EOL_NotRecycled_Landfilled.sum())
+
+# MATERIAL LAYER NOW
+
+dm = r1.scenario['standard'].material['glass'].materialdata
+dm['mat_massperm2'] = 10.0
+dm['mat_massperm2'][1] = 0.5
+dm['mat_EOL_collected_Recycled'] = 100.0
+dm['mat_EOL_Recycled_into_HQ'] = 10.0
+
+# SWITCH TO MASS UNITS FOR THE MATERILA NOW:
+# THIS IS DIFFERENT MULTIPLICATION THAN THE REST
+# BECAUSE IT DEPENDS TO THE ORIGINAL MASS OF EACH MODULE WHEN INSTALLED
+# [M1  * [  G1_1   G1_2    G1_3   G2_4 ...]
+#  M2     [    0    G2_1    G2_2   G2_3 ...]
+#  M3]    [    0      0     G3_1   G3_2 ...]
+# 
+#           EQUAL
+# mat_EOL_sentoRecycling = 
+#     [  G1_1*M1   G1_2*M1    G1_3*M1   G2_4*M1 ...]
+#     [    0       G2_1*M2    G2_2*M2   G2_3*M2 ...]
+#     [    0           0      G3_1*M3   G3_2*M3 ...]
+#
+
+mat_modules_EOL_sentoRecycling = EOL_Recycled.multiply(dm['mat_massperm2'], axis=0)
+dm['mat_modules_NotRecycled'] = list(EOL_NotRecycled_Landfilled.multiply(dm['mat_massperm2'], axis=0).sum())
+dm['mat_modules_NotCollected'] = list(landfill_Collection.multiply(dm['mat_massperm2'], axis=0).sum())
+                   
+                                                            
+# mat_EOL_collected_Recycled CHANGE NAME
+# chnge also landfill_material_EOL_NotRecycled_Landfilled 
+mat_EOL_sento_Recycling = mat_modules_EOL_sentoRecycling.mul(dm['mat_EOL_collected_Recycled'].values*0.01)
+dm['mat_EOL_sento_Recycling'] = list(mat_EOL_sento_Recycling.sum())
+landfill_material_EOL_NotRecycled_Landfilled = mat_modules_EOL_sentoRecycling.mul(1-(dm['mat_EOL_collected_Recycled'].values*0.01))
+dm['mat_EOL_NotRecycled_Landfilled'] = list(landfill_material_EOL_NotRecycled_Landfilled.sum())
+
+mat_EOL_Recycled_Succesfully = mat_EOL_sento_Recycling.mul(dm['mat_EOL_collected_Recycled'].values*0.01)
+dm['mat_EOL_Recycled'] = list(mat_EOL_Recycled_Succesfully.sum())
+landfill_material_EOL_Recyled_Losses_Landfilled = mat_EOL_sento_Recycling.mul(1-(dm['mat_EOL_collected_Recycled'].values*0.01))
+dm['mat_EOL_Recycled_Losses_Landfilled'] = list(landfill_material_EOL_Recyled_Losses_Landfilled.sum())
+
+
+mat_EOL_Recycled_HQ = mat_EOL_Recycled_Succesfully.mul(dm['mat_EOL_Recycled_into_HQ'].values*0.01)
+dm['mat_EoL_Recycled_into_HQ'] = list(mat_EOL_Recycled_HQ.sum())
+mat_EOL_Recycled_OQ = mat_EOL_Recycled_Succesfully.mul(1-(dm['mat_EOL_Recycled_into_HQ'].values*0.01))
+dm['mat_EoL_Recycled_into_OQ'] = list(mat_EOL_Recycled_OQ.sum())
+
+mat_EOL_Recycled_HQ_into_MFG = mat_EOL_Recycled_HQ.mul(dm['mat_EOL_RecycledHQ_Reused4MFG'].values*0.01)
+dm['mat_EoL_Recycled_HQ_into_MFG'] = list(mat_EOL_Recycled_HQ_into_MFG.sum())
+mat_EOL_Recycled_HQ_into_OU = mat_EOL_Recycled_HQ.mul(1-(dm['mat_EOL_RecycledHQ_Reused4MFG'].values*0.01))
+dm['mat_EOL_Recycled_HQ_into_OU'] = list(mat_EOL_Recycled_HQ_into_OU.sum())
+
+# BULK Calculations Now
+dm['mat_Manufactured'] = df['Area'] * dm['mat_massperm2']
+dm['mat_Manufacturing_Input'] = dm['mat_Manufactured'] / (dm['material_MFG_eff'] * 0.01)
+dm['mat_MFG_Scrap'] = dm['mat_Manufactured'] - dm['mat_Manufacturing_Input']
+dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_recycled'] * 0.01
+dm['mat_MFG_Scrap_Landfilled'] = dm['mat_MFG_Scrap'] - dm['mat_MFG_Scrap_Sentto_Recycling'] 
+dm['mat_MFG_Scrap_Recycled'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] *
+                                                 dm['mat_MFG_scrap_recycling_eff'] * 0.01)
+dm['mat_MFG_Scrap_Recycled_Losses_Landfilled'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] - 
+                                                          dm['mat_MFG_Scrap_Recycled'])
+dm['mat_MFG_Recycled_into_HQ'] = (dm['mat_MFG_Scrap_Recycled'] * 
+                                        dm['mat_MFG_scrap_Recycled_into_HQ'] * 0.01)
+dm['mat_MFG_Recycled_into_OQ'] = dm['mat_MFG_Scrap_Recycled'] - dm['mat_MFG_Recycled_into_HQ']
+dm['mat_MFG_Recycled_HQ_into_MFG'] = (dm['mat_MFG_Recycled_into_HQ'] * 
+                          dm['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
+dm['mat_MFG_Recycled_HQ_into_OU'] = dm['mat_MFG_Recycled_into_HQ'] - dm['mat_MFG_Recycled_HQ_into_MFG']
+dm['mat_Virgin_Stock'] = dm['mat_Manufacturing_Input'] - dm['mat_EoL_Recycled_HQ_into_MFG'] - dm['mat_MFG_Recycled_HQ_into_MFG']
+ 
+# Add Wastes
+dm['mat_Total_EoL_Landfilled'] = (dm['mat_modules_NotCollected'] + 
+                                  dm['mat_modules_NotRecycled'] +
+                                  dm['mat_EOL_NotRecycled_Landfilled'] +
+                                  dm['mat_EOL_Recycled_Losses_Landfilled'])      
+
+dm['mat_Total_MFG_Landfilled'] = (dm['mat_MFG_Scrap_Landfilled'] + 
+                                 dm['mat_MFG_Scrap_Recycled_Losses_Landfilled'])
+
+dm['mat_Total_Landfilled'] = (dm['mat_Total_EoL_Landfilled'] + 
+                              dm['mat_Total_MFG_Landfilled'])
+
+dm['mat_Total_Recycled_OU'] = (dm['mat_EoL_Recycled_into_OQ'] + 
+                               dm['mat_EOL_Recycled_HQ_into_OU'] + 
+                               dm['mat_MFG_Recycled_into_OQ'] + 
+                               dm['mat_MFG_Recycled_HQ_into_OU'])

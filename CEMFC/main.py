@@ -133,11 +133,9 @@ class Simulation:
         '''
         for scenario in self.scenario:
                 
-#            df = pd.concat([self.scenario[scenario].data, self.scenario[scenario].material[material].materialdata], axis=1, sort=False)
             df = self.scenario[scenario].data
-            # Constants
 
-    # In[4] :
+            # Constant
             irradiance_stc = 1000 # W/m^2
         
             # Renaming and re-scaling
@@ -235,9 +233,40 @@ class Simulation:
                 print("First Run")
             
             df = df.join(FailuredisposalbyYear)
-                        
-            # In[5]:
+
             
+            ## Start to do EOL Processes
+            ############################
+            
+            filter_col = [col for col in df if col.startswith('Failed_on_Year_')]
+            EOL = df[filter_col]
+            
+            # This Multiplication pattern goes through Module and then material.
+            # It is for processes that depend on each year as they improve, i.e. 
+            # Collection Efficiency,
+            #
+            # [  G1_1   G1_2    G1_3   G2_4 ...]       [N1
+            # [    0    G2_1    G2_2   G2_3 ...]   X    N2
+            # [    0      0     G3_1   G3_2 ...]        N3
+            #                                           N4]
+            #
+            #      EQUAL
+            # EOL_Collected =
+            # [  G1_1*N1   G1_2 *N2   G1_3 *N3   G2_4 *N4 ...]
+            # [    0       G2_1 *N2   G2_2 *N3   G2_3 *N4 ...]
+            # [    0        0         G3_1 *N3   G3_2 *N4 ...]        
+            #
+            
+            EOL_Collected = EOL.mul(df['mod_EOL_collection_eff'].values*0.01)
+            df['EoL_Collected'] = list(EOL_Collected.sum())
+            landfill_Collection = EOL.mul(1-(df['mod_EOL_collection_eff'].values*0.01)) 
+            df['EoL_NotCollected'] = list(landfill_Collection.sum())
+            
+            EOL_Recycled = EOL_Collected.mul(df['mod_EOL_collected_recycled'].values*0.01)
+            df['EoL_Recycled'] = list(EOL_Recycled.sum())
+            EOL_NotRecycled_Landfilled = EOL_Collected.mul((1-df['mod_EOL_collected_recycled'].values*0.01))
+            df['EoL_NotRecycled_Landfilled'] = list(EOL_NotRecycled_Landfilled.sum())
+    
             self.scenario[scenario].data = df
             
             # collection losses here
@@ -253,100 +282,86 @@ class Simulation:
 
                 dm = self.scenario[scenario].material[material].materialdata
                 
+                # SWITCH TO MASS UNITS FOR THE MATERILA NOW:
+                # THIS IS DIFFERENT MULTIPLICATION THAN THE REST
+                # BECAUSE IT DEPENDS TO THE ORIGINAL MASS OF EACH MODULE WHEN INSTALLED
+                # [M1  * [  G1_1   G1_2    G1_3   G2_4 ...]
+                #  M2     [    0    G2_1    G2_2   G2_3 ...]
+                #  M3]    [    0      0     G3_1   G3_2 ...]
+                # 
+                #           EQUAL
+                # mat_EOL_sentoRecycling = 
+                #     [  G1_1*M1   G1_2*M1    G1_3*M1   G2_4*M1 ...]
+                #     [    0       G2_1*M2    G2_2*M2   G2_3*M2 ...]
+                #     [    0           0      G3_1*M3   G3_2*M3 ...]
+                #
                 
-#                df = pd.concat([self.scenario[scenario].data, self.scenario[scenario].material[material].materialdata], axis=1, sort=False)
-                # Calculations of Repowering and Adjusted EoL Waste Glass
-                dm['material_Waste'] = df
-                df['EoL_Waste_Glass'] = df['Cumulative_Area_disposedby_Failure'] - df['Repowered_Modules_Glass']
-            
+                mat_modules_EOL_sentoRecycling = EOL_Recycled.multiply(dm['mat_massperm2'], axis=0)
+                dm['mat_modules_NotRecycled'] = list(EOL_NotRecycled_Landfilled.multiply(dm['mat_massperm2'], axis=0).sum())
+                dm['mat_modules_NotCollected'] = list(landfill_Collection.multiply(dm['mat_massperm2'], axis=0).sum())
+                                   
+                                                                            
+                # mat_EOL_collected_Recycled CHANGE NAME
+                # chnge also landfill_material_EOL_NotRecycled_Landfilled 
+                mat_EOL_sento_Recycling = mat_modules_EOL_sentoRecycling.mul(dm['mat_EOL_collected_Recycled'].values*0.01)
+                dm['mat_EOL_sento_Recycling'] = list(mat_EOL_sento_Recycling.sum())
+                landfill_material_EOL_NotRecycled_Landfilled = mat_modules_EOL_sentoRecycling.mul(1-(dm['mat_EOL_collected_Recycled'].values*0.01))
+                dm['mat_EOL_NotRecycled_Landfilled'] = list(landfill_material_EOL_NotRecycled_Landfilled.sum())
                 
-                df['mat_Mass'] = df['Area']*df['mat_massperm2']
+                mat_EOL_Recycled_Succesfully = mat_EOL_sento_Recycling.mul(dm['mat_EOL_collected_Recycled'].values*0.01)
+                dm['mat_EOL_Recycled'] = list(mat_EOL_Recycled_Succesfully.sum())
+                landfill_material_EOL_Recyled_Losses_Landfilled = mat_EOL_sento_Recycling.mul(1-(dm['mat_EOL_collected_Recycled'].values*0.01))
+                dm['mat_EOL_Recycled_Losses_Landfilled'] = list(landfill_material_EOL_Recyled_Losses_Landfilled.sum())
+                
+                
+                mat_EOL_Recycled_HQ = mat_EOL_Recycled_Succesfully.mul(dm['mat_EOL_Recycled_into_HQ'].values*0.01)
+                dm['mat_EoL_Recycled_into_HQ'] = list(mat_EOL_Recycled_HQ.sum())
+                mat_EOL_Recycled_OQ = mat_EOL_Recycled_Succesfully.mul(1-(dm['mat_EOL_Recycled_into_HQ'].values*0.01))
+                dm['mat_EoL_Recycled_into_OQ'] = list(mat_EOL_Recycled_OQ.sum())
+                
+                mat_EOL_Recycled_HQ_into_MFG = mat_EOL_Recycled_HQ.mul(dm['mat_EOL_RecycledHQ_Reused4MFG'].values*0.01)
+                dm['mat_EoL_Recycled_HQ_into_MFG'] = list(mat_EOL_Recycled_HQ_into_MFG.sum())
+                mat_EOL_Recycled_HQ_into_OU = mat_EOL_Recycled_HQ.mul(1-(dm['mat_EOL_RecycledHQ_Reused4MFG'].values*0.01))
+                dm['mat_EOL_Recycled_HQ_into_OU'] = list(mat_EOL_Recycled_HQ_into_OU.sum())
+                
+                # BULK Calculations Now
+                dm['mat_Manufactured'] = df['Area'] * dm['mat_massperm2']
+                dm['mat_Manufacturing_Input'] = dm['mat_Manufactured'] / (dm['material_MFG_eff'] * 0.01)
+                dm['mat_MFG_Scrap'] = dm['mat_Manufactured'] - dm['mat_Manufacturing_Input']
+                dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_recycled'] * 0.01
+                dm['mat_MFG_Scrap_Landfilled'] = dm['mat_MFG_Scrap'] - dm['mat_MFG_Scrap_Sentto_Recycling'] 
+                dm['mat_MFG_Scrap_Recycled'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] *
+                                                                 dm['mat_MFG_scrap_recycling_eff'] * 0.01)
+                dm['mat_MFG_Scrap_Recycled_Losses_Landfilled'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] - 
+                                                                          dm['mat_MFG_Scrap_Recycled'])
+                dm['mat_MFG_Recycled_into_HQ'] = (dm['mat_MFG_Scrap_Recycled'] * 
+                                                        dm['mat_MFG_scrap_Recycled_into_HQ'] * 0.01)
+                dm['mat_MFG_Recycled_into_OQ'] = dm['mat_MFG_Scrap_Recycled'] - dm['mat_MFG_Recycled_into_HQ']
+                dm['mat_MFG_Recycled_HQ_into_MFG'] = (dm['mat_MFG_Recycled_into_HQ'] * 
+                                          dm['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
+                dm['mat_MFG_Recycled_HQ_into_OU'] = dm['mat_MFG_Recycled_into_HQ'] - dm['mat_MFG_Recycled_HQ_into_MFG']
+                dm['mat_Virgin_Stock'] = dm['mat_Manufacturing_Input'] - dm['mat_EoL_Recycled_HQ_into_MFG'] - dm['mat_MFG_Recycled_HQ_into_MFG']
+                 
+                # Add Wastes
+                dm['mat_Total_EoL_Landfilled'] = (dm['mat_modules_NotCollected'] + 
+                                                  dm['mat_modules_NotRecycled'] +
+                                                  dm['mat_EOL_NotRecycled_Landfilled'] +
+                                                  dm['mat_EOL_Recycled_Losses_Landfilled'])      
+                
+                dm['mat_Total_MFG_Landfilled'] = (dm['mat_MFG_Scrap_Landfilled'] + 
+                                                 dm['mat_MFG_Scrap_Recycled_Losses_Landfilled'])
+                
+                dm['mat_Total_Landfilled'] = (dm['mat_Total_EoL_Landfilled'] + 
+                                              dm['mat_Total_MFG_Landfilled'])
+                
+                dm['mat_Total_Recycled_OU'] = (dm['mat_EoL_Recycled_into_OQ'] + 
+                                               dm['mat_EOL_Recycled_HQ_into_OU'] + 
+                                               dm['mat_MFG_Recycled_into_OQ'] + 
+                                               dm['mat_MFG_Recycled_HQ_into_OU'])
+ 
+                
+                self.scenario[scenario].material[material].materialdata = dm
 
-
-                # Installed Capacity
-                df['installedCapacity_glass'] = 0.0
-                df['installedCapacity_glass'][df.index[0]] = ( df['mat_Mass'][df.index[0]] - 
-                                                             df['EoL_Waste_Glass'][df.index[0]] )
-            
-                for i in range (1, len(df)):
-                    year = df.index[i]
-                    prevyear = df.index[i-1]
-                    df['installedCapacity_glass'][year] = (df[f'installedCapacity_glass'][prevyear]+
-                                                           df[f'mat_Mass'][year] - 
-                                                            df['EoL_Waste_Glass'][year] )
-            
-            #    df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/irradiance_stc # m^2
-            #    df['mat_Mass'] = df['Area']*thickness_glass*density_glass
-                df['installedCapacity_MW_glass'] = ( df['installedCapacity_glass'] / (thickness_glass*density_glass) ) *  (df['mod_eff']*0.01) * irradiance_stc / 1e6
-            
-                
-                # Other calculations of the Mass Flow
-            
-                df['EoL_Collected_Glass'] = df['EoL_Waste_Glass']* df['mod_EOL_collection_eff'] * 0.01
-                
-                df['EoL_CollectionLost_Glass'] =  df['EoL_Waste_Glass'] - df['EoL_Collected_Glass']
-            
-            
-                df['EoL_Collected_Recycled'] = df['EoL_Collected_Glass'] * df['mod_EOL_collected_recycled'] * 0.01
-            
-                df['EoL_Collected_Landfilled'] = df['EoL_Collected_Glass'] - df['EoL_Collected_Recycled']
-            
-            
-                df['EoL_Recycled_Succesfully'] = df['EoL_Collected_Recycled'] * df['mat_EOL_Recycling_eff'] * 0.01
-            
-                df['EoL_Recycled_Losses_Landfilled'] = df['EoL_Collected_Recycled'] - df['EoL_Recycled_Succesfully'] 
-            
-                df['EoL_Recycled_into_HQ'] = df['EoL_Recycled_Succesfully'] * df['mat_EOL_Recycled_into_HQ'] * 0.01
-            
-                df['EoL_Recycled_into_Secondary'] = df['EoL_Recycled_Succesfully'] - df['EoL_Recycled_into_HQ']
-            
-                df['EoL_Recycled_HQ_into_MFG'] = (df['EoL_Recycled_into_HQ'] * 
-                                                                  df['mat_EOL_RecycledHQ_Reused4MFG'] * 0.01)
-            
-                df['EoL_Recycled_HQ_into_OtherUses'] = df['EoL_Recycled_into_HQ'] - df['EoL_Recycled_HQ_into_MFG']
-            
-            
-                df['Manufactured_Input'] = df['mat_Mass'] / (df['mat_MFG_eff'] * 0.01)
-            
-                df['MFG_Scrap'] = df['Manufactured_Input'] - df['mat_Mass']
-            
-                df['MFG_Scrap_Recycled'] = df['MFG_Scrap'] * df['mat_MFG_scrap_recycled'] * 0.01
-            
-                df['MFG_Scrap_Landfilled'] = df['MFG_Scrap'] - df['MFG_Scrap_Recycled'] 
-            
-                df['MFG_Scrap_Recycled_Succesfully'] = (df['MFG_Scrap_Recycled'] *
-                                                                 df['mat_MFG_scrap_recycling_eff'] * 0.01)
-            
-                df['MFG_Scrap_Recycled_Losses_Landfilled'] = (df['MFG_Scrap_Recycled'] - 
-                                                                          df['MFG_Scrap_Recycled_Succesfully'])
-            
-                df['MFG_Recycled_into_HQ'] = (df['MFG_Scrap_Recycled_Succesfully'] * 
-                                                        df['mat_MFG_scrap_Recycled_into_HQ'] * 0.01)
-            
-                df['MFG_Recycled_into_Secondary'] = df['MFG_Scrap_Recycled_Succesfully'] - df['MFG_Recycled_into_HQ']
-            
-                df['MFG_Recycled_HQ_into_MFG'] = (df['MFG_Recycled_into_HQ'] * 
-                                          df['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
-            
-                df['MFG_Recycled_HQ_into_OtherUses'] = df['MFG_Recycled_into_HQ'] - df['MFG_Recycled_HQ_into_MFG']
-            
-            
-                df['Virgin_Stock'] = df['Manufactured_Input'] - df['EoL_Recycled_HQ_into_MFG'] - df['MFG_Recycled_HQ_into_MFG']
-            
-                df['Total_EoL_Landfilled_Waste'] = df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled']
-            
-                df['Total_MFG_Landfilled_Waste'] = df['MFG_Scrap_Landfilled'] + df['MFG_Scrap_Recycled_Losses_Landfilled']
-            
-                df['Total_Landfilled_Waste'] = (df['EoL_CollectionLost_Glass'] + df['EoL_Collected_Landfilled'] + df['EoL_Recycled_Losses_Landfilled'] +
-                                                df['Total_MFG_Landfilled_Waste'])
-            
-                df['Total_EoL_Recycled_OtherUses'] = (df['EoL_Recycled_into_Secondary'] + df['EoL_Recycled_HQ_into_OtherUses'] + 
-                                                      df['MFG_Recycled_into_Secondary'] + df['MFG_Recycled_HQ_into_OtherUses'])
-            
-                df['new_Installed_Capacity_[MW]'] = df['new_Installed_Capacity_[W]']/1e6
-            
-                return df
-        
 
 
 class Scenario(Simulation):
@@ -373,7 +388,7 @@ class Scenario(Simulation):
         meta = dict(zip(head, secondline.rstrip('\n').split(",")))
 
         data = pd.read_csv(csvdata, names=head)
-        
+        data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype(float)
         self.baselinefile = file
         self.metdata = meta,
         self.data = data
@@ -404,7 +419,7 @@ class Material:
         meta = dict(zip(head, secondline.rstrip('\n').split(",")))
 
         data = pd.read_csv(csvdata, names=head)
-        
+        data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype(float)
         self.materialfile = file
         self.materialmetdata = meta
         self.materialdata = data
