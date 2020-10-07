@@ -1,3 +1,2 @@
 include versioneer.py
-include CircularEconomy-MassFlowCalculator/_version.py
-include CEMFC/_version.py
+include PV-DEMICE/_version.py

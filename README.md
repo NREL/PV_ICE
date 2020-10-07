@@ -29,11 +29,11 @@
 </table>
 
 
-# CEMFC: Circular Economy - Mass Flow Calculator
+# PV-DEMICE: PV Dynamic Energy and Materials in the Circular Economy TOOL
 
 This open-source tool will help quantify and assign a value framework to efforts on re-design, reduction, replacement, reusage, recycling, and lifetime and reliability increases on PV, implementing Circular Economy metrics for PV materials.
 
-The CE-MFC is leveraging published data from different sources on PV manufacturing and predicted technological changes. Input data is being compiled [here](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing)
+The PV-DEMICE is leveraging published data from different sources on PV manufacturing and predicted technological changes. Input data is being compiled [here](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing)
 
 This tool will help implement circularity metrics, quantify and assign a value framework to efforts on re-design, reduction, replacement, reusage, recycling, and lifetime and reliability increases on PV.
 
@@ -41,7 +41,7 @@ This tool will help implement circularity metrics, quantify and assign a value f
 Documentation
 =============
 
-The calculator follows the following diagram for calculating Mass Flow. Baseline inputs are available in the CEMFC \ baselines folder for US and World past and projected values. Full documentation can be found at [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/latest/).
+The calculator follows the following diagram for calculating Mass Flow. Baseline inputs are available in the PV-DEMICE \ baselines folder for US and World past and projected values. Full documentation can be found at [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/latest/).
 
 <img src="docs/images_wiki/MFC-Diagram.PNG" width="550">
 
@@ -66,13 +66,13 @@ Installation
 ============
 
 CircularEconomy-MassFlowCalculator releases may be installed using the ``pip`` and ``conda`` tools.
-Please see the [Installation page](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/latest/installation.html) of the documentation for complete instructions.
+Please see the [Installation page](http://PV-DEMICE.readthedocs.io/en/latest/installation.html) of the documentation for complete instructions.
 
 CircularEconomy-MassFlowCalculator is compatible with Python 3.5 and above.
 
 Install with:
 
-    pip install CEMFC
+    pip install PV-DEMICE
 
 For developer installation, download the repository, navigate to the folder location and install as:
 
@@ -82,8 +82,8 @@ For developer installation, download the repository, navigate to the folder loca
 Contributing
 ============
 
-We need your help to make CE-MFC a great tool!
-Please see the [Contributing page](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/stable/contributing.html) for more on how you can contribute.
+We need your help to make PV-DEMICE a great tool!
+Please see the [Contributing page](http://PV-DEMICE.readthedocs.io/en/stable/contributing.html) for more on how you can contribute.
 The long-term success of CircularEconomy-MassFlowCalculator requires substantial community support.
 
 
@@ -104,7 +104,7 @@ change something about CF-MFA, then please make an issue on our
 Citing
 ======
 
-If you use CF-MFA in a published work, please cite:
+If you use PV-DEMICE in a published work, please cite:
 
 	Ayala Pelaez, Silvana; Mirletz, Heather; Silverman, Timothy; 
 	Carpenter, Alberta; Barnes, Teresa. “De-fluffing Circular 
@@ -112,6 +112,6 @@ If you use CF-MFA in a published work, please cite:
 	2020 PV Reliability Workshop, Denver CO.
 
 Please also cite the DOI corresponding to the specific version of
-CF-MFA that you used. CF-MFA DOIs are listed at
+PV-DEMICE that you used. PV-DEMICE DOIs are listed at
 [Zenodo.org](https://zenodo.org/)
 
