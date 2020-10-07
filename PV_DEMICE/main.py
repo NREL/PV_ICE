@@ -207,7 +207,7 @@ class Simulation:
             df['Cumulative_Area_disposedby_Degradation'] = 0
             df['Cumulative_Area_disposed'] = 0
             df['Cumulative_Active_Area'] = 0
-            df['Cumulative_Power_[W]'] = 0
+            df['Installed_Capacity_[W]'] = 0
             for generation, row in df.iterrows(): 
                 #generation is an int 0,1,2,.... etc.
                 #generation=4
@@ -276,7 +276,7 @@ class Simulation:
                 
                 
                 df['Cumulative_Active_Area'] += activeareacount
-                df['Cumulative_Power_[W]'] += areapowergen
+                df['Installed_Capacity_[W]'] += areapowergen
                 Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_degradation)])
                 Generation_Active_byYear.append(activeareacount)
                 Generation_Power_byYear.append(areapowergen)
@@ -386,7 +386,7 @@ class Simulation:
                 
                 # BULK Calculations Now
                 dm['mat_Manufactured'] = df['Area'] * dm['mat_massperm2']
-                dm['mat_Manufacturing_Input'] = dm['mat_Manufactured'] / (dm['material_MFG_eff'] * 0.01)
+                dm['mat_Manufacturing_Input'] = dm['mat_Manufactured'] / (dm['mat_MFG_eff'] * 0.01)
                 dm['mat_MFG_Scrap'] = dm['mat_Manufactured'] - dm['mat_Manufacturing_Input']
                 dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_recycled'] * 0.01
                 dm['mat_MFG_Scrap_Landfilled'] = dm['mat_MFG_Scrap'] - dm['mat_MFG_Scrap_Sentto_Recycling'] 
