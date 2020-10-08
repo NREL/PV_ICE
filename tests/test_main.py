@@ -35,11 +35,14 @@ def test_project_lifetime():
     r1.scenario['standard'].addMaterial('glass', file=MATERIALBASELINE)
     failyear = r1.scenario['standard'].data['mod_lifetime'][0] 
     r1.calculateMassFlow()
+
     # Assert all modules go to trash at end of lifetime
     assert r1.scenario['standard'].data['EOL_on_Year_'+str(int(failyear)+1)].iloc[0] == 0
+
     # Assert that since the manufacturing process is perfect, and there is no
     # trash and recycled input on this year, euqlas 0
     mat_massperm2 = r1.scenario['standard'].material['glass'].materialdata['mat_massperm2'].iloc[0]
     assert (r1.scenario['standard'].data['Area'][0]*mat_massperm2-
             r1.scenario['standard'].material['glass'].materialdata['mat_Virgin_Stock'][0]) == 0.0
-    
+
+        
