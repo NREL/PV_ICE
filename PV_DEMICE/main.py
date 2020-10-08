@@ -368,16 +368,16 @@ class Simulation:
                 landfill_material_EOL_NotRecycled_Landfilled = mat_modules_EOL_sentoRecycling.mul(1-(dm['mat_EOL_collected_Recycled'].values*0.01))
                 dm['mat_EOL_NotRecycled_Landfilled'] = list(landfill_material_EOL_NotRecycled_Landfilled.sum())
                 
-                mat_EOL_Recycled_Succesfully = mat_EOL_sento_Recycling.mul(dm['mat_EOL_Recycling_eff'].values*0.01)
+                mat_EOL_Recycled_Succesfully = mat_EOL_sento_Recycling.mul(dm['mat_EOL_collected_Recycled'].values*0.01)
                 dm['mat_EOL_Recycled'] = list(mat_EOL_Recycled_Succesfully.sum())
-                landfill_material_EOL_Recyled_Losses_Landfilled = mat_EOL_sento_Recycling.mul(1-(dm['mat_EOL_Recycling_eff'].values*0.01))
+                landfill_material_EOL_Recyled_Losses_Landfilled = mat_EOL_sento_Recycling.mul(1-(dm['mat_EOL_collected_Recycled'].values*0.01))
                 dm['mat_EOL_Recycled_Losses_Landfilled'] = list(landfill_material_EOL_Recyled_Losses_Landfilled.sum())
                 
                 
                 mat_EOL_Recycled_HQ = mat_EOL_Recycled_Succesfully.mul(dm['mat_EOL_Recycled_into_HQ'].values*0.01)
-                dm['mat_EOL_Recycled_2_HQ'] = list(mat_EOL_Recycled_HQ.sum())
+                dm['mat_EoL_Recycled_into_HQ'] = list(mat_EOL_Recycled_HQ.sum())
                 mat_EOL_Recycled_OQ = mat_EOL_Recycled_Succesfully.mul(1-(dm['mat_EOL_Recycled_into_HQ'].values*0.01))
-                dm['mat_EOL_Recycled_2_OQ'] = list(mat_EOL_Recycled_OQ.sum())
+                dm['mat_EoL_Recycled_into_OQ'] = list(mat_EOL_Recycled_OQ.sum())
                 
                 mat_EOL_Recycled_HQ_into_MFG = mat_EOL_Recycled_HQ.mul(dm['mat_EOL_RecycledHQ_Reused4MFG'].values*0.01)
                 dm['mat_EoL_Recycled_HQ_into_MFG'] = list(mat_EOL_Recycled_HQ_into_MFG.sum())
@@ -390,20 +390,20 @@ class Simulation:
                 dm['mat_MFG_Scrap'] = dm['mat_Manufactured'] - dm['mat_Manufacturing_Input']
                 dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_recycled'] * 0.01
                 dm['mat_MFG_Scrap_Landfilled'] = dm['mat_MFG_Scrap'] - dm['mat_MFG_Scrap_Sentto_Recycling'] 
-                dm['mat_MFG_Scrap_Recycled_Successfully'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] *
+                dm['mat_MFG_Scrap_Recycled'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] *
                                                                  dm['mat_MFG_scrap_recycling_eff'] * 0.01)
                 dm['mat_MFG_Scrap_Recycled_Losses_Landfilled'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] - 
-                                                                          dm['mat_MFG_Scrap_Recycled_Successfully'])
-                dm['mat_MFG_Recycled_into_HQ'] = (dm['mat_MFG_Scrap_Recycled_Successfully'] * 
+                                                                          dm['mat_MFG_Scrap_Recycled'])
+                dm['mat_MFG_Recycled_into_HQ'] = (dm['mat_MFG_Scrap_Recycled'] * 
                                                         dm['mat_MFG_scrap_Recycled_into_HQ'] * 0.01)
-                dm['mat_MFG_Recycled_into_OQ'] = dm['mat_MFG_Scrap_Recycled_Successfully'] - dm['mat_MFG_Recycled_into_HQ']
+                dm['mat_MFG_Recycled_into_OQ'] = dm['mat_MFG_Scrap_Recycled'] - dm['mat_MFG_Recycled_into_HQ']
                 dm['mat_MFG_Recycled_HQ_into_MFG'] = (dm['mat_MFG_Recycled_into_HQ'] * 
                                           dm['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
                 dm['mat_MFG_Recycled_HQ_into_OU'] = dm['mat_MFG_Recycled_into_HQ'] - dm['mat_MFG_Recycled_HQ_into_MFG']
                 dm['mat_Virgin_Stock'] = dm['mat_Manufacturing_Input'] - dm['mat_EoL_Recycled_HQ_into_MFG'] - dm['mat_MFG_Recycled_HQ_into_MFG']
                  
                 # Add Wastes
-                dm['mat_Total_EOL_Landfilled'] = (dm['mat_modules_NotCollected'] + 
+                dm['mat_Total_EoL_Landfilled'] = (dm['mat_modules_NotCollected'] + 
                                                   dm['mat_modules_NotRecycled'] +
                                                   dm['mat_EOL_NotRecycled_Landfilled'] +
                                                   dm['mat_EOL_Recycled_Losses_Landfilled'])      
@@ -411,10 +411,10 @@ class Simulation:
                 dm['mat_Total_MFG_Landfilled'] = (dm['mat_MFG_Scrap_Landfilled'] + 
                                                  dm['mat_MFG_Scrap_Recycled_Losses_Landfilled'])
                 
-                dm['mat_Total_Landfilled'] = (dm['mat_Total_EOL_Landfilled'] + 
+                dm['mat_Total_Landfilled'] = (dm['mat_Total_EoL_Landfilled'] + 
                                               dm['mat_Total_MFG_Landfilled'])
                 
-                dm['mat_Total_Recycled_OU'] = (dm['mat_EOL_Recycled_2_OQ'] + 
+                dm['mat_Total_Recycled_OU'] = (dm['mat_EoL_Recycled_into_OQ'] + 
                                                dm['mat_EOL_Recycled_HQ_into_OU'] + 
                                                dm['mat_MFG_Recycled_into_OQ'] + 
                                                dm['mat_MFG_Recycled_HQ_into_OU'])
