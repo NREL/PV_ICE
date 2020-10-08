@@ -240,15 +240,15 @@ class Simulation:
                     else:
                         active += 1
                         activeareaprev = activearea                            
-                        activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repairing']))
+                        activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repairing']*0.01))
                         areadisposed_failure.append(activeareaprev-activearea)
-                        if age == row['mod_lifetime']+generation:
+                        if age == int(row['mod_lifetime']+generation):
                             activearea_temp = activearea
-                            activearea = 0+activearea*df.iloc[age]['mod_Repowering']
+                            activearea = 0+activearea*(df.iloc[age]['mod_Repowering']*0.01)
                             disposed_degradation = activearea_temp-activearea
                         areadisposed_degradation.append(disposed_degradation)
                         activeareacount.append(activearea)
-                        areapowergen.append(activearea*row['mod_eff']*0.01*irradiance_stc*(1-row['mod_degradation']/100)**active)                            
+                        areapowergen.append(activearea*row['mod_eff']*0.01*irradiance_stc*(1-row['mod_degradation']*0.01)**active)                            
                 
                 try:
                     # becuase the clip starts with 0 for the installation year, identifying installation year
@@ -385,9 +385,9 @@ class Simulation:
                 dm['mat_EOL_Recycled_HQ_into_OU'] = list(mat_EOL_Recycled_HQ_into_OU.sum())
                 
                 # BULK Calculations Now
-                dm['mat_Manufactured'] = df['Area'] * dm['mat_massperm2']
-                dm['mat_Manufacturing_Input'] = dm['mat_Manufactured'] / (dm['mat_MFG_eff'] * 0.01)
-                dm['mat_MFG_Scrap'] = dm['mat_Manufactured'] - dm['mat_Manufacturing_Input']
+                dm['mat_UsedinManufacturing'] = df['Area'] * dm['mat_massperm2']
+                dm['mat_Manufacturing_Input'] = dm['mat_UsedinManufacturing'] / (dm['mat_MFG_eff'] * 0.01)
+                dm['mat_MFG_Scrap'] = dm['mat_Manufacturing_Input'] - dm['mat_UsedinManufacturing']
                 dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_recycled'] * 0.01
                 dm['mat_MFG_Scrap_Landfilled'] = dm['mat_MFG_Scrap'] - dm['mat_MFG_Scrap_Sentto_Recycling'] 
                 dm['mat_MFG_Scrap_Recycled_Successfully'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] *
