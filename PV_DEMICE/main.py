@@ -48,52 +48,8 @@ def _unitReferences(keyword):
     yunits : str
         Unit specific to the keyword provided
     '''
-    
-    '''['year', 'new_Installed_Capacity_[MW]', 'mod_eff', 'mod_reliability_t50',
-       'mod_reliability_t90', 'mod_degradation', 'mod_lifetime', 'mod_MFG_eff',
-       'mod_EOL_collection_eff', 'mod_EOL_collected_recycled',
-       'mod_Repowering', 'mod_Repairing', 'new_Installed_Capacity_[W]', 't50',
-       't90', 'Area', 'Cumulative_Area_disposedby_Failure',
-       'Cumulative_Area_disposedby_Degradation', 'Cumulative_Area_disposed',
-       'Cumulative_Active_Area', 'Installed_Capacity_[W]', 'EOL_on_Year_0',
-       'EOL_on_Year_1', 'EOL_on_Year_2', 'EOL_on_Year_3', 'EOL_on_Year_4',
-       'EOL_on_Year_5', 'EOL_on_Year_6', 'EOL_on_Year_7', 'EOL_on_Year_8',
-       'EOL_on_Year_9', 'EOL_on_Year_10', 'EOL_on_Year_11', 'EOL_on_Year_12',
-       'EOL_on_Year_13', 'EOL_on_Year_14', 'EOL_on_Year_15', 'EOL_on_Year_16',
-       'EOL_on_Year_17', 'EOL_on_Year_18', 'EOL_on_Year_19', 'EOL_on_Year_20',
-       'EOL_on_Year_21', 'EOL_on_Year_22', 'EOL_on_Year_23', 'EOL_on_Year_24',
-       'EOL_on_Year_25', 'EOL_on_Year_26', 'EOL_on_Year_27', 'EOL_on_Year_28',
-       'EOL_on_Year_29', 'EOL_on_Year_30', 'EOL_on_Year_31', 'EOL_on_Year_32',
-       'EOL_on_Year_33', 'EOL_on_Year_34', 'EOL_on_Year_35', 'EOL_on_Year_36',
-       'EOL_on_Year_37', 'EOL_on_Year_38', 'EOL_on_Year_39', 'EOL_on_Year_40',
-       'EOL_on_Year_41', 'EOL_on_Year_42', 'EOL_on_Year_43', 'EOL_on_Year_44',
-       'EOL_on_Year_45', 'EOL_on_Year_46', 'EOL_on_Year_47', 'EOL_on_Year_48',
-       'EOL_on_Year_49', 'EOL_on_Year_50', 'EOL_on_Year_51', 'EOL_on_Year_52',
-       'EOL_on_Year_53', 'EOL_on_Year_54', 'EOL_on_Year_55', 'EoL_Collected',
-       'EoL_NotCollected', 'EoL_Recycled', 'EoL_NotRecycled_Landfilled']
-    
-    ['year', 'mat_virgin_eff', 'mat_massperm2', 'mat_MFG_eff',
-       'mat_MFG_scrap_recycled', 'mat_MFG_scrap_recycling_eff',
-       'mat_MFG_scrap_Recycled_into_HQ',
-       'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG',
-       'mat_EOL_collected_Recycled', 'mat_EOL_Recycling_eff',
-       'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG',
-       'mat_modules_NotRecycled', 'mat_modules_NotCollected',
-       'mat_EOL_sento_Recycling', 'mat_EOL_NotRecycled_Landfilled',
-       'mat_EOL_Recycled', 'mat_EOL_Recycled_Losses_Landfilled',
-       'mat_EOL_Recycled_2_HQ', 'mat_EOL_Recycled_2_OQ',
-       'mat_EoL_Recycled_HQ_into_MFG', 'mat_EOL_Recycled_HQ_into_OU',
-       'mat_UsedinManufacturing', 'mat_Manufacturing_Input', 'mat_MFG_Scrap',
-       'mat_MFG_Scrap_Sentto_Recycling', 'mat_MFG_Scrap_Landfilled',
-       'mat_MFG_Scrap_Recycled_Successfully',
-       'mat_MFG_Scrap_Recycled_Losses_Landfilled', 'mat_MFG_Recycled_into_HQ',
-       'mat_MFG_Recycled_into_OQ', 'mat_MFG_Recycled_HQ_into_MFG',
-       'mat_MFG_Recycled_HQ_into_OU', 'mat_Virgin_Stock',
-       'mat_Total_EOL_Landfilled', 'mat_Total_MFG_Landfilled',
-       'mat_Total_Landfilled', 'mat_Total_Recycled_OU']
-    '''
-    
-    moduleDictionary = {'year': {'unit': {'unit': '', 'source': 'input'},
+
+    moduleDictionary = {'year': {'unit': 'Years', 'source': 'input'},
                         'new_Installed_Capacity_[MW]': {'unit': 'Power [MW]', 'source':'input'},
                         'mod_eff': {'unit': 'Efficiency $\eta$ [%]', 'source':'input'},
                         'mod_reliability_t50': {'unit': 'Years' , 'source':'input'},
@@ -107,7 +63,7 @@ def _unitReferences(keyword):
                         'mod_Repairing': {'unit': 'Percentage [%]', 'source':'input'},
                         'Area': {'unit': 'm$^2$', 'source': 'generated'},
                         'Cumulative_Area_disposedby_Failure': {'unit': 'm$^2$', 'source': 'generated'},
-                        'Cumulative_Area_disposedby_Degradation': {'unit': 'm$^2$', 'source': 'generated'},
+                        'Cumulative_Area_disposedby_ProjectLifetime': {'unit': 'm$^2$', 'source': 'generated'},
                         'Cumulative_Area_disposed': {'unit': 'm$^2$', 'source': 'generated'},
                         'Cumulative_Active_Area': {'unit': 'm$^2$', 'source': 'generated'},
                         'Installed_Capacity_[W]': {'unit': 'Power [W]', 'source': 'generated'},
@@ -170,52 +126,59 @@ def _unitReferences(keyword):
                         'EoL_Collected': {'unit': 'm$^2$', 'source': 'generated'},
                         'EoL_NotCollected': {'unit': 'm$^2$', 'source': 'generated'},
                         'EoL_Recycled': {'unit': 'm$^2$', 'source': 'generated'},
-                        'EoL_NotRecycled_Landfilled': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EoL_NotRecycled_Landfilled': {'unit': 'm$^2$', 'source': 'generated'}
                         }
 
-        materialdictinoary:{'year': {'unit': 'Years', 'source': 'input'},
-                            'mat_virgin_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
-                            'mat_massperm2': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
-                            'mat_MFG_scrap_recycled': {'unit': 'Percentage [%]', 'source': 'input'},
-                            'mat_MFG_scrap_recycling_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
-                            'mat_MFG_scrap_Recycled_into_HQ': {'unit': 'Percentage [%]', 'source': 'input'},
-                            'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': {'unit': 'Percentage [%]', 'source': 'input'},
-                            'mat_EOL_collected_Recycled': {'unit': 'Percentage [%]', 'source': 'input'},
-                            'mat_EOL_Recycling_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
-                            'mat_EOL_Recycled_into_HQ': {'unit': 'Percentage [%]', 'source': 'input'},
-                            'mat_EOL_RecycledHQ_Reused4MFG': {'unit': 'Percentage [%]', 'source': 'input'},
-                            'mat_modules_NotRecycled': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_modules_NotCollected': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_EOL_sento_Recycling': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_EOL_NotRecycled_Landfilled': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_EOL_Recycled': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_EOL_Recycled_Losses_Landfilled': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_EOL_Recycled_2_HQ': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_EOL_Recycled_2_OQ': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_EoL_Recycled_HQ_into_MFG': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_EOL_Recycled_HQ_into_OU': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_UsedinManufacturing': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_Manufacturing_Input': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_Scrap': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_Scrap_Sentto_Recycling': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_Scrap_Landfilled': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_Scrap_Recycled_Successfully': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_Scrap_Recycled_Losses_Landfilled': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_Recycled_into_HQ': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_Recycled_into_OQ': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_Recycled_HQ_into_MFG': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_MFG_Recycled_HQ_into_OU': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_Virgin_Stock': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_Total_EOL_Landfilled': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_Total_MFG_Landfilled': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_Total_Landfilled': {'unit': 'Mass [g]', 'source': 'input'},
-                            'mat_Total_Recycled_OU': {'unit': 'Mass [g]', 'source': 'input'}
-                            }
-    yunits = 'Units'
-        #TODO: change names on materialinputs: to caps: word Scrap, mat_MFG_scrap_recycling_eff, mat_MFG_scrap_recycling_eff'
-        
+    materialDictionary={'year': {'unit': 'Years', 'source': 'input'},
+                        'mat_virgin_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
+                        'mat_massperm2': {'unit': 'Mass [g]', 'source': 'input'},
+                        'mat_MFG_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
+                        'mat_MFG_scrap_recycled': {'unit': 'Percentage [%]', 'source': 'input'},
+                        'mat_MFG_scrap_Recycled': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
+                        'mat_MFG_scrap_Recycled_into_HQ': {'unit': 'Percentage [%]', 'source': 'input'},
+                        'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': {'unit': 'Percentage [%]', 'source': 'input'},
+                        'mat_EOL_collected_Recycled': {'unit': 'Percentage [%]', 'source': 'input'},
+                        'mat_EOL_Recycling_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
+                        'mat_EOL_Recycled_into_HQ': {'unit': 'Percentage [%]', 'source': 'input'},
+                        'mat_EOL_RecycledHQ_Reused4MFG': {'unit': 'Percentage [%]', 'source': 'input'},
+                        'mat_modules_NotRecycled': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_modules_NotCollected': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_EOL_sento_Recycling': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_EOL_NotRecycled_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_EOL_Recycled': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_EOL_Recycled_Losses_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_EOL_Recycled_2_HQ': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_EOL_Recycled_2_OQ': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_EoL_Recycled_HQ_into_MFG': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_EOL_Recycled_HQ_into_OU': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_UsedinManufacturing': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_Manufacturing_Input': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_MFG_Scrap': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_MFG_Scrap_Sentto_Recycling': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_MFG_Scrap_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_MFG_Scrap_Recycled_Successfully': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_MFG_Scrap_Recycled_Losses_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_MFG_Recycled_into_HQ': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_MFG_Recycled_into_OQ': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_MFG_Recycled_HQ_into_MFG': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_MFG_Recycled_HQ_into_OU': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_Virgin_Stock': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_Total_EOL_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_Total_MFG_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_Total_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_Total_Recycled_OU': {'unit': 'Mass [g]', 'source': 'generated'}
+                        }
     
+
+    if keyword in moduleDictionary.keys():
+      yunits = moduleDictionary[keyword]['unit']
+    elif keyword in materialDictionary.keys():
+        yunits = materialDictionary[keyword]['unit']
+    else:
+        print("Warning: Keyword / Units not Found")
+        yunits =  'UNITS'
+    yunits = 'UNITS'
+     
     return yunits
     
     
@@ -341,7 +304,7 @@ class Simulation:
             Generation_Power_byYear = []
 
             df['Cumulative_Area_disposedby_Failure'] = 0
-            df['Cumulative_Area_disposedby_Degradation'] = 0
+            df['Cumulative_Area_disposedby_ProjectLifetime'] = 0
             df['Cumulative_Area_disposed'] = 0
             df['Cumulative_Active_Area'] = 0
             df['Installed_Capacity_[W]'] = 0
@@ -362,17 +325,17 @@ class Simulation:
                     
                 activeareacount = []
                 areadisposed_failure = []
-                areadisposed_degradation = []
+                areadisposed_projectlifetime = []
             
                 areapowergen = []
                 active=-1
-                disposed_degradation=0
+                disposed_projectlifetime=0
                 for age in range(len(cdf)):
-                    disposed_degradation=0
+                    disposed_projectlifetime=0
                     if cdf[age] == 0.0:
                         activeareacount.append(0)
                         areadisposed_failure.append(0)
-                        areadisposed_degradation.append(0)
+                        areadisposed_projectlifetime.append(0)
                         areapowergen.append(0)
                     else:
                         active += 1
@@ -382,8 +345,8 @@ class Simulation:
                         if age == int(row['mod_lifetime']+generation):
                             activearea_temp = activearea
                             activearea = 0+activearea*(df.iloc[age]['mod_Repowering']*0.01)
-                            disposed_degradation = activearea_temp-activearea
-                        areadisposed_degradation.append(disposed_degradation)
+                            disposed_projectlifetime = activearea_temp-activearea
+                        areadisposed_projectlifetime.append(disposed_projectlifetime)
                         activeareacount.append(activearea)
                         areapowergen.append(activearea*row['mod_eff']*0.01*irradiance_stc*(1-row['mod_degradation']*0.01)**active)                            
                 
@@ -407,19 +370,19 @@ class Simulation:
             
             #   area_disposed_of_generation_by_year = [element*row['Area'] for element in pdf]
                 df['Cumulative_Area_disposedby_Failure'] += areadisposed_failure
-                df['Cumulative_Area_disposedby_Degradation'] += areadisposed_degradation
+                df['Cumulative_Area_disposedby_ProjectLifetime'] += areadisposed_projectlifetime
                 df['Cumulative_Area_disposed'] += areadisposed_failure
-                df['Cumulative_Area_disposed'] += areadisposed_degradation
+                df['Cumulative_Area_disposed'] += areadisposed_projectlifetime
                 
                 
                 df['Cumulative_Active_Area'] += activeareacount
                 df['Installed_Capacity_[W]'] += areapowergen
-                Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_degradation)])
+                Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_projectlifetime)])
                 Generation_Active_byYear.append(activeareacount)
                 Generation_Power_byYear.append(areapowergen)
             
-            FailuredisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
-            FailuredisposalbyYear = FailuredisposalbyYear.add_prefix("EOL_on_Year_")
+            MatrixDisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
+            MatrixDisposalbyYear = MatrixDisposalbyYear.add_prefix("EOL_on_Year_")
             
             try:
                 df = df[df.columns.drop(list(df.filter(regex='EOL_on_Year_')))]
@@ -427,7 +390,7 @@ class Simulation:
                 print("Warning: Issue dropping EOL columns generated by " \
                       "calculateMFC routine to overwrite")
             
-            df = df.join(FailuredisposalbyYear)
+            df = df.join(MatrixDisposalbyYear)
 
             
             ## Start to do EOL Processes
@@ -528,10 +491,10 @@ class Simulation:
                 dm['mat_UsedinManufacturing'] = df['Area'] * dm['mat_massperm2']
                 dm['mat_Manufacturing_Input'] = dm['mat_UsedinManufacturing'] / (dm['mat_MFG_eff'] * 0.01)
                 dm['mat_MFG_Scrap'] = dm['mat_Manufacturing_Input'] - dm['mat_UsedinManufacturing']
-                dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_recycled'] * 0.01
+                dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_Recycled'] * 0.01
                 dm['mat_MFG_Scrap_Landfilled'] = dm['mat_MFG_Scrap'] - dm['mat_MFG_Scrap_Sentto_Recycling'] 
                 dm['mat_MFG_Scrap_Recycled_Successfully'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] *
-                                                                 dm['mat_MFG_scrap_recycling_eff'] * 0.01)
+                                                                 dm['mat_MFG_scrap_Recycling_eff'] * 0.01)
                 dm['mat_MFG_Scrap_Recycled_Losses_Landfilled'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] - 
                                                                           dm['mat_MFG_Scrap_Recycled_Successfully'])
                 dm['mat_MFG_Recycled_into_HQ'] = (dm['mat_MFG_Scrap_Recycled_Successfully'] * 
@@ -718,7 +681,7 @@ def sens_StageImprovement(df, stage, improvement=1.3, start_year=None):
     stage : str
         Stage that wants to be modified. This can be any of the module or 
         material specified values, for example:'MFG_Material_eff', 
-        'mat_MFG_scrap_recycled', 'mat_MFG_scrap_recycling_eff', 
+        'mat_MFG_scrap_recycled', 'mat_MFG_scrap_Recycled', 
         'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
         'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
         'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
@@ -760,7 +723,7 @@ def sens_StageEfficiency(df, stage, target_eff = 95.0, start_year = None,
     stage : str
         Stage that wants to be modified. This can be any of the module or 
         material specified efficiencies, for example:'MFG_Material_eff', 
-        'mat_MFG_scrap_recycled', 'mat_MFG_scrap_recycling_eff', 
+        'mat_MFG_scrap_recycled', 'mat_MFG_scrap_Recycled', 
         'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
         'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
         'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
