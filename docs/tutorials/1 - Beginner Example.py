@@ -83,10 +83,10 @@ r1.calculateMassFlow()
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 
 
-# In[7]:
+# In[8]:
 
 
-r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_EoL_Recycled_into_HQ')
+r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_EOL_Recycled_2_HQ')
 
 
 # In[ ]:
