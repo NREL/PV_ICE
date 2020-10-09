@@ -177,7 +177,6 @@ def _unitReferences(keyword):
     else:
         print("Warning: Keyword / Units not Found")
         yunits =  'UNITS'
-    yunits = 'UNITS'
      
     return yunits
     
