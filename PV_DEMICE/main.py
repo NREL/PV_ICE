@@ -49,35 +49,172 @@ def _unitReferences(keyword):
         Unit specific to the keyword provided
     '''
     
-    if 'Area' in keyword:
-        yunits = 'Area m$^2$'
+    '''['year', 'new_Installed_Capacity_[MW]', 'mod_eff', 'mod_reliability_t50',
+       'mod_reliability_t90', 'mod_degradation', 'mod_lifetime', 'mod_MFG_eff',
+       'mod_EOL_collection_eff', 'mod_EOL_collected_recycled',
+       'mod_Repowering', 'mod_Repairing', 'new_Installed_Capacity_[W]', 't50',
+       't90', 'Area', 'Cumulative_Area_disposedby_Failure',
+       'Cumulative_Area_disposedby_Degradation', 'Cumulative_Area_disposed',
+       'Cumulative_Active_Area', 'Installed_Capacity_[W]', 'EOL_on_Year_0',
+       'EOL_on_Year_1', 'EOL_on_Year_2', 'EOL_on_Year_3', 'EOL_on_Year_4',
+       'EOL_on_Year_5', 'EOL_on_Year_6', 'EOL_on_Year_7', 'EOL_on_Year_8',
+       'EOL_on_Year_9', 'EOL_on_Year_10', 'EOL_on_Year_11', 'EOL_on_Year_12',
+       'EOL_on_Year_13', 'EOL_on_Year_14', 'EOL_on_Year_15', 'EOL_on_Year_16',
+       'EOL_on_Year_17', 'EOL_on_Year_18', 'EOL_on_Year_19', 'EOL_on_Year_20',
+       'EOL_on_Year_21', 'EOL_on_Year_22', 'EOL_on_Year_23', 'EOL_on_Year_24',
+       'EOL_on_Year_25', 'EOL_on_Year_26', 'EOL_on_Year_27', 'EOL_on_Year_28',
+       'EOL_on_Year_29', 'EOL_on_Year_30', 'EOL_on_Year_31', 'EOL_on_Year_32',
+       'EOL_on_Year_33', 'EOL_on_Year_34', 'EOL_on_Year_35', 'EOL_on_Year_36',
+       'EOL_on_Year_37', 'EOL_on_Year_38', 'EOL_on_Year_39', 'EOL_on_Year_40',
+       'EOL_on_Year_41', 'EOL_on_Year_42', 'EOL_on_Year_43', 'EOL_on_Year_44',
+       'EOL_on_Year_45', 'EOL_on_Year_46', 'EOL_on_Year_47', 'EOL_on_Year_48',
+       'EOL_on_Year_49', 'EOL_on_Year_50', 'EOL_on_Year_51', 'EOL_on_Year_52',
+       'EOL_on_Year_53', 'EOL_on_Year_54', 'EOL_on_Year_55', 'EoL_Collected',
+       'EoL_NotCollected', 'EoL_Recycled', 'EoL_NotRecycled_Landfilled']
     
-    if 'eff' in keyword:
-        yunits = 'Efficiency $\eta$ [%]'
+    ['year', 'mat_virgin_eff', 'mat_massperm2', 'mat_MFG_eff',
+       'mat_MFG_scrap_recycled', 'mat_MFG_scrap_recycling_eff',
+       'mat_MFG_scrap_Recycled_into_HQ',
+       'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG',
+       'mat_EOL_collected_Recycled', 'mat_EOL_Recycling_eff',
+       'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG',
+       'mat_modules_NotRecycled', 'mat_modules_NotCollected',
+       'mat_EOL_sento_Recycling', 'mat_EOL_NotRecycled_Landfilled',
+       'mat_EOL_Recycled', 'mat_EOL_Recycled_Losses_Landfilled',
+       'mat_EOL_Recycled_2_HQ', 'mat_EOL_Recycled_2_OQ',
+       'mat_EoL_Recycled_HQ_into_MFG', 'mat_EOL_Recycled_HQ_into_OU',
+       'mat_UsedinManufacturing', 'mat_Manufacturing_Input', 'mat_MFG_Scrap',
+       'mat_MFG_Scrap_Sentto_Recycling', 'mat_MFG_Scrap_Landfilled',
+       'mat_MFG_Scrap_Recycled_Successfully',
+       'mat_MFG_Scrap_Recycled_Losses_Landfilled', 'mat_MFG_Recycled_into_HQ',
+       'mat_MFG_Recycled_into_OQ', 'mat_MFG_Recycled_HQ_into_MFG',
+       'mat_MFG_Recycled_HQ_into_OU', 'mat_Virgin_Stock',
+       'mat_Total_EOL_Landfilled', 'mat_Total_MFG_Landfilled',
+       'mat_Total_Landfilled', 'mat_Total_Recycled_OU']
+    '''
     
-    if '[MW]' in keyword:
-        yunits = 'Power [MW]'
-        
-    if '[W]' in keyword:
-        yunits = 'Power [W]'
-    
-    if 'EOL_on_Year_' in keyword:
-        yunits = 'Area m$^2$'
-    
-    if 'EoL_Collected' or 'EoL_NotCollected' in keyword:
-        yunits = 'Area m$^2$'
+    moduleDictionary = {'year': {'unit': {'unit': '', 'source': 'input'},
+                        'new_Installed_Capacity_[MW]': {'unit': 'Power [MW]', 'source':'input'},
+                        'mod_eff': {'unit': 'Efficiency $\eta$ [%]', 'source':'input'},
+                        'mod_reliability_t50': {'unit': 'Years' , 'source':'input'},
+                        'mod_reliability_t90': {'unit': 'Years', 'source':'input'},
+                        'mod_degradation': {'unit': 'Percentage [%]', 'source':'input'},
+                        'mod_lifetime': {'unit': 'Years', 'source':'input'},
+                        'mod_MFG_eff': {'unit': 'Efficiency $\eta$ [%]', 'source':'input'},
+                        'mod_EOL_collection_eff': {'unit': 'Efficiency $\eta$ [%]', 'source':'input'},
+                        'mod_EOL_collected_recycled': {'unit': 'Percentage [%]', 'source':'input'},
+                        'mod_Repowering': {'unit': 'Percentage [%]', 'source':'input'},
+                        'mod_Repairing': {'unit': 'Percentage [%]', 'source':'input'},
+                        'Area': {'unit': 'm$^2$', 'source': 'generated'},
+                        'Cumulative_Area_disposedby_Failure': {'unit': 'm$^2$', 'source': 'generated'},
+                        'Cumulative_Area_disposedby_Degradation': {'unit': 'm$^2$', 'source': 'generated'},
+                        'Cumulative_Area_disposed': {'unit': 'm$^2$', 'source': 'generated'},
+                        'Cumulative_Active_Area': {'unit': 'm$^2$', 'source': 'generated'},
+                        'Installed_Capacity_[W]': {'unit': 'Power [W]', 'source': 'generated'},
+                        'EOL_on_Year_0': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_1': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_2': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_3': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_4': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_5': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_6': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_7': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_8': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_9': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_10': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_11': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_12': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_13': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_14': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_15': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_16': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_17': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_18': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_19': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_20': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_21': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_22': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_23': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_24': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_25': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_26': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_27': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_28': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_29': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_30': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_31': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_32': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_33': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_34': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_35': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_36': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_37': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_38': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_39': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_40': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_41': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_42': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_43': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_44': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_45': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_46': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_47': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_48': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_49': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_50': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_51': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_52': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_53': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_54': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_on_Year_55': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EoL_Collected': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EoL_NotCollected': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EoL_Recycled': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EoL_NotRecycled_Landfilled': {'unit': 'm$^2$', 'source': 'generated'},
+                        }
 
-    if 'EoL_Recycled' or 'EoL_NotRecycled_Landfilled' in keyword:
-        yunits = 'Area m$^2$'
-
-    if 'mod_lifetime' or 't50' or 't90' in keyword:
-        yunits = 'Years'
+        materialdictinoary:{'year': {'unit': 'Years', 'source': 'input'},
+                            'mat_virgin_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
+                            'mat_massperm2': {'unit': 'Mass [g]', 'source': 'input'},
+                            'mat_MFG_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
+                            'mat_MFG_scrap_recycled': {'unit': 'Percentage [%]', 'source': 'input'},
+                            'mat_MFG_scrap_recycling_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
+                            'mat_MFG_scrap_Recycled_into_HQ': {'unit': 'Percentage [%]', 'source': 'input'},
+                            'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': {'unit': 'Percentage [%]', 'source': 'input'},
+                            'mat_EOL_collected_Recycled': {'unit': 'Percentage [%]', 'source': 'input'},
+                            'mat_EOL_Recycling_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
+                            'mat_EOL_Recycled_into_HQ': {'unit': 'Percentage [%]', 'source': 'input'},
+                            'mat_EOL_RecycledHQ_Reused4MFG': {'unit': 'Percentage [%]', 'source': 'input'},
+                            'mat_modules_NotRecycled': {'unit': '', 'source': 'input'},
+                            'mat_modules_NotCollected': {'unit': '', 'source': 'input'},
+                            'mat_EOL_sento_Recycling': {'unit': '', 'source': 'input'},
+                            'mat_EOL_NotRecycled_Landfilled': {'unit': '', 'source': 'input'},
+                            'mat_EOL_Recycled': {'unit': '', 'source': 'input'},
+                            'mat_EOL_Recycled_Losses_Landfilled': {'unit': '', 'source': 'input'},
+                            'mat_EOL_Recycled_2_HQ': {'unit': '', 'source': 'input'},
+                            'mat_EOL_Recycled_2_OQ': {'unit': '', 'source': 'input'},
+                            'mat_EoL_Recycled_HQ_into_MFG': {'unit': '', 'source': 'input'},
+                            'mat_EOL_Recycled_HQ_into_OU': {'unit': '', 'source': 'input'},
+                            'mat_UsedinManufacturing': {'unit': '', 'source': 'input'},
+                            'mat_Manufacturing_Input': {'unit': '', 'source': 'input'},
+                            'mat_MFG_Scrap': {'unit': '', 'source': 'input'},
+                            'mat_MFG_Scrap_Sentto_Recycling': {'unit': '', 'source': 'input'},
+                            'mat_MFG_Scrap_Landfilled': {'unit': '', 'source': 'input'},
+                            'mat_MFG_Scrap_Recycled_Successfully': {'unit': '', 'source': 'input'},
+                            'mat_MFG_Scrap_Recycled_Losses_Landfilled': {'unit': '', 'source': 'input'},
+                            'mat_MFG_Recycled_into_HQ': {'unit': '', 'source': 'input'},
+                            'mat_MFG_Recycled_into_OQ': {'unit': '', 'source': 'input'},
+                            'mat_MFG_Recycled_HQ_into_MFG': {'unit': '', 'source': 'input'},
+                            'mat_MFG_Recycled_HQ_into_OU': {'unit': '', 'source': 'input'},
+                            'mat_Virgin_Stock': {'unit': '', 'source': 'input'},
+                            'mat_Total_EOL_Landfilled': {'unit': '', 'source': 'input'},
+                            'mat_Total_MFG_Landfilled': {'unit': '', 'source': 'input'},
+                            'mat_Total_Landfilled': {'unit': '', 'source': 'input'},
+                            'mat_Total_Recycled_OU': 'Years', 'source': 'input'}
+                            }
     
-    if 'mod_degradation' or 'mod_EOL_collected_recycled' in keyword:
-        yunits = 'Percentage [%]'
+        #TODO: change names on materialinputs: to caps: word Scrap, mat_MFG_scrap_recycling_eff, mat_MFG_scrap_recycling_eff'
         
-    if 'mod_Repowering' or 'mod_Repairing' in keyword: 
-        yunits = 'Percentage [%]'
     
     return yunits
     
@@ -325,6 +462,9 @@ class Simulation:
             EOL_NotRecycled_Landfilled = EOL_Collected.mul((1-df['mod_EOL_collected_recycled'].values*0.01))
             df['EoL_NotRecycled_Landfilled'] = list(EOL_NotRecycled_Landfilled.sum())
     
+            # Cleanup of internal renaming and internal use columns
+            df.drop(['new_Installed_Capacity_[W]', 't50', 't90'], axis = 1, inplace=True) 
+            
             self.scenario[scen].data = df
             
             # collection losses here
