@@ -9,7 +9,7 @@
 
 # The mass of silicon contained in a PV module is dependent on the size, thickness and number of cells in an average module. Since there is a range of sizes and number of cells per module, we will attempt a weighted average. These weighted averages are based on ITRPV data, which goes back to 2010, Fraunhofer data back to 1990, and 
 
-# In[113]:
+# In[41]:
 
 
 import numpy as np
@@ -26,7 +26,7 @@ density_si = 2.3290 #g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/
 
 # A Fraunhofer report indicates that in 1990, wafers were 400 micron thick, decreasing to the more modern 180 micron thickness by 2008. ITRPVs back to 2010 indicate that 156 mm x 156mm was the standard size wafer through 2015.
 
-# In[114]:
+# In[42]:
 
 
 #weighted average for wafer size 2016 through 2030
@@ -37,7 +37,7 @@ wafer2016avg = 0.9*wafer2016mcsi + 0.1*wafer2016monosi
 print("Average Wafer size in 2016 was", wafer2016avg, "cm on a side")
 
 
-# In[133]:
+# In[43]:
 
 
 #now lets try to do this for 2019 through 2030 all at once with dataframes
@@ -45,7 +45,7 @@ print("Average Wafer size in 2016 was", wafer2016avg, "cm on a side")
 
 #first we input the market share data for mcSi and monoSi, read in from csv
 cwd = os.getcwd() #grabs current working directory
-mrktshr_cellsize = pd.read_csv(cwd+"/../../CEMFC/baselines/SupportingMaterial/MarketShare_CellSize.csv", index_col='Year')
+mrktshr_cellsize = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/MarketShare_CellSize.csv", index_col='Year')
 mrktshr_cellsize /=100 #turn whole numbers into decimal percentages
 #print(mrktshr_cellsize)
 
@@ -64,7 +64,7 @@ print(dfmarketshare_monoSi)
 # ----
 # choosing to interpolate market share of different sizes rather than cell size because this should be more basedin technology - i.e. crystals only grow certain sizes. Additionally, it is more helpful to understand the impact silicon usage by keeping cell size and marketshare seperate.
 
-# In[134]:
+# In[44]:
 
 
 #interpolate for missing marketshare data
@@ -81,7 +81,7 @@ print(dfmarketshare_mcSi)
 print(dfmarketshare_monoSi)
 
 
-# In[135]:
+# In[45]:
 
 
 #multiply each marketshare dataframe column by it's respective size
@@ -102,7 +102,7 @@ print(df_scalecell_mcSi)
 print(df_scalecell_monoSi)
 
 
-# In[136]:
+# In[46]:
 
 
 #now add the columns together to get the weighted average cell size for each year for each technology
@@ -122,12 +122,12 @@ print(df_avgcell)
 
 # Next, we apply the marketshare of mc-Si vs mono-Si to get the average cell dimension for the year. Market share of mc-Si vs mono-Si is taken from LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. <5MW, and is from 2002-2018), from Mints 2019 SPV report, from ITRPVs, and old papers (Costello & Rappaport 1980, Maycock 2003 & 2005).
 
-# In[137]:
+# In[47]:
 
 
 #read in a csv that was copied from CE Data google sheet
 cwd = os.getcwd() #grabs current working directory
-techmarketshare = pd.read_csv(cwd+"/../../CEMFC/baselines/SupportingMaterial/ModuleType_MarketShare.csv",index_col='Year')
+techmarketshare = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/ModuleType_MarketShare.csv",index_col='Year')
 #this file path navigates from current working directory back up 2 folders, and over to the csv
 techmarketshare /=100 #turn whole numbers into decimal percentages
 print(techmarketshare)
@@ -135,7 +135,7 @@ print(techmarketshare)
 
 # #### create a harmonization of annual market share, and interpolate
 
-# In[138]:
+# In[48]:
 
 
 # first, create a single value of tech market share in each year or NaN
@@ -152,7 +152,7 @@ labelnames_mcSi = [e[5:] for e in mcSikeys]
 #print(monoSikeys)
 
 
-# In[139]:
+# In[49]:
 
 
 #aggregate all the columns of mono or mcSi into one averaged market share
@@ -179,7 +179,7 @@ plt.xlabel('Year')
 plt.ylabel('Market Share (%)')
 
 
-# In[140]:
+# In[50]:
 
 
 plt.plot(mcSi_cols.index,mcSi_cols[mcSikeys[0]],lw=2,marker='o',label=labelnames_mcSi[0])
@@ -195,7 +195,7 @@ plt.ylabel('Market Share (%)')
 
 # ### Interpolate and Normalize
 
-# In[141]:
+# In[51]:
 
 
 #Interpolate for marketshare NaN values
@@ -216,7 +216,7 @@ plt.ylabel('Market Share (%)')
 #del est_mrktshrs['Total']
 
 
-# In[142]:
+# In[52]:
 
 
 #normalize all marketshares each year to make sure everything adds to 100%
@@ -241,7 +241,7 @@ plt.ylabel('Market Share (%)')
 # ----------
 # Now we have separate mono and mcSi dataframes, which contain the average cell size, based on the market share of the cell size bin as enumerated in ITRPV 2020. The next step is to combine these technology specific (mono vs mc) based on the module technology market share.
 
-# In[143]:
+# In[53]:
 
 
 #now combine technology market share of mcSi and monoSi with their respective average cell dimensions
@@ -265,20 +265,18 @@ plt.xlabel('Year')
 plt.ylabel('Average cell dimension (mm)')
 
 
-# The 2018 data jumps drastically on the cell size to 168 mm. This is likely due to a combination of increasing market share of larger cell sizes for mono beginning in ~2018, AND LBNL recording a large increase in monoSi market share in 2018 (89% monoSi). Mints and ITRPV have a lower monoSi market share at closer to 50:50. It might be reasonable to omit the LBNL data because it is residential market share, rather than utility scale, however, omitting all LBNL data will remove all values 2002 through 2004, and 2006 through 2010.
-
 # Area of a cell
 # -------
 # The above weighted averages are 1 axis dimension of the square cells in a module. Here we create a dataframe of the averge area of a cell for each year.
 
-# In[144]:
+# In[54]:
 
 
 df_cellarea_mm2 = market_average_cell_dims.pow(2,axis='columns') #still in mm^2/cell
 #you cannot multiply the df.columnname by itself and get a dataframe back, but df.pow returns a dataframe
 df_cellarea_mm2.columns = ['avg_cell']
-df_cellarea_m2 = df_cellarea_mm2/1000000 #mm^2 to m^2
-df_cellarea_cm2 = df_cellarea_mm2/10000 #mm^2 to cm^2
+df_cellarea_m2 = df_cellarea_mm2*0.000001 #mm^2 to m^2
+df_cellarea_cm2 = df_cellarea_mm2*0.01 #mm^2 to cm^2
 #print(df_cellarea_m2)
 
 
@@ -288,7 +286,7 @@ df_cellarea_cm2 = df_cellarea_mm2/10000 #mm^2 to cm^2
 # 
 # This # cells/ m^2 of module will be used as a factor in the final calculation of g Si/m^2 module.
 
-# In[145]:
+# In[55]:
 
 
 # calculate # cells/m^2 at this point, rather than using the # cells per module factor
@@ -300,19 +298,19 @@ df_cellperm2 = 1/df_cellarea_m2
 # ---------
 # In addition to the number of cells that fit into 1m^2 of module, we need the weight of silicon per cell. First, the weighted average of wafer thickness was calculated for each year based on wafer trends and module type market share in the CE Data google spreadsheet. This data is read in here.
 
-# In[146]:
+# In[56]:
 
 
 #read in a csv that was copied from CE Data google sheet where the marketshare weighting was done
 cwd = os.getcwd() #grabs current working directory
-wafer_thickness = pd.read_csv(cwd+"/../../CEMFC/baselines/SupportingMaterial/Wafer_thickness.csv",index_col='Year')
+wafer_thickness = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/Wafer_thickness.csv",index_col='Year')
 #this file path navigates from current working directory back up 2 folders, and over to the csv
 #convert micron to cm
 wafer_thick_cm = wafer_thickness/10000 # microns in a cm
 #print(wafer_thick_cm)
 
 
-# In[147]:
+# In[58]:
 
 
 #There are missing data, so we will interpolate linearly for missing years
@@ -322,7 +320,7 @@ wafer_thick_cm = wafer_thick_cm.interpolate(method='linear',axis=0)
 
 # Now multiply the thickness of the cell by the area of the cell to get a cell volume for each year
 
-# In[148]:
+# In[59]:
 
 
 #First, remove 1990 through 1994, to match the size of the cell area df
@@ -338,12 +336,12 @@ df_cell_volume.columns = ['cell_volume_cm3']
 
 # Now we have the volume of the cell in cm^3 for each year, we can bring in the density of Silicon to get a mass of Silicon per cell for each year.
 
-# In[149]:
+# In[60]:
 
 
 df_Simass_percell = df_cell_volume.mul(density_si)
 df_Simass_percell.columns = ['Si_gpercell']
-#print(df_Simass_percell)
+print(df_Simass_percell)
 plt.plot(df_Simass_percell, label='Mass Si per cell (g/cell)')
 #plt.legend()
 plt.title('Mass Silicon per cell annually')
@@ -355,14 +353,14 @@ plt.ylabel('Silicon (grams/cell)')
 
 # Now take the above mass of silicon per cell and multiply it by the factor of number of cells per m^2 of module
 
-# In[154]:
+# In[62]:
 
 
 df_Simass_percell.columns = df_cellperm2.columns = ['Si_g'] #rename to a common name
 df_Simass_perm2 = df_Simass_percell.mul(df_cellperm2, 'columns') #multiply
 #print(df_Simass_perm2)
 #print out to a csv
-df_Simass_perm2.to_csv(cwd+'/../../CEMFC/baselines/SupportingMaterial/si_g_per_m2.csv', index=True)
+df_Simass_perm2.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/si_g_per_m2.csv', index=True)
 
 #make a pretty plot
 plt.plot(df_Simass_perm2, label='Silicon g/m^2 of module')
