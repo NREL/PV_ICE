@@ -13149,7 +13149,12 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>mfg efficiency by kerf loss proxy is calculated by:</p>
 
-<pre><code>        [Wafer Thickness/(Wafer Thickness + Kerf Loss)] * 100 = % mfg efficiency (proxy)</code></pre>
+<pre><code>        [Wafer Thickness/(Wafer Thickness + Kerf Loss)] * 100 = % mfg efficiency (proxy)
+
+</code></pre>
+<p>And the inverse or manufacturing inefficiency should be calculated by:</p>
+
+<pre><code>        [(Wafer Thickness + Kerf Loss)/Wafer Thickness] * 100 = % mfg "inefficeincy"</code></pre>
 
 </div>
 </div>
@@ -13186,13 +13191,43 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry&#39;</span><span class="p">])</span>
 <span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;diamond_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;diamond&#39;</span><span class="p">])</span>
+<span class="c1">#for maths, create the &quot;inefficiency&quot; percentage by slurry and diamond</span>
+<span class="c1">#i.e. this is how much extra material needed to be put in to get out a single wafer unit</span>
+<span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry_ineff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry&#39;</span><span class="p">])</span><span class="o">/</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span>
+<span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;diamond_ineff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;diamond&#39;</span><span class="p">])</span><span class="o">/</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span>
+<span class="c1">#print(df_thick_kerf)</span>
+</pre></div>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">)</span>
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As a reality check, and because we have data for 2017 of both kerf loss and "utilization", we can check how good a proxy kerf loss is for utilization of input material.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#First, multiply the proxy mfg efficiency by the averaged g/cell of silicon (as calculated by &quot;Silicon per m2&quot;)</span>
+<span class="n">check2017_slurry</span> <span class="o">=</span> <span class="p">(</span><span class="n">si_g_percell</span><span class="p">[</span><span class="s1">&#39;Si_gpercell&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry_ineff&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">])</span>
+<span class="n">check2017_diamond</span> <span class="o">=</span> <span class="p">(</span><span class="n">si_g_percell</span><span class="p">[</span><span class="s1">&#39;Si_gpercell&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;diamond_ineff&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">])</span>
+
+<span class="c1">#utilize_gperwafer_raw</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">check2017_slurry</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">check2017_diamond</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13209,49 +13244,8 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>      wafer_thickness  slurry     diamond  slurry_eff  diamond_eff
-Year                                                              
-1990       400.000000     NaN         NaN         NaN          NaN
-1991       392.857143     NaN         NaN         NaN          NaN
-1992       385.714286     NaN         NaN         NaN          NaN
-1993       378.571429     NaN         NaN         NaN          NaN
-1994       371.428571     NaN         NaN         NaN          NaN
-1995       364.285714     NaN         NaN         NaN          NaN
-1996       357.142857     NaN         NaN         NaN          NaN
-1997       350.000000     NaN         NaN         NaN          NaN
-1998       342.857143     NaN         NaN         NaN          NaN
-1999       335.714286     NaN         NaN         NaN          NaN
-2000       328.571429     NaN         NaN         NaN          NaN
-2001       321.428571     NaN         NaN         NaN          NaN
-2002       314.285714     NaN         NaN         NaN          NaN
-2003       307.142857     NaN         NaN         NaN          NaN
-2004       300.000000     NaN         NaN         NaN          NaN
-2005       250.000000     NaN         NaN         NaN          NaN
-2006       200.000000     NaN         NaN         NaN          NaN
-2007       190.000000     NaN         NaN         NaN          NaN
-2008       180.000000     NaN         NaN         NaN          NaN
-2009       180.000000     NaN         NaN         NaN          NaN
-2010       180.000000   155.0         NaN    0.537313          NaN
-2011       180.000000   152.0  148.000000    0.542169     0.548780
-2012       180.000000   160.0  155.000000    0.529412     0.537313
-2013       180.000000   150.0  138.000000    0.545455     0.566038
-2014       180.000000   150.0  130.000000    0.545455     0.580645
-2015       180.000000   150.0  125.000000    0.545455     0.590164
-2016       180.000000   135.0  110.000000    0.571429     0.620690
-2017       180.000000   125.0   85.000000    0.590164     0.679245
-2018       176.408333     NaN   80.000000         NaN     0.687998
-2019       172.666667     NaN   75.000000         NaN     0.697174
-2020       163.183333     NaN   72.727273         NaN     0.691717
-2021       157.741667     NaN   70.454545         NaN     0.691255
-2022       152.300000     NaN   68.181818         NaN     0.690760
-2023       149.633333     NaN   65.909091         NaN     0.694218
-2024       146.966667     NaN   63.636364         NaN     0.697837
-2025       144.272778     NaN   61.363636         NaN     0.701592
-2026       141.578889     NaN   59.090909         NaN     0.705532
-2027       138.885000     NaN   56.818182         NaN     0.709672
-2028       137.573333     NaN   54.545455         NaN     0.716085
-2029       136.261667     NaN   52.272727         NaN     0.722742
-2030       134.950000     NaN   50.000000         NaN     0.729657
+<pre>17.41421407093434
+15.130382717369182
 </pre>
 </div>
 </div>

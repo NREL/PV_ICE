@@ -42,6 +42,10 @@ wafer_thickness = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial
 # mfg efficiency by kerf loss proxy is calculated by:
 #             
 #             [Wafer Thickness/(Wafer Thickness + Kerf Loss)] * 100 = % mfg efficiency (proxy)
+# 
+# And the inverse or manufacturing inefficiency should be calculated by:
+# 
+#             [(Wafer Thickness + Kerf Loss)/Wafer Thickness] * 100 = % mfg "inefficeincy"
 
 # In[14]:
 
@@ -60,13 +64,30 @@ df_thick_kerf = pd.concat([wafer_thick,kerf_loss], axis=1) #concatinate on the c
 
 # Because slurry and diamond have significantly different kerf losses, we will keep these seperate for as long as possible before averaging.
 
-# In[17]:
+# In[31]:
 
 
 df_thick_kerf['slurry_eff'] = df_thick_kerf['wafer_thickness']/(df_thick_kerf['wafer_thickness']+df_thick_kerf['slurry'])
 df_thick_kerf['diamond_eff'] = df_thick_kerf['wafer_thickness']/(df_thick_kerf['wafer_thickness']+df_thick_kerf['diamond'])
+#for maths, create the "inefficiency" percentage by slurry and diamond
+#i.e. this is how much extra material needed to be put in to get out a single wafer unit
+df_thick_kerf['slurry_ineff'] = (df_thick_kerf['wafer_thickness']+df_thick_kerf['slurry'])/df_thick_kerf['wafer_thickness']
+df_thick_kerf['diamond_ineff'] = (df_thick_kerf['wafer_thickness']+df_thick_kerf['diamond'])/df_thick_kerf['wafer_thickness']
+#print(df_thick_kerf)
 
-print(df_thick_kerf)
+
+# As a reality check, and because we have data for 2017 of both kerf loss and "utilization", we can check how good a proxy kerf loss is for utilization of input material.
+
+# In[30]:
+
+
+#First, multiply the proxy mfg efficiency by the averaged g/cell of silicon (as calculated by "Silicon per m2")
+check2017_slurry = (si_g_percell['Si_gpercell'][2017])*(df_thick_kerf['slurry_ineff'][2017])
+check2017_diamond = (si_g_percell['Si_gpercell'][2017])*(df_thick_kerf['diamond_ineff'][2017])
+
+#utilize_gperwafer_raw
+print(check2017_slurry)
+print(check2017_diamond)
 
 
 # ## 2017 through 2030
