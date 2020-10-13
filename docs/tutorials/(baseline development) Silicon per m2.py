@@ -26,17 +26,6 @@ density_si = 2.3290 #g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/
 
 # A Fraunhofer report indicates that in 1990, wafers were 400 micron thick, decreasing to the more modern 180 micron thickness by 2008. ITRPVs back to 2010 indicate that 156 mm x 156mm was the standard size wafer through 2015.
 
-# In[3]:
-
-
-#weighted average for wafer size 2016 through 2030
-#2016
-wafer2016mcsi = (0.90*156 + 0.10*156.75)/100
-wafer2016monosi = (0.55*156 + 0.45*156.75)/100
-wafer2016avg = 0.9*wafer2016mcsi + 0.1*wafer2016monosi
-print("Average Wafer size in 2016 was", wafer2016avg, "cm on a side")
-
-
 # In[4]:
 
 
@@ -355,12 +344,13 @@ df_cell_volume.columns = ['cell_volume_cm3']
 
 # Now we have the volume of the cell in cm^3 for each year, we can bring in the density of Silicon to get a mass of Silicon per cell for each year.
 
-# In[21]:
+# In[25]:
 
 
 df_Simass_percell = df_cell_volume.mul(density_si)
 df_Simass_percell.columns = ['Si_gpercell']
 print(df_Simass_percell)
+df_Simass_percell.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/si_g_per_cell.csv', index=True)
 plt.plot(df_Simass_percell, label='Mass Si per cell (g/cell)')
 #plt.legend()
 plt.title('Mass Silicon per cell annually')
