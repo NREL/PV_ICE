@@ -13136,7 +13136,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now lets try to do this for 2019 through 2030 all at once with dataframes</span>
@@ -13267,7 +13267,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#interpolate for missing marketshare data</span>
@@ -13384,7 +13384,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#multiply each marketshare dataframe column by it&#39;s respective size</span>
@@ -13505,7 +13505,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now add the columns together to get the weighted average cell size for each year for each technology</span>
@@ -13589,7 +13589,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#turn zeros back into NaN</span>
@@ -13691,7 +13691,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#read in a csv that was copied from CE Data google sheet</span>
@@ -13894,7 +13894,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># first, create a single value of tech market share in each year or NaN</span>
@@ -13918,7 +13918,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#aggregate all the columns of mono or mcSi into one averaged market share</span>
@@ -13955,7 +13955,7 @@ Year
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -13987,7 +13987,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mcSi_cols</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">mcSi_cols</span><span class="p">[</span><span class="n">mcSikeys</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">labelnames_mcSi</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -14011,7 +14011,7 @@ Year
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[12]:</div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
 
@@ -14050,7 +14050,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Interpolate for marketshare NaN values</span>
@@ -14081,7 +14081,7 @@ Year
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[13]:</div>
+    <div class="prompt output_prompt">Out[12]:</div>
 
 
 
@@ -14113,7 +14113,7 @@ Year
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#normalize all marketshares each year to make sure everything adds to 100%</span>
@@ -14123,6 +14123,7 @@ Year
 
 <span class="n">scaled_marketshares</span> <span class="o">=</span> <span class="n">est_mrktshrs</span><span class="p">[[</span><span class="s1">&#39;monoSi_scaled&#39;</span><span class="p">,</span><span class="s1">&#39;mcSi_scaled&#39;</span><span class="p">]]</span>
 <span class="n">scaled_marketshares</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;monoSi&#39;</span><span class="p">,</span><span class="s1">&#39;mcSi&#39;</span><span class="p">]</span>
+<span class="n">scaled_marketshares</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s1">&#39;/../../PV_DEMICE/baselines/SupportingMaterial/scaledmrktshr_mcSi_mono.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">scaled_marketshares</span><span class="p">[</span><span class="s1">&#39;Total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaled_marketshares</span><span class="p">[</span><span class="s1">&#39;monoSi&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">scaled_marketshares</span><span class="p">[</span><span class="s1">&#39;mcSi&#39;</span><span class="p">]</span>
 <span class="c1">#print(scaled_marketshares)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scaled_marketshares</span><span class="p">[</span><span class="s1">&#39;monoSi&#39;</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;MonoSi&#39;</span><span class="p">)</span>
@@ -14148,19 +14149,19 @@ Year
 
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>C:\Users\blond\anaconda3\lib\site-packages\ipykernel_launcher.py:8: SettingWithCopyWarning: 
+<pre>C:\Users\blond\anaconda3\lib\site-packages\ipykernel_launcher.py:9: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  
+  if __name__ == &#39;__main__&#39;:
 </pre>
 </div>
 </div>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[14]:</div>
+    <div class="prompt output_prompt">Out[13]:</div>
 
 
 
@@ -14200,7 +14201,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now combine technology market share of mcSi and monoSi with their respective average cell dimensions</span>
@@ -14234,7 +14235,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[15]:</div>
+    <div class="prompt output_prompt">Out[14]:</div>
 
 
 
