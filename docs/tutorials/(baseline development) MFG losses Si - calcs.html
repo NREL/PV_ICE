@@ -13092,7 +13092,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[62]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13110,7 +13110,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[63]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#read in supporting csv files</span>
@@ -13161,7 +13161,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[64]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#There are missing data in wafer thickness, so we will interpolate linearly for missing years</span>
@@ -13191,7 +13191,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[87]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry&#39;</span><span class="p">])</span>
@@ -13218,16 +13218,29 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#First, multiply the proxy mfg efficiency by the averaged g/cell of silicon (as calculated by &quot;Silicon per m2&quot;)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Multiply the proxy mfg efficiency by the averaged g/cell of silicon (as calculated by &quot;Silicon per m2&quot;)</span>
 <span class="n">check2017_slurry</span> <span class="o">=</span> <span class="p">(</span><span class="n">si_g_percell</span><span class="p">[</span><span class="s1">&#39;Si_gpercell&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry_ineff&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">])</span>
 <span class="n">check2017_diamond</span> <span class="o">=</span> <span class="p">(</span><span class="n">si_g_percell</span><span class="p">[</span><span class="s1">&#39;Si_gpercell&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;diamond_ineff&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">])</span>
 
-<span class="c1">#utilize_gperwafer_raw</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">check2017_slurry</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">check2017_diamond</span><span class="p">)</span>
+<span class="c1">#extract ITRPV 2017 values for g/wafer utilization, and compute their mean</span>
+<span class="n">itrpv2017_slurrys</span> <span class="o">=</span> <span class="p">[</span><span class="n">utilize_gperwafer_raw</span><span class="p">[</span><span class="s1">&#39;mc-Si-slurry&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">],</span><span class="n">utilize_gperwafer_raw</span><span class="p">[</span><span class="s1">&#39;mono-Si-slurry&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">]]</span>
+<span class="n">itrpv2017_diamonds</span> <span class="o">=</span> <span class="p">[</span><span class="n">utilize_gperwafer_raw</span><span class="p">[</span><span class="s1">&#39;mc-Si-diamond&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">],</span><span class="n">utilize_gperwafer_raw</span><span class="p">[</span><span class="s1">&#39;Mono-Si-diamond&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">]]</span>
+<span class="n">itrpv2017_slurry</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">itrpv2017_slurrys</span><span class="p">)</span>
+<span class="n">itrpv2017_diamond</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">itrpv2017_diamonds</span><span class="p">)</span>
+
+<span class="c1">#Compare this calculated value to ITRPV value in 2017</span>
+<span class="c1">#print(&quot;In 2017, the calculated silicon utilization for the slurry cut is &quot;,check2017_slurry, </span>
+      <span class="c1">#&quot;g/wafer, and diamond wire cut is&quot;,check2017_diamond, &quot;g/wafer.&quot;)</span>
+<span class="c1">#print(&quot;In comparison, the 2017 ITRPV average silicon utilization for slurry cut is&quot;,itrpv2017_slurry, </span>
+      <span class="c1">#&quot;g/wafer, and diamond wire cut is&quot;, itrpv2017_diamond, &quot;g/wafer.&quot;)</span>
+
+<span class="c1">#Compare in a printed out table, since this is hard to see</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Slurry&#39;</span><span class="p">:[</span><span class="n">check2017_slurry</span><span class="p">,</span><span class="n">itrpv2017_slurry</span><span class="p">],</span><span class="s1">&#39;Diamond&#39;</span><span class="p">:[</span><span class="n">check2017_diamond</span><span class="p">,</span><span class="n">itrpv2017_diamond</span><span class="p">]}</span>
+<span class="n">gperwafer_compare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Calculated&#39;</span><span class="p">,</span><span class="s1">&#39;ITRPV&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gperwafer_compare</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13244,12 +13257,76 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>17.41421407093434
-15.130382717369182
+<pre>               Slurry    Diamond
+Calculated  17.414214  15.130383
+ITRPV       19.125000  16.225000
 </pre>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In both cases, the calculated silicon utilization is less than the ITRPV survey collected data. This is unsurprising because the ITRPV utilization accounts for more than kerf loss (which is the basis for the calculated value). Therefore, we will compute the difference, and use this as a factor to add to all calculated values based on kerf loss alone.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#gperwafer_compared = gperwafer_compare.append(gperwafer_compare.diff())</span>
+<span class="n">gperwafer_compared</span> <span class="o">=</span> <span class="n">gperwafer_compare</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+<span class="c1">#print(gperwafer_compared)</span>
+<span class="n">slurry_factor</span> <span class="o">=</span> <span class="n">gperwafer_compared</span><span class="p">[</span><span class="s1">&#39;Slurry&#39;</span><span class="p">][</span><span class="s1">&#39;ITRPV&#39;</span><span class="p">]</span>
+<span class="n">diamond_factor</span> <span class="o">=</span> <span class="n">gperwafer_compared</span><span class="p">[</span><span class="s1">&#39;Diamond&#39;</span><span class="p">][</span><span class="s1">&#39;ITRPV&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Add &quot;</span><span class="p">,</span> <span class="n">slurry_factor</span><span class="p">,</span> <span class="s2">&quot;to slurry cut wafer values, and &quot;</span><span class="p">,</span> <span class="n">diamond_factor</span><span class="p">,</span> <span class="s2">&quot;to diamond wire cut values.&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Add  1.7107859290656613 to slurry cut wafer values, and  1.0946172826308196 to diamond wire cut values.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Multiply the proxy mfg efficiency by the averaged g/cell of silicon (as calculated by &quot;Silicon per m2&quot;)</span>
+<span class="c1">#and add the 2017 computed factors</span>
+<span class="n">slurry_gpw</span> <span class="o">=</span> <span class="p">(</span><span class="n">si_g_percell</span><span class="p">[</span><span class="s1">&#39;Si_gpercell&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry_ineff&#39;</span><span class="p">])</span><span class="o">+</span> <span class="n">slurry_factor</span>
+<span class="n">diamond_gpw</span> <span class="o">=</span> <span class="p">(</span><span class="n">si_g_percell</span><span class="p">[</span><span class="s1">&#39;Si_gpercell&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;diamond_ineff&#39;</span><span class="p">][</span><span class="mi">2017</span><span class="p">])</span><span class="o">+</span> <span class="n">diamond_factor</span> 
+<span class="c1">#these are now pd.series, need to create a single value based on marketshare of diamond vs slurry</span>
+<span class="c1">#we know slurry was around until 2017, last year of ITRPV slurry cut data</span>
+<span class="c1">#and in 2010, diamond cut isn&#39;t mentioned only slurry</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
