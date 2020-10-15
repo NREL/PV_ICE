@@ -7,7 +7,7 @@
 # 
 # NOTE: You must run Silicon per m2 journal before running this one, as the calculations depend on grams of silicon per cell.
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np
@@ -18,7 +18,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[34]:
+# In[3]:
 
 
 #read in supporting csv files
@@ -49,7 +49,7 @@ marketshare_mono_mc = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMate
 # 
 #             [(Wafer Thickness + Kerf Loss)/Wafer Thickness] * 100 = % mfg "inefficeincy"
 
-# In[3]:
+# In[4]:
 
 
 #There are missing data in wafer thickness, so we will interpolate linearly for missing years
@@ -66,7 +66,7 @@ df_thick_kerf = pd.concat([wafer_thick,kerf_loss], axis=1) #concatinate on the c
 
 # Because slurry and diamond have significantly different kerf losses, we will keep these seperate for as long as possible before averaging.
 
-# In[19]:
+# In[5]:
 
 
 df_thick_kerf['slurry_eff'] = df_thick_kerf['wafer_thickness']/(df_thick_kerf['wafer_thickness']+df_thick_kerf['slurry'])
@@ -75,14 +75,14 @@ df_thick_kerf['diamond_eff'] = df_thick_kerf['wafer_thickness']/(df_thick_kerf['
 #i.e. this is how much extra material needed to be put in to get out a single wafer unit
 df_thick_kerf['slurry_ineff'] = (df_thick_kerf['wafer_thickness']+df_thick_kerf['slurry'])/df_thick_kerf['wafer_thickness']
 df_thick_kerf['diamond_ineff'] = (df_thick_kerf['wafer_thickness']+df_thick_kerf['diamond'])/df_thick_kerf['wafer_thickness']
-print(df_thick_kerf)
+#print(df_thick_kerf)
 
 
 # ### 2017 check - compare kerf loss calc to ITRPV "utilization"
 
 # As a reality check, and because we have data for 2017 of both kerf loss and "utilization", we can check how good a proxy kerf loss is for utilization of input material.
 
-# In[7]:
+# In[6]:
 
 
 #Multiply the proxy mfg efficiency by the averaged g/cell of silicon (as calculated by "Silicon per m2")
@@ -99,7 +99,7 @@ print(gperwafer_compare)
 
 # The calculated values based on just kerf loss are lower than ITRPV findings. This is unsurprising, since the ITRPV polysilicon utilization includes more than just kerf losses. We will compute the differences, and use this as a factor to add to all calculated values based on kerf loss alone.
 
-# In[18]:
+# In[7]:
 
 
 #gperwafer_compared = gperwafer_compare.append(gperwafer_compare.diff()) 
@@ -111,7 +111,7 @@ print(gperwafer_factors)
 
 # Now we will add these factors in and create a section of the final MFG losses (2010-2017).
 
-# In[46]:
+# In[8]:
 
 
 #Multiply the proxy mfg inefficiency by the averaged g/cell of silicon (as calculated by "Silicon per m2")
@@ -122,12 +122,12 @@ diamond_mcSi_gpw = (si_g_percell['Si_gpercell']*df_thick_kerf['diamond_ineff'])+
 diamond_mono_gpw = (si_g_percell['Si_gpercell']*df_thick_kerf['diamond_ineff'])+ gperwafer_factors['Diamond']['ITRPV_mono']
 mfg_losses_bytype = pd.concat([slurry_mcSi_gpw, slurry_mono_gpw, diamond_mcSi_gpw, diamond_mono_gpw], axis=1)
 mfg_losses_bytype.columns = ['slurry_mcSi','slurry_mono','diamond_mcSi','diamond_mono']
-print(mfg_losses_bytype)
+#print(mfg_losses_bytype)
 
 
 # Because the market shares of slurry + diamond sum to 1 for each mono and mcSi, we will first weight (multiply and sum) the grams per wafer by technology. i.e. slurry_mcSi and diamond_mcSi will be combined.
 
-# In[62]:
+# In[9]:
 
 
 #Now weight the data by marketshare of type of cut
@@ -158,7 +158,7 @@ plt.plot(gpw_cutwtd)
 
 # Now that we have a grams per wafer based on cut type for each PV tech type (mono vs mcSi), we will weight these data by the marketshare of installed PV type, creating an average module for the year.
 
-# In[88]:
+# In[12]:
 
 
 #Now weight by marketshare of mcSi vs Mono Si installed/made, as based on the silicon per m2 journal
@@ -168,7 +168,7 @@ gpw_avg = pd.DataFrame(gpw.agg("sum", axis="columns"))
 gpw_avg.columns = ['avg_g_per_wafer']
 
 #slice the dataframe for the relevant years and plot
-gpw_avg_2010_2017 = gpw_avg.loc[(gpw_avg.index>=2010) & (gpw_avg.index<=2017)]
+gpw_avg_2010_2017 = gpw_avg.loc[(gpw_avg.index>=2010) & (gpw_avg.index<=2016)]
 plt.plot(gpw_avg_2010_2017)
 plt.title('Weighted Average grams of Si to make a Cell')
 plt.ylabel('Grams of Silicon per cell')
@@ -177,10 +177,32 @@ plt.ylabel('Grams of Silicon per cell')
 
 # ## 2017 through 2030
 
-# In[ ]:
+# Now that 2010 through 2016 is accounted for through kerf loss and compensation, we will use the ITRPV forward looking projections of "polysilicon utilization" to determine mfg efficiency. This will be done simply by linearly interpolating ITRPV data for the missing years through 2030, then weighting by marketshare of mcSi vs mono. 2017 will also have weighting by slurry vs diamond.
+
+# In[49]:
 
 
+#fill in missing ITRPV years
+utilize_gpw = utilize_gperwafer_raw.interpolate(method='linear',axis=0, limit_area='inside')
 
+#2017 double weighting
+gpw2017_mcSi = wafering_mrktshr['slurry_mcSi'][2017]*utilize_gpw['mc-Si-slurry'][2017]+wafering_mrktshr['diamond_mcSi'][2017]*utilize_gpw['mc-Si-diamond'][2017]
+gpw2017_mono = wafering_mrktshr['slurry_mono'][2017]*utilize_gpw['mono-Si-slurry'][2017]+wafering_mrktshr['diamond_mono'][2017]*utilize_gpw['Mono-Si-diamond'][2017]
+gpw2017 = gpw2017_mcSi*marketshare_mono_mc['mcSi'][2017] + gpw2017_mono*marketshare_mono_mc['monoSi'][2017]
+#print(gpw2017)
+
+#now do 2018 through 2030, and append together to create single df
+utilize_gpw_trim = utilize_gpw.drop(['mc-Si-slurry','mono-Si-slurry'], axis=1)
+gpw_1980t2030 = utilize_gpw_trim['mc-Si-diamond']*marketshare_mono_mc['mcSi'] + utilize_gpw_trim['Mono-Si-diamond']*marketshare_mono_mc['monoSi']
+gpw_2017t2030 = pd.DataFrame(gpw_1980t2030.loc[(gpw_1980t2030.index>=2017)])
+
+#put the data together
+gpw_2017t2030.columns = ['avg_g_per_wafer']
+gpw_2017t2030['avg_g_per_wafer'][2017] = gpw2017
+#print(gpw_2017t2030)
+plt.plot(gpw_2017t2030)
+plt.title('Weighted Average grams of Si to make a Cell')
+plt.ylabel('Grams of Silicon per cell')
 
 
 # ## 1995 through 2003
