@@ -7,7 +7,7 @@
 # 
 # NOTE: You must run Silicon per m2 journal before running this one, as the calculations depend on grams of silicon per cell.
 
-# In[2]:
+# In[50]:
 
 
 import numpy as np
@@ -18,7 +18,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[3]:
+# In[51]:
 
 
 #read in supporting csv files
@@ -49,7 +49,7 @@ marketshare_mono_mc = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMate
 # 
 #             [(Wafer Thickness + Kerf Loss)/Wafer Thickness] * 100 = % mfg "inefficeincy"
 
-# In[4]:
+# In[52]:
 
 
 #There are missing data in wafer thickness, so we will interpolate linearly for missing years
@@ -66,7 +66,7 @@ df_thick_kerf = pd.concat([wafer_thick,kerf_loss], axis=1) #concatinate on the c
 
 # Because slurry and diamond have significantly different kerf losses, we will keep these seperate for as long as possible before averaging.
 
-# In[5]:
+# In[53]:
 
 
 df_thick_kerf['slurry_eff'] = df_thick_kerf['wafer_thickness']/(df_thick_kerf['wafer_thickness']+df_thick_kerf['slurry'])
@@ -82,7 +82,7 @@ df_thick_kerf['diamond_ineff'] = (df_thick_kerf['wafer_thickness']+df_thick_kerf
 
 # As a reality check, and because we have data for 2017 of both kerf loss and "utilization", we can check how good a proxy kerf loss is for utilization of input material.
 
-# In[6]:
+# In[54]:
 
 
 #Multiply the proxy mfg efficiency by the averaged g/cell of silicon (as calculated by "Silicon per m2")
@@ -99,7 +99,7 @@ print(gperwafer_compare)
 
 # The calculated values based on just kerf loss are lower than ITRPV findings. This is unsurprising, since the ITRPV polysilicon utilization includes more than just kerf losses. We will compute the differences, and use this as a factor to add to all calculated values based on kerf loss alone.
 
-# In[7]:
+# In[55]:
 
 
 #gperwafer_compared = gperwafer_compare.append(gperwafer_compare.diff()) 
@@ -111,7 +111,7 @@ print(gperwafer_factors)
 
 # Now we will add these factors in and create a section of the final MFG losses (2010-2017).
 
-# In[8]:
+# In[56]:
 
 
 #Multiply the proxy mfg inefficiency by the averaged g/cell of silicon (as calculated by "Silicon per m2")
@@ -127,7 +127,7 @@ mfg_losses_bytype.columns = ['slurry_mcSi','slurry_mono','diamond_mcSi','diamond
 
 # Because the market shares of slurry + diamond sum to 1 for each mono and mcSi, we will first weight (multiply and sum) the grams per wafer by technology. i.e. slurry_mcSi and diamond_mcSi will be combined.
 
-# In[9]:
+# In[57]:
 
 
 #Now weight the data by marketshare of type of cut
@@ -158,7 +158,7 @@ plt.plot(gpw_cutwtd)
 
 # Now that we have a grams per wafer based on cut type for each PV tech type (mono vs mcSi), we will weight these data by the marketshare of installed PV type, creating an average module for the year.
 
-# In[12]:
+# In[58]:
 
 
 #Now weight by marketshare of mcSi vs Mono Si installed/made, as based on the silicon per m2 journal
@@ -179,7 +179,7 @@ plt.ylabel('Grams of Silicon per cell')
 
 # Now that 2010 through 2016 is accounted for through kerf loss and compensation, we will use the ITRPV forward looking projections of "polysilicon utilization" to determine mfg efficiency. This will be done simply by linearly interpolating ITRPV data for the missing years through 2030, then weighting by marketshare of mcSi vs mono. 2017 will also have weighting by slurry vs diamond.
 
-# In[49]:
+# In[59]:
 
 
 #fill in missing ITRPV years
@@ -207,20 +207,76 @@ plt.ylabel('Grams of Silicon per cell')
 
 # ## 1995 through 2003
 
-# Here, as previously stated, we set 2003 and earlier years to 50% mfg efficiency
+# Here, as previously stated, we set 2003 and earlier years to 50% mfg efficiency. A 50% MFG efficiency corresponds to using 2x as much material as ends up in the final cell. Therefore, we will multiply the grams of silicon per cell, as calculated by the silicon baseline, by 2.0.
 
-# In[ ]:
+# In[95]:
 
 
-
+#multiply by the "inefficiency"
+si_gpc_ineff = si_g_percell*2.0
+#Trim to relevant years, 1995 through 2003
+gpw_1995t2003 = si_gpc_ineff.loc[(si_gpc_ineff.index<=2003)]
+gpw_1995t2003.columns = ['avg_g_per_wafer']
+#print(gpw_1995t2003)
+plt.plot(gpw_1995t2003)
 
 
 # ## 2004 through 2009
 
-# Until better data is found for this time period, simple linear interpolation will be used.
+# Until better data is found for this time period, simple linear interpolation between 2003 and 2010 will be used.
 
-# In[ ]:
+# In[115]:
 
 
+#create an empty df as a place holder for interpolation with years
+yrs = pd.Series(index=range(2004,2010), dtype='float64')
+tempdf = pd.DataFrame(yrs, columns=['avg_g_per_wafer'])
 
+#squish prior datasets together
+gpc = pd.concat([gpw_1995t2003, tempdf, gpw_avg_2010_2017, gpw_2017t2030])
+gpc_final = gpc.interpolate()
+#print(gpc_final)
+plt.plot(gpc_final)
+plt.ylabel('Grams of Silicon per cell')
+plt.title('Average grams of silicon input per cell')
+
+
+# # Calculate MFG efficiency from grams input per cell and cell mass
+
+# Now that we have a mass of silicon needed to create a cell for each year, this will be compared to the calculated mass of silicon per cell (again, silicon baseline avg calculation), and the resulting comparison will provide a manufacturing efficiency. This efficiency is specified in terms of what percent(%) of material input ends up in the cell (inefficiency here is defined as the % extra needed). i.e.
+#                 Mass of cell / Mass of input material *100 = MFG efficiency (%)
+
+# In[105]:
+
+
+si_g_percell.columns = gpc_final.columns
+mfg_eff_si = (si_g_percell / gpc_final)*100
+#print(mfg_eff_si)
+plt.plot(mfg_eff_si)
+plt.ylabel('Manufacturing Efficiency of Si(%)')
+plt.title('Manufacturing Efficiency of Si on a per cell basis, Averaged')
+mfg_eff_si.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/mfg_eff_si.csv', index=True)
+
+
+# In[150]:
+
+
+#other pretty plots to tell the diamond wire saw story
+#create the forward and backward "history" of type of wafercut
+years = pd.Series(index=range(1995,2031), dtype='float64')
+df_empty = pd.DataFrame(years)
+wafercut_mrktshr = df_empty.join(wafering_mrktshr)
+wafercut_mrktshr.drop([0,'slurry_mcSi','slurry_mono'], axis=1, inplace=True)
+wafercut_diamond_history = wafercut_mrktshr.interpolate(limit_direction='both')
+wafercut_diamond_history = wafercut_diamond_history*100
+#print(wafercut_diamond_history)
+
+#now plot wafer cut history and g/cell mfg eff on the same plot
+#labels = wafercut_diamond_history.columns
+plt.plot(wafercut_diamond_history.diamond_mcSi, label='mcSi')
+plt.plot(wafercut_diamond_history.diamond_mono, label='monoSi')
+plt.plot(mfg_eff_si, '--k', label='MFG eff Si')
+plt.ylabel('% Market share or % MFG Efficiency')
+plt.title('History of Si MFG eff vs rise of Diamond wire')
+plt.legend()
 
