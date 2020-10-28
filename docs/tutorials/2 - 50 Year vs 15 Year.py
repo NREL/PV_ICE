@@ -41,9 +41,11 @@ plt.rcParams['figure.figsize'] = (12, 5)
 r1 = PV_DEMICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='50_Year_Module', file=r'..\baselines\baseline_modules_US.csv')
 r1.scenario['50_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+r1.scenario['50_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
 r1.createScenario(name='15_Year_Module', file=r'..\baselines\baseline_modules_US.csv')
 r1.scenario['15_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+r1.scenario['15_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
 
 # In[5]:
@@ -76,6 +78,12 @@ r1.calculateMassFlow()
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 
 
+# In[10]:
+
+
+r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
+
+
 # In[9]:
 
 
@@ -84,7 +92,7 @@ r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 # ### Modifying Installed Capacity requirements to match 50 Year Module
 
-# In[10]:
+# In[11]:
 
 
 r1.createScenario(name='15_Year_Module_IncreasedInstalls', file=r'..\baselines\baseline_modules_US.csv')
@@ -96,7 +104,7 @@ r1.scenario['15_Year_Module_IncreasedInstalls'].data['mod_lifetime'] = 15
 r1.calculateMassFlow()
 
 
-# In[11]:
+# In[12]:
 
 
 # Modifing the installed capacity requiremetns according to t50. 
@@ -110,7 +118,7 @@ for i in range (0, len(r1.scenario['50_Year_Module'].data)):
     r1.calculateMassFlow()
 
 
-# In[12]:
+# In[13]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
@@ -129,7 +137,7 @@ r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 # 
 # The 50-year module uses the previous settings.
 
-# In[13]:
+# In[14]:
 
 
 r1.scenario['50_Year_Module'].data.keys()
@@ -160,6 +168,12 @@ r1.scenario['15_Year_Module_IncreasedInstalls'].material['glass'].materialdata['
 r1.scenario['15_Year_Module_IncreasedInstalls'].material['glass'].materialdata['mat_MFG_scrap_recycling_eff'] = 95
 r1.scenario['15_Year_Module_IncreasedInstalls'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 100
 r1.scenario['15_Year_Module_IncreasedInstalls'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 100
+
+
+# In[ ]:
+
+
+#potentially add silicon recycling modifications here?
 
 
 # In[15]:

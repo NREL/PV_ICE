@@ -87,3 +87,9 @@ r1.scenario['standard'].data.head()
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_EOL_Recycled_2_HQ')
 
+
+# In[ ]:
+
+
+
+
