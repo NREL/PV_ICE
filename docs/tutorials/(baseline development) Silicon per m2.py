@@ -310,6 +310,7 @@ df_cellarea_cm2 = df_cellarea_mm2*0.01 #mm^2 to cm^2
 # calculate # cells/m^2 at this point, rather than using the # cells per module factor
 df_cellperm2 = 1/df_cellarea_m2
 #print(df_cellperm2)
+df_cellperm2.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/cell_per_m2.csv', index=True)
 
 
 # g of Si per cell

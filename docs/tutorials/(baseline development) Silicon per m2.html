@@ -14323,6 +14323,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># calculate # cells/m^2 at this point, rather than using the # cells per module factor</span>
 <span class="n">df_cellperm2</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">df_cellarea_m2</span>
 <span class="c1">#print(df_cellperm2)</span>
+<span class="n">df_cellperm2</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s1">&#39;/../../PV_DEMICE/baselines/SupportingMaterial/cell_per_m2.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
