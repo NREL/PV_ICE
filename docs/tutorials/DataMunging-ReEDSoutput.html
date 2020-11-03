@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>(baseline development) Si MFG losses</title>
+<title>DataMunging-ReEDSoutput</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13077,17 +13077,140 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Manufacturing-losses-in-Silicon">Manufacturing losses in Silicon<a class="anchor-link" href="#Manufacturing-losses-in-Silicon">&#182;</a></h1>
+<h1 id="Data-Munging-ReEDS-output-data-files-for-input-installations">Data Munging ReEDS output data files for input installations<a class="anchor-link" href="#Data-Munging-ReEDS-output-data-files-for-input-installations">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This journal covers the baseline file for silicon material, specifically computing and estimating manufacturing losses of silicon. The final data input to the baseline file will be expressed as a percentage.</p>
+<p>To explore different scenarios for furture installation projections of PV (or any technology), ReEDS output data can be useful in providing standard scenarios. This input data will be used in the module files input to the PVDEMICE tool. Some will be used to explore middle, low and high projections, some for the Solar Futures Report. This journal extracts the data relevant for the current status of the PVDEMICE tool from ReEDS outputs.</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
+<span class="n">rawdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/2020-11-2-ReEDS Outputs Solar Futures ANL.xlsx&quot;</span><span class="p">,</span>
+                        <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;Solar Capacity (GW)&quot;</span><span class="p">,</span>
+                        <span class="n">index_col</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span> <span class="c1">#this casts scenario, year, PCA and State as levels</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="First,-split-up-the-data-by-scenario">First, split up the data by scenario<a class="anchor-link" href="#First,-split-up-the-data-by-scenario">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#get the scenario names</span>
+<span class="n">scenario_names</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;scenario&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">scenario_names</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Index([&#39;Adv Tech&#39;, &#39;Adv Tech+DR&#39;, &#39;Base&#39;, &#39;Breakthrough PV&#39;, &#39;CSP Sensitivity&#39;,
+       &#39;Decarb Adv Tech&#39;, &#39;Decarb Adv Tech+DR&#39;, &#39;Decarb Base&#39;,
+       &#39;Decarb Breakthrough PV&#39;, &#39;Elec-Decarb Adv Tech&#39;,
+       &#39;Elec-Decarb Adv Tech+DR&#39;, &#39;Elec-Decarb Base&#39;,
+       &#39;Elec-Decarb Breakthrough PV&#39;],
+      dtype=&#39;object&#39;, name=&#39;scenario&#39;)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">adv_tech</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;scenario&#39;</span><span class="p">)</span><span class="o">==</span><span class="n">scenario_names</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+<span class="c1">#find a way to cycle through the full list of names with an appropriate variable name for each</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adv_tech</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>                         Capacity (GW)
+scenario year PCA State               
+Adv Tech 2050 p90 AL          1.631749
+              p91 FL          7.277843
+              p92 TN          9.273474
+              p93 KY          9.487082
+              p94 GA         18.865360
+              p95 SC         54.662885
+              p96 SC         22.148378
+              p97 NC         39.010281
+              p98 NC          7.560087
+              p99 VA         32.428854
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
