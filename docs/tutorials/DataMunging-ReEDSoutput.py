@@ -5,7 +5,7 @@
 
 # To explore different scenarios for furture installation projections of PV (or any technology), ReEDS output data can be useful in providing standard scenarios. This input data will be used in the module files input to the PVDEMICE tool. Some will be used to explore middle, low and high projections, some for the Solar Futures Report. This journal extracts the data relevant for the current status of the PVDEMICE tool from ReEDS outputs.
 
-# In[1]:
+# In[41]:
 
 
 import numpy as np
@@ -16,7 +16,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[24]:
+# In[42]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -27,24 +27,55 @@ rawdf = pd.read_excel(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/2020-11
 
 # ### First, split up the data by scenario
 
-# In[39]:
+# In[66]:
 
 
 #get the scenario names
 scenario_names = rawdf.index.unique(level='scenario')
+years = rawdf.index.unique(level='year')
 print(scenario_names)
 
 
-# In[40]:
+# In[50]:
 
 
-adv_tech = rawdf.loc[(rawdf.index.get_level_values('scenario')==scenario_names[0])]
+#adv_tech = rawdf.loc[(rawdf.index.get_level_values('scenario')==scenario_names[0])]
 #find a way to cycle through the full list of names with an appropriate variable name for each
-print(adv_tech.tail(10))
+#print(adv_tech.tail(10))
+
+
+# The goal for the tool is to have annual installations projection 1995 through 2050.
+
+# In[65]:
+
+
+#returns a df with all scenarios, but installes are summed for each decade
+decade_installs_byScenario = rawdf.groupby(['scenario', 'year']).sum()
+print(decade_installs_byScenario)
+
+
+# In[69]:
+
+
+#Make a pretty plot to show scenarios
+#for i in scenario_names:
+plt.plot(decade_installs_byScenario.index['year'], decade_installs_byScenario.columns['Capacity (GW)'],marker='o',label=scenario_names[0])
 
 
 # In[ ]:
 
 
+#Are these cumulative or incremental capacity numbers?!?!
 
+
+# In[ ]:
+
+
+#Create data for between decades - interpolation non-linear
+
+
+# In[ ]:
+
+
+#print out separate csvs for each scenario
 
