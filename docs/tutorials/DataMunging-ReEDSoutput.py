@@ -5,7 +5,7 @@
 
 # To explore different scenarios for furture installation projections of PV (or any technology), ReEDS output data can be useful in providing standard scenarios. This input data will be used in the module files input to the PVDEMICE tool. Some will be used to explore middle, low and high projections, some for the Solar Futures Report. This journal extracts the data relevant for the current status of the PVDEMICE tool from ReEDS outputs.
 
-# In[41]:
+# In[3]:
 
 
 import numpy as np
@@ -16,11 +16,24 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[42]:
+# In[15]:
+
+
+import os
+from pathlib import Path
+
+reedsFile = str(Path().resolve().parent.parent.parent / '2020-11-2-ReEDS Outputs Solar Futures ANL.xlsx')
+testfolder = str(Path().resolve().parent.parent / 'PV_DEMICE' / 'TEMP')
+
+print ("Input file is stored in %s" % reedsFile)
+print ("Your simulation will be stored in %s" % testfolder)
+
+
+# In[17]:
 
 
 cwd = os.getcwd() #grabs current working directory
-rawdf = pd.read_excel(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/2020-11-2-ReEDS Outputs Solar Futures ANL.xlsx",
+rawdf = pd.read_excel(reedsFile,
                         sheet_name="Solar Capacity (GW)",
                         index_col=[0,1,2,3]) #this casts scenario, year, PCA and State as levels
 
