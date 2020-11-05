@@ -5,7 +5,7 @@
 
 # To explore different scenarios for furture installation projections of PV (or any technology), ReEDS output data can be useful in providing standard scenarios. This input data will be used in the module files input to the PVDEMICE tool. Some will be used to explore middle, low and high projections, some for the Solar Futures Report. This journal extracts the data relevant for the current status of the PVDEMICE tool from ReEDS outputs.
 
-# In[3]:
+# In[1]:
 
 
 import numpy as np
@@ -16,7 +16,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[15]:
+# In[2]:
 
 
 import os
@@ -29,7 +29,7 @@ print ("Input file is stored in %s" % reedsFile)
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[17]:
+# In[4]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -40,7 +40,7 @@ rawdf = pd.read_excel(reedsFile,
 
 # ### First, split up the data by scenario
 
-# In[66]:
+# In[21]:
 
 
 #get the scenario names
@@ -49,36 +49,39 @@ years = rawdf.index.unique(level='year')
 print(scenario_names)
 
 
-# In[50]:
+# The goal for the tool is to have annual installations projection 1995 through 2050.
+
+# In[45]:
 
 
-#adv_tech = rawdf.loc[(rawdf.index.get_level_values('scenario')==scenario_names[0])]
+#returns a df with all scenarios, installs are summed for each decade
+#i.e. the GW listed in 2020, were installed between 2011 and 2020?
+decade_installs_byScenario = rawdf.groupby(['scenario', 'year']).sum()
+print(decade_installs_byScenario.columns)
+
+
+# In[49]:
+
+
 #find a way to cycle through the full list of names with an appropriate variable name for each
+i=0
+for i in range(len(scenario_names)):
+    subdf = decade_installs_byScenario.loc[(decade_installs_byScenario.index.get_level_values('scenario')==scenario_names[i])]
+    #year as column??
+    subdf.plot(title=scenario_names[i])
+    #print(subdf.columns) 
+
 #print(adv_tech.tail(10))
 
 
-# The goal for the tool is to have annual installations projection 1995 through 2050.
-
-# In[65]:
-
-
-#returns a df with all scenarios, but installes are summed for each decade
-decade_installs_byScenario = rawdf.groupby(['scenario', 'year']).sum()
-print(decade_installs_byScenario)
-
-
-# In[69]:
+# In[9]:
 
 
 #Make a pretty plot to show scenarios
-#for i in scenario_names:
-plt.plot(decade_installs_byScenario.index['year'], decade_installs_byScenario.columns['Capacity (GW)'],marker='o',label=scenario_names[0])
 
-
-# In[ ]:
-
-
-#Are these cumulative or incremental capacity numbers?!?!
+plt.plot(x=decade_installs_byScenario['year'], 
+         y=decade_installs_byScenario['Capacity (GW)'],
+         marker='o',label=scenario_names[0])
 
 
 # In[ ]:
@@ -87,8 +90,11 @@ plt.plot(decade_installs_byScenario.index['year'], decade_installs_byScenario.co
 #Create data for between decades - interpolation non-linear
 
 
-# In[ ]:
+# In[17]:
 
 
 #print out separate csvs for each scenario
+collection = ['hey', 5, 'd']
+for x in collection:
+    print(x)
 
