@@ -59,7 +59,7 @@ sim1.scenario['Recycle_100'].material['glass'].materialdata.keys()
 
 # Now set the variables within the scenarios to the relevant quantities
 
-# In[43]:
+# In[50]:
 
 
 #Set 0% recycled for both MFG and EOL - pure linear
@@ -77,15 +77,15 @@ sim1.scenario['Recycle_100'].data['mod_Repairing']=0
 
 sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled'] = 100
 sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycling_eff'] = 100
-sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 0 #directs all to close loop
+sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 100 #directs all to close loop
 sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 100
 sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EOL_Recycling_eff'] = 100
-sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EOL_Recycled_into_HQ'] = 0 #directs all to close loop
+sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EOL_Recycled_into_HQ'] = 100 #directs all to close loop
 sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = 100 
 sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 100
 
 
-# In[45]:
+# In[51]:
 
 
 #plt.plot(sim1.scenario['Recycle_100'].data['mod_EOL_collection_eff']) #check out what module paramaters settings
@@ -94,7 +94,7 @@ sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EoL_Recycled_HQ
 
 # Now run the simulation
 
-# In[46]:
+# In[52]:
 
 
 sim1.calculateMassFlow()
@@ -123,19 +123,32 @@ sim1.calculateMassFlow()
 
 # There is a separate plotting function for materials
 
-# In[49]:
+# In[68]:
 
 
 sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
-sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_MFG_Landfilled')
-sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_EOL_Landfilled')
+#sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_MFG_Landfilled')
+#sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_EOL_Landfilled')
 sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Virgin_Stock')
 
 
-# In[ ]:
+# In[67]:
 
 
+#summ the virgin stock column 1995 through 2050 for the two senarios
+#will give a mass difference in extraction needed all time
+R_0_virginmass = sim1.scenario['Recycle_0'].material['glass'].materialdata['mat_Virgin_Stock'].sum(axis=0)
+R_0_virginmass_kg = R_0_virginmass/1000 #grams in a kg
+R_0_virginmass_mtons = R_0_virginmass/1000000 # grams in a metric ton
+print('0% recycling scenario requires' , R_0_virginmass_mtons , 'metric tons of virgin glass from 1995 through 2050.')
 
+R_100_virginmass = sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_Virgin_Stock'].sum(axis=0)
+R_100_virginmass_kg = R_100_virginmass/1000 #grams in a kg
+R_100_virginmass_mtons = R_100_virginmass/1000000 # grams in a metric ton
+print('100% recycling scenario requires' , R_100_virginmass_mtons , 'metric tons of virgin glass from 1995 through 2050.')
+
+pct_less_virgin = 100*(R_100_virginmass/R_0_virginmass)
+print('100% closed loop recycling scenario requires', pct_less_virgin, 'of the mass of 0% recycling, linear.')
 
 
 # In[ ]:
