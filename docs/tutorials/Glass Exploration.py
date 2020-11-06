@@ -5,7 +5,7 @@
 
 # Here we are going to ask the calculator questions about glass.
 
-# In[1]:
+# In[12]:
 
 
 import os
@@ -19,7 +19,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_DEMICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[2]:
+# In[13]:
 
 
 import PV_DEMICE
@@ -34,7 +34,7 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # First, create the simulation and the scenarios, pointing them at the Temp folder.
 
-# In[3]:
+# In[14]:
 
 
 sim1 = PV_DEMICE.Simulation(name='Recycle Extremes', path=testfolder)
@@ -45,63 +45,66 @@ sim1.createScenario(name='Recycle_100', file=r'..\baselines\baseline_modules_US.
 sim1.scenario['Recycle_100'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 
 
-# In[4]:
+# In[18]:
 
 
-sim1.calculateMassFlow()
+sim1.scenario['Recycle_0'].data.keys()
+
+
+# In[17]:
+
+
+sim1.scenario['Recycle_100'].material['glass'].materialdata.keys()
 
 
 # Now set the variables within the scenarios to the relevant quantities
 
-# In[5]:
+# In[43]:
 
 
-#sim1.scenario['Recycle_0'].data.keys() #use this to see what can be changed
-sim1.scenario['Recycle_100'].material['glass'].materialdata.keys()
-
-
-# In[6]:
-
-
-sim1.scenario['Recycle_0'].data['mod_EOL_collected_recycled']=0
+#Set 0% recycled for both MFG and EOL - pure linear
+sim1.scenario['Recycle_0'].data['mod_EOL_collected_Recycled']=0
 sim1.scenario['Recycle_0'].data['mod_Repowering']=0
 sim1.scenario['Recycle_0'].data['mod_Repairing']=0
+sim1.scenario['Recycle_0'].material['glass'].materialdata['mat_MFG_scrap_Recycled'] = 0
+sim1.scenario['Recycle_0'].material['glass'].materialdata['mat_EOL_collected_Recycled'] = 0
 
-sim1.scenario['Recycle_100'].data['mod_EOL_collected_recycled']=100
+#directs all glass back to mfg to offset virgin, both MFG and EOL
+sim1.scenario['Recycle_100'].data['mod_EOL_collected_Recycled']=100
 sim1.scenario['Recycle_100'].data['mod_EOL_collection_eff']=100
 sim1.scenario['Recycle_100'].data['mod_Repowering']=0
 sim1.scenario['Recycle_100'].data['mod_Repairing']=0
- 
-#directs all glass back to mfg to offset virgin
-sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_eff'] = 100 #100% efficiency of recycling
-sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EOL_Recycled_into_HQ'] = 100 
-sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 100
-sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_recycled'] = 100
-sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_recycling_eff'] = 100
-sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 100
+
+sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled'] = 100
+sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycling_eff'] = 100
+sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 0 #directs all to close loop
 sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 100
+sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EOL_Recycling_eff'] = 100
+sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EOL_Recycled_into_HQ'] = 0 #directs all to close loop
+sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = 100 
+sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 100
 
 
-# In[7]:
+# In[45]:
 
 
 #plt.plot(sim1.scenario['Recycle_100'].data['mod_EOL_collection_eff']) #check out what module paramaters settings
-plt.plot(sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled']) #check out what material parameters settings
+#plt.plot(sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG']) #check out what material parameters settings
 
 
 # Now run the simulation
 
-# In[8]:
+# In[46]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[13]:
+# In[26]:
 
 
 #plt.plot(sim1.scenario['Recycle_100'].data['mod_EOL_collection_eff']) #check out what module paramaters settings
-plt.plot(sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled']) #check out what material parameters settings
+#plt.plot(sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_scrap_Recycled']) #check out what material parameters settings
 
 
 # Now make some pretty pretty plots
@@ -120,16 +123,23 @@ plt.plot(sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_MFG_sc
 
 # There is a separate plotting function for materials
 
-# In[11]:
+# In[49]:
 
 
 sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_MFG_Landfilled')
 sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_EOL_Landfilled')
-
-
-# In[12]:
-
-
 sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Virgin_Stock')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
