@@ -29,46 +29,53 @@ print ("Input file is stored in %s" % reedsFile)
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[4]:
+# In[65]:
 
 
 cwd = os.getcwd() #grabs current working directory
 rawdf = pd.read_excel(reedsFile,
-                        sheet_name="Solar Capacity (GW)",
-                        index_col=[0,1,2,3]) #this casts scenario, year, PCA and State as levels
+                        sheet_name="Solar Capacity (GW)")
+                        #index_col=[0,2,3]) #this casts scenario, PCA and State as levels
+#now set year as an index in place
+rawdf.set_index(['scenario','year','PCA','State'], inplace=True)
+
+
+# In[66]:
+
+
+print(rawdf.index)
 
 
 # ### First, split up the data by scenario
 
-# In[21]:
+# In[73]:
 
 
 #get the scenario names
 scenario_names = rawdf.index.unique(level='scenario')
 years = rawdf.index.unique(level='year')
-print(scenario_names)
+print(years)
 
 
 # The goal for the tool is to have annual installations projection 1995 through 2050.
 
-# In[45]:
+# In[68]:
 
 
 #returns a df with all scenarios, installs are summed for each decade
 #i.e. the GW listed in 2020, were installed between 2011 and 2020?
 decade_installs_byScenario = rawdf.groupby(['scenario', 'year']).sum()
-print(decade_installs_byScenario.columns)
+#print(decade_installs_byScenario)
 
 
-# In[49]:
+# In[77]:
 
 
 #find a way to cycle through the full list of names with an appropriate variable name for each
 i=0
 for i in range(len(scenario_names)):
     subdf = decade_installs_byScenario.loc[(decade_installs_byScenario.index.get_level_values('scenario')==scenario_names[i])]
-    #year as column??
-    subdf.plot(title=scenario_names[i])
+    subdf.plot(title=scenario_names[i], marker='o')
     #print(subdf.columns) 
 
 #print(adv_tech.tail(10))
