@@ -5,7 +5,7 @@
 
 # Here we are going to ask the calculator questions about glass.
 
-# In[12]:
+# In[1]:
 
 
 import os
@@ -19,7 +19,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_DEMICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[13]:
+# In[2]:
 
 
 import PV_DEMICE
@@ -34,7 +34,7 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # First, create the simulation and the scenarios, pointing them at the Temp folder.
 
-# In[14]:
+# In[3]:
 
 
 sim1 = PV_DEMICE.Simulation(name='Recycle Extremes', path=testfolder)
@@ -45,13 +45,13 @@ sim1.createScenario(name='Recycle_100', file=r'..\baselines\baseline_modules_US.
 sim1.scenario['Recycle_100'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 
 
-# In[18]:
+# In[4]:
 
 
 sim1.scenario['Recycle_0'].data.keys()
 
 
-# In[17]:
+# In[5]:
 
 
 sim1.scenario['Recycle_100'].material['glass'].materialdata.keys()
@@ -59,7 +59,7 @@ sim1.scenario['Recycle_100'].material['glass'].materialdata.keys()
 
 # Now set the variables within the scenarios to the relevant quantities
 
-# In[50]:
+# In[6]:
 
 
 #Set 0% recycled for both MFG and EOL - pure linear
@@ -85,7 +85,7 @@ sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EOL_RecycledHQ_
 sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 100
 
 
-# In[51]:
+# In[7]:
 
 
 #plt.plot(sim1.scenario['Recycle_100'].data['mod_EOL_collection_eff']) #check out what module paramaters settings
@@ -94,13 +94,13 @@ sim1.scenario['Recycle_100'].material['glass'].materialdata['mat_EoL_Recycled_HQ
 
 # Now run the simulation
 
-# In[52]:
+# In[8]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[26]:
+# In[9]:
 
 
 #plt.plot(sim1.scenario['Recycle_100'].data['mod_EOL_collection_eff']) #check out what module paramaters settings
@@ -109,13 +109,13 @@ sim1.calculateMassFlow()
 
 # Now make some pretty pretty plots
 
-# In[9]:
+# In[10]:
 
 
 #sim1.scenario['Recycle_0'].data.keys() #choices of what to plot
 
 
-# In[10]:
+# In[11]:
 
 
 #sim1.plotScenariosComparison(keyword='Installed_Capacity_[W]') #make sure installed capacity is same
@@ -123,7 +123,7 @@ sim1.calculateMassFlow()
 
 # There is a separate plotting function for materials
 
-# In[68]:
+# In[12]:
 
 
 sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
@@ -132,7 +132,7 @@ sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_
 sim1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Virgin_Stock')
 
 
-# In[67]:
+# In[13]:
 
 
 #summ the virgin stock column 1995 through 2050 for the two senarios
@@ -151,8 +151,52 @@ pct_less_virgin = 100*(R_100_virginmass/R_0_virginmass)
 print('100% closed loop recycling scenario requires', pct_less_virgin, 'of the mass of 0% recycling, linear.')
 
 
-# In[ ]:
+# ## Backsheet VS Glass-Glass
+
+# What will be the effect if all modules become glass-glass versus if all in future are backsheet-glass.
+# 
+# SHOULD MODIFY THIS TO DRAW ON MODIFIED INPUT FILES, NOT JUST MULTIPLY BY TWO
+
+# In[22]:
 
 
+sim2 = PV_DEMICE.Simulation(name='Tech-Evolution', path=testfolder)
+sim2.createScenario(name='Glass-Glass', file=r'..\baselines\baseline_modules_US.csv')
+sim2.scenario['Glass-Glass'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 
+sim2.createScenario(name='Backsheet', file=r'..\baselines\baseline_modules_US.csv')
+sim2.scenario['Backsheet'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+
+
+# Modify the parameters to express these extreme scenarios. Using 2x as serrogate for glass-glass.
+
+# In[23]:
+
+
+sim2.scenario['Glass-Glass'].material['glass'].materialdata['mat_massperm2'] = 2*sim2.scenario['Glass-Glass'].material['glass'].materialdata['mat_massperm2']
+#sim2.scenario['Backsheet'].material['glass'].materialdata['mat_massperm2'] =0.5*sim2.scenario['Backsheet'].material['glass'].materialdata['mat_massperm2']
+
+
+# In[24]:
+
+
+sim2.calculateMassFlow()
+
+
+# In[25]:
+
+
+sim2.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
+sim2.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Virgin_Stock')
+
+
+# In[28]:
+
+
+glass_virginmass = sim2.scenario['Glass-Glass'].material['glass'].materialdata['mat_Virgin_Stock'].sum(axis=0)
+glass_virginmass_tons = glass_virginmass/1000000 # grams in a metric ton
+backsheet_virginmass = sim2.scenario['Backsheet'].material['glass'].materialdata['mat_Virgin_Stock'].sum(axis=0)
+backsheet_virginmass_tons = backsheet_virginmass/1000000 # grams in a metric ton
+sim2_virgin_pct = 100*(glass_virginmass/backsheet_virginmass)
+print('All glass-glass modules in future could use', sim2_virgin_pct, '% more glass than backsheet-glass.')
 
