@@ -5,7 +5,7 @@
 
 # This journal documents the calculations and assumptions for the silver baseline file used in the calculator.
 
-# In[50]:
+# In[1]:
 
 
 import numpy as np
@@ -27,15 +27,17 @@ density_Ag = 10.49 #g/cm3, source Wikipedia
 # 
 # 2) The difference in silver per cell between bifacial and monofacial cells is not significant for this calculation, and will therefore be averaged together.
 
-# In[51]:
+# In[2]:
 
 
 #read in the csv of 2009 through 2030 data for silver per cell.
 cwd = os.getcwd() #grabs current working directory
-itrpv_ag_gpc = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/ag_g_per_cell.csv", index_col='Year')
+skipcols = ['Source']
+itrpv_ag_gpc = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/ag_g_per_cell.csv", 
+                           index_col='Year', usecols=lambda x: x not in skipcols)
 
 
-# In[52]:
+# In[3]:
 
 
 #plot the raw data
@@ -46,7 +48,7 @@ plt.ylabel("Silver, grams/cell")
 
 # Based on looking at the plot of original data, it doesn't seem crazy to linearly interpolate for missing data
 
-# In[53]:
+# In[4]:
 
 
 ag_gpc = itrpv_ag_gpc.interpolate()
@@ -57,15 +59,16 @@ plt.ylabel("Silver, grams/cell")
 
 # ## Convert to a per module area basis (not per cell)
 
-# In[54]:
+# In[5]:
 
 
 #import cell per m2 from the silicon baseline
-cpm2 = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/cell_per_m2.csv",index_col='Year')
+cpm2 = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/output_cell_per_m2.csv",
+                   index_col='Year', usecols=lambda x: x not in skipcols)
 #print(cpm2)
 
 
-# In[56]:
+# In[6]:
 
 
 #convert silver per cell to silver per m^2 of module, based on output from silicon baseline
@@ -79,7 +82,7 @@ plt.ylabel("Silver, grams/module m2")
 # ### Extend projection through 2050
 # It appears that the silver per cell is expected to level out by 2025 or so. We will extend this projection through 2050 as a "lower limit" or minimal further improvement in this manufacturing technology
 
-# In[61]:
+# In[7]:
 
 
 #create an empty df as a place holder
@@ -99,9 +102,9 @@ plt.title("Silver mass per module area over time")
 plt.ylabel("Silver, grams/module m2")
 
 
-# In[62]:
+# In[8]:
 
 
 #print out to csv
-ag_gpm2_full.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/ag_g_per_m2.csv', index=True)
+ag_gpm2_full.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/output_ag_g_per_m2.csv', index=True)
 

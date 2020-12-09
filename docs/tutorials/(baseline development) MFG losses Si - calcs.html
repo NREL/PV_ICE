@@ -13092,7 +13092,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13110,17 +13110,24 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#read in supporting csv files</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
-<span class="n">si_g_percell</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/si_g_per_cell.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
-<span class="n">kerf_loss_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/kerf_loss_microns.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
-<span class="n">utilize_gperwafer_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/utilization_g_perwafer.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
-<span class="n">wafer_thickness</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/Wafer_thickness.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
-<span class="n">wafering_marketshare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/wafering_marketshare.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
-<span class="n">marketshare_mono_mc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/scaledmrktshr_mcSi_mono.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<span class="n">skipcols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Source&#39;</span><span class="p">]</span>
+<span class="n">si_g_percell</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/output_si_g_per_cell.csv&quot;</span><span class="p">,</span> 
+                           <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">skipcols</span><span class="p">)</span>
+<span class="n">kerf_loss_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/kerf_loss_microns.csv&quot;</span><span class="p">,</span> 
+                            <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">skipcols</span><span class="p">)</span>
+<span class="n">utilize_gperwafer_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/utilization_g_perwafer.csv&quot;</span><span class="p">,</span> 
+                                    <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">skipcols</span><span class="p">)</span>
+<span class="n">wafer_thickness</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/Wafer_thickness.csv&quot;</span><span class="p">,</span> 
+                              <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">skipcols</span><span class="p">)</span>
+<span class="n">wafering_marketshare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/wafering_marketshare.csv&quot;</span><span class="p">,</span> 
+                                   <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">skipcols</span><span class="p">)</span>
+<span class="n">marketshare_mono_mc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv&quot;</span><span class="p">,</span> 
+                                  <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">skipcols</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13163,7 +13170,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#There are missing data in wafer thickness, so we will interpolate linearly for missing years</span>
@@ -13193,7 +13200,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;wafer_thickness&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">df_thick_kerf</span><span class="p">[</span><span class="s1">&#39;slurry&#39;</span><span class="p">])</span>
@@ -13227,7 +13234,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Multiply the proxy mfg efficiency by the averaged g/cell of silicon (as calculated by &quot;Silicon per m2&quot;)</span>
@@ -13278,7 +13285,7 @@ ITRPV_mono   18.750000  15.700000
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#gperwafer_compared = gperwafer_compare.append(gperwafer_compare.diff()) </span>
@@ -13324,7 +13331,7 @@ ITRPV_mono   1.335786  0.569617
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Multiply the proxy mfg inefficiency by the averaged g/cell of silicon (as calculated by &quot;Silicon per m2&quot;)</span>
@@ -13353,7 +13360,7 @@ ITRPV_mono   1.335786  0.569617
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Now weight the data by marketshare of type of cut</span>
@@ -13392,14 +13399,14 @@ ITRPV_mono   1.335786  0.569617
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[8]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x26c720f4f48&gt;,
- &lt;matplotlib.lines.Line2D at 0x26c7213a788&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x1c04a755808&gt;,
+ &lt;matplotlib.lines.Line2D at 0x1c04b11fec8&gt;]</pre>
 </div>
 
 </div>
@@ -13433,7 +13440,7 @@ ITRPV_mono   1.335786  0.569617
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Now weight by marketshare of mcSi vs Mono Si installed/made, as based on the silicon per m2 journal</span>
@@ -13460,7 +13467,7 @@ ITRPV_mono   1.335786  0.569617
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
 
@@ -13507,7 +13514,7 @@ ITRPV_mono   1.335786  0.569617
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#fill in missing ITRPV years</span>
@@ -13543,7 +13550,7 @@ ITRPV_mono   1.335786  0.569617
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[12]:</div>
 
 
 
@@ -13598,7 +13605,7 @@ ITRPV_mono   1.335786  0.569617
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#multiply by the &quot;inefficiency&quot;</span>
@@ -13620,13 +13627,13 @@ ITRPV_mono   1.335786  0.569617
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[15]:</div>
+    <div class="prompt output_prompt">Out[13]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x26c72656c08&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x1c04b287608&gt;]</pre>
 </div>
 
 </div>
@@ -13667,7 +13674,7 @@ ITRPV_mono   1.335786  0.569617
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create an empty df as a place holder for interpolation with years</span>
@@ -13693,7 +13700,7 @@ ITRPV_mono   1.335786  0.569617
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[12]:</div>
+    <div class="prompt output_prompt">Out[14]:</div>
 
 
 
@@ -13741,7 +13748,7 @@ ITRPV_mono   1.335786  0.569617
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">si_g_percell</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">gpc_final</span><span class="o">.</span><span class="n">columns</span>
@@ -13750,7 +13757,7 @@ ITRPV_mono   1.335786  0.569617
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mfg_eff_si</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Manufacturing Efficiency of Si(%)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Manufacturing Efficiency of Si on a per cell basis, Averaged&#39;</span><span class="p">)</span>
-<span class="n">mfg_eff_si</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s1">&#39;/../../PV_DEMICE/baselines/SupportingMaterial/mfg_eff_si.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">mfg_eff_si</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s1">&#39;/../../PV_DEMICE/baselines/SupportingMaterial/output_mfg_eff_si.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13790,7 +13797,7 @@ ITRPV_mono   1.335786  0.569617
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#other pretty plots to tell the diamond wire saw story</span>
@@ -13824,13 +13831,13 @@ ITRPV_mono   1.335786  0.569617
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[18]:</div>
+    <div class="prompt output_prompt">Out[16]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.legend.Legend at 0x26c72d93408&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x1c04b6b5188&gt;</pre>
 </div>
 
 </div>

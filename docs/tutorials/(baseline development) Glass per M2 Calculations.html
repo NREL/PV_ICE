@@ -13093,7 +13093,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13114,7 +13114,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span>  <span class="c1"># m</span>
@@ -13167,7 +13167,7 @@ percentage for 2016 is 97 % glass -backsheet.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2013</span>
@@ -13190,7 +13190,7 @@ percentage for 2016 is 97 % glass -backsheet.</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Glass kg/m2 2013-2015: 8.16
+<pre>Glass kg/m2 2013: 8.16
 </pre>
 </div>
 </div>
@@ -13201,7 +13201,7 @@ percentage for 2016 is 97 % glass -backsheet.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2014</span>
@@ -13214,30 +13214,32 @@ percentage for 2016 is 97 % glass -backsheet.</p>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Glass for 2014: 8.32
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2015</span>
 <span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.96</span><span class="o">.</span><span class="mi">5</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.035</span> <span class="c1"># m</span>
-<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 2013-2015:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2016 </span>
-<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.97</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.03</span> <span class="c1"># m</span>
 <span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 2013-2015:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
 </pre></div>
@@ -13255,12 +13257,32 @@ percentage for 2016 is 97 % glass -backsheet.</p>
     <div class="prompt"></div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Glass kg/m2 2013-2015: 8.24
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-cyan-intense-fg ansi-bold">  File </span><span class="ansi-green-intense-fg ansi-bold">&#34;&lt;ipython-input-5-b7a3f82338e6&gt;&#34;</span><span class="ansi-cyan-intense-fg ansi-bold">, line </span><span class="ansi-green-intense-fg ansi-bold">2</span>
+<span class="ansi-yellow-intense-fg ansi-bold">    thickness_glass = 0.0032 * 0.96.5 + (0.0032+0.0032)*0.035 # m</span>
+<span class="ansi-white-intense-fg ansi-bold">                                    ^</span>
+<span class="ansi-red-intense-fg ansi-bold">SyntaxError</span><span class="ansi-red-intense-fg ansi-bold">:</span> invalid syntax
 </pre>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2016 </span>
+<span class="n">thickness_glass</span> <span class="o">=</span> <span class="mf">0.0032</span> <span class="o">*</span> <span class="mf">0.97</span> <span class="o">+</span> <span class="p">(</span><span class="mf">0.0032</span><span class="o">+</span><span class="mf">0.0032</span><span class="p">)</span><span class="o">*</span><span class="mf">0.03</span> <span class="c1"># m</span>
+<span class="n">glassperm2</span> <span class="o">=</span> <span class="n">thickness_glass</span> <span class="o">*</span> <span class="n">density_glass</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Glass kg/m2 2013-2015:&quot;</span><span class="p">,</span> <span class="n">glassperm2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -13290,7 +13312,7 @@ For example for 2017:</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2017</span>
@@ -13300,24 +13322,6 @@ For example for 2017:</p>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>2017: 8.225000000000001
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 

@@ -13083,7 +13083,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13109,11 +13109,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
-<span class="n">mod_eff_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/module_eff.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<span class="n">skipcols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Source&#39;</span><span class="p">]</span>
+<span class="n">mod_eff_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../PV_DEMICE/baselines/SupportingMaterial/module_eff.csv&quot;</span><span class="p">,</span> 
+                          <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">skipcols</span><span class="p">)</span>
 <span class="n">mod_eff_raw</span><span class="p">[</span><span class="s1">&#39;mod_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">mod_eff_raw</span><span class="p">[</span><span class="s1">&#39;mod_eff&#39;</span><span class="p">])</span>
 </pre></div>
 
@@ -13124,7 +13126,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mod_eff_raw</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
@@ -13140,13 +13142,13 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[29]:</div>
+    <div class="prompt output_prompt">Out[3]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x2a2e62de408&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x1bf78271608&gt;]</pre>
 </div>
 
 </div>
@@ -13180,7 +13182,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod_eff_raw</span><span class="p">[</span><span class="s1">&#39;mod_eff&#39;</span><span class="p">][</span><span class="mi">2003</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -13197,13 +13199,13 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[30]:</div>
+    <div class="prompt output_prompt">Out[4]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x2a2e6350488&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x1bf782f8dc8&gt;]</pre>
 </div>
 
 </div>
@@ -13237,7 +13239,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[81]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod_eff_early</span> <span class="o">=</span> <span class="n">mod_eff_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">mod_eff_raw</span><span class="o">.</span><span class="n">index</span><span class="o">&lt;</span><span class="mi">2019</span><span class="p">)]</span>
@@ -13255,13 +13257,13 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[81]:</div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x2a2eace3d08&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x1bf7869cc48&gt;]</pre>
 </div>
 
 </div>
@@ -13287,7 +13289,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[82]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Import curve fitting package from scipy</span>
@@ -13304,7 +13306,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[83]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#generae a dataset for the area in between</span>
@@ -13336,13 +13338,13 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[83]:</div>
+    <div class="prompt output_prompt">Out[7]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x2a2ead28808&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x1bf79127a88&gt;]</pre>
 </div>
 
 </div>
@@ -13368,7 +13370,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[84]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create a dataframe of the projection</span>
@@ -13403,13 +13405,13 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[84]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x2a2eb093608&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x1bf791c23c8&gt;]</pre>
 </div>
 
 </div>
@@ -13443,11 +13445,11 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[88]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod_eff</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mod_eff_history</span><span class="p">,</span> <span class="n">mod_eff_late</span><span class="p">])</span>
-<span class="n">mod_eff</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s1">&#39;/../../PV_DEMICE/baselines/SupportingMaterial/avg_module_eff_final.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">mod_eff</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s1">&#39;/../../PV_DEMICE/baselines/SupportingMaterial/output_avg_module_eff_final.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mod_eff</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Average Module Efficiency (%)&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Efficiency (%)&#39;</span><span class="p">)</span>
@@ -13463,7 +13465,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[88]:</div>
+    <div class="prompt output_prompt">Out[9]:</div>
 
 
 

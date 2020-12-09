@@ -11,7 +11,7 @@
 # So overall thickness of glass per panel goes from 3.2 to 5 mm for Glass-backsheet to Glass-Glass modules.
 # 
 
-# In[9]:
+# In[1]:
 
 
 import numpy as np
@@ -20,7 +20,7 @@ density_glass = 2500 # kg/m^3
 
 # #### Up to 2012
 
-# In[4]:
+# In[2]:
 
 
 
@@ -41,7 +41,7 @@ print("Glass kg/m2 up to 2012:", glassperm2)
 # 
 # Data is not available on Glass-Glass modules for 2015 so we're interpolating between previous year
 
-# In[5]:
+# In[3]:
 
 
 #2013
@@ -50,7 +50,7 @@ glassperm2 = thickness_glass * density_glass
 print("Glass kg/m2 2013:", glassperm2)
 
 
-# In[ ]:
+# In[4]:
 
 
 #2014
@@ -59,7 +59,7 @@ glassperm2 = thickness_glass * density_glass
 print("Glass for 2014:", glassperm2)
 
 
-# In[ ]:
+# In[5]:
 
 
 #2015
@@ -68,7 +68,7 @@ glassperm2 = thickness_glass * density_glass
 print("Glass kg/m2 2013-2015:", glassperm2)
 
 
-# In[6]:
+# In[ ]:
 
 
 #2016 
@@ -91,7 +91,7 @@ print("Glass kg/m2 2013-2015:", glassperm2)
 # ![ITRPV Glass thicknesses deduction example](../images_wiki/ITRPV_GlassDeduction.PNG)
 # 
 
-# In[7]:
+# In[ ]:
 
 
 #2017
