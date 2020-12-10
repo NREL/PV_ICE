@@ -23,7 +23,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='PV_DEMICE',
+    name='PV_ICE',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -38,7 +38,7 @@ setup(
     long_description_content_type='text/markdown',
 
     # The project's main homepage.
-    url='https://github.com/NREL/PV_DEMICE',
+    url='https://github.com/NREL/PV_ICE',
 
     # Author details
     author='Silvana Ayala',
@@ -75,10 +75,10 @@ setup(
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     #packages=find_packages(exclude=['contrib', 'docs', 'tests']) + ['data'],
-    packages = ['PV_DEMICE'],
+    packages = ['PV_ICE'],
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
-    #py_modules=["PV_DEMICE"],
+    #py_modules=["PV_ICE"],
 
     # List run-time dependencies here.  These will be installed by pip when
     # your project is installed. For an analysis of "install_requires" vs pip's
@@ -104,7 +104,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'PV_DEMICE': ['baselines/baseline_modules_US.csv',
+        'PV_ICE': ['baselines/baseline_modules_US.csv',
                        'baselines/baseline_material_glass.csv'],
     },
 
