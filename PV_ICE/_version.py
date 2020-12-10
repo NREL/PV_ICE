@@ -42,8 +42,8 @@ def get_config():
     cfg.VCS = "git"
     cfg.style = "pep440"
     cfg.tag_prefix = ""
-    cfg.parentdir_prefix = "PV_DEMICE"
-    cfg.versionfile_source = "PV_DEMICE/_version.py"
+    cfg.parentdir_prefix = "PV_ICE"
+    cfg.versionfile_source = "PV_ICE/_version.py"
     cfg.verbose = False
     return cfg
 

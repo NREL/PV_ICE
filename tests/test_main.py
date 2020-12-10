@@ -4,13 +4,13 @@ Created on Wed Oct  7 10:12:46 2020
 
 @author: Silvana
 
-Using pytest to create unit tests for PV DEMICE
+Using pytest to create unit tests for PV ICE
 to run unit tests, run pytest from the command line in the bifacial_radiance directory
 to run coverage tests, run py.test --cov-report term-missing --cov=bifacial_radiance
 
 """
 
-import PVDEMICE
+import PV_ICE
 import numpy as np
 import pytest
 import os
@@ -30,7 +30,7 @@ MODULEBASELINE = 'baseline_module_test.csv'
 MATERIALBASELINE = 'baseline_material_test.csv'
 
 def test_project_lifetime():
-    r1 = PVDEMICE.Simulation()
+    r1 = PV_ICE.Simulation()
     r1.createScenario('standard', file=MODULEBASELINE)
     r1.scenario['standard'].addMaterial('glass', file=MATERIALBASELINE)
     failyear = r1.scenario['standard'].data['mod_lifetime'][0] 
