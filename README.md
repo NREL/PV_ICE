@@ -31,7 +31,7 @@
 
 # PV_ICE: PV in the Circular Economy, Dynamic Energy and Materials TOOL
 
-This open-source tool will help quantify and assign a value framework to efforts on re-design, reduction, replacement, reusage, recycling, and lifetime and reliability increases on PV, implementing Circular Economy metrics for PV materials.
+This open-source tool implements Circular Economy metrics for photovoltaic (PV) materials. It can be used to quantify and assign a value framework to efforts on re-design, reduction, replacement, reuse, recycling, and lifetime and reliability increases in the PV value chain.
 
 The PV_ICE is leveraging published data from different sources on PV manufacturing and predicted technological changes. Input data is being compiled [here](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing)
 
@@ -114,4 +114,3 @@ If you use PV_ICE in a published work, please cite:
 Please also cite the DOI corresponding to the specific version of
 PV_ICE that you used. PV_ICE DOIs are listed at
 [Zenodo.org](https://zenodo.org/)
-
