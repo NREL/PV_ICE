@@ -33,7 +33,7 @@ density_Ag = 10.49 #g/cm3, source Wikipedia
 #read in the csv of 2009 through 2030 data for silver per cell.
 cwd = os.getcwd() #grabs current working directory
 skipcols = ['Source']
-itrpv_ag_gpc = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/ag_g_per_cell.csv", 
+itrpv_ag_gpc = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/ag_g_per_cell.csv", 
                            index_col='Year', usecols=lambda x: x not in skipcols)
 
 
@@ -63,7 +63,7 @@ plt.ylabel("Silver, grams/cell")
 
 
 #import cell per m2 from the silicon baseline
-cpm2 = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/output_cell_per_m2.csv",
+cpm2 = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/output_cell_per_m2.csv",
                    index_col='Year', usecols=lambda x: x not in skipcols)
 #print(cpm2)
 
@@ -106,5 +106,5 @@ plt.ylabel("Silver, grams/module m2")
 
 
 #print out to csv
-ag_gpm2_full.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/output_ag_g_per_m2.csv', index=True)
+ag_gpm2_full.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_ag_g_per_m2.csv', index=True)
 

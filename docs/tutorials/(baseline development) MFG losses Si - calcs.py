@@ -24,17 +24,17 @@ plt.rcParams['figure.figsize'] = (12, 8)
 #read in supporting csv files
 cwd = os.getcwd() #grabs current working directory
 skipcols = ['Source']
-si_g_percell = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/output_si_g_per_cell.csv", 
+si_g_percell = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/output_si_g_per_cell.csv", 
                            index_col='Year', usecols=lambda x: x not in skipcols)
-kerf_loss_raw = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/kerf_loss_microns.csv", 
+kerf_loss_raw = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/kerf_loss_microns.csv", 
                             index_col='Year', usecols=lambda x: x not in skipcols)
-utilize_gperwafer_raw = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/utilization_g_perwafer.csv", 
+utilize_gperwafer_raw = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/utilization_g_perwafer.csv", 
                                     index_col='Year', usecols=lambda x: x not in skipcols)
-wafer_thickness = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/Wafer_thickness.csv", 
+wafer_thickness = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/Wafer_thickness.csv", 
                               index_col='Year', usecols=lambda x: x not in skipcols)
-wafering_marketshare = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/wafering_marketshare.csv", 
+wafering_marketshare = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/wafering_marketshare.csv", 
                                    index_col='Year', usecols=lambda x: x not in skipcols)
-marketshare_mono_mc = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv", 
+marketshare_mono_mc = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv", 
                                   index_col='Year', usecols=lambda x: x not in skipcols)
 
 
@@ -264,7 +264,7 @@ mfg_eff_si = (si_g_percell / gpc_final)*100
 plt.plot(mfg_eff_si)
 plt.ylabel('Manufacturing Efficiency of Si(%)')
 plt.title('Manufacturing Efficiency of Si on a per cell basis, Averaged')
-mfg_eff_si.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/output_mfg_eff_si.csv', index=True)
+mfg_eff_si.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_mfg_eff_si.csv', index=True)
 
 
 # The reason there is a massive drop in mfg efficiency between 2004 and 2009 is primarily due to a rapid decrease in wafer thickness (300 micron to 180 micron).

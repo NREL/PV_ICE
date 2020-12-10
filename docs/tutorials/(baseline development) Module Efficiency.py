@@ -21,7 +21,7 @@ plt.rcParams['figure.figsize'] = (12, 8)
 
 cwd = os.getcwd() #grabs current working directory
 skipcols = ['Source']
-mod_eff_raw = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/module_eff.csv", 
+mod_eff_raw = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/module_eff.csv", 
                           index_col='Year', usecols=lambda x: x not in skipcols)
 mod_eff_raw['mod_eff'] = pd.to_numeric(mod_eff_raw['mod_eff'])
 
@@ -67,7 +67,7 @@ def power_law(x, a, b):
 #generae a dataset for the area in between
 mod_eff_late = mod_eff_raw.loc[(mod_eff_raw.index>=2019)]
 y_dummy = power_law(mod_eff_late.index-2018, mod_eff_late['mod_eff'][2019], 0.077) 
-#played around with the exponential until y_dummy[31] closely matched projected 25.06% value.
+#played around with the exponential until y_dummy[31] closely matched projected 25.06% value. CITE
 print(y_dummy[31])
 plt.plot(y_dummy)
 
@@ -87,7 +87,7 @@ plt.plot(mod_eff_late)
 
 
 mod_eff = pd.concat([mod_eff_history, mod_eff_late])
-mod_eff.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/output_avg_module_eff_final.csv', index=True)
+mod_eff.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_avg_module_eff_final.csv', index=True)
 plt.plot(mod_eff)
 plt.title('Average Module Efficiency (%)')
 plt.ylabel('Efficiency (%)')

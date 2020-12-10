@@ -18,7 +18,7 @@ plt.rcParams['figure.figsize'] = (30, 15)
 
 
 cwd = os.getcwd() #grabs current working directory
-df_installs_raw = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/PVInstalls_USA_AllSources.csv", index_col='Year')
+df_installs_raw = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/PVInstalls_USA_AllSources.csv", index_col='Year')
 
 
 # In[4]:
@@ -79,7 +79,7 @@ installs_old['installed_pv_MW'][1995] = 12.5 #MW
 
 # ### Collect the installation data together into a single df
 
-# In[35]:
+# In[8]:
 
 
 installs = pd.concat([installs_old,installs_recent])
@@ -96,10 +96,10 @@ plt.title('Installations of PV in the USA (MW) since 1995')
 
 
 cwd = os.getcwd() #grabs current working directory
-df_raw_mrktshr_siVtf = pd.read_csv(cwd+"/../../PV_DEMICE/baselines/SupportingMaterial/MarketShare_US_siliconVSthinfilm.csv", index_col='Year')
+df_raw_mrktshr_siVtf = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/MarketShare_US_siliconVSthinfilm.csv", index_col='Year')
 
 
-# In[19]:
+# In[10]:
 
 
 refs = df_raw_mrktshr_siVtf.columns
@@ -115,7 +115,7 @@ plt.ylim(0,1.1)
 # 
 # Mints does have marketshare data overlapping the late 2000s to the present, however, this data is based on MFG capcity and shipments at a global scale. This PV installation baseline is for the USA, and is focused on the install side, rather than the MFG capacity side.
 
-# In[29]:
+# In[11]:
 
 
 #bfill function "collapses" values from all columns into a single column, then make a df of only that data
@@ -124,7 +124,7 @@ df_mrktshr_us =  pd.DataFrame(df_raw_mrktshr_siVtf['All_Marketshare'])
 #print( df_mrktshr_us)
 
 
-# In[36]:
+# In[12]:
 
 
 df_mrktshr_us_si_complete = df_mrktshr_us.interpolate(limit_area='inside')
@@ -135,7 +135,7 @@ plt.title('Marketshare of Silicon PV installed since 1995')
 # # Marketshare weight PV installs by percent Silicon
 # Now we have a marketshare percentage of silicon for 1995 through 2018. We will multiply the PV installs by this silicon marketshare to get the MW of silicon PV installed in the US since 1995.
 
-# In[48]:
+# In[23]:
 
 
 dfs = [installs,df_mrktshr_us_si_complete]
@@ -144,13 +144,17 @@ df_clean = df.dropna()
 us_si_installs = df_clean.agg('prod', axis='columns')
 
 #print(us_si_installs)
-plt.plot(us_si_installs, marker='o')
+plt.rcParams.update({'font.size': 18})
+plt.rcParams['figure.figsize'] = (15, 8)
+plt.plot(installs, label='All USA PV Installed', color='orange')
+plt.plot(us_si_installs, label='Silicon PV Installed, USA', color='blue')
 plt.yscale('log')
 plt.title('Silicon PV Installations (MW) in the USA, 1995 through 2018')
+plt.legend()
 
 
 # In[ ]:
 
 
-us_si_installs.to_csv(cwd+'/../../PV_DEMICE/baselines/SupportingMaterial/output_USA_SiPV_installs.csv', index=True)
+us_si_installs.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_USA_SiPV_installs.csv', index=True)
 
