@@ -1,0 +1,2 @@
+include versioneer.py
+include PV_ICE/_version.py
