@@ -1,0 +1,24 @@
+﻿Baseline Virgin Material efficiency % Development
+
+Quartz-Silica to Metallurgical Grade (MG)-Si
+"Depending on the quality of the raw materials used and the operational strategy and skills, the silicon yield as metallurgical silicon ranges from 80 to 90%, the balance resulting in silica fume [2]." This has 1 to 3% impurities.
+	A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSITY OF SCIENCE AND TECHNOLOGY, Feb. 2008.
+
+Refining of MG-Si
+Seimens process is 80% of Polysilicon tech as of 2014 with increasing share.
+Cz process is 95% of Mono in 2016, with 5% being a Continuous-Cz process.
+"Trichlorosilane HSiCl3 is prepared by hydrochlorination of metallurgical grade silicon in a fluidised bed reactor [1, 2, 4]: 
+Si(s) + 3HCl = HSiCl3 + H2        (26) 
+This reaction occurs at 350°C normally without a catalyst. A competing reaction is 
+Si(s) + 4HCl = SiCl4 + 2H2        (27) 
+contributing to the formation of unsuitable tetrachlorosilane in molar proportion of 10 to 20%."
+"for  each  mole  of  Si  converted  to  polysilicon,  3  to  4  moles  are  converted  to  SiCl4,"
+"The present market of fumed silica is about 60 000 MT measured in terms of silicon unit. This presently corresponds to three times the  output  of  polysilicon  in  2000."
+	A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSITY OF SCIENCE AND TECHNOLOGY, Feb. 2008.
+
+Therefore, the yeild of silicon from quartz-silica seems to be:
+(80% or 90%)*(1/3 or 1/4)
+so Min = 0.8*0.25 = 0.2 or 20% yield
+and Max = 0.9*0.33 = 0.3 or 30% yield
+That is shockingly low. We will assume 20% in 1995, and 30% in 2020, with linear interpolation for now.
+After 2020, the 30% is held constant through 2050 for lack of good extrapolation for this data.
