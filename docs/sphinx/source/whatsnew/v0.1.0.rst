@@ -1,7 +1,7 @@
 .. _whatsnew_0100:
 
 v0.1.0 (12 / 15 / 2020)
-=====================
+=======================
 
 First official release. This software is still under development, in particular of the baselines associated for the data of the PV modules and materials. 
 
