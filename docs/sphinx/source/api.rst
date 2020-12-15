@@ -10,7 +10,9 @@ Modules, methods, classes and attributes are explained here.
 
 Flow Mass Functions
 -------------------
-.. autofunction:: calculateMassFlow
+.. autofunction:: Simulation
+.. autofunction:: Scenario
+.. autofunction:: Material
 
 Reliability and Failure Functions
 ---------------------------------
@@ -21,3 +23,7 @@ Modifying Baseline Functions
 ----------------------------
 .. autofunction:: sens_StageEfficiency
 .. autofunction:: sens_StageImprovement
+
+LCA Functions
+-------------
+.. autofunction:: calculateLCA

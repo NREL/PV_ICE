@@ -4,9 +4,9 @@ API
 ===
 Modules, methods, classes and attributes are explained here.
 
-.. automodule:: CEMFC
+.. automodule:: PV_ICE
 
-.. automodule:: CEMFC.main
+.. automodule:: PV_ICE.main
 
 Flow Mass Functions
 -------------------
