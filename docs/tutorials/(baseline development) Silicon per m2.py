@@ -341,6 +341,7 @@ wafer_thick_cm = wafer_thickness/10000 # microns in a cm
 wafer_thick_cm = wafer_thick_cm.interpolate(method='linear',axis=0)
 #print(wafer_thick_cm)
 plt.plot(wafer_thick_cm, label='Wafer Thickness (cm)')
+plt.title('Wafer Thickness (cm)')
 
 
 # Now multiply the thickness of the cell by the area of the cell to get a cell volume for each year
@@ -396,7 +397,9 @@ plt.xlabel('Year')
 plt.ylabel('Silicon (grams/m^2)')
 
 
-# In[23]:
+# For post-2030, the mass per m^2 of silicon was held constant through 2050 due to the uncertainty about future technology trends. For example, there are at least 3 different cell sizes which are vying for becoming the next mainstream technology, the move to all bifiacial might affect silicon use differently, and the half-cut and smaller cell technologies will also have an affect. Therefore, we have held it constant from 2030 onward, and this assumption can be modified by the user.
+
+# In[21]:
 
 
 #understanding what influences the changes in Si mass/module m^2

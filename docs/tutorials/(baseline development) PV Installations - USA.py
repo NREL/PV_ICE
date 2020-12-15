@@ -158,3 +158,5 @@ plt.legend()
 
 us_si_installs.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_USA_SiPV_installs.csv', index=True)
 
+
+# This data only takes installes through 2018. For the remaining years through 2050, a compound annual growth rate of 8.9% was used to predict increasing installations. This compound annual growth rate was sourced from IRENA 2016 EoL Mangement Report.
