@@ -1,0 +1,24 @@
+.. _whatsnew_0100:
+
+v0.1.0 (12 / 15 / 2020)
+=====================
+
+First official release. This software is still under development, in particular of the baselines associated for the data of the PV modules and materials. 
+
+* Re-structured folders to include Documentation, Versioning and Setup.
+* main.py populated with functions developed
+* Development journals and examples moved to tutorials folder
+* Added Sphinx Documentation
+* Added Versioneer
+* Added baseline for PV modules installations at US and World level
+* Added baseline for materials Silicon & Glass
+* Added simple pytest
+* Pypi registration
+
+Contributors
+~~~~~~~~~~~~
+* Silvana Ayala (:ghuser:`shirubana`)
+* Tim Silverman (:ghuser:`silverman`)
+* Heather Mirletz (:ghuser:`heathermirletz`)
+* Dirk Jordan (:ghuser:`dirkjordan`)
+* Chris Deline (:ghuser:`cdeline`)
