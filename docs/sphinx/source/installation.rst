@@ -3,13 +3,13 @@
 Installation
 ============
 
-CircularEconomy-MassFlowCalculator releases may be installed using the pip and conda tools.
+PV in Circular Economy Tool can be installed using the pip and conda tools.
 
 Install with:
 
 .. code::
 
-        pip install CEMFC
+        pip install PV_ICE
 
 For developer installation, download the repository, navigate to the folder location and install as:
 
@@ -17,6 +17,6 @@ For developer installation, download the repository, navigate to the folder loca
 
         pip install -e .
 
-CEMFC is compatible with Python 3.5 and above.
+PV ICE is compatible with Python 3.5 and above.
         
 

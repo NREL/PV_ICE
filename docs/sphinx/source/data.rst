@@ -7,7 +7,7 @@ Input Data
 ----------------
 At least two files of baselines are needed for the simulation: 1) one file with module parameters throughout the years, for example *baseline_US*, and 2) one or more files with process parameters for each material being analyzed in the module, for example *baseline_glass*. See **baseline_module** and **baseline_material** for more details on input columns needed and their definition. 
 
-The baselines folder in the CEMFC provides baseline scenarios for modules in the US and World level, as well as baseline_materials for glass, Silver and Aluminum. For more details on the source of these values, see the documentation on baselines. 
+The baselines folder in the PV_ICE tool provides baseline scenarios for modules in the US and World level, as well as baseline_materials for glass, Silver and Aluminum. For more details on the source of these values, see the documentation on baselines. 
 
 
 baseline_module
@@ -30,28 +30,28 @@ module_reliability_t90_[years]: float
 module_degradation_[%]: float
 Percentage annual reduction of the module's performance, relative to it’s nameplate. i.e. 0.5 %. 
 
-*module_manufacturing_efficiency_[%]: float
+module_manufacturing_efficiency_[%]: float
 Efficiency of manufacturing modules (if there are losses of modules and all associated   products during production). 
 
-*module_EOL_collection_losses_[%]: float
+module_EOL_collection_losses_[%]: float
 Percentage of modules collected from the field at end of life for sorting and disposition. i.e. 30%
 
 module_EOL_collected_recycled_[%] : float
 Percentage of collected end of life modules that are sent to recycling
 
-*module_repowering_[%]: float
+module_repowering_[%]: float
 Percentage of modules at EOL from degradation that are repowered.
 
-*module_repairing_[%]: float
+module_repairing_[%]: float
 Percentage of modules at EOL from failure that are repaired and go back to functioning  in the field.
 
 
 baseline_material
 ~~~~~~~~~~~~~~~~~~~~
-*material_virgin_efficiency_[%]: float
+material_virgin_efficiency_[%]: float
 Efficiency of mining, extracting, and purifying the material up to the point of entry into the module manufacturing line. 
 
-*material_masspermodule_[kg]: float
+material_masspermodule_[kg]: float
 Mass of specified material in kilograms per PV module
 
 material_manufacturing_efficiency_[%]: float
@@ -69,7 +69,7 @@ Percentage of manufacturing scrap which is recycled into high quality material a
 material_manufacturing_scrap_recycled_into_HighQuality_reused_for_module_manufacturing_[%]: float
 Percentage of manufacturing scrap material which is recycled and used in the manufacturing of a new module
 
-*material_EOL_collected_Recycled_[%]: float
+material_EOL_collected_Recycled_[%]: float
 Percentage of collected end of life material which is sent to recycling
 
 material_EOL_Recycling_efficiency_[%]: float
