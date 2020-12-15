@@ -1,4 +1,4 @@
-Baseline Virgin Material efficiency % Development
+﻿Baseline Virgin Material efficiency % Development
 
 Quartz-Silica to Metallurgical Grade (MG)-Si
 "Depending on the quality of the raw materials used and the operational strategy and skills, the silicon yield as metallurgical silicon ranges from 80 to 90%, the balance resulting in silica fume [2]." This has 1 to 3% impurities.
@@ -21,3 +21,4 @@ Therefore, the yeild of silicon from quartz-silica seems to be:
 so Min = 0.8*0.25 = 0.2 or 20% yield
 and Max = 0.9*0.33 = 0.3 or 30% yield
 That is shockingly low. We will assume 20% in 1995, and 30% in 2020, with linear interpolation for now.
+After 2020, the 30% is held constant through 2050 for lack of good extrapolation for this data.
