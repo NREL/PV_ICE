@@ -19,9 +19,9 @@
 <tr>
   <td>Documentation</td>
   <td>
-    <a href="http://PV_ICE.readthedocs.org/en/latest/">
-    <img src="https://readthedocs.org/projects/PV_ICE/badge/?version=latest" alt="documentation build status" />
-    </a>
+	<a href='https://pv-ice.readthedocs.io/en/latest/?badge=latest'>
+	    <img src='https://readthedocs.org/projects/pv-ice/badge/?version=latest' alt='Documentation Status' />
+	</a>
   </td>
 </tr>
 <tr>
