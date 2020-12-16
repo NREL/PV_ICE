@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# CircularEconomy-MassFlowCalculator documentation build configuration file, April 2020
+# PV ICE documentation build configuration file, April 2020
 #
 # Configuration file for the Sphinx documentation builder.
 #
