@@ -2,6 +2,14 @@
 
 <table>
 <tr>
+  <td>Version</td>
+  <td>
+	[![DOI](https://zenodo.org/badge/248347431.svg)](https://zenodo.org/badge/latestdoi/248347431)
+    </a>
+</td>
+</tr>
+
+<tr>
   <td>License</td>
   <td>
     <a href="https://github.com/NREL/CircularEconomy-MassFlowCalculator/blob/master/LICENSE">
