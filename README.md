@@ -4,8 +4,7 @@
 <tr>
   <td>Version</td>
   <td>
-	[![DOI](https://zenodo.org/badge/248347431.svg)](https://zenodo.org/badge/latestdoi/248347431)
-    </a>
+  <a href="https://zenodo.org/badge/latestdoi/248347431"><img src="https://zenodo.org/badge/248347431.svg" alt="DOI"></a>
 </td>
 </tr>
 
