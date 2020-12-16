@@ -17,10 +17,10 @@
 </td>
 </tr>
 <tr>
-  <td>Build Status</td>
+  <td>Documentation</td>
   <td>
-    <a href="http://circulareconomy-massflowcalculator.readthedocs.org/en/latest/">
-    <img src="https://readthedocs.org/projects/circulareconomy-massflowcalculator/badge/?version=latest" alt="documentation build status" />
+    <a href="http://PV_ICE.readthedocs.org/en/latest/">
+    <img src="https://readthedocs.org/projects/PV_ICE/badge/?version=latest" alt="documentation build status" />
     </a>
   </td>
 </tr>
