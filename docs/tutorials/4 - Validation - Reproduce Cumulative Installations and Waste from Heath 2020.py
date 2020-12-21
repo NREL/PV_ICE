@@ -23,7 +23,7 @@
 #     <li> Power to Glass conversion: 76 t/MW </li>
 # </ul>
 
-# In[47]:
+# In[1]:
 
 
 import os
@@ -37,13 +37,13 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[48]:
+# In[2]:
 
 
 import PV_ICE
 
 
-# In[49]:
+# In[3]:
 
 
 import matplotlib.pyplot as plt
@@ -55,7 +55,7 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # ## REPAIR
 
-# In[50]:
+# In[42]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -66,13 +66,13 @@ r1.createScenario(name='PV_ICE_default', file=r'..\baselines\baseline_modules_Wo
 r1.scenario['PV_ICE_default'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 
 
-# In[51]:
+# In[43]:
 
 
 r1.scenario['Garvin_2020'].data.keys()
 
 
-# In[52]:
+# In[44]:
 
 
 plt.plot(r1.scenario['Garvin_2020'].data['year'], r1.scenario['Garvin_2020'].data['new_Installed_Capacity_[MW]']/1000, 'r', label = 'Irena Digitized')
@@ -88,7 +88,7 @@ plt.axvspan(2000, 2018, facecolor='0.9', alpha=0.9)
 #plt.axvspan(2019, 2050, facecolor='0.2', alpha=0.5)
 
 
-# In[66]:
+# In[45]:
 
 
 #fig = plt.figure()
@@ -106,39 +106,115 @@ plt.xlim([2000, 2050.5])
 plt.ylim([0, 400])
 
 
-# In[ ]:
+# In[147]:
 
 
 r1.scenario['Garvin_2020'].data['mod_Repairing'] = 0
-r1.scenario['PV_ICE_default'].data['mod_Repairing'] = 0
+r1.scenario['Garvin_2020'].data['mod_Repowering'] = 0
 
+r1.scenario['Garvin_2020'].data['mod_degradation'] = 0
+r1.scenario['Garvin_2020'].data['mod_EOL_collection_eff'] = 0  # Everything goes to landfill
 r1.scenario['Garvin_2020'].data['mod_reliability_t50'] = 25
-r1.scenario['Garvin_2020'].data['mod_reliability_t90'] = 40
-
-r1.scenario['PV_ICE_default'].data['mod_reliability_t50'] = 25
-r1.scenario['PV_ICE_default'].data['mod_reliability_t90'] = 40
-
+r1.scenario['Garvin_2020'].data['mod_reliability_t90'] = 38
 # Setting Project Lifetime beyond Failures
 r1.scenario['Garvin_2020'].data['mod_lifetime'] = 40
-r1.scenario['PV_ICE_default'].data['mod_lifetime'] = 40
 
 
-# In[ ]:
+# In[148]:
 
 
+r1.scenario['PV_ICE_default'].data.keys()
 
 
-
-# In[ ]:
+# In[149]:
 
 
 r1.calculateMassFlow()
 
 
+# In[150]:
+
+
+r1.scenario['Garvin_2020'].data.keys()
+
+
+# In[151]:
+
+
+r1.scenario['Garvin_2020'].material['glass'].materialdata.keys()
+
+
+# In[152]:
+
+
+r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[-1]/(1E9)
+
+
+# In[153]:
+
+
+r1.scenario['Garvin_2020'].data['year'].iloc[25]
+r1.scenario['Garvin_2020'].data['year'].iloc[35]
+r1.scenario['Garvin_2020'].data['year'].iloc[55]
+
+
+# In[154]:
+
+
+print(r1.scenario['Garvin_2020'].data['year'].iloc[25], r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[25]/(1E12))
+print(r1.scenario['Garvin_2020'].data['year'].iloc[35], r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[35]/(1E12))
+print(r1.scenario['Garvin_2020'].data['year'].iloc[55], r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[55]/(1E12))
+
+
+# In[163]:
+
+
+fig = plt.figure(figsize=(10,10))
+plt.semilogy(r1.scenario['Garvin_2020'].data.year,r1.scenario['Garvin_2020'].material['glass'].materialdata['mat_Total_Landfilled']/907.185, label='Mass of PV in service')
+plt.semilogy(r1.scenario['Garvin_2020'].data.year,r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]']*76/1000000, label='Cumulative PV Waste')
+plt.ylim([1E5, 1E9])
+plt.legend()
+plt.tick_params(axis='y', which='minor')
+plt.xlim([2016,2050])
+plt.grid()
+plt.ylabel('Mass of PV systems (t)')
+plt.xlabel('Years')
+
+
 # In[ ]:
 
 
-r1.scenario['Repair_0'].data.keys()
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
