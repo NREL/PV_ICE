@@ -166,7 +166,27 @@ print(r1.scenario['Garvin_2020'].data['year'].iloc[35], r1.scenario['Garvin_2020
 print(r1.scenario['Garvin_2020'].data['year'].iloc[55], r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[55]/(1E12))
 
 
-# In[163]:
+# ### Remidner NOTES:
+#  mat_Total_Landfilled is in kg, 1 t --> 907.185 kg 
+#  1 MW --> 76 t conversion for the Mass in PV service.
+
+# In[177]:
+
+
+x2050 = r1.scenario['Garvin_2020'].data['year'].iloc[55]
+y2050 = r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[55]*76/1000000
+t2050 = r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[55]/(1E12)
+
+x2030 = r1.scenario['Garvin_2020'].data['year'].iloc[35]
+y2030 = r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[35]*76/1000000
+t2030 = r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[35]/(1E12)
+
+x2020 = r1.scenario['Garvin_2020'].data['year'].iloc[25]
+y2020 = r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[25]*76/1000000
+t2020 = r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[25]/(1E12)
+
+
+# In[196]:
 
 
 fig = plt.figure(figsize=(10,10))
@@ -180,263 +200,45 @@ plt.grid()
 plt.ylabel('Mass of PV systems (t)')
 plt.xlabel('Years')
 
+offset = (0, 30)
+
+plt.annotate(
+    '{:.1f} TW'.format(t2050), (x2050, y2050),
+    ha='center', va='center',
+    size=15,
+    xytext=offset, textcoords='offset points',
+    bbox=dict(boxstyle='round', fc='#ff7f0e', ec='none'),
+    arrowprops=dict(arrowstyle='wedge,tail_width=1.',
+                    fc='#ff7f0e', ec='none',
+                    relpos=(0.5, 1.5),
+                    )
+)
+
+plt.annotate(
+    '{:.1f} TW'.format(t2030), (x2030, y2030),
+    ha='center', va='center',
+    size=15,
+    xytext=offset, textcoords='offset points',
+    bbox=dict(boxstyle='round', fc='#ff7f0e', ec='none'),
+    arrowprops=dict(arrowstyle='wedge,tail_width=1.',
+                    fc='#ff7f0e', ec='none',
+                    relpos=(0.5, 1.5),
+                    )
+)
+
+
+plt.annotate(
+    '{:.1f} TW'.format(t2020), (x2020, y2020),
+    ha='center', va='center',
+    size=15,
+    xytext=offset, textcoords='offset points',
+    bbox=dict(boxstyle='round', fc='#ff7f0e', ec='none'),
+    arrowprops=dict(arrowstyle='wedge,tail_width=1.',
+                    fc='#ff7f0e', ec='none',
+                    relpos=(0.5, 1.5),
+                    )
+)
+
+plt.show()
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-AREA = r1.scenario['Repair_0'].data['Area'].iloc[0]
-
-
-# In[ ]:
-
-
-filter_col = [col for col in r1.scenario['Repair_0'].data if col.startswith('EOL_on_Year_')]
-
-
-# In[ ]:
-
-
-Cumul_EOL_R0 = []
-Cumul_EOL_R50 = []
-
-foo=0
-foo2=0
-for life in range (0, len(filter_col)):
-    foo +=  r1.scenario['Repair_0'].data[filter_col[life]].iloc[0]
-    foo2 += r1.scenario['Repair_50'].data[filter_col[life]].iloc[0]
-    Cumul_EOL_R0.append(foo)
-    Cumul_EOL_R50.append(foo2)
-
-
-# In[ ]:
-
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(AREA-Cumul_EOL_R0, label='Repair = 0%')
-plt.plot(AREA-Cumul_EOL_R50, label='Repair = 0%')
-plt.ylabel('Working Area [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Repair effects')
-plt.legend()
-plt.xlim([0,45])
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(AREA-Cumul_EOL_R0, label='Repair = 0%')
-plt.plot(AREA-Cumul_EOL_R50, label='Repair = 0%')
-ax.set_yscale('log')
-plt.ylabel('Working Area [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Repair effects')
-plt.legend()
-plt.xlim([0,45])
-
-
-# In[ ]:
-
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(Cumul_EOL_R0)
-plt.plot(Cumul_EOL_R50)
-plt.ylabel('Area Disposed [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Repair effects')
-plt.xlim([0,45])
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(Cumul_EOL_R0)
-plt.plot(Cumul_EOL_R50)
-ax.set_yscale('log')
-plt.ylabel('Area Disposed [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Repair effects')
-plt.xlim([0,45])
-
-
-# In[ ]:
-
-
-r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
-
-
-# In[ ]:
-
-
-r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
-r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
-
-
-# ## Reuse
-# 
-# Starting a Clean simulation
-
-# In[ ]:
-
-
-r1 = PV_DEMICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='Repower_0', file=r'..\baselines\baseline_modules_US.csv')
-r1.scenario['Repower_0'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['Repower_0'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
-
-r1.createScenario(name='Repower_50', file=r'..\baselines\baseline_modules_US.csv')
-r1.scenario['Repower_50'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['Repower_50'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
-
-
-# In[ ]:
-
-
-r1.scenario['Repower_0'].data['mod_Repowering'] = 0
-r1.scenario['Repower_50'].data['mod_Repowering'] = 50
-r1.scenario['Repower_50'].data['mod_Repowering'] = 50
-
-r1.scenario['Repower_0'].data['mod_reliability_t50'] = 35
-r1.scenario['Repower_0'].data['mod_reliability_t90'] = 45
-r1.scenario['Repower_50'].data['mod_reliability_t50'] = 35
-r1.scenario['Repower_50'].data['mod_reliability_t90'] = 45
-
-# Setting Project Lifetime beyond Failures
-r1.scenario['Repower_0'].data['mod_lifetime'] = 25
-r1.scenario['Repower_50'].data['mod_lifetime'] = 25
-
-
-# In[ ]:
-
-
-r1.calculateMassFlow()
-
-
-# In[ ]:
-
-
-r1.scenario['Repower_50'].data.keys()
-
-
-# In[ ]:
-
-
-AREA = r1.scenario['Repower_50'].data['Area'].iloc[0]
-
-
-# In[ ]:
-
-
-filter_col = [col for col in r1.scenario['Repower_50'].data if col.startswith('EOL_on_Year_')]
-
-
-# In[ ]:
-
-
-Cumul_EOL_R0 = []
-Cumul_EOL_R50 = []
-
-foo=0
-foo2=0
-for life in range (0, len(filter_col)):
-    foo +=  r1.scenario['Repower_0'].data[filter_col[life]].iloc[0]
-    foo2 += r1.scenario['Repower_50'].data[filter_col[life]].iloc[0]
-    Cumul_EOL_R0.append(foo)
-    Cumul_EOL_R50.append(foo2)
-
-
-# In[ ]:
-
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(AREA-Cumul_EOL_R0, label='Reuse = 0%')
-plt.plot(AREA-Cumul_EOL_R50, label='Reuse = 50%')
-plt.ylabel('Working Area [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Reuse at End of Project Lifetime')
-plt.legend()
-plt.xlim([0,45])
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(AREA-Cumul_EOL_R0, label='Reuse = 0%')
-plt.plot(AREA-Cumul_EOL_R50, label='Reuse = 50%')
-plt.legend()
-ax.set_yscale('log')
-plt.ylabel('Working Area [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Reuse at End of Project Lifetime')
-plt.xlim([0,45])
-
-
-# In[ ]:
-
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(Cumul_EOL_R0, label='Reuse = 0%')
-plt.plot(Cumul_EOL_R50, label='Reuse = 50%')
-plt.ylabel('Area Disposed [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Reuse at End of Project Lifetime')
-plt.legend()
-plt.xlim([0,45])
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(Cumul_EOL_R0, label='Reuse = 0%')
-plt.plot(Cumul_EOL_R50, label='Reuse = 50%')
-ax.set_yscale('log')
-plt.ylabel('Area Disposed [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Reuse at End of Project Lifetime')
-plt.legend()
-plt.xlim([0,45])
-
-
-# In[ ]:
-
-
-r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
-
-
-# In[ ]:
-
-
-r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
-r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 
