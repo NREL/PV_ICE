@@ -73,13 +73,13 @@ baseline.set_index('year', inplace=True)
 baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
 
 
-# In[ ]:
+# In[75]:
 
 
+baseline
 
 
-
-# In[ ]:
+# In[56]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -88,7 +88,7 @@ for ii in range (len(rawdf.unstack(level=1))):
     SCEN=SCEN.replace('+', '_')
     filetitle = SCEN+'_'+PCA +'.csv'
     filetitle = os.path.join(testfolder, filetitle)
-    A = rawdf.unstack(level=1).iloc[0]
+    A = rawdf.unstack(level=1).iloc[ii]
     A = A.droplevel(level=0)
     A.name = 'new_Installed_Capacity_[MW]'
     A = pd.DataFrame(A)
@@ -96,7 +96,7 @@ for ii in range (len(rawdf.unstack(level=1))):
     A = A.resample('Y').asfreq()
     A = A['new_Installed_Capacity_[MW]'].fillna(0).groupby(A['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')    
     A = pd.DataFrame(A)
-
+    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
 
@@ -113,7 +113,7 @@ for ii in range (len(rawdf.unstack(level=1))):
         A.to_csv(ict, header=False)
 
 
-# In[7]:
+# In[57]:
 
 
 # EXAMPLE FOR JUST ONE 
@@ -123,10 +123,11 @@ SCEN = rawdf.unstack(level=1).iloc[ii].name[0]
 SCEN=SCEN.replace('+', '_')
 filetitle = SCEN+'_'+PCA +'.csv'
 filetitle = os.path.join(testfolder, filetitle)
-A = rawdf.unstack(level=1).iloc[0]
+A = rawdf.unstack(level=1).iloc[ii]        
 A = A.droplevel(level=0)
 A.name = 'new_Installed_Capacity_[MW]'
 A = pd.DataFrame(A)
+A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000
 A.index=pd.PeriodIndex(A.index, freq='A')
 B = A.resample('Y').asfreq()
 B = B['new_Installed_Capacity_[MW]'].fillna(0).groupby(B['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')
@@ -150,13 +151,13 @@ with open(filetitle, 'w', newline='') as ict:
     B.to_csv(ict, header=False)
 
 
-# In[8]:
+# In[40]:
 
 
 ## Reading inputs adn creating scenarios
 
 
-# In[9]:
+# In[7]:
 
 
 GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
@@ -164,66 +165,87 @@ GIS = pd.read_excel(GISfile)
 GIS = GIS.set_index('id')
 
 
-# In[10]:
+# In[8]:
 
 
 GIS.head()
 
 
-# In[11]:
+# In[9]:
 
 
 GIS.loc['p1'].long
 
 
-# In[12]:
+# In[10]:
 
 
-simulationname = scenarios[0]
-simulationname
+simulationname = scenarios
+simulationname = [w.replace('+', '_') for w in simulationname]
 PCA = PCAs[0]
+simulationname
 
 
-# In[18]:
+# In[ ]:
 
 
-PCA
 
 
-# In[24]:
+
+# In[ ]:
+
+
+
+
+
+# In[13]:
 
 
 for ii in range (0, 1): #len(scenarios):
     r1 = PV_ICE.Simulation(name=scenarios[ii], path=testfolder)
-    for jj in range (0, 2): #len(PCAs)): 
-        r1.createScenario(name=PCAs[jj], file=r'..\baselines\baseline_modules_US.csv')
-        r1.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+    for jj in range (0, 10): #len(PCAs)): 
+        filetitle = scenarios[ii]+'_'+PCAs[jj]+'.csv'
+        filetitle = os.path.join(testfolder, filetitle)        
+        r1.createScenario(name=PCAs[jj], file=filetitle)
+        r1.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\baseline_material_glass_Reeds.csv')
         r1.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
         r1.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
 
-# In[ ]:
+# In[14]:
 
 
+r1.scenario['p1'].data
 
 
-
-# In[ ]:
-
+# In[15]:
 
 
-
-
-# In[ ]:
-
-
-
+r1.calculateMassFlow()
 
 
 # In[16]:
 
 
+r1.scenario['p107'].data['Cumulative_Area_disposedby_Failure'].sum()
 
+
+# In[17]:
+
+
+r1.scenario['p105'].data['Cumulative_Area_disposedby_Failure'].sum()
+
+
+# In[18]:
+
+
+r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
+
+
+# In[19]:
+
+
+r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 
 
 # In[ ]:
