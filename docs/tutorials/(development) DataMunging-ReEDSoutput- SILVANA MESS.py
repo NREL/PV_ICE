@@ -59,8 +59,58 @@ for ii in range (len(rawdf.unstack(level=1))):
     A = rawdf.unstack(level=1).iloc[0]
     A = A.droplevel(level=0)
     A.name = 'new_Installed_Capacity_[MW]'
-    pd.DataFrame(A).to_csv(filetitle)
+    A = pd.DataFrame(A)
+    A.index=pd.PeriodIndex(A.index, freq='A')
+    A = A.resample('Y').asfreq()
+    A = A['new_Installed_Capacity_[MW]'].fillna(0).groupby(A['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')    
+    A = pd.DataFrame(A)
+    A.to_csv(filetitle)
     
+
+
+# In[6]:
+
+
+# EXAMPLE FOR JUST ONE 
+ii = 0
+PCA = rawdf.unstack(level=1).iloc[ii].name[1]
+SCEN = rawdf.unstack(level=1).iloc[ii].name[0]
+SCEN=SCEN.replace('+', '_')
+filetitle = SCEN+'_'+PCA +'.csv'
+filetitle = os.path.join(testfolder, filetitle)
+A = rawdf.unstack(level=1).iloc[0]
+A = A.droplevel(level=0)
+A.name = 'new_Installed_Capacity_[MW]'
+A = pd.DataFrame(A)
+A.index=pd.PeriodIndex(A.index, freq='A')
+B = A.resample('Y').asfreq()
+B = B['new_Installed_Capacity_[MW]'].fillna(0).groupby(B['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')
+B = pd.DataFrame(B)
+B.to_csv(filetitle)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
