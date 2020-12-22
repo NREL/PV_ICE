@@ -603,7 +603,12 @@ class Scenario(Simulation):
     
     def addMaterial(self, materialname, file=None):
         self.material[materialname] = Material(materialname, file)
+    
+    def __getitem__(self, key):
+        return getattr(self, key)
 
+    def __setitem__(self, key):
+        return setattr(self, key)
 
 class Material:
     def __init__(self, materialname, file):

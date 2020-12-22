@@ -47,7 +47,21 @@ rawdf.set_index(['scenario','year','PCA'], inplace=True)
 rawdf.index.get_level_values('scenario').unique()
 
 
-# In[26]:
+# In[5]:
+
+
+scenarios = list(rawdf.index.get_level_values('scenario').unique())
+PCAs = list(rawdf.index.get_level_values('PCA').unique())
+scenarios
+
+
+# In[ ]:
+
+
+
+
+
+# In[6]:
 
 
 import PV_ICE
@@ -65,7 +79,7 @@ baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
 
 
 
-# In[30]:
+# In[ ]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -99,7 +113,7 @@ for ii in range (len(rawdf.unstack(level=1))):
         A.to_csv(ict, header=False)
 
 
-# In[29]:
+# In[7]:
 
 
 # EXAMPLE FOR JUST ONE 
@@ -136,9 +150,91 @@ with open(filetitle, 'w', newline='') as ict:
     B.to_csv(ict, header=False)
 
 
+# In[8]:
+
+
+## Reading inputs adn creating scenarios
+
+
+# In[9]:
+
+
+GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
+GIS = pd.read_excel(GISfile)
+GIS = GIS.set_index('id')
+
+
+# In[10]:
+
+
+GIS.head()
+
+
+# In[11]:
+
+
+GIS.loc['p1'].long
+
+
+# In[12]:
+
+
+simulationname = scenarios[0]
+simulationname
+PCA = PCAs[0]
+
+
+# In[18]:
+
+
+PCA
+
+
+# In[24]:
+
+
+for ii in range (0, 1): #len(scenarios):
+    r1 = PV_ICE.Simulation(name=scenarios[ii], path=testfolder)
+    for jj in range (0, 2): #len(PCAs)): 
+        r1.createScenario(name=PCAs[jj], file=r'..\baselines\baseline_modules_US.csv')
+        r1.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+        r1.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
+        r1.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[16]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
 # ## Playing with Multiindex Stuff
 
-# In[7]:
+# In[ ]:
 
 
 rawdf.unstack(level=0).head()
@@ -146,32 +242,32 @@ rawdf.unstack(level=1).head()
 rawdf.unstack(level=2).head()
 
 
-# In[8]:
+# In[ ]:
 
 
 rawdf.unstack(level=1).iloc[0]
 
 
-# In[9]:
+# In[ ]:
 
 
 rawdf.unstack(level=1).iloc[2].name[1]
 
 
-# In[10]:
+# In[ ]:
 
 
 rawdf.loc[('Reference.Mod',2010)].head()
 
 
-# In[11]:
+# In[ ]:
 
 
 scenarios = rawdf.groupby(level=0)
 PCA = rawdf.groupby(level=2)
 
 
-# In[12]:
+# In[ ]:
 
 
 for a,b in scenarios:
@@ -179,7 +275,7 @@ for a,b in scenarios:
         print(a, c)
 
 
-# In[13]:
+# In[ ]:
 
 
 PCAs = rawdf.index.get_level_values('PCA').unique()
@@ -187,19 +283,19 @@ scenarios = rawdf.index.get_level_values('scenario').unique()
 years = rawdf.index.get_level_values('year').unique()
 
 
-# In[14]:
+# In[ ]:
 
 
 rawdf.loc[(scenarios[1])].head()
 
 
-# In[15]:
+# In[ ]:
 
 
 rawdf.loc[scenarios[1]].head()
 
 
-# In[16]:
+# In[ ]:
 
 
 rawdf.loc[[scenarios[1]]].head()
