@@ -47,7 +47,25 @@ rawdf.set_index(['scenario','year','PCA'], inplace=True)
 rawdf.index.get_level_values('scenario').unique()
 
 
-# In[5]:
+# In[26]:
+
+
+import PV_ICE
+r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
+r1.createScenario(name='US', file=r'..\baselines\baseline_modules_US.csv')
+baseline = r1.scenario['US'].data
+baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
+baseline.set_index('year', inplace=True)
+baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
+
+
+# In[ ]:
+
+
+
+
+
+# In[30]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -64,11 +82,24 @@ for ii in range (len(rawdf.unstack(level=1))):
     A = A.resample('Y').asfreq()
     A = A['new_Installed_Capacity_[MW]'].fillna(0).groupby(A['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')    
     A = pd.DataFrame(A)
-    A.to_csv(filetitle)
-    
+
+    # Add other columns
+    A = pd.concat([A, baseline.reindex(A.index)], axis=1)
+
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repowering,mod_Repairing\n"    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
+
+    with open(filetitle, 'w', newline='') as ict:
+    # Write the header lines, including the index variable for
+    # the last one if you're letting Pandas produce that for you.
+    # (see above).
+        for line in header:
+            ict.write(line)
+
+        #    savedata.to_csv(ict, index=False)
+        A.to_csv(ict, header=False)
 
 
-# In[6]:
+# In[29]:
 
 
 # EXAMPLE FOR JUST ONE 
@@ -88,47 +119,21 @@ B = B['new_Installed_Capacity_[MW]'].fillna(0).groupby(B['new_Installed_Capacity
 B = pd.DataFrame(B)
 B.to_csv(filetitle)
 
-
-# In[ ]:
-
-
+# Add other columns
+B = pd.concat([B, baseline.reindex(B.index)], axis=1)
 
 
+header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,""mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,""mod_Repowering,mod_Repairing\n""year,MW,%,years,years,%,years,%,%,%,%,%\n"
 
-# In[ ]:
+with open(filetitle, 'w', newline='') as ict:
+# Write the header lines, including the index variable for
+# the last one if you're letting Pandas produce that for you.
+# (see above).
+    for line in header:
+        ict.write(line)
 
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
+    #    savedata.to_csv(ict, index=False)
+    B.to_csv(ict, header=False)
 
 
 # ## Playing with Multiindex Stuff
