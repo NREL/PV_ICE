@@ -15,7 +15,7 @@
 
 
 import numpy as np
-density_glass = 2500 # kg/m^3    
+density_glass = 2500*1000 # g/m^3    
 
 
 # #### Up to 2012
@@ -26,7 +26,7 @@ density_glass = 2500 # kg/m^3
 
 thickness_glass = 0.0032  # m
 glassperm2 = thickness_glass * density_glass
-print("Glass kg/m2 up to 2012:", glassperm2)
+print("Glass g/m2 up to 2012:", glassperm2)
 
 
 # #### 2013 - 2016
@@ -47,7 +47,7 @@ print("Glass kg/m2 up to 2012:", glassperm2)
 #2013
 thickness_glass = 0.0032 * 0.98 + (0.0032+0.0032)*0.02 # m
 glassperm2 = thickness_glass * density_glass
-print("Glass kg/m2 2013:", glassperm2)
+print("Glass g/m2 2013:", glassperm2)
 
 
 # In[4]:
@@ -63,18 +63,18 @@ print("Glass for 2014:", glassperm2)
 
 
 #2015
-thickness_glass = 0.0032 * 0.96.5 + (0.0032+0.0032)*0.035 # m
+thickness_glass = 0.0032 * 0.965 + (0.0032+0.0032)*0.035 # m
 glassperm2 = thickness_glass * density_glass
-print("Glass kg/m2 2013-2015:", glassperm2)
+print("Glass g/m2 2015:", glassperm2)
 
 
-# In[ ]:
+# In[6]:
 
 
 #2016 
 thickness_glass = 0.0032 * 0.97 + (0.0032+0.0032)*0.03 # m
 glassperm2 = thickness_glass * density_glass
-print("Glass kg/m2 2013-2015:", glassperm2)
+print("Glass g/m2 2016:", glassperm2)
 
 
 # In[ ]:
@@ -91,7 +91,7 @@ print("Glass kg/m2 2013-2015:", glassperm2)
 # ![ITRPV Glass thicknesses deduction example](../images_wiki/ITRPV_GlassDeduction.PNG)
 # 
 
-# In[ ]:
+# In[7]:
 
 
 #2017
