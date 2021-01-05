@@ -55,12 +55,6 @@ PCAs = list(rawdf.index.get_level_values('PCA').unique())
 scenarios
 
 
-# In[ ]:
-
-
-
-
-
 # In[6]:
 
 
@@ -73,7 +67,7 @@ baseline.set_index('year', inplace=True)
 baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
 
 
-# In[75]:
+# In[7]:
 
 
 baseline
@@ -151,13 +145,9 @@ with open(filetitle, 'w', newline='') as ict:
     B.to_csv(ict, header=False)
 
 
-# In[40]:
+# ## Reading inputs and creating scenarios
 
-
-## Reading inputs adn creating scenarios
-
-
-# In[7]:
+# In[8]:
 
 
 GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
@@ -165,19 +155,19 @@ GIS = pd.read_excel(GISfile)
 GIS = GIS.set_index('id')
 
 
-# In[8]:
+# In[9]:
 
 
 GIS.head()
 
 
-# In[9]:
+# In[10]:
 
 
 GIS.loc['p1'].long
 
 
-# In[10]:
+# In[11]:
 
 
 simulationname = scenarios
@@ -186,24 +176,12 @@ PCA = PCAs[0]
 simulationname
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[13]:
+# In[79]:
 
 
 for ii in range (0, 1): #len(scenarios):
     r1 = PV_ICE.Simulation(name=scenarios[ii], path=testfolder)
-    for jj in range (0, 10): #len(PCAs)): 
+    for jj in range (0, len(PCAs)): 
         filetitle = scenarios[ii]+'_'+PCAs[jj]+'.csv'
         filetitle = os.path.join(testfolder, filetitle)        
         r1.createScenario(name=PCAs[jj], file=filetitle)
@@ -212,119 +190,315 @@ for ii in range (0, 1): #len(scenarios):
         r1.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
 
-# In[14]:
-
-
-r1.scenario['p1'].data
-
-
-# In[15]:
+# In[80]:
 
 
 r1.calculateMassFlow()
 
 
-# In[16]:
+# In[81]:
+
+
+r1.scenario.keys()
+
+
+# In[82]:
+
+
+r1.scenario[PCAs[jj]].data.keys()
+
+
+# In[83]:
+
+
+r1.scenario[PCAs[jj]].material['glass'].materialdata.keys()
+
+
+# In[84]:
+
+
+r1.scenario['p1'].data.head()
+
+
+# In[85]:
 
 
 r1.scenario['p107'].data['Cumulative_Area_disposedby_Failure'].sum()
 
 
-# In[17]:
+# In[86]:
 
 
 r1.scenario['p105'].data['Cumulative_Area_disposedby_Failure'].sum()
 
 
-# In[18]:
+# In[87]:
 
 
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 
 
-# In[19]:
+# In[25]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 
 
+# # GEOPANDAS
+
+# In[88]:
+
+
+latitude_all =[]
+longitude_all = []
+cumulativewaste2050 = []
+for scen in r1.scenario.keys():
+    latitude_all.append(r1.scenario[scen].latitude)
+    longitude_all.append(r1.scenario[scen].longitude)
+    cumulativewaste2050.append(r1.scenario[scen].material['glass'].materialdata['mat_Total_Landfilled'].sum())
+
+
+# In[89]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import descartes
+import geopandas as gpd
+from shapely.geometry import Point, Polygon
+
+street_map = gpd.read_file(r'C:\Users\sayala\Desktop\geopandas\cb_2018_us_nation_20m\cb_2018_us_nation_20m.shp')
+
+# Show the map only
+#fig, ax = plt.subplots(figsize=(10,15))
+#street_map.plot(ax=ax)
+
+
+# In[90]:
+
+
+frame = { 'Latitude': latitude_all, 'Longitude': longitude_all, 'CumulativeWaste2050': cumulativewaste2050}   
+df = pd.DataFrame(frame) 
+
+
+# In[91]:
+
+
+df.head()
+
+
+# In[92]:
+
+
+geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
+geometry[:3]
+
+
+# In[94]:
+
+
+crs = {'init':'epsg:4326'}
+
+
+# In[95]:
+
+
+geo_df = gpd.GeoDataFrame(df, # specify our data
+                         crs = crs, # specify our coordinate reference system
+                         geometry = geometry) # specify the geometry list we created
+geo_df.head()
+
+
+# In[96]:
+
+
+fig, ax = plt.subplots(figsize = (15,15))
+street_map.plot(ax = ax, alpha = 0.4, color = "grey")
+geo_df[geo_df['CumulativeWaste2050'] >= 1.918125e+09].plot(ax=ax, markersize = 20, color= "blue", marker = "o", label = "Bigger Than")
+geo_df[geo_df['CumulativeWaste2050'] < 1.918125e+09].plot(ax=ax, markersize = 20, color= "red", marker = "o", label = "Less Than")
+plt.xlim([-130, -60])
+plt.ylim([20, 50])
+plt.legend(prop={'size':15})
+
+
+# In[104]:
+
+
+import random
+import pandas as pd
+import matplotlib.pyplot as plt
+import descartes
+import geopandas as gpd
+from shapely.geometry import Point, Polygon
+
+latitude = random.sample(range(25, 45), 10) 
+longitude = random.sample(range(-125, -65), 10) 
+weight = random.sample(range(0, 500), 10) 
+
+frame = { 'Latitude': latitude, 'Longitude': longitude, 'Weight': weight}   
+df = pd.DataFrame(frame) 
+
+geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
+crs = {'init':'epsg:4326'}
+geo_df = gpd.GeoDataFrame(df, # specify our data
+                         crs = crs, # specify our coordinate reference system
+                         geometry = geometry) # specify the geometry list we created
+
+fig, ax = plt.subplots(figsize = (15,15))
+street_map.plot(ax = ax, alpha = 0.4, color = "grey")
+geo_df[geo_df['Weight'] >=250].plot(ax=ax, markersize = 20, color= "blue", marker = "o", label = "Bigger Than")
+geo_df[geo_df['Weight'] < 250].plot(ax=ax, markersize = 20, color= "red", marker = "o", label = "Less Than")
+plt.xlim([-130, -60])
+plt.ylim([20, 50])
+plt.legend(prop={'size':15})
+
+
+# In[107]:
+
+
+import geoplot
+
+
+# In[106]:
+
+
+ax = street_map.kdeplot(
+    geo_df, #clip=boroughs.geometry,
+    shade=True, cmap='Reds',
+    projection=geoplot.crs.AlbersEqualArea())
+geoplot.polyplot(boroughs, ax=ax, zorder=1)
+
+
 # In[ ]:
 
 
 
 
 
-# ## Playing with Multiindex Stuff
-
-# In[ ]:
+# In[59]:
 
 
-rawdf.unstack(level=0).head()
-rawdf.unstack(level=1).head()
-rawdf.unstack(level=2).head()
+import scipy.stats
+import seaborn.palettes
+import seaborn.utils
 
 
-# In[ ]:
+# In[63]:
 
 
-rawdf.unstack(level=1).iloc[0]
+axis = [-130, 48.1667, -70, 100.1667]
 
 
 # In[ ]:
 
 
-rawdf.unstack(level=1).iloc[2].name[1]
+latlng_bounds = area.total_bounds
+area = area.to_crs(epsg=3857)
+axis = area.total_bounds
+
+# Create the map stretching over the requested area
+ax = area.plot(alpha=0)
+
+
+# In[64]:
+
+
+# Calculate the KDE
+data = np.c_[df.Longitude, df.Latitude]
+kde = scipy.stats.gaussian_kde(data.T, bw_method="scott", weights=df.CumulativeWaste2050)
+data_std = data.std(axis=0, ddof=1)
+bw_x = getattr(kde, "scotts_factor")() * data_std[0]
+bw_y = getattr(kde, "scotts_factor")() * data_std[1]
+grid_x = grid_y = 100
+x_support = seaborn.utils._kde_support(data[:, 0], bw_x, grid_x, 3, (axis[0], axis[2]))
+y_support = seaborn.utils._kde_support(data[:, 1], bw_y, grid_y, 3, (axis[1], axis[3]))
+xx, yy = np.meshgrid(x_support, y_support)
+levels = kde([xx.ravel(), yy.ravel()]).reshape(xx.shape)
+
+
+# In[65]:
+
+
+cset = ax.contourf(xx, yy, levels,
+    20, # n_levels
+
+    cmap=seaborn.palettes.blend_palette(('#ffffff10', '#ff0000af'), 6, as_cmap=True),
+    antialiased=True,       # avoids lines on the contours to some extent
+)
+
+
+# In[68]:
+
+
+
+
+
+# In[66]:
+
+
+def add_basemap(ax, latlng_bounds, axis, url='https://a.basemaps.cartocdn.com/light_all/tileZ/tileX/tileY@2x.png'):
+    prev_ax = ax.axis()
+    # TODO: Zoom should surely take output pixel request size into account...
+    zoom = ctx.tile._calculate_zoom(*latlng_bounds)
+    while ctx.tile.howmany(*latlng_bounds, zoom, ll=True) > max_tiles:      # dont ever try to download loads of tiles
+        zoom = zoom - 1
+    print("downloading %d tiles with zoom level %d" % (ctx.tile.howmany(*latlng_bounds, zoom, ll=True), zoom))
+    basemap, extent = ctx.bounds2img(*axis, zoom=zoom, url=url)
+    ax.imshow(basemap, extent=extent, interpolation='bilinear')
+    ax.axis(prev_ax)        # restore axis after changing the background
+ 
+add_basemap(ax, latlng_bounds, axis)
 
 
 # In[ ]:
 
 
-rawdf.loc[('Reference.Mod',2010)].head()
+import geopandas as gpd
 
 
-# In[ ]:
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
+
+def make_plot(projection_name, projection_crs, extent, heat_data):
+    """
+    ?
+    """
+    fig = plt.figure()
+    rect = 0.1, 0.1, 0.8, 0.8
+    ax = fig.add_axes(rect, projection=projection_crs)
+
+    # Set display limits to include a set region of latitude * longitude.
+    # (Note: Cartopy-specific).
+    ax.set_extent(extent, crs=projection_crs)
+
+    # Add coastlines and meridians/parallels (Cartopy-specific).
+    ax.coastlines(linewidth=0.2, color='black')
+    ax.gridlines(crs=projection_crs, linestyle='-')
+
+    lat = np.linspace(extent[0],extent[1],heat_data.shape[0])
+    lon = np.linspace(extent[2],extent[3],heat_data.shape[1])
+    Lat,Lon = np.meshgrid(lat,lon)
+    ax.pcolormesh(Lat,Lon,np.transpose(heat_data))
+    plt.savefig("Test_fig.pdf", bbox_inches='tight')
 
 
-scenarios = rawdf.groupby(level=0)
-PCA = rawdf.groupby(level=2)
+def main():
+    #extent = (-65.0, -62, 44, 45.5)
+    extent = (-90, -40, 30, 60)
+    # Define some test points with latitude and longitude coordinates.
+    #city_data = [('Halifax, NS', 44.67, -63.61, 'black'),
+    #             ('Neighbour', 45, -63, 'blue'),
+    #             ('Other_Place', 44.1, -64, 'red')]
+    heat_data = np.random.normal(0.0,0.2,size=(100,150))
 
+    # Demonstrate with two different display projections.
+    # Define a Cartopy 'ordinary' lat-lon coordinate reference system.
+    crs_latlon = ccrs.PlateCarree()
+    make_plot('Equidistant Cylindrical', crs_latlon, extent, heat_data)
+    #crs_ae = ccrs.LambertCylindrical()
+    #make_plot('Lambert Cylindrical', crs_ae, extent, heat_data)
 
-# In[ ]:
-
-
-for a,b in scenarios:
-    for c,d in PCA:
-        print(a, c)
-
-
-# In[ ]:
-
-
-PCAs = rawdf.index.get_level_values('PCA').unique()
-scenarios = rawdf.index.get_level_values('scenario').unique()
-years = rawdf.index.get_level_values('year').unique()
-
-
-# In[ ]:
-
-
-rawdf.loc[(scenarios[1])].head()
-
-
-# In[ ]:
-
-
-rawdf.loc[scenarios[1]].head()
-
-
-# In[ ]:
-
-
-rawdf.loc[[scenarios[1]]].head()
-
-
-# In[ ]:
-
-
-
+if __name__ == '__main__':
+    main()
 
