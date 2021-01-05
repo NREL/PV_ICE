@@ -6,7 +6,7 @@
 # 
 # This journal shows how to load the baselines and run the dynamic mas flow analysis, plotting the results for two scenarios and two materials.
 
-# ### Step 1: Set Working Folder and Import PV DEMISE
+# ### Step 1: Set Working Folder and Import PV ICE
 
 # In[1]:
 
@@ -14,7 +14,7 @@
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_DEMICE' / 'TEMP')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 
 # Another option using relative address; for some operative systems you might need '/' instead of '\'
 # testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
@@ -25,7 +25,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[2]:
 
 
-import PV_DEMICE
+import PV_ICE
 
 
 # ### Step 2: Add Scenarios and Materials
