@@ -1,0 +1,17 @@
+Silver and Copper Baseline Flows Assumptions
+
+See the Jupyter Journal for the derivation of g/m^2 of module.
+
+We assume a ##% virgin material efficiency for silver???
+
+We assume 80% manufacturing efficiency of silver, based on the overproduction of solar cells with silver on them (11% more cells than installed capacity), plus any additional processing inefficiencies, such as screen cleaning losses (C. Alexander et al., “World Silver Survey 2019,” The Silver Institute, Apr. 2019.
+).
+
+We assume that 100% of the silver used in the manufacturing process is collected and sent to a recycler. We assume that the recycling efficiency is the US industry average of 97% efficient (H. E. Hilliard, “Silver Recycling in the United States in 2000,” U.S. GEOLOGICAL SURVEY CIRCULAR 1196-N, 2000.)
+
+Currently and historically, recycling of PV panels is minimal to non-existant. Therefore, prior to 2015, all EoL circular flows are 0. In 2014, recycling of PV panels was happening in the EU, but was failing to recover any precious metals. By 2017, this recovery percentage was up to 21.5% (K. Wambach, “Life Cycle Inventory of Current Photovoltaic Modules Recycling Process in Europe,” IEA PVPS Task 12 IEA-PVPS T12-12:2017, Dec. 2017. Accessed: Jan. 12, 2021. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/01/LCI_of_Current_European_PV_Recycling_WambachHeath_2017_by_Task_12.pdf.
+). We assumed a linear increase in recycling of silver and copper between 2014 and 2017.
+
+The FRELP recycling process has been documented, and a pilot facility is in Europe. This process claims to recover silver and copper at 95% ([1]K. Wambach, “Life Cycle Inventory of Current Photovoltaic Modules Recycling Process in Europe,” IEA PVPS Task 12 IEA-PVPS T12-12:2017, Dec. 2017. Accessed: Jan. 12, 2021. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/01/LCI_of_Current_European_PV_Recycling_WambachHeath_2017_by_Task_12.pdf.
+). It is optimistically assumed that this process will be running at scale by 2025. A linear increase from 21.5%  to 95% recovery of silver and copper is assumed. Additionally, it is assumed that this increasing recycled silver stream would be routed back into PV manufacturing, given the growth projections for PV installations.
+
