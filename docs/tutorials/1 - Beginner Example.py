@@ -36,7 +36,7 @@ import PV_ICE
 # In[3]:
 
 
-r1 = PV_DEMICE.Simulation(name='Simulation1', path=testfolder)
+r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='standard', file=r'..\baselines\baseline_modules_US.csv')
 r1.scenario['standard'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['standard'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv' )
@@ -52,13 +52,6 @@ r1.scenario['decadence'].addMaterial('silicon', file=r'..\baselines\baseline_mat
 # 
 
 # In[4]:
-
-
-#these were previously used to modify the glass baseline to immitate silicon
-#but we now have a silicon baseline file to play with!
-#r1.scenario['standard'].material['silicon'].materialdata['mat_virgin_eff'] = 30.0
-#r1.scenario['standard'].material['silicon'].materialdata['mat_EOL_collected_Recycled'] = 40.0
-#r1.scenario['standard'].material['silicon'].materialdata['mat_massperm2'] = 4
 
 
 r1.scenario['decadence'].data['mod_lifetime'] = 35
@@ -79,21 +72,22 @@ r1.calculateMassFlow()
 
 # ### Step 5: Use internal plotting functions to plot results
 
-# In[13]:
+# In[6]:
 
 
 #pull out the keywords for choosing plots below
 #print(r1.scenario.keys())
+#print(r1.scenario['standard'].data.keys())
 print(r1.scenario['standard'].material['glass'].materialdata.keys())
 
 
-# In[6]:
+# In[7]:
 
 
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 
 
-# In[15]:
+# In[8]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
