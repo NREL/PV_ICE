@@ -2,9 +2,9 @@ Silver and Copper Baseline Flows Assumptions
 
 See the Jupyter Journal for the derivation of g/m^2 of module of both silver and copper.
 
-We assume a ##% virgin material efficiency for silver??? 
-
 Based on a 2003 book about copper flows and impacts, they state the global average is 125 tons of ore are mined to generate 1 ton of copper ore, or 0.8% efficiency at the mine mouth (excluding overburden). The SX-EW process is slightly more efficient, but constitutes a small but growing marketshare (<15%). The roasting and smelting processes result in slag with 0.5% to 10% copper content, some of which can be recovered by secondary processes; we will assume 5% losses during roasting and smelting (or 95% efficiency). Therefore, we assume a 76% virgin material efficiency for copper, which falls between the 62% and 88% efficiency as noted in the copper refining book from 2003. 
+
+The mining efficiency of silver, excluding overburden, is 80%, from 2002 data (T. Lanzano, M. Bertram, M. De Palo, C. Wagner, K. Zyla, and T. E. Graedel, “The contemporary European silver cycle,” Resources, Conservation and Recycling, vol. 46, no. 1, pp. 27–43, Jan. 2006, doi: 10.1016/j.resconrec.2005.06.003.). In the furnaces from various types of ores is approximately 95% recoverable (W. C. Butterman and H. E. Hilliard, “Silver,” USGS, Open-File Report 2004-1251, 2005. [Online]. Available: https://pubs.usgs.gov/of/2004/1251/.). A USGS 2009 Report indicates that 70% to 95% of silver is recoverable from various ore types (T. G. Goonan, “The Lifecycle of Silver in the United States in 2009,” USGS, Scientific Investigations Report Scientific Investigations Report 2013–5178, 2014. [Online]. Available: https://pubs.usgs.gov/sir/2013/5178/.). Finally, silver is often recovered from copper ores. Therefore, We assume a 75% virgin material efficiency for silver.
 
 We assume 80% manufacturing efficiency of silver, based on the overproduction of solar cells with silver on them (11% more cells than installed capacity), plus any additional processing inefficiencies, such as screen cleaning losses (C. Alexander et al., “World Silver Survey 2019,” The Silver Institute, Apr. 2019.).
 
