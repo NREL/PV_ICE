@@ -18,14 +18,21 @@ plt.rcParams['figure.figsize'] = (12, 8)
 density_Ag = 10.49 #g/cm3, source Wikipedia
 
 
-# From the ITRPVs, we have grams of Ag per cell from 2009 through 2019, with projections through 2030. While the standard cell size has changed in that time frame, it appears that cell size makes less of a difference than cell type (n-type vs p-type), therefore we will use this as contiguous average data.
-# Note: raw number extracted from ITRPV graphs with "webplotdigitizer"
-
-# ### Some assumptions that will be made:
+# ### Pre-Journal Calculations
 # 
-# 1) n-type cells account for only 5% of the world market share and have for the last decade. While these require more silver per cell than p-type, they make up a small portion of the marketshare and will therefore be ignored.
+# From the ITRPVs, we have grams of Ag per cell from 2009 through 2019, with projections through 2030. Data for silver per cell for 4 different types of cell were extracted from ITRPV graphs with "webplotdigitizer" then rounded to ~2 significant figures. The 4 types of cell noted in ITRPV 2019 and 2020 are Monofacial p-type, Bifacial p-type, HJT n-type, and n-type. Some mathmatical assumptions:
 # 
-# 2) The difference in silver per cell between bifacial and monofacial cells is not significant for this calculation, and will therefore be averaged together.
+# 1) n-type cells account for only 5% of the world market share and have for the last decade. While the amount of silver in the two different n-type cells is noteably different, because their marketshare is so small, these two n-type cell silver quantities were averaged together.
+# 
+# 2) The difference in silver per cell between bifacial and monofacial cells is not significant, and were therefore averaged together.
+# 
+# Therefore the process for determining the average silver per cell across the different technologies was:
+# 
+#         average silver per cell = 0.95*(average of monofacial and bifacial p-type) + 0.05*(average of n-type)
+#         
+# This math was completed in the google spreadsheet of raw data
+# <https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing>
+# then copied to a csv and is uploaded here.
 
 # In[2]:
 
@@ -80,23 +87,23 @@ plt.ylabel("Silver, grams/module m2")
 
 
 # ### Extend projection through 2050
-# It appears that the silver per cell is expected to level out by 2025 or so. We will extend this projection through 2050 as a "lower limit" or minimal further improvement in this manufacturing technology
+# It appears that the silver per cell is expected to level out by 2025 or so. We will extend 2030 values through 2050 as a "lower limit" or minimal further improvement.
 
-# In[7]:
+# In[9]:
 
 
 #create an empty df as a place holder
 yrs = pd.Series(index=range(2031,2050), dtype='float64')
 tempdf = pd.DataFrame(yrs, columns=['ag_g_per_m2'])
+fulldf = pd.concat([ag_gpm2,tempdf]) #attach it to rest of df
 
-#take the average from 2025 through 2030, use that as lower limit projection 
-avg = ag_gpm2.loc[2025:2030].mean() #this spits out a series, so need to access the the element and assign that to df
-tempdf.loc[2050] = avg[0]
-#print(tempdf)
-
-#squish dataframes together
-fulldf = pd.concat([ag_gpm2,tempdf])
+#set the 2050 value to the same as 2030
+fulldf.loc[2050] = fulldf.loc[2030]
+#interpolate for missing values
 ag_gpm2_full = fulldf.interpolate()
+#print(ag_gpm2_full)
+
+#plot
 plt.plot(ag_gpm2_full)
 plt.title("Silver mass per module area over time")
 plt.ylabel("Silver, grams/module m2")
