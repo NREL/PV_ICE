@@ -48,13 +48,14 @@ plt.ylabel("Silver, grams/cell")
 
 # Based on looking at the plot of original data, it doesn't seem crazy to linearly interpolate for missing data
 
-# In[4]:
+# In[10]:
 
 
 ag_gpc = itrpv_ag_gpc.interpolate()
 plt.plot(ag_gpc, marker="o")
 plt.title("Silver mass per cell over time")
 plt.ylabel("Silver, grams/cell")
+print(ag_gpc)
 
 
 # ## Convert to a per module area basis (not per cell)
@@ -68,15 +69,17 @@ cpm2 = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/output_cell_p
 #print(cpm2)
 
 
-# In[6]:
+# In[9]:
 
 
 #convert silver per cell to silver per m^2 of module, based on output from silicon baseline
 ag_gpc.columns = cpm2.columns = ['ag_g_per_m2'] #rename to a common name
 ag_gpm2 = ag_gpc.mul(cpm2, 'columns') #multiply
 plt.plot(ag_gpm2)
+plt.plot(cpm2)
 plt.title("Silver mass per module m2 over time")
 plt.ylabel("Silver, grams/module m2")
+print(cpm2)
 
 
 # ### Extend projection through 2050
@@ -90,8 +93,8 @@ yrs = pd.Series(index=range(2031,2050), dtype='float64')
 tempdf = pd.DataFrame(yrs, columns=['ag_g_per_m2'])
 
 #take the average from 2025 through 2030, use that as lower limit projection 
-avg = ag_gpm2.loc[2025:2030].mean() #this spits out a series, so need to access the the element and assign that to df
-tempdf.loc[2050] = avg[0]
+#avg = ag_gpm2.loc[2025:2030].mean() #this spits out a series, so need to access the the element and assign that to df
+tempdf.loc[2050] = avg[0] #pad or fill 2030 through 2050.
 #print(tempdf)
 
 #squish dataframes together
