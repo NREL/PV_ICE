@@ -315,7 +315,7 @@ class Simulation:
         
 
 
-    def calculateMassFlow(self, debugflag=False):
+    def calculateMassFlow(self, weibullInputParams = None, debugflag=False):
         '''
         Function takes as input a baseline dataframe already imported, 
         with the right number of columns and content.
@@ -355,6 +355,7 @@ class Simulation:
             Generation_Disposed_byYear = []
             Generation_Active_byYear= []
             Generation_Power_byYear = []
+            weibullParamList = []
 
             df['Cumulative_Area_disposedby_Failure'] = 0
             df['Cumulative_Area_disposedby_ProjectLifetime'] = 0
@@ -367,7 +368,13 @@ class Simulation:
                 #row=df.iloc[generation]
                 
                 t50, t90 = row['t50'], row['t90']
-                f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
+                if not weibullInputParams:
+                    weibullIParams = weibull_params({t50: 0.50, t90: 0.90})      
+                else: 
+                    weibullIParams = weibullInputParams
+                #f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
+                weibullParamList.append(weibullIParams)
+                f = weibull_cdf(weibullIParams['alpha'], weibullIParams['beta'])
                 x = np.clip(df.index - generation, 0, np.inf)
                 cdf = list(map(f, x))
 #                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
@@ -375,7 +382,7 @@ class Simulation:
                 activearea = row['Area']
                 if np.isnan(activearea):
                     activearea=0
-                    
+                
                 activeareacount = []
                 areadisposed_failure = []
                 areadisposed_projectlifetime = []
@@ -434,6 +441,8 @@ class Simulation:
                 Generation_Active_byYear.append(activeareacount)
                 Generation_Power_byYear.append(areapowergen)
             
+            
+            df['WeibullParams'] = weibullParamList
             MatrixDisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
             MatrixDisposalbyYear = MatrixDisposalbyYear.add_prefix("EOL_on_Year_")
             
