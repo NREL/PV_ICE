@@ -1,5 +1,6 @@
 ﻿year,mat_virgin_eff,mat_massperm2,mat_MFG_eff,mat_MFG_scrap_Recycled,mat_MFG_scrap_Recycling_eff,mat_MFG_scrap_Recycled_into_HQ,mat_MFG_scrap_Recycled_into_HQ_Reused4MFG,mat_EOL_collected_Recycled,mat_EOL_Recycling_eff,mat_EOL_Recycled_into_HQ,mat_EOL_RecycledHQ_Reused4MFG
 year,%,g,%,%,%,%,%,%,%,%,%
+2009,25.6,419.22,31.31355595,100,20,0,100,20,80,0,0
 2010,26,419.22,49.33536239,100,20,0,100,20,80,0,0
 2011,26.4,419.22,49.66181831,100,20,0,100,20,80,0,0
 2012,26.8,419.22,48.63711241,100,20,0,100,20,80,0,0
