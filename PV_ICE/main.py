@@ -180,6 +180,60 @@ def _unitReferences(keyword):
      
     return yunits
     
+
+def distance(s_lat, s_lng, e_lat, e_lng):
+    """
+    # Haversine formula for numpy arrays
+    # Author: MalyutinS
+    # imported from comment on: https://gist.github.com/rochacbruno/2883505
+    # Example: 
+    # s_lat = 45; s_lng = -110; e_lat=[33, 44]; e_lng = [-115, -140]
+    # Returns distance from the source point  to the two ending points:
+    # r = distance(s_lat, s_lng, e_lat, e_lng)
+    # r = array([1402.24996689, 2369.0150434 ])
+    #
+    """
+    
+    
+    # approximate radius of earth in km
+    R = 6373.0  
+    
+#    s_lat = s_lat*np.pi/180.0                      
+    s_lat = np.deg2rad(s_lat)                     
+    s_lng = np.deg2rad(s_lng)     
+    e_lat = np.deg2rad(e_lat)                       
+    e_lng = np.deg2rad(e_lng)  
+    
+    d = np.sin((e_lat - s_lat)/2)**2 + np.cos(s_lat)*np.cos(e_lat) * np.sin((e_lng - s_lng)/2)**2
+    distance = 2 * R * np.arcsin(np.sqrt(d)) 
+    
+    return distance
+
+def drivingdistance(origin, destination, APIkey):
+    """
+    Creates call for google-maps api to get driving directions betwen two points.
+    
+    Input
+    -----
+    origin: array
+        [lat, lon] expected
+    destination: array
+        [lat, lon] expected
+    APYkey: str
+        String
+    """
+    
+    lat1, lon1 = origin
+    lat2, lon2 = destination
+    
+    gm_url = ('https://maps.googleapis.com/maps/api/directions/xml?'+
+              'origin='+str(lat1)+','+str(lon1)+
+              '&destination='+str(lat2)+','+str(lon2)+
+              '&key='+APIkey)
+
+    return gm_url
+    
+    
     
 class Simulation:
     """
