@@ -315,7 +315,8 @@ class Simulation:
         
 
 
-    def calculateMassFlow(self, weibullInputParams = None, debugflag=False):
+    def calculateMassFlow(self, weibullInputParams = None, weibullAlphaOnly = False,
+                          debugflag=False):
         '''
         Function takes as input a baseline dataframe already imported, 
         with the right number of columns and content.
@@ -373,8 +374,16 @@ class Simulation:
                 else: 
                     weibullIParams = weibullInputParams
                 #f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
+                
+                if weibullAlphaOnly:
+                    f = weibull_cdf_alphaonly(alpha = weibullIParams['alpha'], 
+                                              Lifetime = row['mod_lifetime'])
+                    weibullIParams = weibullIParams['alpha']
+                else:
+                    f = weibull_cdf(weibullIParams['alpha'], weibullIParams['beta'])
+                
                 weibullParamList.append(weibullIParams)
-                f = weibull_cdf(weibullIParams['alpha'], weibullIParams['beta'])
+
                 x = np.clip(df.index - generation, 0, np.inf)
                 cdf = list(map(f, x))
 #                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
@@ -725,6 +734,15 @@ def weibull_cdf(alpha, beta):
     def cdf(x):
         return 1 - np.exp(-(np.array(x)/beta)**alpha)
     return cdf
+
+def weibull_cdf_alphaonly(alpha, Lifetime):
+    '''Return the CDF for a Weibull distribution having:
+    shape parameter `alpha`
+    scale parameter `beta`'''
+    def cdf(x):
+        return 1 - np.exp(-(np.array(x)/Lifetime)**alpha)
+    return cdf
+
 
 def weibull_pdf(alpha, beta):
     '''Return the PDF for a Weibull distribution having:
