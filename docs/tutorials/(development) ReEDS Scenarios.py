@@ -12,6 +12,14 @@
 # <li>### Reading scenarios of interest and running PV ICE tool </li>
 # <li>###Plotting </li>
 # <li>### GeoPlotting.</li>
+# </ol>
+#     Notes:
+#    
+# Scenarios of Interest:
+# 	the Ref.Mod, 
+# o	95-by-35.Adv, and 
+# o	95-by-35+Elec.Adv+DR ones
+# 
 
 # In[1]:
 
@@ -80,23 +88,19 @@ baseline = r1.scenario['US'].data
 baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
 baseline.set_index('year', inplace=True)
 baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
+baseline.head()
 
 
 # In[8]:
 
 
-baseline.head()
-
-
-# In[12]:
-
-
 rawdf.head(21)
 
 
-# In[ ]:
+# In[9]:
 
 
+r'''
 A = rawdf.unstack(level=1).iloc[0]
 A = A.droplevel(level=0)
 A.name = 'new_Installed_Capacity_[MW]'
@@ -108,56 +112,16 @@ A = pd.DataFrame(A)
 A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
 # Add other columns
 A = pd.concat([A, baseline.reindex(A.index)], axis=1)
+A.loc['2050']['new_Installed_Capacity_[MW]'] = A.loc['2050']['new_Installed_Capacity_[MW]']/2   # Dividing last value by 2
+new_row = A[-1:]
+new_row.index = new_row.index.shift(periods=1)   #Shifting so new row is 2051
+A = pd.concat([A,pd.concat([new_row])])              
+A.index = A.index.shift(periods=-1)          # Shifting back so it goes from 2009-2050
+'''
+pass
 
 
-# In[117]:
-
-
-A = rawdf.unstack(level=1).iloc[0]
-A = A.droplevel(level=0)
-A.name = 'new_Installed_Capacity_[MW]'
-A = pd.DataFrame(A)
-A.index=pd.PeriodIndex(A.index, freq='A')
-A = A.resample('Y').asfreq()
-
-
-# In[119]:
-
-
-A = A['new_Installed_Capacity_[MW]'].fillna(0)
-
-
-# In[121]:
-
-
-B = A[1:]
-
-
-# In[123]:
-
-
-B.index=B.index-1
-
-
-# In[128]:
-
-
-B = pd.DataFrame(B)
-
-
-# In[131]:
-
-
-B = B.groupby(B['new_Installed_Capacity_[MW]'].cumsum()).transform('mean')    
-
-
-# In[132]:
-
-
-
-
-
-# In[ ]:
+# In[10]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -177,7 +141,13 @@ for ii in range (len(rawdf.unstack(level=1))):
     A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
+    A.loc['2050']['new_Installed_Capacity_[MW]'] = A.loc['2050']['new_Installed_Capacity_[MW]']/2   # Dividing last value by 2
+    new_row = A[-1:]
+    new_row.index = new_row.index.shift(periods=1)   #Shifting so new row is 2051
+    A = pd.concat([A,pd.concat([new_row])])              
+    A.index = A.index.shift(periods=-1)          # Shifting back so it goes from 2009-2050
 
+    
     header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repowering,mod_Repairing\n"    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
 
     with open(filetitle, 'w', newline='') as ict:
@@ -194,7 +164,13 @@ for ii in range (len(rawdf.unstack(level=1))):
 # In[ ]:
 
 
-# EXAMPLE FOR JUST ONE 
+
+
+
+# In[ ]:
+
+
+r'''# EXAMPLE FOR JUST ONE 
 ii = 0
 PCA = rawdf.unstack(level=1).iloc[ii].name[1]
 SCEN = rawdf.unstack(level=1).iloc[ii].name[0]
@@ -216,7 +192,10 @@ B.to_csv(filetitle)
 B = pd.concat([B, baseline.reindex(B.index)], axis=1)
 
 
-header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,""mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,""mod_Repowering,mod_Repairing\n""year,MW,%,years,years,%,years,%,%,%,%,%\n"
+header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"\
+"mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"\
+"mod_Repowering,mod_Repairing\n"\
+"year,MW,%,years,years,%,years,%,%,%,%,%\n"
 
 with open(filetitle, 'w', newline='') as ict:
 # Write the header lines, including the index variable for
@@ -227,11 +206,13 @@ with open(filetitle, 'w', newline='') as ict:
 
     #    savedata.to_csv(ict, index=False)
     B.to_csv(ict, header=False)
+'''
+pass
 
 
 # ### Reading GIS inputs
 
-# In[ ]:
+# In[11]:
 
 
 GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
@@ -239,13 +220,13 @@ GIS = pd.read_excel(GISfile)
 GIS = GIS.set_index('id')
 
 
-# In[ ]:
+# In[12]:
 
 
 GIS.head()
 
 
-# In[ ]:
+# In[13]:
 
 
 GIS.loc['p1'].long
@@ -253,7 +234,7 @@ GIS.loc['p1'].long
 
 # ### Create Scenarios
 
-# In[ ]:
+# In[14]:
 
 
 simulationname = scenarios
@@ -262,19 +243,14 @@ PCA = PCAs[0]
 simulationname
 
 
-# In[ ]:
+# In[17]:
 
 
 SFscenarios = [scenarios[0], scenarios[4], scenarios[8]]
-
-
-# In[ ]:
-
-
 SFscenarios
 
 
-# In[ ]:
+# In[19]:
 
 
 #for ii in range (0, 1): #len(scenarios):
@@ -283,9 +259,11 @@ for jj in range (0, len(PCAs)):
     filetitle = SFscenarios[0]+'_'+PCAs[jj]+'.csv'
     filetitle = os.path.join(testfolder, filetitle)        
     r1.createScenario(name=PCAs[jj], file=filetitle)
-    r1.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\baseline_material_glass_Reeds.csv')
-    r1.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon_Reeds.csv')
-    r1.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\baseline_material_silver_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
     r1.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
     r1.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
@@ -294,9 +272,11 @@ for jj in range (0, len(PCAs)):
     filetitle = SFscenarios[1]+'_'+PCAs[jj]+'.csv'
     filetitle = os.path.join(testfolder, filetitle)        
     r2.createScenario(name=PCAs[jj], file=filetitle)
-    r2.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\baseline_material_glass_Reeds.csv')
-    r2.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon_Reeds.csv')
-    r2.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\baseline_material_silver_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
     r2.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
     r2.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
@@ -305,81 +285,54 @@ for jj in range (0, len(PCAs)):
     filetitle = simulationname[8]+'_'+PCAs[jj]+'.csv'
     filetitle = os.path.join(testfolder, filetitle)        
     r3.createScenario(name=PCAs[jj], file=filetitle)
-    r3.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\baseline_material_glass_Reeds.csv')
-    r3.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon_Reeds.csv')
-    r3.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\baseline_material_silver_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
     r3.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
     r3.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
 
-# In[ ]:
+# In[20]:
 
 
 r1.calculateMassFlow()
-
-
-# In[ ]:
-
-
 r2.calculateMassFlow()
 r3.calculateMassFlow()
 
 
-# In[ ]:
+# In[28]:
 
 
-r1.scenario.keys()
+print("PCAs:", r1.scenario.keys())
+print("Module Keys:", r1.scenario[PCAs[jj]].data.keys())
+print("Material Keys: ", r1.scenario[PCAs[jj]].material['glass'].materialdata.keys())
 
 
-# In[ ]:
-
-
-r1.scenario[PCAs[jj]].data.keys()
-
-
-# In[ ]:
-
-
-r1.scenario[PCAs[jj]].material['glass'].materialdata.keys()
-
-
-# In[ ]:
+# In[29]:
 
 
 r1.scenario['p1'].data.head()
 
 
-# In[ ]:
+# In[43]:
 
-
-r1.scenario['p107'].data['Cumulative_Area_disposedby_Failure'].sum()
-
-
-# In[ ]:
-
-
-#new_Installed_Capacity_[MW]
 
 keyword='new_Installed_Capacity_[MW]'
-
-foo = r1.scenario[PCAs[12]].data[keyword].copy()
+foo = r1.scenario[PCAs[0]].data[keyword].copy()
 plt.figure()
 plt.plot(r1.scenario[PCAs[0]].data['year'], foo, label=PCAs[12])
+plt.title(keyword)
 plt.legend()
-print(max(foo))
-print(foo)
-
-
-# In[ ]:
-
 
 for jj in range (1, len(PCAs)): 
     foo += r1.scenario[PCAs[jj]].data[keyword]
      
-#UScumsumlandfill_glass = np.cumsum(USlandfill_glass)
 fig = plt.figure()
 ax = fig.add_subplot(2, 1, 1)
 ax.plot(r1.scenario[PCAs[0]].data['year'], foo, label='US')
+plt.title("Cumulative" +keyword)
 #ax.set_yscale('log')
 print(max(foo))
 
@@ -387,70 +340,220 @@ print(max(foo))
 # In[ ]:
 
 
-r1.scenario['p105'].data['Cumulative_Area_disposedby_Failure'].sum()
+df.to_csv(r'Path where you want to store the exported CSV file\File Name.csv')
 
 
 # In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[40]:
 
 
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 
 
-# In[ ]:
+# In[41]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 
 
+# In[61]:
+
+
+keyword='mat_Total_Landfilled'
+plt.figure()
+plt.plot(r1.scenario[PCAs[0]].data['year'], foo, label=PCAs[12])
+plt.title(keyword)
+plt.legend()
+
+for jj in range (1, len(PCAs)): 
+    foo['silver'] += r1.scenario[PCAs[jj]].material['silver'].materialdata[keyword]
+
+
+fig = plt.figure()
+ax = fig.add_subplot(2, 1, 1)
+ax.plot(r1.scenario[PCAs[0]].data['year'], foo['silver'], label='US')
+plt.title("Material Landfilled per Year US")
+#ax.set_yscale('log')
+print(max(foo))
+
+
 # In[ ]:
 
 
-r1.plotMaterialComparisonAcrossScenarios(material='silver', keyword='mat_Total_Landfilled')
+
+
+
+# In[60]:
+
+
+foo = r1.scenario[PCAs[0]].material['silver'].materialdata[keyword].copy()
+foo = r1.scenario[PCAs[0]].material['silver'].materialdata[keyword].copy()
+foo = foo.to_frame(name='silver')
+UScum=pd.DataFrame()
+UScum['silver'] = foo['silver']
+
+
+# ## Adding Material Landfilled for the US 
+
+# In[90]:
+
+
+keyword='mat_Total_Landfilled'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+USyearly=pd.DataFrame()
+
+
+for ii in range (0, len(materials)):    
+    material = materials[ii]
+    foo = r1.scenario[PCAs[0]].material[material].materialdata[keyword].copy()
+    foo = r1.scenario[PCAs[0]].material[material].materialdata[keyword].copy()
+    foo = foo.to_frame(name=material)
+    USyearly[material] = foo[material]
+
+    for jj in range (1, len(PCAs)): 
+        USyearly[material] += r1.scenario[PCAs[jj]].material[material].materialdata[keyword]
+
+USyearly = USyearly/907185
+USyearly.head()
+
+
+# In[91]:
+
+
+plt.plot([],[],color='m', label='glass', linewidth=5)
+plt.plot([],[],color='c', label='silicon', linewidth=5)
+plt.plot([],[],color='r', label='silver', linewidth=5)
+plt.plot([],[],color='k', label='copper', linewidth=5)
+plt.plot([],[],color='g', label='aluminum', linewidth=5)
+
+plt.stackplot(r1.scenario[PCAs[0]].data['year'], USyearly['glass'], USyearly['silicon'], USyearly['silver'], USyearly['copper'], USyearly['aluminum'], colors=['m','c','r','k', 'g'])
+plt.ylabel('Mass [Tons]')
+plt.xlim([2010, 2050])
+plt.title('Yearly')
+plt.legend(materials)
+
+
+# In[112]:
+
+
+keyword='mat_Virgin_Stock'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+USyearly=pd.DataFrame()
+
+
+for ii in range (0, len(materials)):    
+    material = materials[ii]
+    foo = r1.scenario[PCAs[0]].material[material].materialdata[keyword].copy()
+    foo = r1.scenario[PCAs[0]].material[material].materialdata[keyword].copy()
+    foo = foo.to_frame(name=material)
+    USyearly[material] = foo[material]
+
+    for jj in range (1, len(PCAs)): 
+        USyearly[material] += r1.scenario[PCAs[jj]].material[material].materialdata[keyword]
+
+USyearly = USyearly/907185
+USyearly.head()
+
+
+plt.plot([],[],color='m', label='glass', linewidth=5)
+plt.plot([],[],color='c', label='silicon', linewidth=5)
+plt.plot([],[],color='r', label='silver', linewidth=5)
+plt.plot([],[],color='k', label='copper', linewidth=5)
+plt.plot([],[],color='g', label='aluminum', linewidth=5)
+
+plt.stackplot(r1.scenario[PCAs[0]].data['year'], USyearly['glass'], USyearly['silicon'], USyearly['silver'], USyearly['copper'], USyearly['aluminum'], colors=['m','c','r','k', 'g'])
+plt.ylabel('Mass [Tons]')
+plt.xlim([2010, 2050])
+plt.title(keyword)
+plt.legend(materials)
 
 
 # In[ ]:
 
 
-r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 
 
-# In[ ]:
+
+# ## Calculating Cumulative Yearly Waste for US
+
+# In[114]:
 
 
-# Plot Cumulative Material Waste
+UScum = USyearly.copy()
+UScum = UScum.cumsum()
+UScum.head()
 
+    
+plt.plot([],[],color='m', label='glass', linewidth=5)
+plt.plot([],[],color='c', label='silicon', linewidth=5)
+plt.plot([],[],color='r', label='silver', linewidth=5)
+plt.plot([],[],color='k', label='copper', linewidth=5)
+plt.plot([],[],color='g', label='aluminum', linewidth=5)
 
-# In[ ]:
-
-
-if keyword is None:
-    scens = list(self.scenario.keys())[0]
-    mats = list(self.scenario[scens].material.keys())[0]
-    print("Choose one of the keywords: ",  list(self.scenario[scens].material[mats].materialdata.keys())) 
-    return
-
-if material is None:
-    scens = list(self.scenario.keys())[0]
-    mats = list(self.scenario[scens].material.keys())
-    print("Choose one of the Materials: ", mats) 
-    return
-
-yunits = _unitReferences(keyword)
+plt.stackplot(r1.scenario[PCAs[0]].data['year'], UScum['glass'], UScum['silicon'], UScum['silver'], UScum['copper'], UScum['aluminum'], colors=['m','c','r','k', 'g'])
+plt.ylabel('Mass [Tons]')
+plt.xlim([2010, 2050])
+plt.title('Cumulative')
+plt.legend(materials)
 
 plt.figure()
-
-for scen in self.scenario:
-    plt.plot(self.scenario[scen].data['year'], self.scenario[scen].material[material].materialdata[keyword], label=scen)
-    plt.legend()
-
-plt.xlabel('Year')
-plt.title((material + ' ' + keyword.replace('_', " ")))
-plt.ylabel(yunits)    
+plt.stackplot(r1.scenario[PCAs[0]].data['year'], UScum['glass'], UScum['silicon'], UScum['silver'], UScum['copper'], UScum['aluminum'], colors=['m','c','r','k', 'g'])
+plt.ylabel('Mass [Tons]')
+plt.title('Cumulative')
+plt.xlim([2010, 2050])
+plt.yscale('log')
+plt.legend(materials)
 
 
 # In[ ]:
 
 
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# ## Non stacked plot, previuos method
+
+# In[100]:
+
+
+''' 
 material1='glass'
 material2='silicon'
 material3='silver'
@@ -470,12 +573,22 @@ UScumsumlandfill_silicon = np.cumsum(USlandfill_silicon)
 UScumsumlandfill_silver = np.cumsum(USlandfill_silver)
 
 
-# In[ ]:
-
-
 plt.plot(r1.scenario[PCAs[0]].data['year'], UScumsumlandfill_glass, label='Glass')
 plt.plot(r1.scenario[PCAs[0]].data['year'], UScumsumlandfill_silicon, label='Silicon')
 plt.plot(r1.scenario[PCAs[0]].data['year'], UScumsumlandfill_silver, label='Silver')
+'''
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
@@ -486,7 +599,7 @@ plt.plot(r1.scenario[PCAs[0]].data['year'], UScumsumlandfill_silver, label='Silv
 
 # # GEOPANDAS
 
-# In[ ]:
+# In[101]:
 
 
 latitude_all =[]
@@ -498,7 +611,7 @@ for scen in r1.scenario.keys():
     cumulativewaste2050.append(r1.scenario[scen].material['glass'].materialdata['mat_Total_Landfilled'].sum())
 
 
-# In[ ]:
+# In[102]:
 
 
 import pandas as pd
@@ -514,33 +627,33 @@ street_map = gpd.read_file(r'C:\Users\sayala\Desktop\geopandas\cb_2018_us_nation
 #street_map.plot(ax=ax)
 
 
-# In[ ]:
+# In[103]:
 
 
 frame = { 'Latitude': latitude_all, 'Longitude': longitude_all, 'CumulativeWaste2050': cumulativewaste2050}   
 df = pd.DataFrame(frame) 
 
 
-# In[ ]:
+# In[104]:
 
 
 df.head()
 
 
-# In[ ]:
+# In[105]:
 
 
 geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
 geometry[:3]
 
 
-# In[ ]:
+# In[106]:
 
 
 crs = {'init':'epsg:4326'}
 
 
-# In[ ]:
+# In[107]:
 
 
 geo_df = gpd.GeoDataFrame(df, # specify our data
@@ -549,7 +662,7 @@ geo_df = gpd.GeoDataFrame(df, # specify our data
 geo_df.head()
 
 
-# In[ ]:
+# In[108]:
 
 
 fig, ax = plt.subplots(figsize = (15,15))
