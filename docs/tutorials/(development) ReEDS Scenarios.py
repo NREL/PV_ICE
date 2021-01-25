@@ -129,7 +129,7 @@ for ii in range (len(rawdf.unstack(level=1))):
     SCEN = rawdf.unstack(level=1).iloc[ii].name[0]
     SCEN=SCEN.replace('+', '_')
     filetitle = SCEN+'_'+PCA +'.csv'
-    filetitle = os.path.join(testfolder, filetitle)
+    filetitle = os.path.join(testfolder, 'PCAs', filetitle)
     A = rawdf.unstack(level=1).iloc[ii]
     A = A.droplevel(level=0)
     A.name = 'new_Installed_Capacity_[MW]'
@@ -161,58 +161,145 @@ for ii in range (len(rawdf.unstack(level=1))):
         A.to_csv(ict, header=False)
 
 
-# In[ ]:
+# ## Save Input Files By States
+
+# In[179]:
 
 
+rawdf = pd.read_excel(reedsFile,
+                        sheet_name="UPV Capacity (GW)")
+                        #index_col=[0,2,3]) #this casts scenario, PCA and State as levels
+#now set year as an index in place
+#rawdf.drop(columns=['State'], inplace=True)
+rawdf.drop(columns=['Tech'], inplace=True)
+rawdf.set_index(['Scenario','Year','PCA', 'State'], inplace=True)
+rawdf.head(21)
 
 
-
-# In[ ]:
-
-
-r'''# EXAMPLE FOR JUST ONE 
-ii = 0
-PCA = rawdf.unstack(level=1).iloc[ii].name[1]
-SCEN = rawdf.unstack(level=1).iloc[ii].name[0]
-SCEN=SCEN.replace('+', '_')
-filetitle = SCEN+'_'+PCA +'.csv'
-filetitle = os.path.join(testfolder, filetitle)
-A = rawdf.unstack(level=1).iloc[ii]        
-A = A.droplevel(level=0)
-A.name = 'new_Installed_Capacity_[MW]'
-A = pd.DataFrame(A)
-A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000
-A.index=pd.PeriodIndex(A.index, freq='A')
-B = A.resample('Y').asfreq()
-B = B['new_Installed_Capacity_[MW]'].fillna(0).groupby(B['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')
-B = pd.DataFrame(B)
-B.to_csv(filetitle)
-
-# Add other columns
-B = pd.concat([B, baseline.reindex(B.index)], axis=1)
+# In[180]:
 
 
-header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"\
-"mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"\
-"mod_Repowering,mod_Repairing\n"\
-"year,MW,%,years,years,%,years,%,%,%,%,%\n"
+df = rawdf.groupby(['Scenario','State', 'Year'])['Capacity (GW)'].sum(axis=0)
+df = pd.DataFrame(df)
 
-with open(filetitle, 'w', newline='') as ict:
-# Write the header lines, including the index variable for
-# the last one if you're letting Pandas produce that for you.
-# (see above).
-    for line in header:
-        ict.write(line)
 
-    #    savedata.to_csv(ict, index=False)
-    B.to_csv(ict, header=False)
-'''
-pass
+# In[181]:
+
+
+import PV_ICE
+r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
+r1.createScenario(name='US', file=r'..\baselines\baseline_modules_US.csv')
+baseline = r1.scenario['US'].data
+baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
+baseline.set_index('year', inplace=True)
+baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
+baseline.head()
+
+
+# In[182]:
+
+
+for ii in range (len(df.unstack(level=2))):
+    STATE = df.unstack(level=2).iloc[ii].name[1]
+    SCEN = df.unstack(level=2).iloc[ii].name[0]
+    SCEN=SCEN.replace('+', '_')
+    filetitle = SCEN+'_'+STATE +'.csv'
+    filetitle = os.path.join(testfolder, 'STATEs', filetitle)
+    A = df.unstack(level=2).iloc[ii]
+    A = A.droplevel(level=0)
+    A.name = 'new_Installed_Capacity_[MW]'
+    A = pd.DataFrame(A)
+    A.index=pd.PeriodIndex(A.index, freq='A')
+    A = A.resample('Y').asfreq()
+    A = A['new_Installed_Capacity_[MW]'].fillna(0).groupby(A['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')    
+    A = pd.DataFrame(A)
+    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
+    # Add other columns
+    A = pd.concat([A, baseline.reindex(A.index)], axis=1)
+    A.loc['2050']['new_Installed_Capacity_[MW]'] = A.loc['2050']['new_Installed_Capacity_[MW]']/2   # Dividing last value by 2
+    new_row = A[-1:]
+    new_row.index = new_row.index.shift(periods=1)   #Shifting so new row is 2051
+    A = pd.concat([A,pd.concat([new_row])])              
+    A.index = A.index.shift(periods=-1)          # Shifting back so it goes from 2009-2050
+
+    
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repowering,mod_Repairing\n"    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
+
+    with open(filetitle, 'w', newline='') as ict:
+    # Write the header lines, including the index variable for
+    # the last one if you're letting Pandas produce that for you.
+    # (see above).
+        for line in header:
+            ict.write(line)
+
+        #    savedata.to_csv(ict, index=False)
+        A.to_csv(ict, header=False)
+
+
+# ### ATTEMPT 2
+
+# In[183]:
+
+
+df = pd.read_excel(reedsFile,
+                        sheet_name="UPV Capacity (GW)")
+                        #index_col=[0,2,3]) #this casts scenario, PCA and State as levels
+df.drop(columns=['Tech'], inplace=True)
+
+
+# In[184]:
+
+
+#foo = df.pivot_table(index=['Scenario','Year'],columns='State',aggfunc=sum)
+foo = df.pivot_table(index=['Scenario','State'],columns='Year',aggfunc=sum)
+
+foo = pd.DataFrame(foo)
+foo.head()
+
+
+# In[199]:
+
+
+for ii in range (len(foo)):
+    STATE = foo.index[ii][1]
+    SCEN = foo.index[ii][0]
+    SCEN=SCEN.replace('+', '_')
+    filetitle = SCEN+'_'+STATE +'.csv'
+    filetitle = os.path.join(testfolder, 'STATEs', filetitle)
+    A = pd.DataFrame(foo.iloc[ii])
+    #A = A.unstack(level=0).iloc[ii]
+    A = A.droplevel(level=0)
+    A.columns = [' '.join(col).strip() for col in A.columns.values]
+    A.rename(columns = {list(A)[0]: 'new_Installed_Capacity_[MW]'}, inplace = True)
+    A.index=pd.PeriodIndex(A.index, freq='A')
+    A = A.resample('Y').asfreq()
+    A = A['new_Installed_Capacity_[MW]'].fillna(0).groupby(A['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')    
+    A = pd.DataFrame(A)
+    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
+    # Add other columns
+    A = pd.concat([A, baseline.reindex(A.index)], axis=1)
+    A.loc['2050']['new_Installed_Capacity_[MW]'] = A.loc['2050']['new_Installed_Capacity_[MW]']/2   # Dividing last value by 2
+    new_row = A[-1:]
+    new_row.index = new_row.index.shift(periods=1)   #Shifting so new row is 2051
+    A = pd.concat([A,pd.concat([new_row])])              
+    A.index = A.index.shift(periods=-1)          # Shifting back so it goes from 2009-2050
+
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repowering,mod_Repairing\n"    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
+
+    with open(filetitle, 'w', newline='') as ict:
+    # Write the header lines, including the index variable for
+    # the last one if you're letting Pandas produce that for you.
+    # (see above).
+        for line in header:
+            ict.write(line)
+
+        #    savedata.to_csv(ict, index=False)
+        A.to_csv(ict, header=False)
 
 
 # ### Reading GIS inputs
 
-# In[11]:
+# In[190]:
 
 
 GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
@@ -220,13 +307,13 @@ GIS = pd.read_excel(GISfile)
 GIS = GIS.set_index('id')
 
 
-# In[12]:
+# In[191]:
 
 
 GIS.head()
 
 
-# In[13]:
+# In[192]:
 
 
 GIS.loc['p1'].long
@@ -234,7 +321,7 @@ GIS.loc['p1'].long
 
 # ### Create Scenarios
 
-# In[14]:
+# In[193]:
 
 
 simulationname = scenarios
@@ -243,21 +330,21 @@ PCA = PCAs[0]
 simulationname
 
 
-# In[17]:
+# In[194]:
 
 
 SFscenarios = [scenarios[0], scenarios[4], scenarios[8]]
 SFscenarios
 
 
-# In[19]:
+# In[195]:
 
 
 #for ii in range (0, 1): #len(scenarios):
 r1 = PV_ICE.Simulation(name=SFscenarios[0], path=testfolder)
 for jj in range (0, len(PCAs)): 
     filetitle = SFscenarios[0]+'_'+PCAs[jj]+'.csv'
-    filetitle = os.path.join(testfolder, filetitle)        
+    filetitle = os.path.join(testfolder, 'PCAs', filetitle)        
     r1.createScenario(name=PCAs[jj], file=filetitle)
     r1.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
     r1.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
@@ -270,7 +357,7 @@ for jj in range (0, len(PCAs)):
 r2 = PV_ICE.Simulation(name=SFscenarios[1], path=testfolder)
 for jj in range (0, len(PCAs)): 
     filetitle = SFscenarios[1]+'_'+PCAs[jj]+'.csv'
-    filetitle = os.path.join(testfolder, filetitle)        
+    filetitle = os.path.join(testfolder, 'PCAs', filetitle)        
     r2.createScenario(name=PCAs[jj], file=filetitle)
     r2.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
     r2.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
@@ -283,7 +370,7 @@ for jj in range (0, len(PCAs)):
 r3 = PV_ICE.Simulation(name=SFscenarios[2], path=testfolder)
 for jj in range (0, len(PCAs)): 
     filetitle = simulationname[8]+'_'+PCAs[jj]+'.csv'
-    filetitle = os.path.join(testfolder, filetitle)        
+    filetitle = os.path.join(testfolder, 'PCAs', filetitle)        
     r3.createScenario(name=PCAs[jj], file=filetitle)
     r3.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
     r3.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
@@ -294,7 +381,7 @@ for jj in range (0, len(PCAs)):
     r3.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
 
-# In[20]:
+# In[196]:
 
 
 r1.calculateMassFlow()
@@ -302,7 +389,7 @@ r2.calculateMassFlow()
 r3.calculateMassFlow()
 
 
-# In[28]:
+# In[198]:
 
 
 print("PCAs:", r1.scenario.keys())
@@ -310,7 +397,7 @@ print("Module Keys:", r1.scenario[PCAs[jj]].data.keys())
 print("Material Keys: ", r1.scenario[PCAs[jj]].material['glass'].materialdata.keys())
 
 
-# In[29]:
+# In[197]:
 
 
 r1.scenario['p1'].data.head()
