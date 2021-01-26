@@ -74,7 +74,7 @@ rawdf.head(21)
 
 import PV_ICE
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='US', file=r'..\baselines\baseline_modules_US.csv')
+r1.createScenario(name='US', file=r'..\baselines\ReedsSubset\baseline_modules_US_Reeds.csv')
 baseline = r1.scenario['US'].data
 baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
 baseline.set_index('year', inplace=True)
@@ -192,7 +192,7 @@ for ii in range (len(df.unstack(level=2))):
 
 # ## Method with PIVOT tables for STATES (REDUNDANT)
 
-# In[12]:
+# In[11]:
 
 
 """
