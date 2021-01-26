@@ -21,7 +21,7 @@
 # o	95-by-35+Elec.Adv+DR ones
 # 
 
-# In[21]:
+# In[1]:
 
 
 import PV_ICE
@@ -46,7 +46,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 
 # ### Reading REEDS original file to get list of SCENARIOs, PCAs, and STATEs 
 
-# In[10]:
+# In[3]:
 
 
 reedsFile = str(Path().resolve().parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
@@ -61,7 +61,7 @@ rawdf.drop(columns=['Tech'], inplace=True)
 rawdf.set_index(['Scenario','Year','PCA', 'State'], inplace=True)
 
 
-# In[12]:
+# In[4]:
 
 
 scenarios = list(rawdf.index.get_level_values('Scenario').unique())
@@ -71,7 +71,7 @@ STATEs = list(rawdf.index.get_level_values('State').unique())
 
 # ### Reading GIS inputs
 
-# In[14]:
+# In[5]:
 
 
 GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
@@ -79,13 +79,13 @@ GIS = pd.read_excel(GISfile)
 GIS = GIS.set_index('id')
 
 
-# In[15]:
+# In[6]:
 
 
 GIS.head()
 
 
-# In[16]:
+# In[7]:
 
 
 GIS.loc['p1'].long
@@ -95,7 +95,7 @@ GIS.loc['p1'].long
 
 # #### Rename difficult characters from Scenarios Names
 
-# In[18]:
+# In[8]:
 
 
 simulationname = scenarios
@@ -110,7 +110,7 @@ simulationname
 # <li> 95-by-35.Adv  
 # <li> 95-by-35+Elec.Adv+DR 
 
-# In[43]:
+# In[9]:
 
 
 SFscenarios = [simulationname[0], simulationname[4], simulationname[8]]
@@ -121,7 +121,7 @@ SFscenarios
 # 
 # Keeping track of each scenario as its own PV ICE Object.
 
-# In[44]:
+# In[10]:
 
 
 #for ii in range (0, 1): #len(scenarios):
@@ -172,23 +172,31 @@ for jj in range (0, len(PCAs)):
 
 # # 2 FINISH: Set characteristics of Recycling to SF values.
 
-# In[31]:
+# In[11]:
 
 
-# r1.scenario[]
+#r1.scenario[]
 
 
 # #### Calculate Mass Flow
 
-# In[46]:
+# In[12]:
 
 
-r1.calculateMassFlow()
-r2.calculateMassFlow()
-r3.calculateMassFlow()
+IRENA= True
+
+if IRENA:
+    weibullInputParams = {'alpha': 5.3759}  # Regular-loss scenario IRENA
+    r1.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
+    r2.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
+    r3.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
+else:
+    r1.calculateMassFlow()
+    r2.calculateMassFlow()
+    r3.calculateMassFlow()
 
 
-# In[47]:
+# In[13]:
 
 
 print("PCAs:", r1.scenario.keys())
@@ -196,19 +204,22 @@ print("Module Keys:", r1.scenario[PCAs[jj]].data.keys())
 print("Material Keys: ", r1.scenario[PCAs[jj]].material['glass'].materialdata.keys())
 
 
-# In[29]:
+# In[14]:
 
 
+"""
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 r1.scenario['p1'].data.head(21)
 r2.scenario['p1'].data.head(21)
 r3.scenario['p1'].data.head(21)
+"""
+pass
 
 
 # ## Aggregating PCAs Material Landfilled to obtain US totals by Year
 
-# In[57]:
+# In[15]:
 
 
 ### Singe Material Example Aggregating PCAs to obtain US Total
@@ -236,7 +247,7 @@ print(max(foo))
 pass
 
 
-# In[58]:
+# In[16]:
 
 
 ### Verbose Material Example Aggregating PCAs to obtain US Total
@@ -274,7 +285,7 @@ USyearlyWASTE.head(20)
 pass
 
 
-# In[61]:
+# In[17]:
 
 
 keyword='mat_Total_Landfilled'
@@ -298,11 +309,11 @@ for kk in range(0, 3):
             USyearly["Waste_"+material+'_'+obj.name] += obj.scenario[PCAs[jj]].material[material].materialdata[keyword]
 
 # Converting to grams to Tons. 
-USyearly = USyearly/907185
+#USyearly = USyearly/907185
 USyearly.head(20)
 
 
-# In[62]:
+# In[18]:
 
 
 keyword='mat_Virgin_Stock'
@@ -323,15 +334,43 @@ for kk in range(0, 3):
         for jj in range (1, len(PCAs)): 
             USyearly["VirginStock_"+material+'_'+obj.name] += obj.scenario[PCAs[jj]].material[material].materialdata[keyword]
 
-# Converting to grams to Tons. 
+
+# ### Converting to grams to Tons. 
+# 
+
+# In[19]:
+
+
 USyearly = USyearly/907185
+
+
+# ### Adding Installed Capacity to US
+
+# In[20]:
+
+
+keyword='Installed_Capacity_[W]'
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+for kk in range(0, 3):
+    obj = SFScenarios[kk]
+    # Loop over Materials
+    foo = obj.scenario[PCAs[0]].data[keyword]
+    foo = foo.to_frame(name=keyword)
+    USyearly["Capacity_"+obj.name] = foo[keyword]
+
+    # Loop over PCAs
+    for jj in range (1, len(PCAs)): 
+        USyearly["Capacity_"+obj.name] += obj.scenario[PCAs[jj]].data[keyword]
+
 USyearly.head(20)
 
 
-# In[70]:
+# In[21]:
 
 
-keywords=['VirginStock_', 'Waste_']
+keywords=['VirginStock_', 'Waste_', 'Capacity']
 SFScenarios = [r1, r2, r3]
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
@@ -360,18 +399,75 @@ for ii in range(0, 2):
         plt.legend(materials)
 
 
-# In[88]:
+# In[31]:
 
 
 plt.rcParams.update({'font.size': 8})
 plt.rcParams['figure.figsize'] = (12, 8)
     
-keywords=['VirginStock_', 'Waste_']
-SFScenarios = [r1, r2, r3]
+keywords=['VirginStock_', 'Waste_', 'Capacity_']
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
-    
 fig, axs = plt.subplots(2,3, figsize=(15, 6), facecolor='w', edgecolor='k')
+fig.subplots_adjust(hspace = .5, wspace=.001)
+axs = axs.ravel()
+i = 0
+
+# Loop over Keywords
+for ii in range(0, 2):
+    keyw = keywords[ii]
+    # Loop over SF Scenarios
+    for kk in range(0, 3):
+        
+        obj = SFScenarios[kk]
+        axs[i].yaxis.grid()
+        axs[i].axvspan(2000, 2018, facecolor='0.9', alpha=0.5)
+        axs[i].axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
+        axs[i].plot([],[],color='c', label='glass', linewidth=5)
+        axs[i].plot([],[],color='k', label='silicon', linewidth=5)
+        axs[i].plot([],[],color='m', label='silver', linewidth=5)
+        axs[i].plot([],[],color='r', label='copper', linewidth=5)
+        axs[i].plot([],[],color='g', label='aluminum', linewidth=5)
+
+        axs[i].stackplot(obj.scenario[PCAs[0]].data['year'], USyearly[keyw+materials[0]+'_'+obj.name], 
+                                                          USyearly[keyw+materials[1]+'_'+obj.name], 
+                                                          USyearly[keyw+materials[2]+'_'+obj.name], 
+                                                          USyearly[keyw+materials[3]+'_'+obj.name], 
+                                                          USyearly[keyw+materials[4]+'_'+obj.name], 
+                                                          colors=['c','k','m','r', 'g'])
+        #axs[i].ylabel('Mass [Tons]')
+        axs[i].set_xlim([2010, 2050])
+        axs[i].set_title(keyw+ ' ' + obj.name)
+        #axs[i].legend(materials)
+        
+        i += 1 
+       
+for i in range (0, 3):
+    axs[i].set_ylim([0, 4e7])
+    axs[i+3].set_ylim([0, 4e7])
+
+axs[0].set_ylabel('Mass [Tons]')
+axs[3].set_ylabel('Mass [Tons]')
+axs[5].legend(materials)
+        
+
+
+# In[23]:
+
+
+USyearly.keys()
+
+
+# In[32]:
+
+
+plt.rcParams.update({'font.size': 8})
+plt.rcParams['figure.figsize'] = (12, 8)
+    
+keywords=['VirginStock_', 'Waste_', 'Capacity_']
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+fig, axs = plt.subplots(3,3, figsize=(15, 6), facecolor='w', edgecolor='k')
 fig.subplots_adjust(hspace = .5, wspace=.001)
 axs = axs.ravel()
 i = 0
@@ -406,9 +502,30 @@ for ii in range(0, 2):
         i += 1 
 
         
+# CAPACITY IS BY MODULE NOT MATERIAL:
+ii = 2
+keyw = keywords[ii]
+
+# Loop over SF Scenarios
+for kk in range(0, 3):
+    obj = SFScenarios[kk]
+    axs[i].yaxis.grid()
+    axs[i].axvspan(2000, 2018, facecolor='0.9', alpha=0.5)
+    axs[i].axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
+    #axs[i].plot([],[],color='c', label='glass', linewidth=5)
+    axs[i].plot(obj.scenario[PCAs[0]].data['year'], USyearly[keyw+obj.name])
+    #axs[i].ylabel('Mass [Tons]')
+    axs[i].set_xlim([2010, 2050])
+    axs[i].set_title(keyw+ ' ' + obj.name)
+    #axs[i].legend(materials)
+    i += 1 
+
+
+
+
 for i in range (0, 3):
     axs[i].set_ylim([0, 4e7])
-    axs[i+3].set_ylim([0, 10])
+    axs[i+3].set_ylim([0, 4e7])
 
 axs[0].set_ylabel('Mass [Tons]')
 axs[3].set_ylabel('Mass [Tons]')
@@ -416,168 +533,308 @@ axs[5].legend(materials)
         
 
 
-# In[63]:
-
-
-r1.name
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-keyword='mat_Virgin_Stock'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
-
-USyearly=pd.DataFrame()
-
-
-for ii in range (0, len(materials)):    
-    material = materials[ii]
-    foo = r1.scenario[PCAs[0]].material[material].materialdata[keyword].copy()
-    foo = r1.scenario[PCAs[0]].material[material].materialdata[keyword].copy()
-    foo = foo.to_frame(name=material)
-    USyearly[material] = foo[material]
-
-    for jj in range (1, len(PCAs)): 
-        USyearly[material] += r1.scenario[PCAs[jj]].material[material].materialdata[keyword]
-
-USyearly = USyearly/907185
-USyearly.head()
-
-
-plt.plot([],[],color='m', label='glass', linewidth=5)
-plt.plot([],[],color='c', label='silicon', linewidth=5)
-plt.plot([],[],color='r', label='silver', linewidth=5)
-plt.plot([],[],color='k', label='copper', linewidth=5)
-plt.plot([],[],color='g', label='aluminum', linewidth=5)
-
-plt.stackplot(r1.scenario[PCAs[0]].data['year'], USyearly['glass'], USyearly['silicon'], USyearly['silver'], USyearly['copper'], USyearly['aluminum'], colors=['m','c','r','k', 'g'])
-plt.ylabel('Mass [Tons]')
-plt.xlim([2010, 2050])
-plt.title(keyword)
-plt.legend(materials)
-
-
-# In[ ]:
-
-
-
-
-
-# ## Calculating Cumulative Yearly Waste for US
-
-# In[ ]:
+# In[25]:
 
 
 UScum = USyearly.copy()
 UScum = UScum.cumsum()
 UScum.head()
 
+
+# In[33]:
+
+
+plt.rcParams.update({'font.size': 8})
+plt.rcParams['figure.figsize'] = (12, 8)
     
-plt.plot([],[],color='m', label='glass', linewidth=5)
-plt.plot([],[],color='c', label='silicon', linewidth=5)
-plt.plot([],[],color='r', label='silver', linewidth=5)
-plt.plot([],[],color='k', label='copper', linewidth=5)
-plt.plot([],[],color='g', label='aluminum', linewidth=5)
+keywords=['VirginStock_', 'Waste_', 'Capacity_']
+SFScenarios = [r1, r2, r3]
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
-plt.stackplot(r1.scenario[PCAs[0]].data['year'], UScum['glass'], UScum['silicon'], UScum['silver'], UScum['copper'], UScum['aluminum'], colors=['m','c','r','k', 'g'])
-plt.ylabel('Mass [Tons]')
-plt.xlim([2010, 2050])
-plt.title('Cumulative')
-plt.legend(materials)
+    
+fig, axs = plt.subplots(3,3, figsize=(15, 6), facecolor='w', edgecolor='k')
+fig.subplots_adjust(hspace = .5, wspace=.001)
+axs = axs.ravel()
+i = 0
 
-plt.figure()
-plt.stackplot(r1.scenario[PCAs[0]].data['year'], UScum['glass'], UScum['silicon'], UScum['silver'], UScum['copper'], UScum['aluminum'], colors=['m','c','r','k', 'g'])
-plt.ylabel('Mass [Tons]')
-plt.title('Cumulative')
-plt.xlim([2010, 2050])
-plt.yscale('log')
-plt.legend(materials)
+# Loop over Keywords
+for ii in range(0, 2):
+    keyw = keywords[ii]
+    # Loop over SF Scenarios
+    for kk in range(0, 3):
+        
+        obj = SFScenarios[kk]
+        axs[i].yaxis.grid()
+        axs[i].axvspan(2000, 2018, facecolor='0.9', alpha=0.5)
+        axs[i].axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
+        axs[i].plot([],[],color='c', label='glass', linewidth=5)
+        axs[i].plot([],[],color='k', label='silicon', linewidth=5)
+        axs[i].plot([],[],color='m', label='silver', linewidth=5)
+        axs[i].plot([],[],color='r', label='copper', linewidth=5)
+        axs[i].plot([],[],color='g', label='aluminum', linewidth=5)
+
+        axs[i].stackplot(obj.scenario[PCAs[0]].data['year'], UScum[keyw+materials[0]+'_'+obj.name], 
+                                                          UScum[keyw+materials[1]+'_'+obj.name], 
+                                                          UScum[keyw+materials[2]+'_'+obj.name], 
+                                                          UScum[keyw+materials[3]+'_'+obj.name], 
+                                                          UScum[keyw+materials[4]+'_'+obj.name], 
+                                                          colors=['c','k','m','r', 'g'])
+        #axs[i].ylabel('Mass [Tons]')
+        axs[i].set_xlim([2010, 2050])
+        axs[i].set_title(keyw+ ' ' + obj.name)
+        #axs[i].legend(materials)
+        
+        i += 1 
+
+# CAPACITY IS BY MODULE NOT MATERIAL:
+ii = 2
+keyw = keywords[ii]
+
+# Loop over SF Scenarios
+for kk in range(0, 3):
+    obj = SFScenarios[kk]
+    axs[i].yaxis.grid()
+    axs[i].axvspan(2000, 2018, facecolor='0.9', alpha=0.5)
+    axs[i].axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
+    #axs[i].plot([],[],color='c', label='glass', linewidth=5)
+    axs[i].plot(obj.scenario[PCAs[0]].data['year'], USyearly[keyw+obj.name]/1e6)
+    #axs[i].ylabel('Mass [Tons]')
+    axs[i].set_xlim([2010, 2050])
+    axs[i].set_title(keyw+ ' ' + obj.name)
+    #axs[i].legend(materials)
+    i += 1 
+    
+for i in range (0, 3):
+    axs[i].set_ylim([1e0, 10e8])
+    axs[i+3].set_ylim([1e0, 10e8])
+    axs[i+6].set_ylim([1e0, 10e7])
+
+    axs[i].set_yscale('log')
+    axs[i+3].set_yscale('log')
+    axs[i+6].set_yscale('log')
+    
+    
+axs[0].set_ylabel('Mass [Tons]')
+axs[3].set_ylabel('Mass [Tons]')
+axs[6].set_ylabel('Installed Capacity [TW]')
+axs[5].legend(materials)
+
+
+# # SAVE DATA FOR BILLY
+
+# ### PCA vs. Cumulative Waste by 2050
+# 
+
+# In[36]:
+
+
+keyword='mat_Virgin_Stock'
 
 
 # In[ ]:
 
 
+for kk in range(0, 3):
+
+    obj = SFScenarios[kk]
 
 
-
-# In[ ]:
-
+# In[46]:
 
 
+PCAs
 
 
-# In[ ]:
+# In[50]:
 
 
+SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword]
 
 
-
-# In[ ]:
-
+# In[58]:
 
 
+df
 
 
-# ## Non stacked plot, previuos method
-
-# In[ ]:
+# In[87]:
 
 
-''' 
-material1='glass'
-material2='silicon'
-material3='silver'
+keyword='mat_Virgin_Stock'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    
+    materiallist = []
+    for ii in range (0, len(materials)):    
+        
+        keywordsum = []
+        for zz in range (0, len(PCAs)):
+            keywordsum.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword].sum())
+    
+        materiallist.append(keywordsum)
+    df = pd.DataFrame (materiallist,columns=PCAs, index = materials)
+    df = df.T
+    df = df.add_prefix(SFScenarios[kk].name+'_')
+    scenariolist = pd.concat([scenariolist , df], axis=1)
+
+scenariolist = scenariolist/907185
+scenariolist.to_csv('1 - PCA Cumulative2050 VirginMaterialNeeds_tons.csv')
+
+
+# In[88]:
+
+
 keyword='mat_Total_Landfilled'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
-USlandfill_glass = r1.scenario[PCAs[0]].material[material1].materialdata[keyword]
-USlandfill_silicon = r1.scenario[PCAs[0]].material[material2].materialdata[keyword]
-USlandfill_silver = r1.scenario[PCAs[0]].material[material3].materialdata[keyword]
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
 
-for jj in range (1, len(PCAs)): 
-    USlandfill_glass += r1.scenario[PCAs[jj]].material[material1].materialdata[keyword] 
-    USlandfill_silicon += r1.scenario[PCAs[jj]].material[material2].materialdata[keyword] 
-    USlandfill_silver += r1.scenario[PCAs[jj]].material[material3].materialdata[keyword]
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
     
-UScumsumlandfill_glass = np.cumsum(USlandfill_glass)
-UScumsumlandfill_silicon = np.cumsum(USlandfill_silicon)
-UScumsumlandfill_silver = np.cumsum(USlandfill_silver)
+    materiallist = []
+    for ii in range (0, len(materials)):    
+        
+        keywordsum = []
+        for zz in range (0, len(PCAs)):
+            keywordsum.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword].sum())
+    
+        materiallist.append(keywordsum)
+    df = pd.DataFrame (materiallist,columns=PCAs, index = materials)
+    df = df.T
+    df = df.add_prefix(SFScenarios[kk].name+'_')
+    scenariolist = pd.concat([scenariolist , df], axis=1)
+
+scenariolist.keys()
+scenariolist.to_csv('2 - PCA Cumulative2050 Waste_tons.csv')
 
 
-plt.plot(r1.scenario[PCAs[0]].data['year'], UScumsumlandfill_glass, label='Glass')
-plt.plot(r1.scenario[PCAs[0]].data['year'], UScumsumlandfill_silicon, label='Silicon')
-plt.plot(r1.scenario[PCAs[0]].data['year'], UScumsumlandfill_silver, label='Silver')
-'''
+# SFScenarios[kk].scenario[PCAs[zz]].data.year
+# 
+# Index 21 --> 2030
+# 
+# Index 31 --> 2040
+# 
+# Index 41 --> 2050
+
+# In[89]:
 
 
-# In[ ]:
+scenariolist.keys()
 
 
+# In[92]:
 
 
+keyword='mat_Total_Landfilled'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
-# In[ ]:
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+ 
+    for ii in range (0, len(materials)):    
+        
+        keywordsum2030 = []
+        keywordsum2040 = []
+        keywordsum2050 = []
+
+        for zz in range (0, len(PCAs)):
+            keywordsum2030.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][21])
+            keywordsum2040.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][31])
+            keywordsum2050.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][41])
+    
+        materiallist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=PCAs, index = [2030, 2040, 2050])
+        materiallist = materiallist.T
+        materiallist = materiallist.add_prefix(materials[ii]+'_')
+    materiallist = materiallist.add_prefix(SFScenarios[kk].name+'_')
+    scenariolist = pd.concat([scenariolist , materiallist], axis=1)
+
+scenariolist = scenariolist/907185
+scenariolist.to_csv('3 - PCA Yearly 2030 2040 2050 Waste_tons.csv')
 
 
+# In[107]:
 
 
+keyword='mat_Virgin_Stock'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
-# In[ ]:
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    materiallist = pd.DataFrame()
+
+    for ii in range (0, len(materials)):    
+        
+        keywordsum2030 = []
+        keywordsum2040 = []
+        keywordsum2050 = []
+
+        for zz in range (0, len(PCAs)):
+            keywordsum2030.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][21])
+            keywordsum2040.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][31])
+            keywordsum2050.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][41])
+    
+        yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=PCAs, index = [2030, 2040, 2050])
+        yearlylist = yearlylist.T
+        yearlylist = yearlylist.add_prefix(materials[ii]+'_')
+        materiallist = pd.concat([materiallist, yearlylist], axis=1)
+    materiallist = materiallist.add_prefix(SFScenarios[kk].name+'_')
+    scenariolist = pd.concat([scenariolist , materiallist], axis=1)
+
+scenariolist = scenariolist/907185
+scenariolist.to_csv('4 - PCA Yearly 2030 2040 2050 VirginMaterialNeeds_tons.csv')
 
 
+# In[111]:
 
+
+keyword='mat_Total_Landfilled'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    materiallist = pd.DataFrame()
+
+    for ii in range (0, len(materials)):    
+        
+        keywordsum2030 = []
+        keywordsum2040 = []
+        keywordsum2050 = []
+
+        for zz in range (0, len(PCAs)):
+            keywordsum2030.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][21])
+            keywordsum2040.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][31])
+            keywordsum2050.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][41])
+    
+        yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=PCAs, index = [2030, 2040, 2050])
+        yearlylist = yearlylist.T
+        yearlylist = yearlylist.add_prefix(materials[ii]+'_')
+        materiallist = pd.concat([materiallist, yearlylist], axis=1)
+    materiallist = materiallist.add_prefix(SFScenarios[kk].name+'_')
+    scenariolist = pd.concat([scenariolist , materiallist], axis=1)
+
+scenariolist = scenariolist/907185
+scenariolist.to_csv('5 - PCA Yearly 2030 2040 2050 Waste_tons.csv')
 
 
 # # GEOPANDAS
@@ -837,28 +1094,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-df.to_csv(r'Path where you want to store the exported CSV file\File Name.csv')
 
