@@ -166,7 +166,7 @@ plt.plot(gdf, label='passed params')
 plt.plot(hdf, label='alphaonly 2.49')
 plt.plot(idf, label='alphaonly 5.3759')
 plt.legend()
-#                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
+#   pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
 
 # In[3]:
 

@@ -57,7 +57,7 @@ REEDSInput = pd.read_excel(reedsFile,
 
 # #### Create a copy of the REEDS Input and modify structure for PCA focus
 
-# In[5]:
+# In[ ]:
 
 
 rawdf = REEDSInput.copy()
@@ -69,7 +69,7 @@ rawdf.head(21)
 
 # #### Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[6]:
+# In[ ]:
 
 
 import PV_ICE
@@ -84,7 +84,7 @@ baseline.head()
 
 # #### For each Scenario and for each PCA, combine with baseline and save as input file
 
-# In[7]:
+# In[ ]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -128,7 +128,7 @@ for ii in range (len(rawdf.unstack(level=1))):
 
 # #### Reassign data from REEDS Input, as we need one of the columns we dropped.
 
-# In[8]:
+# In[ ]:
 
 
 rawdf = REEDSInput.copy()
@@ -140,7 +140,7 @@ rawdf.head(21)
 
 # #### Group data so we can work with the States instead
 
-# In[9]:
+# In[ ]:
 
 
 df = rawdf.groupby(['Scenario','State', 'Year'])['Capacity (GW)'].sum(axis=0)
@@ -150,7 +150,7 @@ df.head()
 
 # #### For each Scenario and for each STATE, combine with baseline and save as input file
 
-# In[10]:
+# In[ ]:
 
 
 for ii in range (len(df.unstack(level=2))):
@@ -192,7 +192,7 @@ for ii in range (len(df.unstack(level=2))):
 
 # ## Method with PIVOT tables for STATES (REDUNDANT)
 
-# In[11]:
+# In[ ]:
 
 
 """
@@ -249,6 +249,82 @@ for ii in range (len(foo)):
         
 """
 pass
+
+
+# # Saving US Baseline
+
+# ### Create a copy of the REEDS Input and modify structure for PCA focus
+
+# In[5]:
+
+
+rawdf = REEDSInput.copy()
+#rawdf.drop(columns=['State'], inplace=True)
+rawdf.drop(columns=['Tech'], inplace=True)
+rawdf.set_index(['Scenario','Year'], inplace=True)
+rawdf.head(21)
+
+
+# In[6]:
+
+
+df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum(axis=0)
+
+
+# ### Loading Module Baseline. Will be used later to populate all the columsn other than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
+
+# In[7]:
+
+
+import PV_ICE
+r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
+r1.createScenario(name='US', file=r'..\baselines\ReedsSubset\baseline_modules_US_Reeds.csv')
+baseline = r1.scenario['US'].data
+baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
+baseline.set_index('year', inplace=True)
+baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
+baseline.head()
+
+
+# ### For each Scenario, combine with baseline and save as input file¶
+
+# In[9]:
+
+
+for ii in range (len(df.unstack(level=1))):
+    SCEN = df.unstack(level=1).index[ii]
+    SCEN=SCEN.replace('+', '_')
+    filetitle = SCEN+'.csv'
+    filetitle = os.path.join(testfolder, 'USA', filetitle)
+    A = df.unstack(level=1).iloc[ii]
+
+    A.name = 'new_Installed_Capacity_[MW]'
+    A = pd.DataFrame(A)
+    A.index=pd.PeriodIndex(A.index, freq='A')
+    A = A.resample('Y').asfreq()
+    A = A['new_Installed_Capacity_[MW]'].fillna(0).groupby(A['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')    
+    A = pd.DataFrame(A)
+    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
+    # Add other columns
+    A = pd.concat([A, baseline.reindex(A.index)], axis=1)
+    A.loc['2050']['new_Installed_Capacity_[MW]'] = A.loc['2050']['new_Installed_Capacity_[MW]']/2   # Dividing last value by 2
+    new_row = A[-1:]
+    new_row.index = new_row.index.shift(periods=1)   #Shifting so new row is 2051
+    A = pd.concat([A,pd.concat([new_row])])              
+    A.index = A.index.shift(periods=-1)          # Shifting back so it goes from 2009-2050
+
+    
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repowering,mod_Repairing\n"    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
+
+    with open(filetitle, 'w', newline='') as ict:
+    # Write the header lines, including the index variable for
+    # the last one if you're letting Pandas produce that for you.
+    # (see above).
+        for line in header:
+            ict.write(line)
+
+        #    savedata.to_csv(ict, index=False)
+        A.to_csv(ict, header=False)
 
 
 # In[ ]:
