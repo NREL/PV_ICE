@@ -21,7 +21,7 @@
 # o	95-by-35+Elec.Adv+DR ones
 # 
 
-# In[1]:
+# In[46]:
 
 
 import PV_ICE
@@ -34,7 +34,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[2]:
+# In[47]:
 
 
 import os
@@ -47,7 +47,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 
 # ### Reading REEDS original file to get list of SCENARIOs, PCAs, and STATEs 
 
-# In[3]:
+# In[48]:
 
 
 reedsFile = str(Path().resolve().parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
@@ -62,7 +62,7 @@ rawdf.drop(columns=['Tech'], inplace=True)
 rawdf.set_index(['Scenario','Year','PCA', 'State'], inplace=True)
 
 
-# In[4]:
+# In[49]:
 
 
 scenarios = list(rawdf.index.get_level_values('Scenario').unique())
@@ -72,7 +72,7 @@ STATEs = list(rawdf.index.get_level_values('State').unique())
 
 # ### Reading GIS inputs
 
-# In[5]:
+# In[50]:
 
 
 GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
@@ -80,13 +80,13 @@ GIS = pd.read_excel(GISfile)
 GIS = GIS.set_index('id')
 
 
-# In[6]:
+# In[51]:
 
 
 GIS.head()
 
 
-# In[7]:
+# In[52]:
 
 
 GIS.loc['p1'].long
@@ -96,7 +96,7 @@ GIS.loc['p1'].long
 
 # #### Rename difficult characters from Scenarios Names
 
-# In[8]:
+# In[53]:
 
 
 simulationname = scenarios
@@ -111,7 +111,7 @@ simulationname
 # <li> 95-by-35.Adv  
 # <li> 95-by-35+Elec.Adv+DR 
 
-# In[9]:
+# In[54]:
 
 
 SFscenarios = [simulationname[0], simulationname[4], simulationname[8]]
@@ -122,7 +122,7 @@ SFscenarios
 # 
 # Keeping track of each scenario as its own PV ICE Object.
 
-# In[10]:
+# In[55]:
 
 
 #for ii in range (0, 1): #len(scenarios):
@@ -171,10 +171,10 @@ for jj in range (0, len(STATEs)):
 
 # #### Calculate Mass Flow
 
-# In[11]:
+# In[56]:
 
 
-IRENA= True
+IRENA= False
 ELorRL = 'EL'
 if IRENA:
     if ELorRL == 'RL':
@@ -192,7 +192,7 @@ else:
     title_Method = 'PVICE'
 
 
-# In[12]:
+# In[57]:
 
 
 print("PCAs:", r1.scenario.keys())
@@ -200,7 +200,7 @@ print("Module Keys:", r1.scenario[STATEs[jj]].data.keys())
 print("Material Keys: ", r1.scenario[STATEs[jj]].material['glass'].materialdata.keys())
 
 
-# In[13]:
+# In[58]:
 
 
 """
@@ -212,7 +212,7 @@ pass
 
 # ## Aggregating PCAs Material Landfilled to obtain US totals by Year
 
-# In[14]:
+# In[59]:
 
 
 ### Singe Material Example Aggregating PCAs to obtain US Total
@@ -240,7 +240,7 @@ print(max(foo))
 pass
 
 
-# In[15]:
+# In[60]:
 
 
 ### Verbose Material Example Aggregating PCAs to obtain US Total
@@ -277,7 +277,7 @@ USyearlyWASTE.head(20)
 pass
 
 
-# In[16]:
+# In[61]:
 
 
 keyword='mat_Total_Landfilled'
@@ -307,7 +307,7 @@ for kk in range(0, 3):
 USyearly.head(20)
 
 
-# In[17]:
+# In[62]:
 
 
 keyword='mat_Virgin_Stock'
@@ -335,7 +335,7 @@ for kk in range(0, 3):
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[18]:
+# In[63]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
@@ -344,7 +344,7 @@ USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 
 # ### Adding Installed Capacity to US
 
-# In[19]:
+# In[64]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -367,13 +367,13 @@ USyearly.head(20)
 
 # ### Creative Cumulative DataFrame and Saving
 
-# In[20]:
+# In[65]:
 
 
 USyearly.index = obj.scenario[STATEs[0]].data['year']
 
 
-# In[21]:
+# In[66]:
 
 
 UScum = USyearly.copy()
@@ -381,7 +381,7 @@ UScum = UScum.cumsum()
 UScum.head()
 
 
-# In[22]:
+# In[67]:
 
 
 
@@ -391,7 +391,7 @@ UScum.to_csv(title_Method+' US_Cumulative.csv')
 
 # # PLOTTING GALORE
 
-# In[23]:
+# In[68]:
 
 
 keywords=['VirginStock_', 'Waste_', 'Capacity']
@@ -423,7 +423,7 @@ for ii in range(0, 2):
         plt.legend(materials)
 
 
-# In[24]:
+# In[69]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -476,7 +476,7 @@ axs[5].legend(materials)
         
 
 
-# In[25]:
+# In[70]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -563,7 +563,7 @@ axs[5].legend(materials)
 
 
 
-# In[26]:
+# In[71]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -642,7 +642,7 @@ axs[6].set_ylabel('Installed Capacity [TW]')
 axs[5].legend(materials)
 
 
-# In[27]:
+# In[72]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -727,7 +727,7 @@ axs[5].legend(materials)
 
 
 
-# In[28]:
+# In[73]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -869,7 +869,7 @@ fig.savefig(title_Method+' Fig_3x3_MaterialNeeds.png', dpi=600)
 
 # ## Mining Capacity + Virgin Needs Plot
 
-# In[29]:
+# In[74]:
 
 
 mining2020_aluminum = 65267000
@@ -878,7 +878,7 @@ mining2020_copper = 20000000
 mining2020_silicon = 8000000
 
 
-# In[30]:
+# In[75]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1024,7 +1024,7 @@ axs[6].set_ylabel('Yearly Mass [Tonnes]')
 #axs[8].legend(materials)
 
 
-# In[31]:
+# In[76]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1062,9 +1062,64 @@ axs.set_ylabel('Virgin Material Needs ratio to 2020 Production Capacity [%]')
 fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production.png', dpi=600)
 
 
+# In[89]:
+
+
+plt.rcParams.update({'font.size': 10})
+plt.rcParams['figure.figsize'] = (12, 8)
+    
+keywords=['VirginStock_']
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+fig, axs = plt.subplots(1,1, figsize=(4, 6), facecolor='w', edgecolor='k')
+fig.subplots_adjust(hspace = .3, wspace=.2)
+i = 0
+
+obj = SFScenarios[2].name
+# Loop over Keywords
+ii = 0 
+keyw = keywords[ii]
+# Loop over SF Scenarios
+
+# ROW 2, Aluminum and Silicon:        g-  4 aluminum k - 1 silicon   orange - 3 copper  gray - 2 silver
+axs.plot(USyearly[keyw+materials[2]+'_'+SFScenarios[2].name]*100/mining2020_silver, 
+         color = 'gray', linewidth=2.0, label='Silver')
+axs.fill_between(USyearly.index, USyearly[keyw+materials[2]+'_'+SFScenarios[0].name]*100/mining2020_silver, USyearly[keyw+materials[2]+'_'+SFScenarios[2].name]*100/mining2020_silver,
+                   color='gray', lw=3, alpha=.3)
+    
+axs.plot(USyearly[keyw+materials[1]+'_'+SFScenarios[2].name]*100/mining2020_silicon, 
+         color = 'k', linewidth=2.0, label='Silicon')
+axs.fill_between(USyearly.index, USyearly[keyw+materials[1]+'_'+SFScenarios[0].name]*100/mining2020_silicon, 
+                                USyearly[keyw+materials[1]+'_'+SFScenarios[2].name]*100/mining2020_silicon,
+                   color='k', lw=3, alpha=.5)
+
+axs.plot(USyearly[keyw+materials[4]+'_'+SFScenarios[2].name]*100/mining2020_aluminum, 
+         color = 'g', linewidth=2.0, label='Aluminum')
+
+axs.fill_between(USyearly.index, USyearly[keyw+materials[4]+'_'+SFScenarios[0].name]*100/mining2020_aluminum, 
+                                USyearly[keyw+materials[4]+'_'+SFScenarios[2].name]*100/mining2020_aluminum,
+                   color='g', lw=3, alpha=.3)
+
+
+axs.plot(USyearly[keyw+materials[3]+'_'+SFScenarios[2].name]*100/mining2020_copper, 
+         color = 'orange', linewidth=2.0, label='Copper')
+
+axs.fill_between(USyearly.index, USyearly[keyw+materials[3]+'_'+SFScenarios[0].name]*100/mining2020_copper, 
+                                USyearly[keyw+materials[3]+'_'+SFScenarios[2].name]*100/mining2020_copper,
+                   color='orange', lw=3, alpha=.3)
+
+axs.set_xlim([2020,2050])
+axs.legend()
+#axs.set_yscale('log')
+
+axs.set_ylabel('Virgin Material Needs ratio to 2020 Production Capacity [%]')
+
+fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production.png', dpi=600)
+
+
 # # TABLES 
 
-# In[32]:
+# In[90]:
 
 
 materials = ['Module', 'glass', 'aluminum', 'copper', 'silicon', 'silver']
@@ -1090,7 +1145,13 @@ for kk in range (0, 3):
     print("****************************\n")
 
 
-# In[33]:
+# In[ ]:
+
+
+
+
+
+# In[91]:
 
 
 print(" VIRGIN STOCK Yearly Needs ")
@@ -1099,7 +1160,7 @@ for kk in range(0, 3):
     obj = SFScenarios[kk]
     print(obj.name)
     filter_col = [col for col in USyearly if (col.startswith('VirginStock_') and col.endswith(obj.name)) ]
-    display(USyearly[filter_col].loc[[2030, 2040, 2050]])
+    display(USyearlysig3[filter_col].loc[[2030, 2040, 2050]])
     print("\n\n")
     
 print(" VIRGIN STOCK Cumulative Needs ")
@@ -1108,11 +1169,11 @@ for kk in range(0, 3):
     obj = SFScenarios[kk]
     print(obj.name)
     filter_col = [col for col in UScum if (col.startswith('VirginStock_') and col.endswith(obj.name)) ]
-    display(UScum[filter_col].loc[[2030, 2040, 2050]])
+    display(UScumsig3[filter_col].loc[[2030, 2040, 2050]])
     print("\n\n")
 
 
-# In[34]:
+# In[92]:
 
 
 print(" WASTE CUMULATIVE RESULTS [Tonnes] ")
@@ -1121,7 +1182,7 @@ filter_col = [col for col in UScum if (col.startswith('Waste_Module')) ]
 display(UScum[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[35]:
+# In[ ]:
 
 
 # Same as above cell but in more lines
@@ -1160,7 +1221,7 @@ pass
 
 # ## DWARAKS PLOT
 
-# In[36]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1228,7 +1289,7 @@ plt.ylabel('Mass [tons]')
 
 # #### Organizing Cumulative 2050 material needs for Materials / Scenarios
 
-# In[37]:
+# In[ ]:
 
 
 #This is in the plots
@@ -1255,7 +1316,7 @@ pass
 
 # #### Calculating Bottoms for stacked bar plots... ugh.
 
-# In[38]:
+# In[ ]:
 
 
 #This is in the plots
@@ -1270,7 +1331,7 @@ pass
 
 # ##### Virgin Needs
 
-# In[39]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1400,7 +1461,7 @@ f.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cu
 
 # ##### Waste
 
-# In[40]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1530,7 +1591,7 @@ f.savefig(title_Method+' Fig_2x1_Yearly WASTE by Scenario and Cumulatives.png', 
 
 # ##### Another option
 
-# In[41]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 12})
@@ -1648,7 +1709,7 @@ a0.legend(bbox_to_anchor=(0.10, -0.3), loc='lower left')
 # ### PCA vs. Cumulative Waste by 2050
 # 
 
-# In[42]:
+# In[ ]:
 
 
 keyword='mat_Virgin_Stock'
@@ -1678,7 +1739,7 @@ scenariolist = scenariolist/1000000 # Converting to Metric Tons
 scenariolist.to_csv(title_Method+' 6 - STATE Cumulative2050 VirginMaterialNeeds_tons.csv')
 
 
-# In[43]:
+# In[ ]:
 
 
 keyword='mat_Total_Landfilled'
@@ -1708,7 +1769,7 @@ scenariolist = scenariolist/1000000 # Converting to Metric Tons
 scenariolist.to_csv(title_Method+' 7 - STATE Cumulative2050 Waste_tons.csv')
 
 
-# In[44]:
+# In[ ]:
 
 
 keyword='mat_Virgin_Stock'
@@ -1744,7 +1805,7 @@ scenariolist = scenariolist/1000000   # Converting to Metric Tons
 scenariolist.to_csv(title_Method+' 8 - STATE Yearly 2030 2040 2050 VirginMaterialNeeds_tons.csv')
 
 
-# In[45]:
+# In[ ]:
 
 
 keyword='mat_Total_Landfilled'
