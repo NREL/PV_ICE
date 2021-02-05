@@ -171,11 +171,11 @@ for jj in range (0, len(STATEs)):
 
 # #### Calculate Mass Flow
 
-# In[11]:
+# In[ ]:
 
 
 IRENA= True
-ELorRL = 'EL'
+ELorRL = 'RL'
 if IRENA:
     if ELorRL == 'RL':
         weibullInputParams = {'alpha': 5.3759}  # Regular-loss scenario IRENA
@@ -192,7 +192,7 @@ else:
     title_Method = 'PVICE'
 
 
-# In[12]:
+# In[ ]:
 
 
 print("PCAs:", r1.scenario.keys())
@@ -200,7 +200,7 @@ print("Module Keys:", r1.scenario[STATEs[jj]].data.keys())
 print("Material Keys: ", r1.scenario[STATEs[jj]].material['glass'].materialdata.keys())
 
 
-# In[13]:
+# In[ ]:
 
 
 """
@@ -212,7 +212,7 @@ pass
 
 # ## Aggregating PCAs Material Landfilled to obtain US totals by Year
 
-# In[14]:
+# In[ ]:
 
 
 ### Singe Material Example Aggregating PCAs to obtain US Total
@@ -240,7 +240,7 @@ print(max(foo))
 pass
 
 
-# In[15]:
+# In[ ]:
 
 
 ### Verbose Material Example Aggregating PCAs to obtain US Total
@@ -277,7 +277,7 @@ USyearlyWASTE.head(20)
 pass
 
 
-# In[16]:
+# In[ ]:
 
 
 keyword='mat_Total_Landfilled'
@@ -307,7 +307,7 @@ for kk in range(0, 3):
 USyearly.head(20)
 
 
-# In[17]:
+# In[ ]:
 
 
 keyword='mat_Virgin_Stock'
@@ -335,7 +335,7 @@ for kk in range(0, 3):
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[18]:
+# In[ ]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
@@ -344,7 +344,7 @@ USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 
 # ### Adding Installed Capacity to US
 
-# In[19]:
+# In[ ]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -367,13 +367,13 @@ USyearly.head(20)
 
 # ### Creative Cumulative DataFrame and Saving
 
-# In[20]:
+# In[ ]:
 
 
 USyearly.index = obj.scenario[STATEs[0]].data['year']
 
 
-# In[21]:
+# In[ ]:
 
 
 UScum = USyearly.copy()
@@ -381,7 +381,7 @@ UScum = UScum.cumsum()
 UScum.head()
 
 
-# In[22]:
+# In[ ]:
 
 
 
@@ -391,7 +391,7 @@ UScum.to_csv(title_Method+' US_Cumulative.csv')
 
 # # PLOTTING GALORE
 
-# In[23]:
+# In[ ]:
 
 
 keywords=['VirginStock_', 'Waste_', 'Capacity']
@@ -423,7 +423,7 @@ for ii in range(0, 2):
         plt.legend(materials)
 
 
-# In[24]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -476,7 +476,7 @@ axs[5].legend(materials)
         
 
 
-# In[25]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -563,7 +563,7 @@ axs[5].legend(materials)
 
 
 
-# In[26]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -642,7 +642,7 @@ axs[6].set_ylabel('Installed Capacity [TW]')
 axs[5].legend(materials)
 
 
-# In[27]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -727,7 +727,7 @@ axs[5].legend(materials)
 
 
 
-# In[28]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -869,7 +869,7 @@ fig.savefig(title_Method+' Fig_3x3_MaterialNeeds.png', dpi=600)
 
 # ## Mining Capacity + Virgin Needs Plot
 
-# In[29]:
+# In[ ]:
 
 
 mining2020_aluminum = 65267000
@@ -878,7 +878,7 @@ mining2020_copper = 20000000
 mining2020_silicon = 8000000
 
 
-# In[30]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1024,7 +1024,7 @@ axs[6].set_ylabel('Yearly Mass [Tonnes]')
 #axs[8].legend(materials)
 
 
-# In[31]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1064,7 +1064,7 @@ fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production.png', dpi=6
 
 # # TABLES 
 
-# In[32]:
+# In[ ]:
 
 
 materials = ['Module', 'glass', 'aluminum', 'copper', 'silicon', 'silver']
@@ -1090,7 +1090,7 @@ for kk in range (0, 3):
     print("****************************\n")
 
 
-# In[33]:
+# In[ ]:
 
 
 print(" VIRGIN STOCK Yearly Needs ")
@@ -1112,7 +1112,7 @@ for kk in range(0, 3):
     print("\n\n")
 
 
-# In[34]:
+# In[ ]:
 
 
 print(" WASTE CUMULATIVE RESULTS [Tonnes] ")
@@ -1121,7 +1121,7 @@ filter_col = [col for col in UScum if (col.startswith('Waste_Module')) ]
 display(UScum[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[35]:
+# In[ ]:
 
 
 # Same as above cell but in more lines
@@ -1160,7 +1160,7 @@ pass
 
 # ## DWARAKS PLOT
 
-# In[36]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1228,7 +1228,7 @@ plt.ylabel('Mass [tons]')
 
 # #### Organizing Cumulative 2050 material needs for Materials / Scenarios
 
-# In[37]:
+# In[ ]:
 
 
 #This is in the plots
@@ -1255,7 +1255,7 @@ pass
 
 # #### Calculating Bottoms for stacked bar plots... ugh.
 
-# In[38]:
+# In[ ]:
 
 
 #This is in the plots
@@ -1270,7 +1270,7 @@ pass
 
 # ##### Virgin Needs
 
-# In[39]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1395,12 +1395,12 @@ a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'Aluminum', 'Silicon',
 
 f.tight_layout()
 
-f.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cumulatives.png', dpi=600)
+fig.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cumulatives.png', dpi=600)
 
 
 # ##### Waste
 
-# In[40]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1525,12 +1525,12 @@ a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'Aluminum', 'Silicon',
 
 f.tight_layout()
 
-f.savefig(title_Method+' Fig_2x1_Yearly WASTE by Scenario and Cumulatives.png', dpi=600)
+fig.savefig(title_Method+' Fig_2x1_Yearly WASTE by Scenario and Cumulatives.png', dpi=600)
 
 
 # ##### Another option
 
-# In[41]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 12})
@@ -1648,7 +1648,7 @@ a0.legend(bbox_to_anchor=(0.10, -0.3), loc='lower left')
 # ### PCA vs. Cumulative Waste by 2050
 # 
 
-# In[42]:
+# In[ ]:
 
 
 keyword='mat_Virgin_Stock'
@@ -1678,7 +1678,7 @@ scenariolist = scenariolist/1000000 # Converting to Metric Tons
 scenariolist.to_csv(title_Method+' 6 - STATE Cumulative2050 VirginMaterialNeeds_tons.csv')
 
 
-# In[43]:
+# In[ ]:
 
 
 keyword='mat_Total_Landfilled'
@@ -1708,7 +1708,7 @@ scenariolist = scenariolist/1000000 # Converting to Metric Tons
 scenariolist.to_csv(title_Method+' 7 - STATE Cumulative2050 Waste_tons.csv')
 
 
-# In[44]:
+# In[ ]:
 
 
 keyword='mat_Virgin_Stock'
@@ -1744,7 +1744,7 @@ scenariolist = scenariolist/1000000   # Converting to Metric Tons
 scenariolist.to_csv(title_Method+' 8 - STATE Yearly 2030 2040 2050 VirginMaterialNeeds_tons.csv')
 
 
-# In[45]:
+# In[ ]:
 
 
 keyword='mat_Total_Landfilled'

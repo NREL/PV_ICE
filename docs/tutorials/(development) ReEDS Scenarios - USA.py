@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # ReEDS Scenarios on PV ICE Tool STATES
+# # ReEDS Scenarios on PV ICE Tool USA
 
 # To explore different scenarios for furture installation projections of PV (or any technology), ReEDS output data can be useful in providing standard scenarios. ReEDS installation projections are used in this journal as input data to the PV ICE tool. 
 # 
@@ -122,85 +122,53 @@ SFscenarios
 # 
 # Keeping track of each scenario as its own PV ICE Object.
 
-# In[10]:
+# In[15]:
 
 
 #for ii in range (0, 1): #len(scenarios):
 i = 0
-r1 = PV_ICE.Simulation(name=SFscenarios[i], path=testfolder)
-
-for jj in range (0, len(STATEs)): 
-    filetitle = SFscenarios[i]+'_'+STATEs[jj]+'.csv'
-    filetitle = os.path.join(testfolder, 'STATEs', filetitle)    
-    r1.createScenario(name=STATEs[jj], file=filetitle)
-    r1.scenario[STATEs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    r1.scenario[STATEs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    r1.scenario[STATEs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    r1.scenario[STATEs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    r1.scenario[STATEs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
-
-
-i = 1
-r2 = PV_ICE.Simulation(name=SFscenarios[i], path=testfolder)
-
-for jj in range (0, len(STATEs)): 
-    filetitle = SFscenarios[i]+'_'+STATEs[jj]+'.csv'
-    filetitle = os.path.join(testfolder, 'STATEs', filetitle)        
-    r2.createScenario(name=STATEs[jj], file=filetitle)
-    r2.scenario[STATEs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    r2.scenario[STATEs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    r2.scenario[STATEs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    r2.scenario[STATEs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    r2.scenario[STATEs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
-
-
-i = 2
-r3 = PV_ICE.Simulation(name=SFscenarios[i], path=testfolder)
-for jj in range (0, len(STATEs)): 
-    filetitle = SFscenarios[i]+'_'+STATEs[jj]+'.csv'
-    filetitle = os.path.join(testfolder, 'STATEs', filetitle)        
-    r3.createScenario(name=STATEs[jj], file=filetitle)
-    r3.scenario[STATEs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    r3.scenario[STATEs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    r3.scenario[STATEs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    r3.scenario[STATEs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    r3.scenario[STATEs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
+rr = PV_ICE.Simulation(name='USA', path=testfolder)
+for i in range(0, 3):
+    filetitle = SFscenarios[i]+'.csv'
+    filetitle = os.path.join(testfolder, 'USA', filetitle)    
+    rr.createScenario(name=SFscenarios[i], file=filetitle)
+    rr.scenario[SFscenarios[i]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
+    rr.scenario[SFscenarios[i]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
+    rr.scenario[SFscenarios[i]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
+    rr.scenario[SFscenarios[i]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
+    rr.scenario[SFscenarios[i]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
 
 
 # # 2 FINISH: Set characteristics of Recycling to SF values.
 
 # #### Calculate Mass Flow
 
-# In[11]:
+# In[21]:
 
 
-IRENA= True
-ELorRL = 'EL'
+IRENA= False
+ELorRL = 'RL'
 if IRENA:
     if ELorRL == 'RL':
         weibullInputParams = {'alpha': 5.3759}  # Regular-loss scenario IRENA
     if ELorRL == 'EL':
         weibullInputParams = {'alpha': 2.49}  # Regular-loss scenario IRENA
-    r1.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
-    r2.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
-    r3.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
+    rr.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
     title_Method = 'Irena_'+ELorRL
 else:
-    r1.calculateMassFlow()
-    r2.calculateMassFlow()
-    r3.calculateMassFlow()
+    rr.calculateMassFlow()
     title_Method = 'PVICE'
 
 
-# In[12]:
+# In[22]:
 
 
-print("PCAs:", r1.scenario.keys())
-print("Module Keys:", r1.scenario[STATEs[jj]].data.keys())
-print("Material Keys: ", r1.scenario[STATEs[jj]].material['glass'].materialdata.keys())
+print("Scenarios:", rr.scenario.keys())
+print("Module Keys:", rr.scenario[SFscenarios[0]].data.keys())
+print("Material Keys: ", rr.scenario[SFscenarios[0]].material['glass'].materialdata.keys())
 
 
-# In[13]:
+# In[23]:
 
 
 """
@@ -212,130 +180,55 @@ pass
 
 # ## Aggregating PCAs Material Landfilled to obtain US totals by Year
 
-# In[14]:
+# In[45]:
 
 
-### Singe Material Example Aggregating PCAs to obtain US Total
-
-"""
 keyword='mat_Total_Landfilled'
-#keyword='new_Installed_Capacity_[MW]'
-
-plt.figure()
-plt.plot(r1.scenario[PCAs[0]].data['year'], foo, label=PCAs[12])
-plt.title(keyword)
-plt.legend()
-
-for jj in range (1, len(PCAs)): 
-    foo['silver'] += r1.scenario[PCAs[jj]].material['silver'].materialdata[keyword]
+keyword='mat_Virgin_Stock'
 
 
-fig = plt.figure()
-ax = fig.add_subplot(2, 1, 1)
-ax.plot(r1.scenario[PCAs[0]].data['year'], foo['silver'], label='US')
-plt.title("Material Landfilled per Year US")
-#ax.set_yscale('log')
-print(max(foo))
-"""
-pass
+# In[46]:
 
 
-# In[15]:
+rr.scenario[SFscenarios[0]].material['glass'].materialdata['mat_Total_Landfilled']
 
 
-### Verbose Material Example Aggregating PCAs to obtain US Total
+# In[47]:
 
-"""
-keyword='mat_Total_Landfilled'
+
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
-
-USyearlyWASTE=pd.DataFrame()
-
-# Loop over Materials
-for ii in range (0, len(materials)):    
-    material = materials[ii]
-    foo1 = r1.scenario[PCAs[0]].material[material].materialdata[keyword].copy()
-    foo1 = foo1.to_frame(name=material)
-    foo2 = r2.scenario[PCAs[0]].material[material].materialdata[keyword].copy()
-    foo2 = foo2.to_frame(name=material)
-    foo3 = r3.scenario[PCAs[0]].material[material].materialdata[keyword].copy()
-    foo3 = foo3.to_frame(name=material)
-
-    USyearlyWASTE[r1.name + '_' + material] = foo1[material]
-    USyearlyWASTE[r2.name + '_' + material] = foo2[material]
-    USyearlyWASTE[r3.name + '_' + material] = foo3[material]
-
-    # Loop over PCAs
-    for jj in range (1, len(PCAs)): 
-        USyearlyWASTE[r1.name + '_' + material] += r1.scenario[PCAs[jj]].material[material].materialdata[keyword]
-        USyearlyWASTE[r2.name + '_' + material] += r2.scenario[PCAs[jj]].material[material].materialdata[keyword]
-        USyearlyWASTE[r3.name + '_' + material] += r3.scenario[PCAs[jj]].material[material].materialdata[keyword]
-
-# Converting to grams to Tons. 
-USyearlyWASTE.head(20)
-"""
-pass
-
-
-# In[16]:
-
-
-keyword='mat_Total_Landfilled'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+keywd = 'mat_Total_Landfilled'
 
 USyearly=pd.DataFrame()
 
-SFScenarios = [r1, r2, r3]
-# Loop over SF Scenarios
-for kk in range(0, 3):
-    obj = SFScenarios[kk]
-    # Loop over Materials
-    for ii in range (0, len(materials)):    
-        material = materials[ii]
-        foo = obj.scenario[STATEs[0]].material[material].materialdata[keyword].copy()
-        foo = foo.to_frame(name=material)
-        USyearly["Waste_"+material+'_'+obj.name] = foo[material]
+for jj in range(len(SFscenarios)):
+    obj = SFscenarios[jj]
+    for ii in range(len(materials)):
+        USyearly['Waste_'+materials[ii]+'_'+obj] = rr.scenario[obj].material[materials[ii]].materialdata['mat_Total_Landfilled']
 
-        # Loop over STATEs
-        for jj in range (1, len(STATEs)): 
-            USyearly["Waste_"+material+'_'+obj.name] += obj.scenario[STATEs[jj]].material[material].materialdata[keyword]
-
-    filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj.name)) ]
-    USyearly['Waste_Module_'+obj.name] = USyearly[filter_col].sum(axis=1)
-    
-# Converting to grams to Tons. 
-USyearly.head(20)
+    filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj)) ]
+    USyearly['Waste_Module_'+obj] = USyearly[filter_col].sum(axis=1)
 
 
-# In[17]:
+# In[48]:
 
 
-keyword='mat_Virgin_Stock'
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+keywd = 'VirginStock_Module_'
 
-SFScenarios = [r1, r2, r3]
-# Loop over SF Scenarios
-for kk in range(0, 3):
-    obj = SFScenarios[kk]
-    # Loop over Materials
-    for ii in range (0, len(materials)):    
-        material = materials[ii]
-        foo = obj.scenario[STATEs[0]].material[material].materialdata[keyword].copy()
-        foo = foo.to_frame(name=material)
-        USyearly["VirginStock_"+material+'_'+obj.name] = foo[material]
+for jj in range(len(SFscenarios)):
+    obj = SFscenarios[jj]
+    for ii in range(len(materials)):
+        USyearly['VirginStock_'+materials[ii]+'_'+obj] = rr.scenario[obj].material[materials[ii]].materialdata['mat_Total_Landfilled']
 
-        # Loop over STATEs
-        for jj in range (1, len(STATEs)): 
-            USyearly["VirginStock_"+material+'_'+obj.name] += obj.scenario[STATEs[jj]].material[material].materialdata[keyword]
-            
-    filter_col = [col for col in USyearly if (col.startswith('VirginStock_') and col.endswith(obj.name)) ]
-    USyearly['VirginStock_Module_'+obj.name] = USyearly[filter_col].sum(axis=1)
+    filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj)) ]
+    USyearly['VirginStock_Module_'+obj] = USyearly[filter_col].sum(axis=1)
 
 
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[18]:
+# In[49]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
@@ -344,36 +237,37 @@ USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 
 # ### Adding Installed Capacity to US
 
-# In[19]:
+# In[ ]:
+
+
+
+
+
+# In[50]:
 
 
 keyword='Installed_Capacity_[W]'
+for jj in range(len(SFscenarios)):
+    obj = SFscenarios[jj]
+    USyearly["Capacity_"+obj] = rr.scenario[obj].data[keyword]
+ 
 
-SFScenarios = [r1, r2, r3]
-# Loop over SF Scenarios
-for kk in range(0, 3):
-    obj = SFScenarios[kk]
-    # Loop over Materials
-    foo = obj.scenario[STATEs[0]].data[keyword]
-    foo = foo.to_frame(name=keyword)
-    USyearly["Capacity_"+obj.name] = foo[keyword]
 
-    # Loop over STATEs
-    for jj in range (1, len(STATEs)): 
-        USyearly["Capacity_"+obj.name] += obj.scenario[STATEs[jj]].data[keyword]
+# In[51]:
+
 
 USyearly.head(20)
 
 
 # ### Creative Cumulative DataFrame and Saving
 
-# In[20]:
+# In[ ]:
 
 
 USyearly.index = obj.scenario[STATEs[0]].data['year']
 
 
-# In[21]:
+# In[ ]:
 
 
 UScum = USyearly.copy()
@@ -381,7 +275,7 @@ UScum = UScum.cumsum()
 UScum.head()
 
 
-# In[22]:
+# In[ ]:
 
 
 
@@ -391,7 +285,7 @@ UScum.to_csv(title_Method+' US_Cumulative.csv')
 
 # # PLOTTING GALORE
 
-# In[23]:
+# In[ ]:
 
 
 keywords=['VirginStock_', 'Waste_', 'Capacity']
@@ -423,7 +317,7 @@ for ii in range(0, 2):
         plt.legend(materials)
 
 
-# In[24]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -476,7 +370,7 @@ axs[5].legend(materials)
         
 
 
-# In[25]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -563,7 +457,7 @@ axs[5].legend(materials)
 
 
 
-# In[26]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -642,7 +536,7 @@ axs[6].set_ylabel('Installed Capacity [TW]')
 axs[5].legend(materials)
 
 
-# In[27]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -727,7 +621,7 @@ axs[5].legend(materials)
 
 
 
-# In[28]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -869,7 +763,7 @@ fig.savefig(title_Method+' Fig_3x3_MaterialNeeds.png', dpi=600)
 
 # ## Mining Capacity + Virgin Needs Plot
 
-# In[29]:
+# In[ ]:
 
 
 mining2020_aluminum = 65267000
@@ -878,7 +772,7 @@ mining2020_copper = 20000000
 mining2020_silicon = 8000000
 
 
-# In[30]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1024,7 +918,7 @@ axs[6].set_ylabel('Yearly Mass [Tonnes]')
 #axs[8].legend(materials)
 
 
-# In[31]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1064,7 +958,7 @@ fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production.png', dpi=6
 
 # # TABLES 
 
-# In[32]:
+# In[ ]:
 
 
 materials = ['Module', 'glass', 'aluminum', 'copper', 'silicon', 'silver']
@@ -1090,7 +984,7 @@ for kk in range (0, 3):
     print("****************************\n")
 
 
-# In[33]:
+# In[ ]:
 
 
 print(" VIRGIN STOCK Yearly Needs ")
@@ -1112,7 +1006,7 @@ for kk in range(0, 3):
     print("\n\n")
 
 
-# In[34]:
+# In[ ]:
 
 
 print(" WASTE CUMULATIVE RESULTS [Tonnes] ")
@@ -1121,7 +1015,7 @@ filter_col = [col for col in UScum if (col.startswith('Waste_Module')) ]
 display(UScum[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[35]:
+# In[ ]:
 
 
 # Same as above cell but in more lines
@@ -1160,7 +1054,7 @@ pass
 
 # ## DWARAKS PLOT
 
-# In[36]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1228,7 +1122,7 @@ plt.ylabel('Mass [tons]')
 
 # #### Organizing Cumulative 2050 material needs for Materials / Scenarios
 
-# In[37]:
+# In[ ]:
 
 
 #This is in the plots
@@ -1255,7 +1149,7 @@ pass
 
 # #### Calculating Bottoms for stacked bar plots... ugh.
 
-# In[38]:
+# In[ ]:
 
 
 #This is in the plots
@@ -1270,7 +1164,7 @@ pass
 
 # ##### Virgin Needs
 
-# In[39]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1395,12 +1289,12 @@ a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'Aluminum', 'Silicon',
 
 f.tight_layout()
 
-f.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cumulatives.png', dpi=600)
+fig.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cumulatives.png', dpi=600)
 
 
 # ##### Waste
 
-# In[40]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1525,12 +1419,12 @@ a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'Aluminum', 'Silicon',
 
 f.tight_layout()
 
-f.savefig(title_Method+' Fig_2x1_Yearly WASTE by Scenario and Cumulatives.png', dpi=600)
+fig.savefig(title_Method+' Fig_2x1_Yearly WASTE by Scenario and Cumulatives.png', dpi=600)
 
 
 # ##### Another option
 
-# In[41]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 12})
@@ -1648,7 +1542,7 @@ a0.legend(bbox_to_anchor=(0.10, -0.3), loc='lower left')
 # ### PCA vs. Cumulative Waste by 2050
 # 
 
-# In[42]:
+# In[ ]:
 
 
 keyword='mat_Virgin_Stock'
@@ -1678,7 +1572,7 @@ scenariolist = scenariolist/1000000 # Converting to Metric Tons
 scenariolist.to_csv(title_Method+' 6 - STATE Cumulative2050 VirginMaterialNeeds_tons.csv')
 
 
-# In[43]:
+# In[ ]:
 
 
 keyword='mat_Total_Landfilled'
@@ -1708,7 +1602,7 @@ scenariolist = scenariolist/1000000 # Converting to Metric Tons
 scenariolist.to_csv(title_Method+' 7 - STATE Cumulative2050 Waste_tons.csv')
 
 
-# In[44]:
+# In[ ]:
 
 
 keyword='mat_Virgin_Stock'
@@ -1744,7 +1638,7 @@ scenariolist = scenariolist/1000000   # Converting to Metric Tons
 scenariolist.to_csv(title_Method+' 8 - STATE Yearly 2030 2040 2050 VirginMaterialNeeds_tons.csv')
 
 
-# In[45]:
+# In[ ]:
 
 
 keyword='mat_Total_Landfilled'
