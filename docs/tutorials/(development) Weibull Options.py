@@ -4,7 +4,7 @@
 # # Weibull Options Comparison
 # 
 
-# In[4]:
+# In[1]:
 
 
 import PV_ICE
@@ -21,7 +21,7 @@ r1.scenario['standard'].addMaterial('glass', file=materialfile)
 
 # #### A. Internally calculated Weibull with t50 and t90
 
-# In[12]:
+# In[2]:
 
 
 r1.calculateMassFlow()
@@ -30,7 +30,7 @@ print(r1.scenario['standard'].data.WeibullParams.head())
 
 # #### B. Passing Alpha and Beta values
 
-# In[13]:
+# In[3]:
 
 
 weibullInputParams = {'alpha': 3.4,
@@ -41,7 +41,7 @@ print(r1.scenario['standard'].data.WeibullParams.head())
 
 # #### C. Passing Alpha only
 
-# In[14]:
+# In[4]:
 
 
 weibullInputParams = {'alpha': 5.3759}  # Regular-loss scenario IRENA
@@ -52,7 +52,7 @@ print(r1.scenario['standard'].data.WeibullParams.head())
 
 # ## Going internally to plot. This is custom code.
 
-# In[19]:
+# In[5]:
 
 
 def weibull_cdf(alpha, beta):
@@ -101,7 +101,7 @@ def weibull_params(keypoints):
 
 
 
-# In[20]:
+# In[6]:
 
 
 df = r1.scenario['standard'].data
@@ -130,9 +130,10 @@ df['Cumulative_Active_Area'] = 0
 df['Installed_Capacity_[W]'] = 0
 
 
-# In[22]:
+# In[37]:
 
 
+df = r1.scenario['standard'].data
 
 #for generation, row in df.iterrows(): 
     #generation is an int 0,1,2,.... etc.
@@ -140,32 +141,54 @@ generation=0
 row=df.iloc[generation]
 
 t50, t90 = row['t50'], row['t90']   #  t50 = 17.0; t90 = 22.0
-weibullInputParams2 = weibull_params({t50: 0.50, t90: 0.90})      #  alpha = 4.65, beta = 18.39
+weibullInputParams = weibull_params({t50: 0.50, t90: 0.90})      #  alpha = 4.65, beta = 18.39
 f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
 x = np.clip(df.index - generation, 0, np.inf)
 cdf = list(map(f, x))
 
-weibullInputParams = {'alpha': 3.4,
-                      'beta': 4.5}
 
-g = weibull_cdf(weibullInputParams['alpha'], weibullInputParams['beta'])
+generation=40
+row=df.iloc[generation]
+t50, t90 = row['t50'], row['t90']   #  t50 = 17.0; t90 = 22.0
+weibullInputParams2 = weibull_params({t50: 0.50, t90: 0.90})      #  alpha = 4.65, beta = 18.39
+g = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
+generation = 0
 x = np.clip(df.index - generation, 0, np.inf)
 gdf = list(map(g, x))
+
+
+#weibullInputParams = {'alpha': 3.4,
+#                      'beta': 4.5}
+
+#g = weibull_cdf(weibullInputParams['alpha'], weibullInputParams['beta'])
+#x = np.clip(df.index - generation, 0, np.inf)
+#gdf = list(map(g, x))
 
 h = weibull_cdf_alphaonly(2.4928, 30)
 x = np.clip(df.index - generation, 0, np.inf)
 hdf = list(map(h, x))
 
-i = weibull_cdf_alphaonly(5.3759, 30)
+j = weibull_cdf_alphaonly(5.3759, 30)
+x = np.clip(df.index - generation, 0, np.inf)
+jdf = list(map(j, x))
+
+i = weibull_cdf_alphaonly(14.41, 30)
 x = np.clip(df.index - generation, 0, np.inf)
 idf = list(map(i, x))
 
 
-plt.plot(cdf, label='internal params'+str(round(weibullInputParams2['alpha'],2))+ ' '+ str(round(weibullInputParams2['beta'],2)))
-plt.plot(gdf, label='passed params')
-plt.plot(hdf, label='alphaonly 2.49')
-plt.plot(idf, label='alphaonly 5.3759')
+
+plt.plot(cdf, label=r'$ \alpha $ : '+str(round(weibullInputParams['alpha'],2))+ r' $ \beta $ : '+ str(round(weibullInputParams['beta'],2)) + ' PV ICE, gen 1995')
+plt.plot(gdf, label=r'$ \alpha $ : '+str(round(weibullInputParams2['alpha'],2))+ r' $ \beta $ : '+ str(round(weibullInputParams2['beta'],2)) + ' PV ICE, gen 2030')
+plt.plot(hdf, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
+plt.plot(jdf, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
+plt.plot(idf, label=r'$ \alpha $ : 14.41, Upper Shape Factor Kumar 2013')
 plt.legend()
+plt.ylabel('Cumulative Distribution Function (CDF)')
+plt.xlabel('Years since install')
+plt.xlim([0,50])
+plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
+
 #   pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
 
 # In[3]:
