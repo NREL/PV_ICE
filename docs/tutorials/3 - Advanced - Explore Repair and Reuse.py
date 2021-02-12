@@ -9,7 +9,7 @@
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_DEMICE' / 'TEMP')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 
 # Another option using relative address; for some operative systems you might need '/' instead of '\'
 # testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
@@ -20,10 +20,10 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[2]:
 
 
-import PV_DEMICE
+import PV_ICE
 
 
-# In[4]:
+# In[3]:
 
 
 import matplotlib.pyplot as plt
@@ -35,10 +35,10 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # ## REPAIR
 
-# In[5]:
+# In[4]:
 
 
-r1 = PV_DEMICE.Simulation(name='Simulation1', path=testfolder)
+r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='Repair_0', file=r'..\baselines\baseline_modules_US.csv')
 r1.scenario['Repair_0'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['Repair_0'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
@@ -48,7 +48,7 @@ r1.scenario['Repair_50'].addMaterial('glass', file=r'..\baselines\baseline_mater
 r1.scenario['Repair_50'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
 
-# In[6]:
+# In[5]:
 
 
 r1.scenario['Repair_0'].data['mod_Repairing'] = 0
@@ -64,31 +64,31 @@ r1.scenario['Repair_0'].data['mod_lifetime'] = 50
 r1.scenario['Repair_50'].data['mod_lifetime'] = 50
 
 
-# In[7]:
+# In[6]:
 
 
 r1.calculateMassFlow()
 
 
-# In[8]:
+# In[7]:
 
 
 r1.scenario['Repair_0'].data.keys()
 
 
-# In[9]:
+# In[8]:
 
 
 AREA = r1.scenario['Repair_0'].data['Area'].iloc[0]
 
 
-# In[10]:
+# In[9]:
 
 
 filter_col = [col for col in r1.scenario['Repair_0'].data if col.startswith('EOL_on_Year_')]
 
 
-# In[11]:
+# In[10]:
 
 
 Cumul_EOL_R0 = []
@@ -103,7 +103,7 @@ for life in range (0, len(filter_col)):
     Cumul_EOL_R50.append(foo2)
 
 
-# In[12]:
+# In[11]:
 
 
 fig = plt.figure()
@@ -125,39 +125,39 @@ plt.ylabel('Working Area [m$^2$]')
 plt.xlabel('Years of Service')
 plt.title('Generation 1995 - Repair effects')
 plt.legend()
+plt.xlim([0,45])
+
+
+# In[12]:
+
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+plt.plot(Cumul_EOL_R0)
+plt.plot(Cumul_EOL_R50)
+plt.ylabel('Area Disposed [m$^2$]')
+plt.xlabel('Years of Service')
+plt.title('Generation 1995 - Repair effects')
+plt.xlim([0,45])
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+plt.plot(Cumul_EOL_R0)
+plt.plot(Cumul_EOL_R50)
+ax.set_yscale('log')
+plt.ylabel('Area Disposed [m$^2$]')
+plt.xlabel('Years of Service')
+plt.title('Generation 1995 - Repair effects')
 plt.xlim([0,45])
 
 
 # In[13]:
 
 
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(Cumul_EOL_R0)
-plt.plot(Cumul_EOL_R50)
-plt.ylabel('Area Disposed [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Repair effects')
-plt.xlim([0,45])
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(Cumul_EOL_R0)
-plt.plot(Cumul_EOL_R50)
-ax.set_yscale('log')
-plt.ylabel('Area Disposed [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Repair effects')
-plt.xlim([0,45])
-
-
-# In[14]:
-
-
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
-# In[16]:
+# In[14]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
@@ -168,10 +168,10 @@ r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_
 # 
 # Starting a Clean simulation
 
-# In[17]:
+# In[15]:
 
 
-r1 = PV_DEMICE.Simulation(name='Simulation1', path=testfolder)
+r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='Repower_0', file=r'..\baselines\baseline_modules_US.csv')
 r1.scenario['Repower_0'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['Repower_0'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
@@ -181,7 +181,7 @@ r1.scenario['Repower_50'].addMaterial('glass', file=r'..\baselines\baseline_mate
 r1.scenario['Repower_50'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
 
-# In[18]:
+# In[16]:
 
 
 r1.scenario['Repower_0'].data['mod_Repowering'] = 0
@@ -198,31 +198,31 @@ r1.scenario['Repower_0'].data['mod_lifetime'] = 25
 r1.scenario['Repower_50'].data['mod_lifetime'] = 25
 
 
-# In[19]:
+# In[17]:
 
 
 r1.calculateMassFlow()
 
 
-# In[20]:
+# In[18]:
 
 
 r1.scenario['Repower_50'].data.keys()
 
 
-# In[21]:
+# In[19]:
 
 
 AREA = r1.scenario['Repower_50'].data['Area'].iloc[0]
 
 
-# In[22]:
+# In[20]:
 
 
 filter_col = [col for col in r1.scenario['Repower_50'].data if col.startswith('EOL_on_Year_')]
 
 
-# In[23]:
+# In[21]:
 
 
 Cumul_EOL_R0 = []
@@ -237,65 +237,77 @@ for life in range (0, len(filter_col)):
     Cumul_EOL_R50.append(foo2)
 
 
+# In[22]:
+
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+plt.plot(AREA-Cumul_EOL_R0, label='Reuse = 0%')
+plt.plot(AREA-Cumul_EOL_R50, label='Reuse = 50%')
+plt.ylabel('Working Area [m$^2$]')
+plt.xlabel('Years of Service')
+plt.title('Generation 1995 - Reuse at End of Project Lifetime')
+plt.legend()
+plt.xlim([0,45])
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+plt.plot(AREA-Cumul_EOL_R0, label='Reuse = 0%')
+plt.plot(AREA-Cumul_EOL_R50, label='Reuse = 50%')
+plt.legend()
+ax.set_yscale('log')
+plt.ylabel('Working Area [m$^2$]')
+plt.xlabel('Years of Service')
+plt.title('Generation 1995 - Reuse at End of Project Lifetime')
+plt.xlim([0,45])
+
+
+# In[23]:
+
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+plt.plot(Cumul_EOL_R0, label='Reuse = 0%')
+plt.plot(Cumul_EOL_R50, label='Reuse = 50%')
+plt.ylabel('Area Disposed [m$^2$]')
+plt.xlabel('Years of Service')
+plt.title('Generation 1995 - Reuse at End of Project Lifetime')
+plt.legend()
+plt.xlim([0,45])
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+plt.plot(Cumul_EOL_R0, label='Reuse = 0%')
+plt.plot(Cumul_EOL_R50, label='Reuse = 50%')
+ax.set_yscale('log')
+plt.ylabel('Area Disposed [m$^2$]')
+plt.xlabel('Years of Service')
+plt.title('Generation 1995 - Reuse at End of Project Lifetime')
+plt.legend()
+plt.xlim([0,45])
+
+
 # In[24]:
-
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(AREA-Cumul_EOL_R0, label='Reuse = 0%')
-plt.plot(AREA-Cumul_EOL_R50, label='Reuse = 50%')
-plt.ylabel('Working Area [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Reuse at End of Project Lifetime')
-plt.legend()
-plt.xlim([0,45])
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(AREA-Cumul_EOL_R0, label='Reuse = 0%')
-plt.plot(AREA-Cumul_EOL_R50, label='Reuse = 50%')
-plt.legend()
-ax.set_yscale('log')
-plt.ylabel('Working Area [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Reuse at End of Project Lifetime')
-plt.xlim([0,45])
-
-
-# In[25]:
-
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(Cumul_EOL_R0, label='Reuse = 0%')
-plt.plot(Cumul_EOL_R50, label='Reuse = 50%')
-plt.ylabel('Area Disposed [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Reuse at End of Project Lifetime')
-plt.legend()
-plt.xlim([0,45])
-
-fig = plt.figure()
-ax = fig.add_subplot(1,1,1)
-plt.plot(Cumul_EOL_R0, label='Reuse = 0%')
-plt.plot(Cumul_EOL_R50, label='Reuse = 50%')
-ax.set_yscale('log')
-plt.ylabel('Area Disposed [m$^2$]')
-plt.xlabel('Years of Service')
-plt.title('Generation 1995 - Reuse at End of Project Lifetime')
-plt.legend()
-plt.xlim([0,45])
-
-
-# In[26]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
-# In[28]:
+# In[25]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
