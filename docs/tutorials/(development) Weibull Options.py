@@ -19,16 +19,7 @@ r1.createScenario(name='standard', file=baselinefile)
 r1.scenario['standard'].addMaterial('glass', file=materialfile)
 
 
-# #### A. Internally calculated Weibull with t50 and t90
-
-# In[2]:
-
-
-r1.calculateMassFlow()
-print(r1.scenario['standard'].data.WeibullParams.head())
-
-
-# #### B. Passing Alpha and Beta values
+# #### A. Passing Alpha and Beta values
 
 # In[3]:
 
@@ -39,7 +30,7 @@ r1.calculateMassFlow(weibullInputParams=weibullInputParams)
 print(r1.scenario['standard'].data.WeibullParams.head())
 
 
-# #### C. Passing Alpha only
+# #### B. Passing Alpha only
 
 # In[4]:
 
@@ -50,160 +41,100 @@ r1.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=Tru
 print(r1.scenario['standard'].data.WeibullParams.head())
 
 
-# ## Going internally to plot. This is custom code.
+# #### C. Internally calculated Weibull with t50 and t90
 
-# In[5]:
-
-
-def weibull_cdf(alpha, beta):
-    '''Return the CDF for a Weibull distribution having:
-    shape parameter `alpha`
-    scale parameter `beta`'''
-    def cdf(x):
-        return 1 - np.exp(-(np.array(x)/beta)**alpha)
-    return cdf
-
-def weibull_pdf(alpha, beta):
-    '''Return the PDF for a Weibull distribution having:
-        shape parameter `alpha`
-        scale parameter `beta`/'''
-    def pdf(x):
-        return (alpha/np.array(x)) * ((np.array(x)/beta)**alpha) * (np.exp(-(np.array(x)/beta)**alpha))
-    return pdf
-
-def weibull_cdf_alphaonly(alpha, Lifetime):
-    '''Return the CDF for a Weibull distribution having:
-    shape parameter `alpha`
-    scale parameter `beta`'''
-    def cdf(x):
-        return 1 - np.exp(-(np.array(x)/Lifetime)**alpha)
-    return cdf
+# In[7]:
 
 
-def weibull_params(keypoints):
-    '''Returns shape parameter `alpha` and scale parameter `beta`
-    for a Weibull distribution whose CDF passes through the
-    two time: value pairs in `keypoints`'''
-    t1, t2 = tuple(keypoints.keys())
-    cdf1, cdf2 = tuple(keypoints.values())
-    alpha = np.ndarray.item(np.real_if_close(
-        (np.log(np.log(1 - cdf1)+0j) - np.log(np.log(1 - cdf2)+0j))/(np.log(t1) - np.log(t2))
-    ))
-    beta = np.abs(np.exp(
-        (
-            np.log(t2)*((0+1j)*np.pi + np.log(np.log(1 - cdf1)+0j))
-            + np.log(t1)*(((0-1j))*np.pi - np.log(np.log(1 - cdf2)+0j))
-        )/(
-            np.log(np.log(1 - cdf1)+0j) - np.log(np.log(1 - cdf2)+0j)
-        )
-    ))
-    return {'alpha': alpha, 'beta': beta}
+r1.calculateMassFlow()
+print(r1.scenario['standard'].data.WeibullParams.head())
 
 
+# # Testing NEw helper function
 
-# In[6]:
-
-
-df = r1.scenario['standard'].data
-
-# Constant
-irradiance_stc = 1000 # W/m^2
-
-# Renaming and re-scaling
-df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
-df['t50'] = df['mod_reliability_t50']
-df['t90'] = df['mod_reliability_t90']
-
-# Calculating Area and Mass
-df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/irradiance_stc # m^2                
-df['Area'] = df['Area'].fillna(0) # Chagne na's to 0s.
-
-# Calculating Wast by Generation by Year, and Cumulative Waste by Year.
-Generation_Disposed_byYear = []
-Generation_Active_byYear= []
-Generation_Power_byYear = []
-
-df['Cumulative_Area_disposedby_Failure'] = 0
-df['Cumulative_Area_disposedby_ProjectLifetime'] = 0
-df['Cumulative_Area_disposed'] = 0
-df['Cumulative_Active_Area'] = 0
-df['Installed_Capacity_[W]'] = 0
+# In[14]:
 
 
-# In[37]:
+firstgen['alpha']
 
 
-df = r1.scenario['standard'].data
-
-#for generation, row in df.iterrows(): 
-    #generation is an int 0,1,2,.... etc.
-generation=0
-row=df.iloc[generation]
-
-t50, t90 = row['t50'], row['t90']   #  t50 = 17.0; t90 = 22.0
-weibullInputParams = weibull_params({t50: 0.50, t90: 0.90})      #  alpha = 4.65, beta = 18.39
-f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
-x = np.clip(df.index - generation, 0, np.inf)
-cdf = list(map(f, x))
+# In[15]:
 
 
-generation=40
-row=df.iloc[generation]
-t50, t90 = row['t50'], row['t90']   #  t50 = 17.0; t90 = 22.0
-weibullInputParams2 = weibull_params({t50: 0.50, t90: 0.90})      #  alpha = 4.65, beta = 18.39
-g = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
-generation = 0
-x = np.clip(df.index - generation, 0, np.inf)
-gdf = list(map(g, x))
+firstgen = r1.scenario['standard'].data.WeibullParams.iloc[0]
+ares = PV_ICE.weibull_cdf_vis(firstgen['alpha'],firstgen['beta'])
+
+twentythirtygen = firstgen = r1.scenario['standard'].data.WeibullParams.iloc[35]
+bres = PV_ICE.weibull_cdf_vis(twentythirtygen['alpha'],twentythirtygen['beta'])
+
+#userWeibulls = {'alpha': 3.4,
+#               'beta': 4.5}
+#userres = PV_ICE.weibull_cdf_vis(userWeibulls['alpha'],userWeibulls['beta'])
+
+# Irena 'EL' 2016
+alpha = 2.4928
+Lifetime = 30
+cres = PV_ICE.weibull_cdf_vis(alpha, Lifetime=Lifetime)
+
+# Irena 'RL' 2016
+alpha = 5.3759
+Lifetime = 30
+dres = PV_ICE.weibull_cdf_vis(alpha, Lifetime=Lifetime)
+
+# Upper Shape Factor Kumar 2013
+alpha = 14.41
+Lifetime = 30
+eres = PV_ICE.weibull_cdf_vis(alpha, Lifetime=Lifetime)
 
 
-#weibullInputParams = {'alpha': 3.4,
-#                      'beta': 4.5}
-
-#g = weibull_cdf(weibullInputParams['alpha'], weibullInputParams['beta'])
-#x = np.clip(df.index - generation, 0, np.inf)
-#gdf = list(map(g, x))
-
-h = weibull_cdf_alphaonly(2.4928, 30)
-x = np.clip(df.index - generation, 0, np.inf)
-hdf = list(map(h, x))
-
-j = weibull_cdf_alphaonly(5.3759, 30)
-x = np.clip(df.index - generation, 0, np.inf)
-jdf = list(map(j, x))
-
-i = weibull_cdf_alphaonly(14.41, 30)
-x = np.clip(df.index - generation, 0, np.inf)
-idf = list(map(i, x))
+# In[30]:
 
 
-
-plt.plot(cdf, label=r'$ \alpha $ : '+str(round(weibullInputParams['alpha'],2))+ r' $ \beta $ : '+ str(round(weibullInputParams['beta'],2)) + ' PV ICE, gen 1995')
-plt.plot(gdf, label=r'$ \alpha $ : '+str(round(weibullInputParams2['alpha'],2))+ r' $ \beta $ : '+ str(round(weibullInputParams2['beta'],2)) + ' PV ICE, gen 2030')
-plt.plot(hdf, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
-plt.plot(jdf, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
-plt.plot(idf, label=r'$ \alpha $ : 14.41, Upper Shape Factor Kumar 2013')
+plt.rcParams.update({'font.size': 12})
+plt.rcParams['figure.figsize'] = (10, 8)
+    
+plt.plot(ares, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
+plt.plot(bres, color='b', label=r'$ \alpha $ : '+str(round(twentythirtygen['alpha'],2))+ r' $ \beta $ : '+ str(round(twentythirtygen['beta'],2)) + ' PV ICE, gen 2030')
+plt.plot(cres, color='red', linewidth=4.0, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
+plt.plot(dres, color='orange', linewidth=4.0, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
+plt.plot(eres, '-', color='orange', label=r'$ \alpha $ : 14.41, Upper Shape Factor Kumar 2013')
 plt.legend()
 plt.ylabel('Cumulative Distribution Function (CDF)')
 plt.xlabel('Years since install')
 plt.xlim([0,50])
 plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
-#   pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
 
-# In[3]:
-
-
-# In[28]:
+# In[33]:
 
 
+plt.rcParams.update({'font.size': 12})
+plt.rcParams['figure.figsize'] = (10, 8)
+    
+#plt.plot(ares, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
+#plt.plot(bres, color='b', label=r'$ \alpha $ : '+str(round(twentythirtygen['alpha'],2))+ r' $ \beta $ : '+ str(round(twentythirtygen['beta'],2)) + ' PV ICE, gen 2030')
+plt.plot(cres, color='red', linewidth=4.0, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
+plt.plot(dres, color='orange', linewidth=4.0, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
+#plt.plot(eres, '-', color='orange', label=r'$ \alpha $ : 14.41, Upper Shape Factor Kumar 2013')
+plt.ylabel('Cumulative Distribution Function (CDF)')
+plt.xlabel('Years since install')
+plt.xlim([0,50])
 
 
-
-# In[ ]:
-
+# In[35]:
 
 
+plt.rcParams.update({'font.size': 12})
+plt.rcParams['figure.figsize'] = (10, 8)
+    
+plt.plot(ares, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
+plt.plot(bres, color='b', label=r'$ \alpha $ : '+str(round(twentythirtygen['alpha'],2))+ r' $ \beta $ : '+ str(round(twentythirtygen['beta'],2)) + ' PV ICE, gen 2030')
+plt.plot(cres, color='red', linewidth=4.0, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
+plt.plot(dres, color='orange', linewidth=4.0, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
+plt.plot(eres, '-', color='orange', label=r'$ \alpha $ : 14.41, Upper Shape Factor Kumar 2013')
+plt.ylabel('Cumulative Distribution Function (CDF)')
+plt.xlabel('Years since install')
+plt.xlim([0,50])
 
 
 # In[ ]:

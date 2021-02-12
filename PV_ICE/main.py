@@ -753,6 +753,24 @@ def weibull_pdf(alpha, beta):
     return pdf
 
 
+def weibull_cdf_vis(alpha, beta=None, Lifetime=None, maxyears=56):
+    r''' Returns the CDF for a weibull distribution of 1 generation
+    so it can be plotted.'''
+
+    dfindex = pd.RangeIndex(0,maxyears,1)
+    x = np.clip(dfindex - 0, 0, np.inf)
+
+    if alpha and beta:
+        i = weibull_cdf(alpha, beta)
+    
+    elif alpha and Lifetime:
+        i = weibull_cdf_alphaonly(alpha, Lifetime)  
+    
+    idf = list(map(i, x))
+    
+    return idf
+
+    
 def sens_StageImprovement(df, stage, improvement=1.3, start_year=None):
     '''
     Modifies baseline scenario for evaluating sensitivity of lifetime parameter.
