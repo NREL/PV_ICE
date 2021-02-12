@@ -243,6 +243,20 @@ for life in range (0, len(filter_col)):
 fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
 plt.plot(AREA-Cumul_EOL_R0, label='Reuse = 0%')
+#plt.plot(AREA-Cumul_EOL_R50, label='Reuse = 50%')
+plt.ylabel('Working Area [m$^2$]')
+plt.xlabel('Years of Service')
+plt.title('Generation 1995 - Reuse at End of Project Lifetime')
+plt.legend()
+plt.xlim([0,45])
+
+
+# In[23]:
+
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+plt.plot(AREA-Cumul_EOL_R0, label='Reuse = 0%')
 plt.plot(AREA-Cumul_EOL_R50, label='Reuse = 50%')
 plt.ylabel('Working Area [m$^2$]')
 plt.xlabel('Years of Service')
@@ -262,7 +276,7 @@ plt.title('Generation 1995 - Reuse at End of Project Lifetime')
 plt.xlim([0,45])
 
 
-# In[23]:
+# In[24]:
 
 
 fig = plt.figure()
@@ -287,13 +301,13 @@ plt.legend()
 plt.xlim([0,45])
 
 
-# In[24]:
+# In[25]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
-# In[25]:
+# In[26]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
