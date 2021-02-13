@@ -93,7 +93,7 @@ plt.ylim([0, 400])
 
 # #### Adjusting input parameters to represent the inputs from the IRENA analysis:
 
-# In[7]:
+# In[15]:
 
 
 r1.scenario['Garvin_2020'].data['mod_Repairing'] = 0
@@ -105,13 +105,13 @@ r1.scenario['Garvin_2020'].data['mod_degradation'] = 0  # Their calculation does
 r1.scenario['Garvin_2020'].data['mod_EOL_collection_eff'] = 0  
 
 # Setting the shape of the weibull 
-r1.scenario['Garvin_2020'].data['mod_reliability_t50'] = 35
-r1.scenario['Garvin_2020'].data['mod_reliability_t90'] = 45
+r1.scenario['Garvin_2020'].data['mod_reliability_t50'] = 45
+r1.scenario['Garvin_2020'].data['mod_reliability_t90'] = 50
 # Setting Project Lifetime beyond Failures
 r1.scenario['Garvin_2020'].data['mod_lifetime'] = 40
 
 
-# In[8]:
+# In[16]:
 
 
 print(r1.scenario.keys())
@@ -121,13 +121,24 @@ print("")
 print(r1.scenario['Garvin_2020'].material['glass'].materialdata.keys())
 
 
-# In[9]:
+# In[17]:
 
 
-r1.calculateMassFlow()
+IRENA= True
+ELorRL = 'RL'
+if IRENA:
+    if ELorRL == 'RL':
+        weibullInputParams = {'alpha': 5.3759}  # Regular-loss scenario IRENA
+    if ELorRL == 'EL':
+        weibullInputParams = {'alpha': 2.49}  # Regular-loss scenario IRENA
+    r1.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
+    title_Method = 'Irena_'+ELorRL
+else:
+    r1.calculateMassFlow()
+    title_Method = 'PVICE'
 
 
-# In[10]:
+# In[18]:
 
 
 print(r1.scenario.keys())
@@ -143,7 +154,7 @@ print(r1.scenario['Garvin_2020'].material['glass'].materialdata.keys())
 
 # Querying some of the values for plotting the flags
 
-# In[11]:
+# In[19]:
 
 
 x2020 = r1.scenario['Garvin_2020'].data['year'].iloc[25]
@@ -165,7 +176,7 @@ t2050 = r1.scenario['Garvin_2020'].data['Installed_Capacity_[W]'].iloc[55]/(1E12
 # Using glass for proxy of the module; glass is ~76% of the module's mass [REF]
 # 
 
-# In[12]:
+# In[20]:
 
 
 cumWaste = r1.scenario['Garvin_2020'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
@@ -174,7 +185,7 @@ cumWaste = (cumWaste*100/76)/907185.0  # Converting to tons.
 
 # PLOT:
 
-# In[13]:
+# In[21]:
 
 
 fig = plt.figure(figsize=(10,10))
@@ -231,12 +242,24 @@ plt.show()
 
 
 
-# In[14]:
+# In[22]:
 
 
 fig = plt.figure(figsize=(10,10))
 plt.semilogy(r1.scenario['Garvin_2020'].data.year,r1.scenario['Garvin_2020'].material['glass'].materialdata['mat_Total_Landfilled'], label='PV Glass Waste per Year')
 plt.legend()
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
