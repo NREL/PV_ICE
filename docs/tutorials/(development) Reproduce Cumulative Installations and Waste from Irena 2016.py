@@ -23,7 +23,7 @@
 #     <li> Power to Glass conversion: 76 t/MW </li>
 # </ul>
 
-# In[14]:
+# In[39]:
 
 
 import os
@@ -37,13 +37,13 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[15]:
+# In[40]:
 
 
 import PV_ICE
 
 
-# In[16]:
+# In[41]:
 
 
 import matplotlib.pyplot as plt
@@ -55,7 +55,7 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # ## PV ICE
 
-# In[30]:
+# In[42]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -73,15 +73,18 @@ r1.createScenario(name='B_PowerBased', file=r'..\baselines\baseline_modules_Worl
 r1.scenario['B_PowerBased'].addMaterial('glass', file=r'..\baselines\baseline_material_glass_Irena_B_PowerBased.csv')
 
 
-# In[ ]:
+# In[70]:
 
 
-
+r1.scenario['PV_ICE'].data['mod_lifetime'] = 30
+r1.scenario['PV_ICE_base'].data['mod_lifetime'] = 30
+r1.scenario['A_MassBased'].data['mod_lifetime'] = 30
+r1.scenario['B_PowerBased'].data['mod_lifetime'] = 30
 
 
 # Plot same plot from Garvin's paper from digitized data input
 
-# In[31]:
+# In[71]:
 
 
 fig = plt.figure(figsize=(20,10))
@@ -111,7 +114,7 @@ plt.ylim([0, 400])
 
 
 
-# In[32]:
+# In[72]:
 
 
 IRENA= True
@@ -140,7 +143,7 @@ else:
 
 # Querying some of the values for plotting the flags
 
-# In[33]:
+# In[73]:
 
 
 x2020 = r1.scenario['PV_ICE'].data['year'].iloc[25]
@@ -164,7 +167,7 @@ print(x2050)
 # Using glass for proxy of the module; glass is ~76% of the module's mass [REF]
 # 
 
-# In[35]:
+# In[74]:
 
 
 cumWaste = r1.scenario['PV_ICE'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
@@ -174,7 +177,6 @@ cumWaste0 = r1.scenario['PV_ICE_base'].material['glass'].materialdata['mat_Total
 cumWaste0 = (cumWaste0*100/76)/1000000  # Converting to tonnes
 
 
-
 cumWaste2 = r1.scenario['A_MassBased'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
 cumWaste2 = (cumWaste2*100/76)/1000000  # Converting to tonnes
 
@@ -182,17 +184,53 @@ cumWaste3 = r1.scenario['B_PowerBased'].material['glass'].materialdata['mat_Tota
 cumWaste3 = (cumWaste3*100/76)/1000000  # Converting to tonnes
 
 
+# In[75]:
+
+
+x2020_irena = 2020
+y2020_irena = 3.96E+07
+t2020_irena = 0.5
+
+x2030_irena = 2030
+y2030_irena = 1.24E+08
+t2030_irena = 1.6
+
+x2050_irena = 2050
+y2050_irena = 3.41E+08
+t2050_irena = 4.5
+
+
+# In[76]:
+
+
+Garvin2020_litCumWaste_X = [2020, 2021.1, 2022.1, 2023.2, 2024.6, 2026.3, 2027.3, 2028.7,
+2029.5, 2030.6, 2032.1, 2033.8, 2035.4, 2037.5, 2039.1, 2040.6, 2042, 2044, 2045.5, 2047.3,
+2048.9, 2050]
+
+Garvin2020_litCumWaste_Y = [860414.9, 1108341.4, 1383227, 1781800.6, 2295222.2, 3355623.2,
+4605006.5, 6319566.5, 7886916, 8951381, 1.15E+07, 1.44E+07, 1.85E+07, 2.31E+07,
+2.89E+07, 3.49E+07, 3.96E+07, 4.79E+07, 5.44E+07, 6.57E+07, 7.00E+07, 7.95E+07]
+
+Garvin2020_litMassService_X = [2020, 2021.1, 2022.5, 2024.1, 2025.8, 2027.8, 2030, 2031.8, 2034.5, 
+                               2036.9, 2039.5, 2042.6, 2044.9, 2047.4, 2050]
+
+Garvin2020_litMassService_Y = [3.96E+07, 4.79E+07, 5.44E+07, 6.57E+07, 7.95E+07, 1.02E+08,
+1.24E+08, 1.45E+08, 1.65E+08, 1.99E+08, 2.19E+08, 2.48E+08, 2.82E+08, 3.10E+08, 3.41E+08]
+
+
 # PLOT:
 
-# In[38]:
+# In[77]:
 
 
 fig = plt.figure(figsize=(10,10))
-plt.semilogy(r1.scenario['PV_ICE'].data.year,r1.scenario['PV_ICE'].data['Installed_Capacity_[W]']*76/1000000, color='C1', label='Mass of PV in service')
-plt.semilogy(r1.scenario['PV_ICE_base'].data.year,cumWaste0, 'r', label='PV ICE Base-ish Cum Waste')
-plt.semilogy(r1.scenario['PV_ICE'].data.year,cumWaste, 'r.', label='PV ICE Perfect Efficiencies')
-plt.semilogy(r1.scenario['A_MassBased'].data.year,cumWaste2, 'k.', label='A - Material Based Cum Waste')
-plt.semilogy(r1.scenario['B_PowerBased'].data.year,cumWaste3, 'g', label='B - Power Based Cum Waste')
+plt.semilogy(Garvin2020_litMassService_X, Garvin2020_litMassService_Y, color='C1', label='Irena 2016, Mass in Service')
+plt.semilogy(r1.scenario['PV_ICE'].data.year,r1.scenario['PV_ICE'].data['Installed_Capacity_[W]']*76/1000000, color='C1', marker='o', label='PV ICE, Based on 2019')
+plt.semilogy(Garvin2020_litCumWaste_X, Garvin2020_litCumWaste_Y, color='cornflowerblue', label='Irena 2016, Cum Waste')
+#plt.semilogy(r1.scenario['PV_ICE_base'].data.year,cumWaste0, color='cornflowerblue', marker='.', label='PV ICE, Cum Waste')
+plt.semilogy(r1.scenario['PV_ICE'].data.year,cumWaste, 'c.', label='PV ICE, Cum Waste Perfect World')
+plt.semilogy(r1.scenario['A_MassBased'].data.year,cumWaste2, 'k--', label='A - Material Based Cum Waste')
+plt.semilogy(r1.scenario['B_PowerBased'].data.year,cumWaste3, 'g-.', label='B - Power Based Cum Waste')
 
 
 plt.ylim([1E4, 1E9])
@@ -242,11 +280,50 @@ plt.annotate(
                     )
 )
 
+
+### IRENA
+
+plt.annotate(
+    '{:.1f} TW'.format(t2020_irena), (x2020_irena, y2020_irena),
+    ha='center', va='center',
+    size=15,
+    xytext=offset, textcoords='offset points',
+    bbox=dict(boxstyle='round', fc='#ff7f0e', ec='none'),
+    arrowprops=dict(arrowstyle='wedge,tail_width=1.',
+                    fc='#ff7f0e', ec='none',
+                    relpos=(0.5, 1.5),
+                    )
+)
+
+plt.annotate(
+    '{:.1f} TW'.format(t2030_irena), (x2030_irena, y2030_irena),
+    ha='center', va='center',
+    size=15,
+    xytext=offset, textcoords='offset points',
+    bbox=dict(boxstyle='round', fc='#ff7f0e', ec='none'),
+    arrowprops=dict(arrowstyle='wedge,tail_width=1.',
+                    fc='#ff7f0e', ec='none',
+                    relpos=(0.5, 1.5),
+                    )
+)
+
+plt.annotate(
+    '{:.1f} TW'.format(t2050_irena), (x2050_irena, y2050_irena),
+    ha='center', va='center',
+    size=15,
+    xytext=offset, textcoords='offset points',
+    bbox=dict(boxstyle='round', fc='#ff7f0e', ec='none'),
+    arrowprops=dict(arrowstyle='wedge,tail_width=1.',
+                    fc='#ff7f0e', ec='none',
+                    relpos=(0.5, 1.5),
+                    )
+)
+
 plt.show()
 
 
 
-# In[28]:
+# In[78]:
 
 
 fig = plt.figure(figsize=(10,10))

@@ -5,7 +5,7 @@
 # 
 # Comparison case using the functions in CE-MFC to compare 15 year module reliability vs 50 year module reliability.
 
-# In[1]:
+# In[17]:
 
 
 import os
@@ -19,13 +19,13 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[2]:
+# In[18]:
 
 
 import PV_ICE
 
 
-# In[3]:
+# In[19]:
 
 
 import matplotlib.pyplot as plt
@@ -35,7 +35,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[4]:
+# In[20]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -47,17 +47,21 @@ r1.createScenario(name='15_Year_Module', file=r'..\baselines\baseline_modules_US
 r1.scenario['15_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['15_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
+r1.createScenario(name='30_Year_Module', file=r'..\baselines\baseline_modules_US.csv')
+r1.scenario['30_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+r1.scenario['30_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
-# In[5]:
+
+# In[21]:
 
 
 r1.scenario['50_Year_Module'].data.keys()
 
 
-# In[6]:
+# In[22]:
 
 
-r1.scenario['50_Year_Module'].data['mod_reliability_t50'] = 50
+r1.scenario['50_Year_Module'].data['mod_reliability_t50'] = 55
 r1.scenario['50_Year_Module'].data['mod_reliability_t90'] = 60
 r1.scenario['50_Year_Module'].data['mod_lifetime'] = 50
 
@@ -65,26 +69,30 @@ r1.scenario['15_Year_Module'].data['mod_reliability_t50'] = 15
 r1.scenario['15_Year_Module'].data['mod_reliability_t90'] = 25
 r1.scenario['15_Year_Module'].data['mod_lifetime'] = 15
 
+r1.scenario['30_Year_Module'].data['mod_reliability_t50'] = 32
+r1.scenario['30_Year_Module'].data['mod_reliability_t90'] = 35
+r1.scenario['30_Year_Module'].data['mod_lifetime'] = 30
 
-# In[7]:
+
+# In[23]:
 
 
 r1.calculateMassFlow()
 
 
-# In[8]:
+# In[24]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 
 
-# In[9]:
+# In[25]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 
 
-# In[10]:
+# In[26]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
@@ -92,7 +100,7 @@ r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 # ### Modifying Installed Capacity requirements to match 50 Year Module
 
-# In[11]:
+# In[27]:
 
 
 r1.createScenario(name='15_Year_Module_IncreasedInstalls', file=r'..\baselines\baseline_modules_US.csv')
@@ -109,27 +117,97 @@ r1.calculateMassFlow()
 # Needs to run each year becuase it needs to calculate the acumulated installs and deads.
 # 
 
-# In[12]:
-
+# In[28]:
 
 
 Under_Installment = []
-for i in range (0, len(r1.scenario['50_Year_Module'].data)):
-    Under_Installment = ( (r1.scenario['50_Year_Module'].data['Installed_Capacity_[W]'][i] - 
+for i in range (0, len(r1.scenario['30_Year_Module'].data)):
+    Under_Installment = ( (r1.scenario['30_Year_Module'].data['Installed_Capacity_[W]'][i] - 
                          r1.scenario['15_Year_Module_IncreasedInstalls'].data['Installed_Capacity_[W]'][i])/1000000 )  # MWATTS
     r1.scenario['15_Year_Module_IncreasedInstalls'].data['new_Installed_Capacity_[MW]'][i] += Under_Installment
     r1.calculateMassFlow()
 
 
-# In[14]:
+# In[29]:
+
+
+r1.createScenario(name='50_Year_Module_DecreasedInstalls', file=r'..\baselines\baseline_modules_US.csv')
+r1.scenario['50_Year_Module_DecreasedInstalls'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+r1.scenario['50_Year_Module_DecreasedInstalls'].data['mod_reliability_t50'] = 55
+r1.scenario['50_Year_Module_DecreasedInstalls'].data['mod_reliability_t90'] = 60
+r1.scenario['50_Year_Module_DecreasedInstalls'].data['mod_lifetime'] = 50
+
+r1.calculateMassFlow()
+
+
+# In[ ]:
+
+
+
+
+
+# In[30]:
+
+
+Over_Installment = []
+for i in range (0, len(r1.scenario['50_Year_Module'].data)):
+    Over_Installment = ( (r1.scenario['50_Year_Module_DecreasedInstalls'].data['Installed_Capacity_[W]'][i] - 
+                         r1.scenario['30_Year_Module'].data['Installed_Capacity_[W]'][i])/1000000 )  # MWATTS
+    r1.scenario['50_Year_Module_DecreasedInstalls'].data['new_Installed_Capacity_[MW]'][i] -= Over_Installment
+    r1.calculateMassFlow()
+
+
+# In[31]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
+# In[32]:
+
+
+r1.plotScenariosComparison(keyword='new_Installed_Capacity_[MW]')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
 # ## Same plots but not automatic from the software to control more the parameters
 
-# In[38]:
+# In[ ]:
 
 
 plt.plot(-1,-1)
@@ -139,7 +217,7 @@ plt.ylabel('Power [W]')
 plt.xlim([2000, 2050])
 
 
-# In[39]:
+# In[ ]:
 
 
 plt.plot(r1.scenario['50_Year_Module'].data['year'], r1.scenario['50_Year_Module'].data['Installed_Capacity_[W]']/1e12)
@@ -150,7 +228,7 @@ plt.title('Installed Active Capacity')
 plt.xlim([2000, 2050])
 
 
-# In[40]:
+# In[ ]:
 
 
 plt.plot(r1.scenario['50_Year_Module'].data['year'], r1.scenario['50_Year_Module'].data['Installed_Capacity_[W]']/1e12)
@@ -172,14 +250,14 @@ plt.xlim([2000, 2050])
 # 
 # The 50-year module uses the previous settings.
 
-# In[41]:
+# In[ ]:
 
 
 r1.scenario['50_Year_Module'].data.keys()
 r1.scenario['50_Year_Module'].material['glass'].materialdata.keys()
 
 
-# In[42]:
+# In[ ]:
 
 
 #modify 15-year module attributes df2, with no compensation for capacity
@@ -205,19 +283,19 @@ r1.scenario['15_Year_Module_IncreasedInstalls'].material['glass'].materialdata['
 r1.scenario['15_Year_Module_IncreasedInstalls'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 100
 
 
-# In[43]:
+# In[ ]:
 
 
 #potentially add silicon recycling modifications here?
 
 
-# In[44]:
+# In[ ]:
 
 
 r1.calculateMassFlow()
 
 
-# In[45]:
+# In[ ]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Virgin_Stock')
@@ -228,7 +306,7 @@ r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Virgin_S
 # the landfilled glass is very low regardless of capacity assumptions.
 # Thus, if the intent is to avoid landfilled material, a 95% recyclable module is the best technology evolution.
 
-# In[46]:
+# In[ ]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
@@ -236,7 +314,7 @@ r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_La
 
 # # No Deaths Allowed Scenario
 
-# In[47]:
+# In[ ]:
 
 
 r1.createScenario(name='No_Deaths', file=r'..\baselines\baseline_modules_US.csv')
@@ -249,7 +327,7 @@ r1.scenario['No_Deaths'].data['mod_Repairing'] = 99
 r1.scenario['No_Deaths'].data['mod_lifetime'] = 100
 
 
-# In[48]:
+# In[ ]:
 
 
 r1.calculateMassFlow()
@@ -261,7 +339,7 @@ r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 # 
 # We have previously obtained results for ladnfilled waste for 50 year module, 15 year module, and 15 year module with increased installations to reach to 50 year module installed capacity. This is applies the LCA methodology to evaluate environmetnal impacts based on landfilled area.
 
-# In[49]:
+# In[ ]:
 
 
 Area_50years = r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_Total_Landfilled'].sum()
@@ -271,7 +349,7 @@ Area_15years_Increased_Installs = r1.scenario['15_Year_Module_IncreasedInstalls'
 
 # #### First we calculate the Area, based on the glass thickness and glass density and the Total Landfilled Waste [kg]. The PV panel area will be equal to the Glass Area for our modeled scenarios so far.
 
-# In[50]:
+# In[ ]:
 
 
 [acidification, carcinogenics, ecotoxicity, eutrophication, 
@@ -279,7 +357,7 @@ fossil_fuel_depletion, global_warming,
 non_carcinogenics, ozone_depletion, respiratory_effects, smog] = PV_ICE.calculateLCA(Area_50years)
 
 
-# In[51]:
+# In[ ]:
 
 
 [acidification2, carcinogenics2, ecotoxicity2, eutrophication2, 
@@ -287,7 +365,7 @@ fossil_fuel_depletion2, global_warming2,
 non_carcinogenics2, ozone_depletion2, respiratory_effects2, smog2] = PV_ICE.calculateLCA(Area_15years)
 
 
-# In[52]:
+# In[ ]:
 
 
 [acidification3, carcinogenics3, ecotoxicity3, eutrophication3, 
@@ -295,14 +373,14 @@ fossil_fuel_depletion3, global_warming3,
 non_carcinogenics3, ozone_depletion3, respiratory_effects3, smog3] = PV_ICE.calculateLCA(Area_15years_Increased_Installs)
 
 
-# In[53]:
+# In[ ]:
 
 
 global_warming = pd.DataFrame({'Global warming':['50 year', '15 year', '15 year*'], 
                                'val':[global_warming, global_warming2, global_warming3]})
 
 
-# In[54]:
+# In[ ]:
 
 
 ax = global_warming.plot.bar(x='Global warming', y='val', rot=0)

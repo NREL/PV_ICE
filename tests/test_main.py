@@ -8,6 +8,8 @@ Using pytest to create unit tests for PV ICE
 to run unit tests, run pytest from the command line in the bifacial_radiance directory
 to run coverage tests, run py.test --cov-report term-missing --cov=bifacial_radiance
 
+cd C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\tests
+
 """
 
 import PV_ICE
@@ -43,3 +45,30 @@ def test_project_lifetime():
     assert (r1.scenario['standard'].data['Area'][0]*mat_massperm2-
             r1.scenario['standard'].material['glass'].materialdata['mat_Virgin_Stock'][0]) == 0.0
     
+
+def test_infinite_Weibull():
+    r1 = PV_ICE.Simulation()
+    r1.createScenario('standard', file=MODULEBASELINE)
+    r1.scenario['standard'].addMaterial('glass', file=MATERIALBASELINE)
+    r1.scenario['standard'].data['mod_lifetime'] = 50.0
+    failyear = r1.scenario['standard'].data['mod_lifetime'][0] 
+    r1.calculateMassFlow()
+    data = r1.scenario['standard'].data
+    EOLrow = data.loc[0, data.columns.str.startswith("EOL_on_Year")]
+    assert round(r1.scenario['standard'].data['Area'][0],0) ==round(EOLrow.sum(),0)
+    EOLrow = data.loc[10, data.columns.str.startswith("EOL_on_Year")]
+    assert round(r1.scenario['standard'].data['Area'][10],0) ==round(EOLrow.sum(),0)
+
+    # If no recycling as input material, then virgin material is constant for this scenario
+    r1.scenario['standard'].material['glass'].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = 0.0
+    r1.calculateMassFlow()
+    assert r1.scenario['standard'].material['glass'].materialdata['mat_Virgin_Stock'][0] == r1.scenario['standard'].data['Area'][10]*mat_massperm2
+    
+    # If nothing is collected, everything goes to landfill.
+    r1.scenario['standard'].data['mod_EOL_collection_eff'] = 0.0
+    r1.calculateMassFlow()
+    # Comparing to a year in the future where steady state has been achieved.
+    assert (round(r1.scenario['standard'].data['Area'][0]*mat_massperm2,0) == 
+    round(r1.scenario['standard'].material['glass'].materialdata['mat_Total_Landfilled'][30],0))
+    assert (round(r1.scenario['standard'].material['glass'].materialdata['mat_Total_Landfilled'][0],0) ==
+    round(r1.scenario['standard'].material['glass'].materialdata['mat_Total_EOL_Landfilled'][0],0))
