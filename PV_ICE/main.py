@@ -559,10 +559,19 @@ class Simulation:
                 dm['mat_EOL_Recycled_HQ_into_OU'] = list(mat_EOL_Recycled_HQ_into_OU.sum())
                 
                 # BULK Calculations Now
-                dm['mat_UsedinManufacturing'] = df['Area'] * dm['mat_massperm2']
-                dm['mat_Manufacturing_Input'] = dm['mat_UsedinManufacturing'] / (dm['mat_MFG_eff'] * 0.01)
-                dm['mat_MFG_Scrap'] = dm['mat_Manufacturing_Input'] - dm['mat_UsedinManufacturing']
+                dm['mat_UsedSuccessfullyinModuleManufacturing'] = (df['Area'] * dm['mat_massperm2'])
+                dm['mat_EnteringModuleManufacturing'] = (df['Area'] * dm['mat_massperm2']*100/df['mod_MFG_eff'])
+                dm['mat_LostinModuleManufacturing'] = dm['mat_EnteringModuleManufacturing'] - dm['mat_UsedSuccessfullyinModuleManufacturing']
+                
+                dm['mat_Manufacturing_Input'] = dm['mat_EnteringModuleManufacturing'] / (dm['mat_MFG_eff'] * 0.01)
+                
+                # Scrap = Lost to Material manufacturing losses + Module manufacturing losses
+                dm['mat_MFG_Scrap'] = (dm['mat_Manufacturing_Input'] - dm['mat_EnteringModuleManufacturing'] + 
+                                      dm['mat_LostinModuleManufacturing'])
                 dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_Recycled'] * 0.01
+                
+                
+                
                 dm['mat_MFG_Scrap_Landfilled'] = dm['mat_MFG_Scrap'] - dm['mat_MFG_Scrap_Sentto_Recycling'] 
                 dm['mat_MFG_Scrap_Recycled_Successfully'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] *
                                                                  dm['mat_MFG_scrap_Recycling_eff'] * 0.01)
@@ -575,7 +584,10 @@ class Simulation:
                                           dm['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
                 dm['mat_MFG_Recycled_HQ_into_OU'] = dm['mat_MFG_Recycled_into_HQ'] - dm['mat_MFG_Recycled_HQ_into_MFG']
                 dm['mat_Virgin_Stock'] = dm['mat_Manufacturing_Input'] - dm['mat_EoL_Recycled_HQ_into_MFG'] - dm['mat_MFG_Recycled_HQ_into_MFG']
-                 
+                
+                # Calculate raw virgin needs before mining and refining efficiency losses
+                dm['mat_Virgin_Stock_Raw'] = (dm['mat_Virgin_Stock'] * 100 /  dm['mat_virgin_eff'])
+
                 # Add Wastes
                 dm['mat_Total_EOL_Landfilled'] = (dm['mat_modules_NotCollected'] + 
                                                   dm['mat_modules_NotRecycled'] +
