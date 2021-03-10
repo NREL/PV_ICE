@@ -315,8 +315,7 @@ class Simulation:
         
 
 
-    def calculateMassFlow(self, weibullInputParams = None, weibullAlphaOnly = False,
-                          debugflag=False):
+    def calculateMassFlow(self, weibullInputParams = None, debugflag=False):
         '''
         Function takes as input a baseline dataframe already imported, 
         with the right number of columns and content.
@@ -324,6 +323,12 @@ class Simulation:
         
         Parameters
         ------------
+        weibullInputParams : None
+            Dictionary with 'alpha' and 'beta' value for shaping the weibull
+            curve. beta is sometimes exchanged with lifetime, for example on
+            Irena 2016 values beta = 30. If weibullInputParams = None,
+            alfa and beta are calcualted from the t50 and t90 columns on the
+            module baseline.
         
         Returns
         --------
@@ -373,14 +378,8 @@ class Simulation:
                     weibullIParams = weibull_params({t50: 0.50, t90: 0.90})      
                 else: 
                     weibullIParams = weibullInputParams
-                #f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
-                
-                if weibullAlphaOnly:
-                    f = weibull_cdf_alphaonly(alpha = weibullIParams['alpha'], 
-                                              Lifetime = row['mod_lifetime'])
-                    weibullIParams = weibullIParams['alpha']
-                else:
-                    f = weibull_cdf(weibullIParams['alpha'], weibullIParams['beta'])
+               
+                f = weibull_cdf(weibullIParams['alpha'], weibullIParams['beta'])
                 
                 weibullParamList.append(weibullIParams)
 
@@ -721,9 +720,29 @@ class Material:
 
 
 def weibull_params(keypoints):
-    '''Returns shape parameter `alpha` and scale parameter `beta`
+    r'''Returns shape parameter `alpha` and scale parameter `beta`
     for a Weibull distribution whose CDF passes through the
-    two time: value pairs in `keypoints`'''
+    two time: value pairs in `keypoints`
+
+    Parameters
+    ----------
+    keypoints : list
+        Two lists of t50 and 590 values, where t50 is the year since deployment
+        that the cohort has lost 50% of originally installed modules, and t90 
+        is the year since deployment that the cohort has lost 90% of the originally
+        installed modules. These values are used to calcualte the shape and scale 
+        parameters for the weibull distribution.
+    
+    Returns
+    -------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+        
+    '''
+    
     t1, t2 = tuple(keypoints.keys())
     cdf1, cdf2 = tuple(keypoints.values())
     alpha = np.ndarray.item(np.real_if_close(
@@ -742,41 +761,69 @@ def weibull_params(keypoints):
 def weibull_cdf(alpha, beta):
     '''Return the CDF for a Weibull distribution having:
     shape parameter `alpha`
-    scale parameter `beta`'''
+    scale parameter `beta`
+    
+    Parameters
+    ----------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+        
+    '''
+    
     def cdf(x):
         return 1 - np.exp(-(np.array(x)/beta)**alpha)
     return cdf
 
-def weibull_cdf_alphaonly(alpha, Lifetime):
-    '''Return the CDF for a Weibull distribution having:
-    shape parameter `alpha`
-    scale parameter `beta`'''
-    def cdf(x):
-        return 1 - np.exp(-(np.array(x)/Lifetime)**alpha)
-    return cdf
-
-
 def weibull_pdf(alpha, beta):
-    '''Return the PDF for a Weibull distribution having:
+    r'''Return the PDF for a Weibull distribution having:
         shape parameter `alpha`
-        scale parameter `beta`/'''
+        scale parameter `beta`
+        
+    Parameters
+    ----------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+        
+    '''
+    
     def pdf(x):
         return (alpha/np.array(x)) * ((np.array(x)/beta)**alpha) * (np.exp(-(np.array(x)/beta)**alpha))
+    
     return pdf
 
 
-def weibull_cdf_vis(alpha, beta=None, Lifetime=None, maxyears=56):
+def weibull_cdf_vis(alpha, beta, xlim=56):
     r''' Returns the CDF for a weibull distribution of 1 generation
-    so it can be plotted.'''
+    so it can be plotted.
+    
+    Parameters
+    ----------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+    xlim : int
+        Number of years to calculate the distribution for. i.e. x-axis limit. 
 
-    dfindex = pd.RangeIndex(0,maxyears,1)
+    Returns
+    -------
+    idf : list
+        List of weibull cumulative distribution values for year 0 until xlim.
+
+    '''
+
+    dfindex = pd.RangeIndex(0,xlim,1)
     x = np.clip(dfindex - 0, 0, np.inf)
 
     if alpha and beta:
         i = weibull_cdf(alpha, beta)
-    
-    elif alpha and Lifetime:
-        i = weibull_cdf_alphaonly(alpha, Lifetime)  
     
     idf = list(map(i, x))
     

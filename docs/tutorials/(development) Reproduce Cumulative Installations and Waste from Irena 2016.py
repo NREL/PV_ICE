@@ -23,7 +23,7 @@
 #     <li> Power to Glass conversion: 76 t/MW </li>
 # </ul>
 
-# In[39]:
+# In[ ]:
 
 
 import os
@@ -37,13 +37,13 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[40]:
+# In[ ]:
 
 
 import PV_ICE
 
 
-# In[41]:
+# In[3]:
 
 
 import matplotlib.pyplot as plt
@@ -55,36 +55,29 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # ## PV ICE
 
-# In[42]:
+# In[4]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='PV_ICE', file=r'..\baselines\baseline_modules_World_Irena_2019.csv')
-r1.scenario['PV_ICE'].addMaterial('glass', file=r'..\baselines\baseline_material_glass_Irena_2019.csv')
-
-r1.createScenario(name='PV_ICE_base', file=r'..\baselines\baseline_modules_World_Irena_2019.csv')
+r1.createScenario(name='PV_ICE_base', file=r'..\baselines\baseline_modules_World.csv')
 r1.scenario['PV_ICE_base'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 
+r1.createScenario(name='Irena_2019', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2019.csv')
+r1.scenario['Irena_2019'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena.csv')
 
-r1.createScenario(name='A_MassBased', file=r'..\baselines\baseline_modules_World_Irena_2019_A_MassBased.csv')
-r1.scenario['A_MassBased'].addMaterial('glass', file=r'..\baselines\baseline_material_glass_Irena_A_MassBased.csv')
+r1.createScenario(name='Irena_2016', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2016.csv')
+r1.scenario['Irena_2016'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena.csv')
 
-r1.createScenario(name='B_PowerBased', file=r'..\baselines\baseline_modules_World_Irena_2019_B_PowerBased.csv')
-r1.scenario['B_PowerBased'].addMaterial('glass', file=r'..\baselines\baseline_material_glass_Irena_B_PowerBased.csv')
+r1.createScenario(name='A_MassBased', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2019_A_MassBased.csv')
+r1.scenario['A_MassBased'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena_A_MassBased.csv')
 
-
-# In[70]:
-
-
-r1.scenario['PV_ICE'].data['mod_lifetime'] = 30
-r1.scenario['PV_ICE_base'].data['mod_lifetime'] = 30
-r1.scenario['A_MassBased'].data['mod_lifetime'] = 30
-r1.scenario['B_PowerBased'].data['mod_lifetime'] = 30
+r1.createScenario(name='B_PowerBased', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2019_B_PowerBased.csv')
+r1.scenario['B_PowerBased'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena_B_PowerBased.csv')
 
 
 # Plot same plot from Garvin's paper from digitized data input
 
-# In[71]:
+# In[5]:
 
 
 fig = plt.figure(figsize=(20,10))
@@ -92,7 +85,23 @@ ax1 = plt.subplot(111)
 ax1.yaxis.grid()
 plt.axvspan(2000, 2018, facecolor='0.9', alpha=0.5)
 plt.axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
-ax1.bar(r1.scenario['PV_ICE'].data['year'], r1.scenario['PV_ICE'].data['new_Installed_Capacity_[MW]']/1000, color='gold', label='IRENA')
+ax1.bar(r1.scenario['Irena_2019'].data['year'], r1.scenario['Irena_2019'].data['new_Installed_Capacity_[MW]']/1000, color='gold', label='IRENA 2019')
+plt.legend()
+plt.xlabel('Year')
+plt.ylabel('Annual Deployments (GW/yr)')
+plt.xlim([2000, 2050.5])
+plt.ylim([0, 400])
+
+
+# In[6]:
+
+
+fig = plt.figure(figsize=(20,10))
+ax1 = plt.subplot(111)
+ax1.yaxis.grid()
+plt.axvspan(2000, 2018, facecolor='0.9', alpha=0.5)
+plt.axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
+ax1.bar(r1.scenario['Irena_2016'].data['year'], r1.scenario['Irena_2016'].data['new_Installed_Capacity_[MW]']/1000, color='gold', label='IRENA 2016')
 plt.legend()
 plt.xlabel('Year')
 plt.ylabel('Annual Deployments (GW/yr)')
@@ -102,29 +111,17 @@ plt.ylim([0, 400])
 
 # #### Adjusting input parameters to represent the inputs from the IRENA analysis:
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[72]:
+# In[7]:
 
 
 IRENA= True
 ELorRL = 'RL'
 if IRENA:
     if ELorRL == 'RL':
-        weibullInputParams = {'alpha': 5.3759}  # Regular-loss scenario IRENA
+        weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
     if ELorRL == 'EL':
-        weibullInputParams = {'alpha': 2.49}  # Regular-loss scenario IRENA
-    r1.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
+        weibullInputParams = {'alpha': 2.49, 'beta': 30}  # Regular-loss scenario IRENA
+    r1.calculateMassFlow(weibullInputParams=weibullInputParams)
     title_Method = 'Irena_'+ELorRL
 else:
     r1.calculateMassFlow()
@@ -143,21 +140,21 @@ else:
 
 # Querying some of the values for plotting the flags
 
-# In[73]:
+# In[9]:
 
 
-x2020 = r1.scenario['PV_ICE'].data['year'].iloc[25]
-y2020 = r1.scenario['PV_ICE'].data['Installed_Capacity_[W]'].iloc[25]*76/1000000
-t2020 = r1.scenario['PV_ICE'].data['Installed_Capacity_[W]'].iloc[25]/(1E12)
+x2020 = r1.scenario['Irena_2019'].data['year'].iloc[25]
+y2020 = r1.scenario['Irena_2019'].data['Installed_Capacity_[W]'].iloc[25]*76/1000000
+t2020 = r1.scenario['Irena_2019'].data['Installed_Capacity_[W]'].iloc[25]/(1E12)
 
 
-x2030 = r1.scenario['PV_ICE'].data['year'].iloc[35]
-y2030 = r1.scenario['PV_ICE'].data['Installed_Capacity_[W]'].iloc[35]*76/1000000
-t2030 = r1.scenario['PV_ICE'].data['Installed_Capacity_[W]'].iloc[35]/(1E12)
+x2030 = r1.scenario['Irena_2019'].data['year'].iloc[35]
+y2030 = r1.scenario['Irena_2019'].data['Installed_Capacity_[W]'].iloc[35]*76/1000000
+t2030 = r1.scenario['Irena_2019'].data['Installed_Capacity_[W]'].iloc[35]/(1E12)
 
-x2050 = r1.scenario['PV_ICE'].data['year'].iloc[55]
-y2050 = r1.scenario['PV_ICE'].data['Installed_Capacity_[W]'].iloc[55]*76/1000000
-t2050 = r1.scenario['PV_ICE'].data['Installed_Capacity_[W]'].iloc[55]/(1E12)
+x2050 = r1.scenario['Irena_2019'].data['year'].iloc[55]
+y2050 = r1.scenario['Irena_2019'].data['Installed_Capacity_[W]'].iloc[55]*76/1000000
+t2050 = r1.scenario['Irena_2019'].data['Installed_Capacity_[W]'].iloc[55]/(1E12)
 
 print(x2050)
 
@@ -167,15 +164,17 @@ print(x2050)
 # Using glass for proxy of the module; glass is ~76% of the module's mass [REF]
 # 
 
-# In[74]:
+# In[10]:
 
 
-cumWaste = r1.scenario['PV_ICE'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
+cumWaste = r1.scenario['PV_ICE_base'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
 cumWaste = (cumWaste*100/76)/1000000  # Converting to tonnes
 
-cumWaste0 = r1.scenario['PV_ICE_base'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
+cumWaste0 = r1.scenario['Irena_2019'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
 cumWaste0 = (cumWaste0*100/76)/1000000  # Converting to tonnes
 
+cumWaste1 = r1.scenario['Irena_2016'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
+cumWaste1 = (cumWaste1*100/76)/1000000  # Converting to tonnes
 
 cumWaste2 = r1.scenario['A_MassBased'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
 cumWaste2 = (cumWaste2*100/76)/1000000  # Converting to tonnes
@@ -184,7 +183,7 @@ cumWaste3 = r1.scenario['B_PowerBased'].material['glass'].materialdata['mat_Tota
 cumWaste3 = (cumWaste3*100/76)/1000000  # Converting to tonnes
 
 
-# In[75]:
+# In[11]:
 
 
 x2020_irena = 2020
@@ -200,7 +199,7 @@ y2050_irena = 3.41E+08
 t2050_irena = 4.5
 
 
-# In[76]:
+# In[12]:
 
 
 Garvin2020_litCumWaste_X = [2020, 2021.1, 2022.1, 2023.2, 2024.6, 2026.3, 2027.3, 2028.7,
@@ -218,36 +217,27 @@ Garvin2020_litMassService_Y = [3.96E+07, 4.79E+07, 5.44E+07, 6.57E+07, 7.95E+07,
 1.24E+08, 1.45E+08, 1.65E+08, 1.99E+08, 2.19E+08, 2.48E+08, 2.82E+08, 3.10E+08, 3.41E+08]
 
 
-# In[ ]:
-
-
-Irena2016_Installs_X = [ 2000, 2001, 2002, 2003, 2004, 2005,2006,2007,2008,2009,2010,2011,2012,2013,
-2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,
-2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,2041,2042,2043,2044,2045,
-2046,2047,2048,2049,2050]
-
-Irena2016_Installs_Y = [34.39617, 34.39617,34.39617,34.39617,34.39617,34.39617,50.739925,
-50.739925,50.739925,50.368477,50.368477,84.715126,102.09894,154.99327,207.78854,
-260.63333,278.04193,330.8372,383.682,471.9382,524.80786,577.65265,648.2032,
-771.99475,842.5948,948.5568,1054.6178,1196.0903,1337.5629,1496.7659,1602.827,
-1744.2748,1885.8215,1956.3721,2080.114,2203.8809,2345.3782,2451.4146,2575.1812,
-2752.1643,2875.8816,2999.5989,3158.901,3335.8096,3459.5764,3654.2405,
-3813.493,3990.4019,4149.679,4308.8574,4485.791]
-
-
 # PLOT:
 
-# In[77]:
+# In[37]:
 
 
 fig = plt.figure(figsize=(10,10))
-plt.semilogy(Garvin2020_litMassService_X, Garvin2020_litMassService_Y, color='C1', label='Irena 2016, Mass in Service')
-plt.semilogy(r1.scenario['PV_ICE'].data.year,r1.scenario['PV_ICE'].data['Installed_Capacity_[W]']*76/1000000, color='C1', marker='o', label='PV ICE, Based on 2019')
-plt.semilogy(Garvin2020_litCumWaste_X, Garvin2020_litCumWaste_Y, color='cornflowerblue', label='Irena 2016, Cum Waste')
-#plt.semilogy(r1.scenario['PV_ICE_base'].data.year,cumWaste0, color='cornflowerblue', marker='.', label='PV ICE, Cum Waste')
-plt.semilogy(r1.scenario['PV_ICE'].data.year,cumWaste, 'c.', label='PV ICE, Cum Waste Perfect World')
-plt.semilogy(r1.scenario['A_MassBased'].data.year,cumWaste2, 'k--', label='A - Material Based Cum Waste')
-plt.semilogy(r1.scenario['B_PowerBased'].data.year,cumWaste3, 'g-.', label='B - Power Based Cum Waste')
+#color = 'C1', 'cornflowerblue'
+
+#Installs
+plt.semilogy(Garvin2020_litMassService_X, Garvin2020_litMassService_Y, color='C1', linewidth=5.0, label='Mass in Service - Garvin 2020')
+plt.semilogy(r1.scenario['Irena_2016'].data.year,r1.scenario['Irena_2016'].data['Installed_Capacity_[W]']*76/1000000, color='C1', label='Mass in Service - Irena 2016')
+plt.semilogy(r1.scenario['Irena_2019'].data.year,r1.scenario['Irena_2019'].data['Installed_Capacity_[W]']*76/1000000, color='C1', marker='o', label='Mass in Service - Irena 2019')
+plt.semilogy(r1.scenario['PV_ICE_base'].data.year,r1.scenario['PV_ICE_base'].data['Installed_Capacity_[W]']*76/1000000, color='k', marker='o', label='Mass in Service - PV ICE baseline')
+
+# Waste
+plt.semilogy(Garvin2020_litCumWaste_X, Garvin2020_litCumWaste_Y, color='cornflowerblue', linewidth=5.0, label='Cum Waste - Garvin 2020')
+plt.semilogy(r1.scenario['Irena_2016'].data.year,cumWaste1, color='cornflowerblue', label='Irena 2016 w PV Ice')
+plt.semilogy(r1.scenario['Irena_2019'].data.year,cumWaste0, color='cornflowerblue',  marker='o', label='Irena 2019 w PV ICE')
+plt.semilogy(r1.scenario['A_MassBased'].data.year,cumWaste2, 'k--', alpha=0.4, label='Irena 2019 Approach A & B')
+plt.semilogy(r1.scenario['PV_ICE_base'].data.year,cumWaste, color='k', marker='.', label='Cum Waste - PV ICE baseline')
+
 
 
 plt.ylim([1E4, 1E9])
@@ -337,31 +327,5 @@ plt.annotate(
 )
 
 plt.show()
-
-
-
-# In[78]:
-
-
-fig = plt.figure(figsize=(10,10))
-plt.semilogy(r1.scenario['PV_ICE'].data.year,r1.scenario['PV_ICE'].material['glass'].materialdata['mat_Total_Landfilled'], label='PV Glass Waste per Year')
-plt.legend()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 
 
