@@ -13113,20 +13113,67 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Monte-Carlo-Simulation">Monte Carlo Simulation<a class="anchor-link" href="#Monte-Carlo-Simulation">&#182;</a></h1><p>Currently using a normal distribution.
+Next steps: modify distribution to random distribution between limits, or triangular. 
+    Also, check with experts the boundaries guestimates.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">)</span>
 
 <span class="c1"># Another option using relative address; for some operative systems you might need &#39;/&#39; instead of &#39;\&#39;</span>
-<span class="c1"># testfolder = os.path.abspath(r&#39;..\..\PV_DEMICE\TEMP&#39;)  </span>
+<span class="c1"># testfolder = os.path.abspath(r&#39;..\..\PV_ICE\TEMP&#39;)  </span>
 
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Your simulation will be stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">testfolder</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Start-PV_ICE-baseline">Start PV_ICE baseline<a class="anchor-link" href="#Start-PV_ICE-baseline">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
 </pre></div>
 
     </div>
@@ -13148,35 +13195,6 @@ div#notebook {
 <span class="k">else</span><span class="p">:</span>
     <span class="n">MODULEBASELINE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_modules_US.csv&#39;</span>
     <span class="n">MATERIALBASELINE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_&#39;</span><span class="o">+</span><span class="n">MATERIAL</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13217,120 +13235,12 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_MFG_eff&#39;</span><span class="p">]</span>
-</pre></div>
-
-    </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Montecarlo-Parameters">Montecarlo Parameters<a class="anchor-link" href="#Montecarlo-Parameters">&#182;</a></h3>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>0     90.0
-1     90.0
-2     90.0
-3     90.0
-4     90.0
-5     90.0
-6     90.0
-7     90.0
-8     90.0
-9     90.0
-10    90.0
-11    90.0
-12    90.0
-13    90.0
-14    90.0
-15    90.0
-16    90.0
-17    90.0
-18    90.0
-19    90.0
-20    90.0
-21    90.0
-22    90.0
-23    90.0
-24    90.0
-25    90.0
-26    90.0
-27    90.0
-28    90.0
-29    90.0
-30    90.0
-31    90.0
-32    90.0
-33    90.0
-34    90.0
-35    90.0
-36    90.0
-37    90.0
-38    90.0
-39    90.0
-40    90.0
-41    90.0
-42    90.0
-43    90.0
-44    90.0
-45    90.0
-46    90.0
-47    90.0
-48    90.0
-49    90.0
-50    90.0
-51    90.0
-52    90.0
-53    90.0
-54    90.0
-55    90.0
-Name: mod_MFG_eff, dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13339,18 +13249,21 @@ Name: mod_MFG_eff, dtype: float64</pre>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">avg</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">std_dev</span> <span class="o">=</span> <span class="o">.</span><span class="mi">1</span>
-<span class="n">num_reps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_MFG_eff&#39;</span><span class="p">])</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">num_simulations = 100</span>
-<span class="sd">pct_to_target = np.random.normal(avg, std_dev, num_reps).round(2)</span>
-<span class="sd">pct_to_target</span>
-<span class="sd">&quot;&quot;&quot;</span><span class="p">;</span>
+<span class="n">num_reps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_MFG_eff&#39;</span><span class="p">])</span>   <span class="c1"># So each row gets a new value</span>
+<span class="n">num_simulations</span> <span class="o">=</span> <span class="mi">500</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Variables-that-are--being-MonteCarlo-ed">Variables that are  being MonteCarlo-ed<a class="anchor-link" href="#Variables-that-are--being-MonteCarlo-ed">&#182;</a></h3>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13371,14 +13284,19 @@ Name: mod_MFG_eff, dtype: float64</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Creating-the-Multiple-Monte-Carlo-Scenarios">Creating the Multiple Monte Carlo Scenarios<a class="anchor-link" href="#Creating-the-Multiple-Monte-Carlo-Scenarios">&#182;</a></h3>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_simulations</span> <span class="o">=</span> <span class="mi">500</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_simulations</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_simulations</span><span class="p">):</span>
     <span class="n">simname</span> <span class="o">=</span> <span class="s1">&#39;mod_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">simname</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">MODULEBASELINE</span><span class="p">)</span>
     <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">simname</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">MATERIAL</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE</span><span class="p">)</span>
@@ -13397,539 +13315,12 @@ Name: mod_MFG_eff, dtype: float64</pre>
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scenarios</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="n">scenarios</span>
-</pre></div>
-
-    </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h5 id="Visual-Check-of-changes">Visual Check of changes<a class="anchor-link" href="#Visual-Check-of-changes">&#182;</a></h5>
 </div>
 </div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[17]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[&#39;baseline&#39;,
- &#39;mod_0&#39;,
- &#39;mod_1&#39;,
- &#39;mod_2&#39;,
- &#39;mod_3&#39;,
- &#39;mod_4&#39;,
- &#39;mod_5&#39;,
- &#39;mod_6&#39;,
- &#39;mod_7&#39;,
- &#39;mod_8&#39;,
- &#39;mod_9&#39;,
- &#39;mod_10&#39;,
- &#39;mod_11&#39;,
- &#39;mod_12&#39;,
- &#39;mod_13&#39;,
- &#39;mod_14&#39;,
- &#39;mod_15&#39;,
- &#39;mod_16&#39;,
- &#39;mod_17&#39;,
- &#39;mod_18&#39;,
- &#39;mod_19&#39;,
- &#39;mod_20&#39;,
- &#39;mod_21&#39;,
- &#39;mod_22&#39;,
- &#39;mod_23&#39;,
- &#39;mod_24&#39;,
- &#39;mod_25&#39;,
- &#39;mod_26&#39;,
- &#39;mod_27&#39;,
- &#39;mod_28&#39;,
- &#39;mod_29&#39;,
- &#39;mod_30&#39;,
- &#39;mod_31&#39;,
- &#39;mod_32&#39;,
- &#39;mod_33&#39;,
- &#39;mod_34&#39;,
- &#39;mod_35&#39;,
- &#39;mod_36&#39;,
- &#39;mod_37&#39;,
- &#39;mod_38&#39;,
- &#39;mod_39&#39;,
- &#39;mod_40&#39;,
- &#39;mod_41&#39;,
- &#39;mod_42&#39;,
- &#39;mod_43&#39;,
- &#39;mod_44&#39;,
- &#39;mod_45&#39;,
- &#39;mod_46&#39;,
- &#39;mod_47&#39;,
- &#39;mod_48&#39;,
- &#39;mod_49&#39;,
- &#39;mod_50&#39;,
- &#39;mod_51&#39;,
- &#39;mod_52&#39;,
- &#39;mod_53&#39;,
- &#39;mod_54&#39;,
- &#39;mod_55&#39;,
- &#39;mod_56&#39;,
- &#39;mod_57&#39;,
- &#39;mod_58&#39;,
- &#39;mod_59&#39;,
- &#39;mod_60&#39;,
- &#39;mod_61&#39;,
- &#39;mod_62&#39;,
- &#39;mod_63&#39;,
- &#39;mod_64&#39;,
- &#39;mod_65&#39;,
- &#39;mod_66&#39;,
- &#39;mod_67&#39;,
- &#39;mod_68&#39;,
- &#39;mod_69&#39;,
- &#39;mod_70&#39;,
- &#39;mod_71&#39;,
- &#39;mod_72&#39;,
- &#39;mod_73&#39;,
- &#39;mod_74&#39;,
- &#39;mod_75&#39;,
- &#39;mod_76&#39;,
- &#39;mod_77&#39;,
- &#39;mod_78&#39;,
- &#39;mod_79&#39;,
- &#39;mod_80&#39;,
- &#39;mod_81&#39;,
- &#39;mod_82&#39;,
- &#39;mod_83&#39;,
- &#39;mod_84&#39;,
- &#39;mod_85&#39;,
- &#39;mod_86&#39;,
- &#39;mod_87&#39;,
- &#39;mod_88&#39;,
- &#39;mod_89&#39;,
- &#39;mod_90&#39;,
- &#39;mod_91&#39;,
- &#39;mod_92&#39;,
- &#39;mod_93&#39;,
- &#39;mod_94&#39;,
- &#39;mod_95&#39;,
- &#39;mod_96&#39;,
- &#39;mod_97&#39;,
- &#39;mod_98&#39;,
- &#39;mod_99&#39;,
- &#39;mod_100&#39;,
- &#39;mod_101&#39;,
- &#39;mod_102&#39;,
- &#39;mod_103&#39;,
- &#39;mod_104&#39;,
- &#39;mod_105&#39;,
- &#39;mod_106&#39;,
- &#39;mod_107&#39;,
- &#39;mod_108&#39;,
- &#39;mod_109&#39;,
- &#39;mod_110&#39;,
- &#39;mod_111&#39;,
- &#39;mod_112&#39;,
- &#39;mod_113&#39;,
- &#39;mod_114&#39;,
- &#39;mod_115&#39;,
- &#39;mod_116&#39;,
- &#39;mod_117&#39;,
- &#39;mod_118&#39;,
- &#39;mod_119&#39;,
- &#39;mod_120&#39;,
- &#39;mod_121&#39;,
- &#39;mod_122&#39;,
- &#39;mod_123&#39;,
- &#39;mod_124&#39;,
- &#39;mod_125&#39;,
- &#39;mod_126&#39;,
- &#39;mod_127&#39;,
- &#39;mod_128&#39;,
- &#39;mod_129&#39;,
- &#39;mod_130&#39;,
- &#39;mod_131&#39;,
- &#39;mod_132&#39;,
- &#39;mod_133&#39;,
- &#39;mod_134&#39;,
- &#39;mod_135&#39;,
- &#39;mod_136&#39;,
- &#39;mod_137&#39;,
- &#39;mod_138&#39;,
- &#39;mod_139&#39;,
- &#39;mod_140&#39;,
- &#39;mod_141&#39;,
- &#39;mod_142&#39;,
- &#39;mod_143&#39;,
- &#39;mod_144&#39;,
- &#39;mod_145&#39;,
- &#39;mod_146&#39;,
- &#39;mod_147&#39;,
- &#39;mod_148&#39;,
- &#39;mod_149&#39;,
- &#39;mod_150&#39;,
- &#39;mod_151&#39;,
- &#39;mod_152&#39;,
- &#39;mod_153&#39;,
- &#39;mod_154&#39;,
- &#39;mod_155&#39;,
- &#39;mod_156&#39;,
- &#39;mod_157&#39;,
- &#39;mod_158&#39;,
- &#39;mod_159&#39;,
- &#39;mod_160&#39;,
- &#39;mod_161&#39;,
- &#39;mod_162&#39;,
- &#39;mod_163&#39;,
- &#39;mod_164&#39;,
- &#39;mod_165&#39;,
- &#39;mod_166&#39;,
- &#39;mod_167&#39;,
- &#39;mod_168&#39;,
- &#39;mod_169&#39;,
- &#39;mod_170&#39;,
- &#39;mod_171&#39;,
- &#39;mod_172&#39;,
- &#39;mod_173&#39;,
- &#39;mod_174&#39;,
- &#39;mod_175&#39;,
- &#39;mod_176&#39;,
- &#39;mod_177&#39;,
- &#39;mod_178&#39;,
- &#39;mod_179&#39;,
- &#39;mod_180&#39;,
- &#39;mod_181&#39;,
- &#39;mod_182&#39;,
- &#39;mod_183&#39;,
- &#39;mod_184&#39;,
- &#39;mod_185&#39;,
- &#39;mod_186&#39;,
- &#39;mod_187&#39;,
- &#39;mod_188&#39;,
- &#39;mod_189&#39;,
- &#39;mod_190&#39;,
- &#39;mod_191&#39;,
- &#39;mod_192&#39;,
- &#39;mod_193&#39;,
- &#39;mod_194&#39;,
- &#39;mod_195&#39;,
- &#39;mod_196&#39;,
- &#39;mod_197&#39;,
- &#39;mod_198&#39;,
- &#39;mod_199&#39;,
- &#39;mod_200&#39;,
- &#39;mod_201&#39;,
- &#39;mod_202&#39;,
- &#39;mod_203&#39;,
- &#39;mod_204&#39;,
- &#39;mod_205&#39;,
- &#39;mod_206&#39;,
- &#39;mod_207&#39;,
- &#39;mod_208&#39;,
- &#39;mod_209&#39;,
- &#39;mod_210&#39;,
- &#39;mod_211&#39;,
- &#39;mod_212&#39;,
- &#39;mod_213&#39;,
- &#39;mod_214&#39;,
- &#39;mod_215&#39;,
- &#39;mod_216&#39;,
- &#39;mod_217&#39;,
- &#39;mod_218&#39;,
- &#39;mod_219&#39;,
- &#39;mod_220&#39;,
- &#39;mod_221&#39;,
- &#39;mod_222&#39;,
- &#39;mod_223&#39;,
- &#39;mod_224&#39;,
- &#39;mod_225&#39;,
- &#39;mod_226&#39;,
- &#39;mod_227&#39;,
- &#39;mod_228&#39;,
- &#39;mod_229&#39;,
- &#39;mod_230&#39;,
- &#39;mod_231&#39;,
- &#39;mod_232&#39;,
- &#39;mod_233&#39;,
- &#39;mod_234&#39;,
- &#39;mod_235&#39;,
- &#39;mod_236&#39;,
- &#39;mod_237&#39;,
- &#39;mod_238&#39;,
- &#39;mod_239&#39;,
- &#39;mod_240&#39;,
- &#39;mod_241&#39;,
- &#39;mod_242&#39;,
- &#39;mod_243&#39;,
- &#39;mod_244&#39;,
- &#39;mod_245&#39;,
- &#39;mod_246&#39;,
- &#39;mod_247&#39;,
- &#39;mod_248&#39;,
- &#39;mod_249&#39;,
- &#39;mod_250&#39;,
- &#39;mod_251&#39;,
- &#39;mod_252&#39;,
- &#39;mod_253&#39;,
- &#39;mod_254&#39;,
- &#39;mod_255&#39;,
- &#39;mod_256&#39;,
- &#39;mod_257&#39;,
- &#39;mod_258&#39;,
- &#39;mod_259&#39;,
- &#39;mod_260&#39;,
- &#39;mod_261&#39;,
- &#39;mod_262&#39;,
- &#39;mod_263&#39;,
- &#39;mod_264&#39;,
- &#39;mod_265&#39;,
- &#39;mod_266&#39;,
- &#39;mod_267&#39;,
- &#39;mod_268&#39;,
- &#39;mod_269&#39;,
- &#39;mod_270&#39;,
- &#39;mod_271&#39;,
- &#39;mod_272&#39;,
- &#39;mod_273&#39;,
- &#39;mod_274&#39;,
- &#39;mod_275&#39;,
- &#39;mod_276&#39;,
- &#39;mod_277&#39;,
- &#39;mod_278&#39;,
- &#39;mod_279&#39;,
- &#39;mod_280&#39;,
- &#39;mod_281&#39;,
- &#39;mod_282&#39;,
- &#39;mod_283&#39;,
- &#39;mod_284&#39;,
- &#39;mod_285&#39;,
- &#39;mod_286&#39;,
- &#39;mod_287&#39;,
- &#39;mod_288&#39;,
- &#39;mod_289&#39;,
- &#39;mod_290&#39;,
- &#39;mod_291&#39;,
- &#39;mod_292&#39;,
- &#39;mod_293&#39;,
- &#39;mod_294&#39;,
- &#39;mod_295&#39;,
- &#39;mod_296&#39;,
- &#39;mod_297&#39;,
- &#39;mod_298&#39;,
- &#39;mod_299&#39;,
- &#39;mod_300&#39;,
- &#39;mod_301&#39;,
- &#39;mod_302&#39;,
- &#39;mod_303&#39;,
- &#39;mod_304&#39;,
- &#39;mod_305&#39;,
- &#39;mod_306&#39;,
- &#39;mod_307&#39;,
- &#39;mod_308&#39;,
- &#39;mod_309&#39;,
- &#39;mod_310&#39;,
- &#39;mod_311&#39;,
- &#39;mod_312&#39;,
- &#39;mod_313&#39;,
- &#39;mod_314&#39;,
- &#39;mod_315&#39;,
- &#39;mod_316&#39;,
- &#39;mod_317&#39;,
- &#39;mod_318&#39;,
- &#39;mod_319&#39;,
- &#39;mod_320&#39;,
- &#39;mod_321&#39;,
- &#39;mod_322&#39;,
- &#39;mod_323&#39;,
- &#39;mod_324&#39;,
- &#39;mod_325&#39;,
- &#39;mod_326&#39;,
- &#39;mod_327&#39;,
- &#39;mod_328&#39;,
- &#39;mod_329&#39;,
- &#39;mod_330&#39;,
- &#39;mod_331&#39;,
- &#39;mod_332&#39;,
- &#39;mod_333&#39;,
- &#39;mod_334&#39;,
- &#39;mod_335&#39;,
- &#39;mod_336&#39;,
- &#39;mod_337&#39;,
- &#39;mod_338&#39;,
- &#39;mod_339&#39;,
- &#39;mod_340&#39;,
- &#39;mod_341&#39;,
- &#39;mod_342&#39;,
- &#39;mod_343&#39;,
- &#39;mod_344&#39;,
- &#39;mod_345&#39;,
- &#39;mod_346&#39;,
- &#39;mod_347&#39;,
- &#39;mod_348&#39;,
- &#39;mod_349&#39;,
- &#39;mod_350&#39;,
- &#39;mod_351&#39;,
- &#39;mod_352&#39;,
- &#39;mod_353&#39;,
- &#39;mod_354&#39;,
- &#39;mod_355&#39;,
- &#39;mod_356&#39;,
- &#39;mod_357&#39;,
- &#39;mod_358&#39;,
- &#39;mod_359&#39;,
- &#39;mod_360&#39;,
- &#39;mod_361&#39;,
- &#39;mod_362&#39;,
- &#39;mod_363&#39;,
- &#39;mod_364&#39;,
- &#39;mod_365&#39;,
- &#39;mod_366&#39;,
- &#39;mod_367&#39;,
- &#39;mod_368&#39;,
- &#39;mod_369&#39;,
- &#39;mod_370&#39;,
- &#39;mod_371&#39;,
- &#39;mod_372&#39;,
- &#39;mod_373&#39;,
- &#39;mod_374&#39;,
- &#39;mod_375&#39;,
- &#39;mod_376&#39;,
- &#39;mod_377&#39;,
- &#39;mod_378&#39;,
- &#39;mod_379&#39;,
- &#39;mod_380&#39;,
- &#39;mod_381&#39;,
- &#39;mod_382&#39;,
- &#39;mod_383&#39;,
- &#39;mod_384&#39;,
- &#39;mod_385&#39;,
- &#39;mod_386&#39;,
- &#39;mod_387&#39;,
- &#39;mod_388&#39;,
- &#39;mod_389&#39;,
- &#39;mod_390&#39;,
- &#39;mod_391&#39;,
- &#39;mod_392&#39;,
- &#39;mod_393&#39;,
- &#39;mod_394&#39;,
- &#39;mod_395&#39;,
- &#39;mod_396&#39;,
- &#39;mod_397&#39;,
- &#39;mod_398&#39;,
- &#39;mod_399&#39;,
- &#39;mod_400&#39;,
- &#39;mod_401&#39;,
- &#39;mod_402&#39;,
- &#39;mod_403&#39;,
- &#39;mod_404&#39;,
- &#39;mod_405&#39;,
- &#39;mod_406&#39;,
- &#39;mod_407&#39;,
- &#39;mod_408&#39;,
- &#39;mod_409&#39;,
- &#39;mod_410&#39;,
- &#39;mod_411&#39;,
- &#39;mod_412&#39;,
- &#39;mod_413&#39;,
- &#39;mod_414&#39;,
- &#39;mod_415&#39;,
- &#39;mod_416&#39;,
- &#39;mod_417&#39;,
- &#39;mod_418&#39;,
- &#39;mod_419&#39;,
- &#39;mod_420&#39;,
- &#39;mod_421&#39;,
- &#39;mod_422&#39;,
- &#39;mod_423&#39;,
- &#39;mod_424&#39;,
- &#39;mod_425&#39;,
- &#39;mod_426&#39;,
- &#39;mod_427&#39;,
- &#39;mod_428&#39;,
- &#39;mod_429&#39;,
- &#39;mod_430&#39;,
- &#39;mod_431&#39;,
- &#39;mod_432&#39;,
- &#39;mod_433&#39;,
- &#39;mod_434&#39;,
- &#39;mod_435&#39;,
- &#39;mod_436&#39;,
- &#39;mod_437&#39;,
- &#39;mod_438&#39;,
- &#39;mod_439&#39;,
- &#39;mod_440&#39;,
- &#39;mod_441&#39;,
- &#39;mod_442&#39;,
- &#39;mod_443&#39;,
- &#39;mod_444&#39;,
- &#39;mod_445&#39;,
- &#39;mod_446&#39;,
- &#39;mod_447&#39;,
- &#39;mod_448&#39;,
- &#39;mod_449&#39;,
- &#39;mod_450&#39;,
- &#39;mod_451&#39;,
- &#39;mod_452&#39;,
- &#39;mod_453&#39;,
- &#39;mod_454&#39;,
- &#39;mod_455&#39;,
- &#39;mod_456&#39;,
- &#39;mod_457&#39;,
- &#39;mod_458&#39;,
- &#39;mod_459&#39;,
- &#39;mod_460&#39;,
- &#39;mod_461&#39;,
- &#39;mod_462&#39;,
- &#39;mod_463&#39;,
- &#39;mod_464&#39;,
- &#39;mod_465&#39;,
- &#39;mod_466&#39;,
- &#39;mod_467&#39;,
- &#39;mod_468&#39;,
- &#39;mod_469&#39;,
- &#39;mod_470&#39;,
- &#39;mod_471&#39;,
- &#39;mod_472&#39;,
- &#39;mod_473&#39;,
- &#39;mod_474&#39;,
- &#39;mod_475&#39;,
- &#39;mod_476&#39;,
- &#39;mod_477&#39;,
- &#39;mod_478&#39;,
- &#39;mod_479&#39;,
- &#39;mod_480&#39;,
- &#39;mod_481&#39;,
- &#39;mod_482&#39;,
- &#39;mod_483&#39;,
- &#39;mod_484&#39;,
- &#39;mod_485&#39;,
- &#39;mod_486&#39;,
- &#39;mod_487&#39;,
- &#39;mod_488&#39;,
- &#39;mod_489&#39;,
- &#39;mod_490&#39;,
- &#39;mod_491&#39;,
- &#39;mod_492&#39;,
- &#39;mod_493&#39;,
- &#39;mod_494&#39;,
- &#39;mod_495&#39;,
- &#39;mod_496&#39;,
- &#39;mod_497&#39;,
- &#39;mod_498&#39;,
- &#39;mod_499&#39;]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -14075,16 +13466,208 @@ Name: mod_MFG_eff, dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;mod_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[59]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>new_Installed_Capacity_[MW]</th>
+      <th>mod_eff</th>
+      <th>mod_reliability_t50</th>
+      <th>mod_reliability_t90</th>
+      <th>mod_degradation</th>
+      <th>mod_lifetime</th>
+      <th>mod_MFG_eff</th>
+      <th>mod_EOL_collection_eff</th>
+      <th>mod_EOL_collected_recycled</th>
+      <th>...</th>
+      <th>EOL_on_Year_50</th>
+      <th>EOL_on_Year_51</th>
+      <th>EOL_on_Year_52</th>
+      <th>EOL_on_Year_53</th>
+      <th>EOL_on_Year_54</th>
+      <th>EOL_on_Year_55</th>
+      <th>EoL_Collected</th>
+      <th>EoL_NotCollected</th>
+      <th>EoL_Recycled</th>
+      <th>EoL_NotRecycled_Landfilled</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1995</td>
+      <td>12.500000</td>
+      <td>12.8750</td>
+      <td>15.0</td>
+      <td>20.0</td>
+      <td>0.4895</td>
+      <td>10.0</td>
+      <td>98.1</td>
+      <td>12.75</td>
+      <td>36.8</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1996</td>
+      <td>9.667667</td>
+      <td>12.3190</td>
+      <td>15.0</td>
+      <td>20.0</td>
+      <td>0.5225</td>
+      <td>10.0</td>
+      <td>83.7</td>
+      <td>14.55</td>
+      <td>44.8</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.121011</td>
+      <td>0.710678</td>
+      <td>0.054213</td>
+      <td>0.066798</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1997</td>
+      <td>11.622000</td>
+      <td>11.4632</td>
+      <td>19.0</td>
+      <td>23.0</td>
+      <td>0.5280</td>
+      <td>15.0</td>
+      <td>100.0</td>
+      <td>13.35</td>
+      <td>36.8</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.092630</td>
+      <td>13.582501</td>
+      <td>0.770088</td>
+      <td>1.322542</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1998</td>
+      <td>11.781000</td>
+      <td>10.9704</td>
+      <td>19.0</td>
+      <td>23.0</td>
+      <td>0.5555</td>
+      <td>15.0</td>
+      <td>99.0</td>
+      <td>15.75</td>
+      <td>34.4</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>14.736295</td>
+      <td>78.827485</td>
+      <td>5.069286</td>
+      <td>9.667010</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1999</td>
+      <td>16.884667</td>
+      <td>14.2992</td>
+      <td>19.0</td>
+      <td>23.0</td>
+      <td>0.5280</td>
+      <td>15.0</td>
+      <td>88.2</td>
+      <td>15.60</td>
+      <td>39.6</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>52.402274</td>
+      <td>283.509738</td>
+      <td>20.751300</td>
+      <td>31.650973</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 79 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Calculate-Mass-Flow-for-all-Monte-Carlo-Simulations">Calculate Mass Flow for all Monte Carlo Simulations<a class="anchor-link" href="#Calculate-Mass-Flow-for-all-Monte-Carlo-Simulations">&#182;</a></h3><p>This might take a wile depending on number. ~1.5 mississipis per simulation.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -16120,6 +15703,26 @@ Finished Area+Power Generation Calculations
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Compiling-Results">Compiling Results<a class="anchor-link" href="#Compiling-Results">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scenarios</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[32]:</div>
@@ -16150,20 +15753,9 @@ Finished Area+Power Generation Calculations
 <div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stages</span> <span class="o">=</span> <span class="n">scenarios</span><span class="p">[</span><span class="mi">1</span><span class="p">::]</span>
-</pre></div>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">stages</span> <span class="o">=</span> <span class="n">scenarios</span><span class="p">[</span><span class="mi">1</span><span class="p">::]</span>    <span class="c1"># Removing the baseline</span>
 
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">virginStock_Changes</span><span class="p">,</span> <span class="n">waste_Changes</span><span class="p">)),</span> 
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">virginStock_Changes</span><span class="p">,</span> <span class="n">waste_Changes</span><span class="p">)),</span> 
                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Virgin Needs Change&#39;</span><span class="p">,</span> <span class="s1">&#39;Waste Change&#39;</span><span class="p">],</span><span class="n">index</span><span class="o">=</span><span class="n">stages</span><span class="p">)</span> 
 </pre></div>
 
@@ -16178,7 +15770,6 @@ Finished Area+Power Generation Calculations
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
-<span class="c1">#plt.text(0.9, -0.2, &#39;Percent Change compared to baseline&#39;, ha=&#39;center&#39;);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.85</span><span class="p">,</span> <span class="o">-</span><span class="mf">20.5</span><span class="p">,</span> <span class="s1">&#39;Change compared to baseline [%]&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">);</span>
 </pre></div>
 
@@ -16205,85 +15796,6 @@ Finished Area+Power Generation Calculations
 
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[27]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>array([89.94])</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">avg = r1.scenario[&#39;baseline&#39;].data[&#39;mod_MFG_eff&#39;][0]</span>
-<span class="sd">std_dev = .1</span>
-<span class="sd">num_reps = 100</span>
-<span class="sd">num_simulations = 100</span>
-<span class="sd">pct_to_target = np.random.normal(avg, std_dev, 1).round(2)</span>
-<span class="sd">pct_to_target</span>
-<span class="sd">&quot;&quot;&quot;</span><span class="p">;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
 </div>
 </div>
 
