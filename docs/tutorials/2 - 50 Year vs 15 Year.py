@@ -5,7 +5,7 @@
 # 
 # Comparison case using the functions in CE-MFC to compare 15 year module reliability vs 50 year module reliability.
 
-# In[17]:
+# In[1]:
 
 
 import os
@@ -19,13 +19,13 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[18]:
+# In[2]:
 
 
 import PV_ICE
 
 
-# In[19]:
+# In[3]:
 
 
 import matplotlib.pyplot as plt
@@ -35,7 +35,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[20]:
+# In[4]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -52,17 +52,17 @@ r1.scenario['30_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_
 r1.scenario['30_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
 
-# In[21]:
+# In[5]:
 
 
 r1.scenario['50_Year_Module'].data.keys()
 
 
-# In[22]:
+# In[6]:
 
 
-r1.scenario['50_Year_Module'].data['mod_reliability_t50'] = 55
-r1.scenario['50_Year_Module'].data['mod_reliability_t90'] = 60
+r1.scenario['50_Year_Module'].data['mod_reliability_t50'] = 60
+r1.scenario['50_Year_Module'].data['mod_reliability_t90'] = 70
 r1.scenario['50_Year_Module'].data['mod_lifetime'] = 50
 
 r1.scenario['15_Year_Module'].data['mod_reliability_t50'] = 15
@@ -74,25 +74,42 @@ r1.scenario['30_Year_Module'].data['mod_reliability_t90'] = 35
 r1.scenario['30_Year_Module'].data['mod_lifetime'] = 30
 
 
-# In[23]:
+# In[7]:
+
+
+IRENA= True
+ELorRL = 'RL'
+if IRENA:
+    if ELorRL == 'RL':
+        weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
+    if ELorRL == 'EL':
+        weibullInputParams = {'alpha': 2.49, 'beta': 30}  # Regular-loss scenario IRENA
+    r1.calculateMassFlow(weibullInputParams=weibullInputParams)
+    title_Method = 'Irena_'+ELorRL
+else:
+    r1.calculateMassFlow()
+    title_Method = 'PVICE'
+
+
+# In[8]:
 
 
 r1.calculateMassFlow()
 
 
-# In[24]:
+# In[9]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 
 
-# In[25]:
+# In[10]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 
 
-# In[26]:
+# In[11]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
