@@ -72,3 +72,25 @@ def test_infinite_Weibull():
     round(r1.scenario['standard'].material['glass'].materialdata['mat_Total_Landfilled'][30],0))
     assert (round(r1.scenario['standard'].material['glass'].materialdata['mat_Total_Landfilled'][0],0) ==
     round(r1.scenario['standard'].material['glass'].materialdata['mat_Total_EOL_Landfilled'][0],0))
+
+
+def test_landfilledArea_vs_AreafromWaste():
+    r1 = PV_ICE.Simulation()
+    r1.createScenario('standard', file=MODULEBASELINE)
+    r1.scenario['standard'].addMaterial('glass', file=MATERIALBASELINE)
+    r1.scenario['standard'].data['mod_EOL_collection_eff'] = 0.0
+    r1.calculateMassFlow()
+    data = r1.scenario['standard'].data
+    matdata = r1.scenario['standard'].material['glass'].materialdata
+    UscumAreaDisp_100years = data['Cumulative_Area_disposed'].cumsum()
+    UscumAreaDisp_100years = UscumAreaDisp_100years*1e-6 # convert to km2
+    B = UscumAreaDisp_100years.iloc[-1]
+    
+    UScumLandfillGr_disposed_tonnes = matdata['mat_Total_Landfilled']/1000000
+    UScumLandfillGr_disposed_tonnes = UScumLandfillGr_disposed_tonnes.cumsum()
+    A = UScumLandfillGr_disposed_tonnes.iloc[-1]
+    A = A*1000 # convet to kg
+    A = A/20 # convert to modules if each module is 22 kg
+    A = A*2 # convert to area if each module is ~2 m2
+    A = A*1e-6 # Convert to km 2
+    assert (round(A,0) == (round(B,0))  

@@ -44,6 +44,12 @@ itrpv_ag_gpc = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/ag_g_
                            index_col='Year', usecols=lambda x: x not in skipcols)
 
 
+# In[5]:
+
+
+itrpv_ag_gpc
+
+
 # In[3]:
 
 

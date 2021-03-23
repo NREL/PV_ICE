@@ -2534,6 +2534,24 @@ print("Cumulative Area by 2050 of Waste PV Material", A, " km$^2$")
 print("Cumulative Area by 2050 of Waste PV Material", B, " km$^2$")
 
 
+# In[79]:
+
+
+(USyearly['Waste_Module_Reference.Mod'].iloc[-1]  # Tonnes
+
+
+# In[80]:
+
+
+UScum['Waste_Module_Reference.Mod'].iloc[-1]   # Tonnes
+
+
+# In[81]:
+
+
+52294865.36183769/1e6
+
+
 # In[ ]:
 
 
