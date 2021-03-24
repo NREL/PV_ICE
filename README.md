@@ -105,7 +105,7 @@ Getting support
 
 If you suspect that you may have discovered a bug or if you'd like to
 change something about CF-MFA, then please make an issue on our
-[GitHub issues page](https://github.com/NREL/CircularEconomy-MassFlowCalculator/issues).
+[GitHub issues page](https://github.com/NREL/PV_ICe/issues).
 
 
 Citing
@@ -118,6 +118,10 @@ If you use PV_ICE in a published work, please cite:
 	Economy Metrics with Open-Source Calculator for PV” 
 	2020 PV Reliability Workshop, Denver CO.
 
-Please also cite the DOI corresponding to the specific version of
+and also please also cite the DOI corresponding to the specific version of
 PV_ICE that you used. PV_ICE DOIs are listed at
-[Zenodo.org](https://zenodo.org/)
+[Zenodo.org](https://zenodo.org/). For example for version 0.1.0:
+
+	Silvana Ayala Pelaez, Heather Mirletz, & Tim Silverman. 
+	(2020, December 16). NREL/PV_ICE: First Release v0.1.0 
+	(Version v0.1.0). Zenodo. http://doi.org/10.5281/zenodo.4324011
