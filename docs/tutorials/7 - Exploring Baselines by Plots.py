@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Baseline Plotting
+# # 7 - Exploring Baselines by Plots
 # 
-# This Journal supports the documentation of the baseline input files for the PV_ICE calculator by graphing all baseline inputs of modules and materials for all years. Currently, this includes:
-# - USA module installs
-# - Global module intalls
+# This Journal documents the current baseline input files for PV_ICE claculator by graphing all the variable inputs.
 # 
-# And materials such as:
-# - glass
-# - silicon
-# - silver (preliminary)
+# Plots are also made for the upper and lower confidence limits of those variables. 
+# 
+# This journal is in development, with future improvements:
+#     - Improve ylabels so that it's a readable expression instead of the varible names. For the moment, reffer to the documentation to know the details of the different variables being plotted.
+#     - Updated upper and lower confidence limits to follow triangular distribution. For the moment, using the values of the sensitivity analysis.
+# 
 
-# In[12]:
+# In[1]:
 
 
 import PV_ICE
@@ -23,14 +23,14 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 
-# In[13]:
+# In[2]:
 
 
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[14]:
+# In[3]:
 
 
 testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
@@ -43,68 +43,78 @@ print ("Your simulation will be stored in %s" % testfolder)
 
 # ## Select Module Baseline and Material baseline to Plot:
 
-# In[18]:
+# These are the current options in the baselines folder:
+
+# In[4]:
 
 
-USBaseline = True
+baselineoptions = ['US', 'WORLD']
+materialoptions = ['glass', 'glass_bifacialTrend', 'silicon', 'silver', 'copper', 'aluminium_frames']
 
-if USBaseline:
-    MODULEBASELINE=r'..\baselines\baseline_modules_US.csv'
-else:
-    MODULEBASELINE=r'..\baselines\baseline_modules_WORLD.csv'
 
-MATERIAL = 'glass' # Other options: silicon, silver, aluminum
+# In[5]:
+
+
+baselinewanted = 0
+materialwanted = 0
+
+MODULEBASELINE=r'..\baselines\baseline_modules_'+baselineoptions[baselinewanted]+'.csv'
+MATERIAL =materialoptions[materialwanted]
 MATERIALBASELINE=r'..\baselines\baseline_material_'+MATERIAL+'.csv'
 
 
 # ## Create Simulation
 
-# In[25]:
+# In[6]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='standard', file=os.path.join(baselinesfolder,  MODULEBASELINE))
+#r1.createScenario(name='standard', file=os.path.join(baselinesfolder,  MODULEBASELINE))
+r1.createScenario(name='standard', file=MODULEBASELINE)
+
 r1.scenario['standard'].addMaterial(MATERIAL, file=MATERIALBASELINE)
 r1.calculateMassFlow()
 
 
-# #### Explore loaded Baselines
-
-# In[26]:
-
-
-r1.scenario['standard'].data.head()
-
-
-# In[27]:
-
-
-r1.scenario['standard'].material[MATERIAL].materialdata.head()
-
-
 # #### Generate variable list of data and material data. 
 # 
-# This journal plots only baselines, not generated results so it's not all columns after running the mass flow
+# This journal plots only baselines, not generated results so it's not all columns after running the mass flow. The input data labels and units are kept intact in metdata so using that to set module keys and material keys
 
-# In[89]:
+# In[7]:
 
 
+# module keys
 keys = list(r1.scenario['standard'].metdata[0])
 keys = keys[1::]
 keys
 
 
-# In[76]:
+# In[8]:
 
 
+# material keys
 matkeys = list(r1.scenario['standard'].material[MATERIAL].materialmetdata)
 matkeys = matkeys[1::]
 matkeys
 
 
-# ### Plot all keys
+# ### Module Individual Plots by Key
 
-# In[82]:
+# In[9]:
+
+
+for k in keys:
+    plt.figure()
+    plt.plot(r1.scenario['standard'].data.year, r1.scenario['standard'].data[k])
+    plt.xlabel('Year')
+    plt.ylabel(k+' ['+r1.scenario['standard'].metdata[0][k]+']')
+
+
+# ### Combined Plot For All Keys
+
+# #### Module Keys
+
+# In[10]:
 
 
 prows=int(np.ceil((len(keys)+1)/3))
@@ -136,7 +146,9 @@ axs[i].set_xlim(1995, 2050)
 axs[i].set_xlim(1995, 2050)
 
 
-# In[97]:
+# #### Material Keys
+
+# In[11]:
 
 
 prows=int(np.ceil((len(matkeys)+1)/3))
@@ -156,12 +168,19 @@ for i in range(0, len(matkeys)):
     axs[i].set_xlim(1995, 2050)
 
 
-# ## Plot with Limits
+# ## Combined Plot with Levels of Confidence 
+# 
+# The following plots are organized in a custom manner, and include shaded areas marking the upper and lower limits of confidence.
+# 
 
-# In[103]:
+# #### Set Upper and Lower Limits
+# 
+# 
+# Note: at the moment the limits of confidence are marked as the sensitivities explored in the publication in progress. A tringular distribution with distinct limits will be updated at a later time.
+
+# In[12]:
 
 
-# absolutes
 upperlimit = {'new_Installed_Capacity_[MW]': 5,    # relative
  'mod_eff': 3,                                     # absolute
  'mod_reliability_t50': 5,                         # absolute
@@ -174,7 +193,6 @@ upperlimit = {'new_Installed_Capacity_[MW]': 5,    # relative
  'mod_Repowering': 10,                             #absolute
  'mod_Repairing':10}
 
-# absolutes
 lowerlimit = {'new_Installed_Capacity_[MW]': 5,        # relative
  'mod_eff': 3,                                     # absolute
  'mod_reliability_t50': 5,                         # absolute
@@ -188,15 +206,41 @@ lowerlimit = {'new_Installed_Capacity_[MW]': 5,        # relative
  'mod_Repairing':10}
 
 
-# In[ ]:
+# In[13]:
 
 
 
+matupperlimit = {'mat_virgin_eff': 10,               # absolute
+ 'mat_massperm2': 10,                                # relative
+ 'mat_MFG_eff': 10,                                  # absolute
+ 'mat_MFG_scrap_Recycled': 10,                       # absolute
+ 'mat_MFG_scrap_Recycling_eff': 10,                  # absolute
+ 'mat_MFG_scrap_Recycled_into_HQ': 10,               # absolute
+ 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': 10,    # absolute
+ 'mat_EOL_collected_Recycled': 10,                   # absolute
+ 'mat_EOL_Recycling_eff': 10,                        # absolute
+ 'mat_EOL_Recycled_into_HQ': 10,                     #absolute
+ 'mat_EOL_RecycledHQ_Reused4MFG':10}
 
 
-# #### Reducing keys so that lifetime-related ones are plotted together
+matlowerlimit = {'mat_virgin_eff': 10,                  # absolute
+ 'mat_massperm2': 10,                                # relative
+ 'mat_MFG_eff': 10,                                  # absolute
+ 'mat_MFG_scrap_Recycled': 10,                       # absolute
+ 'mat_MFG_scrap_Recycling_eff': 10,                  # absolute
+ 'mat_MFG_scrap_Recycled_into_HQ': 10,               # absolute
+ 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': 10,    # absolute
+ 'mat_EOL_collected_Recycled': 10,                   # absolute
+ 'mat_EOL_Recycling_eff': 10,                        # absolute
+ 'mat_EOL_Recycled_into_HQ': 10,                     #absolute
+ 'mat_EOL_RecycledHQ_Reused4MFG':10}
 
-# In[117]:
+
+# #### Module Plots with Levels of Confidence
+
+# First creating a key subset keys so that lifetime-related ones are plotted together
+
+# In[14]:
 
 
 keys = ['new_Installed_Capacity_[MW]',
@@ -209,15 +253,10 @@ keys = ['new_Installed_Capacity_[MW]',
  'mod_Repairing']
 
 
-# In[118]:
+# In[15]:
 
 
-(r1.scenario['standard'].data[k]+upperlimit[k]).clip(lower=0.0, upper=100.0)
-
-
-# In[134]:
-
-
+# Plotting
 prows=int(np.ceil((len(keys)+1)/3))
 
 plt.rcParams.update({'font.size': 12})
@@ -313,49 +352,9 @@ axs[i].legend()
 axs[i].set_xlim(1995, 2050)
 
 
-# In[135]:
+# #### Material Level
 
-
-matkeys
-
-
-# In[139]:
-
-
-# absolutes
-matupperlimit = {'mat_virgin_eff': 10,               # absolute
- 'mat_massperm2': 10,                                # relative
- 'mat_MFG_eff': 10,                                  # absolute
- 'mat_MFG_scrap_Recycled': 10,                       # absolute
- 'mat_MFG_scrap_Recycling_eff': 10,                  # absolute
- 'mat_MFG_scrap_Recycled_into_HQ': 10,               # absolute
- 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': 10,    # absolute
- 'mat_EOL_collected_Recycled': 10,                   # absolute
- 'mat_EOL_Recycling_eff': 10,                        # absolute
- 'mat_EOL_Recycled_into_HQ': 10,                     #absolute
- 'mat_EOL_RecycledHQ_Reused4MFG':10}
-
-# absolutes
-matlowerlimit = {'mat_virgin_eff': 10,                  # absolute
- 'mat_massperm2': 10,                                # relative
- 'mat_MFG_eff': 10,                                  # absolute
- 'mat_MFG_scrap_Recycled': 10,                       # absolute
- 'mat_MFG_scrap_Recycling_eff': 10,                  # absolute
- 'mat_MFG_scrap_Recycled_into_HQ': 10,               # absolute
- 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': 10,    # absolute
- 'mat_EOL_collected_Recycled': 10,                   # absolute
- 'mat_EOL_Recycling_eff': 10,                        # absolute
- 'mat_EOL_Recycled_into_HQ': 10,                     #absolute
- 'mat_EOL_RecycledHQ_Reused4MFG':10}
-
-
-# In[143]:
-
-
-base
-
-
-# In[149]:
+# In[16]:
 
 
 prows=int(np.ceil((len(matkeys)+1)/3))
@@ -438,215 +437,23 @@ for i in range(3, len(matkeys)):
     axs[i].legend()
 
 
-# In[ ]:
+# ### 3x1 Plot of Module Relability and Efficiency
+
+# In[17]:
 
 
-plt.rcParams.update({'font.size': 10})
-plt.rcParams['figure.figsize'] = (12, 8)
-    
-keywords=['VirginStock_']
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+# 3x1 Plot of Module Relability and Efficiency
 
-fig, axs = plt.subplots(1,1, figsize=(4, 6), facecolor='w', edgecolor='k')
-fig.subplots_adjust(hspace = .3, wspace=.2)
-i = 0
+fig, axs = plt.subplots(1,3, figsize=(15, 6), facecolor='w', edgecolor='k')
+fig.subplots_adjust(hspace = .5, wspace=.2)
+axs = axs.ravel()
 
-obj = SFScenarios[2].name
-# Loop over Keywords
-ii = 0 
-keyw = keywords[ii]
-# Loop over SF Scenarios
-
-# ROW 2, Aluminum and Silicon:        g-  4 aluminum k - 1 silicon   orange - 3 copper  gray - 2 silver
-axs.plot(USyearly[keyw+materials[2]+'_'+SFScenarios[2].name]*100/mining2020_silver, 
-         color = 'gray', linewidth=2.0, label='Silver')
-axs.fill_between(USyearly.index, USyearly[keyw+materials[2]+'_'+SFScenarios[0].name]*100/mining2020_silver, USyearly[keyw+materials[2]+'_'+SFScenarios[2].name]*100/mining2020_silver,
-                   color='gray', lw=3, alpha=.3)
-    
-axs.plot(USyearly[keyw+materials[1]+'_'+SFScenarios[2].name]*100/mining2020_silicon, 
-         color = 'k', linewidth=2.0, label='Silicon')
-axs.fill_between(USyearly.index, USyearly[keyw+materials[1]+'_'+SFScenarios[0].name]*100/mining2020_silicon, 
-                                USyearly[keyw+materials[1]+'_'+SFScenarios[2].name]*100/mining2020_silicon,
-                   color='k', lw=3, alpha=.5)
-
-axs.plot(USyearly[keyw+materials[4]+'_'+SFScenarios[2].name]*100/mining2020_aluminum, 
-         color = 'g', linewi
-
-
-for i in range(1, len(keys)):
-    k = keys[i]
-    upperlim = r1.scenario['standard'].data[k]+upperlimit[k].clip(100)
-    lowerlim = r1.scenario['standard'].data[k]-lowerlimit[k].clip(0)
-    axs[i].plot(r1.scenario['standard'].data.year, upperlim)
-    axs[i].plot(r1.scenario['standard'].data.year, lowerlim)
-    axs[i].set_ylabel(k+' ['+r1.scenario['standard'].metdata[0][k]+']')   
-    axs[i].axvspan(1995, 2018, facecolor='0.9', alpha=0.5)
-    axs[i].axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
-    axs[i].set_xlim(1995, 2050)
-
-
-    
-i +=1
-axs[i].plot(r1.scenario['standard'].data.year, r1.scenario['standard'].data['mod_reliability_t50'])
-axs[i].plot(r1.scenario['standard'].data.year, r1.scenario['standard'].data['mod_reliability_t90'])
-axs[i].plot(r1.scenario['standard'].data.year, r1.scenario['standard'].data['mod_lifetime'])
-axs[i].set_ylabel(k+' ['+r1.scenario['standard'].metdata[0]['mod_reliability_t50']+']')   
-axs[i].axvspan(1995, 2018, facecolor='0.9', alpha=0.5)
-axs[i].axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
-axs[i].set_xlim(1995, 2050)
-
-axs[i].set_xlim(1995, 2050)dth=2.0, label='Aluminum')
-
-
-axs.plot(USyearly[keyw+materials[3]+'_'+SFScenarios[2].name]*100/mining2020_copper, 
-         color = 'orange', linewidth=2.0, label='Copper')
-
-axs.fill_between(USyearly.index, USyearly[keyw+materials[3]+'_'+SFScenarios[0].name]*100/mining2020_copper, 
-                                USyearly[keyw+materials[3]+'_'+SFScenarios[2].name]*100/mining2020_copper,
-                   color='orange', lw=3, alpha=.3)
-
-axs.set_xlim([2020,2050])
-axs.legend()
-#axs.set_yscale('log')
-
-axs.set_ylabel('Virgin material needs as a percentage of 2020 global mining production capacity [%]')
-
-fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production.png', dpi=600)
-
-
-# In[ ]:
-
-
-
-for k in keys:
-    plt.figure()
-    plt.plot(r1.scenario['standard'].data.year, r1.scenario['standard'].data[k])
-    plt.xlabel('Year')
-    plt.ylabel(k+' ['+r1.scenario['standard'].metdata[0][k]+']')
-
-
-# In[45]:
-
-
-for k in keys:
-    plt.figure()
-    plt.plot(r1.scenario['standard'].data.year, r1.scenario['standard'].data[k])
-    plt.xlabel('Year')
-    plt.ylabel(k+' ['+r1.scenario['standard'].metdata[0][k]+']')
-
-
-# In[46]:
-
-
-r1.scenario['standard'].data.year[0]
-
-
-# In[ ]:
-
-
-
-
-
-# In[47]:
-
-
-weibulls = r1.scenario['standard'].data.WeibullParams
-weibulls = pd.DataFrame(weibulls.tolist())
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[48]:
-
-
+# T590 and T90
 avgt= (r1.scenario['standard'].data['mod_reliability_t50']+r1.scenario['standard'].data['mod_reliability_t90'])/2.0
 avgtmax = r1.scenario['standard'].data['mod_reliability_t90']+5
 avgtmin = r1.scenario['standard'].data['mod_reliability_t50']-5
 
-
-# In[49]:
-
-
-df = r1.scenario['standard'].data
-
-#for generation, row in df.iterrows(): 
-    #generation is an int 0,1,2,.... etc.
-generation=0
-row=df.iloc[generation]
-
-t50, t90 = row['t50'], row['t90']   #  t50 = 17.0; t90 = 22.0
-weibullInputParams = weibull_params({t50: 0.50, t90: 0.90})      #  alpha = 4.65, beta = 18.39
-f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
-x = np.clip(df.index - generation, 0, np.inf)
-cdf = list(map(f, x))
-
-
-generation=40
-row=df.iloc[generation]
-t50, t90 = row['t50'], row['t90']   #  t50 = 17.0; t90 = 22.0
-weibullInputParams2 = weibull_params({t50: 0.50, t90: 0.90})      #  alpha = 4.65, beta = 18.39
-g = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
-generation = 0
-x = np.clip(df.index - generation, 0, np.inf)
-gdf = list(map(g, x))
-
-
-#weibullInputParams = {'alpha': 3.4,
-#                      'beta': 4.5}
-
-#g = weibull_cdf(weibullInputParams['alpha'], weibullInputParams['beta'])
-#x = np.clip(df.index - generation, 0, np.inf)
-#gdf = list(map(g, x))
-
-h = weibull_cdf_alphaonly(2.4928, 30)
-x = np.clip(df.index - generation, 0, np.inf)
-hdf = list(map(h, x))
-
-j = weibull_cdf_alphaonly(5.3759, 30)
-x = np.clip(df.index - generation, 0, np.inf)
-jdf = list(map(j, x))
-
-i = weibull_cdf_alphaonly(14.41, 30)
-x = np.clip(df.index - generation, 0, np.inf)
-idf = list(map(i, x))
-
-
-
-plt.plot(cdf, label=r'$ \alpha $ : '+str(round(weibullInputParams['alpha'],2))+ r' $ \beta $ : '+ str(round(weibullInputParams['beta'],2)) + ' PV ICE, gen 1995')
-plt.plot(gdf, label=r'$ \alpha $ : '+str(round(weibullInputParams2['alpha'],2))+ r' $ \beta $ : '+ str(round(weibullInputParams2['beta'],2)) + ' PV ICE, gen 2030')
-plt.plot(hdf, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
-plt.plot(jdf, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
-plt.plot(idf, label=r'$ \alpha $ : 14.41, Upper Shape Factor Kumar 2013')
-plt.legend()
-plt.ylabel('Cumulative Distribution Function (CDF)')
-plt.xlabel('Years since install')
-plt.xlim([0,50])
-plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
-
-#   pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
-
-# In[3]:
-
-
-# In[50]:
-
-
-
-fig, axs = plt.subplots(2,3, figsize=(15, 6), facecolor='w', edgecolor='k')
-fig.subplots_adjust(hspace = .5, wspace=.2)
-axs = axs.ravel()
 i = 0
-
 axs[i].axvspan(1995, 2018, facecolor='0.9', alpha=0.5)
 axs[i].axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
 #axs[i].plot([],[],color='g', label='aluminum', linewidth=5)
@@ -654,7 +461,6 @@ axs[i].plot(r1.scenario['standard'].data.year,r1.scenario['standard'].data['mod_
 axs[i].plot(r1.scenario['standard'].data.year,r1.scenario['standard'].data['mod_reliability_t90'],color='b', label='t90', linewidth=5)
 axs[i].set_xlim([1995, 2050])
 axs[i].plot(r1.scenario['standard'].data.year,r1.scenario['standard'].data['mod_lifetime'],color='k', label='Project Lifetime', linewidth=5)
-
 
 #axs[i].fill_between(r1.scenario['standard'].data.year, r1.scenario['standard'].data['mod_reliability_t50'], r1.scenario['standard'].data['mod_reliability_t90'], 
 #                   alpha= 0.3, color='cyan', lw=3)# , alpha=.6)
@@ -665,39 +471,22 @@ axs[i].set_ylabel('Years')
 axs[i].set_title('Module Reliability points t50 and t90')
 axs[i].legend()
 
+
 # ALPHA AND BETA
 i = 1
-axs[i].plot(weibulls['alpha'])
-axs[i].plot(weibulls['beta'])
+weibulls = r1.scenario['standard'].data.WeibullParams
+weibulls = pd.DataFrame(weibulls.tolist())
+axs[i].plot(r1.scenario['standard'].data.year,weibulls['alpha'])
+axs[i].plot(r1.scenario['standard'].data.year,weibulls['beta'])
+axs[i].legend(['Alpha', 'Beta'])
 
 
 # EFFICIENCY
-i=3
+i=2
 axs[i].axvspan(1995, 2018, facecolor='0.9', alpha=0.5)
 axs[i].axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
 #axs[i].plot([],[],color='g', label='aluminum', linewidth=5)
 axs[i].plot(r1.scenario['standard'].data.year,r1.scenario['standard'].data['mod_eff'],color='g', label='t50', linewidth=5)
 axs[i].set_xlim([1995, 2050])
-
-
-# # Module Files 
-
-# ## USA
-
-# In[ ]:
-
-
-print(baseline_modules_US)
-
-
-# In[ ]:
-
-
-plt.plot(baseline_modules_US)
-
-
-# In[ ]:
-
-
-
+axs[i].set_ylabel('Efficiency [%]');
 

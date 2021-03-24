@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Weibull Options Comparison
+# # 4 - Exploring Weibull
+# 
+# 
+# PV ICE handles failures through a probabilistic distribution, so far in specific the Weibull. The Weibull equation is defined by an Alfa and a Beta parameters. These parameters can be found on literature, or they can be calculated if the reliability is known. Altough other values can be set by changing the probabilities, we use by default:
+#     - T50: number of years when 50 % of the year will be off and 
+#     - T90 are used:
+#     
+# Below we show a couple ways of passing the parameters, plot a comparison between different literature values, and highlight the significance of T50 and T90.
 # 
 
 # In[1]:
@@ -10,6 +17,7 @@
 import PV_ICE
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 r1 = PV_ICE.Simulation(name='Simulation1')
 
@@ -26,7 +34,7 @@ r1.scenario['standard'].addMaterial('glass', file=materialfile)
 
 weibullInputParams = {'alpha': 3.4,
                       'beta': 4.5}
-r1.calculateMassFlow(weibullInputParams=weibullInputParams)
+r1.calculateMassFlow(weibullInputParams=weibullInputParams) 
 print(r1.scenario['standard'].data.WeibullParams.head())
 
 
@@ -35,8 +43,33 @@ print(r1.scenario['standard'].data.WeibullParams.head())
 # In[3]:
 
 
-r1.calculateMassFlow()
+r1.calculateMassFlow()  # Note we are not passing weibullInputParams, 
+#so it defaults to clculating alpha and beta from the T50 and t90 passed.
+
 print(r1.scenario['standard'].data.WeibullParams.head())
+
+
+# This is what T50, T90 look like for this dataset, and the alpha and beta values resulting for each year.
+
+# In[4]:
+
+
+# Plotting T50 and T90
+plt.plot(r1.scenario['standard'].data.mod_reliability_t50)
+plt.plot(r1.scenario['standard'].data.mod_reliability_t90)
+plt.ylabel('Years')
+plt.legend(['T50', 'T90'])
+
+# Making a dataframe of the list of dictionary values for alpha and beta
+foo = r1.scenario['standard'].data.WeibullParams
+foo = pd.DataFrame.from_records(foo)
+foo.set_index(r1.scenario['standard'].data.year, inplace=True)
+
+# Plotting Alpha and Beta
+plt.figure()
+plt.plot(foo)
+plt.ylabel('Value')
+plt.legend(['Alpha', 'Beta']);
 
 
 # # Plotting CDFs with Helper Function
@@ -45,7 +78,7 @@ print(r1.scenario['standard'].data.WeibullParams.head())
 # 
 # 
 
-# In[4]:
+# In[5]:
 
 
 firstgen = r1.scenario['standard'].data.WeibullParams.iloc[0]
@@ -74,7 +107,7 @@ Lifetime = 30
 Kumar = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
 
 
-# In[5]:
+# In[6]:
 
 
 plt.rcParams.update({'font.size': 12})
@@ -89,14 +122,14 @@ plt.legend()
 plt.ylabel('Cumulative Distribution Function (CDF)')
 plt.xlabel('Years since install')
 plt.xlim([0,50])
-plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left')
+plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left');
 
 
 # ## Calculating 'alpha' and 'beta' from t50 and t90 
 # 
-# Using ``PV_ICe.weibull_params`` to calculate alpha and beta values for t50 and t90
+# Using ``PV_ICe.weibull_params`` to calculate alpha and beta values for t50 and t90. This is done internally usually but this is an example of directly accesing that function
 
-# In[6]:
+# In[7]:
 
 
 t50 = 25
@@ -106,7 +139,9 @@ weibullIParams = PV_ICE.weibull_params({t50: 0.50, t90: 0.90})
 print(weibullIParams)
 
 
-# In[7]:
+# Here's a plot showing the relationship between the t50 and t90 and how our Weibull looks like.
+
+# In[8]:
 
 
 calc_cdf = PV_ICE.weibull_cdf_vis(weibullIParams['alpha'], weibullIParams['beta'])
@@ -117,36 +152,5 @@ plt.axhline(y=0.5, color='r', linestyle='--')
 plt.axvline(x=t50, color='c', linestyle='--')
 plt.axvline(x=t90, color='c', linestyle='--')
 plt.axhline(y=0.1, color='r', linestyle='--')
-plt.legend()
-
-
-# In[10]:
-
-
-t33 = 25
-t54 = 30 
-t75 = 89
-
-weibullIParams = PV_ICE.weibull_params({t33: 0.33, t54: 0.54, t75: 0.89 })    
-print(weibullIParams)
-
-
-# In[11]:
-
-
-calc_cdf = PV_ICE.weibull_cdf_vis(weibullIParams['alpha'], weibullIParams['beta'])
-mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $ : '+ str(round(weibullIParams['beta'],2))
-plt.plot(calc_cdf, linewidth=4.0, label=mylabel)
-plt.axhline(y=0.9, color='r', linestyle='--')
-plt.axhline(y=0.5, color='r', linestyle='--')
-plt.axvline(x=t50, color='c', linestyle='--')
-plt.axvline(x=t90, color='c', linestyle='--')
-plt.axhline(y=0.1, color='r', linestyle='--')
-plt.legend()
-
-
-# In[ ]:
-
-
-
+plt.legend();
 
