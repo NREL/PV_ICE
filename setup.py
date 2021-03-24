@@ -35,7 +35,7 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
 
 
-    description='Tool to evaluate Photovoltaic Dynamic Energy and Material in the Circular Economy',
+    description='Tool to evaluate Circular Economy',
     long_description=long_description,
     long_description_content_type='text/markdown',
 
