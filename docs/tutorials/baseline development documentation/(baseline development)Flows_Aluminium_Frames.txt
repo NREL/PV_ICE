@@ -1,0 +1,7 @@
+This file documents the assumptions made for several material flows for Aluminium used in PV modules frames.
+
+The virgin mining efficiency of aluminum in 1993 was 18.6% [Table 1] (R. U. Ayres, “Metals recycling: economic and environmental implications,” Resources, Conservation and Recycling, vol. 21, no. 3, pp. 145–173, Nov. 1997, doi: 10.1016/S0921-3449(97)00033-5.). "About 2.2 tons of crude bauxite ore yields one ton of dehydrated alumina (Al2O3), by means of the so-called Bayer process." which corresponds to an efficiency of 45%. "About two tons of alumina and 0.5 tons of carbon anodes (made from petroleum coke), plus a small amount of aluminum fluoride, are needed to produce one tonne of aluminum metal", or less than 50% efficient. We will assume 18.6% efficiency for virgin material.
+
+Recycling Efficiencies
+"The recy-cling efficiency for old scrap was calculated to be 42 percent for 2000 (table 1).  If aluminum recovery from new scrap is included in the calculation, then the recycling efficiency for aluminum increases to 60 percent." (P. A. Plunkert, “Aluminum Recycling in the United States in 2000,” USGS, cIRcUlAR 1196–W, 2006. [Online]. Available: https://pubs.usgs.gov/circ/c1196w/.). These efficiency rates will be used of EoL and MFG recycling efficiencies respectively.
+

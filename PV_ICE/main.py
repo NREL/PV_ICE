@@ -180,6 +180,60 @@ def _unitReferences(keyword):
      
     return yunits
     
+
+def distance(s_lat, s_lng, e_lat, e_lng):
+    """
+    # Haversine formula for numpy arrays
+    # Author: MalyutinS
+    # imported from comment on: https://gist.github.com/rochacbruno/2883505
+    # Example: 
+    # s_lat = 45; s_lng = -110; e_lat=[33, 44]; e_lng = [-115, -140]
+    # Returns distance from the source point  to the two ending points:
+    # r = distance(s_lat, s_lng, e_lat, e_lng)
+    # r = array([1402.24996689, 2369.0150434 ])
+    #
+    """
+    
+    
+    # approximate radius of earth in km
+    R = 6373.0  
+    
+#    s_lat = s_lat*np.pi/180.0                      
+    s_lat = np.deg2rad(s_lat)                     
+    s_lng = np.deg2rad(s_lng)     
+    e_lat = np.deg2rad(e_lat)                       
+    e_lng = np.deg2rad(e_lng)  
+    
+    d = np.sin((e_lat - s_lat)/2)**2 + np.cos(s_lat)*np.cos(e_lat) * np.sin((e_lng - s_lng)/2)**2
+    distance = 2 * R * np.arcsin(np.sqrt(d)) 
+    
+    return distance
+
+def drivingdistance(origin, destination, APIkey):
+    """
+    Creates call for google-maps api to get driving directions betwen two points.
+    
+    Input
+    -----
+    origin: array
+        [lat, lon] expected
+    destination: array
+        [lat, lon] expected
+    APYkey: str
+        String
+    """
+    
+    lat1, lon1 = origin
+    lat2, lon2 = destination
+    
+    gm_url = ('https://maps.googleapis.com/maps/api/directions/xml?'+
+              'origin='+str(lat1)+','+str(lon1)+
+              '&destination='+str(lat2)+','+str(lon2)+
+              '&key='+APIkey)
+
+    return gm_url
+    
+    
     
 class Simulation:
     """
@@ -261,7 +315,7 @@ class Simulation:
         
 
 
-    def calculateMassFlow(self, debugflag=False):
+    def calculateMassFlow(self, weibullInputParams = None, debugflag=False):
         '''
         Function takes as input a baseline dataframe already imported, 
         with the right number of columns and content.
@@ -269,6 +323,12 @@ class Simulation:
         
         Parameters
         ------------
+        weibullInputParams : None
+            Dictionary with 'alpha' and 'beta' value for shaping the weibull
+            curve. beta is sometimes exchanged with lifetime, for example on
+            Irena 2016 values beta = 30. If weibullInputParams = None,
+            alfa and beta are calcualted from the t50 and t90 columns on the
+            module baseline.
         
         Returns
         --------
@@ -301,6 +361,7 @@ class Simulation:
             Generation_Disposed_byYear = []
             Generation_Active_byYear= []
             Generation_Power_byYear = []
+            weibullParamList = []
 
             df['Cumulative_Area_disposedby_Failure'] = 0
             df['Cumulative_Area_disposedby_ProjectLifetime'] = 0
@@ -313,7 +374,15 @@ class Simulation:
                 #row=df.iloc[generation]
                 
                 t50, t90 = row['t50'], row['t90']
-                f = weibull_cdf(**weibull_params({t50: 0.50, t90: 0.90}))
+                if not weibullInputParams:
+                    weibullIParams = weibull_params({t50: 0.50, t90: 0.90})      
+                else: 
+                    weibullIParams = weibullInputParams
+               
+                f = weibull_cdf(weibullIParams['alpha'], weibullIParams['beta'])
+                
+                weibullParamList.append(weibullIParams)
+
                 x = np.clip(df.index - generation, 0, np.inf)
                 cdf = list(map(f, x))
 #                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
@@ -321,7 +390,7 @@ class Simulation:
                 activearea = row['Area']
                 if np.isnan(activearea):
                     activearea=0
-                    
+                
                 activeareacount = []
                 areadisposed_failure = []
                 areadisposed_projectlifetime = []
@@ -380,6 +449,8 @@ class Simulation:
                 Generation_Active_byYear.append(activeareacount)
                 Generation_Power_byYear.append(areapowergen)
             
+            
+            df['WeibullParams'] = weibullParamList
             MatrixDisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
             MatrixDisposalbyYear = MatrixDisposalbyYear.add_prefix("EOL_on_Year_")
             
@@ -487,10 +558,19 @@ class Simulation:
                 dm['mat_EOL_Recycled_HQ_into_OU'] = list(mat_EOL_Recycled_HQ_into_OU.sum())
                 
                 # BULK Calculations Now
-                dm['mat_UsedinManufacturing'] = df['Area'] * dm['mat_massperm2']
-                dm['mat_Manufacturing_Input'] = dm['mat_UsedinManufacturing'] / (dm['mat_MFG_eff'] * 0.01)
-                dm['mat_MFG_Scrap'] = dm['mat_Manufacturing_Input'] - dm['mat_UsedinManufacturing']
+                dm['mat_UsedSuccessfullyinModuleManufacturing'] = (df['Area'] * dm['mat_massperm2'])
+                dm['mat_EnteringModuleManufacturing'] = (df['Area'] * dm['mat_massperm2']*100/df['mod_MFG_eff'])
+                dm['mat_LostinModuleManufacturing'] = dm['mat_EnteringModuleManufacturing'] - dm['mat_UsedSuccessfullyinModuleManufacturing']
+                
+                dm['mat_Manufacturing_Input'] = dm['mat_EnteringModuleManufacturing'] / (dm['mat_MFG_eff'] * 0.01)
+                
+                # Scrap = Lost to Material manufacturing losses + Module manufacturing losses
+                dm['mat_MFG_Scrap'] = (dm['mat_Manufacturing_Input'] - dm['mat_EnteringModuleManufacturing'] + 
+                                      dm['mat_LostinModuleManufacturing'])
                 dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_Recycled'] * 0.01
+                
+                
+                
                 dm['mat_MFG_Scrap_Landfilled'] = dm['mat_MFG_Scrap'] - dm['mat_MFG_Scrap_Sentto_Recycling'] 
                 dm['mat_MFG_Scrap_Recycled_Successfully'] = (dm['mat_MFG_Scrap_Sentto_Recycling'] *
                                                                  dm['mat_MFG_scrap_Recycling_eff'] * 0.01)
@@ -503,7 +583,10 @@ class Simulation:
                                           dm['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
                 dm['mat_MFG_Recycled_HQ_into_OU'] = dm['mat_MFG_Recycled_into_HQ'] - dm['mat_MFG_Recycled_HQ_into_MFG']
                 dm['mat_Virgin_Stock'] = dm['mat_Manufacturing_Input'] - dm['mat_EoL_Recycled_HQ_into_MFG'] - dm['mat_MFG_Recycled_HQ_into_MFG']
-                 
+                
+                # Calculate raw virgin needs before mining and refining efficiency losses
+                dm['mat_Virgin_Stock_Raw'] = (dm['mat_Virgin_Stock'] * 100 /  dm['mat_virgin_eff'])
+
                 # Add Wastes
                 dm['mat_Total_EOL_Landfilled'] = (dm['mat_modules_NotCollected'] + 
                                                   dm['mat_modules_NotRecycled'] +
@@ -603,7 +686,12 @@ class Scenario(Simulation):
     
     def addMaterial(self, materialname, file=None):
         self.material[materialname] = Material(materialname, file)
+    
+    def __getitem__(self, key):
+        return getattr(self, key)
 
+    def __setitem__(self, key):
+        return setattr(self, key)
 
 class Material:
     def __init__(self, materialname, file):
@@ -632,9 +720,29 @@ class Material:
 
 
 def weibull_params(keypoints):
-    '''Returns shape parameter `alpha` and scale parameter `beta`
+    r'''Returns shape parameter `alpha` and scale parameter `beta`
     for a Weibull distribution whose CDF passes through the
-    two time: value pairs in `keypoints`'''
+    two time: value pairs in `keypoints`
+
+    Parameters
+    ----------
+    keypoints : list
+        Two lists of t50 and 590 values, where t50 is the year since deployment
+        that the cohort has lost 50% of originally installed modules, and t90 
+        is the year since deployment that the cohort has lost 90% of the originally
+        installed modules. These values are used to calcualte the shape and scale 
+        parameters for the weibull distribution.
+    
+    Returns
+    -------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+        
+    '''
+    
     t1, t2 = tuple(keypoints.keys())
     cdf1, cdf2 = tuple(keypoints.values())
     alpha = np.ndarray.item(np.real_if_close(
@@ -653,20 +761,75 @@ def weibull_params(keypoints):
 def weibull_cdf(alpha, beta):
     '''Return the CDF for a Weibull distribution having:
     shape parameter `alpha`
-    scale parameter `beta`'''
+    scale parameter `beta`
+    
+    Parameters
+    ----------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+        
+    '''
+    
     def cdf(x):
         return 1 - np.exp(-(np.array(x)/beta)**alpha)
     return cdf
 
 def weibull_pdf(alpha, beta):
-    '''Return the PDF for a Weibull distribution having:
+    r'''Return the PDF for a Weibull distribution having:
         shape parameter `alpha`
-        scale parameter `beta`/'''
+        scale parameter `beta`
+        
+    Parameters
+    ----------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+        
+    '''
+    
     def pdf(x):
         return (alpha/np.array(x)) * ((np.array(x)/beta)**alpha) * (np.exp(-(np.array(x)/beta)**alpha))
+    
     return pdf
 
 
+def weibull_cdf_vis(alpha, beta, xlim=56):
+    r''' Returns the CDF for a weibull distribution of 1 generation
+    so it can be plotted.
+    
+    Parameters
+    ----------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+    xlim : int
+        Number of years to calculate the distribution for. i.e. x-axis limit. 
+
+    Returns
+    -------
+    idf : list
+        List of weibull cumulative distribution values for year 0 until xlim.
+
+    '''
+
+    dfindex = pd.RangeIndex(0,xlim,1)
+    x = np.clip(dfindex - 0, 0, np.inf)
+
+    if alpha and beta:
+        i = weibull_cdf(alpha, beta)
+    
+    idf = list(map(i, x))
+    
+    return idf
+
+    
 def sens_StageImprovement(df, stage, improvement=1.3, start_year=None):
     '''
     Modifies baseline scenario for evaluating sensitivity of lifetime parameter.
