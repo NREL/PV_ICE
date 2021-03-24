@@ -57,7 +57,7 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # ## PV ICE
 
-# In[78]:
+# In[4]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -72,6 +72,9 @@ r1.scenario['PV_ICE_idealMFG'].material['glass'].materialdata['mat_MFG_eff'] = 1
 r1.createScenario(name='Irena_2019', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2019.csv')
 r1.scenario['Irena_2019'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena.csv')
 
+r1.createScenario(name='A_MassBased', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2019_A_MassBased.csv')
+r1.scenario['A_MassBased'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena_A_MassBased.csv')
+
 r1.createScenario(name='Irena_2016', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2016.csv')
 r1.scenario['Irena_2016'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena.csv')
 
@@ -81,7 +84,28 @@ if Wambach:
     r1.scenario['Wambach2020'].addMaterial('glass', file=r'C:\Users\sayala\Documents\GitHub\Wambach_Baseline_DonotShare\baseline_material_glass_Wambach2020.csv')
 
 
-# In[79]:
+# In[5]:
+
+
+'''
+r1.scenario['Garvin_2020'].data['mod_Repairing'] = 0
+r1.scenario['Garvin_2020'].data['mod_Repowering'] = 0
+
+r1.scenario['Garvin_2020'].data['mod_degradation'] = 0  # Their calculation does not consider degradation of the fleet.
+
+#We're just calculating total waste so everythign goes to landfill
+r1.scenario['Garvin_2020'].data['mod_EOL_collection_eff'] = 0  
+
+# Setting the shape of the weibull 
+r1.scenario['Garvin_2020'].data['mod_reliability_t50'] = 45
+r1.scenario['Garvin_2020'].data['mod_reliability_t90'] = 50
+# Setting Project Lifetime beyond Failures
+r1.scenario['Garvin_2020'].data['mod_lifetime'] = 40
+'''
+pass
+
+
+# In[6]:
 
 
 r1.scenario['PV_ICE_base'].data.keys()
@@ -89,7 +113,7 @@ r1.scenario['PV_ICE_base'].data.keys()
 
 # Plot same plot from Garvin's paper from digitized data input
 
-# In[80]:
+# In[7]:
 
 
 fig = plt.figure(figsize=(20,10))
@@ -105,7 +129,7 @@ plt.xlim([2000, 2050.5])
 plt.ylim([0, 400])
 
 
-# In[81]:
+# In[8]:
 
 
 fig = plt.figure(figsize=(20,10))
@@ -123,7 +147,7 @@ plt.ylim([0, 400])
 
 # #### Adjusting input parameters to represent the inputs from the IRENA analysis:
 
-# In[82]:
+# In[9]:
 
 
 IRENA= True
@@ -146,7 +170,7 @@ else:
 
 # Querying some of the values for plotting the flags
 
-# In[83]:
+# In[10]:
 
 
 x2020 = r1.scenario['Irena_2019'].data['year'].iloc[25]
@@ -165,7 +189,7 @@ t2050 = r1.scenario['Irena_2019'].data['Installed_Capacity_[W]'].iloc[55]/(1E12)
 print(x2050)
 
 
-# In[84]:
+# In[11]:
 
 
 if Wambach:
@@ -189,7 +213,7 @@ if Wambach:
 # Using glass for proxy of the module; glass is ~76% of the module's mass [REF]
 # 
 
-# In[89]:
+# In[16]:
 
 
 cumWaste = r1.scenario['PV_ICE_base'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
@@ -204,11 +228,15 @@ cumWaste0 = (cumWaste0*100/76)/1000000  # Converting to tonnes
 cumWaste1 = r1.scenario['Irena_2016'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
 cumWaste1 = (cumWaste1*100/76)/1000000  # Converting to tonnes
 
-cumWaste2 = r1.scenario['Wambach2020'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
+cumWaste2 = r1.scenario['A_MassBased'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
 cumWaste2 = (cumWaste2*100/76)/1000000  # Converting to tonnes
 
+if Wambach:
+    cumWaste3 = r1.scenario['Wambach2020'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
+    cumWaste3 = (cumWaste3*100/76)/1000000  # Converting to tonnes
 
-# In[90]:
+
+# In[17]:
 
 
 x2020_irena = 2020
@@ -224,7 +252,7 @@ y2050_irena = 3.41E+08
 t2050_irena = 4.5
 
 
-# In[91]:
+# In[18]:
 
 
 Garvin2020_litCumWaste_X = [2020, 2021.1, 2022.1, 2023.2, 2024.6, 2026.3, 2027.3, 2028.7,
@@ -244,7 +272,7 @@ Garvin2020_litMassService_Y = [3.96E+07, 4.79E+07, 5.44E+07, 6.57E+07, 7.95E+07,
 
 # PLOT:
 
-# In[93]:
+# In[19]:
 
 
 fig = plt.figure(figsize=(10,10))
@@ -265,8 +293,9 @@ plt.semilogy(r1.scenario['PV_ICE_idealMFG'].data.year,cumWasteIdeal, color='k', 
 plt.semilogy(Garvin2020_litCumWaste_X, Garvin2020_litCumWaste_Y, color='cornflowerblue', linewidth=5.0, label='Cum Waste - Garvin 2020')
 plt.semilogy(r1.scenario['Irena_2016'].data.year,cumWaste1, color='cornflowerblue', label='Irena 2016 w PV Ice')
 plt.semilogy(r1.scenario['Irena_2019'].data.year,cumWaste0, color='cornflowerblue',  marker='o', label='Irena 2019 w PV ICE')
+plt.semilogy(r1.scenario['A_MassBased'].data.year,cumWaste2, 'k--', alpha=0.4, label='Irena 2019 Approach A & B')
 if Wambach:
-    plt.semilogy(r1.scenario['Wambach2020'].data.year,cumWaste2, color='cornflowerblue',  marker='P', markersize=12, label='Wambach 2020')
+    plt.semilogy(r1.scenario['Wambach2020'].data.year,cumWaste3, color='cornflowerblue',  marker='P', markersize=12, label='Wambach 2020')
     
 
 plt.ylim([1E4, 1E9])

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Sensitivity Analysis
+# # 6 - Sensitivity Analysis
 
 # In[69]:
 
@@ -567,7 +567,7 @@ r1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(r1.scenario[stage
 # Module baseline mod.
 stage = 'mod_Repowering'
 modhigh = 1.10
-modlow = 0.95
+modlow = 0.90
 stage_highname = 'HighEff_'+stage
 stage_lowname = 'LowEff'+stage
 
@@ -622,7 +622,7 @@ r1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(r1.scenario[stage
 
 # Module baseline mod.
 stage = 'EOL_CE_Pathways'
-modhigh = 1.15 
+modhigh = 1.10 
 stage_highname = 'HighEff_'+stage
 
 r1.createScenario(name=stage_highname, file=MODULEBASELINE)
@@ -653,7 +653,7 @@ for i in range(0, len(stages)):
 
 # Module baseline mod.
 stage = 'Reliability_and_CE_Pathways'
-modhigh = 1.15 
+modhigh = 1.10
 stage_highname = 'HighEff_'+stage
 
 r1.createScenario(name=stage_highname, file=MODULEBASELINE)
