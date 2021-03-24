@@ -14,9 +14,11 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-import versioneer
-
 here = path.abspath(path.dirname(__file__))
+
+import sys
+sys.path.insert(0, here)  # make sure local files are available to an isolated build
+import versioneer
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
