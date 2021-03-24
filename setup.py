@@ -22,7 +22,7 @@ import versioneer
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+    long_description = f.read().replace('\r\n', '\n')
 
 setup(
     name='PV_ICE',
