@@ -3,7 +3,7 @@
 
 # # 6 - Sensitivity Analysis
 
-# In[69]:
+# In[1]:
 
 
 import os
@@ -17,7 +17,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[70]:
+# In[2]:
 
 
 MATERIAL = 'glass'
@@ -31,7 +31,7 @@ else:
     MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIAL+'.csv'
 
 
-# In[71]:
+# In[3]:
 
 
 import PV_ICE
@@ -39,19 +39,31 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-# In[72]:
+# In[4]:
 
 
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[73]:
+# In[5]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='baseline', file=MODULEBASELINE)
 r1.scenario['baseline'].addMaterial(MATERIAL, file=MATERIALBASELINE)
+
+
+# In[6]:
+
+
+r1.scenario['baseline'].data.keys()
+
+
+# In[7]:
+
+
+r1.scenario['baseline'].material[MATERIAL].materialdata.keys()
 
 
 # # Goal; Compare Virgin Material Extraction , and Waste. 
@@ -60,7 +72,7 @@ r1.scenario['baseline'].addMaterial(MATERIAL, file=MATERIALBASELINE)
 
 # ### mat_virgin_eff | Virgin Material Efficiency
 
-# In[74]:
+# In[8]:
 
 
 # Material baseline mod.
@@ -85,7 +97,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 # ### mat_massperm2
 # 
 
-# In[75]:
+# In[9]:
 
 
 # Material baseline mod.
@@ -108,7 +120,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 
 # ### mat_MFG_eff      |      Material Manfuacturing Efficiency 
 
-# In[76]:
+# In[10]:
 
 
 # Material baseline mod.
@@ -129,9 +141,21 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
                              stage=stage, improvement=modlow, start_year=0)
 
 
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
 # ### mat_MFG_scrap_Recycled
 
-# In[77]:
+# In[11]:
 
 
 # Material baseline mod.
@@ -154,7 +178,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 
 # ### mat_MFG_scrap_Recycling_eff
 
-# In[78]:
+# In[12]:
 
 
 # Material baseline mod.
@@ -177,7 +201,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 
 # ### mat_MFG_scrap_Recycled_into_HQ
 
-# In[79]:
+# In[13]:
 
 
 # Material baseline mod.
@@ -200,7 +224,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 
 # ### mat_MFG_scrap_Recycled_into_HQ_Reused4MFG
 
-# In[80]:
+# In[14]:
 
 
 # Material baseline mod.
@@ -231,7 +255,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 #     mat_MFG_scrap_Recycled_into_HQ_Reused4MFG
 # 
 
-# In[81]:
+# In[15]:
 
 
 # Material baseline mod.
@@ -263,7 +287,7 @@ for i in range(0, len(stages)):
 # ### mat_EOL_collected_Recycled
 # 
 
-# In[82]:
+# In[16]:
 
 
 # Material baseline mod.
@@ -287,7 +311,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 # ### mat_EOL_Recycling_eff
 # 
 
-# In[83]:
+# In[17]:
 
 
 # Material baseline mod.
@@ -311,7 +335,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 # ### mat_EOL_Recycled_into_HQ
 # 
 
-# In[84]:
+# In[18]:
 
 
 # Material baseline mod.
@@ -335,7 +359,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 # ### mat_EOL_RecycledHQ_Reused4MFG
 # 
 
-# In[85]:
+# In[19]:
 
 
 # Material baseline mod.
@@ -366,7 +390,7 @@ r1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageIm
 #     mat_EOL_RecycledHQ_Reused4MFG
 # 
 
-# In[86]:
+# In[20]:
 
 
 # Material baseline mod.
@@ -401,7 +425,7 @@ for i in range(0, len(stages)):
 # ### new_Installed_Capacity_[MW]
 # 
 
-# In[87]:
+# In[21]:
 
 
 # Module baseline mod.
@@ -426,7 +450,7 @@ r1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(r1.scenario[stage
 # ### mod_eff
 # 
 
-# In[88]:
+# In[22]:
 
 
 # Module baseline mod.
@@ -458,7 +482,7 @@ r1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(r1.scenario[stage
 # 
 # 
 
-# In[89]:
+# In[23]:
 
 
 # Module baseline mod.
@@ -486,7 +510,7 @@ for i in range(0, len(stages)):
 
 # ### mod_MFG_eff
 
-# In[90]:
+# In[24]:
 
 
 # Module baseline mod.
@@ -511,7 +535,7 @@ r1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(r1.scenario[stage
 # ### mod_EOL_collection_eff
 # 
 
-# In[91]:
+# In[25]:
 
 
 # Module baseline mod.
@@ -536,7 +560,7 @@ r1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(r1.scenario[stage
 # ### mod_EOL_collected_recycled
 # 
 
-# In[92]:
+# In[26]:
 
 
 # Module baseline mod.
@@ -561,7 +585,7 @@ r1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(r1.scenario[stage
 # ### mod_Repowering
 # 
 
-# In[93]:
+# In[27]:
 
 
 # Module baseline mod.
@@ -586,7 +610,7 @@ r1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(r1.scenario[stage
 # ### mod_Repairing
 # 
 
-# In[94]:
+# In[28]:
 
 
 # Module baseline mod.
@@ -617,7 +641,7 @@ r1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(r1.scenario[stage
 #     mod_Repowering
 #     mod_Repairing
 
-# In[95]:
+# In[29]:
 
 
 # Module baseline mod.
@@ -648,7 +672,7 @@ for i in range(0, len(stages)):
 #     mod_reliability_t90
 #     mod_lifetime
 
-# In[96]:
+# In[30]:
 
 
 # Module baseline mod.
@@ -670,40 +694,55 @@ for i in range(0, len(stages)):
 
 # # MASS FLOWS
 
-# In[97]:
+# In[31]:
 
 
 r1.calculateMassFlow()
 
 
-# In[98]:
+# In[32]:
 
 
 scenarios = list(r1.scenario.keys())
 
 
-# In[99]:
+# In[33]:
 
 
 scenarios
 
 
-# In[100]:
+# In[64]:
 
 
 virginStock_Changes = []
 waste_Changes = []
+installedCapacity_Changes = []
 
 virgin_keyword = 'mat_Virgin_Stock'
 waste_keyword = 'mat_Total_Landfilled'
 
 virginStock_baseline_cum2050 = r1.scenario['baseline'].material[MATERIAL].materialdata[virgin_keyword].sum()
 waste_baseline_cum2050 = r1.scenario['baseline'].material[MATERIAL].materialdata[waste_keyword].sum()
+installedCapacity_baselined_2050 = r1.scenario['baseline'].data['Installed_Capacity_[W]'].iloc[-1]
 
 for i in range (1, len(scenarios)):
     stage_name = scenarios[i]
     virginStock_Changes.append(round(100*r1.scenario[stage_name].material[MATERIAL].materialdata[virgin_keyword].sum()/virginStock_baseline_cum2050,5)-100)
     waste_Changes.append(round(100*r1.scenario[stage_name].material[MATERIAL].materialdata[waste_keyword].sum()/waste_baseline_cum2050,5)-100)
+    installedCapacity_Changes.append(round(100*r1.scenario[stage_name].data['Installed_Capacity_[W]'].iloc[-1]/installedCapacity_baselined_2050,5)-100)
+
+
+# In[65]:
+
+
+r1.scenario['baseline'].data['Installed_Capacity_[W]'].iloc[-1]
+
+
+# In[66]:
+
+
+stages = scenarios[1::]
 
 
 # In[ ]:
@@ -712,29 +751,106 @@ for i in range (1, len(scenarios)):
 
 
 
-# In[101]:
+# In[67]:
 
 
-stages = scenarios[1::]
+df = pd.DataFrame(list(zip(virginStock_Changes, waste_Changes, installedCapacity_Changes)), 
+               columns=['Virgin Needs Change', 'Waste Change', 'InstalledCapacity Change'],index=stages) 
 
 
-# In[102]:
+# In[126]:
 
 
-df = pd.DataFrame(list(zip(virginStock_Changes, waste_Changes)), 
-               columns=['Virgin Needs Change', 'Waste Change'],index=stages) 
+df_Pos = df[['HighEff' in s for s in df.index]].copy()
+    
 
 
-# In[103]:
+# In[127]:
 
 
-df[['HighEff' in s for s in df.index]]
+#df_Pos = df_Pos.applymap(lambda x: str(x).rstrip('HighEff_'))
 
 
-# In[104]:
+# In[128]:
 
 
-df[['LowEff' in s for s in df.index]]
+df_Pos.index = df_Pos.index.str.replace("HighEff_", "")
+
+
+# In[129]:
+
+
+variables_description = {'mat_virgin_eff': "Material Virgin Efficiency",
+    'mat_massperm2': "Mass per m2",
+    'mat_MFG_eff': "Efficiency of Material Use during Module Manufacturing",
+    'mat_MFG_scrap_Recycled': "% of Material Scrap from Manufacturing that undergoes Recycling",
+    'mat_MFG_scrap_Recycling_eff': "Recycling Efficiency of the Material Scrap",
+    'mat_MFG_scrap_Recycling_eff': "% of Recycled Material Scrap that is high quality",
+    'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': "% of high quality Recycled Material Scrap reused for manufacturing",
+    'new_Installed_Capacity_[MW]': "New Installed Capacity",
+    'mod_eff': "Module Efficiency",
+    'mod_EOL_collection_eff': "Collection Efficiency of EoL Modules",
+    'mod_EOL_collected_recycled': "% of collected modules that are recycled",
+    'mod_Repowering': "% of EOL modules that are repowered",
+    'mod_Repairing' : "% of failed modules that undergo repair",
+    'mat_EOL_collected_Recycled': "% of times material is chosen to be recycled",
+    'mat_EOL_Recycling_eff': "Efficiency of material recycling",
+    'mat_EOL_Recycled_into_HQ': "Fraction of recycled material that is high quality",
+    'mat_EOL_RecycledHQ_Reused4MFG': "Fraction of high quality recycled material that is reused for manufacturing",
+    'EOL_CE_Pathways': "Overall improvement on EoL Circularity Pathways",
+    'Reliability_and_CE_Pathways': "Overall improvement on Eol Circularity Pathways + Reliability and Lifetime",
+    'mat_EOL_Recycling_Overall_Improvement': "Overall Improvement on EoL Recycling Loop"}
+
+
+# In[130]:
+
+
+col_verbose = []
+
+for i in range (0, len(df_Pos)):
+    if df_Pos.index[i] in variables_description:
+        col_verbose.append(variables_description[df_Pos.index[i]])
+    else:
+        col_verbose.append("")
+
+
+# In[ ]:
+
+
+
+
+
+# In[131]:
+
+
+df_Pos['Description'] = col_verbose
+
+
+# In[ ]:
+
+
+df_Pos = df_Pos.reset_index()
+df_Pos = df_Pos.rename(columns={'index':'variable'})
+
+
+# In[140]:
+
+
+df_Neg = df[['LowEff' in s for s in df.index]].copy()
+df_Neg.index = df_Neg.index.str.replace("LowEff", "")
+
+col_verbose = []
+
+for i in range (0, len(df_Neg)):
+    if df_Neg.index[i] in variables_description:
+        col_verbose.append(variables_description[df_Neg.index[i]])
+    else:
+        col_verbose.append("")
+
+df_Neg['Description'] = col_verbose
+df_Neg = df_Neg.reset_index()
+df_Neg = df_Neg.rename(columns={'index':'variable'})
+df_Neg
 
 
 # In[ ]:
