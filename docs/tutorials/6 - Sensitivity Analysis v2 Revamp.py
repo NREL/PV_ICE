@@ -27,18 +27,6 @@ MODULEBASELINE = r'..\baselines\baseline_modules_US.csv'
 MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIAL+'.csv'
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # In[3]:
 
 
@@ -50,11 +38,17 @@ import pandas as pd
 # In[4]:
 
 
+PV_ICE.__version__
+
+
+# In[5]:
+
+
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[5]:
+# In[6]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -65,7 +59,7 @@ r1.scenario['baseline'].addMaterial(MATERIAL, file=MATERIALBASELINE)
 # ### Change VAlues to 50:
 # 
 
-# In[6]:
+# In[7]:
 
 
 ## Change VAlues to 50:
@@ -81,7 +75,7 @@ od_degradation = 0.6
 
 # ### Load Scenarios and Parameters
 
-# In[7]:
+# In[8]:
 
 
 ss = pd.read_excel(r'..\..\tests\sensitivity_test.xlsx')
@@ -90,74 +84,7 @@ ss
 
 # #### Create Scenarios
 
-# In[8]:
-
-
-i=0
-stage = ss['stage'][i]
-stage_highname = stage+'_high'
-stage_lowname = stage+'_low'
-
-
-# In[ ]:
-
-
-
-
-
 # In[9]:
-
-
-ss['variables'][i]
-
-
-# In[10]:
-
-
-ss['Modification'][i]
-
-
-# In[11]:
-
-
-ss['AbsRel'][i]
-
-
-# In[12]:
-
-
-r1.createScenario(name=stage_highname, file=MODULEBASELINE)
-r1.scenario[stage_highname].addMaterial(MATERIAL, file=MATERIALBASELINE)
-r1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]] = r1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]] + ss['High'][i]
-
-            #df[df > 9] = 11
-
-
-# In[13]:
-
-
-r1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]]
-
-
-# In[14]:
-
-
-r1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]][r1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]]>100.0] =100.0
-
-
-# In[ ]:
-
-
-
-
-
-# In[15]:
-
-
-r1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]]
-
-
-# In[16]:
 
 
 for i in range (0, len(ss)):
@@ -197,7 +124,7 @@ for i in range (0, len(ss)):
           
         # If multiple, assumed all modifications are ABSOLUTE
         if ss['Modification'][i] == 'multiple':
-            vars = [x.strip() for x in ss['variables'][i].split(',')]
+            varmods = [x.strip() for x in ss['variables'][i].split(',')]
             
             # Create Scenarios
             r1.createScenario(name=stage_highname, file=MODULEBASELINE)
@@ -205,13 +132,13 @@ for i in range (0, len(ss)):
             r1.createScenario(name=stage_lowname, file=MODULEBASELINE)
             r1.scenario[stage_lowname].addMaterial(MATERIAL, file=MATERIALBASELINE)
             
-            for j in range(0, len(vars)):
+            for j in range(0, len(varmods)):
                 # Modify Values High
-                r1.scenario[stage_highname].material[MATERIAL].materialdata[vars[j]] = r1.scenario[stage_highname].material[MATERIAL].materialdata[vars[j]] + ss['High'][i] 
-                r1.scenario[stage_highname].material[MATERIAL].materialdata[vars[j]][r1.scenario[stage_highname].material[MATERIAL].materialdata[vars[j]]>100.0] =100.0
+                r1.scenario[stage_highname].material[MATERIAL].materialdata[varmods[j]] = r1.scenario[stage_highname].material[MATERIAL].materialdata[varmods[j]] + ss['High'][i] 
+                r1.scenario[stage_highname].material[MATERIAL].materialdata[varmods[j]][r1.scenario[stage_highname].material[MATERIAL].materialdata[varmods[j]]>100.0] =100.0
                 # Modify Values Low
-                r1.scenario[stage_lowname].material[MATERIAL].materialdata[vars[j]] = r1.scenario[stage_lowname].material[MATERIAL].materialdata[vars[j]] + ss['Low'][i]
-                r1.scenario[stage_lowname].material[MATERIAL].materialdata[vars[j]][r1.scenario[stage_lowname].material[MATERIAL].materialdata[vars[j]]<0.0] = 0.0
+                r1.scenario[stage_lowname].material[MATERIAL].materialdata[varmods[j]] = r1.scenario[stage_lowname].material[MATERIAL].materialdata[varmods[j]] + ss['Low'][i]
+                r1.scenario[stage_lowname].material[MATERIAL].materialdata[varmods[j]][r1.scenario[stage_lowname].material[MATERIAL].materialdata[varmods[j]]<0.0] = 0.0
 
         
     if ss['Database'][i] == 'module':
@@ -246,44 +173,44 @@ for i in range (0, len(ss)):
         
         # If multiple, assumed all modifications are ABSOLUTE
         if ss['Modification'][i] == 'multiple':
-            vars = [x.strip() for x in ss['variables'][i].split(',')]
+            varmods = [x.strip() for x in ss['variables'][i].split(',')]
 
             r1.createScenario(name=stage_highname, file=MODULEBASELINE)
             r1.scenario[stage_highname].addMaterial(MATERIAL, file=MATERIALBASELINE)
             r1.createScenario(name=stage_lowname, file=MODULEBASELINE)
             r1.scenario[stage_lowname].addMaterial(MATERIAL, file=MATERIALBASELINE)
             
-            for j in range(0, len(vars)):
-                r1.scenario[stage_highname].data[vars[j]] = r1.scenario[stage_highname].data[vars[j]] + ss['High'][i] 
-                r1.scenario[stage_highname].data[vars[j]][r1.scenario[stage_highname].data[vars[j]]>100.0] =100.0
+            for j in range(0, len(varmods)):
+                r1.scenario[stage_highname].data[varmods[j]] = r1.scenario[stage_highname].data[varmods[j]] + ss['High'][i] 
+                r1.scenario[stage_highname].data[varmods[j]][r1.scenario[stage_highname].data[varmods[j]]>100.0] =100.0
 
-                r1.scenario[stage_lowname].data[vars[j]] = r1.scenario[stage_lowname].data[vars[j]] + ss['Low'][i]
-                r1.scenario[stage_lowname].data[vars[j]][r1.scenario[stage_lowname].data[vars[j]]<0.0] = 0.0
+                r1.scenario[stage_lowname].data[varmods[j]] = r1.scenario[stage_lowname].data[varmods[j]] + ss['Low'][i]
+                r1.scenario[stage_lowname].data[varmods[j]][r1.scenario[stage_lowname].data[varmods[j]]<0.0] = 0.0
 
         
 
 
 # # MASS FLOWS
 
-# In[17]:
+# In[10]:
 
 
 r1.calculateMassFlow()
 
 
-# In[18]:
+# In[11]:
 
 
 r1.scenario['baseline'].material['glass'].materialdata.head()
 
 
-# In[19]:
+# In[12]:
 
 
 r1.scenario['mat_massperm2_high'].material['glass'].materialdata.head()
 
 
-# In[20]:
+# In[13]:
 
 
 scenarios = list(r1.scenario.keys())
@@ -292,102 +219,7 @@ scenarios
 
 # #### Compile Changes
 
-# In[ ]:
-
-
-installs_keyword = 'Installed_Capacity_[W]'
-
-
-# In[27]:
-
-
-import matplotlib.pyplot as plt
-
-
-# In[41]:
-
-
-r1.scenario['baseline'].data.head()
-
-
-# In[40]:
-
-
-r1.scenario['reliability_high'].data.head()
-
-
-# In[42]:
-
-
-r1.scenario['reliability_high'].data.keys()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[37]:
-
-
-plt.plot(r1.scenario['baseline'].data['Cumulative_Area_disposed'],'k')
-plt.plot(r1.scenario['reliability_low'].data['Cumulative_Area_disposed'],'r')
-plt.plot(r1.scenario['reliability_high'].data['Cumulative_Area_disposed'],'b')
-
-
-# In[39]:
-
-
-plt.plot(r1.scenario['baseline'].data['Installed_Capacity_[W]'],'k')
-plt.plot(r1.scenario['reliability_low'].data['Installed_Capacity_[W]'],'r')
-plt.plot(r1.scenario['reliability_high'].data['Installed_Capacity_[W]'],'b')
-
-
-# In[ ]:
-
-
-plt.plot(r1.scenario['baseline'].data['Installed_Capacity_[W]'],'k')
-plt.plot(r1.scenario['reliability_high'].data['Installed_Capacity_[W]'],'r')
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[21]:
+# In[14]:
 
 
 virginStock_Changes = []
@@ -403,6 +235,7 @@ viring_raw_keyword = 'mat_Virgin_Stock_Raw'
 virginStock_baseline_cum2050 = r1.scenario['baseline'].material[MATERIAL].materialdata[virgin_keyword].sum()
 virginStockRAW_baseline_cum2050 = r1.scenario['baseline'].material[MATERIAL].materialdata[viring_raw_keyword].sum()
 
+# Installed Capacity is already cumulative so no need to sum or cumsum.
 waste_baseline_cum2050 = r1.scenario['baseline'].material[MATERIAL].materialdata[waste_keyword].sum()
 installedCapacity_baselined_2050 = r1.scenario['baseline'].data[installs_keyword].iloc[-1]
 
@@ -415,20 +248,20 @@ for i in range (1, len(scenarios)):
     installedCapacity_Changes.append(round(100*r1.scenario[stage_name].data[installs_keyword].iloc[-1]/installedCapacity_baselined_2050,5)-100)
 
 
-# In[22]:
+# In[15]:
 
 
 stages = scenarios[1::] # removing baseline as we want a dataframe with only changes
 
 
-# In[23]:
+# In[16]:
 
 
 df = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Changes, installedCapacity_Changes)), 
                columns=['Virgin Needs Change', 'Virgin Stock Raw Change', 'Waste Change', 'InstalledCapacity Change'],index=stages) 
 
 
-# In[24]:
+# In[17]:
 
 
 variables_description = {'mat_virgin_eff': "Material Virgin Efficiency",
@@ -453,7 +286,7 @@ variables_description = {'mat_virgin_eff': "Material Virgin Efficiency",
     'mat_EOL_Recycling_Overall_Improvement': "Overall Improvement on EoL Recycling Loop"}
 
 
-# In[25]:
+# In[18]:
 
 
 df_Pos = df[['high' in s for s in df.index]].copy()
@@ -473,7 +306,7 @@ df_Pos = df_Pos.rename(columns={'index':'variable'})
 df_Pos
 
 
-# In[26]:
+# In[19]:
 
 
 df_Neg = df[['low' in s for s in df.index]].copy()
@@ -493,57 +326,23 @@ df_Neg = df_Neg.rename(columns={'index':'variable'})
 df_Neg
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # # Print Values for a Senki Diagram, 1 year
 
-# In[ ]:
+# https://observablehq.com/@mbostock/flow-o-matic
+
+# In[20]:
 
 
+r1.scenario['baseline'].data.keys()
 
 
+# In[21]:
 
-# In[ ]:
+
+r1.scenario['baseline'].material[MATERIAL].materialdata.keys()
+
+
+# In[23]:
 
 
 mat_UsedSuccessfullyinModuleManufacturing = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_UsedSuccessfullyinModuleManufacturing'].sum()
@@ -557,9 +356,13 @@ mat_MFG_Recycled_into_OQ = r1.scenario['baseline'].material[MATERIAL].materialda
 mat_MFG_Recycled_HQ_into_MFG = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_HQ_into_MFG'].sum()
 mat_MFG_Recycled_HQ_into_OU = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_HQ_into_OU'].sum()
 
+
 mat_modules_NotCollected = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_NotCollected'].sum()
-mat_EOL_Collected = mat_UsedSuccessfullyinModuleManufacturing-mat_modules_NotCollected
+mat_EOL_Collected = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_NotCollected'].sum()
+mat_still_Installed = mat_UsedSuccessfullyinModuleManufacturing-mat_modules_NotCollected-mat_EOL_Collected
+
 mat_EOL_collected_Recycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_collected_Recycled'].sum()
+mat_EOL_collected_notRecycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_NotRecycled'].sum()
 mat_EOL_NotRecycled_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_NotRecycled_Landfilled'].sum()
 mat_EOL_Recycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled'].sum()
 mat_EOL_Recycled_Losses_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled_Losses_Landfilled'].sum()
@@ -595,53 +398,42 @@ mat_EOL_Recycled_HQ_into_OU = r1.scenario['baseline'].material[MATERIAL].materia
 # In[ ]:
 
 
-print(mat_UsedSuccessfullyinModuleManufacturing,', ','Virgin Stock',', ','Modules')
-print(mat_MFG_Scrap,', ','Virgin Stock',', ','Manufacturing Scrap')
-print(mat_MFG_Scrap_Sentto_Recycling,', ','Manufacturing Scrap',', ','Sent to Recycling')
-print(mat_MFG_Scrap_Landfilled,', ','Manufacturing Scrap',', ','Waste')
-print(mat_MFG_Scrap_Recycled_Successfully,', ','Sent to Recycling',', ','Recycled')
-print(mat_MFG_Scrap_Recycled_Losses_Landfilled,', ','Sent to Recycling',', ','Waste')
-print(mat_MFG_Recycled_into_HQ,', ','Recycled',', ','HQ')
-print(mat_MFG_Recycled_into_OQ,', ','Recycled',', ','OQ')
-print(mat_MFG_Recycled_HQ_into_MFG,', ','HQ',', ','HQ_Mfg')
-print(mat_MFG_Recycled_HQ_into_OU,', ','HQ',', ','HQ Other Uses')
 
-print(mat_modules_NotCollected,', ','Modules,', ',mat_modules_NotCollected')
-print((mat_UsedSuccessfullyinModuleManufacturing-mat_modules_NotCollected),', ','Modules',', ','EOL Collected')
-print(mat_EOL_collected_Recycled,', ','EOL Collected',', ','Sent to Recycling')
-print(mat_EOL_NotRecycled_Landfilled,', ','EOL Collected',', ','Waste')
-print(mat_EOL_Recycled,', ','Sent to Recycling',', ','Recycled')
-print(mat_EOL_Recycled_Losses_Landfilled,', ','Sent to Recycling',', ','Waste')
-print(mat_EOL_Recycled_2_HQ,', ','Recycled',', ','HQ')
-print(mat_EOL_Recycled_2_OQ,', ','Recycled',', ','OQ')
-print(mat_EoL_Recycled_HQ_into_MFG,', ','HQ',', ','HQ_Mfg')
-print(mat_EOL_Recycled_HQ_into_OU,', ','HQ',', ','HQ Other Uses')
 
 
 # In[ ]:
 
 
-print('Virgin Stock',',','Modules',',',mat_UsedSuccessfullyinModuleManufacturing)
-print('Virgin Stock',',','Manufacturing Scrap',',',mat_MFG_Scrap)
-print('Manufacturing Scrap',',','Sent to Recycling',',',mat_MFG_Scrap_Sentto_Recycling)
-print('Manufacturing Scrap',',','Waste',',',mat_MFG_Scrap_Landfilled)
-print('Sent to Recycling',',','Recycled',',',mat_MFG_Scrap_Recycled_Successfully)
-print('Sent to Recycling',',','Waste',',',mat_MFG_Scrap_Recycled_Losses_Landfilled)
-print('Recycled',',','HQ',',',mat_MFG_Recycled_into_HQ)
-print('Recycled',',','OQ',',',mat_MFG_Recycled_into_OQ)
-print('HQ',',','HQ_Mfg',',',mat_MFG_Recycled_HQ_into_MFG)
-print('HQ',',','HQ Other Uses',',',mat_MFG_Recycled_HQ_into_OU)
 
-print('Modules,',',mat_modules_NotCollected',',',mat_modules_NotCollected)
-print('Modules',',','EOL Collected',',',mat_EOL_Collected)
-print('EOL Collected',',','Sent to Recycling',',',mat_EOL_collected_Recycled)
-print('EOL Collected',',','Waste',',',mat_EOL_NotRecycled_Landfilled)
-print('Sent to Recycling',',','Recycled',',',mat_EOL_Recycled)
-print('Sent to Recycling',',','Waste',',',mat_EOL_Recycled_Losses_Landfilled)
-print('Recycled',',','HQ',',',mat_EOL_Recycled_2_HQ)
-print('Recycled',',','OQ',',',mat_EOL_Recycled_2_OQ)
-print('HQ',',','HQ_Mfg',',',mat_EoL_Recycled_HQ_into_MFG)
-print('HQ',',','HQ Other Uses',',',mat_EOL_Recycled_HQ_into_OU)
+
+
+# In[29]:
+
+
+print('Virgin Stock,Modules,',mat_UsedSuccessfullyinModuleManufacturing)
+print('Virgin Stock,Manufacturing Scrap,',mat_MFG_Scrap)
+print('Manufacturing Scrap,Sent to Recycling,',mat_MFG_Scrap_Sentto_Recycling)
+print('Manufacturing Scrap,Waste,',mat_MFG_Scrap_Landfilled)
+print('Sent to Recycling,Recycled,',mat_MFG_Scrap_Recycled_Successfully)
+print('Sent to Recycling,Waste,',mat_MFG_Scrap_Recycled_Losses_Landfilled)
+print('Recycled,HQ,',mat_MFG_Recycled_into_HQ)
+print('Recycled,OQ,',mat_MFG_Recycled_into_OQ)
+print('HQ,HQ_Mfg,',mat_MFG_Recycled_HQ_into_MFG)
+print('HQ,HQ Other Uses,',mat_MFG_Recycled_HQ_into_OU)
+
+print('Modules,still_installed,',mat_still_Installed)
+print('Modules,mat_modules_NotCollected,',mat_modules_NotCollected)
+print('mat_modules_NotCollected,Waste,',mat_modules_NotCollected)
+print('Modules,EOL Collected,',mat_EOL_Collected)
+print('EOL Collected,Sent to Recycling,',mat_EOL_collected_Recycled)
+print('EOL Collected,Waste,',mat_EOL_NotRecycled_Landfilled) # Material not recycled
+print('Sent to Recycling,Recycled,',mat_EOL_Recycled)
+print('Sent to Recycling,Waste,',mat_EOL_Recycled_Losses_Landfilled)
+
+print('Recycled,HQ,',mat_EOL_Recycled_2_HQ)
+print('Recycled,OQ,',mat_EOL_Recycled_2_OQ)
+print('HQ,HQ_Mfg,',mat_EoL_Recycled_HQ_into_MFG)
+print('HQ,HQ Other Uses,',mat_EOL_Recycled_HQ_into_OU)
 
 
 # In[ ]:
@@ -673,7 +465,27 @@ print('HQ,HQ Other Uses,',mat_EOL_Recycled_HQ_into_OU)
 # In[ ]:
 
 
+print('Virgin Stock,Modules,',mat_UsedSuccessfullyinModuleManufacturing)
+print('Virgin Stock,Manufacturing Scrap,',mat_MFG_Scrap)
+print('Manufacturing Scrap,Sent to Recycling,',mat_MFG_Scrap_Sentto_Recycling)
+print('Manufacturing Scrap,Waste,',mat_MFG_Scrap_Landfilled)
+print('Sent to Recycling,Recycled,',mat_MFG_Scrap_Recycled_Successfully)
+print('Sent to Recycling,Waste,',mat_MFG_Scrap_Recycled_Losses_Landfilled)
+print('Recycled,HQ,',mat_MFG_Recycled_into_HQ)
+print('Recycled,OQ,',mat_MFG_Recycled_into_OQ)
+print('HQ,HQ_Mfg,',mat_MFG_Recycled_HQ_into_MFG)
+print('HQ,HQ Other Uses,',mat_MFG_Recycled_HQ_into_OU)
 
+print('Modules,mat_modules_NotCollected,',mat_modules_NotCollected)
+print('Modules,EOL Collected,',mat_EOL_Collected)
+print('EOL Collected,Sent to Recycling,',mat_EOL_collected_Recycled)
+print('EOL Collected,Waste,',mat_EOL_NotRecycled_Landfilled)
+print('Sent to Recycling,Recycled,',mat_EOL_Recycled)
+print('Sent to Recycling,Waste,',mat_EOL_Recycled_Losses_Landfilled)
+print('Recycled,HQ,',mat_EOL_Recycled_2_HQ)
+print('Recycled,OQ,',mat_EOL_Recycled_2_OQ)
+print('HQ,HQ_Mfg,',mat_EoL_Recycled_HQ_into_MFG)
+print('HQ,HQ Other Uses,',mat_EOL_Recycled_HQ_into_OU)
 
 
 # In[ ]:
