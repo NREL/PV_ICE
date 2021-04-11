@@ -530,8 +530,10 @@ class Simulation:
                 #
                 
                 mat_modules_EOL_sentoRecycling = EOL_Recycled.multiply(dm['mat_massperm2'], axis=0)
-                dm['mat_modules_NotRecycled'] = list(EOL_NotRecycled_Landfilled.multiply(dm['mat_massperm2'], axis=0).sum())
+                dm['mat_modules_Collected'] = list(EOL_Collected.multiply(dm['mat_massperm2'], axis=0).sum())
                 dm['mat_modules_NotCollected'] = list(landfill_Collection.multiply(dm['mat_massperm2'], axis=0).sum())
+                dm['mat_modules_Recycled'] = list(EOL_Recycled.multiply(dm['mat_massperm2'], axis=0).sum())
+                dm['mat_modules_NotRecycled'] = list(EOL_NotRecycled_Landfilled.multiply(dm['mat_massperm2'], axis=0).sum())
                                    
                                                                             
                 # mat_EOL_collected_Recycled CHANGE NAME
