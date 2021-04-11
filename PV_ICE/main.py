@@ -400,7 +400,7 @@ class Simulation:
                 disposed_projectlifetime=0
                 for age in range(len(cdf)):
                     disposed_projectlifetime=0
-                    if cdf[age] == 0.0:
+                    if x[age] == 0.0:
                         activeareacount.append(0)
                         areadisposed_failure.append(0)
                         areadisposed_projectlifetime.append(0)
