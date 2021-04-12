@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # 6 - Sensitivity Analysis v2
+# # 6 - Sensitivity Analysis
 
 # In[1]:
 
