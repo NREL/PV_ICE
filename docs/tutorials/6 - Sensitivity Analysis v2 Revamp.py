@@ -342,34 +342,42 @@ r1.scenario['baseline'].data.keys()
 r1.scenario['baseline'].material[MATERIAL].materialdata.keys()
 
 
-# In[23]:
+# In[22]:
 
 
 mat_UsedSuccessfullyinModuleManufacturing = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_UsedSuccessfullyinModuleManufacturing'].sum()
 mat_MFG_Scrap = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Scrap'].sum()
-mat_MFG_Scrap_Sentto_Recycling = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Scrap_Sentto_Recycling'].sum()
-mat_MFG_Scrap_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Scrap_Landfilled'].sum()
-mat_MFG_Scrap_Recycled_Successfully = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Scrap_Recycled_Successfully'].sum()
-mat_MFG_Scrap_Recycled_Losses_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Scrap_Recycled_Losses_Landfilled'].sum()
-mat_MFG_Recycled_into_HQ = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_into_HQ'].sum()
-mat_MFG_Recycled_into_OQ = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_into_OQ'].sum()
-mat_MFG_Recycled_HQ_into_MFG = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_HQ_into_MFG'].sum()
-mat_MFG_Recycled_HQ_into_OU = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_HQ_into_OU'].sum()
+normvalue = (mat_UsedSuccessfullyinModuleManufacturing+mat_MFG_Scrap)/100
+
+mat_UsedSuccessfullyinModuleManufacturing = mat_UsedSuccessfullyinModuleManufacturing/normvalue
+mat_MFG_Scrap = mat_MFG_Scrap/normvalue
+mat_MFG_Scrap_Sentto_Recycling = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Scrap_Sentto_Recycling'].sum()/normvalue
+mat_MFG_Scrap_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Scrap_Landfilled'].sum()/normvalue
+mat_MFG_Scrap_Recycled_Successfully = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Scrap_Recycled_Successfully'].sum()/normvalue
+mat_MFG_Scrap_Recycled_Losses_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Scrap_Recycled_Losses_Landfilled'].sum()/normvalue
+mat_MFG_Recycled_into_HQ = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_into_HQ'].sum()/normvalue
+mat_MFG_Recycled_into_OQ = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_into_OQ'].sum()/normvalue
+mat_MFG_Recycled_HQ_into_MFG = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_HQ_into_MFG'].sum()/normvalue
+mat_MFG_Recycled_HQ_into_OU = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_Recycled_HQ_into_OU'].sum()/normvalue
 
 
-mat_modules_NotCollected = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_NotCollected'].sum()
-mat_EOL_Collected = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_NotCollected'].sum()
+mat_modules_NotCollected = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_NotCollected'].sum()/normvalue
+mat_EOL_Collected = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_Collected'].sum()/normvalue
 mat_still_Installed = mat_UsedSuccessfullyinModuleManufacturing-mat_modules_NotCollected-mat_EOL_Collected
+mat_modules_Recycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_Recycled'].sum()/normvalue
 
-mat_EOL_collected_Recycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_collected_Recycled'].sum()
-mat_EOL_collected_notRecycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_NotRecycled'].sum()
-mat_EOL_NotRecycled_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_NotRecycled_Landfilled'].sum()
-mat_EOL_Recycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled'].sum()
-mat_EOL_Recycled_Losses_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled_Losses_Landfilled'].sum()
-mat_EOL_Recycled_2_HQ = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled_2_HQ'].sum()
-mat_EOL_Recycled_2_OQ = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled_2_OQ'].sum()
-mat_EoL_Recycled_HQ_into_MFG = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EoL_Recycled_HQ_into_MFG'].sum()
-mat_EOL_Recycled_HQ_into_OU = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled_HQ_into_OU'].sum()
+
+mat_EOL_collected_Recycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_collected_Recycled'].sum()/normvalue
+mat_EOL_collected_notRecycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_modules_NotRecycled'].sum()/normvalue
+mat_EOL_NotRecycled_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_NotRecycled_Landfilled'].sum()/normvalue
+mat_EOL_sento_Recycling = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_sento_Recycling'].sum()/normvalue
+mat_EOL_Recycled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled'].sum()/normvalue
+mat_EOL_Recycled_Losses_Landfilled = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled_Losses_Landfilled'].sum()/normvalue
+mat_EOL_Recycled_2_HQ = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled_2_HQ'].sum()/normvalue
+mat_EOL_Recycled_2_OQ = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled_2_OQ'].sum()/normvalue
+mat_EoL_Recycled_HQ_into_MFG = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EoL_Recycled_HQ_into_MFG'].sum()/normvalue
+mat_EOL_Recycled_HQ_into_OU = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_EOL_Recycled_HQ_into_OU'].sum()/normvalue
+pass
 
 
 # mat_Virgin_Stock, mat_UsedSuccessfullyinModuleManufacturing
@@ -395,147 +403,65 @@ mat_EOL_Recycled_HQ_into_OU = r1.scenario['baseline'].material[MATERIAL].materia
 # mat_EOL_Recycled_2_HQ, mat_EOL_Recycled_HQ_into_OU
 # 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[29]:
+# In[23]:
 
 
 print('Virgin Stock,Modules,',mat_UsedSuccessfullyinModuleManufacturing)
-print('Virgin Stock,Manufacturing Scrap,',mat_MFG_Scrap)
-print('Manufacturing Scrap,Sent to Recycling,',mat_MFG_Scrap_Sentto_Recycling)
-print('Manufacturing Scrap,Waste,',mat_MFG_Scrap_Landfilled)
-print('Sent to Recycling,Recycled,',mat_MFG_Scrap_Recycled_Successfully)
-print('Sent to Recycling,Waste,',mat_MFG_Scrap_Recycled_Losses_Landfilled)
-print('Recycled,HQ,',mat_MFG_Recycled_into_HQ)
-print('Recycled,OQ,',mat_MFG_Recycled_into_OQ)
-print('HQ,HQ_Mfg,',mat_MFG_Recycled_HQ_into_MFG)
-print('HQ,HQ Other Uses,',mat_MFG_Recycled_HQ_into_OU)
 
-print('Modules,still_installed,',mat_still_Installed)
-print('Modules,mat_modules_NotCollected,',mat_modules_NotCollected)
-print('mat_modules_NotCollected,Waste,',mat_modules_NotCollected)
+print('Modules, Installed Capacity,',mat_still_Installed)
+print('Modules,EOL Not Collected,',mat_modules_NotCollected)
+print('EOL Not Collected,Waste,',mat_modules_NotCollected)
 print('Modules,EOL Collected,',mat_EOL_Collected)
-print('EOL Collected,Sent to Recycling,',mat_EOL_collected_Recycled)
+
 print('EOL Collected,Waste,',mat_EOL_NotRecycled_Landfilled) # Material not recycled
-print('Sent to Recycling,Recycled,',mat_EOL_Recycled)
-print('Sent to Recycling,Waste,',mat_EOL_Recycled_Losses_Landfilled)
+print('EOL Collected,Recycled,',mat_modules_Recycled, ', #da4f81')
+print('Recycled,Succesful,', mat_EOL_Recycled, ', #da4f81')
+print('Recycled,Waste,', mat_EOL_collected_notRecycled+mat_EOL_Recycled_Losses_Landfilled)
 
-print('Recycled,HQ,',mat_EOL_Recycled_2_HQ)
-print('Recycled,OQ,',mat_EOL_Recycled_2_OQ)
-print('HQ,HQ_Mfg,',mat_EoL_Recycled_HQ_into_MFG)
-print('HQ,HQ Other Uses,',mat_EOL_Recycled_HQ_into_OU)
+print('Succesful,Closed Loop,',mat_EoL_Recycled_HQ_into_MFG, ', #da4f81')
+print('Succesful,Open Loop,',mat_EOL_Recycled_2_OQ+mat_EOL_Recycled_HQ_into_OU)
+
+print('Virgin Stock,Manufacturing Scrap,',mat_MFG_Scrap)
+print('Manufacturing Scrap,Recycled,',mat_MFG_Scrap_Sentto_Recycling, ', #da4f81')
+print('Manufacturing Scrap,Waste,',mat_MFG_Scrap_Landfilled)
+print('Recycled,Succesful,',mat_MFG_Scrap_Recycled_Successfully, ', #da4f81')
+print('Recycled,Waste,',mat_MFG_Scrap_Recycled_Losses_Landfilled)
+print('Succesful,Closed Loop,',mat_MFG_Recycled_HQ_into_MFG, ', #da4f81')
+print('Succesful,Open Loop,',mat_MFG_Recycled_into_OQ+mat_MFG_Recycled_HQ_into_OU)
 
 
-# In[ ]:
+# # OPTION 2 
+# More detailed of the Material Sent to Recycling and HQ, OQ details
+
+# In[24]:
 
 
 print('Virgin Stock,Modules,',mat_UsedSuccessfullyinModuleManufacturing)
-print('Virgin Stock,Manufacturing Scrap,',mat_MFG_Scrap)
-print('Manufacturing Scrap,Sent to Recycling,',mat_MFG_Scrap_Sentto_Recycling)
-print('Manufacturing Scrap,Waste,',mat_MFG_Scrap_Landfilled)
-print('Sent to Recycling,Recycled,',mat_MFG_Scrap_Recycled_Successfully)
-print('Sent to Recycling,Waste,',mat_MFG_Scrap_Recycled_Losses_Landfilled)
-print('Recycled,HQ,',mat_MFG_Recycled_into_HQ)
-print('Recycled,OQ,',mat_MFG_Recycled_into_OQ)
-print('HQ,HQ_Mfg,',mat_MFG_Recycled_HQ_into_MFG)
-print('HQ,HQ Other Uses,',mat_MFG_Recycled_HQ_into_OU)
 
-print('Modules,mat_modules_NotCollected,',mat_modules_NotCollected)
+print('Modules, Installed Capacity,',mat_still_Installed)
+print('Modules,EOL Not Collected,',mat_modules_NotCollected)
+print('EOL Not Collected,Waste,',mat_modules_NotCollected)
 print('Modules,EOL Collected,',mat_EOL_Collected)
-print('EOL Collected,Sent to Recycling,',mat_EOL_collected_Recycled)
-print('EOL Collected,Waste,',mat_EOL_NotRecycled_Landfilled)
-print('Sent to Recycling,Recycled,',mat_EOL_Recycled)
-print('Sent to Recycling,Waste,',mat_EOL_Recycled_Losses_Landfilled)
-print('Recycled,HQ,',mat_EOL_Recycled_2_HQ)
+
+print('EOL Collected,Waste,',mat_EOL_NotRecycled_Landfilled) # Material not recycled
+print('EOL Collected,Sent to Recycling,',mat_modules_Recycled, ', #da4f81')
+print('Sent to Recycling,Material Recycled,', mat_EOL_sento_Recycling, ', #da4f81')
+
+print('Material Recycled,Recycled,',mat_EOL_Recycled, ', #da4f81')
+print('Material Recycled,Waste,',mat_EOL_Recycled_Losses_Landfilled)
+
+print('Recycled,HQ,',mat_EOL_Recycled_2_HQ, ', #da4f81')
 print('Recycled,OQ,',mat_EOL_Recycled_2_OQ)
-print('HQ,HQ_Mfg,',mat_EoL_Recycled_HQ_into_MFG)
+print('HQ,HQ into Mfg,',mat_EoL_Recycled_HQ_into_MFG, ', #da4f81')
 print('HQ,HQ Other Uses,',mat_EOL_Recycled_HQ_into_OU)
 
-
-# In[ ]:
-
-
-print('Virgin Stock,Modules,',mat_UsedSuccessfullyinModuleManufacturing)
 print('Virgin Stock,Manufacturing Scrap,',mat_MFG_Scrap)
-print('Manufacturing Scrap,Sent to Recycling,',mat_MFG_Scrap_Sentto_Recycling)
+print('Manufacturing Scrap,Sent to Recycling,',mat_MFG_Scrap_Sentto_Recycling, ', #da4f81')
 print('Manufacturing Scrap,Waste,',mat_MFG_Scrap_Landfilled)
-print('Sent to Recycling,Recycled,',mat_MFG_Scrap_Recycled_Successfully)
+print('Sent to Recycling,Recycled,',mat_MFG_Scrap_Recycled_Successfully, ', #da4f81')
 print('Sent to Recycling,Waste,',mat_MFG_Scrap_Recycled_Losses_Landfilled)
-print('Recycled,HQ,',mat_MFG_Recycled_into_HQ)
+print('Recycled,HQ,',mat_MFG_Recycled_into_HQ, ', #da4f81')
 print('Recycled,OQ,',mat_MFG_Recycled_into_OQ)
-print('HQ,HQ_Mfg,',mat_MFG_Recycled_HQ_into_MFG)
+print('HQ,HQ into Mfg,',mat_MFG_Recycled_HQ_into_MFG, ', #da4f81')
 print('HQ,HQ Other Uses,',mat_MFG_Recycled_HQ_into_OU)
-
-print('Modules,mat_modules_NotCollected,',mat_modules_NotCollected)
-print('Modules,EOL Collected,',mat_EOL_Collected)
-print('EOL Collected,Sent to Recycling,',mat_EOL_collected_Recycled)
-print('EOL Collected,Waste,',mat_EOL_NotRecycled_Landfilled)
-print('Sent to Recycling,Recycled,',mat_EOL_Recycled)
-print('Sent to Recycling,Waste,',mat_EOL_Recycled_Losses_Landfilled)
-print('Recycled,HQ,',mat_EOL_Recycled_2_HQ)
-print('Recycled,OQ,',mat_EOL_Recycled_2_OQ)
-print('HQ,HQ_Mfg,',mat_EoL_Recycled_HQ_into_MFG)
-print('HQ,HQ Other Uses,',mat_EOL_Recycled_HQ_into_OU)
-
-
-# In[ ]:
-
-
-# Material Baseline Mod. Results
-"""
-resultkeyword = 'mat_Virgin_Stock'
-print("Baseline Cum Value 2050 ", resultkeyword, ": ", r1.scenario['baseline'].material[MATERIAL].materialdata[resultkeyword].sum())
-print("High Eff ", stage, resultkeyword, ": ", int(100*r1.scenario[stage_highname].material[MATERIAL].materialdata[resultkeyword].sum()/r1.scenario['baseline'].material[MATERIAL].materialdata[resultkeyword].sum()))
-print("Low Eff", stage, resultkeyword, ": ", int(100*r1.scenario[stage_lowname].material[MATERIAL].materialdata[resultkeyword].sum()/r1.scenario['baseline'].material[MATERIAL].materialdata[resultkeyword].sum()))
-
-resultkeyword = 'mat_Total_Landfilled'
-print("Baseline Cum Value 2050 ", resultkeyword, ": ", r1.scenario['baseline'].material[MATERIAL].materialdata[resultkeyword].sum())
-print("High Eff ", stage, resultkeyword, ": ", int(100*r1.scenario[stage_highname].material[MATERIAL].materialdata[resultkeyword].sum()/r1.scenario['baseline'].material[MATERIAL].materialdata[resultkeyword].sum()))
-print("Low Eff", stage, resultkeyword, ": ", int(100*r1.scenario[stage_lowname].material[MATERIAL].materialdata[resultkeyword].sum()/r1.scenario['baseline'].material[MATERIAL].materialdata[resultkeyword].sum()))
-r""";
-
-
-# In[ ]:
-
-
-"""
-fig, ax1 = plt.subplots()
-ax1.plot(r1.scenario['baseline'].data.year, r1.scenario['baseline'].material[MATERIAL].materialdata['mat_Total_Landfilled']/r1.scenario['baseline'].material[MATERIAL].materialdata['mat_Total_Landfilled'], label='base eff')
-ax1.plot(r1.scenario['baseline'].data.year, r1.scenario['baseline_HighMatManufEff'].material[MATERIAL].materialdata['mat_Total_Landfilled']/r1.scenario['baseline'].material[MATERIAL].materialdata['mat_Total_Landfilled'], label='high eff')
-ax1.plot(r1.scenario['baseline'].data.year, r1.scenario['baseline_lowMatManufEff'].material[MATERIAL].materialdata['mat_Total_Landfilled']/r1.scenario['baseline'].material[MATERIAL].materialdata['mat_Total_Landfilled'], label='low eff')
-
-ax2 = ax1.twinx()
-ax2.plot(r1.scenario['baseline'].data.year, r1.scenario['baseline'].material[MATERIAL].materialdata['mat_MFG_eff'], '.')
-ax2.plot(r1.scenario['baseline'].data.year, r1.scenario['baseline_HighMatManufEff'].material[MATERIAL].materialdata['mat_MFG_eff'], '.')
-ax2.plot(r1.scenario['baseline'].data.year, r1.scenario['baseline_lowMatManufEff'].material[MATERIAL].materialdata['mat_MFG_eff'], '.')
-ax1.legend()
-""";
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 

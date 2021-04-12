@@ -13215,7 +13215,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;0+untagged.336.g093b0ee.dirty&#39;</pre>
+<pre>&#39;0+untagged.337.g6b4ae31.dirty&#39;</pre>
 </div>
 
 </div>
@@ -15270,34 +15270,42 @@ Finished Area+Power Generation Calculations
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mat_UsedSuccessfullyinModuleManufacturing</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_UsedSuccessfullyinModuleManufacturing&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">mat_MFG_Scrap</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Scrap&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_MFG_Scrap_Sentto_Recycling</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Scrap_Sentto_Recycling&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_MFG_Scrap_Landfilled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Scrap_Landfilled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_MFG_Scrap_Recycled_Successfully</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Scrap_Recycled_Successfully&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_MFG_Scrap_Recycled_Losses_Landfilled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Scrap_Recycled_Losses_Landfilled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_MFG_Recycled_into_HQ</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Recycled_into_HQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_MFG_Recycled_into_OQ</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Recycled_into_OQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_MFG_Recycled_HQ_into_MFG</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Recycled_HQ_into_MFG&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_MFG_Recycled_HQ_into_OU</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Recycled_HQ_into_OU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">normvalue</span> <span class="o">=</span> <span class="p">(</span><span class="n">mat_UsedSuccessfullyinModuleManufacturing</span><span class="o">+</span><span class="n">mat_MFG_Scrap</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
+
+<span class="n">mat_UsedSuccessfullyinModuleManufacturing</span> <span class="o">=</span> <span class="n">mat_UsedSuccessfullyinModuleManufacturing</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_MFG_Scrap</span> <span class="o">=</span> <span class="n">mat_MFG_Scrap</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_MFG_Scrap_Sentto_Recycling</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Scrap_Sentto_Recycling&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_MFG_Scrap_Landfilled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Scrap_Landfilled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_MFG_Scrap_Recycled_Successfully</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Scrap_Recycled_Successfully&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_MFG_Scrap_Recycled_Losses_Landfilled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Scrap_Recycled_Losses_Landfilled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_MFG_Recycled_into_HQ</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Recycled_into_HQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_MFG_Recycled_into_OQ</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Recycled_into_OQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_MFG_Recycled_HQ_into_MFG</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Recycled_HQ_into_MFG&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_MFG_Recycled_HQ_into_OU</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_Recycled_HQ_into_OU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
 
 
-<span class="n">mat_modules_NotCollected</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_modules_NotCollected&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_EOL_Collected</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_modules_NotCollected&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">mat_modules_NotCollected</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_modules_NotCollected&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EOL_Collected</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_modules_Collected&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
 <span class="n">mat_still_Installed</span> <span class="o">=</span> <span class="n">mat_UsedSuccessfullyinModuleManufacturing</span><span class="o">-</span><span class="n">mat_modules_NotCollected</span><span class="o">-</span><span class="n">mat_EOL_Collected</span>
+<span class="n">mat_modules_Recycled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_modules_Recycled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
 
-<span class="n">mat_EOL_collected_Recycled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_collected_Recycled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_EOL_collected_notRecycled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_modules_NotRecycled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_EOL_NotRecycled_Landfilled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_NotRecycled_Landfilled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_EOL_Recycled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_EOL_Recycled_Losses_Landfilled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_Losses_Landfilled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_EOL_Recycled_2_HQ</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_2_HQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_EOL_Recycled_2_OQ</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_2_OQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_EoL_Recycled_HQ_into_MFG</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EoL_Recycled_HQ_into_MFG&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">mat_EOL_Recycled_HQ_into_OU</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_HQ_into_OU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="n">mat_EOL_collected_Recycled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_collected_Recycled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EOL_collected_notRecycled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_modules_NotRecycled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EOL_NotRecycled_Landfilled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_NotRecycled_Landfilled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EOL_sento_Recycling</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_sento_Recycling&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EOL_Recycled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EOL_Recycled_Losses_Landfilled</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_Losses_Landfilled&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EOL_Recycled_2_HQ</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_2_HQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EOL_Recycled_2_OQ</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_2_OQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EoL_Recycled_HQ_into_MFG</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EoL_Recycled_HQ_into_MFG&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="n">mat_EOL_Recycled_HQ_into_OU</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIAL</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_HQ_into_OU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="n">normvalue</span>
+<span class="k">pass</span>
 </pre></div>
 
     </div>
@@ -15334,59 +15342,31 @@ mat_EOL_Recycled_2_HQ, mat_EOL_Recycled_HQ_into_OU</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Virgin Stock,Modules,&#39;</span><span class="p">,</span><span class="n">mat_UsedSuccessfullyinModuleManufacturing</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Virgin Stock,Manufacturing Scrap,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manufacturing Scrap,Sent to Recycling,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Sentto_Recycling</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manufacturing Scrap,Waste,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Recycled_Successfully</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Waste,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Recycled_Losses_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,HQ,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_into_HQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,OQ,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_into_OQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ_Mfg,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_HQ_into_MFG</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ Other Uses,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_HQ_into_OU</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules,still_installed,&#39;</span><span class="p">,</span><span class="n">mat_still_Installed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules,mat_modules_NotCollected,&#39;</span><span class="p">,</span><span class="n">mat_modules_NotCollected</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mat_modules_NotCollected,Waste,&#39;</span><span class="p">,</span><span class="n">mat_modules_NotCollected</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules, Installed Capacity,&#39;</span><span class="p">,</span><span class="n">mat_still_Installed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules,EOL Not Collected,&#39;</span><span class="p">,</span><span class="n">mat_modules_NotCollected</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Not Collected,Waste,&#39;</span><span class="p">,</span><span class="n">mat_modules_NotCollected</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules,EOL Collected,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Collected</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Sent to Recycling,&#39;</span><span class="p">,</span><span class="n">mat_EOL_collected_Recycled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Waste,&#39;</span><span class="p">,</span><span class="n">mat_EOL_NotRecycled_Landfilled</span><span class="p">)</span> <span class="c1"># Material not recycled</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Waste,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_Losses_Landfilled</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,HQ,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_2_HQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,OQ,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_2_OQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ_Mfg,&#39;</span><span class="p">,</span><span class="n">mat_EoL_Recycled_HQ_into_MFG</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ Other Uses,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_HQ_into_OU</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Waste,&#39;</span><span class="p">,</span><span class="n">mat_EOL_NotRecycled_Landfilled</span><span class="p">)</span> <span class="c1"># Material not recycled</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_modules_Recycled</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,Succesful,&#39;</span><span class="p">,</span> <span class="n">mat_EOL_Recycled</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,Waste,&#39;</span><span class="p">,</span> <span class="n">mat_EOL_collected_notRecycled</span><span class="o">+</span><span class="n">mat_EOL_Recycled_Losses_Landfilled</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Succesful,Closed Loop,&#39;</span><span class="p">,</span><span class="n">mat_EoL_Recycled_HQ_into_MFG</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Succesful,Open Loop,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_2_OQ</span><span class="o">+</span><span class="n">mat_EOL_Recycled_HQ_into_OU</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Virgin Stock,Manufacturing Scrap,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manufacturing Scrap,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Sentto_Recycling</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manufacturing Scrap,Waste,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Landfilled</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,Succesful,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Recycled_Successfully</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,Waste,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Recycled_Losses_Landfilled</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Succesful,Closed Loop,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_HQ_into_MFG</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Succesful,Open Loop,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_into_OQ</span><span class="o">+</span><span class="n">mat_MFG_Recycled_HQ_into_OU</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -15403,28 +15383,24 @@ mat_EOL_Recycled_2_HQ, mat_EOL_Recycled_HQ_into_OU</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Virgin Stock,Modules, 68401519661229.11
-Virgin Stock,Manufacturing Scrap, 2290696055989.547
-Manufacturing Scrap,Sent to Recycling, 1832556844791.6375
-Manufacturing Scrap,Waste, 458139211197.9093
-Sent to Recycling,Recycled, 916278422395.8187
-Sent to Recycling,Waste, 916278422395.8187
-Recycled,HQ, 183255684479.16376
-Recycled,OQ, 733022737916.655
-HQ,HQ_Mfg, 18325568447.916378
-HQ,HQ Other Uses, 164930116031.24738
-Modules,still_installed, 63619193400782.78
-Modules,mat_modules_NotCollected, 2391163130223.1665
-mat_modules_NotCollected,Waste, 2391163130223.1665
-Modules,EOL Collected, 2391163130223.1665
-EOL Collected,Sent to Recycling, 5040.0
-EOL Collected,Waste, 16878798566.281174
-Sent to Recycling,Recycled, 60763674838.61224
-Sent to Recycling,Waste, 91145512257.91837
-Recycled,HQ, 9114551225.791836
-Recycled,OQ, 51649123612.820404
-HQ,HQ_Mfg, 729164098.0633469
-HQ,HQ Other Uses, 8385387127.728489
+<pre>Virgin Stock,Modules, 96.75962051443864
+Modules, Installed Capacity, 92.78021052447139
+Modules,EOL Not Collected, 3.3824984914721608
+EOL Not Collected,Waste, 3.3824984914721608
+Modules,EOL Collected, 0.5969114984950872
+EOL Collected,Waste, 0.023876459939803484
+EOL Collected,Recycled, 0.23876459939803488 , #da4f81
+Recycled,Succesful, 0.08595525578329256 , #da4f81
+Recycled,Waste, 0.48707978277199115
+Succesful,Closed Loop, 0.0010314630693995107 , #da4f81
+Succesful,Open Loop, 0.08492379271389305
+Virgin Stock,Manufacturing Scrap, 3.2403794855613746
+Manufacturing Scrap,Recycled, 2.5923035884490995 , #da4f81
+Manufacturing Scrap,Waste, 0.6480758971122748
+Recycled,Succesful, 1.2961517942245497 , #da4f81
+Recycled,Waste, 1.2961517942245497
+Succesful,Closed Loop, 0.025923035884491 , #da4f81
+Succesful,Open Loop, 1.2702287583400589
 </pre>
 </div>
 </div>
@@ -15433,155 +15409,90 @@ HQ,HQ Other Uses, 8385387127.728489
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="OPTION-2">OPTION 2<a class="anchor-link" href="#OPTION-2">&#182;</a></h1><p>More detailed of the Material Sent to Recycling and HQ, OQ details</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Virgin Stock,Modules,&#39;</span><span class="p">,</span><span class="n">mat_UsedSuccessfullyinModuleManufacturing</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Virgin Stock,Manufacturing Scrap,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manufacturing Scrap,Sent to Recycling,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Sentto_Recycling</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manufacturing Scrap,Waste,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Recycled_Successfully</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Waste,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Recycled_Losses_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,HQ,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_into_HQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,OQ,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_into_OQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ_Mfg,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_HQ_into_MFG</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ Other Uses,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_HQ_into_OU</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules,mat_modules_NotCollected,&#39;</span><span class="p">,</span><span class="n">mat_modules_NotCollected</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules, Installed Capacity,&#39;</span><span class="p">,</span><span class="n">mat_still_Installed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules,EOL Not Collected,&#39;</span><span class="p">,</span><span class="n">mat_modules_NotCollected</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Not Collected,Waste,&#39;</span><span class="p">,</span><span class="n">mat_modules_NotCollected</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules,EOL Collected,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Collected</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Sent to Recycling,&#39;</span><span class="p">,</span><span class="n">mat_EOL_collected_Recycled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Waste,&#39;</span><span class="p">,</span><span class="n">mat_EOL_NotRecycled_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Waste,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_Losses_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,HQ,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_2_HQ</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Waste,&#39;</span><span class="p">,</span><span class="n">mat_EOL_NotRecycled_Landfilled</span><span class="p">)</span> <span class="c1"># Material not recycled</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Sent to Recycling,&#39;</span><span class="p">,</span><span class="n">mat_modules_Recycled</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Material Recycled,&#39;</span><span class="p">,</span> <span class="n">mat_EOL_sento_Recycling</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Material Recycled,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Material Recycled,Waste,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_Losses_Landfilled</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,HQ,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_2_HQ</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,OQ,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_2_OQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ_Mfg,&#39;</span><span class="p">,</span><span class="n">mat_EoL_Recycled_HQ_into_MFG</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ into Mfg,&#39;</span><span class="p">,</span><span class="n">mat_EoL_Recycled_HQ_into_MFG</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ Other Uses,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_HQ_into_OU</span><span class="p">)</span>
-</pre></div>
 
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Virgin Stock,Modules,&#39;</span><span class="p">,</span><span class="n">mat_UsedSuccessfullyinModuleManufacturing</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Virgin Stock,Manufacturing Scrap,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manufacturing Scrap,Sent to Recycling,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Sentto_Recycling</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manufacturing Scrap,Sent to Recycling,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Sentto_Recycling</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Manufacturing Scrap,Waste,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Recycled_Successfully</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Recycled_Successfully</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Waste,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Scrap_Recycled_Losses_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,HQ,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_into_HQ</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,HQ,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_into_HQ</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,OQ,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_into_OQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ_Mfg,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_HQ_into_MFG</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ into Mfg,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_HQ_into_MFG</span><span class="p">,</span> <span class="s1">&#39;, #da4f81&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ Other Uses,&#39;</span><span class="p">,</span><span class="n">mat_MFG_Recycled_HQ_into_OU</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules,mat_modules_NotCollected,&#39;</span><span class="p">,</span><span class="n">mat_modules_NotCollected</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Modules,EOL Collected,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Collected</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Sent to Recycling,&#39;</span><span class="p">,</span><span class="n">mat_EOL_collected_Recycled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EOL Collected,Waste,&#39;</span><span class="p">,</span><span class="n">mat_EOL_NotRecycled_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Recycled,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sent to Recycling,Waste,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_Losses_Landfilled</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,HQ,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_2_HQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Recycled,OQ,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_2_OQ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ_Mfg,&#39;</span><span class="p">,</span><span class="n">mat_EoL_Recycled_HQ_into_MFG</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HQ,HQ Other Uses,&#39;</span><span class="p">,</span><span class="n">mat_EOL_Recycled_HQ_into_OU</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Material Baseline Mod. Results</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">resultkeyword = &#39;mat_Virgin_Stock&#39;</span>
-<span class="sd">print(&quot;Baseline Cum Value 2050 &quot;, resultkeyword, &quot;: &quot;, r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[resultkeyword].sum())</span>
-<span class="sd">print(&quot;High Eff &quot;, stage, resultkeyword, &quot;: &quot;, int(100*r1.scenario[stage_highname].material[MATERIAL].materialdata[resultkeyword].sum()/r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[resultkeyword].sum()))</span>
-<span class="sd">print(&quot;Low Eff&quot;, stage, resultkeyword, &quot;: &quot;, int(100*r1.scenario[stage_lowname].material[MATERIAL].materialdata[resultkeyword].sum()/r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[resultkeyword].sum()))</span>
+<div class="output_wrapper">
+<div class="output">
 
-<span class="sd">resultkeyword = &#39;mat_Total_Landfilled&#39;</span>
-<span class="sd">print(&quot;Baseline Cum Value 2050 &quot;, resultkeyword, &quot;: &quot;, r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[resultkeyword].sum())</span>
-<span class="sd">print(&quot;High Eff &quot;, stage, resultkeyword, &quot;: &quot;, int(100*r1.scenario[stage_highname].material[MATERIAL].materialdata[resultkeyword].sum()/r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[resultkeyword].sum()))</span>
-<span class="sd">print(&quot;Low Eff&quot;, stage, resultkeyword, &quot;: &quot;, int(100*r1.scenario[stage_lowname].material[MATERIAL].materialdata[resultkeyword].sum()/r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[resultkeyword].sum()))</span>
-<span class="sd">r&quot;&quot;&quot;</span><span class="p">;</span>
-</pre></div>
 
-    </div>
-</div>
-</div>
+<div class="output_area">
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">fig, ax1 = plt.subplots()</span>
-<span class="sd">ax1.plot(r1.scenario[&#39;baseline&#39;].data.year, r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[&#39;mat_Total_Landfilled&#39;]/r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[&#39;mat_Total_Landfilled&#39;], label=&#39;base eff&#39;)</span>
-<span class="sd">ax1.plot(r1.scenario[&#39;baseline&#39;].data.year, r1.scenario[&#39;baseline_HighMatManufEff&#39;].material[MATERIAL].materialdata[&#39;mat_Total_Landfilled&#39;]/r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[&#39;mat_Total_Landfilled&#39;], label=&#39;high eff&#39;)</span>
-<span class="sd">ax1.plot(r1.scenario[&#39;baseline&#39;].data.year, r1.scenario[&#39;baseline_lowMatManufEff&#39;].material[MATERIAL].materialdata[&#39;mat_Total_Landfilled&#39;]/r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[&#39;mat_Total_Landfilled&#39;], label=&#39;low eff&#39;)</span>
+    <div class="prompt"></div>
 
-<span class="sd">ax2 = ax1.twinx()</span>
-<span class="sd">ax2.plot(r1.scenario[&#39;baseline&#39;].data.year, r1.scenario[&#39;baseline&#39;].material[MATERIAL].materialdata[&#39;mat_MFG_eff&#39;], &#39;.&#39;)</span>
-<span class="sd">ax2.plot(r1.scenario[&#39;baseline&#39;].data.year, r1.scenario[&#39;baseline_HighMatManufEff&#39;].material[MATERIAL].materialdata[&#39;mat_MFG_eff&#39;], &#39;.&#39;)</span>
-<span class="sd">ax2.plot(r1.scenario[&#39;baseline&#39;].data.year, r1.scenario[&#39;baseline_lowMatManufEff&#39;].material[MATERIAL].materialdata[&#39;mat_MFG_eff&#39;], &#39;.&#39;)</span>
-<span class="sd">ax1.legend()</span>
-<span class="sd">&quot;&quot;&quot;</span><span class="p">;</span>
-</pre></div>
 
-    </div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Virgin Stock,Modules, 96.75962051443864
+Modules, Installed Capacity, 92.78021052447139
+Modules,EOL Not Collected, 3.3824984914721608
+EOL Not Collected,Waste, 3.3824984914721608
+Modules,EOL Collected, 0.5969114984950872
+EOL Collected,Waste, 0.023876459939803484
+EOL Collected,Sent to Recycling, 0.23876459939803488 , #da4f81
+Sent to Recycling,Material Recycled, 0.21488813945823143 , #da4f81
+Material Recycled,Recycled, 0.08595525578329256 , #da4f81
+Material Recycled,Waste, 0.12893288367493885
+Recycled,HQ, 0.012893288367493884 , #da4f81
+Recycled,OQ, 0.07306196741579868
+HQ,HQ into Mfg, 0.0010314630693995107 , #da4f81
+HQ,HQ Other Uses, 0.011861825298094373
+Virgin Stock,Manufacturing Scrap, 3.2403794855613746
+Manufacturing Scrap,Sent to Recycling, 2.5923035884490995 , #da4f81
+Manufacturing Scrap,Waste, 0.6480758971122748
+Sent to Recycling,Recycled, 1.2961517942245497 , #da4f81
+Sent to Recycling,Waste, 1.2961517942245497
+Recycled,HQ, 0.25923035884490997 , #da4f81
+Recycled,OQ, 1.0369214353796399
+HQ,HQ into Mfg, 0.025923035884491 , #da4f81
+HQ,HQ Other Uses, 0.23330732296041895
+</pre>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
 </div>
 </div>
 
