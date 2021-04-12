@@ -23,8 +23,11 @@ print ("Your simulation will be stored in %s" % testfolder)
 MATERIALS = ['glass','silver','silicon', 'copper','aluminium_frames']
 MATERIAL = MATERIALS[0]
 
+
 MODULEBASELINE = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_basecase.csv'
+MODULEBASELINE = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_basecase_noKittyCat.csv'
 MODULEBASELINE_High = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_LowREHighElec.csv'
+MODULEBASELINE_High = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_LowREHighElec_noKittyCat.csv'
 
 
 # In[3]:
@@ -212,14 +215,14 @@ UScum.tail(20)
 
 # ## Mining Capacity
 
-# In[27]:
+# In[15]:
 
 
 USyearly.index = r1.scenario['base'].data['year']
 UScum.index = r1.scenario['base'].data['year']
 
 
-# In[15]:
+# In[16]:
 
 
 mining2020_aluminum = 65267000
@@ -228,26 +231,26 @@ mining2020_copper = 20000000
 mining2020_silicon = 8000000
 
 
-# In[ ]:
+# In[17]:
 
 
 objects = [r1, r2]
 scenarios = ['base', 'high']
 
 
-# In[16]:
+# In[18]:
 
 
 # PLOTTING GALORE
 
 
-# In[28]:
+# In[19]:
 
 
 USyearly.keys()
 
 
-# In[31]:
+# In[20]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -306,7 +309,7 @@ axs.legend()
 fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production_NREL2018.png', dpi=600)
 
 
-# In[44]:
+# In[32]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -406,14 +409,35 @@ f.tight_layout()
 f.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cumulatives_NREL2018.png', dpi=600)
 
 
-# In[52]:
-
-
-print("Million Tones by case")
+print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[53]:
+# ### Bonus: Bifacial Trend Cumulative Virgin Needs (not plotted, just values)
+
+# In[28]:
+
+
+name2 = 'bifacialTrend_high'
+name0 = 'bifacialTrend_base'
+
+cumulations2050 = {}
+for ii in range(0, len(materials)):
+    matcum = []
+    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
+    cumulations2050[materials[ii]] = matcum
+
+dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
+dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
+ 
+print("Cumulative Virgin Needs by 2050 Million Tones by Scenario for Bifacial Trend")
+dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+
+
+# ### Waste by year
+
+# In[23]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -512,9 +536,6 @@ f.tight_layout()
 
 f.savefig(title_Method+' Fig_2x1_Yearly WASTE by Scenario and Cumulatives_NREL2018.png', dpi=600)
 
-
-# In[ ]:
-
-
-
+print("Cumulative Waste by 2050 Million Tones by case")
+dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 

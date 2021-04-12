@@ -31,7 +31,7 @@ plt.rcParams['figure.figsize'] = (12, 8)
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
+testfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'TEMP')
 
 print ("Your simulation will be stored in %s" % testfolder)
 
@@ -41,7 +41,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[3]:
 
 
-reedsFile = str(Path().resolve().parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
+reedsFile = str(Path().resolve().parent.parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
 print ("Input file is stored in %s" % reedsFile)
 
 
@@ -57,7 +57,7 @@ REEDSInput = pd.read_excel(reedsFile,
 
 # #### Create a copy of the REEDS Input and modify structure for PCA focus
 
-# In[ ]:
+# In[5]:
 
 
 rawdf = REEDSInput.copy()
@@ -69,7 +69,7 @@ rawdf.head(21)
 
 # #### Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[ ]:
+# In[6]:
 
 
 import PV_ICE
@@ -84,7 +84,7 @@ baseline.head()
 
 # #### For each Scenario and for each PCA, combine with baseline and save as input file
 
-# In[ ]:
+# In[7]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -128,7 +128,7 @@ for ii in range (len(rawdf.unstack(level=1))):
 
 # #### Reassign data from REEDS Input, as we need one of the columns we dropped.
 
-# In[ ]:
+# In[8]:
 
 
 rawdf = REEDSInput.copy()
@@ -140,7 +140,7 @@ rawdf.head(21)
 
 # #### Group data so we can work with the States instead
 
-# In[ ]:
+# In[9]:
 
 
 df = rawdf.groupby(['Scenario','State', 'Year'])['Capacity (GW)'].sum(axis=0)
@@ -150,7 +150,7 @@ df.head()
 
 # #### For each Scenario and for each STATE, combine with baseline and save as input file
 
-# In[ ]:
+# In[10]:
 
 
 for ii in range (len(df.unstack(level=2))):
@@ -192,7 +192,7 @@ for ii in range (len(df.unstack(level=2))):
 
 # ## Method with PIVOT tables for STATES (REDUNDANT)
 
-# In[ ]:
+# In[11]:
 
 
 """
@@ -255,7 +255,7 @@ pass
 
 # ### Create a copy of the REEDS Input and modify structure for PCA focus
 
-# In[5]:
+# In[12]:
 
 
 rawdf = REEDSInput.copy()
@@ -265,7 +265,7 @@ rawdf.set_index(['Scenario','Year'], inplace=True)
 rawdf.head(21)
 
 
-# In[6]:
+# In[13]:
 
 
 df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum(axis=0)
@@ -273,7 +273,7 @@ df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum(axis=0)
 
 # ### Loading Module Baseline. Will be used later to populate all the columsn other than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[7]:
+# In[14]:
 
 
 import PV_ICE
@@ -288,7 +288,7 @@ baseline.head()
 
 # ### For each Scenario, combine with baseline and save as input file¶
 
-# In[9]:
+# In[15]:
 
 
 for ii in range (len(df.unstack(level=1))):
@@ -325,10 +325,4 @@ for ii in range (len(df.unstack(level=1))):
 
         #    savedata.to_csv(ict, index=False)
         A.to_csv(ict, header=False)
-
-
-# In[ ]:
-
-
-
 

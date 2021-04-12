@@ -110,7 +110,7 @@ Kumar = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
 # In[6]:
 
 
-plt.rcParams.update({'font.size': 12})
+plt.rcParams.update({'font.size': 15})
 plt.rcParams['figure.figsize'] = (10, 8)
     
 plt.plot(ares, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
@@ -122,7 +122,7 @@ plt.legend()
 plt.ylabel('Cumulative Distribution Function (CDF)')
 plt.xlabel('Years since install')
 plt.xlim([0,50])
-plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left');
+plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
 
 
 # ## Calculating 'alpha' and 'beta' from t50 and t90 
@@ -134,6 +134,7 @@ plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper left');
 
 t50 = 25
 t90 = 35
+
 
 weibullIParams = PV_ICE.weibull_params({t50: 0.50, t90: 0.90})    
 print(weibullIParams)
@@ -149,8 +150,130 @@ mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $
 plt.plot(calc_cdf, linewidth=4.0, label=mylabel)
 plt.axhline(y=0.9, color='r', linestyle='--')
 plt.axhline(y=0.5, color='r', linestyle='--')
-plt.axvline(x=t50, color='c', linestyle='--')
+plt.axvline(x=28, color='c', linestyle='--')
 plt.axvline(x=t90, color='c', linestyle='--')
-plt.axhline(y=0.1, color='r', linestyle='--')
+#plt.axhline(y=0.1, color='r', linestyle='--')
+plt.ylabel("CDF")
+plt.title('Cumulative Density Function (CDF)\n (a.k.a. Unreliability Function)')
+
 plt.legend();
+
+
+# # Reliability 101: Relationship between CDF, PDF, Reliability and Failure Rate
+# 
+# Calculating all of these for a Weibull PDF with Irena Regular Loss Values, of alpha: 5.3759 and beta:30
+
+# In[9]:
+
+
+weibullIParams = {'alpha': 5.3759,
+                      'beta': 30}
+
+
+# In[10]:
+
+
+# Changing size for slide presentation of these results
+plt.rcParams.update({'font.size': 22})
+plt.rcParams['figure.figsize'] = (12, 5)
+
+
+# ### Calculating CDF with PV ICE 
+
+# In[11]:
+
+
+calc_cdf = PV_ICE.weibull_cdf_vis(weibullIParams['alpha'], weibullIParams['beta'])
+
+
+# ### PDF f(t) is the difference between every value of the CDF
+
+# In[12]:
+
+
+calc_pdf = np.diff(calc_cdf)
+
+
+# ### Reliability Function R(t) is the "Complement" of the CDF
+
+# In[13]:
+
+
+reliability_function = [1 - x for x in calc_cdf]
+
+
+# ### Failure Rate is the ratio of the PDF to the Reliability function (f(t)/R(t))
+
+# In[14]:
+
+
+failure_rate = calc_pdf / reliability_function[:-1]
+
+
+# ### Plotting each of the Functions
+
+# In[15]:
+
+
+mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $ : '+ str(round(weibullIParams['beta'],2))
+plt.plot(calc_cdf, linewidth=4.0, label=mylabel)
+plt.axhline(y=0.9, color='r', linestyle='--')
+plt.axhline(y=0.5, color='r', linestyle='--')
+plt.axvline(x=28, color='c', linestyle='--')
+plt.axvline(x=t90, color='c', linestyle='--')
+#plt.axhline(y=0.1, color='r', linestyle='--')
+plt.ylabel("CDF")
+plt.title('Cumulative Density Function (CDF)\n (a.k.a. Unreliability Function)')
+
+plt.legend();
+
+
+# In[16]:
+
+
+mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $ : '+ str(round(weibullIParams['beta'],2))
+plt.plot(failure_rate, linewidth=4.0, label=mylabel)
+
+plt.legend();
+
+plt.ylabel("Failure Rate \n(PDF / Reliability)")
+plt.title('Failure Rate')
+
+#plt.axhline(y=0.1, color='r', linestyle='--')
+#plt.axhline(y=0.5, color='r', linestyle='--')
+#plt.axvline(x=28, color='c', linestyle='--')
+#plt.axvline(x=t90, color='c', linestyle='--')
+#plt.axhline(y=0.1, color='r', linestyle='--')
+
+
+# In[17]:
+
+
+mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $ : '+ str(round(weibullIParams['beta'],2))
+plt.plot(reliability_function, linewidth=4.0, label=mylabel)
+
+plt.legend();
+plt.axhline(y=0.1, color='r', linestyle='--')
+plt.axhline(y=0.5, color='r', linestyle='--')
+plt.axvline(x=28, color='c', linestyle='--')
+plt.axvline(x=t90, color='c', linestyle='--')
+#plt.axhline(y=0.1, color='r', linestyle='--')
+plt.ylabel("RELIABILITY")
+plt.title('Reliability Function \na.k.a. Survival Plot')
+
+
+# In[18]:
+
+
+mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $ : '+ str(round(weibullIParams['beta'],2))
+plt.plot(calc_pdf, linewidth=4.0, label=mylabel)
+
+plt.legend();
+#plt.axhline(y=0.9, color='r', linestyle='--')
+#plt.axhline(y=0.5, color='r', linestyle='--')
+plt.axvline(x=28, color='c', linestyle='--')
+plt.axvline(x=t90, color='c', linestyle='--')
+#plt.axhline(y=0.1, color='r', linestyle='--')
+plt.title('Probability Density Function (PDF) \na.k.a. Density')
+plt.ylabel("DENSITY")
 
