@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # US NREL ENERGY FUTURES 2021
+# US NREL ENERGY FUTURES 2018
 
 # In[1]:
 
@@ -24,13 +24,10 @@ MATERIALS = ['glass','silver','silicon', 'copper','aluminium_frames']
 MATERIAL = MATERIALS[0]
 
 
-MODULEBASELINE = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_basecase_noKittyCat.csv'
-MODULEBASELINE_High = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_LowREHighElec_noKittyCat.csv'
-MODULEBASELINE = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2021_basecase.csv'
-MODULEBASELINE_High = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2021_LowREHighElec.csv'
-
 MODULEBASELINE = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_basecase.csv'
+MODULEBASELINE = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_basecase_noKittyCat.csv'
 MODULEBASELINE_High = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_LowREHighElec.csv'
+MODULEBASELINE_High = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_LowREHighElec_noKittyCat.csv'
 
 
 # In[3]:
@@ -117,15 +114,10 @@ scenarios = ['base', 'high']
 # In[9]:
 
 
-USyearly=pd.DataFrame()
-
-
-# In[10]:
-
-
 keyword='mat_Total_Landfilled'
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
 
+USyearly=pd.DataFrame()
 
 # Loop over objects
 for kk in range(0, len(objects)):
@@ -148,34 +140,7 @@ for kk in range(0, len(objects)):
 USyearly.head(20)
 
 
-# In[11]:
-
-
-keyword='mat_Total_EOL_Landfilled'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
-
-# Loop over objects
-for kk in range(0, len(objects)):
-    obj = objects[kk]
-
-    # Loop over Scenarios
-    for jj in range(0, len(scenarios)):
-        case = scenarios[jj]
-        
-        for ii in range (0, len(materials)):    
-            material = materials[ii]
-            foo = obj.scenario[case].material[material].materialdata[keyword].copy()
-            foo = foo.to_frame(name=material)
-            USyearly["Waste_EOL_"+material+'_'+obj.name+'_'+case] = foo[material]
-
-        filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj.name+'_'+case)) ]
-        USyearly['Waste_EOL_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
-
-# Converting to grams to Tons. 
-USyearly.head(20)
-
-
-# In[12]:
+# In[10]:
 
 
 keyword='mat_Virgin_Stock'
@@ -202,14 +167,14 @@ for kk in range(0, len(objects)):
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[13]:
+# In[11]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 #907185 -- this is for US tons
 
 
-# In[14]:
+# In[12]:
 
 
 UScum = USyearly.copy()
@@ -219,7 +184,7 @@ UScum.head()
 
 # ### Adding Installed Capacity to US
 
-# In[15]:
+# In[13]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -242,7 +207,7 @@ for kk in range(0, len(objects)):
         
 
 
-# In[16]:
+# In[14]:
 
 
 UScum.tail(20)
@@ -250,14 +215,14 @@ UScum.tail(20)
 
 # ## Mining Capacity
 
-# In[17]:
+# In[15]:
 
 
 USyearly.index = r1.scenario['base'].data['year']
 UScum.index = r1.scenario['base'].data['year']
 
 
-# In[18]:
+# In[16]:
 
 
 mining2020_aluminum = 65267000
@@ -266,26 +231,26 @@ mining2020_copper = 20000000
 mining2020_silicon = 8000000
 
 
-# In[19]:
+# In[17]:
 
 
 objects = [r1, r2]
 scenarios = ['base', 'high']
 
 
-# In[20]:
+# In[18]:
 
 
 # PLOTTING GALORE
 
 
-# In[21]:
+# In[19]:
 
 
 USyearly.keys()
 
 
-# In[22]:
+# In[20]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -344,7 +309,7 @@ axs.legend()
 fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production_NREL2018.png', dpi=600)
 
 
-# In[23]:
+# In[32]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -448,15 +413,9 @@ print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[ ]:
-
-
-
-
-
 # ### Bonus: Bifacial Trend Cumulative Virgin Needs (not plotted, just values)
 
-# In[24]:
+# In[28]:
 
 
 name2 = 'bifacialTrend_high'
@@ -478,13 +437,7 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 # ### Waste by year
 
-# In[ ]:
-
-
-
-
-
-# In[25]:
+# In[23]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -585,113 +538,4 @@ f.savefig(title_Method+' Fig_2x1_Yearly WASTE by Scenario and Cumulatives_NREL20
 
 print("Cumulative Waste by 2050 Million Tones by case")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
-
-
-# In[26]:
-
-
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (15, 8)
-keyw='Waste_EOL_'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
-
-
-f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
-
-########################    
-# SUBPLOT 1
-########################
-#######################
-   
-# loop plotting over scenarios
-name2 = 'Simulation1_high'
-name0 = 'Simulation1_base'
-
-
-# SCENARIO 1 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
-            USyearly[keyw+materials[2]+'_'+name0]+USyearly[keyw+materials[3]+'_'+name0]+
-            USyearly[keyw+materials[4]+'_'+name0])
-glassmat = (USyearly[keyw+materials[0]+'_'+name0])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(USyearly.index, modulemat, 'k.', linewidth=5, label='S1: '+name0+' module mass')
-a0.plot(USyearly.index, glassmat, 'k', linewidth=5, label='S1: '+name0+' glass mass only')
-a0.fill_between(USyearly.index, glassmat, modulemat, color='k', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 2 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
-            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
-            USyearly[keyw+materials[4]+'_'+name2])
-glassmat = (USyearly[keyw+materials[0]+'_'+name2])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(USyearly.index, modulemat, 'c.', linewidth=5, label='S2: '+name2+' module mass')
-a0.plot(USyearly.index, glassmat, 'c', linewidth=5, label='S2: '+name2+' glass mass only')
-a0.fill_between(USyearly.index, glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
-a0.legend()
-a0.set_title('Yearly Material Waste by Scenario')
-a0.set_ylabel('Mass [Million Tonnes]')
-a0.set_xlim([2020, 2050])
-a0.set_xlabel('Years')
-    
-    
-########################    
-# SUBPLOT 2
-########################
-#######################
-# Calculate    
-
-cumulations2050 = {}
-for ii in range(0, len(materials)):
-    matcum = []
-    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
-    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
-    cumulations2050[materials[ii]] = matcum
-
-dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
-dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
-
-dfcumulations2050['bottom1'] = dfcumulations2050['glass']
-dfcumulations2050['bottom2'] = dfcumulations2050['bottom1']+dfcumulations2050['aluminium_frames']
-dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['silicon']
-dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
-
-
-## Plot BARS Stuff
-ind=np.arange(2)
-width=0.35 # width of the bars.
-p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
-p1 = a1.bar(ind, dfcumulations2050['aluminium_frames'], width,
-             bottom=dfcumulations2050['bottom1'])
-p2 = a1.bar(ind, dfcumulations2050['silicon'], width,
-             bottom=dfcumulations2050['bottom2'])
-p3 = a1.bar(ind, dfcumulations2050['copper'], width,
-             bottom=dfcumulations2050['bottom3'])
-p4 = a1.bar(ind, dfcumulations2050['silver'], width,
-             bottom=dfcumulations2050['bottom4'])
-
-a1.yaxis.set_label_position("right")
-a1.yaxis.tick_right()
-a1.set_ylabel('Cumulative EOL Only Waste by 2050 [Million Tonnes]')
-a1.set_xlabel('Scenario')
-a1.set_xticks(ind, ('S1', 'S2'))
-#plt.yticks(np.arange(0, 81, 10))
-a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver'))
-
-f.tight_layout()
-
-f.savefig(title_Method+' Fig_2x1_Yearly EOL Only WASTE by Scenario and Cumulatives_NREL2018.png', dpi=600)
-
-print("Cumulative Eol Only Waste by 2050 Million Tones by case")
-dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
-
-
-# In[ ]:
-
-
-
 

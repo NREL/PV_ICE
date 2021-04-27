@@ -39,7 +39,7 @@ plt.rcParams['figure.figsize'] = (12, 8)
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
+testfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'TEMP')
 
 print ("Your simulation will be stored in %s" % testfolder)
 
@@ -49,7 +49,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[3]:
 
 
-reedsFile = str(Path().resolve().parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
+reedsFile = str(Path().resolve().parent.parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
 print ("Input file is stored in %s" % reedsFile)
 
 rawdf = pd.read_excel(reedsFile,
@@ -74,7 +74,7 @@ STATEs = list(rawdf.index.get_level_values('State').unique())
 # In[5]:
 
 
-GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
+GISfile = str(Path().resolve().parent.parent.parent.parent / 'gis_centroid_n.xlsx')
 GIS = pd.read_excel(GISfile)
 GIS = GIS.set_index('id')
 
@@ -183,17 +183,42 @@ for jj in range (0, len(PCAs)):
 # In[12]:
 
 
-IRENA= True
+IRENA= False
+PERFECTMFG = True
 
+mats = ['glass', 'silicon','silver','copper','aluminum']
+
+ELorRL = 'EL'
 if IRENA:
-    weibullInputParams = {'alpha': 5.3759}  # Regular-loss scenario IRENA
-    r1.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
-    r2.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
-    r3.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
+    if ELorRL == 'RL':
+        weibullInputParams = {'alpha': 5.3759, 'beta':30}  # Regular-loss scenario IRENA
+    if ELorRL == 'EL':
+        weibullInputParams = {'alpha': 2.49, 'beta':30}  # Regular-loss scenario IRENA
+    
+    if PERFECTMFG:
+        for jj in range (0, len(r1.scenario.keys())):
+            r1.scenario[STATEs[jj]].data['mod_lifetime'] = 40
+            r1.scenario[STATEs[jj]].data['mod_MFG_eff'] = 100.0
+            r2.scenario[STATEs[jj]].data['mod_lifetime'] = 40
+            r2.scenario[STATEs[jj]].data['mod_MFG_eff'] = 100.0
+            r3.scenario[STATEs[jj]].data['mod_lifetime'] = 40
+            r3.scenario[STATEs[jj]].data['mod_MFG_eff'] = 100.0
+
+            for kk in range(0, len(mats)):
+                mat = mats[kk]
+                r1.scenario[STATEs[jj]].material[mat].materialdata['mat_MFG_eff'] = 100.0    
+                r2.scenario[STATEs[jj]].material[mat].materialdata['mat_MFG_eff'] = 100.0    
+                r3.scenario[STATEs[jj]].material[mat].materialdata['mat_MFG_eff'] = 100.0    
+    
+    r1.calculateMassFlow(weibullInputParams=weibullInputParams)
+    r2.calculateMassFlow(weibullInputParams=weibullInputParams)
+    r3.calculateMassFlow(weibullInputParams=weibullInputParams)
+    title_Method = 'Irena_'+ELorRL
 else:
     r1.calculateMassFlow()
     r2.calculateMassFlow()
     r3.calculateMassFlow()
+    title_Method = 'PVICE'
 
 
 # In[13]:
@@ -216,6 +241,338 @@ r3.scenario['p1'].data.head(21)
 """
 pass
 
+
+# # SAVE DATA FOR BILLY: PCAs
+
+# ### PCA vs. Cumulative Waste by 2050
+# 
+
+# In[15]:
+
+
+#for 3 significant numbers rounding
+N = 2
+
+
+# SFScenarios[kk].scenario[PCAs[zz]].data.year
+# 
+# Index 21 --> 2030
+# 
+# Index 31 --> 2040
+# 
+# Index 41 --> 2050
+
+# In[16]:
+
+
+idx2030 = 21
+idx2040 = 31
+idx2050 = 41
+print("index ", idx2030, " is year ", r1.scenario[PCAs[0]].data['year'].iloc[idx2030])
+print("index ", idx2040, " is year ", r1.scenario[PCAs[0]].data['year'].iloc[idx2040])
+print("index ", idx2050, " is year ", r1.scenario[PCAs[0]].data['year'].iloc[idx2050])
+
+
+# #### 1 - PCA Cumulative Virgin Needs by 2050
+
+# In[17]:
+
+
+keyword='mat_Virgin_Stock'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    
+    materiallist = []
+    for ii in range (0, len(materials)):    
+        
+        keywordsum = []
+        for zz in range (0, len(PCAs)):
+            keywordsum.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword].sum())
+    
+        materiallist.append(keywordsum)
+    df = pd.DataFrame (materiallist,columns=PCAs, index = materials)
+    df = df.T
+    df = df.add_prefix(SFScenarios[kk].name+'_')
+    scenariolist = pd.concat([scenariolist , df], axis=1)
+
+scenariolist = scenariolist/1000000 # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv(title_Method+' 1 - PCA Cumulative2050 VirginMaterialNeeds_tons.csv')
+
+
+# #### 2 - PCA Cumulative EoL Only Waste by 2050
+
+# In[18]:
+
+
+keyword='mat_Total_EOL_Landfilled'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    
+    materiallist = []
+    for ii in range (0, len(materials)):    
+        
+        keywordsum = []
+        for zz in range (0, len(PCAs)):
+            keywordsum.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword].sum())
+    
+        materiallist.append(keywordsum)
+    df = pd.DataFrame (materiallist,columns=PCAs, index = materials)
+    df = df.T
+    df = df.add_prefix(SFScenarios[kk].name+'_')
+    scenariolist = pd.concat([scenariolist , df], axis=1)
+
+scenariolist = scenariolist/1000000 # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv(title_Method+' 2 - PCA Cumulative2050 Waste EOL_tons.csv')
+
+
+# #### 3 - PCA Yearly Virgin Needs 2030 2040 2050
+
+# In[19]:
+
+
+keyword='mat_Virgin_Stock'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    materiallist = pd.DataFrame()
+
+    for ii in range (0, len(materials)):    
+        
+        keywordsum2030 = []
+        keywordsum2040 = []
+        keywordsum2050 = []
+
+        for zz in range (0, len(PCAs)):
+            keywordsum2030.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][idx2030])
+            keywordsum2040.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][idx2040])
+            keywordsum2050.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][idx2050])
+    
+        yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=PCAs, index = [2030, 2040, 2050])
+        yearlylist = yearlylist.T
+        yearlylist = yearlylist.add_prefix(materials[ii]+'_')
+        materiallist = pd.concat([materiallist, yearlylist], axis=1)
+    materiallist = materiallist.add_prefix(SFScenarios[kk].name+'_')
+    scenariolist = pd.concat([scenariolist , materiallist], axis=1)
+
+scenariolist = scenariolist/1000000   # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv(title_Method+' 3 - PCA Yearly 2030 2040 2050 VirginMaterialNeeds_tons.csv')
+
+
+# #### 4 - PCA Yearly EoL Waste 2030 2040 2050
+
+# In[20]:
+
+
+keyword='mat_Total_Landfilled'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    materiallist = pd.DataFrame()
+
+    for ii in range (0, len(materials)):    
+        
+        keywordsum2030 = []
+        keywordsum2040 = []
+        keywordsum2050 = []
+
+        for zz in range (0, len(PCAs)):
+            keywordsum2030.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][idx2030])
+            keywordsum2040.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][idx2040])
+            keywordsum2050.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][idx2050])
+    
+        yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=PCAs, index = [2030, 2040, 2050])
+        yearlylist = yearlylist.T
+        yearlylist = yearlylist.add_prefix(materials[ii]+'_')
+        materiallist = pd.concat([materiallist, yearlylist], axis=1)
+    materiallist = materiallist.add_prefix(SFScenarios[kk].name+'_')
+    scenariolist = pd.concat([scenariolist , materiallist], axis=1)
+
+scenariolist = scenariolist/1000000   # Converting to Metric Tonnes
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv(title_Method+' 4 - PCA Yearly 2030 2040 2050 Waste_EOL_tons.csv')
+
+
+# # GEOPANDAS
+
+# In[21]:
+
+
+latitude_all =[]
+longitude_all = []
+cumulativewaste2050 = []
+for scen in r1.scenario.keys():
+    latitude_all.append(r1.scenario[scen].latitude)
+    longitude_all.append(r1.scenario[scen].longitude)
+    cumulativewaste2050.append(r1.scenario[scen].material['glass'].materialdata['mat_Total_Landfilled'].sum())
+
+
+# In[22]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import descartes
+import geopandas as gpd
+from shapely.geometry import Point, Polygon
+
+street_map = gpd.read_file(r'C:\Users\sayala\Desktop\geopandas\cb_2018_us_nation_20m\cb_2018_us_nation_20m.shp')
+
+# Show the map only
+#fig, ax = plt.subplots(figsize=(10,15))
+#street_map.plot(ax=ax)
+
+
+# In[23]:
+
+
+frame = { 'Latitude': latitude_all, 'Longitude': longitude_all, 'CumulativeWaste2050': cumulativewaste2050}   
+df = pd.DataFrame(frame) 
+
+
+# In[24]:
+
+
+df.head()
+
+
+# In[25]:
+
+
+geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
+geometry[:3]
+
+
+# In[26]:
+
+
+crs = {'init':'epsg:4326'}
+
+
+# In[27]:
+
+
+geo_df = gpd.GeoDataFrame(df, # specify our data
+                         crs = crs, # specify our coordinate reference system
+                         geometry = geometry) # specify the geometry list we created
+geo_df.head()
+
+
+# In[28]:
+
+
+fig, ax = plt.subplots(figsize = (15,15))
+street_map.plot(ax = ax, alpha = 0.4, color = "grey")
+geo_df[geo_df['CumulativeWaste2050'] >= 1.918125e+09].plot(ax=ax, markersize = 20, color= "blue", marker = "o", label = "Bigger Than")
+geo_df[geo_df['CumulativeWaste2050'] < 1.918125e+09].plot(ax=ax, markersize = 20, color= "red", marker = "o", label = "Less Than")
+plt.xlim([-130, -60])
+plt.ylim([20, 50])
+plt.legend(prop={'size':15})
+
+
+# In[29]:
+
+
+import random
+import pandas as pd
+import matplotlib.pyplot as plt
+import descartes
+import geopandas as gpd
+from shapely.geometry import Point, Polygon
+
+latitude = random.sample(range(25, 45), 10) 
+longitude = random.sample(range(-125, -65), 10) 
+weight = random.sample(range(0, 500), 10) 
+
+frame = { 'Latitude': latitude, 'Longitude': longitude, 'Weight': weight}   
+df = pd.DataFrame(frame) 
+
+geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
+crs = {'init':'epsg:4326'}
+geo_df = gpd.GeoDataFrame(df, # specify our data
+                         crs = crs, # specify our coordinate reference system
+                         geometry = geometry) # specify the geometry list we created
+
+fig, ax = plt.subplots(figsize = (15,15))
+street_map.plot(ax = ax, alpha = 0.4, color = "grey")
+geo_df[geo_df['Weight'] >=250].plot(ax=ax, markersize = 20, color= "blue", marker = "o", label = "Bigger Than")
+geo_df[geo_df['Weight'] < 250].plot(ax=ax, markersize = 20, color= "red", marker = "o", label = "Less Than")
+plt.xlim([-130, -60])
+plt.ylim([20, 50])
+plt.legend(prop={'size':15})
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# # OBSOLETE BECAUSE FASTER TO DO ON NATION LEVEL
 
 # ## Aggregating PCAs Material Landfilled to obtain US totals by Year
 
@@ -341,7 +698,8 @@ for kk in range(0, 3):
 # In[19]:
 
 
-USyearly = USyearly/907185
+USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
+#907185 -- this is for US tons
 
 
 # ### Adding Installed Capacity to US
@@ -618,452 +976,4 @@ axs[0].set_ylabel('Mass [Tons]')
 axs[3].set_ylabel('Mass [Tons]')
 axs[6].set_ylabel('Installed Capacity [TW]')
 axs[5].legend(materials)
-
-
-# # SAVE DATA FOR BILLY
-
-# ### PCA vs. Cumulative Waste by 2050
-# 
-
-# In[36]:
-
-
-keyword='mat_Virgin_Stock'
-
-
-# In[ ]:
-
-
-for kk in range(0, 3):
-
-    obj = SFScenarios[kk]
-
-
-# In[46]:
-
-
-PCAs
-
-
-# In[50]:
-
-
-SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword]
-
-
-# In[58]:
-
-
-df
-
-
-# In[87]:
-
-
-keyword='mat_Virgin_Stock'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
-
-SFScenarios = [r1, r2, r3]
-# Loop over SF Scenarios
-
-scenariolist = pd.DataFrame()
-for kk in range(0, 3):
-    # Loop over Materials
-    
-    materiallist = []
-    for ii in range (0, len(materials)):    
-        
-        keywordsum = []
-        for zz in range (0, len(PCAs)):
-            keywordsum.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword].sum())
-    
-        materiallist.append(keywordsum)
-    df = pd.DataFrame (materiallist,columns=PCAs, index = materials)
-    df = df.T
-    df = df.add_prefix(SFScenarios[kk].name+'_')
-    scenariolist = pd.concat([scenariolist , df], axis=1)
-
-scenariolist = scenariolist/907185
-scenariolist.to_csv('1 - PCA Cumulative2050 VirginMaterialNeeds_tons.csv')
-
-
-# In[88]:
-
-
-keyword='mat_Total_Landfilled'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
-
-SFScenarios = [r1, r2, r3]
-# Loop over SF Scenarios
-
-scenariolist = pd.DataFrame()
-for kk in range(0, 3):
-    # Loop over Materials
-    
-    materiallist = []
-    for ii in range (0, len(materials)):    
-        
-        keywordsum = []
-        for zz in range (0, len(PCAs)):
-            keywordsum.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword].sum())
-    
-        materiallist.append(keywordsum)
-    df = pd.DataFrame (materiallist,columns=PCAs, index = materials)
-    df = df.T
-    df = df.add_prefix(SFScenarios[kk].name+'_')
-    scenariolist = pd.concat([scenariolist , df], axis=1)
-
-scenariolist.keys()
-scenariolist.to_csv('2 - PCA Cumulative2050 Waste_tons.csv')
-
-
-# SFScenarios[kk].scenario[PCAs[zz]].data.year
-# 
-# Index 21 --> 2030
-# 
-# Index 31 --> 2040
-# 
-# Index 41 --> 2050
-
-# In[89]:
-
-
-scenariolist.keys()
-
-
-# In[ ]:
-
-
-
-
-
-# In[107]:
-
-
-keyword='mat_Virgin_Stock'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
-
-SFScenarios = [r1, r2, r3]
-# Loop over SF Scenarios
-
-scenariolist = pd.DataFrame()
-for kk in range(0, 3):
-    # Loop over Materials
-    materiallist = pd.DataFrame()
-
-    for ii in range (0, len(materials)):    
-        
-        keywordsum2030 = []
-        keywordsum2040 = []
-        keywordsum2050 = []
-
-        for zz in range (0, len(PCAs)):
-            keywordsum2030.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][21])
-            keywordsum2040.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][31])
-            keywordsum2050.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][41])
-    
-        yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=PCAs, index = [2030, 2040, 2050])
-        yearlylist = yearlylist.T
-        yearlylist = yearlylist.add_prefix(materials[ii]+'_')
-        materiallist = pd.concat([materiallist, yearlylist], axis=1)
-    materiallist = materiallist.add_prefix(SFScenarios[kk].name+'_')
-    scenariolist = pd.concat([scenariolist , materiallist], axis=1)
-
-scenariolist = scenariolist/907185
-scenariolist.to_csv('3 - PCA Yearly 2030 2040 2050 VirginMaterialNeeds_tons.csv')
-
-
-# In[111]:
-
-
-keyword='mat_Total_Landfilled'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
-
-SFScenarios = [r1, r2, r3]
-# Loop over SF Scenarios
-
-scenariolist = pd.DataFrame()
-for kk in range(0, 3):
-    # Loop over Materials
-    materiallist = pd.DataFrame()
-
-    for ii in range (0, len(materials)):    
-        
-        keywordsum2030 = []
-        keywordsum2040 = []
-        keywordsum2050 = []
-
-        for zz in range (0, len(PCAs)):
-            keywordsum2030.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][21])
-            keywordsum2040.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][31])
-            keywordsum2050.append(SFScenarios[kk].scenario[PCAs[zz]].material[materials[ii]].materialdata[keyword][41])
-    
-        yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=PCAs, index = [2030, 2040, 2050])
-        yearlylist = yearlylist.T
-        yearlylist = yearlylist.add_prefix(materials[ii]+'_')
-        materiallist = pd.concat([materiallist, yearlylist], axis=1)
-    materiallist = materiallist.add_prefix(SFScenarios[kk].name+'_')
-    scenariolist = pd.concat([scenariolist , materiallist], axis=1)
-
-scenariolist = scenariolist/907185
-scenariolist.to_csv('4 - PCA Yearly 2030 2040 2050 Waste_tons.csv')
-
-
-# # GEOPANDAS
-
-# In[ ]:
-
-
-latitude_all =[]
-longitude_all = []
-cumulativewaste2050 = []
-for scen in r1.scenario.keys():
-    latitude_all.append(r1.scenario[scen].latitude)
-    longitude_all.append(r1.scenario[scen].longitude)
-    cumulativewaste2050.append(r1.scenario[scen].material['glass'].materialdata['mat_Total_Landfilled'].sum())
-
-
-# In[ ]:
-
-
-import pandas as pd
-import matplotlib.pyplot as plt
-import descartes
-import geopandas as gpd
-from shapely.geometry import Point, Polygon
-
-street_map = gpd.read_file(r'C:\Users\sayala\Desktop\geopandas\cb_2018_us_nation_20m\cb_2018_us_nation_20m.shp')
-
-# Show the map only
-#fig, ax = plt.subplots(figsize=(10,15))
-#street_map.plot(ax=ax)
-
-
-# In[ ]:
-
-
-frame = { 'Latitude': latitude_all, 'Longitude': longitude_all, 'CumulativeWaste2050': cumulativewaste2050}   
-df = pd.DataFrame(frame) 
-
-
-# In[ ]:
-
-
-df.head()
-
-
-# In[ ]:
-
-
-geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
-geometry[:3]
-
-
-# In[ ]:
-
-
-crs = {'init':'epsg:4326'}
-
-
-# In[ ]:
-
-
-geo_df = gpd.GeoDataFrame(df, # specify our data
-                         crs = crs, # specify our coordinate reference system
-                         geometry = geometry) # specify the geometry list we created
-geo_df.head()
-
-
-# In[ ]:
-
-
-fig, ax = plt.subplots(figsize = (15,15))
-street_map.plot(ax = ax, alpha = 0.4, color = "grey")
-geo_df[geo_df['CumulativeWaste2050'] >= 1.918125e+09].plot(ax=ax, markersize = 20, color= "blue", marker = "o", label = "Bigger Than")
-geo_df[geo_df['CumulativeWaste2050'] < 1.918125e+09].plot(ax=ax, markersize = 20, color= "red", marker = "o", label = "Less Than")
-plt.xlim([-130, -60])
-plt.ylim([20, 50])
-plt.legend(prop={'size':15})
-
-
-# In[ ]:
-
-
-import random
-import pandas as pd
-import matplotlib.pyplot as plt
-import descartes
-import geopandas as gpd
-from shapely.geometry import Point, Polygon
-
-latitude = random.sample(range(25, 45), 10) 
-longitude = random.sample(range(-125, -65), 10) 
-weight = random.sample(range(0, 500), 10) 
-
-frame = { 'Latitude': latitude, 'Longitude': longitude, 'Weight': weight}   
-df = pd.DataFrame(frame) 
-
-geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
-crs = {'init':'epsg:4326'}
-geo_df = gpd.GeoDataFrame(df, # specify our data
-                         crs = crs, # specify our coordinate reference system
-                         geometry = geometry) # specify the geometry list we created
-
-fig, ax = plt.subplots(figsize = (15,15))
-street_map.plot(ax = ax, alpha = 0.4, color = "grey")
-geo_df[geo_df['Weight'] >=250].plot(ax=ax, markersize = 20, color= "blue", marker = "o", label = "Bigger Than")
-geo_df[geo_df['Weight'] < 250].plot(ax=ax, markersize = 20, color= "red", marker = "o", label = "Less Than")
-plt.xlim([-130, -60])
-plt.ylim([20, 50])
-plt.legend(prop={'size':15})
-
-
-# In[ ]:
-
-
-import geoplot
-
-
-# In[ ]:
-
-
-ax = street_map.kdeplot(
-    geo_df, #clip=boroughs.geometry,
-    shade=True, cmap='Reds',
-    projection=geoplot.crs.AlbersEqualArea())
-geoplot.polyplot(boroughs, ax=ax, zorder=1)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-import scipy.stats
-import seaborn.palettes
-import seaborn.utils
-
-
-# In[ ]:
-
-
-axis = [-130, 48.1667, -70, 100.1667]
-
-
-# In[ ]:
-
-
-latlng_bounds = area.total_bounds
-area = area.to_crs(epsg=3857)
-axis = area.total_bounds
-
-# Create the map stretching over the requested area
-ax = area.plot(alpha=0)
-
-
-# In[ ]:
-
-
-# Calculate the KDE
-data = np.c_[df.Longitude, df.Latitude]
-kde = scipy.stats.gaussian_kde(data.T, bw_method="scott", weights=df.CumulativeWaste2050)
-data_std = data.std(axis=0, ddof=1)
-bw_x = getattr(kde, "scotts_factor")() * data_std[0]
-bw_y = getattr(kde, "scotts_factor")() * data_std[1]
-grid_x = grid_y = 100
-x_support = seaborn.utils._kde_support(data[:, 0], bw_x, grid_x, 3, (axis[0], axis[2]))
-y_support = seaborn.utils._kde_support(data[:, 1], bw_y, grid_y, 3, (axis[1], axis[3]))
-xx, yy = np.meshgrid(x_support, y_support)
-levels = kde([xx.ravel(), yy.ravel()]).reshape(xx.shape)
-
-
-# In[ ]:
-
-
-cset = ax.contourf(xx, yy, levels,
-    20, # n_levels
-
-    cmap=seaborn.palettes.blend_palette(('#ffffff10', '#ff0000af'), 6, as_cmap=True),
-    antialiased=True,       # avoids lines on the contours to some extent
-)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-def add_basemap(ax, latlng_bounds, axis, url='https://a.basemaps.cartocdn.com/light_all/tileZ/tileX/tileY@2x.png'):
-    prev_ax = ax.axis()
-    # TODO: Zoom should surely take output pixel request size into account...
-    zoom = ctx.tile._calculate_zoom(*latlng_bounds)
-    while ctx.tile.howmany(*latlng_bounds, zoom, ll=True) > max_tiles:      # dont ever try to download loads of tiles
-        zoom = zoom - 1
-    print("downloading %d tiles with zoom level %d" % (ctx.tile.howmany(*latlng_bounds, zoom, ll=True), zoom))
-    basemap, extent = ctx.bounds2img(*axis, zoom=zoom, url=url)
-    ax.imshow(basemap, extent=extent, interpolation='bilinear')
-    ax.axis(prev_ax)        # restore axis after changing the background
- 
-add_basemap(ax, latlng_bounds, axis)
-
-
-# In[ ]:
-
-
-import geopandas as gpd
-
-
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
-import numpy as np
-
-def make_plot(projection_name, projection_crs, extent, heat_data):
-    """
-    ?
-    """
-    fig = plt.figure()
-    rect = 0.1, 0.1, 0.8, 0.8
-    ax = fig.add_axes(rect, projection=projection_crs)
-
-    # Set display limits to include a set region of latitude * longitude.
-    # (Note: Cartopy-specific).
-    ax.set_extent(extent, crs=projection_crs)
-
-    # Add coastlines and meridians/parallels (Cartopy-specific).
-    ax.coastlines(linewidth=0.2, color='black')
-    ax.gridlines(crs=projection_crs, linestyle='-')
-
-    lat = np.linspace(extent[0],extent[1],heat_data.shape[0])
-    lon = np.linspace(extent[2],extent[3],heat_data.shape[1])
-    Lat,Lon = np.meshgrid(lat,lon)
-    ax.pcolormesh(Lat,Lon,np.transpose(heat_data))
-    plt.savefig("Test_fig.pdf", bbox_inches='tight')
-
-
-def main():
-    #extent = (-65.0, -62, 44, 45.5)
-    extent = (-90, -40, 30, 60)
-    # Define some test points with latitude and longitude coordinates.
-    #city_data = [('Halifax, NS', 44.67, -63.61, 'black'),
-    #             ('Neighbour', 45, -63, 'blue'),
-    #             ('Other_Place', 44.1, -64, 'red')]
-    heat_data = np.random.normal(0.0,0.2,size=(100,150))
-
-    # Demonstrate with two different display projections.
-    # Define a Cartopy 'ordinary' lat-lon coordinate reference system.
-    crs_latlon = ccrs.PlateCarree()
-    make_plot('Equidistant Cylindrical', crs_latlon, extent, heat_data)
-    #crs_ae = ccrs.LambertCylindrical()
-    #make_plot('Lambert Cylindrical', crs_ae, extent, heat_data)
-
-if __name__ == '__main__':
-    main()
 
