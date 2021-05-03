@@ -101,6 +101,7 @@ for ii in range (len(rawdf.unstack(level=1))):
     A = A.resample('Y').asfreq()
     A = A['new_Installed_Capacity_[MW]'].fillna(0).groupby(A['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')    
     A = pd.DataFrame(A)
+    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * df_marketshares['Si']
     A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
@@ -167,6 +168,7 @@ for ii in range (len(df.unstack(level=2))):
     A = A.resample('Y').asfreq()
     A = A['new_Installed_Capacity_[MW]'].fillna(0).groupby(A['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')    
     A = pd.DataFrame(A)
+    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * df_marketshares['Si']
     A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
@@ -304,6 +306,7 @@ for ii in range (len(df.unstack(level=1))):
     A = A.resample('Y').asfreq()
     A = A['new_Installed_Capacity_[MW]'].fillna(0).groupby(A['new_Installed_Capacity_[MW]'].notna().cumsum()).transform('mean')    
     A = pd.DataFrame(A)
+    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * df_marketshares['Si']
     A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
