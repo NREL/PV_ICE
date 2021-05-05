@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # ReEDS Scenarios on PV ICE Tool USA
+# # ReEDS Scenarios on PV ICE Tool WORLD
+# 
 
 # To explore different scenarios for furture installation projections of PV (or any technology), ReEDS output data can be useful in providing standard scenarios. ReEDS installation projections are used in this journal as input data to the PV ICE tool. 
 # 
@@ -45,100 +46,41 @@ testfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# ### Reading REEDS original file to get list of SCENARIOs, PCAs, and STATEs 
-
 # In[3]:
 
 
-r"""
-reedsFile = str(Path().resolve().parent.parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
-print ("Input file is stored in %s" % reedsFile)
-
-rawdf = pd.read_excel(reedsFile,
-                        sheet_name="UPV Capacity (GW)")
-                        #index_col=[0,2,3]) #this casts scenario, PCA and State as levels
-#now set year as an index in place
-#rawdf.drop(columns=['State'], inplace=True)
-rawdf.drop(columns=['Tech'], inplace=True)
-rawdf.set_index(['Scenario','Year','PCA', 'State'], inplace=True)
-""";
-
-
-# In[4]:
-
-
-#scenarios = list(rawdf.index.get_level_values('Scenario').unique())
-#PCAs = list(rawdf.index.get_level_values('PCA').unique())
-#STATEs = list(rawdf.index.get_level_values('State').unique())
-
-
-# ### Create Scenarios in PV_ICE
-
-# #### Rename difficult characters from Scenarios Names
-
-# In[5]:
-
-
-scenarios = ['Reference.Mod',
- 'Reference.Adv',
- 'Reference.Adv_DR',
- '95-by-35.Mod',
- '95-by-35.Adv',
- '95-by-35.Adv_DR',
- '95-by-35_Elec.Mod',
- '95-by-35_Elec.Adv',
- '95-by-35_Elec.Adv_DR']
-
-
-# In[6]:
-
-
-#simulationname = scenarios
-#simulationname = [w.replace('+', '_') for w in simulationname]
-#simulationname
-
-
-# #### Downselect to Solar Future scenarios of interest
-# 
-# Scenarios of Interest:
-# <li> Ref.Mod
-# <li> 95-by-35.Adv  
-# <li> 95-by-35+Elec.Adv+DR 
-
-# In[7]:
-
-
-#SFscenarios = [simulationname[0], simulationname[4], simulationname[8]]
-SFscenarios = ['Reference.Mod', '95-by-35.Adv', '95-by-35_Elec.Adv_DR']
-SFscenarios
+SFscenarios = ['World']
 
 
 # #### Create the 3 Scenarios and assign Baselines
 # 
 # Keeping track of each scenario as its own PV ICE Object.
 
-# In[8]:
+# In[4]:
+
+
+filetitle = r'..\baselines\ReedsSubset\baseline_modules_World_Bogdanov.csv'
+
+
+# In[5]:
 
 
 #for ii in range (0, 1): #len(scenarios):
 i = 0
-rr = PV_ICE.Simulation(name='USA', path=testfolder)
-for i in range(0, 3):
-    filetitle = SFscenarios[i]+'.csv'
-    filetitle = os.path.join(testfolder, 'USA', filetitle)    
-    rr.createScenario(name=SFscenarios[i], file=filetitle)
-    rr.scenario[SFscenarios[i]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    rr.scenario[SFscenarios[i]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    rr.scenario[SFscenarios[i]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    rr.scenario[SFscenarios[i]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    rr.scenario[SFscenarios[i]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
+rr = PV_ICE.Simulation(name='World', path=testfolder)
+rr.createScenario(name=SFscenarios[i], file=filetitle)
+rr.scenario[SFscenarios[i]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
+rr.scenario[SFscenarios[i]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
+rr.scenario[SFscenarios[i]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
+rr.scenario[SFscenarios[i]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
+rr.scenario[SFscenarios[i]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
 
 
 # # 2 FINISH: Set characteristics of Recycling to SF values.
 
 # #### Calculate Mass Flow
 
-# In[9]:
+# In[6]:
 
 
 IRENA= False
@@ -171,45 +113,21 @@ else:
     title_Method = 'PVICE'
 
 
-# In[ ]:
-
-
-
-
-
-# In[10]:
-
-
-print("Scenarios:", rr.scenario.keys())
-print("Module Keys:", rr.scenario[SFscenarios[0]].data.keys())
-print("Material Keys: ", rr.scenario[SFscenarios[0]].material['glass'].materialdata.keys())
-
-
-# In[11]:
-
-
-"""
-r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
-r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
-"""
-pass
-
-
 # ## Aggregating PCAs Material Landfilled to obtain US totals by Year
 
-# In[12]:
+# In[7]:
 
 
 USyearly=pd.DataFrame()
 
 
-# In[13]:
+# In[8]:
 
 
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
 
-# In[14]:
+# In[9]:
 
 
 keywd = 'mat_Virgin_Stock'
@@ -223,7 +141,7 @@ for jj in range(len(SFscenarios)):
     USyearly['VirginStock_Module_'+obj] = USyearly[filter_col].sum(axis=1)
 
 
-# In[15]:
+# In[10]:
 
 
 keywd = 'mat_Total_Landfilled'
@@ -237,7 +155,7 @@ for jj in range(len(SFscenarios)):
     USyearly['Waste_Module_'+obj] = USyearly[filter_col].sum(axis=1)
 
 
-# In[16]:
+# In[11]:
 
 
 keywd = 'mat_Total_EOL_Landfilled'
@@ -251,7 +169,7 @@ for jj in range(len(SFscenarios)):
     USyearly['Waste_EOL_Module_'+obj] = USyearly[filter_col].sum(axis=1)
 
 
-# In[17]:
+# In[12]:
 
 
 keywd = 'mat_Total_MFG_Landfilled'
@@ -268,7 +186,7 @@ for jj in range(len(SFscenarios)):
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[18]:
+# In[13]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
@@ -277,7 +195,7 @@ USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 
 # ### Adding NEW Installed Capacity to US
 
-# In[19]:
+# In[14]:
 
 
 keyword='new_Installed_Capacity_[MW]'
@@ -289,7 +207,7 @@ for jj in range(len(SFscenarios)):
 
 # #### Reindexing and creating c umulative results
 
-# In[20]:
+# In[15]:
 
 
 UScum = USyearly.copy()
@@ -298,7 +216,7 @@ UScum = UScum.cumsum()
 
 # ### Adding Installed Capacity to US (This is already 'Cumulative') so not including it in UScum
 
-# In[21]:
+# In[16]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -310,26 +228,32 @@ for jj in range(len(SFscenarios)):
 
 # #### Set YEAR Index
 
-# In[22]:
+# In[17]:
 
 
 USyearly.index = rr.scenario[obj].data['year']
 UScum.index = rr.scenario[obj].data['year']
 
 
-# In[23]:
+# In[18]:
 
 
 USyearly.head().iloc[1]
 
 
-# In[24]:
+# In[19]:
 
 
 USyearly.head()
 
 
-# In[25]:
+# In[20]:
+
+
+plt.plot(USyearly['new_Installed_Capacity_[MW]World'])
+
+
+# In[21]:
 
 
 UScum.head()
@@ -337,7 +261,7 @@ UScum.head()
 
 # ### 3 sig figures save Yearly and cumulative overview Nation
 
-# In[26]:
+# In[22]:
 
 
 USyearly3sig = USyearly.copy()
@@ -361,7 +285,7 @@ USyearly3sig.to_csv(title_Method+' US_Yearly NATION.csv')
 UScum3sig.to_csv(title_Method+' US_Cumulative NATION.csv')
 
 
-# In[27]:
+# In[23]:
 
 
 print("Sanity check: mat_Total_Landfilled = mat_Total_EOL_Landfilled + mat_Total_MFG_Landfilled")
@@ -375,7 +299,7 @@ A - B - C
 
 # ## Yearly Virgin Material Needs by Scenario
 
-# In[28]:
+# In[24]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -413,44 +337,6 @@ a0.plot(rr.scenario[obj].data['year'], glassmat, 'k', linewidth=5, label='S1 Ref
 a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='k', alpha=0.3,
                  interpolate=True)
 
-# SCENARIO 2 ***************
-kk = 1
-obj = SFscenarios[kk]
-
-modulemat = (USyearly[keyw+materials[0]+'_'+obj]+USyearly[keyw+materials[1]+'_'+obj]+
-            USyearly[keyw+materials[2]+'_'+obj]+USyearly[keyw+materials[3]+'_'+obj]+
-            USyearly[keyw+materials[4]+'_'+obj])
-glassmat = (USyearly[keyw+materials[0]+'_'+obj])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(rr.scenario[obj].data['year'], modulemat, 'g.', linewidth=5, label='S2 Grid Decarbonization: module mass')
-a0.plot(rr.scenario[obj].data['year'], glassmat, 'g', linewidth=5, label='S2 Grid Decarbonization: glass mass only')
-a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='g', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 3 ***************
-kk = 2
-obj = SFscenarios[kk]
-
-modulemat = (USyearly[keyw+materials[0]+'_'+obj]+USyearly[keyw+materials[1]+'_'+obj]+
-            USyearly[keyw+materials[2]+'_'+obj]+USyearly[keyw+materials[3]+'_'+obj]+
-            USyearly[keyw+materials[4]+'_'+obj])
-glassmat = (USyearly[keyw+materials[0]+'_'+obj])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(rr.scenario[obj].data['year'], modulemat, 'c.', linewidth=5, label='S3 High Electrification: module mass')
-a0.plot(rr.scenario[obj].data['year'], glassmat, 'c', linewidth=5, label='S3 High Electrification: glass mass only')
-
-a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
-a0.legend()
-a0.set_title('Yearly Virgin Material Needs by Scenario')
-a0.set_ylabel('Mass [Million Tonnes]')
-
-a0.set_xlabel('Years')
-
-
 
     
 ########################    
@@ -463,7 +349,7 @@ materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 cumulations2050 = {}
 for ii in range(0, len(materials)):
     matcum = []
-    for kk in range (0, 3):
+    for kk in range (0, 1):
         obj = SFscenarios[kk]
         matcum.append(UScum[keyw+materials[ii]+'_'+obj].loc[2050])
     cumulations2050[materials[ii]] = matcum
@@ -478,7 +364,7 @@ dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['c
 
 
 ## Plot BARS Stuff
-ind=np.arange(3)
+ind=np.arange(1)
 width=0.35 # width of the bars.
 p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
 p1 = a1.bar(ind, dfcumulations2050['aluminum'], width,
@@ -494,16 +380,16 @@ a1.yaxis.set_label_position("right")
 a1.yaxis.tick_right()
 a1.set_ylabel('Virgin Material Cumulative Needs 2020-2050 [Million Tonnes]')
 a1.set_xlabel('Scenario')
-a1.set_xticks(ind, ('S1', 'S2', 'S3'))
+a1.set_xticks(ind, ('S1'))
 #plt.yticks(np.arange(0, 81, 10))
 a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'Aluminum', 'Silicon','Copper','Silver'))
 
 f.tight_layout()
 
-f.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cumulatives.png', dpi=600)
+f.savefig(title_Method+' Fig_2x1_WORLD Yearly Virgin Material Needs by Scenario and Cumulatives.png', dpi=600)
 
 
-# In[29]:
+# In[27]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -542,44 +428,6 @@ a0.plot(rr.scenario[obj].data['year'], glassmat, 'k', linewidth=5, label='S1 Ref
 a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='k', alpha=0.3,
                  interpolate=True)
 
-# SCENARIO 2 ***************
-kk = 1
-obj = SFscenarios[kk]
-
-modulemat = (USyearly[keyw+materials[0]+'_'+obj]+USyearly[keyw+materials[1]+'_'+obj]+
-            USyearly[keyw+materials[2]+'_'+obj]+USyearly[keyw+materials[3]+'_'+obj]+
-            USyearly[keyw+materials[4]+'_'+obj])
-glassmat = (USyearly[keyw+materials[0]+'_'+obj])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(rr.scenario[obj].data['year'], modulemat, 'g.', linewidth=5, label='S2 Grid Decarbonization: module mass')
-a0.plot(rr.scenario[obj].data['year'], glassmat, 'g', linewidth=5, label='S2 Grid Decarbonization: glass mass only')
-a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='g', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 3 ***************
-kk = 2
-obj = SFscenarios[kk]
-
-modulemat = (USyearly[keyw+materials[0]+'_'+obj]+USyearly[keyw+materials[1]+'_'+obj]+
-            USyearly[keyw+materials[2]+'_'+obj]+USyearly[keyw+materials[3]+'_'+obj]+
-            USyearly[keyw+materials[4]+'_'+obj])
-glassmat = (USyearly[keyw+materials[0]+'_'+obj])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(rr.scenario[obj].data['year'], modulemat, 'c.', linewidth=5, label='S High Electrification: module mass')
-a0.plot(rr.scenario[obj].data['year'], glassmat, 'c', linewidth=5, label='S3 High Electrification: glass mass only')
-
-a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
-a0.legend()
-a0.set_title('Yearly Manufacturing Scrap and EoL Material by Scenario')
-a0.set_ylabel('Mass [Million Tonnes]')
-
-a0.set_xlabel('Years')
-
-
 
     
 ########################    
@@ -592,7 +440,7 @@ materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 cumulations2050 = {}
 for ii in range(0, len(materials)):
     matcum = []
-    for kk in range (0, 3):
+    for kk in range (0, 1):
         obj = SFscenarios[kk]
         matcum.append(UScum[keyw+materials[ii]+'_'+obj].loc[2050])
     cumulations2050[materials[ii]] = matcum
@@ -607,7 +455,7 @@ dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['c
 
 
 ## Plot BARS Stuff
-ind=np.arange(3)
+ind=np.arange(1)
 width=0.35 # width of the bars.
 p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
 p1 = a1.bar(ind, dfcumulations2050['aluminum'], width,
@@ -623,7 +471,7 @@ a1.yaxis.set_label_position("right")
 a1.yaxis.tick_right()
 a1.set_ylabel('Cumulative Manufacturing Scrap and EoL Material \n by 2050 [Million Tonnes]')
 a1.set_xlabel('Scenario')
-a1.set_xticks(ind, ('S1', 'S2', 'S3'))
+a1.set_xticks(ind, ('S1'))
 #plt.yticks(np.arange(0, 81, 10))
 a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'Aluminum', 'Silicon','Copper','Silver'))
 
@@ -632,7 +480,7 @@ f.tight_layout()
 f.savefig(title_Method+' Fig_2x1_Yearly MFG and EOL Material by Scenario and Cumulatives_Nation.png', dpi=600)
 
 
-# In[30]:
+# In[28]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -669,38 +517,6 @@ a0.plot(rr.scenario[obj].data['year'], modulemat, 'k.', linewidth=5, label='S1 R
 a0.plot(rr.scenario[obj].data['year'], glassmat, 'k', linewidth=5, label='S1 Reference Scenario: glass mass only')
 a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='k', alpha=0.3,
                  interpolate=True)
-
-# SCENARIO 2 ***************
-kk = 1
-obj = SFscenarios[kk]
-
-modulemat = (USyearly[keyw+materials[0]+'_'+obj]+USyearly[keyw+materials[1]+'_'+obj]+
-            USyearly[keyw+materials[2]+'_'+obj]+USyearly[keyw+materials[3]+'_'+obj]+
-            USyearly[keyw+materials[4]+'_'+obj])
-glassmat = (USyearly[keyw+materials[0]+'_'+obj])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(rr.scenario[obj].data['year'], modulemat, 'g.', linewidth=5, label='S2 Grid Decarbonization: module mass')
-a0.plot(rr.scenario[obj].data['year'], glassmat, 'g', linewidth=5, label='S2 Grid Decarbonization: glass mass only')
-a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='g', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 3 ***************
-kk = 2
-obj = SFscenarios[kk]
-
-modulemat = (USyearly[keyw+materials[0]+'_'+obj]+USyearly[keyw+materials[1]+'_'+obj]+
-            USyearly[keyw+materials[2]+'_'+obj]+USyearly[keyw+materials[3]+'_'+obj]+
-            USyearly[keyw+materials[4]+'_'+obj])
-glassmat = (USyearly[keyw+materials[0]+'_'+obj])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(rr.scenario[obj].data['year'], modulemat, 'c.', linewidth=5, label='S3 High Electrification: module mass')
-a0.plot(rr.scenario[obj].data['year'], glassmat, 'c', linewidth=5, label='S3 High Electrification: glass mass only')
-
-a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
 a0.legend()
 a0.set_title('Yearly End of Life Material by Scenario')
 a0.set_ylabel('Mass [Million Tonnes]')
@@ -720,7 +536,7 @@ materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 cumulations2050 = {}
 for ii in range(0, len(materials)):
     matcum = []
-    for kk in range (0, 3):
+    for kk in range (0, 1):
         obj = SFscenarios[kk]
         matcum.append(UScum[keyw+materials[ii]+'_'+obj].loc[2050])
     cumulations2050[materials[ii]] = matcum
@@ -735,7 +551,7 @@ dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['c
 
 
 ## Plot BARS Stuff
-ind=np.arange(3)
+ind=np.arange(1)
 width=0.35 # width of the bars.
 p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
 p1 = a1.bar(ind, dfcumulations2050['aluminum'], width,
@@ -798,46 +614,8 @@ a0.plot(rr.scenario[obj].data['year'], glassmat, 'k', linewidth=5, label='S1 Ref
 a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='k', alpha=0.3,
                  interpolate=True)
 
-# SCENARIO 2 ***************
-kk = 1
-obj = SFscenarios[kk]
-
-modulemat = (USyearly[keyw+materials[0]+'_'+obj]+USyearly[keyw+materials[1]+'_'+obj]+
-            USyearly[keyw+materials[2]+'_'+obj]+USyearly[keyw+materials[3]+'_'+obj]+
-            USyearly[keyw+materials[4]+'_'+obj])
-glassmat = (USyearly[keyw+materials[0]+'_'+obj])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(rr.scenario[obj].data['year'], modulemat, 'g.', linewidth=5, label='S2 Grid Decarbonization: module mass')
-a0.plot(rr.scenario[obj].data['year'], glassmat, 'g', linewidth=5, label='S2 Grid Decarbonization: glass mass only')
-a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='g', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 3 ***************
-kk = 2
-obj = SFscenarios[kk]
-
-modulemat = (USyearly[keyw+materials[0]+'_'+obj]+USyearly[keyw+materials[1]+'_'+obj]+
-            USyearly[keyw+materials[2]+'_'+obj]+USyearly[keyw+materials[3]+'_'+obj]+
-            USyearly[keyw+materials[4]+'_'+obj])
-glassmat = (USyearly[keyw+materials[0]+'_'+obj])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(rr.scenario[obj].data['year'], modulemat, 'c.', linewidth=5, label='S3 High Electrification: module mass')
-a0.plot(rr.scenario[obj].data['year'], glassmat, 'c', linewidth=5, label='S3 High Electrification: glass mass only')
-
-a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
-a0.legend()
-a0.set_title('Yearly Manufacturing Scrap by Scenario')
-a0.set_ylabel('Mass [Million Tonnes]')
-
-a0.set_xlabel('Years')
 
 
-
-    
 ########################    
 # SUBPLOT 2
 ########################
@@ -848,7 +626,7 @@ materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 cumulations2050 = {}
 for ii in range(0, len(materials)):
     matcum = []
-    for kk in range (0, 3):
+    for kk in range (0, 1):
         obj = SFscenarios[kk]
         matcum.append(UScum[keyw+materials[ii]+'_'+obj].loc[2050])
     cumulations2050[materials[ii]] = matcum
@@ -863,7 +641,7 @@ dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['c
 
 
 ## Plot BARS Stuff
-ind=np.arange(3)
+ind=np.arange(1)
 width=0.35 # width of the bars.
 p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
 p1 = a1.bar(ind, dfcumulations2050['aluminum'], width,
@@ -879,7 +657,7 @@ a1.yaxis.set_label_position("right")
 a1.yaxis.tick_right()
 a1.set_ylabel('Cumulative Manufacturing Scrap by 2050 [Million Tonnes]')
 a1.set_xlabel('Scenario')
-a1.set_xticks(ind, ('S1', 'S2', 'S3'))
+a1.set_xticks(ind, ('S1'))
 #plt.yticks(np.arange(0, 81, 10))
 a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'Aluminum', 'Silicon','Copper','Silver'))
 
@@ -888,14 +666,14 @@ f.tight_layout()
 f.savefig(title_Method+' Fig_2x1_Yearly MFG Waste by Scenario and Cumulatives_Nation.png', dpi=600)
 
 
-# In[32]:
+# In[33]:
 
 
 plt.rcParams.update({'font.size': 15})
 plt.rcParams['figure.figsize'] = (8, 8)
 
 fig, axs = plt.subplots(figsize=(8, 8))
-axs.plot(UScum['new_Installed_Capacity_[MW]'+SFscenarios[2]]/1e6-UScum['new_Installed_Capacity_[MW]'+SFscenarios[1]]/1e6, 'k', label='Cumulative New Yearly Installs S3-S2')
+axs.plot(UScum['new_Installed_Capacity_[MW]'+SFscenarios[0]]/1e6-UScum['new_Installed_Capacity_[MW]'+SFscenarios[0]]/1e6, 'k', label='Cumulative New Yearly Installs S3-S2')
 
 #axs.plot(UScum['new_Installed_Capacity_[MW]'+SFscenarios[2]]/1e6, 'c', label='Cumulative New Yearly Installs')
 
@@ -907,7 +685,7 @@ fig.savefig(title_Method+' Fig_New_Installs_vs_InstalledCapacity_vs_Waste', dpi=
 
 # # WASTE COMPARISON SIZE
 
-# In[33]:
+# In[34]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -923,59 +701,45 @@ axs.set_ylabel('Power [TW]')
 fig.savefig(title_Method+' Fig_New_Installs_vs_InstalledCapacity_vs_Waste', dpi=600)
 
 
-# In[34]:
+# In[ ]:
 
 
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (8, 8)
 
-fig, axs = plt.subplots(figsize=(8, 8))
-axs.plot(UScum['new_Installed_Capacity_[MW]'+SFscenarios[0]]/1e6, 'b', label='Cumulative New Yearly Installs')
-axs.plot(USyearly['Capacity_'+SFscenarios[0]]/1e12, 'g', label='Active in Field Installs')
-axs.plot(UScum['new_Installed_Capacity_[MW]'+SFscenarios[0]]/1e6-USyearly['Capacity_'+SFscenarios[0]]/1e12, 'r', label='Decomissioned PV Panels')
-axs.plot(UScum['new_Installed_Capacity_[MW]'+SFscenarios[1]]/1e6-USyearly['Capacity_'+SFscenarios[1]]/1e12, 'r--', label='Decomissioned PV Panels')
-axs.plot(UScum['new_Installed_Capacity_[MW]'+SFscenarios[2]]/1e6-USyearly['Capacity_'+SFscenarios[2]]/1e12, 'r.', label='Decomissioned PV Panels')
-
-axs.legend()
-axs.set_xlim([2020,2050])
-axs.set_ylabel('Power [TW]')
-
-
-# In[35]:
-
-
-foo0 = (UScum['new_Installed_Capacity_[MW]'+SFscenarios[0]]/1e6-USyearly['Capacity_'+SFscenarios[0]]/1e12).sum()
-foo1 = (UScum['new_Installed_Capacity_[MW]'+SFscenarios[1]]/1e6-USyearly['Capacity_'+SFscenarios[1]]/1e12).sum()
-foo2 = (UScum['new_Installed_Capacity_[MW]'+SFscenarios[2]]/1e6-USyearly['Capacity_'+SFscenarios[2]]/1e12).sum()
-print(foo0, foo1, foo2)
-
-
-# In[36]:
-
-
-E = (UScum['new_Installed_Capacity_[MW]Reference.Mod']/1e6).sum()
-F = (UScum['new_Installed_Capacity_[MW]Reference.Mod']/1e6-USyearly['Capacity_Reference.Mod']/1e12).sum()
-print("Cumulative Installs", E)
-print("Cumulative Waste", F)
-print("Fraction of Decomisioned to Installed Cumulative by 2050", F/E)
 
 
 # In[37]:
 
 
+foo0 = (UScum['new_Installed_Capacity_[MW]'+SFscenarios[0]]/1e6-USyearly['Capacity_'+SFscenarios[0]]/1e12).sum()
+print(foo0)
+
+
+# In[38]:
+
+
+E = (UScum['new_Installed_Capacity_[MW]World']/1e6).sum()
+F = (UScum['new_Installed_Capacity_[MW]World']/1e6-USyearly['Capacity_World']/1e12).sum()
+print("Cumulative Installs", E)
+print("Cumulative Waste", F)
+print("Fraction of Decomisioned to Installed Cumulative by 2050", F/E)
+
+
+# In[39]:
+
+
 plt.rcParams.update({'font.size': 15})
 plt.rcParams['figure.figsize'] = (8, 8)
 
 fig, axs = plt.subplots(figsize=(8, 8))
-axs.plot(USyearly['new_Installed_Capacity_[MW]Reference.Mod']/1e6, 'b', label='Yearly New Yearly Installs')
-axs.plot(UScum['new_Installed_Capacity_[MW]Reference.Mod']/1e6-USyearly['Capacity_Reference.Mod']/1e12, 'r', label='Decomissioned PV Panels')
+axs.plot(USyearly['new_Installed_Capacity_[MW]World']/1e6, 'b', label='Yearly New Yearly Installs')
+axs.plot(UScum['new_Installed_Capacity_[MW]World']/1e6-USyearly['Capacity_World']/1e12, 'r', label='Decomissioned PV Panels')
 axs.legend()
 axs.set_xlim([2020,2050])
 axs.set_ylabel('Power [TW]')
 fig.savefig(title_Method+' Fig_New_Installs_vs_Decomisions', dpi=600)
 
 
-# In[38]:
+# In[40]:
 
 
 print("CUMULATIVE WASTE by 2050")
@@ -983,27 +747,21 @@ print("*************************")
 print("")
 UScum.iloc[-1]
 print("MFG Scrap + EoL Material Only")
-print("\t Reference Scenario: ", UScum['Waste_Module_Reference.Mod'].iloc[-1]/1e6, ' Million Tonnes')
-print("\t Grid Decarbonization Scenario: ", UScum['Waste_Module_95-by-35.Adv'].iloc[-1]/1e6, ' Million Tonnes')
-print("\t High Electrification Scenario: ", UScum['Waste_Module_95-by-35_Elec.Adv_DR'].iloc[-1]/1e6, ' Million Tonnes')
+print("\t Reference Scenario: ", UScum['Waste_Module_World'].iloc[-1]/1e6, ' Million Tonnes')
 
 print("EoL Material Only")
-print("\t Reference Scenario: ", UScum['Waste_EOL_Module_Reference.Mod'].iloc[-1]/1e6, ' Million Tonnes')
-print("\t Grid Decarbonization Scenario: ", UScum['Waste_EOL_Module_95-by-35.Adv'].iloc[-1]/1e6, ' Million Tonnes')
-print("\t High Electrification Scenario: ", UScum['Waste_EOL_Module_95-by-35_Elec.Adv_DR'].iloc[-1]/1e6, ' Million Tonnes')
+print("\t Reference Scenario: ", UScum['Waste_EOL_Module_World'].iloc[-1]/1e6, ' Million Tonnes')
 
 print("MFG Scrap Only")
-print("\t Reference Scenario: ", UScum['Waste_MFG_Module_Reference.Mod'].iloc[-1]/1e6, ' Million Tonnes')
-print("\t Grid Decarbonization Scenario: ", UScum['Waste_MFG_Module_95-by-35.Adv'].iloc[-1]/1e6, ' Million Tonnes')
-print("\t High Electrification Scenario: ", UScum['Waste_MFG_Module_95-by-35_Elec.Adv_DR'].iloc[-1]/1e6, ' Million Tonnes')
+print("\t Reference Scenario: ", UScum['Waste_MFG_Module_World'].iloc[-1]/1e6, ' Million Tonnes')
 
 
-# In[39]:
+# In[41]:
 
 
 print(" VIRGIN STOCK Yearly Needs ")
 print(" **************************")
-for kk in range(0, 3):
+for kk in range(0, 1):
     obj = SFscenarios[kk]
     print(obj)
     filter_col = [col for col in USyearly3sig if (col.startswith('VirginStock_') and col.endswith(obj)) ]
@@ -1012,7 +770,7 @@ for kk in range(0, 3):
     
 print(" VIRGIN STOCK Cumulative Needs ")
 print(" ***************************** ")
-for kk in range(0, 3):
+for kk in range(0, 1):
     obj = SFscenarios[kk]
     print(obj)
     filter_col = [col for col in UScum3sig if (col.startswith('VirginStock_') and col.endswith(obj)) ]
@@ -1026,7 +784,7 @@ for kk in range(0, 3):
 
 
 
-# In[40]:
+# In[42]:
 
 
 print(" WASTE EoL CUMULATIVE RESULTS [Tonnes] ")
@@ -1035,7 +793,7 @@ filter_col = [col for col in UScum3sig if (col.startswith('Waste_EOL_Module')) ]
 display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[41]:
+# In[43]:
 
 
 print(" WASTE EoL + MfgScrap CUMULATIVE RESULTS [Tonnes] ")
@@ -1044,7 +802,7 @@ filter_col = [col for col in UScum3sig if (col.startswith('Waste_Module')) ]
 display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[42]:
+# In[44]:
 
 
 print(" WASTE MfgScrap CUMULATIVE RESULTS [Tonnes] ")
@@ -1053,7 +811,7 @@ filter_col = [col for col in UScum3sig if (col.startswith('Waste_MFG_Module')) ]
 display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[43]:
+# In[50]:
 
 
 materials = ['Module', 'glass', 'aluminum', 'copper', 'silicon', 'silver']
@@ -1061,7 +819,7 @@ materials = ['Module', 'glass', 'aluminum', 'copper', 'silicon', 'silver']
 print(" Appendix Table I: Metric Tonnes Installed in field in 2030")
 print(" ########################################################### \n")
 #Loop over scenarios
-for kk in range (0, 3):
+for kk in range (0, 1):
     obj = SFscenarios[kk]
     print("SCENARIO :", obj)
 
@@ -1079,18 +837,7 @@ for kk in range (0, 3):
     print("****************************\n")
 
 
-# # Mining Capacity
-
-# In[44]:
-
-
-mining2020_aluminum = 65267000
-mining2020_silver = 22260
-mining2020_copper = 20000000
-mining2020_silicon = 8000000
-
-
-# In[45]:
+# In[73]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1099,66 +846,8 @@ plt.rcParams['figure.figsize'] = (12, 8)
 keywords=['VirginStock_']
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
-fig, axs = plt.subplots(1,1, figsize=(4, 6), facecolor='w', edgecolor='k')
-fig.subplots_adjust(hspace = .3, wspace=.2)
-i = 0
-
-obj = SFscenarios[2]
-# Loop over Keywords
-ii = 0 
-keyw = keywords[ii]
-# Loop over SF Scenarios
-
-# ROW 2, Aluminum and Silicon:        g-  4 aluminum k - 1 silicon   orange - 3 copper  gray - 2 silver
-axs.plot(USyearly[keyw+materials[2]+'_'+SFscenarios[2]]*100/mining2020_silver, 
-         color = 'gray', linewidth=2.0, label='Silver')
-axs.fill_between(USyearly.index, USyearly[keyw+materials[2]+'_'+SFscenarios[0]]*100/mining2020_silver, 
-                                 USyearly[keyw+materials[2]+'_'+SFscenarios[2]]*100/mining2020_silver,
-                   color='gray', lw=3, alpha=.3)
-    
-axs.plot(USyearly[keyw+materials[1]+'_'+SFscenarios[2]]*100/mining2020_silicon, 
-         color = 'k', linewidth=2.0, label='Silicon')
-axs.fill_between(USyearly.index, USyearly[keyw+materials[1]+'_'+SFscenarios[0]]*100/mining2020_silicon, 
-                                USyearly[keyw+materials[1]+'_'+SFscenarios[2]]*100/mining2020_silicon,
-                   color='k', lw=3, alpha=.5)
-
-axs.plot(USyearly[keyw+materials[4]+'_'+SFscenarios[2]]*100/mining2020_aluminum, 
-         color = 'g', linewidth=2.0, label='Aluminum')
-
-axs.fill_between(USyearly.index, USyearly[keyw+materials[4]+'_'+SFscenarios[0]]*100/mining2020_aluminum, 
-                                USyearly[keyw+materials[4]+'_'+SFscenarios[2]]*100/mining2020_aluminum,
-                   color='g', lw=3, alpha=.3)
-
-
-axs.plot(USyearly[keyw+materials[3]+'_'+SFscenarios[2]]*100/mining2020_copper, 
-         color = 'orange', linewidth=2.0, label='Copper')
-
-axs.fill_between(USyearly.index, USyearly[keyw+materials[3]+'_'+SFscenarios[0]]*100/mining2020_copper, 
-                                USyearly[keyw+materials[3]+'_'+SFscenarios[2]]*100/mining2020_copper,
-                   color='orange', lw=3, alpha=.3)
-
-axs.set_xlim([2020,2050])
-axs.legend()
-#axs.set_yscale('log')
-
-axs.set_ylabel('Virgin material needs as a percentage \nof 2020 global mining production capacity [%]')
-
-fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production.png', dpi=600)
-
-
-# In[46]:
-
-
-import matplotlib as mpl
-
-plt.rcParams.update({'font.size': 10})
-plt.rcParams['figure.figsize'] = (12, 8)
-    
-keywords=['VirginStock_']
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
-
-fig, axs = plt.subplots(3,3, figsize=(15, 10), facecolor='w', edgecolor='k')
-fig.subplots_adjust(hspace = .3, wspace=.2)
+fig, axs = plt.subplots(1,3, figsize=(15, 5), facecolor='w', edgecolor='k')
+fig.subplots_adjust(hspace = .3, wspace=.5)
 axs = axs.ravel()
 i = 0
 
@@ -1167,10 +856,9 @@ ii = 0
 keyw = keywords[ii]
 # Loop over SF Scenarios
 
-titlesscens = ['Reference Scenario', 'Grid Decarbonization Scenario', 'High Electrification Scenario']
 
 
-for kk in range(0, 3):
+for kk in range(0, 1):
 
     obj = SFscenarios[kk]
     axs[i].yaxis.grid()
@@ -1190,16 +878,15 @@ for kk in range(0, 3):
                                                       colors=['c','k','gray','orange', 'g'])
     #axs[i].ylabel('Mass [Tons]')
     axs[i].set_xlim([2020, 2050])
-    axs[i].set_title(titlesscens[kk])
+    axs[i].set_title('WORLD')
     axs[i].legend(loc='lower right')
 
     #axs[i].legend(materials)
 
-    i += 1 
 
 # 2nd axis plot
-i = 0
-for kk in range(0, 3):
+
+for kk in range(0, 1):
 
     obj = SFscenarios[kk]
     ax2=axs[i].twinx()
@@ -1211,15 +898,15 @@ for kk in range(0, 3):
     #axs[i].legend(materials)
     ax2.set_yscale('log')
     ax2.set_ylim([1e3/1e6, 1e8/1e6])
-    i += 1 
+ 
 
     ax2.legend()
 
 
-i = 3
+i = 1
 # ROW 2, Aluminum and Silicon:
 # Loop over SF Scenarios
-for kk in range(0, 3):
+for kk in range(0, 1):
 
 
     obj = SFscenarios[kk]
@@ -1242,13 +929,13 @@ for kk in range(0, 3):
     #axs[i].legend(materials)
     axs[i].legend()
 
-    i += 1 
 
 
+i=2
 
 # ROW 3:
 # Loop over SF Scenarios
-for kk in range(0, 3):
+for kk in range(0, 1):
 
     obj = SFscenarios[kk]
     axs[i].yaxis.grid()
@@ -1268,33 +955,25 @@ for kk in range(0, 3):
     axs[i].legend()
     axs[i].yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:,.0f}'))
 
-    i += 1 
-    
-for i in range (0, 3):
-    axs[i].set_ylim([0, 5e7/1e6])
-    axs[i+3].set_ylim([0, 3e6/1e6])
-    axs[i+6].set_ylim([0, 2.5e4])
 
-    #axs[i+3].set_ylim([1e0, 10e8])
-    #axs[i+6].set_ylim([1e0, 5e6])
+    
+#axs[i].set_ylim([0, 5e7/1e6])
+#axs[i+3].set_ylim([0, 3e6/1e6])
+#axs[i+6].set_ylim([0, 2.5e4])
 
 #    axs[i+3].set_yscale('log')
 #    axs[i+6].set_yscale('log')
 
-axs[0].set_ylabel('Mass [Tons]')
-axs[3].set_ylabel('Mass [Tons]')
-#axs[5].legend(materials)
-    
 axs[0].set_ylabel('Yearly Mass [Million Tonnes]')
-axs[3].set_ylabel('Yearly Mass [Million Tonnes]')
-axs[6].set_ylabel('Yearly Mass [Tonnes]')
+axs[1].set_ylabel('Yearly Mass [Million Tonnes]')
+axs[2].set_ylabel('Yearly Mass [Tonnes]')
 
 #axs[8].legend(materials)
 
-fig.savefig(title_Method+' Fig_3x3_MaterialNeeds_Nation.png', dpi=600)
+fig.savefig(title_Method+' Fig_3x3_WORLD_MaterialNeeds_Nation.png', dpi=600)
 
 
-# In[47]:
+# In[58]:
 
 
 keyword='Cumulative_Area_disposed'
@@ -1302,7 +981,7 @@ keyword='Cumulative_Area_disposed'
 USyearly_Areadisp=pd.DataFrame()
 
 # Loop over SF Scenarios
-for kk in range(0, 3):
+for kk in range(0, 1):
     obj = SFscenarios[kk]
     # Loop over Materials
     foo = rr.scenario[obj].data[keyword].copy()
@@ -1313,17 +992,17 @@ for kk in range(0, 3):
      #   USyearly_Areadisp["Areadisp_"+obj] += rr.scenario[obj].data[keyword]
 
 
-# In[48]:
+# In[59]:
 
 
 UScum_Areadisp = USyearly_Areadisp.copy()
 UScum_Areadisp = UScum_Areadisp.cumsum()
 
 
-# In[49]:
+# In[60]:
 
 
-A = UScum['Waste_Module_Reference.Mod'].iloc[-1]
+A = UScum['Waste_Module_World'].iloc[-1]
 #47700000 # tonnes cumulative by 2050
 A = A*1000 # convert to kg
 A = A/10.05599 # convert to m2 if each m2 is ~avg 10 kg
@@ -1332,47 +1011,30 @@ A = A/1e6 # Convert to km 2
 print(A)
 
 
-# In[50]:
+# In[61]:
 
 
-B = UScum['Waste_Module_95-by-35_Elec.Adv_DR'].iloc[-1]
-#47700000 # tonnes cumulative by 2050
-B = B*1000 # convert to kg
-B= B/10.05599 # convert to m2 if each m2 is ~avg 10 kg
-#A = A*2 # convert to area if each module is ~2 m2
-B =B/1e6 # Convert to km 2
-print(B)
+C = UScum_Areadisp['Areadisp_World'].iloc[-1]/1e6
 
 
-# In[51]:
-
-
-C = UScum_Areadisp['Areadisp_Reference.Mod'].iloc[-1]/1e6
-D = UScum_Areadisp['Areadisp_95-by-35_Elec.Adv_DR'].iloc[-1]/1e6
-
-
-# In[52]:
+# In[62]:
 
 
 # MANHATTAN SIZE:
 manhattans = 59.103529
 
 
-# In[53]:
+# In[63]:
 
 
 print("Reference Cumulative Area by 2050 of Waste PV Modules EoL", round(C), " km^2")
-print("High Electrification Cumulative Area by 2050 of Waste PV Modules EoL", round(D), " km^2")
-
 
 print("")
 print("Reference Waste equals ", round(C/manhattans), " Manhattans ")
-print("High Electrification equals ", round(D/manhattans), " Manhattans ")
 
 print("")
 print ("MFG SCrap + Eol Waste")
 print("Reference Cumulative Area by 2050 of Waste PV Mfg + Modules EoL", round(A), " km^2")
-print("High Electrification Cumulative Area by 2050 of Waste PV Mfg + Modules EoL", round(B), " km^$")
 
 
 # ### New Section
@@ -1392,19 +1054,7 @@ print("High Electrification Cumulative Area by 2050 of Waste PV Mfg + Modules Eo
 # Waste_EOL_silver_95-by-35_Elec.Adv_DR  
 # 
 
-# In[62]:
-
-
-USyearly['VirginStock_silver_Reference.Mod']
-
-
-# In[69]:
-
-
-USyearly
-
-
-# In[120]:
+# In[67]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1417,15 +1067,15 @@ axs = axs.ravel()
 # PLOT 1
 i = 0
 axs[i].yaxis.grid()
-lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_silver_Reference.Mod']/1e6, color='gray', linewidth=4.0, label='Virgin Material Demands')
-lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_silver_Reference.Mod']/1e6, color='k', linewidth=4.0, label='EoL Material')
+lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_silver_World']/1e6, color='gray', linewidth=4.0, label='Virgin Material Demands')
+lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_silver_World']/1e6, color='k', linewidth=4.0, label='EoL Material')
 axs[i].set_ylabel('Mass [Tons]')
 axs[i].set_xlim([2020, 2050])
 axs[i].set_title('Silver')
 
 # 2nd axis plot
 ax2=axs[i].twinx()
-lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_silver_Reference.Mod']/USyearly['VirginStock_silver_Reference.Mod'], 
+lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_silver_World']/USyearly['VirginStock_silver_World'], 
              color = 'r', linewidth=1.0, label='Eol Material as fraction of Demand')
 ax2.set_ylabel('EoL Material as Fraction of Demand', color='r')
 ax2.tick_params(axis='y', labelcolor='r')
@@ -1439,15 +1089,15 @@ axs[0].legend(lns, labs, loc=0)
 # PLOT 2
 i = 1
 axs[i].yaxis.grid()
-lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_aluminum_Reference.Mod']/1e6, color='g', linewidth=4.0, label='Virgin Material Demands')
-lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_aluminum_Reference.Mod']/1e6, color='k', linewidth=4.0, label='EoL Material')
+lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_aluminum_World']/1e6, color='g', linewidth=4.0, label='Virgin Material Demands')
+lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_aluminum_World']/1e6, color='k', linewidth=4.0, label='EoL Material')
 axs[i].set_ylabel('Mass [Tons]')
 axs[i].set_xlim([2020, 2050])
 axs[i].set_title('Aluminum')
 
 # 2nd axis plot
 ax2=axs[i].twinx()
-lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_aluminum_Reference.Mod']/USyearly['VirginStock_aluminum_Reference.Mod'], 
+lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_aluminum_World']/USyearly['VirginStock_aluminum_World'], 
              color = 'r', linewidth=1.0, label='Eol Material as fraction of Demand')
 
 ax2.set_ylabel('EoL Material as Fraction of Demand', color='r')
@@ -1458,22 +1108,4 @@ ax2.tick_params(axis='y', labelcolor='r')
 lns = lns1+lns2+lns3
 labs = [l.get_label() for l in lns]
 axs[1].legend(lns, labs, loc=0)
-
-
-# In[108]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
