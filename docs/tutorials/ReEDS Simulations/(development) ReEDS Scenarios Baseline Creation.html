@@ -13199,7 +13199,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reedsFile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reedsFile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx&#39;</span><span class="p">)</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Input file is stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">reedsFile</span><span class="p">)</span>
 </pre></div>
 
@@ -13217,7 +13217,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Input file is stored in C:\Users\sayala\Documents\GitHub\December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx
+<pre>Input file is stored in C:\Users\sayala\Documents\GitHub\December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx
 </pre>
 </div>
 </div>
@@ -13232,7 +13232,7 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">REEDSInput</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">reedsFile</span><span class="p">,</span>
-                        <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;UPV Capacity (GW)&quot;</span><span class="p">)</span>
+                        <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;new installs PV&quot;</span><span class="p">)</span>
                         <span class="c1">#index_col=[0,2,3]) #this casts scenario, PCA and State as levels</span>
 </pre></div>
 
@@ -13313,110 +13313,110 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th rowspan="21" valign="top">Reference.Mod</th>
+      <th rowspan="21" valign="top">95-by-35.Adv</th>
       <th>2010</th>
       <th>p1</th>
-      <td>0.000000</td>
+      <td>0.000017</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <th>p1</th>
+      <td>0.005158</td>
     </tr>
     <tr>
       <th>2012</th>
       <th>p1</th>
-      <td>0.000000</td>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <th>p1</th>
+      <td>0.007146</td>
     </tr>
     <tr>
       <th>2014</th>
       <th>p1</th>
-      <td>0.000000</td>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <th>p1</th>
+      <td>0.018253</td>
     </tr>
     <tr>
       <th>2016</th>
       <th>p1</th>
-      <td>0.000000</td>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <th>p1</th>
+      <td>0.019460</td>
     </tr>
     <tr>
       <th>2018</th>
       <th>p1</th>
-      <td>0.000000</td>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <th>p1</th>
+      <td>0.036320</td>
     </tr>
     <tr>
       <th>2020</th>
       <th>p1</th>
-      <td>0.025000</td>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <th>p1</th>
+      <td>0.002434</td>
     </tr>
     <tr>
       <th>2022</th>
       <th>p1</th>
-      <td>0.025000</td>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <th>p1</th>
+      <td>0.010066</td>
     </tr>
     <tr>
       <th>2024</th>
       <th>p1</th>
-      <td>0.025000</td>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <th>p1</th>
+      <td>0.049445</td>
     </tr>
     <tr>
       <th>2026</th>
       <th>p1</th>
-      <td>0.025000</td>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <th>p1</th>
+      <td>0.051342</td>
     </tr>
     <tr>
       <th>2028</th>
       <th>p1</th>
-      <td>0.025000</td>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <th>p1</th>
+      <td>0.105931</td>
     </tr>
     <tr>
       <th>2030</th>
       <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2032</th>
-      <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2034</th>
-      <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2036</th>
-      <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2038</th>
-      <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2040</th>
-      <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2042</th>
-      <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2044</th>
-      <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2046</th>
-      <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2048</th>
-      <th>p1</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2050</th>
-      <th>p1</th>
-      <td>0.282881</td>
+      <td>0.105931</td>
     </tr>
   </tbody>
 </table>
@@ -13606,6 +13606,45 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
@@ -13620,20 +13659,12 @@ div#notebook {
     <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">asfreq</span><span class="p">()</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>    
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df_marketshares</span><span class="p">[</span><span class="s1">&#39;Si&#39;</span><span class="p">]</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span>
     <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
     <span class="c1"># Add other columns</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2050&#39;</span><span class="p">][</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2050&#39;</span><span class="p">][</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>   <span class="c1"># Dividing last value by 2</span>
-    <span class="n">new_row</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="n">new_row</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">new_row</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1">#Shifting so new row is 2051</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">new_row</span><span class="p">])])</span>              
-    <span class="n">A</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>          <span class="c1"># Shifting back so it goes from 2009-2050</span>
-
-    
+   
     <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,&quot;</span>\
     <span class="s2">&quot;mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,&quot;</span>\
     <span class="s2">&quot;mod_Repowering,mod_Repairing</span><span class="se">\n</span><span class="s2">&quot;</span>\
@@ -13729,131 +13760,131 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th rowspan="21" valign="top">Reference.Mod</th>
+      <th rowspan="21" valign="top">95-by-35.Adv</th>
       <th>2010</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.000000</td>
+      <td>0.000017</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.005158</td>
     </tr>
     <tr>
       <th>2012</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.000000</td>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.007146</td>
     </tr>
     <tr>
       <th>2014</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.000000</td>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.018253</td>
     </tr>
     <tr>
       <th>2016</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.000000</td>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.019460</td>
     </tr>
     <tr>
       <th>2018</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.000000</td>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.036320</td>
     </tr>
     <tr>
       <th>2020</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.025000</td>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.002434</td>
     </tr>
     <tr>
       <th>2022</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.025000</td>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.010066</td>
     </tr>
     <tr>
       <th>2024</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.025000</td>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.049445</td>
     </tr>
     <tr>
       <th>2026</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.025000</td>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.051342</td>
     </tr>
     <tr>
       <th>2028</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.025000</td>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.105931</td>
     </tr>
     <tr>
       <th>2030</th>
       <th>p1</th>
       <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2032</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2034</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2036</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2038</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2040</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2042</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2044</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2046</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2048</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2050</th>
-      <th>p1</th>
-      <th>WA</th>
-      <td>0.282881</td>
+      <td>0.105931</td>
     </tr>
   </tbody>
 </table>
@@ -13932,23 +13963,23 @@ div#notebook {
       <th rowspan="5" valign="top">95-by-35+Elec.Adv</th>
       <th rowspan="5" valign="top">AL</th>
       <th>2010</th>
-      <td>0.0000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>2012</th>
-      <td>0.0000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>0.000951</td>
     </tr>
     <tr>
       <th>2014</th>
-      <td>0.0000</td>
-    </tr>
-    <tr>
-      <th>2016</th>
-      <td>0.0750</td>
-    </tr>
-    <tr>
-      <th>2018</th>
-      <td>0.1941</td>
+      <td>0.000951</td>
     </tr>
   </tbody>
 </table>
@@ -13973,7 +14004,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
     <span class="n">STATE</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">SCEN</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
@@ -13984,19 +14015,12 @@ div#notebook {
     <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">asfreq</span><span class="p">()</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>    
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df_marketshares</span><span class="p">[</span><span class="s1">&#39;Si&#39;</span><span class="p">]</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
     <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
     <span class="c1"># Add other columns</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2050&#39;</span><span class="p">][</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2050&#39;</span><span class="p">][</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>   <span class="c1"># Dividing last value by 2</span>
-    <span class="n">new_row</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="n">new_row</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">new_row</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1">#Shifting so new row is 2051</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">new_row</span><span class="p">])])</span>              
-    <span class="n">A</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>          <span class="c1"># Shifting back so it goes from 2009-2050</span>
-
+    
     
     <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,&quot;</span>\
     <span class="s2">&quot;mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,&quot;</span>\
@@ -14022,79 +14046,6 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Method-with-PIVOT-tables-for-STATES-(REDUNDANT)">Method with PIVOT tables for STATES (REDUNDANT)<a class="anchor-link" href="#Method-with-PIVOT-tables-for-STATES-(REDUNDANT)">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">df = pd.read_excel(reedsFile,</span>
-<span class="sd">                        sheet_name=&quot;UPV Capacity (GW)&quot;)</span>
-<span class="sd">                        #index_col=[0,2,3]) #this casts scenario, PCA and State as levels</span>
-<span class="sd">df.drop(columns=[&#39;Tech&#39;], inplace=True)</span>
-
-<span class="sd">#foo = df.pivot_table(index=[&#39;Scenario&#39;,&#39;Year&#39;],columns=&#39;State&#39;,aggfunc=sum)</span>
-<span class="sd">foo = df.pivot_table(index=[&#39;Scenario&#39;,&#39;State&#39;],columns=&#39;Year&#39;,aggfunc=sum)</span>
-
-<span class="sd">foo = pd.DataFrame(foo)</span>
-<span class="sd">foo.head()</span>
-
-
-<span class="sd">for ii in range (len(foo)):</span>
-<span class="sd">    STATE = foo.index[ii][1]</span>
-<span class="sd">    SCEN = foo.index[ii][0]</span>
-<span class="sd">    SCEN=SCEN.replace(&#39;+&#39;, &#39;_&#39;)</span>
-<span class="sd">    filetitle = SCEN+&#39;_&#39;+STATE +&#39;.csv&#39;</span>
-<span class="sd">    filetitle = os.path.join(testfolder, &#39;STATEs&#39;, filetitle)</span>
-<span class="sd">    A = pd.DataFrame(foo.iloc[ii])</span>
-<span class="sd">    #A = A.unstack(level=0).iloc[ii]</span>
-<span class="sd">    A = A.droplevel(level=0)</span>
-<span class="sd">    A.columns = [&#39; &#39;.join(col).strip() for col in A.columns.values]</span>
-<span class="sd">    A.rename(columns = {list(A)[0]: &#39;new_Installed_Capacity_[MW]&#39;}, inplace = True)</span>
-<span class="sd">    A.index=pd.PeriodIndex(A.index, freq=&#39;A&#39;)</span>
-<span class="sd">    A = A.resample(&#39;Y&#39;).asfreq()</span>
-<span class="sd">    A = A[&#39;new_Installed_Capacity_[MW]&#39;].fillna(0).groupby(A[&#39;new_Installed_Capacity_[MW]&#39;].notna().cumsum()).transform(&#39;mean&#39;)    </span>
-<span class="sd">    A = pd.DataFrame(A)</span>
-<span class="sd">    A[&#39;new_Installed_Capacity_[MW]&#39;] = A[&#39;new_Installed_Capacity_[MW]&#39;] * 1000   # ReEDS file is in GW.</span>
-<span class="sd">    # Add other columns</span>
-<span class="sd">    A = pd.concat([A, baseline.reindex(A.index)], axis=1)</span>
-<span class="sd">    A.loc[&#39;2050&#39;][&#39;new_Installed_Capacity_[MW]&#39;] = A.loc[&#39;2050&#39;][&#39;new_Installed_Capacity_[MW]&#39;]/2   # Dividing last value by 2</span>
-<span class="sd">    new_row = A[-1:]</span>
-<span class="sd">    new_row.index = new_row.index.shift(periods=1)   #Shifting so new row is 2051</span>
-<span class="sd">    A = pd.concat([A,pd.concat([new_row])])              </span>
-<span class="sd">    A.index = A.index.shift(periods=-1)          # Shifting back so it goes from 2009-2050</span>
-
-<span class="sd">    header = &quot;year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,&quot;\</span>
-<span class="sd">    &quot;mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,&quot;\</span>
-<span class="sd">    &quot;mod_Repowering,mod_Repairing\n&quot;\</span>
-<span class="sd">    &quot;year,MW,%,years,years,%,years,%,%,%,%,%\n&quot;</span>
-
-<span class="sd">    with open(filetitle, &#39;w&#39;, newline=&#39;&#39;) as ict:</span>
-<span class="sd">    # Write the header lines, including the index variable for</span>
-<span class="sd">    # the last one if you&#39;re letting Pandas produce that for you.</span>
-<span class="sd">    # (see above).</span>
-<span class="sd">        for line in header:</span>
-<span class="sd">            ict.write(line)</span>
-
-<span class="sd">        #    savedata.to_csv(ict, index=False)</span>
-<span class="sd">        A.to_csv(ict, header=False)</span>
-<span class="sd">        </span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="k">pass</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Saving-US-Baseline">Saving US Baseline<a class="anchor-link" href="#Saving-US-Baseline">&#182;</a></h1>
 </div>
 </div>
@@ -14108,7 +14059,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -14128,7 +14079,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[12]:</div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
 
@@ -14166,131 +14117,131 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th rowspan="21" valign="top">Reference.Mod</th>
+      <th rowspan="21" valign="top">95-by-35.Adv</th>
       <th>2010</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.000000</td>
+      <td>0.000017</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.005158</td>
     </tr>
     <tr>
       <th>2012</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.000000</td>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.007146</td>
     </tr>
     <tr>
       <th>2014</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.000000</td>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.018253</td>
     </tr>
     <tr>
       <th>2016</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.000000</td>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.019460</td>
     </tr>
     <tr>
       <th>2018</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.000000</td>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.036320</td>
     </tr>
     <tr>
       <th>2020</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.025000</td>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.002434</td>
     </tr>
     <tr>
       <th>2022</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.025000</td>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.010066</td>
     </tr>
     <tr>
       <th>2024</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.025000</td>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.049445</td>
     </tr>
     <tr>
       <th>2026</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.025000</td>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.051342</td>
     </tr>
     <tr>
       <th>2028</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.025000</td>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.105931</td>
     </tr>
     <tr>
       <th>2030</th>
       <td>p1</td>
       <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2032</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2034</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2036</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2038</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2040</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2042</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2044</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2046</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2048</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.025000</td>
-    </tr>
-    <tr>
-      <th>2050</th>
-      <td>p1</td>
-      <td>WA</td>
-      <td>0.282881</td>
+      <td>0.105931</td>
     </tr>
   </tbody>
 </table>
@@ -14305,7 +14256,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">])[</span><span class="s1">&#39;Capacity (GW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -14325,7 +14276,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
@@ -14359,7 +14310,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[14]:</div>
+    <div class="prompt output_prompt">Out[13]:</div>
 
 
 
@@ -14493,7 +14444,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">))):</span>
@@ -14506,20 +14457,12 @@ div#notebook {
     <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">asfreq</span><span class="p">()</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>    
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df_marketshares</span><span class="p">[</span><span class="s1">&#39;Si&#39;</span><span class="p">]</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
     <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
     <span class="c1"># Add other columns</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2050&#39;</span><span class="p">][</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;2050&#39;</span><span class="p">][</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span>   <span class="c1"># Dividing last value by 2</span>
-    <span class="n">new_row</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="n">new_row</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">new_row</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1">#Shifting so new row is 2051</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">new_row</span><span class="p">])])</span>              
-    <span class="n">A</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>          <span class="c1"># Shifting back so it goes from 2009-2050</span>
-
-    
+   
     <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,&quot;</span>\
     <span class="s2">&quot;mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,&quot;</span>\
     <span class="s2">&quot;mod_Repowering,mod_Repairing</span><span class="se">\n</span><span class="s2">&quot;</span>\
