@@ -1392,25 +1392,25 @@ print("High Electrification Cumulative Area by 2050 of Waste PV Mfg + Modules Eo
 # Waste_EOL_silver_95-by-35_Elec.Adv_DR  
 # 
 
-# In[62]:
+# In[54]:
 
 
 USyearly['VirginStock_silver_Reference.Mod']
 
 
-# In[69]:
+# In[55]:
 
 
 USyearly
 
 
-# In[120]:
+# In[64]:
 
 
 plt.rcParams.update({'font.size': 10})
 plt.rcParams['figure.figsize'] = (12, 8)
     
-fig, axs = plt.subplots(1,2, figsize=(15, 6), facecolor='w', edgecolor='k')
+fig, axs = plt.subplots(1,3, figsize=(16, 4), facecolor='w', edgecolor='k')
 fig.subplots_adjust(hspace = .1, wspace=.4)
 axs = axs.ravel()
 
@@ -1418,7 +1418,7 @@ axs = axs.ravel()
 i = 0
 axs[i].yaxis.grid()
 lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_silver_Reference.Mod']/1e6, color='gray', linewidth=4.0, label='Virgin Material Demands')
-lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_silver_Reference.Mod']/1e6, color='k', linewidth=4.0, label='EoL Material')
+lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_silver_Reference.Mod']/1e6, color='gray', linestyle='dashed', linewidth=3.0, label='EoL Material')
 axs[i].set_ylabel('Mass [Tons]')
 axs[i].set_xlim([2020, 2050])
 axs[i].set_title('Silver')
@@ -1440,7 +1440,7 @@ axs[0].legend(lns, labs, loc=0)
 i = 1
 axs[i].yaxis.grid()
 lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_aluminum_Reference.Mod']/1e6, color='g', linewidth=4.0, label='Virgin Material Demands')
-lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_aluminum_Reference.Mod']/1e6, color='k', linewidth=4.0, label='EoL Material')
+lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_aluminum_Reference.Mod']/1e6, color='g', linestyle='dashed', linewidth=3.0, label='EoL Material')
 axs[i].set_ylabel('Mass [Tons]')
 axs[i].set_xlim([2020, 2050])
 axs[i].set_title('Aluminum')
@@ -1460,10 +1460,31 @@ labs = [l.get_label() for l in lns]
 axs[1].legend(lns, labs, loc=0)
 
 
-# In[108]:
 
+# PLOT 3
+i = 2
+axs[i].yaxis.grid()
+lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_silicon_Reference.Mod']/1e6, color='k', linewidth=4.0, label='Virgin Material Demands')
+lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_silicon_Reference.Mod']/1e6, color='k', linestyle='dashed', linewidth=3.0, label='EoL Material')
+axs[i].set_ylabel('Mass [Tons]')
+axs[i].set_xlim([2020, 2050])
+axs[i].set_title('Silicon')
 
+# 2nd axis plot
+ax2=axs[i].twinx()
+lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_silicon_Reference.Mod']/USyearly['VirginStock_silicon_Reference.Mod'], 
+             color = 'r', linewidth=1.0, label='Eol Material as fraction of Demand')
 
+ax2.set_ylabel('EoL Material as Fraction of Demand', color='r')
+ax2.tick_params(axis='y', labelcolor='r')
+
+# LEGENDS
+# added these three lines
+lns = lns1+lns2+lns3
+labs = [l.get_label() for l in lns]
+axs[2].legend(lns, labs, loc=0)
+
+fig.savefig(title_Method+' Fig_1x3_VirginvsWaste_Fraction_Nation.png', dpi=600)
 
 
 # In[ ]:

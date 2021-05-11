@@ -229,18 +229,18 @@ N = 2
 
 # SFScenarios[kk].scenario[PCAs[zz]].data.year
 # 
-# Index 21 --> 2030
+# Index 20 --> 2030
 # 
-# Index 31 --> 2040
+# Index 30 --> 2040
 # 
-# Index 41 --> 2050
+# Index 40 --> 2050
 
-# In[16]:
+# In[14]:
 
 
-idx2030 = 21
-idx2040 = 31
-idx2050 = 41
+idx2030 = 20
+idx2040 = 30
+idx2050 = 40
 print("index ", idx2030, " is year ", r1.scenario[STATEs[0]].data['year'].iloc[idx2030])
 print("index ", idx2040, " is year ", r1.scenario[STATEs[0]].data['year'].iloc[idx2040])
 print("index ", idx2050, " is year ", r1.scenario[STATEs[0]].data['year'].iloc[idx2050])
@@ -249,7 +249,7 @@ print("index ", idx2050, " is year ", r1.scenario[STATEs[0]].data['year'].iloc[i
 # #### 6 - STATE Cumulative Virgin Needs by 2050
 # 
 
-# In[17]:
+# In[15]:
 
 
 keyword='mat_Virgin_Stock'
@@ -283,7 +283,7 @@ scenariolist.to_csv(title_Method+' 6 - STATE Cumulative2050 VirginMaterialNeeds_
 
 # #### 7 - STATE Cumulative EoL Only Waste by 2050
 
-# In[18]:
+# In[16]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -317,7 +317,7 @@ scenariolist.to_csv(title_Method+' 7 - STATE Cumulative2050 Waste_EOL_tons.csv')
 
 # ##### 8 - STATE Yearly Virgin Needs 2030 2040 2050
 
-# In[19]:
+# In[17]:
 
 
 keyword='mat_Virgin_Stock'
@@ -357,7 +357,7 @@ scenariolist.to_csv(title_Method+' 8 - STATE Yearly 2030 2040 2050 VirginMateria
 
 # #### 9 - STATE Yearly EoL Waste 2030 2040 205
 
-# In[20]:
+# In[18]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -401,7 +401,7 @@ scenariolist.to_csv(title_Method+' 9 - STATE Yearly 2030 2040 2050 Waste_EOL_ton
 
 # #### Appendix - Cumulative Virgin Stock
 
-# In[21]:
+# In[19]:
 
 
 keyword='mat_Virgin_Stock'
@@ -421,8 +421,8 @@ for kk in range(0, 3):
         keywordsum2040 = []
         keywordsum2050 = []
         for zz in range (0, len(STATEs)):
-            keywordsum2030.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:21].sum())
-            keywordsum2040.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:31].sum())
+            keywordsum2030.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:20].sum())
+            keywordsum2040.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:30].sum())
             keywordsum2050.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:].sum())
     
         yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=STATEs, index = [2030, 2040, 2050])
@@ -454,7 +454,7 @@ for kk in range(0, 3):
 
 # #### Appendix - Yearly Virgin Stock
 
-# In[22]:
+# In[20]:
 
 
 keyword='mat_Virgin_Stock'
@@ -475,9 +475,9 @@ for kk in range(0, 3):
         keywordsum2050 = []
 
         for zz in range (0, len(STATEs)):
-            keywordsum2030.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][21])
-            keywordsum2040.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][31])
-            keywordsum2050.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][41])
+            keywordsum2030.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2030])
+            keywordsum2040.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2040])
+            keywordsum2050.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2050])
     
         yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=STATEs, index = [2030, 2040, 2050])
         yearlylist = yearlylist.T
@@ -508,7 +508,7 @@ for kk in range(0, 3):
 
 # #### Appendix - Cumulative EOL_ WASTE by State
 
-# In[23]:
+# In[21]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -528,8 +528,8 @@ for kk in range(0, 3):
         keywordsum2040 = []
         keywordsum2050 = []
         for zz in range (0, len(STATEs)):
-            keywordsum2030.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:21].sum())
-            keywordsum2040.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:31].sum())
+            keywordsum2030.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:20].sum())
+            keywordsum2040.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:30].sum())
             keywordsum2050.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][0:].sum())
     
         yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=STATEs, index = [2030, 2040, 2050])
@@ -558,7 +558,7 @@ for kk in range(0, 3):
 
 # #####  Sparkplots  +  APPENDIX - Yearly EoL Waste 
 
-# In[24]:
+# In[22]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -579,18 +579,18 @@ for kk in range(0, 3):
         keywordsum2050 = []
 
         for zz in range (0, len(STATEs)):
-            keywordsum2030.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][21])
-            keywordsum2040.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][31])
-            keywordsum2050.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][41])
+            keywordsum2030.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2030])
+            keywordsum2040.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2040])
+            keywordsum2050.append(SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2050])
     
             # SPARK PLOT
             if materials[ii] == 'glass':
                 fig, axs = plt.subplots(figsize=(2, 1), facecolor='w', edgecolor='k')
                 #axs.ioff()
                 axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year, SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword]/1000000, 'k')
-                axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[21], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][21]/1000000, 'r.',markersize=12)
-                axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[31], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][31]/1000000, 'r.', markersize=12)
-                axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[41], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][41]/1000000, 'r.', markersize=12)
+                axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[idx2030], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2030]/1000000, 'r.',markersize=12)
+                axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[idx2040], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2040]/1000000, 'r.', markersize=12)
+                axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[idx2050], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2050]/1000000, 'r.', markersize=12)
                 #plt.ylabel('Tonnes')
                 axs.set_xlim([2020, 2052])
                 #axs.set_visible(False)
@@ -625,15 +625,15 @@ for kk in range(0, 3):
     reduced.to_csv(title_Method+' Appendix - '+ SFScenarios[kk].name + ' Yearly EOL Waste by State.csv')
 
 
-# In[25]:
+# In[23]:
 
 
 # PLOT HERE
 fig, axs = plt.subplots(figsize=(2, 1), facecolor='w', edgecolor='k')
 axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year, SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword]/1000000, 'k')
-axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[21], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][21]/1000000, 'r.',markersize=12)
-axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[31], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][31]/1000000, 'r.', markersize=12)
-axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[41], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][41]/1000000, 'r.', markersize=12)
+axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[idx2030], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2030]/1000000, 'r.',markersize=12)
+axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[idx2040], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2040]/1000000, 'r.', markersize=12)
+axs.plot(SFScenarios[kk].scenario[STATEs[zz]].data.year.loc[idx2050], SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword][idx2050]/1000000, 'r.', markersize=12)
 #plt.ylabel('Tonnes')
 axs.set_xlim([2020, 2052])
 #axs.set_visible(False)

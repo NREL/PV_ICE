@@ -49,11 +49,11 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[3]:
 
 
-reedsFile = str(Path().resolve().parent.parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
+reedsFile = str(Path().resolve().parent.parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx')
 print ("Input file is stored in %s" % reedsFile)
 
 rawdf = pd.read_excel(reedsFile,
-                        sheet_name="UPV Capacity (GW)")
+                        sheet_name="new installs PV")
                         #index_col=[0,2,3]) #this casts scenario, PCA and State as levels
 #now set year as an index in place
 #rawdf.drop(columns=['State'], inplace=True)
@@ -170,9 +170,15 @@ for jj in range (0, len(PCAs)):
     r3.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
 
+# In[11]:
+
+
+r1.scenario[PCAs[0]].data
+
+
 # # 2 FINISH: Set characteristics of Recycling to SF values.
 
-# In[11]:
+# In[12]:
 
 
 #r1.scenario[]
@@ -180,7 +186,7 @@ for jj in range (0, len(PCAs)):
 
 # #### Calculate Mass Flow
 
-# In[12]:
+# In[13]:
 
 
 IRENA= False
@@ -221,7 +227,7 @@ else:
     title_Method = 'PVICE'
 
 
-# In[13]:
+# In[14]:
 
 
 print("PCAs:", r1.scenario.keys())
@@ -229,7 +235,7 @@ print("Module Keys:", r1.scenario[PCAs[jj]].data.keys())
 print("Material Keys: ", r1.scenario[PCAs[jj]].material['glass'].materialdata.keys())
 
 
-# In[14]:
+# In[15]:
 
 
 """
@@ -247,7 +253,7 @@ pass
 # ### PCA vs. Cumulative Waste by 2050
 # 
 
-# In[15]:
+# In[16]:
 
 
 #for 3 significant numbers rounding
@@ -256,18 +262,18 @@ N = 2
 
 # SFScenarios[kk].scenario[PCAs[zz]].data.year
 # 
-# Index 21 --> 2030
+# Index 20 --> 2030
 # 
-# Index 31 --> 2040
+# Index 30 --> 2040
 # 
-# Index 41 --> 2050
+# Index 40 --> 2050
 
-# In[16]:
+# In[18]:
 
 
-idx2030 = 21
-idx2040 = 31
-idx2050 = 41
+idx2030 = 20
+idx2040 = 30
+idx2050 = 40
 print("index ", idx2030, " is year ", r1.scenario[PCAs[0]].data['year'].iloc[idx2030])
 print("index ", idx2040, " is year ", r1.scenario[PCAs[0]].data['year'].iloc[idx2040])
 print("index ", idx2050, " is year ", r1.scenario[PCAs[0]].data['year'].iloc[idx2050])
@@ -275,7 +281,7 @@ print("index ", idx2050, " is year ", r1.scenario[PCAs[0]].data['year'].iloc[idx
 
 # #### 1 - PCA Cumulative Virgin Needs by 2050
 
-# In[17]:
+# In[19]:
 
 
 keyword='mat_Virgin_Stock'
@@ -309,7 +315,7 @@ scenariolist.to_csv(title_Method+' 1 - PCA Cumulative2050 VirginMaterialNeeds_to
 
 # #### 2 - PCA Cumulative EoL Only Waste by 2050
 
-# In[18]:
+# In[20]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -343,7 +349,7 @@ scenariolist.to_csv(title_Method+' 2 - PCA Cumulative2050 Waste EOL_tons.csv')
 
 # #### 3 - PCA Yearly Virgin Needs 2030 2040 2050
 
-# In[19]:
+# In[21]:
 
 
 keyword='mat_Virgin_Stock'
@@ -383,7 +389,7 @@ scenariolist.to_csv(title_Method+' 3 - PCA Yearly 2030 2040 2050 VirginMaterialN
 
 # #### 4 - PCA Yearly EoL Waste 2030 2040 2050
 
-# In[20]:
+# In[22]:
 
 
 keyword='mat_Total_Landfilled'
@@ -423,7 +429,7 @@ scenariolist.to_csv(title_Method+' 4 - PCA Yearly 2030 2040 2050 Waste_EOL_tons.
 
 # # GEOPANDAS
 
-# In[21]:
+# In[23]:
 
 
 latitude_all =[]
@@ -435,7 +441,7 @@ for scen in r1.scenario.keys():
     cumulativewaste2050.append(r1.scenario[scen].material['glass'].materialdata['mat_Total_Landfilled'].sum())
 
 
-# In[22]:
+# In[25]:
 
 
 import pandas as pd
@@ -444,40 +450,40 @@ import descartes
 import geopandas as gpd
 from shapely.geometry import Point, Polygon
 
-street_map = gpd.read_file(r'C:\Users\sayala\Desktop\geopandas\cb_2018_us_nation_20m\cb_2018_us_nation_20m.shp')
+#street_map = gpd.read_file(r'C:\Users\sayala\Desktop\geopandas\cb_2018_us_nation_20m\cb_2018_us_nation_20m.shp')
 
 # Show the map only
 #fig, ax = plt.subplots(figsize=(10,15))
 #street_map.plot(ax=ax)
 
 
-# In[23]:
+# In[26]:
 
 
 frame = { 'Latitude': latitude_all, 'Longitude': longitude_all, 'CumulativeWaste2050': cumulativewaste2050}   
 df = pd.DataFrame(frame) 
 
 
-# In[24]:
+# In[27]:
 
 
 df.head()
 
 
-# In[25]:
+# In[28]:
 
 
 geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
 geometry[:3]
 
 
-# In[26]:
+# In[29]:
 
 
 crs = {'init':'epsg:4326'}
 
 
-# In[27]:
+# In[30]:
 
 
 geo_df = gpd.GeoDataFrame(df, # specify our data
@@ -486,7 +492,7 @@ geo_df = gpd.GeoDataFrame(df, # specify our data
 geo_df.head()
 
 
-# In[28]:
+# In[31]:
 
 
 fig, ax = plt.subplots(figsize = (15,15))
@@ -498,7 +504,7 @@ plt.ylim([20, 50])
 plt.legend(prop={'size':15})
 
 
-# In[29]:
+# In[32]:
 
 
 import random
@@ -576,7 +582,7 @@ plt.legend(prop={'size':15})
 
 # ## Aggregating PCAs Material Landfilled to obtain US totals by Year
 
-# In[15]:
+# In[ ]:
 
 
 ### Singe Material Example Aggregating PCAs to obtain US Total
@@ -604,7 +610,7 @@ print(max(foo))
 pass
 
 
-# In[16]:
+# In[ ]:
 
 
 ### Verbose Material Example Aggregating PCAs to obtain US Total
@@ -642,7 +648,7 @@ USyearlyWASTE.head(20)
 pass
 
 
-# In[17]:
+# In[ ]:
 
 
 keyword='mat_Total_Landfilled'
@@ -670,7 +676,7 @@ for kk in range(0, 3):
 USyearly.head(20)
 
 
-# In[18]:
+# In[ ]:
 
 
 keyword='mat_Virgin_Stock'
@@ -695,7 +701,7 @@ for kk in range(0, 3):
 # ### Converting to grams to Tons. 
 # 
 
-# In[19]:
+# In[ ]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
@@ -704,7 +710,7 @@ USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 
 # ### Adding Installed Capacity to US
 
-# In[20]:
+# In[ ]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -725,7 +731,7 @@ for kk in range(0, 3):
 USyearly.head(20)
 
 
-# In[21]:
+# In[ ]:
 
 
 keywords=['VirginStock_', 'Waste_', 'Capacity']
@@ -757,7 +763,7 @@ for ii in range(0, 2):
         plt.legend(materials)
 
 
-# In[31]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -810,13 +816,13 @@ axs[5].legend(materials)
         
 
 
-# In[23]:
+# In[ ]:
 
 
 USyearly.keys()
 
 
-# In[32]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
@@ -891,7 +897,7 @@ axs[5].legend(materials)
         
 
 
-# In[25]:
+# In[ ]:
 
 
 UScum = USyearly.copy()
@@ -899,7 +905,7 @@ UScum = UScum.cumsum()
 UScum.head()
 
 
-# In[33]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 8})
