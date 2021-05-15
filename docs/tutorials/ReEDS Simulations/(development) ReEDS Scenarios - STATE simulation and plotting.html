@@ -13142,7 +13142,7 @@ o   95-by-35+Elec.Adv+DR ones</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
@@ -15070,7 +15070,7 @@ Material Keys:  Index([&#39;year&#39;, &#39;mat_virgin_eff&#39;, &#39;mat_masspe
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># WORK ON THIS FOIR OPENEI</span>
@@ -15078,6 +15078,9 @@ Material Keys:  Index([&#39;year&#39;, &#39;mat_virgin_eff&#39;, &#39;mat_masspe
 
 <span class="n">keyw</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">,</span><span class="s1">&#39;Installed_Capacity_[W]&#39;</span><span class="p">]</span>
 <span class="n">keywprint</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NewInstalledCapacity&#39;</span><span class="p">,</span><span class="s1">&#39;InstalledCapacity&#39;</span><span class="p">]</span> 
+<span class="n">keywprint</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NewInstalledCapacity&#39;</span><span class="p">,</span><span class="s1">&#39;InstalledCapacity&#39;</span><span class="p">]</span> 
+<span class="n">sfprint</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Reference&#39;</span><span class="p">,</span><span class="s1">&#39;Grid Decarbonization&#39;</span><span class="p">,</span> <span class="s1">&#39;High Electrification&#39;</span><span class="p">]</span> 
+
 <span class="n">keywunits</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MW&#39;</span><span class="p">,</span><span class="s1">&#39;MW&#39;</span><span class="p">]</span>
 <span class="n">keywdcumneed</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">]</span>
 <span class="n">keywdlevel</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;module&#39;</span><span class="p">,</span><span class="s1">&#39;module&#39;</span><span class="p">]</span>
@@ -15097,12 +15100,12 @@ Material Keys:  Index([&#39;year&#39;, &#39;mat_virgin_eff&#39;, &#39;mat_masspe
            
         <span class="c1"># kk -- scenario</span>
         <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
-            <span class="n">sentit</span> <span class="o">=</span> <span class="s1">&#39;@value|&#39;</span><span class="o">+</span><span class="n">keywprint</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="n">keywunits</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+            <span class="n">sentit</span> <span class="o">=</span> <span class="s1">&#39;@value|&#39;</span><span class="o">+</span><span class="n">keywprint</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="n">sfprint</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="n">keywunits</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
             <span class="c1">#sentit = &#39;@value|&#39;+keywprint[jj]+&#39;#&#39;+keywunits[jj]</span>
             <span class="n">foo</span><span class="p">[</span><span class="n">sentit</span><span class="p">]</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">STATEs</span><span class="p">[</span><span class="n">zz</span><span class="p">]]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">keyw</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">/</span><span class="n">keywscale</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> 
 
             <span class="k">if</span> <span class="n">keywdcumneed</span><span class="p">[</span><span class="n">jj</span><span class="p">]:</span>
-                <span class="n">sentit</span> <span class="o">=</span> <span class="s1">&#39;@value|Cumulative&#39;</span><span class="o">+</span><span class="n">keywprint</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="n">keywunits</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+                <span class="n">sentit</span> <span class="o">=</span> <span class="s1">&#39;@value|Cumulative&#39;</span><span class="o">+</span><span class="n">keywprint</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="n">sfprint</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="n">keywunits</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
                 <span class="n">foo</span><span class="p">[</span><span class="n">sentit</span><span class="p">]</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">STATEs</span><span class="p">[</span><span class="n">zz</span><span class="p">]]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">keyw</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span><span class="o">/</span><span class="n">keywscale</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> 
 
     <span class="c1">#        foo[&#39;@value|scenario|Solar Futures&#39;] = SFScenarios[kk].name</span>

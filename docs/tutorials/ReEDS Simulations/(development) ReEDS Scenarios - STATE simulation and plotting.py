@@ -21,7 +21,7 @@
 # o	95-by-35+Elec.Adv+DR ones
 # 
 
-# In[1]:
+# In[39]:
 
 
 import PV_ICE
@@ -421,7 +421,7 @@ scenariolist.to_csv(title_Method+' OpenEI Cumulatives Only.csv', index=False)
 print("Done")
 
 
-# In[16]:
+# In[40]:
 
 
 # WORK ON THIS FOIR OPENEI
@@ -429,6 +429,9 @@ print("Done")
 
 keyw=['new_Installed_Capacity_[MW]','Installed_Capacity_[W]']
 keywprint = ['NewInstalledCapacity','InstalledCapacity'] 
+keywprint = ['NewInstalledCapacity','InstalledCapacity'] 
+sfprint = ['Reference','Grid Decarbonization', 'High Electrification'] 
+
 keywunits = ['MW','MW']
 keywdcumneed = [True,False]
 keywdlevel = ['module','module']
@@ -448,12 +451,12 @@ for zz in range (0, len(STATEs)):
            
         # kk -- scenario
         for kk in range(0, 3):
-            sentit = '@value|'+keywprint[jj]+'|'+SFScenarios[kk].name+'#'+keywunits[jj]
+            sentit = '@value|'+keywprint[jj]+'|'+sfprint[kk]+'#'+keywunits[jj]
             #sentit = '@value|'+keywprint[jj]+'#'+keywunits[jj]
             foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].data[keyw[jj]]/keywscale[jj] 
 
             if keywdcumneed[jj]:
-                sentit = '@value|Cumulative'+keywprint[jj]+'|'+SFScenarios[kk].name+'#'+keywunits[jj]
+                sentit = '@value|Cumulative'+keywprint[jj]+'|'+sfprint[kk]+'#'+keywunits[jj]
                 foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].data[keyw[jj]].cumsum()/keywscale[jj] 
 
     #        foo['@value|scenario|Solar Futures'] = SFScenarios[kk].name
