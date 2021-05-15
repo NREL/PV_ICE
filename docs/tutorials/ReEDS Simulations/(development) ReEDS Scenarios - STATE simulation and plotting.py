@@ -50,7 +50,8 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[3]:
 
 
-reedsFile = str(Path().resolve().parent.parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
+r"""
+reedsFile = str(Path().resolve().parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx')
 print ("Input file is stored in %s" % reedsFile)
 
 rawdf = pd.read_excel(reedsFile,
@@ -61,48 +62,32 @@ rawdf = pd.read_excel(reedsFile,
 rawdf.drop(columns=['Tech'], inplace=True)
 rawdf.set_index(['Scenario','Year','PCA', 'State'], inplace=True)
 
-
-# In[4]:
-
-
 scenarios = list(rawdf.index.get_level_values('Scenario').unique())
 PCAs = list(rawdf.index.get_level_values('PCA').unique())
 STATEs = list(rawdf.index.get_level_values('State').unique())
 
-
-# ### Reading GIS inputs
-
-# In[5]:
-
-
-GISfile = str(Path().resolve().parent.parent.parent.parent / 'gis_centroid_n.xlsx')
-GIS = pd.read_excel(GISfile)
-GIS = GIS.set_index('id')
-
-
-# In[6]:
-
-
-GIS.head()
-
-
-# In[7]:
-
-
-GIS.loc['p1'].long
-
-
-# ### Create Scenarios in PV_ICE
-
-# #### Rename difficult characters from Scenarios Names
-
-# In[8]:
-
-
 simulationname = scenarios
 simulationname = [w.replace('+', '_') for w in simulationname]
 simulationname
+SFscenarios = [simulationname[0], simulationname[4], simulationname[8]]
+"""
 
+
+# ### Reading GIS inputs
+
+# In[4]:
+
+
+r"""
+GISfile = str(Path().resolve().parent.parent.parent.parent / 'gis_centroid_n.xlsx')
+GIS = pd.read_excel(GISfile)
+GIS = GIS.set_index('id')
+GIS.head()
+GIS.loc['p1'].long
+"""
+
+
+# ### Create Scenarios in PV_ICE
 
 # #### Downselect to Solar Future scenarios of interest
 # 
@@ -111,18 +96,27 @@ simulationname
 # <li> 95-by-35.Adv  
 # <li> 95-by-35+Elec.Adv+DR 
 
-# In[9]:
+# In[5]:
 
 
-SFscenarios = [simulationname[0], simulationname[4], simulationname[8]]
+SFscenarios = ['Reference.Mod', '95-by-35.Adv', '95-by-35_Elec.Adv_DR']
 SFscenarios
 
 
-# #### Create the 3 Scenarios and assign Baselines
+# In[6]:
+
+
+STATEs = ['WA',  'CA',  'VA',  'FL',  'MI',  'IN',  'KY',  'OH',  'PA',  'WV',  'NV',  'MD',
+ 'DE',  'NJ',  'NY',  'VT',  'NH',  'MA',  'CT',  'RI',  'ME',  'ID',  'MT',  'WY',  'UT',  'AZ',  'NM',
+ 'SD',  'CO',  'ND',  'NE',  'MN',  'IA',  'WI',  'TX',  'OK',  'OR',  'KS',  'MO',  'AR',  'LA',  'IL',  'MS',
+ 'AL',  'TN',  'GA',  'SC',  'NC']  
+
+
+# ### Create the 3 Scenarios and assign Baselines
 # 
 # Keeping track of each scenario as its own PV ICE Object.
 
-# In[10]:
+# In[7]:
 
 
 #for ii in range (0, 1): #len(scenarios):
@@ -169,7 +163,7 @@ for jj in range (0, len(STATEs)):
 
 # # Calculate Mass Flow
 
-# In[11]:
+# In[8]:
 
 
 IRENA= False
@@ -210,17 +204,285 @@ else:
     title_Method = 'PVICE'
 
 
-# In[12]:
+# In[9]:
 
 
-print("PCAs:", r1.scenario.keys())
+print("STATEs:", r1.scenario.keys())
 print("Module Keys:", r1.scenario[STATEs[jj]].data.keys())
 print("Material Keys: ", r1.scenario[STATEs[jj]].material['glass'].materialdata.keys())
 
 
-# # SAVE DATA FOR BILLY: STATES
+# # OPEN EI
+
+# In[12]:
+
+
+kk=0
+SFScenarios = [r1, r2, r3]
+SFScenarios[kk].name
+
 
 # In[13]:
+
+
+# WORK ON THIS FOIR OPENEI
+
+keyw=['mat_Virgin_Stock','mat_Total_EOL_Landfilled','mat_Total_MFG_Landfilled', 'mat_Total_Landfilled', 
+      'new_Installed_Capacity_[MW]','Installed_Capacity_[W]']
+keywprint = ['VirginMaterialDemand','EOLMaterial', 'ManufacturingScrap','ManufacturingScrapAndEOLMaterial',
+             'NewInstalledCapacity','InstalledCapacity'] 
+keywunits = ['MetricTonnes', 'MetricTonnes', 'MetricTonnes', 'MetricTonnes', 
+            'MW','MW']
+keywdcumneed = [True,True,True,True,
+                True,False]
+keywdlevel = ['material','material','material','material',
+             'module','module']
+keywscale = [1000000, 1000000, 1000000, 1000000,
+            1,1e6]
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    
+    for zz in range (0, len(STATEs)):
+
+        foo = pd.DataFrame()
+        for jj in range (0, len(keyw)):
+
+            if keywdlevel[jj] == 'material':
+                for ii in range (0, len(materials)):    
+                    sentit = '@value|'+keywprint[jj]+'|'+materials[ii].capitalize() +'#'+keywunits[jj]
+                    foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyw[jj]]/keywscale[jj] 
+            
+                if keywdcumneed[jj]:
+                    for ii in range (0, len(materials)):    
+                        sentit = '@value|Cumulative'+keywprint[jj]+'|'+materials[ii].capitalize() +'#'+keywunits[jj]
+                        foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyw[jj]].cumsum()/keywscale[jj] 
+
+            else:
+                sentit = '@value|'+keywprint[jj]+'|'+'PV' +'#'+keywunits[jj]
+                #sentit = '@value|'+keywprint[jj]+'#'+keywunits[jj]
+                foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].data[keyw[jj]]/keywscale[jj] 
+
+                if keywdcumneed[jj]:
+                    sentit = '@value|Cumulative'+keywprint[jj]+'|'+'PV' +'#'+keywunits[jj]
+                    foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].data[keyw[jj]].cumsum()/keywscale[jj] 
+                  
+
+        foo['@states'] = STATEs[zz]
+        foo['@scenario|Solar Futures'] = SFScenarios[kk].name
+        foo['@timeseries|Year'] = SFScenarios[kk].scenario[STATEs[zz]].data.year
+
+        scenariolist = scenariolist.append(foo)   
+
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+#scenariolist = scenariolist/1000000 # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv(title_Method+' OpenEI.csv', index=False)
+
+print("Done")
+
+
+# In[14]:
+
+
+# WORK ON THIS FOIR OPENEI
+
+keyw=['mat_Virgin_Stock','mat_Total_EOL_Landfilled','mat_Total_MFG_Landfilled', 'mat_Total_Landfilled', 
+      'new_Installed_Capacity_[MW]','Installed_Capacity_[W]']
+keywprint = ['VirginMaterialDemand','EOLMaterial', 'ManufacturingScrap','ManufacturingScrapAndEOLMaterial',
+             'NewInstalledCapacity','InstalledCapacity'] 
+keywunits = ['MetricTonnes', 'MetricTonnes', 'MetricTonnes', 'MetricTonnes', 
+            'MW','MW']
+keywdcumneed = [True,True,True,True,
+                True,False]
+keywdlevel = ['material','material','material','material',
+             'module','module']
+keywscale = [1000000, 1000000, 1000000, 1000000,
+            1,1e6]
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    
+    for zz in range (0, len(STATEs)):
+
+        foo = pd.DataFrame()
+        for jj in range (0, len(keyw)):
+
+            if keywdlevel[jj] == 'material':
+                for ii in range (0, len(materials)):    
+                    sentit = '@value|'+keywprint[jj]+'|'+materials[ii].capitalize() +'#'+keywunits[jj]
+                    foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyw[jj]]/keywscale[jj] 
+            
+            else:
+                sentit = '@value|'+keywprint[jj]+'|'+'PV' +'#'+keywunits[jj]
+                #sentit = '@value|'+keywprint[jj]+'#'+keywunits[jj]
+                foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].data[keyw[jj]]/keywscale[jj] 
+
+
+
+        foo['@states'] = STATEs[zz]
+        foo['@scenario|Solar Futures'] = SFScenarios[kk].name
+        foo['@timeseries|Year'] = SFScenarios[kk].scenario[STATEs[zz]].data.year
+
+        scenariolist = scenariolist.append(foo)   
+
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+#scenariolist = scenariolist/1000000 # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv(title_Method+' OpenEI Yearly Only.csv', index=False)
+
+print("Done")
+
+
+# In[15]:
+
+
+# WORK ON THIS FOIR OPENEI
+
+keyw=['mat_Virgin_Stock','mat_Total_EOL_Landfilled','mat_Total_MFG_Landfilled', 'mat_Total_Landfilled', 
+      'new_Installed_Capacity_[MW]','Installed_Capacity_[W]']
+keywprint = ['VirginMaterialDemand','EOLMaterial', 'ManufacturingScrap','ManufacturingScrapAndEOLMaterial',
+             'NewInstalledCapacity','InstalledCapacity'] 
+keywunits = ['MetricTonnes', 'MetricTonnes', 'MetricTonnes', 'MetricTonnes', 
+            'MW','MW']
+keywdcumneed = [True,True,True,True,
+                True,False]
+keywdlevel = ['material','material','material','material',
+             'module','module']
+keywscale = [1000000, 1000000, 1000000, 1000000,
+            1,1e6]
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+for kk in range(0, 3):
+    # Loop over Materials
+    
+    for zz in range (0, len(STATEs)):
+
+        foo = pd.DataFrame()
+        for jj in range (0, len(keyw)):
+
+            if keywdlevel[jj] == 'material':
+
+                if keywdcumneed[jj]:
+                    for ii in range (0, len(materials)):    
+                        sentit = '@value|Cumulative'+keywprint[jj]+'|'+materials[ii].capitalize() +'#'+keywunits[jj]
+                        foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyw[jj]].cumsum()/keywscale[jj] 
+
+            else:
+
+                if keywdcumneed[jj]:
+                    sentit = '@value|Cumulative'+keywprint[jj]+'|'+'PV' +'#'+keywunits[jj]
+                    foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].data[keyw[jj]].cumsum()/keywscale[jj] 
+                  
+
+        foo['@states'] = STATEs[zz]
+        foo['@scenario|Solar Futures'] = SFScenarios[kk].name
+        foo['@timeseries|Year'] = SFScenarios[kk].scenario[STATEs[zz]].data.year
+
+        scenariolist = scenariolist.append(foo)   
+
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+#scenariolist = scenariolist/1000000 # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv(title_Method+' OpenEI Cumulatives Only.csv', index=False)
+
+print("Done")
+
+
+# In[16]:
+
+
+# WORK ON THIS FOIR OPENEI
+# SCENARIO DIFERENCeS
+
+keyw=['new_Installed_Capacity_[MW]','Installed_Capacity_[W]']
+keywprint = ['NewInstalledCapacity','InstalledCapacity'] 
+keywunits = ['MW','MW']
+keywdcumneed = [True,False]
+keywdlevel = ['module','module']
+keywscale = [1,1e6]
+materials = []
+
+SFScenarios = [r1, r2, r3]
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+    
+for zz in range (0, len(STATEs)):
+
+    foo = pd.DataFrame()
+    
+    for jj in range (0, len(keyw)):
+           
+        # kk -- scenario
+        for kk in range(0, 3):
+            sentit = '@value|'+keywprint[jj]+'|'+SFScenarios[kk].name+'#'+keywunits[jj]
+            #sentit = '@value|'+keywprint[jj]+'#'+keywunits[jj]
+            foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].data[keyw[jj]]/keywscale[jj] 
+
+            if keywdcumneed[jj]:
+                sentit = '@value|Cumulative'+keywprint[jj]+'|'+SFScenarios[kk].name+'#'+keywunits[jj]
+                foo[sentit] = SFScenarios[kk].scenario[STATEs[zz]].data[keyw[jj]].cumsum()/keywscale[jj] 
+
+    #        foo['@value|scenario|Solar Futures'] = SFScenarios[kk].name
+    foo['@states'] = STATEs[zz]
+    foo['@timeseries|Year'] = SFScenarios[kk].scenario[STATEs[zz]].data.year
+    scenariolist = scenariolist.append(foo)   
+
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+
+#scenariolist = scenariolist/1000000 # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv(title_Method+' OpenEI ScenarioDifferences.csv', index=False)
+
+print("Done")
+
+
+# In[17]:
+
+
+scenariolist.head()
+
+
+# # SAVE DATA FOR BILLY: STATES
+
+# In[18]:
 
 
 #for 3 significant numbers rounding
@@ -235,7 +497,7 @@ N = 2
 # 
 # Index 40 --> 2050
 
-# In[14]:
+# In[19]:
 
 
 idx2030 = 20
@@ -249,7 +511,7 @@ print("index ", idx2050, " is year ", r1.scenario[STATEs[0]].data['year'].iloc[i
 # #### 6 - STATE Cumulative Virgin Needs by 2050
 # 
 
-# In[15]:
+# In[20]:
 
 
 keyword='mat_Virgin_Stock'
@@ -281,9 +543,15 @@ scenariolist = scenariolist.applymap(lambda x: int(x))
 scenariolist.to_csv(title_Method+' 6 - STATE Cumulative2050 VirginMaterialNeeds_tons.csv')
 
 
+# In[21]:
+
+
+SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword]
+
+
 # #### 7 - STATE Cumulative EoL Only Waste by 2050
 
-# In[16]:
+# In[22]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -317,7 +585,7 @@ scenariolist.to_csv(title_Method+' 7 - STATE Cumulative2050 Waste_EOL_tons.csv')
 
 # ##### 8 - STATE Yearly Virgin Needs 2030 2040 2050
 
-# In[17]:
+# In[23]:
 
 
 keyword='mat_Virgin_Stock'
@@ -357,7 +625,7 @@ scenariolist.to_csv(title_Method+' 8 - STATE Yearly 2030 2040 2050 VirginMateria
 
 # #### 9 - STATE Yearly EoL Waste 2030 2040 205
 
-# In[18]:
+# In[24]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -401,7 +669,7 @@ scenariolist.to_csv(title_Method+' 9 - STATE Yearly 2030 2040 2050 Waste_EOL_ton
 
 # #### Appendix - Cumulative Virgin Stock
 
-# In[19]:
+# In[25]:
 
 
 keyword='mat_Virgin_Stock'
@@ -454,7 +722,7 @@ for kk in range(0, 3):
 
 # #### Appendix - Yearly Virgin Stock
 
-# In[20]:
+# In[26]:
 
 
 keyword='mat_Virgin_Stock'
@@ -508,7 +776,7 @@ for kk in range(0, 3):
 
 # #### Appendix - Cumulative EOL_ WASTE by State
 
-# In[21]:
+# In[27]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -558,7 +826,13 @@ for kk in range(0, 3):
 
 # #####  Sparkplots  +  APPENDIX - Yearly EoL Waste 
 
-# In[22]:
+# In[37]:
+
+
+sparkplotfolder = os.path.join(testfolder, 'SPARKPLOTS')
+
+
+# In[38]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -597,9 +871,10 @@ for kk in range(0, 3):
                 axs.axis('off')
                 figtitle = title_Method+ ' ' + SFScenarios[kk].name + ' Fig_2x1_GLASS_Waste_'+STATEs[zz]+'.png'
                 #figtitle = os.path.join('SPARKPLOTS', figtitle)
-                fig.savefig(figtitle, dpi=600)
+                #fig.savefig(figtitle, dpi=600)
+                fig.savefig(os.path.join(sparkplotfolder, figtitle), dpi=600)
                 plt.close(fig) # This avoids the figure from displayig and getting all the warnings
-
+                
         yearlylist = pd.DataFrame([keywordsum2030, keywordsum2040, keywordsum2050], columns=STATEs, index = [2030, 2040, 2050])
         yearlylist = yearlylist.T
         yearlylist = yearlylist.add_prefix(materials[ii]+'_')
@@ -625,7 +900,7 @@ for kk in range(0, 3):
     reduced.to_csv(title_Method+' Appendix - '+ SFScenarios[kk].name + ' Yearly EOL Waste by State.csv')
 
 
-# In[23]:
+# In[29]:
 
 
 # PLOT HERE
@@ -689,6 +964,13 @@ axs.axis('off');
 
 
 # # OBSOLETE BECAUSE FASTER TO DO ON NATION LEVEL
+
+# In[32]:
+
+
+print(failtest)
+# so the simulation will stop when reaching here jic
+
 
 # In[ ]:
 

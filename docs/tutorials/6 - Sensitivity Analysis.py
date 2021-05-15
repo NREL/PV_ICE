@@ -257,7 +257,7 @@ stages = scenarios[1::] # removing baseline as we want a dataframe with only cha
 # In[16]:
 
 
-df = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Changes, installedCapacity_Changes)), 
+df2 = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Changes, installedCapacity_Changes)), 
                columns=['Virgin Needs Change', 'Virgin Stock Raw Change', 'Waste Change', 'InstalledCapacity Change'],index=stages) 
 
 
@@ -289,60 +289,60 @@ variables_description = {'mat_virgin_eff': "Material Virgin Efficiency",
 # In[18]:
 
 
-df_Pos = df[['high' in s for s in df.index]].copy()
-df_Pos.index = df_Pos.index.str.replace("_high", "")
+df2_Pos = df2[['high' in s for s in df2.index]].copy()
+df2_Pos.index = df2_Pos.index.str.replace("_high", "")
 
 col_verbose = []
 
-for i in range (0, len(df_Pos)):
-    if df_Pos.index[i] in variables_description:
-        col_verbose.append(variables_description[df_Pos.index[i]])
+for i in range (0, len(df2_Pos)):
+    if df2_Pos.index[i] in variables_description:
+        col_verbose.append(variables_description[df2_Pos.index[i]])
     else:
         col_verbose.append("")
         
-df_Pos['Description'] = col_verbose     
-df_Pos = df_Pos.reset_index()
-df_Pos = df_Pos.rename(columns={'index':'variable'})
-df_Pos
+df2_Pos['Description'] = col_verbose     
+df2_Pos = df2_Pos.reset_index()
+df2_Pos = df2_Pos.rename(columns={'index':'variable'})
+df2_Pos
 
 
 # In[19]:
 
 
-df_Neg = df[['low' in s for s in df.index]].copy()
-df_Neg.index = df_Neg.index.str.replace("_low", "")
+df2_Neg = df2[['low' in s for s in df2.index]].copy()
+df2_Neg.index = df2_Neg.index.str.replace("_low", "")
 
 col_verbose = []
 
-for i in range (0, len(df_Neg)):
-    if df_Neg.index[i] in variables_description:
-        col_verbose.append(variables_description[df_Neg.index[i]])
+for i in range (0, len(df2_Neg)):
+    if df2_Neg.index[i] in variables_description:
+        col_verbose.append(variables_description[df2_Neg.index[i]])
     else:
         col_verbose.append("")
 
-df_Neg['Description'] = col_verbose
-df_Neg = df_Neg.reset_index()
-df_Neg = df_Neg.rename(columns={'index':'variable'})
-df_Neg
+df2_Neg['Description'] = col_verbose
+df2_Neg = df2_Neg.reset_index()
+df2_Neg = df2_Neg.rename(columns={'index':'variable'})
+df2_Neg
 
 
 # # Print Values for a Senki Diagram, 1 year
 
 # https://observablehq.com/@mbostock/flow-o-matic
 
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
 # In[20]:
-
-
-r1.scenario['baseline'].data.keys()
-
-
-# In[21]:
-
-
-r1.scenario['baseline'].material[MATERIAL].materialdata.keys()
-
-
-# In[22]:
 
 
 mat_UsedSuccessfullyinModuleManufacturing = r1.scenario['baseline'].material[MATERIAL].materialdata['mat_UsedSuccessfullyinModuleManufacturing'].sum()
@@ -403,7 +403,7 @@ pass
 # mat_EOL_Recycled_2_HQ, mat_EOL_Recycled_HQ_into_OU
 # 
 
-# In[23]:
+# In[21]:
 
 
 print('Virgin Stock,Modules,',mat_UsedSuccessfullyinModuleManufacturing)
@@ -433,7 +433,7 @@ print('Succesful,Open Loop,',mat_MFG_Recycled_into_OQ+mat_MFG_Recycled_HQ_into_O
 # # OPTION 2 
 # More detailed of the Material Sent to Recycling and HQ, OQ details
 
-# In[24]:
+# In[22]:
 
 
 print('Virgin Stock,Modules,',mat_UsedSuccessfullyinModuleManufacturing)
@@ -464,4 +464,124 @@ print('Recycled,HQ,',mat_MFG_Recycled_into_HQ, ', #da4f81')
 print('Recycled,OQ,',mat_MFG_Recycled_into_OQ)
 print('HQ,HQ into Mfg,',mat_MFG_Recycled_HQ_into_MFG, ', #da4f81')
 print('HQ,HQ Other Uses,',mat_MFG_Recycled_HQ_into_OU)
+
+
+# # Modifing the installed capacity to stay fixed at BASELINE
+# Needs to run each year becuase it needs to calculate the acumulated installs and deads.
+
+# In[24]:
+
+
+Diff_Installment = []
+for i in range (0, len(r1.scenario['baseline'].data)):
+    for jj in range (1, len(list(r1.scenario.keys()))):
+        scen = list(r1.scenario.keys())[jj]
+        Diff_Installment = ( (r1.scenario['baseline'].data['Installed_Capacity_[W]'][i] - 
+                             r1.scenario[scen].data['Installed_Capacity_[W]'][i])/1000000 )  # MWATTS
+        r1.scenario[scen].data['new_Installed_Capacity_[MW]'][i] += Diff_Installment
+    r1.calculateMassFlow()
+
+
+# #### Compile Changes
+
+# In[26]:
+
+
+virginStock_Changes = []
+waste_Changes = []
+installedCapacity_Changes = []
+virginStockRAW_Changes = []
+
+virgin_keyword = 'mat_Virgin_Stock'
+waste_keyword = 'mat_Total_Landfilled'
+installs_keyword = 'Installed_Capacity_[W]'
+viring_raw_keyword = 'mat_Virgin_Stock_Raw'
+
+virginStock_baseline_cum2050 = r1.scenario['baseline'].material[MATERIAL].materialdata[virgin_keyword].sum()
+virginStockRAW_baseline_cum2050 = r1.scenario['baseline'].material[MATERIAL].materialdata[viring_raw_keyword].sum()
+
+# Installed Capacity is already cumulative so no need to sum or cumsum.
+waste_baseline_cum2050 = r1.scenario['baseline'].material[MATERIAL].materialdata[waste_keyword].sum()
+installedCapacity_baselined_2050 = r1.scenario['baseline'].data[installs_keyword].iloc[-1]
+
+for i in range (1, len(scenarios)):
+    stage_name = scenarios[i]
+    virginStock_Changes.append(round(100*r1.scenario[stage_name].material[MATERIAL].materialdata[virgin_keyword].sum()/virginStock_baseline_cum2050,5)-100)
+    virginStockRAW_Changes.append(round(100*r1.scenario[stage_name].material[MATERIAL].materialdata[viring_raw_keyword].sum()/virginStockRAW_baseline_cum2050,5)-100)
+
+    waste_Changes.append(round(100*r1.scenario[stage_name].material[MATERIAL].materialdata[waste_keyword].sum()/waste_baseline_cum2050,5)-100)
+    installedCapacity_Changes.append(round(100*r1.scenario[stage_name].data[installs_keyword].iloc[-1]/installedCapacity_baselined_2050,5)-100)
+
+
+# In[27]:
+
+
+stages = scenarios[1::] # removing baseline as we want a dataframe with only changes
+
+
+# In[28]:
+
+
+df = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Changes, installedCapacity_Changes)), 
+               columns=['Virgin Needs Change', 'Virgin Stock Raw Change', 'Waste Change', 'InstalledCapacity Change'],index=stages) 
+
+
+# #### Present Results
+
+# In[30]:
+
+
+df_Pos = df[['high' in s for s in df.index]].copy()
+df_Pos.index = df_Pos.index.str.replace("_high", "")
+
+col_verbose = []
+
+for i in range (0, len(df_Pos)):
+    if df_Pos.index[i] in variables_description:
+        col_verbose.append(variables_description[df_Pos.index[i]])
+    else:
+        col_verbose.append("")
+        
+df_Pos['Description'] = col_verbose     
+df_Pos = df_Pos.reset_index()
+df_Pos = df_Pos.rename(columns={'index':'variable'})
+
+
+# In[31]:
+
+
+df_Neg = df[['low' in s for s in df.index]].copy()
+df_Neg.index = df_Neg.index.str.replace("_low", "")
+
+col_verbose = []
+
+for i in range (0, len(df_Neg)):
+    if df_Neg.index[i] in variables_description:
+        col_verbose.append(variables_description[df_Neg.index[i]])
+    else:
+        col_verbose.append("")
+
+df_Neg['Description'] = col_verbose
+df_Neg = df_Neg.reset_index()
+df_Neg = df_Neg.rename(columns={'index':'variable'})
+
+
+# In[32]:
+
+
+print("Keeping Installs, the modifications to Virgin Needs, Virgin STock and Waste")
+df_Pos[df_Pos['InstalledCapacity Change']!=0.000]
+
+
+# In[33]:
+
+
+print("Keeping Installs, the modifications to Virgin Needs, Virgin STock and Waste")
+df_Neg[df_Neg['InstalledCapacity Change']!=0.000]
+
+
+# In[ ]:
+
+
+
 
