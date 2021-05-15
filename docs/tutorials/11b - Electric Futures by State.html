@@ -13154,14 +13154,14 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">MATERIALS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;copper&#39;</span><span class="p">,</span><span class="s1">&#39;aluminium_frames&#39;</span><span class="p">]</span>
 <span class="n">MATERIAL</span> <span class="o">=</span> <span class="n">MATERIALS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="n">MODULEBASELINE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\PV_ICE\baselines\LiteratureProjections\EF-CapacityByState-basecase.csv&#39;</span>
-<span class="n">MODULEBASELINE_High</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\PV_ICE\baselines\LiteratureProjections\EF-CapacityByState-LowREHighElec.csv&#39;</span>
+<span class="n">MODULEBASELINE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\baselines\LiteratureProjections\EF-CapacityByState-basecase.csv&#39;</span>
+<span class="n">MODULEBASELINE_High</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\baselines\LiteratureProjections\EF-CapacityByState-LowREHighElec.csv&#39;</span>
 </pre></div>
 
     </div>
@@ -13171,7 +13171,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
@@ -13187,7 +13187,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">PV_ICE</span><span class="o">.</span><span class="n">__version__</span>
@@ -13203,13 +13203,13 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[29]:</div>
+    <div class="prompt output_prompt">Out[4]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;0+untagged.364.g911d04e.dirty&#39;</pre>
+<pre>&#39;0+untagged.365.g187f205.dirty&#39;</pre>
 </div>
 
 </div>
@@ -13217,55 +13217,26 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Loading-Module-Baseline.-Will-be-used-later-to-populate-all-the-columsn-otehr-than-'new_InstalledCapacity[MW]'-which-will-be-supplied-by-the-REEDS-model">Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed<em>Capacity</em>[MW]' which will be supplied by the REEDS model<a class="anchor-link" href="#Loading-Module-Baseline.-Will-be-used-later-to-populate-all-the-columsn-otehr-than-'new_InstalledCapacity[MW]'-which-will-be-supplied-by-the-REEDS-model">&#182;</a></h3>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">MODULEBASELINE</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="s1">&#39;gid&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#df.set_index(&#39;time&#39;, inplace=True)</span>
-<span class="c1">#df.index=pd.PeriodIndex(df.index, freq=&#39;A&#39;)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[47]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Simulation1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\..\baselines\ReedsSubset\baseline_modules_US_Reeds_EF.csv&#39;</span><span class="p">)</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;US&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">])</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>  <span class="c1"># A -- Annual</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13281,54 +13252,2283 @@ div#notebook {
     <div class="prompt"></div>
 
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">KeyError</span>                                  Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">C:\ProgramData\Anaconda3\lib\site-packages\pandas\core\indexes\base.py</span> in <span class="ansi-cyan-fg">get_loc</span><span class="ansi-blue-intense-fg ansi-bold">(self, key, method, tolerance)</span>
-<span class="ansi-green-fg">   2656</span>             <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 2657</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span><span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_engine<span class="ansi-yellow-intense-fg ansi-bold">.</span>get_loc<span class="ansi-yellow-intense-fg ansi-bold">(</span>key<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   2658</span>             <span class="ansi-green-intense-fg ansi-bold">except</span> KeyError<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\ElectricFutures
+</pre>
+</div>
+</div>
 
-<span class="ansi-green-intense-fg ansi-bold">pandas/_libs/index.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.index.IndexEngine.get_loc</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<div class="output_area">
 
-<span class="ansi-green-intense-fg ansi-bold">pandas/_libs/index.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.index.IndexEngine.get_loc</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+    <div class="prompt output_prompt">Out[5]:</div>
 
-<span class="ansi-green-intense-fg ansi-bold">pandas/_libs/hashtable_class_helper.pxi</span> in <span class="ansi-cyan-fg">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
 
-<span class="ansi-green-intense-fg ansi-bold">pandas/_libs/hashtable_class_helper.pxi</span> in <span class="ansi-cyan-fg">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
 
-<span class="ansi-red-intense-fg ansi-bold">KeyError</span>: &#39;time&#39;
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-During handling of the above exception, another exception occurred:
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-<span class="ansi-red-intense-fg ansi-bold">KeyError</span>                                  Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-47-d11e1a7d9967&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>df<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;time&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mod_eff</th>
+      <th>mod_reliability_t50</th>
+      <th>mod_reliability_t90</th>
+      <th>mod_degradation</th>
+      <th>mod_lifetime</th>
+      <th>mod_MFG_eff</th>
+      <th>mod_EOL_collection_eff</th>
+      <th>mod_EOL_collected_recycled</th>
+      <th>mod_Repowering</th>
+      <th>mod_Repairing</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2018</th>
+      <td>18.400000</td>
+      <td>28.0</td>
+      <td>33.0</td>
+      <td>0.3</td>
+      <td>31.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>19.200000</td>
+      <td>28.0</td>
+      <td>33.0</td>
+      <td>0.3</td>
+      <td>32.4</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>20.252588</td>
+      <td>33.0</td>
+      <td>38.0</td>
+      <td>0.5</td>
+      <td>35.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>20.894865</td>
+      <td>33.0</td>
+      <td>38.0</td>
+      <td>0.5</td>
+      <td>35.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>21.362882</td>
+      <td>33.0</td>
+      <td>38.0</td>
+      <td>0.5</td>
+      <td>35.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
 
-<span class="ansi-green-intense-fg ansi-bold">C:\ProgramData\Anaconda3\lib\site-packages\pandas\core\frame.py</span> in <span class="ansi-cyan-fg">__getitem__</span><span class="ansi-blue-intense-fg ansi-bold">(self, key)</span>
-<span class="ansi-green-fg">   2925</span>             <span class="ansi-green-intense-fg ansi-bold">if</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>columns<span class="ansi-yellow-intense-fg ansi-bold">.</span>nlevels <span class="ansi-yellow-intense-fg ansi-bold">&gt;</span> <span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">   2926</span>                 <span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_getitem_multilevel<span class="ansi-yellow-intense-fg ansi-bold">(</span>key<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 2927</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>indexer <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>columns<span class="ansi-yellow-intense-fg ansi-bold">.</span>get_loc<span class="ansi-yellow-intense-fg ansi-bold">(</span>key<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   2928</span>             <span class="ansi-green-intense-fg ansi-bold">if</span> is_integer<span class="ansi-yellow-intense-fg ansi-bold">(</span>indexer<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">   2929</span>                 indexer <span class="ansi-yellow-intense-fg ansi-bold">=</span> <span class="ansi-yellow-intense-fg ansi-bold">[</span>indexer<span class="ansi-yellow-intense-fg ansi-bold">]</span>
+</div>
 
-<span class="ansi-green-intense-fg ansi-bold">C:\ProgramData\Anaconda3\lib\site-packages\pandas\core\indexes\base.py</span> in <span class="ansi-cyan-fg">get_loc</span><span class="ansi-blue-intense-fg ansi-bold">(self, key, method, tolerance)</span>
-<span class="ansi-green-fg">   2657</span>                 <span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_engine<span class="ansi-yellow-intense-fg ansi-bold">.</span>get_loc<span class="ansi-yellow-intense-fg ansi-bold">(</span>key<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   2658</span>             <span class="ansi-green-intense-fg ansi-bold">except</span> KeyError<span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 2659</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span><span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_engine<span class="ansi-yellow-intense-fg ansi-bold">.</span>get_loc<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_maybe_cast_indexer<span class="ansi-yellow-intense-fg ansi-bold">(</span>key<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   2660</span>         indexer <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>get_indexer<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">[</span>key<span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> method<span class="ansi-yellow-intense-fg ansi-bold">=</span>method<span class="ansi-yellow-intense-fg ansi-bold">,</span> tolerance<span class="ansi-yellow-intense-fg ansi-bold">=</span>tolerance<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">   2661</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> indexer<span class="ansi-yellow-intense-fg ansi-bold">.</span>ndim <span class="ansi-yellow-intense-fg ansi-bold">&gt;</span> <span class="ansi-cyan-intense-fg ansi-bold">1</span> <span class="ansi-green-intense-fg ansi-bold">or</span> indexer<span class="ansi-yellow-intense-fg ansi-bold">.</span>size <span class="ansi-yellow-intense-fg ansi-bold">&gt;</span> <span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+</div>
+</div>
 
-<span class="ansi-green-intense-fg ansi-bold">pandas/_libs/index.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.index.IndexEngine.get_loc</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
 
-<span class="ansi-green-intense-fg ansi-bold">pandas/_libs/index.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.index.IndexEngine.get_loc</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+    </div>
+</div>
+</div>
 
-<span class="ansi-green-intense-fg ansi-bold">pandas/_libs/hashtable_class_helper.pxi</span> in <span class="ansi-cyan-fg">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">MODULEBASELINE</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span><span class="s1">&#39;State&#39;</span><span class="p">,</span><span class="s1">&#39;year&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
 
-<span class="ansi-green-intense-fg ansi-bold">pandas/_libs/hashtable_class_helper.pxi</span> in <span class="ansi-cyan-fg">pandas._libs.hashtable.PyObjectHashTable.get_item</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+    </div>
+</div>
+</div>
 
-<span class="ansi-red-intense-fg ansi-bold">KeyError</span>: &#39;time&#39;</pre>
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>New Installs</th>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <th>State</th>
+      <th>year</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">Rooftop_MW</th>
+      <th rowspan="5" valign="top">AL</th>
+      <th>2018</th>
+      <td>4.652727</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>7.016364</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>2.363637</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>9.192727</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>2.176363</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
+    <span class="n">STATE</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">SCEN</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="s1">&#39;base_&#39;</span><span class="o">+</span><span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">STATE</span> <span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;baselines&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
+    <span class="c1"># Add other columns</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    
+    <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,&quot;</span>\
+    <span class="s2">&quot;mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,&quot;</span>\
+    <span class="s2">&quot;mod_Repowering,mod_Repairing</span><span class="se">\n</span><span class="s2">&quot;</span>\
+    <span class="s2">&quot;year,MW,%,years,years,%,years,%,%,%,%,%</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
+    <span class="c1"># Write the header lines, including the index variable for</span>
+    <span class="c1"># the last one if you&#39;re letting Pandas produce that for you.</span>
+    <span class="c1"># (see above).</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+            <span class="n">ict</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="c1">#    savedata.to_csv(ict, index=False)</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ict</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">MODULEBASELINE_High</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span><span class="s1">&#39;State&#39;</span><span class="p">,</span><span class="s1">&#39;year&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>New Installs</th>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <th>State</th>
+      <th>year</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">Rooftop_MW</th>
+      <th rowspan="5" valign="top">AL</th>
+      <th>2018</th>
+      <td>5.432727</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>9.000909</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>3.568182</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>12.890000</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>3.889091</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
+    <span class="n">STATE</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">SCEN</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="s1">&#39;LowREHighElec_&#39;</span><span class="o">+</span><span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">STATE</span> <span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;baselines&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
+    <span class="c1"># Add other columns</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    
+    <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,&quot;</span>\
+    <span class="s2">&quot;mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,&quot;</span>\
+    <span class="s2">&quot;mod_Repowering,mod_Repairing</span><span class="se">\n</span><span class="s2">&quot;</span>\
+    <span class="s2">&quot;year,MW,%,years,years,%,years,%,%,%,%,%</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
+    <span class="c1"># Write the header lines, including the index variable for</span>
+    <span class="c1"># the last one if you&#39;re letting Pandas produce that for you.</span>
+    <span class="c1"># (see above).</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+            <span class="n">ict</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="c1">#    savedata.to_csv(ict, index=False)</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ict</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="DO-SIMULATIONS">DO SIMULATIONS<a class="anchor-link" href="#DO-SIMULATIONS">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Sims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">,</span><span class="s1">&#39;LowREHighElec&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">baselineinstalls</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;baselines&#39;</span><span class="p">)</span>
+<span class="n">onlyfiles</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">baselineinstalls</span><span class="p">)]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">onlyfiles</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">Sims</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+<span class="n">sim2</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">onlyfiles</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">Sims</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">STATEs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sim1</span><span class="p">]</span>
+<span class="n">STATEs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">STATEs</span><span class="p">]</span>
+<span class="n">Type</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sim1</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for ii in range (0, 1): #len(scenarios):</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">Sims</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sim1</span><span class="p">)):</span> 
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">sim1</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;baselines&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span> 
+    <span class="n">scen</span> <span class="o">=</span> <span class="n">Type</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">STATEs</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+    <span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">scen</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">filetitle</span><span class="p">)</span>
+    <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_glass_Reeds.csv&#39;</span><span class="p">)</span>
+    <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_silicon_Reeds.csv&#39;</span><span class="p">)</span>
+    <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_silver_Reeds.csv&#39;</span><span class="p">)</span>
+    <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_copper_Reeds.csv&#39;</span><span class="p">)</span>
+    <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;aluminum&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_aluminium_Reeds.csv&#39;</span><span class="p">)</span>
+
+
+<span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">Sims</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">STATEs</span><span class="p">)):</span> 
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">sim2</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;baselines&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>    
+    <span class="n">scen</span> <span class="o">=</span> <span class="n">Type</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">STATEs</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">scen</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">filetitle</span><span class="p">)</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_glass_Reeds.csv&#39;</span><span class="p">)</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_silicon_Reeds.csv&#39;</span><span class="p">)</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_silver_Reeds.csv&#39;</span><span class="p">)</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_copper_Reeds.csv&#39;</span><span class="p">)</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;aluminum&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;materialsubsets\baseline_material_aluminium_Reeds.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\ElectricFutures
+path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\ElectricFutures
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">IRENA</span><span class="o">=</span> <span class="kc">False</span>
+<span class="n">PERFECTMFG</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">mats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;silicon&#39;</span><span class="p">,</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span><span class="s1">&#39;aluminum&#39;</span><span class="p">]</span>
+
+<span class="n">ELorRL</span> <span class="o">=</span> <span class="s1">&#39;EL&#39;</span>
+<span class="k">if</span> <span class="n">IRENA</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">ELorRL</span> <span class="o">==</span> <span class="s1">&#39;RL&#39;</span><span class="p">:</span>
+        <span class="n">weibullInputParams</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">5.3759</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span><span class="mi">30</span><span class="p">}</span>  <span class="c1"># Regular-loss scenario IRENA</span>
+    <span class="k">if</span> <span class="n">ELorRL</span> <span class="o">==</span> <span class="s1">&#39;EL&#39;</span><span class="p">:</span>
+        <span class="n">weibullInputParams</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">2.49</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span><span class="mi">30</span><span class="p">}</span>  <span class="c1"># Regular-loss scenario IRENA</span>
+    
+    <span class="k">if</span> <span class="n">PERFECTMFG</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="n">scen</span> <span class="o">=</span> <span class="n">Type</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">STATEs</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+            <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_lifetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">40</span>
+            <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_MFG_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">100.0</span>
+            <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_lifetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">40</span>
+            <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_MFG_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">100.0</span>
+
+            <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mats</span><span class="p">)):</span>
+                <span class="n">mat</span> <span class="o">=</span> <span class="n">mats</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span>
+                <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">100.0</span>    
+                <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_MFG_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">100.0</span>    
+
+    
+    <span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span><span class="n">weibullInputParams</span><span class="p">)</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span><span class="n">weibullInputParams</span><span class="p">)</span>
+    <span class="n">title_Method</span> <span class="o">=</span> <span class="s1">&#39;Irena_&#39;</span><span class="o">+</span><span class="n">ELorRL</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
+    <span class="n">title_Method</span> <span class="o">=</span> <span class="s1">&#39;PVICE&#39;</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Working on Scenario:  Rooftop_AL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_AR
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_AZ
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_CA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_CO
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_CT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_DE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_FL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_GA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_IA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_ID
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_IL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_IN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_KS
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_KY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_LA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MD
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_ME
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MO
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MS
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NC
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_ND
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NH
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NJ
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NM
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NV
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_OH
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_OK
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_OR
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_PA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_RI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_SC
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_SD
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_TN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_TX
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_UT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_VA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_VT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_WA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_WI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_WV
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_WY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_AL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_AR
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_AZ
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_CA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_CO
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_CT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_DE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_FL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_GA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_IA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_ID
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_IL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_IN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_KS
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_KY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_LA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MD
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_ME
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MO
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MS
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NC
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_ND
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NH
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NJ
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NM
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NV
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_OH
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_OK
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_OR
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_PA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_RI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_SC
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_SD
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_TN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_TX
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_UT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_VA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_VT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_WA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_WI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_WV
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_WY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_AL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_AR
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_AZ
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_CA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_CO
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_CT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_DE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_FL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_GA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_IA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_ID
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_IL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_IN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_KS
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_KY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_LA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MD
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_ME
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MO
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MS
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_MT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NC
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_ND
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NH
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NJ
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NM
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NV
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_NY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_OH
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_OK
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_OR
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_PA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_RI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_SC
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_SD
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_TN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_TX
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_UT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_VA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_VT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_WA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_WI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_WV
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Rooftop_WY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_AL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_AR
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_AZ
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_CA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_CO
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_CT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_DE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_FL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_GA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_IA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_ID
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_IL
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_IN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_KS
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_KY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_LA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MD
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_ME
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MO
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MS
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_MT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NC
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_ND
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NH
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NJ
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NM
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NV
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_NY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_OH
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_OK
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_OR
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_PA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_RI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_SC
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_SD
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_TN
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_TX
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_UT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_VA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_VT
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_WA
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_WI
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_WV
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+Working on Scenario:  Utility_WY
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  copper
+==&gt; Working on Material :  aluminum
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="OPEN-EI">OPEN EI<a class="anchor-link" href="#OPEN-EI">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kk</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">SFScenarios</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">]</span>
+<span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[42]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;base&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># WORK ON THIS FOIR OPENEI</span>
+
+<span class="n">keyw</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mat_Virgin_Stock&#39;</span><span class="p">,</span><span class="s1">&#39;mat_Total_EOL_Landfilled&#39;</span><span class="p">,</span><span class="s1">&#39;mat_Total_MFG_Landfilled&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_Total_Landfilled&#39;</span><span class="p">,</span> 
+      <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">,</span><span class="s1">&#39;Installed_Capacity_[W]&#39;</span><span class="p">]</span>
+<span class="n">keywprint</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;VirginMaterialDemand&#39;</span><span class="p">,</span><span class="s1">&#39;EOLMaterial&#39;</span><span class="p">,</span> <span class="s1">&#39;ManufacturingScrap&#39;</span><span class="p">,</span><span class="s1">&#39;ManufacturingScrapAndEOLMaterial&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;NewInstalledCapacity&#39;</span><span class="p">,</span><span class="s1">&#39;InstalledCapacity&#39;</span><span class="p">]</span> 
+<span class="n">keywunits</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MetricTonnes&#39;</span><span class="p">,</span> <span class="s1">&#39;MetricTonnes&#39;</span><span class="p">,</span> <span class="s1">&#39;MetricTonnes&#39;</span><span class="p">,</span> <span class="s1">&#39;MetricTonnes&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;MW&#39;</span><span class="p">,</span><span class="s1">&#39;MW&#39;</span><span class="p">]</span>
+<span class="n">keywdcumneed</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span><span class="kc">True</span><span class="p">,</span>
+                <span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">]</span>
+<span class="n">keywdlevel</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;material&#39;</span><span class="p">,</span><span class="s1">&#39;material&#39;</span><span class="p">,</span><span class="s1">&#39;material&#39;</span><span class="p">,</span><span class="s1">&#39;material&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;module&#39;</span><span class="p">,</span><span class="s1">&#39;module&#39;</span><span class="p">]</span>
+<span class="n">keywscale</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span><span class="mf">1e6</span><span class="p">]</span>
+<span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="s1">&#39;aluminum&#39;</span><span class="p">]</span>
+
+<span class="c1"># Loop over SF Scenarios</span>
+
+<span class="n">scenariolist</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">SFScenarios</span><span class="p">)):</span>
+    <span class="c1"># Loop over Materials</span>
+    
+    <span class="k">for</span> <span class="n">zz</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">STATEs</span><span class="p">)):</span>
+
+        <span class="n">foo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">keyw</span><span class="p">)):</span>
+
+            <span class="k">if</span> <span class="n">keywdlevel</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;material&#39;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">materials</span><span class="p">)):</span>    
+                    <span class="n">scen</span> <span class="o">=</span> <span class="n">Type</span><span class="p">[</span><span class="n">zz</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">STATEs</span><span class="p">[</span><span class="n">zz</span><span class="p">]</span>
+                    <span class="n">sentit</span> <span class="o">=</span> <span class="s1">&#39;@value|&#39;</span><span class="o">+</span><span class="n">keywprint</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">+</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="n">keywunits</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+                    <span class="n">foo</span><span class="p">[</span><span class="n">sentit</span><span class="p">]</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="n">keyw</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">/</span><span class="n">keywscale</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> 
+            
+                <span class="k">if</span> <span class="n">keywdcumneed</span><span class="p">[</span><span class="n">jj</span><span class="p">]:</span>
+                    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">materials</span><span class="p">)):</span>    
+                        <span class="n">sentit</span> <span class="o">=</span> <span class="s1">&#39;@value|Cumulative&#39;</span><span class="o">+</span><span class="n">keywprint</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">+</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="n">keywunits</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+                        <span class="n">foo</span><span class="p">[</span><span class="n">sentit</span><span class="p">]</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="n">keyw</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span><span class="o">/</span><span class="n">keywscale</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> 
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sentit</span> <span class="o">=</span> <span class="s1">&#39;@value|&#39;</span><span class="o">+</span><span class="n">keywprint</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="s1">&#39;PV&#39;</span> <span class="o">+</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="n">keywunits</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+                <span class="c1">#sentit = &#39;@value|&#39;+keywprint[jj]+&#39;#&#39;+keywunits[jj]</span>
+                <span class="n">foo</span><span class="p">[</span><span class="n">sentit</span><span class="p">]</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">keyw</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">/</span><span class="n">keywscale</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> 
+
+                <span class="k">if</span> <span class="n">keywdcumneed</span><span class="p">[</span><span class="n">jj</span><span class="p">]:</span>
+                    <span class="n">sentit</span> <span class="o">=</span> <span class="s1">&#39;@value|Cumulative&#39;</span><span class="o">+</span><span class="n">keywprint</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;|&#39;</span><span class="o">+</span><span class="s1">&#39;PV&#39;</span> <span class="o">+</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="n">keywunits</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
+                    <span class="n">foo</span><span class="p">[</span><span class="n">sentit</span><span class="p">]</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">keyw</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span><span class="o">/</span><span class="n">keywscale</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> 
+                  
+
+        <span class="n">foo</span><span class="p">[</span><span class="s1">&#39;@states&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">STATEs</span><span class="p">[</span><span class="n">zz</span><span class="p">]</span>
+        <span class="n">foo</span><span class="p">[</span><span class="s1">&#39;@scenario|Electric Futures&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> 
+        <span class="n">foo</span><span class="p">[</span><span class="s1">&#39;@filter|Install Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Type</span><span class="p">[</span><span class="n">zz</span><span class="p">]</span>
+        <span class="n">foo</span><span class="p">[</span><span class="s1">&#39;@timeseries|Year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">year</span>
+
+        <span class="n">scenariolist</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>   
+
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">scenariolist</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">scenariolist</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">scenariolist</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">scenariolist</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">scenariolist</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">scenariolist</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">scenariolist</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">scenariolist</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+<span class="c1">#scenariolist = scenariolist/1000000 # Converting to Metric Tons</span>
+<span class="c1">#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))</span>
+<span class="c1">#scenariolist = scenariolist.applymap(lambda x: int(x))</span>
+<span class="n">scenariolist</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;OPEN EI &#39;</span><span class="o">+</span><span class="n">title_Method</span><span class="o">+</span><span class="s1">&#39; ELECTRIF FUTURES.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Done
+</pre>
 </div>
 </div>
 
