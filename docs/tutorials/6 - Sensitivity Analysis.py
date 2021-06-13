@@ -69,7 +69,7 @@ mod_MFG_eff	mod_EOL_collection_eff	mod_EOL_collected_recycled	mod_Repowering	mod
 mod_lifetime = 25
 mod_reliability_t50 = 31
 mod_reliability_t90 = 36
-od_degradation = 0.6
+mod_degradation = 0.6
 ''';
 
 

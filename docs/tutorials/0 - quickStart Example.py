@@ -3,7 +3,7 @@
 
 # # 0 - quickStart Example
 
-# ### 1. Create a folder for your simulation, and load PV_DEMICE
+# #### 1. Create a folder for your simulation, and load PV_DEMICE
 # 
 # First let's set the folder where the simulation will be saved. By default, this is the TEMP folder in the PV_DEMICE distribution.
 # 
@@ -28,7 +28,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[2]:
 
 
-import PV_DEMICE
+import PV_ICE
 
 
 # ### 2. Create your Simulation Object
