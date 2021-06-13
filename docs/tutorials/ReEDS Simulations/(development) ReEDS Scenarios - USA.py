@@ -21,7 +21,7 @@
 # o	95-by-35+Elec.Adv+DR ones
 # 
 
-# In[61]:
+# In[1]:
 
 
 import PV_ICE
@@ -34,7 +34,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[62]:
+# In[2]:
 
 
 import os
@@ -47,7 +47,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 
 # ### Reading REEDS original file to get list of SCENARIOs, PCAs, and STATEs 
 
-# In[63]:
+# In[3]:
 
 
 r"""
@@ -64,7 +64,7 @@ rawdf.set_index(['Scenario','Year','PCA', 'State'], inplace=True)
 """;
 
 
-# In[64]:
+# In[4]:
 
 
 #scenarios = list(rawdf.index.get_level_values('Scenario').unique())
@@ -76,7 +76,7 @@ rawdf.set_index(['Scenario','Year','PCA', 'State'], inplace=True)
 
 # #### Rename difficult characters from Scenarios Names
 
-# In[65]:
+# In[5]:
 
 
 scenarios = ['Reference.Mod',
@@ -90,7 +90,7 @@ scenarios = ['Reference.Mod',
  '95-by-35_Elec.Adv_DR']
 
 
-# In[66]:
+# In[6]:
 
 
 #simulationname = scenarios
@@ -105,7 +105,7 @@ scenarios = ['Reference.Mod',
 # <li> 95-by-35.Adv  
 # <li> 95-by-35+Elec.Adv+DR 
 
-# In[67]:
+# In[7]:
 
 
 #SFscenarios = [simulationname[0], simulationname[4], simulationname[8]]
@@ -117,7 +117,7 @@ SFscenarios
 # 
 # Keeping track of each scenario as its own PV ICE Object.
 
-# In[68]:
+# In[8]:
 
 
 #for ii in range (0, 1): #len(scenarios):
@@ -138,7 +138,7 @@ for i in range(0, 3):
 
 # #### Calculate Mass Flow
 
-# In[ ]:
+# In[9]:
 
 
 IRENA= False
@@ -171,13 +171,7 @@ else:
     title_Method = 'PVICE'
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
+# In[10]:
 
 
 print("Scenarios:", rr.scenario.keys())
@@ -185,7 +179,7 @@ print("Module Keys:", rr.scenario[SFscenarios[0]].data.keys())
 print("Material Keys: ", rr.scenario[SFscenarios[0]].material['glass'].materialdata.keys())
 
 
-# In[ ]:
+# In[11]:
 
 
 """
@@ -197,19 +191,19 @@ pass
 
 # ## Aggregating PCAs Material Landfilled to obtain US totals by Year
 
-# In[69]:
+# In[12]:
 
 
 USyearly=pd.DataFrame()
 
 
-# In[70]:
+# In[13]:
 
 
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
 
-# In[71]:
+# In[14]:
 
 
 keywd = 'mat_Virgin_Stock'
@@ -223,7 +217,7 @@ for jj in range(len(SFscenarios)):
     USyearly['VirginStock_Module_'+obj] = USyearly[filter_col].sum(axis=1)
 
 
-# In[72]:
+# In[15]:
 
 
 keywd = 'mat_Total_Landfilled'
@@ -237,7 +231,7 @@ for jj in range(len(SFscenarios)):
     USyearly['Waste_Module_'+obj] = USyearly[filter_col].sum(axis=1)
 
 
-# In[73]:
+# In[16]:
 
 
 keywd = 'mat_Total_EOL_Landfilled'
@@ -251,7 +245,7 @@ for jj in range(len(SFscenarios)):
     USyearly['Waste_EOL_Module_'+obj] = USyearly[filter_col].sum(axis=1)
 
 
-# In[74]:
+# In[17]:
 
 
 keywd = 'mat_Total_MFG_Landfilled'
@@ -268,7 +262,7 @@ for jj in range(len(SFscenarios)):
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[75]:
+# In[18]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
@@ -277,7 +271,7 @@ USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 
 # ### Adding NEW Installed Capacity to US
 
-# In[76]:
+# In[19]:
 
 
 keyword='new_Installed_Capacity_[MW]'
@@ -289,7 +283,7 @@ for jj in range(len(SFscenarios)):
 
 # #### Reindexing and creating c umulative results
 
-# In[77]:
+# In[20]:
 
 
 UScum = USyearly.copy()
@@ -298,7 +292,7 @@ UScum = UScum.cumsum()
 
 # ### Adding Installed Capacity to US (This is already 'Cumulative') so not including it in UScum
 
-# In[78]:
+# In[21]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -310,26 +304,26 @@ for jj in range(len(SFscenarios)):
 
 # #### Set YEAR Index
 
-# In[79]:
+# In[22]:
 
 
 USyearly.index = rr.scenario[obj].data['year']
 UScum.index = rr.scenario[obj].data['year']
 
 
-# In[80]:
+# In[23]:
 
 
 USyearly.head().iloc[1]
 
 
-# In[81]:
+# In[24]:
 
 
 USyearly.head()
 
 
-# In[82]:
+# In[25]:
 
 
 UScum.head()
@@ -337,7 +331,15 @@ UScum.head()
 
 # ### 3 sig figures save Yearly and cumulative overview Nation
 
-# In[83]:
+# In[26]:
+
+
+# Data for Jarett
+USyearly.to_csv(title_Method+' US_Yearly NATION_tonnes.csv')
+UScum.to_csv(title_Method+' US_Cumulative NATION_tonnes.csv')
+
+
+# In[27]:
 
 
 USyearly3sig = USyearly.copy()
@@ -361,7 +363,7 @@ USyearly3sig.to_csv(title_Method+' US_Yearly NATION.csv')
 UScum3sig.to_csv(title_Method+' US_Cumulative NATION.csv')
 
 
-# In[84]:
+# In[28]:
 
 
 print("Sanity check: mat_Total_Landfilled = mat_Total_EOL_Landfilled + mat_Total_MFG_Landfilled")
@@ -375,7 +377,7 @@ A - B - C
 
 # ## Yearly Virgin Material Needs by Scenario
 
-# In[85]:
+# In[29]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -390,7 +392,7 @@ f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
 ########################
 #######################
 
-    
+foo = pd.DataFrame() 
     
 # Loop over Keywords
 ii = 0 
@@ -412,6 +414,7 @@ a0.plot(rr.scenario[obj].data['year'], modulemat, 'k.', linewidth=5, label='S1 R
 a0.plot(rr.scenario[obj].data['year'], glassmat, 'k', linewidth=5, label='S1 Reference Scenario: glass mass only')
 a0.fill_between(rr.scenario[obj].data['year'], glassmat, modulemat, color='k', alpha=0.3,
                  interpolate=True)
+
 
 # SCENARIO 2 ***************
 kk = 1
@@ -503,7 +506,31 @@ f.tight_layout()
 f.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cumulatives.png', dpi=600)
 
 
-# In[152]:
+# In[32]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[34]:
+
+
+rr.scenario['Reference.Mod'].material['glass'].materialdata['mat_Virgin_Stock'].tail(5)
+
+
+# In[ ]:
+
+
+# Save Data for Jarett Zuboy
+
+
+# In[29]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -638,7 +665,7 @@ f.tight_layout()
 f.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cumulatives.png', dpi=600)
 
 
-# In[153]:
+# In[30]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -772,7 +799,7 @@ f.tight_layout()
 f.savefig(title_Method+' Fig_2x1_Yearly MFG and EOL Material by Scenario and Cumulatives_Nation.png', dpi=600)
 
 
-# In[170]:
+# In[31]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -907,7 +934,7 @@ f.tight_layout()
 f.savefig(title_Method+' Fig_2x1_Yearly EoL Waste by Scenario and Cumulatives_Nation.png', dpi=600)
 
 
-# In[173]:
+# In[32]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1042,7 +1069,7 @@ f.tight_layout()
 f.savefig(title_Method+' Fig_2x1_Yearly MFG Waste by Scenario and Cumulatives_Nation.png', dpi=600)
 
 
-# In[89]:
+# In[33]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1061,7 +1088,7 @@ fig.savefig(title_Method+' Fig_New_Installs_vs_InstalledCapacity_vs_Waste', dpi=
 
 # # WASTE COMPARISON SIZE
 
-# In[90]:
+# In[34]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1077,7 +1104,7 @@ axs.set_ylabel('Power [TW]')
 fig.savefig(title_Method+' Fig_New_Installs_vs_InstalledCapacity_vs_Waste', dpi=600)
 
 
-# In[91]:
+# In[35]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1099,7 +1126,7 @@ axs.set_xlim([2020,2050])
 axs.set_ylabel('Power [TW]')
 
 
-# In[92]:
+# In[36]:
 
 
 foo0 = (UScum['new_Installed_Capacity_[MW]'+SFscenarios[0]]/1e6-USyearly['Capacity_'+SFscenarios[0]]/1e12).sum()
@@ -1108,7 +1135,7 @@ foo2 = (UScum['new_Installed_Capacity_[MW]'+SFscenarios[2]]/1e6-USyearly['Capaci
 print(foo0, foo1, foo2)
 
 
-# In[93]:
+# In[37]:
 
 
 E = (UScum['new_Installed_Capacity_[MW]Reference.Mod']/1e6).sum()
@@ -1118,13 +1145,13 @@ print("Cumulative Waste", F)
 print("Fraction of Decomisioned to Installed Cumulative by 2050", F/E)
 
 
-# In[175]:
+# In[38]:
 
 
 SFscenarios[1]
 
 
-# In[178]:
+# In[39]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1139,7 +1166,7 @@ axs.set_ylabel('Power [TW]')
 fig.savefig(title_Method+' Fig_New_Installs_vs_Decomisions', dpi=600)
 
 
-# In[197]:
+# In[40]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1168,7 +1195,7 @@ axs.set_ylabel('Power [TW]')
 fig.savefig(title_Method+' Fig_New_Installs_vs_Decomisions', dpi=600)
 
 
-# In[95]:
+# In[41]:
 
 
 print("CUMULATIVE WASTE by 2050")
@@ -1191,7 +1218,7 @@ print("\t Grid Decarbonization Scenario: ", UScum['Waste_MFG_Module_95-by-35.Adv
 print("\t High Electrification Scenario: ", UScum['Waste_MFG_Module_95-by-35_Elec.Adv_DR'].iloc[-1]/1e6, ' Million Tonnes')
 
 
-# In[96]:
+# In[42]:
 
 
 print(" VIRGIN STOCK Yearly Needs ")
@@ -1219,7 +1246,7 @@ for kk in range(0, 3):
 
 
 
-# In[97]:
+# In[43]:
 
 
 print(" WASTE EoL CUMULATIVE RESULTS [Tonnes] ")
@@ -1228,7 +1255,7 @@ filter_col = [col for col in UScum3sig if (col.startswith('Waste_EOL_Module')) ]
 display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[98]:
+# In[44]:
 
 
 print(" WASTE EoL + MfgScrap CUMULATIVE RESULTS [Tonnes] ")
@@ -1237,7 +1264,7 @@ filter_col = [col for col in UScum3sig if (col.startswith('Waste_Module')) ]
 display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[99]:
+# In[45]:
 
 
 print(" WASTE MfgScrap CUMULATIVE RESULTS [Tonnes] ")
@@ -1246,7 +1273,7 @@ filter_col = [col for col in UScum3sig if (col.startswith('Waste_MFG_Module')) ]
 display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[100]:
+# In[46]:
 
 
 materials = ['Module', 'glass', 'aluminum', 'copper', 'silicon', 'silver']
@@ -1274,7 +1301,7 @@ for kk in range (0, 3):
 
 # # Mining Capacity
 
-# In[101]:
+# In[47]:
 
 
 mining2020_aluminum = 65267000
@@ -1283,7 +1310,7 @@ mining2020_copper = 20000000
 mining2020_silicon = 8000000
 
 
-# In[198]:
+# In[48]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1340,7 +1367,7 @@ axs.set_ylabel('Virgin material needs as a percentage \nof 2020 global mining pr
 fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production.png',  bbox_inches = "tight", dpi=600)
 
 
-# In[201]:
+# In[49]:
 
 
 
@@ -1372,7 +1399,7 @@ newdf['Copper_High'] = USyearly[keyw+materials[3]+'_'+SFscenarios[2]]*100/mining
 newdf.to_csv(title_Method+' Demand as Percentage of Mining.csv')
 
 
-# In[169]:
+# In[50]:
 
 
 import matplotlib as mpl
@@ -1535,7 +1562,7 @@ axs[6].set_ylabel('Yearly Mass [Tonnes]')
 fig.savefig(title_Method+' Fig_3x3_MaterialNeeds_Nation.png', dpi=600)
 
 
-# In[104]:
+# In[51]:
 
 
 keyword='Cumulative_Area_disposed'
@@ -1554,14 +1581,14 @@ for kk in range(0, 3):
      #   USyearly_Areadisp["Areadisp_"+obj] += rr.scenario[obj].data[keyword]
 
 
-# In[105]:
+# In[52]:
 
 
 UScum_Areadisp = USyearly_Areadisp.copy()
 UScum_Areadisp = UScum_Areadisp.cumsum()
 
 
-# In[106]:
+# In[53]:
 
 
 A = UScum['Waste_Module_Reference.Mod'].iloc[-1]
@@ -1573,7 +1600,7 @@ A = A/1e6 # Convert to km 2
 print(A)
 
 
-# In[107]:
+# In[54]:
 
 
 B = UScum['Waste_Module_95-by-35_Elec.Adv_DR'].iloc[-1]
@@ -1585,21 +1612,21 @@ B =B/1e6 # Convert to km 2
 print(B)
 
 
-# In[108]:
+# In[55]:
 
 
 C = UScum_Areadisp['Areadisp_Reference.Mod'].iloc[-1]/1e6
 D = UScum_Areadisp['Areadisp_95-by-35_Elec.Adv_DR'].iloc[-1]/1e6
 
 
-# In[109]:
+# In[56]:
 
 
 # MANHATTAN SIZE:
 manhattans = 59.103529
 
 
-# In[110]:
+# In[57]:
 
 
 print("Reference Cumulative Area by 2050 of Waste PV Modules EoL", round(C), " km^2")
@@ -1633,19 +1660,19 @@ print("High Electrification Cumulative Area by 2050 of Waste PV Mfg + Modules Eo
 # Waste_EOL_silver_95-by-35_Elec.Adv_DR  
 # 
 
-# In[111]:
+# In[58]:
 
 
 USyearly['VirginStock_silver_Reference.Mod']
 
 
-# In[112]:
+# In[59]:
 
 
 USyearly
 
 
-# In[113]:
+# In[61]:
 
 
 plt.rcParams.update({'font.size': 14})
@@ -1729,7 +1756,7 @@ axs[2].legend(lns, labs, loc='upper center', bbox_to_anchor=(-0.95, -0.25),
 fig.savefig(title_Method+' Fig_1x3_VirginvsWaste_Fraction_Nation.png', bbox_inches = "tight", dpi=600)
 
 
-# In[187]:
+# In[62]:
 
 
 from matplotlib.legend_handler import HandlerBase
@@ -1841,7 +1868,7 @@ axs[2].legend([("gray","g","k","-","-","-"), ("gray","g","k","--","--","--"),("r
 fig.savefig(title_Method+' Fig_1x3_VirginvsWaste_Fraction_Nation.png', bbox_inches = "tight", dpi=600)
 
 
-# In[192]:
+# In[63]:
 
 
 newdf = pd.DataFrame()
