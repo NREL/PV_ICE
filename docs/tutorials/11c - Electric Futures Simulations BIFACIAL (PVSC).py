@@ -49,7 +49,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[86]:
+# In[6]:
 
 
 r1 = PV_ICE.Simulation(name='PV_ICE', path=testfolder)
@@ -75,13 +75,52 @@ for mat in range (2, len(MATERIALS)):
     
 
 
-# In[ ]:
+# In[7]:
 
 
+MATERIALBASELINE_Mono = r'..\..\baselines\baseline_modules_US_ITRPVPrediction_monofacialModules.csv'
+MATERIALBASELINE_Bifi = r'..\..\baselines\baseline_modules_US_ITRPVPrediction_bifacialModules.csv'
+bifacialityfactors = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\baselines\bifaciality_factor.csv'
+
+r0a = PV_ICE.Simulation(name='BifacialProjection', path=testfolder)
+
+r0a.createScenario(name='Mono', file=MATERIALBASELINE_Mono)
+MATERIALBASELINE = r'..\..\baselines\baseline_material_glass_hold2020.csv'
+r0a.scenario['Mono'].addMaterial('glass', file=MATERIALBASELINE)
+MATERIALBASELINE = r'..\..\baselines\baseline_material_aluminium_frames_hold2020.csv'
+r0a.scenario['Mono'].addMaterial('aluminium_frames', file=MATERIALBASELINE)
+for mat in range (2, len(MATERIALS)):
+    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+    r0a.scenario['Mono'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+
+r0b = PV_ICE.Simulation(name='BifacialProjection', path=testfolder)
+
+r0b.createScenario(name='Bifacial', file=MATERIALBASELINE_Bifi)
+MATERIALBASELINE = r'..\..\baselines\baseline_material_glass_bifacialTrend.csv'
+r0b.scenario['Bifacial'].addMaterial('glass', file=MATERIALBASELINE)
+MATERIALBASELINE = r'..\..\baselines\baseline_material_aluminium_frames_bifacialTrend.csv'
+r0b.scenario['Bifacial'].addMaterial('aluminium_frames', file=MATERIALBASELINE)
+for mat in range (2, len(MATERIALS)):
+    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+    r0b.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
+# In[8]:
 
-# In[87]:
+
+r0c = PV_ICE.Simulation(name='SameInstalls', path=testfolder)
+
+r0c.createScenario(name='Bifacial_SameInstalls', file=MATERIALBASELINE_Bifi)
+MATERIALBASELINE = r'..\..\baselines\baseline_material_glass_bifacialTrend.csv'
+r0c.scenario['Bifacial_SameInstalls'].addMaterial('glass', file=MATERIALBASELINE)
+MATERIALBASELINE = r'..\..\baselines\baseline_material_aluminium_frames_bifacialTrend.csv'
+r0c.scenario['Bifacial_SameInstalls'].addMaterial('aluminium_frames', file=MATERIALBASELINE)
+for mat in range (2, len(MATERIALS)):
+    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+    r0c.scenario['Bifacial_SameInstalls'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+
+
+# In[9]:
 
 
 # Irena EL 
@@ -131,7 +170,7 @@ for mat in range (2, len(MATERIALS)):
     
 
 
-# In[88]:
+# In[10]:
 
 
 # Irena RL
@@ -188,7 +227,7 @@ for mat in range (2, len(MATERIALS)):
 # <li> Case3 -- r6: mod_degradation
 # 
 
-# In[89]:
+# In[11]:
 
 
 Life_Good = [3, 6, 9, 12, 15, 18, 21, 24]
@@ -197,7 +236,7 @@ Life_Bad = [element * -1 for element in Life_Good]
 degradation_Bad = [0.2, 0.4, 0.6, 0.8, 1.2, 1.6, 2.0, 3.0]
 
 
-# In[90]:
+# In[12]:
 
 
 r4 = PV_ICE.Simulation(name='Reliability_Case1', path=testfolder)
@@ -234,7 +273,7 @@ for i in range(0, len(Life_Good)):
         r4.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)   
 
 
-# In[91]:
+# In[13]:
 
 
 # Sanity Check
@@ -242,7 +281,7 @@ print('Scenario', list(r4.scenario.keys())[0] , 't50 in 2030: ', r4.scenario[lis
 print('Scenario', list(r4.scenario.keys())[1] , 't50 in 2030: ', r4.scenario[list(r4.scenario.keys())[1]].data['mod_reliability_t50'][35])
 
 
-# In[92]:
+# In[14]:
 
 
 r5 = PV_ICE.Simulation(name='Reliability_Case2', path=testfolder)
@@ -284,7 +323,7 @@ for i in range(0, len(Life_Good)):
         r5.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)   
 
 
-# In[93]:
+# In[15]:
 
 
 r6 = PV_ICE.Simulation(name='Reliability_Case3', path=testfolder)
@@ -322,13 +361,22 @@ for i in range(0, len(Life_Good)):
 
 # # Run Simulations 
 
-# In[94]:
+# In[ ]:
 
 
+
+
+
+# In[16]:
+
+
+r0a.calculateMassFlow()
+r0b.calculateMassFlow(bifacialityfactors=bifacialityfactors)
+r0c.calculateMassFlow(bifacialityfactors=bifacialityfactors, reducecapacity=False)
 r1.calculateMassFlow()
 
 
-# In[95]:
+# In[17]:
 
 
 weibullInputParams = {'alpha': 2.49, 'beta':30}  # Early-loss scenario IRENA
@@ -338,7 +386,7 @@ weibullInputParams = {'alpha': 5.3759, 'beta':30}  # Regular-loss scenario IRENA
 r3.calculateMassFlow(weibullInputParams=weibullInputParams)
 
 
-# In[96]:
+# In[18]:
 
 
 r4.calculateMassFlow()
@@ -346,42 +394,41 @@ r5.calculateMassFlow()
 r6.calculateMassFlow()
 
 
-# In[97]:
+# In[19]:
 
 
 r4.scenario[list(r4.scenario.keys())[-1]].data
 
 
-# ## Creating Summary of results 
-# 
-
-# In[98]:
-
-
-#Simulations = [r1, r2, r3, r4, r5, r6]
-Simulations = [r1, r2, r3]
-#scenarios = ['Today', 'Bifacial']
-
-
-# In[99]:
+# In[20]:
 
 
 r1.scenario['Today'].material['copper'].materialdata['mat_Total_Landfilled'].tail(5)
 
 
-# In[100]:
+# In[21]:
 
 
 r1.scenario['Bifacial'].material['copper'].materialdata['mat_Total_Landfilled'].tail(5)
 
 
-# In[101]:
+# ## Creating Summary of results 
+# 
+
+# In[22]:
+
+
+#Simulations = [r1, r2, r3, r4, r5, r6]
+Simulations = [r0a, r0b, r0c, r1, r2, r3]
+
+
+# In[23]:
 
 
 USyearly=pd.DataFrame()
 
 
-# In[102]:
+# In[24]:
 
 
 keyword='mat_Total_Landfilled'
@@ -389,8 +436,8 @@ materials = ['glass', 'aluminium_frames','silicon', 'silver', 'copper']
 
 # Loop over objects
 for kk in range(0, len(Simulations)):
-    obj = Simulations[kk]
-
+    obj = Simulations[kk]      
+    
     # Loop over Scenarios
     for jj in range(0, len(obj.scenario)):
         case = list(obj.scenario.keys())[jj]
@@ -404,11 +451,8 @@ for kk in range(0, len(Simulations)):
         filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj.name+'_'+case)) ]
         USyearly['Waste_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
-# Converting to grams to Tons. 
-USyearly.head(20)
 
-
-# In[103]:
+# In[25]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -431,11 +475,8 @@ for kk in range(0, len(Simulations)):
         filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj.name+'_'+case)) ]
         USyearly['Waste_EOL_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
-# Converting to grams to Tons. 
-USyearly.head(20)
 
-
-# In[104]:
+# In[26]:
 
 
 keyword='mat_Total_MFG_Landfilled'
@@ -458,11 +499,8 @@ for kk in range(0, len(Simulations)):
         filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj.name+'_'+case)) ]
         USyearly['Waste_MFG_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
-# Converting to grams to Tons. 
-USyearly.head(20)
 
-
-# In[105]:
+# In[27]:
 
 
 keyword='mat_Virgin_Stock'
@@ -485,21 +523,81 @@ for kk in range(0, len(Simulations)):
         filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj.name+'_'+case)) ]
         USyearly['VirginStock_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
-# Converting to grams to Tons. 
-USyearly.head(20)
-
 
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[106]:
+# In[28]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 #907185 -- this is for US tons
 
 
-# In[107]:
+# ### Adding NEW Installed Capacity to US
+
+# In[29]:
+
+
+keyword='new_Installed_Capacity_[MW]'
+
+# Loop over objects
+for kk in range(0, len(Simulations)):
+    obj = Simulations[kk]
+    newcolname = keyword+obj.name
+    
+    if newcolname in USyearly:
+        USyearly[newcolname] = USyearly[newcolname]+obj.scenario[list(obj.scenario.keys())[0]].data[keyword]
+        USyearly[keyword+obj.name+'_p2'] = obj.scenario[list(obj.scenario.keys())[0]].data[keyword]
+    else:
+        USyearly[keyword+obj.name] = obj.scenario[list(obj.scenario.keys())[0]].data[keyword]
+
+USyearly.head(10)
+
+
+# # Combining BifacialProjection
+
+# In[30]:
+
+
+filter_col_Bifacial = [col for col in USyearly if col.endswith('BifacialProjection_Bifacial')]
+filter_col_Mono = [col for col in USyearly if col.endswith('BifacialProjection_Mono')]
+
+filter_col = filter_col_Bifacial.copy()
+filter_col = [x[:-9] for x in filter_col]
+foo = pd.DataFrame(USyearly[filter_col_Bifacial].values + USyearly[filter_col_Mono].values, columns=filter_col)
+USyearly = pd.concat([USyearly, foo], axis=1)
+USyearly = USyearly[USyearly.columns.drop(filter_col_Bifacial)]
+USyearly = USyearly[USyearly.columns.drop(filter_col_Mono)]
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# ### Creating Cuulatives 
+
+# In[31]:
 
 
 UScum = USyearly.copy()
@@ -509,11 +607,10 @@ UScum.head()
 
 # ### Adding Installed Capacity to US
 
-# In[108]:
+# In[32]:
 
 
 keyword='Installed_Capacity_[W]'
-materials = ['glass', 'aluminium_frames','silicon', 'silver', 'copper']
 
 # Loop over objects
 for kk in range(0, len(Simulations)):
@@ -522,31 +619,39 @@ for kk in range(0, len(Simulations)):
     # Loop over Scenarios
     for jj in range(0, len(obj.scenario)):
         case = list(obj.scenario.keys())[jj]
-
         foo = obj.scenario[case].data[keyword]
         foo = foo.to_frame(name=keyword)
         UScum["Capacity_"+obj.name+'_'+case] = foo[keyword]
         
-# Converting to grams to Tons. 
-USyearly.head(20)
+        
 
 
-# In[109]:
+# In[33]:
 
 
-UScum.tail(20)
+UScum['Capacity_BifacialProjection'] = UScum['Capacity_BifacialProjection_Mono'] + UScum['Capacity_BifacialProjection_Bifacial']
+UScum['Capacity_BifacialProjection_SameInstalls'] = (UScum['Capacity_BifacialProjection_Mono'] +
+                                 UScum['Capacity_SameInstalls_Bifacial_SameInstalls'])
 
 
-# ## Mining Capacity
+# ### Reindexing
 
-# In[110]:
+# In[34]:
 
 
 USyearly.index = r1.scenario['Today'].data['year']
 UScum.index = r1.scenario['Today'].data['year']
 
 
-# In[111]:
+# In[35]:
+
+
+UScum.tail(5)
+
+
+# ## Mining Capacity
+
+# In[36]:
 
 
 mining2020_aluminum = 65267000
@@ -557,7 +662,7 @@ mining2020_silicon = 8000000
 
 # # PLOTTING GALORE
 
-# In[112]:
+# In[37]:
 
 
 list(USyearly.keys())
@@ -569,7 +674,7 @@ list(USyearly.keys())
 
 
 
-# In[113]:
+# In[38]:
 
 
 #VirginStock_glass_PVSC_Today
@@ -638,7 +743,7 @@ axs.set_ylabel('Virgin material needs as a percentage of \n 2020 global mining p
 
 
 
-# In[114]:
+# In[39]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -742,7 +847,7 @@ print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[116]:
+# In[40]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -845,9 +950,15 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
+# In[ ]:
+
+
+
+
+
 # # Waste_ EOL 
 
-# In[250]:
+# In[41]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1024,7 +1135,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[251]:
+# In[42]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1204,7 +1315,13 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[255]:
+# In[43]:
+
+
+USyearly.keys()
+
+
+# In[44]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1223,6 +1340,7 @@ f, (a0, a1, a2) = plt.subplots(1, 3, gridspec_kw={'width_ratios': [2,0.8,0.8]})
 # Loop over CASES
 name0 = 'PV_ICE_Today'
 name2 = 'PV_ICE_Bifacial'
+#name3 = 'BifacialProjection'
 
 # SCENARIO 1 ***************
 modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
@@ -1247,6 +1365,22 @@ a0.plot(USyearly.index, modulemat, 'lightcoral', linestyle='dotted', linewidth=5
 a0.plot(USyearly.index, glassmat, 'lightcoral', linewidth=5, label='Bifacial Evolution: glass')
 a0.fill_between(USyearly.index, glassmat, modulemat, color='lightcoral', alpha=0.3,
                  interpolate=True)
+
+'''
+# SCENARIO 3 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name3]+USyearly[keyw+materials[1]+'_'+name3]+
+            USyearly[keyw+materials[2]+'_'+name3]+USyearly[keyw+materials[3]+'_'+name3]+
+            USyearly[keyw+materials[4]+'_'+name3])
+glassmat = (USyearly[keyw+materials[0]+'_'+name3])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'g', linestyle='dotted', linewidth=5, label='Bifacial Evolution: module')
+a0.plot(USyearly.index, glassmat, 'g', linewidth=5, label='Bifacial Evolution: glass')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='lightcoral', alpha=0.3,
+                 interpolate=True)
+
+'''
+
 
 a0.legend(loc=2)
 #a0.set_title('Yearly End of Life Material by Scenario')
@@ -1349,7 +1483,6 @@ dfcumulations2050.iloc[0] = dfcumulations2050_Prev_B.iloc[0]
 dfcumulations2050.iloc[1] = dfcumulations2050_Prev_B.iloc[1]
 
 dfcumulations2050_Prev_B = dfcumulations2050.copy()
-
 
 ## Plot BARS Stuff
 ind=np.arange(3)
@@ -1391,7 +1524,19 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 # # Waste_ EOL + MFG
 
-# In[256]:
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[45]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1568,7 +1713,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[257]:
+# In[46]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1748,7 +1893,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[258]:
+# In[47]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1767,6 +1912,7 @@ f, (a0, a1, a2) = plt.subplots(1, 3, gridspec_kw={'width_ratios': [2,0.8,0.8]})
 # Loop over CASES
 name0 = 'PV_ICE_Today'
 name2 = 'PV_ICE_Bifacial'
+#name3 = 'BifacialProjection'
 
 # SCENARIO 1 ***************
 modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
@@ -1791,6 +1937,7 @@ a0.plot(USyearly.index, modulemat, 'lightcoral', linestyle='dotted', linewidth=5
 a0.plot(USyearly.index, glassmat, 'lightcoral', linewidth=5, label='Bifacial Evolution: glass')
 a0.fill_between(USyearly.index, glassmat, modulemat, color='lightcoral', alpha=0.3,
                  interpolate=True)
+
 
 a0.legend(loc=2)
 #a0.set_title('Yearly End of Life Material by Scenario')
@@ -1855,7 +2002,7 @@ a1.set_ylim([0, 28])
 
 
 plt.sca(a1)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'Bifacial'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -1920,7 +2067,7 @@ a2.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'S
 a2.set_ylim([0, 28])
 
 plt.sca(a2)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'BIFACIAL.'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -1933,27 +2080,15 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# # Installed Capacity
-
-# In[263]:
-
-
-UScum.keys()
-
-
 # In[ ]:
 
 
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (15, 8)
-keyw='Waste_'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
 
 
-f, (a0) = plt.subplots(1, 1, gridspec_kw={'width_ratios': [2]})
 
+# # BIFACIAL PROJECTION COMPARISON
 
-# In[262]:
+# In[48]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1962,40 +2097,16 @@ keyw='Waste_'
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
 
 
-f, (a0) = plt.subplots(1, 1, gridspec_kw={'width_ratios': [2]})
-
-
-# In[ ]:
-
-
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (15, 8)
-keyw='Waste_'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
-
-
-f, (a0, a1, a2) = plt.subplots(1, 3, gridspec_kw={'width_ratios': [2,0.8,0.8]})
+f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [2,0.8]})
 
 ########################    
-# SUBPLOT 
+# SUBPLOT 1
 ########################
 #######################
    
 # Loop over CASES
-name0 = 'PV_ICE_Today'
 name2 = 'PV_ICE_Bifacial'
-
-# SCENARIO 1 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
-            USyearly[keyw+materials[2]+'_'+name0]+USyearly[keyw+materials[3]+'_'+name0]+
-            USyearly[keyw+materials[4]+'_'+name0])
-glassmat = (USyearly[keyw+materials[0]+'_'+name0])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(USyearly.index, modulemat, 'k', linestyle='dotted', linewidth=5, label='Today: module')
-a0.plot(USyearly.index, glassmat, 'k', linewidth=5, label='Today: glass')
-a0.fill_between(USyearly.index, glassmat, modulemat, color='k', alpha=0.3,
-                 interpolate=True)
+name3 = 'BifacialProjection'
 
 # SCENARIO 2 ***************
 modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
@@ -2004,10 +2115,23 @@ modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_
 glassmat = (USyearly[keyw+materials[0]+'_'+name2])
 modulemat = modulemat/1000000
 glassmat = glassmat/1000000 
-a0.plot(USyearly.index, modulemat, 'lightcoral', linestyle='dotted', linewidth=5, label='Bifacial Evolution: module')
-a0.plot(USyearly.index, glassmat, 'lightcoral', linewidth=5, label='Bifacial Evolution: glass')
+a0.plot(USyearly.index, modulemat, 'lightcoral', linestyle='dotted', linewidth=5, label='Same Installs: module')
+a0.plot(USyearly.index, glassmat, 'lightcoral', linewidth=5, label='Same Installs: glass')
 a0.fill_between(USyearly.index, glassmat, modulemat, color='lightcoral', alpha=0.3,
                  interpolate=True)
+
+# SCENARIO 3 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name3]+USyearly[keyw+materials[1]+'_'+name3]+
+            USyearly[keyw+materials[2]+'_'+name3]+USyearly[keyw+materials[3]+'_'+name3]+
+            USyearly[keyw+materials[4]+'_'+name3])
+glassmat = (USyearly[keyw+materials[0]+'_'+name3])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'gold', linestyle='dotted', linewidth=5, label='Reduced Installs: module')
+a0.plot(USyearly.index, glassmat, 'gold', linewidth=5, label='Reduced Installs: glass')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='lightcoral', alpha=0.3,
+                 interpolate=True)
+
 
 a0.legend(loc=2)
 #a0.set_title('Yearly End of Life Material by Scenario')
@@ -2025,10 +2149,9 @@ a0.set_ylim([0, 1.8])
 cumulations2050 = {}
 for ii in range(0, len(materials)):
     matcum = []
-    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name3].loc[2050])
     empty = 0
-    matcum.append(empty)
-    matcum.append(empty)
     cumulations2050[materials[ii]] = matcum
 
 dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
@@ -2039,14 +2162,9 @@ dfcumulations2050['bottom2'] = dfcumulations2050['bottom1']+dfcumulations2050['a
 dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['silicon']
 dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
 
-dfcumulations2050.iloc[2] = dfcumulations2050.iloc[0] 
-dfcumulations2050.iloc[0] = dfcumulations2050_Prev_A.iloc[0]
-dfcumulations2050.iloc[1] = dfcumulations2050_Prev_A.iloc[1]
-
-dfcumulations2050_Prev_A = dfcumulations2050.copy()
 
 ## Plot BARS Stuff
-ind=np.arange(3)
+ind=np.arange(2)
 width=0.35 # width of the bars.
 p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
 p1 = a1.bar(ind, dfcumulations2050['aluminium_frames'], width,
@@ -2060,29 +2178,86 @@ p4 = a1.bar(ind, dfcumulations2050['silver'], width,
 
 a1.yaxis.set_label_position("right")
 a1.yaxis.tick_right()
-a1.yaxis.set_ticklabels([]) 
+#a1.yaxis.set_ticklabels([]) 
 
-a1.set_ylabel('Cumulative End of Life Material by 2050 [Million Tonnes]')
+a1.set_ylabel('Cumulative End of Life Material and MFG Scrap \n by 2050 [Million Tonnes]')
 #a1.set_xlabel('Scenario')
 a1.set_xticks(ind, ('S1', 'S2'))
-a1.yaxis.set_ticklabels([]) 
+#a1.yaxis.set_ticklabels([]) 
 #plt.yticks(np.arange(0, 81, 10))
 #a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver'))
-a1.set_ylim([0, 28])
+#a1.set_ylim([0, 28])
 
 
 plt.sca(a1)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(2), ['Same\n Installs\n', 'Reduced\n Installs'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
-
 print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
-dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+change = dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
+
+# In[49]:
+
+
+print("Reduced Installs reduces EOL Material & MFG Scrap landfilled by {} % ".format(round((change[0] - change[1])*100/change[0],2)))
+
+
+# In[50]:
+
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (15, 8)
+keyw='VirginStock_'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
+
+
+f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [2,0.8]})
 
 ########################    
-# SUBPLOT 3
+# SUBPLOT 1
+########################
+#######################
+   
+# Loop over CASES
+name2 = 'PV_ICE_Bifacial'
+name3 = 'BifacialProjection'
+
+# SCENARIO 2 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
+            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
+            USyearly[keyw+materials[4]+'_'+name2])
+glassmat = (USyearly[keyw+materials[0]+'_'+name2])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'lightcoral', linestyle='dotted', linewidth=5, label='Same Installs: module')
+a0.plot(USyearly.index, glassmat, 'lightcoral', linewidth=5, label='Same Installs: glass')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='lightcoral', alpha=0.3,
+                 interpolate=True)
+
+# SCENARIO 3 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name3]+USyearly[keyw+materials[1]+'_'+name3]+
+            USyearly[keyw+materials[2]+'_'+name3]+USyearly[keyw+materials[3]+'_'+name3]+
+            USyearly[keyw+materials[4]+'_'+name3])
+glassmat = (USyearly[keyw+materials[0]+'_'+name3])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'gold', linestyle='dotted', linewidth=5, label='Reduced Installs: module')
+a0.plot(USyearly.index, glassmat, 'gold', linewidth=5, label='Reduced Installs: glass')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='lightcoral', alpha=0.3,
+                 interpolate=True)
+
+
+a0.legend(loc=2)
+#a0.set_title('Yearly End of Life Material by Scenario')
+a0.set_ylabel('Mass [Million Tonnes]')
+a0.set_xlim([2020, 2050])
+a0.set_xlabel('Years')
+#a0.set_ylim([0, 1.8])
+    
+########################    
+# SUBPLOT 2
 ########################
 #######################
 # Calculate    
@@ -2091,9 +2266,8 @@ cumulations2050 = {}
 for ii in range(0, len(materials)):
     matcum = []
     matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name3].loc[2050])
     empty = 0
-    matcum.append(empty)
-    matcum.append(empty)
     cumulations2050[materials[ii]] = matcum
 
 dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
@@ -2105,49 +2279,299 @@ dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['s
 dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
 
 
-dfcumulations2050.iloc[2] = dfcumulations2050.iloc[0] 
-dfcumulations2050.iloc[0] = dfcumulations2050_Prev_B.iloc[0]
-dfcumulations2050.iloc[1] = dfcumulations2050_Prev_B.iloc[1]
-
-dfcumulations2050_Prev_B = dfcumulations2050.copy()
-
-
 ## Plot BARS Stuff
-ind=np.arange(3)
+ind=np.arange(2)
 width=0.35 # width of the bars.
-p0 = a2.bar(ind, dfcumulations2050['glass'], width, color='c')
-p1 = a2.bar(ind, dfcumulations2050['aluminium_frames'], width,
+p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
+p1 = a1.bar(ind, dfcumulations2050['aluminium_frames'], width,
              bottom=dfcumulations2050['bottom1'])
-p2 = a2.bar(ind, dfcumulations2050['silicon'], width,
+p2 = a1.bar(ind, dfcumulations2050['silicon'], width,
              bottom=dfcumulations2050['bottom2'])
-p3 = a2.bar(ind, dfcumulations2050['copper'], width,
+p3 = a1.bar(ind, dfcumulations2050['copper'], width,
              bottom=dfcumulations2050['bottom3'])
-p4 = a2.bar(ind, dfcumulations2050['silver'], width,
+p4 = a1.bar(ind, dfcumulations2050['silver'], width,
              bottom=dfcumulations2050['bottom4'])
 
-a2.yaxis.set_label_position("right")
-a2.yaxis.tick_right()
-a2.set_ylabel('Cumulative End of Life Material by 2050 [Million Tonnes]')
-#a1.set_xlabel('Scenario')
-a2.set_xticks(ind, ('S1', 'S2'))
-#plt.yticks(np.arange(0, 81, 10))
-a2.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver'),
-          bbox_to_anchor=(0.6, -0.25),
-          fancybox=True, shadow=True, ncol=5)
-a2.set_ylim([0, 28])
+a1.yaxis.set_label_position("right")
+a1.yaxis.tick_right()
+#a1.yaxis.set_ticklabels([]) 
 
-plt.sca(a2)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+a1.set_ylabel('Cumulative Virgin Stock Needs [Million Tonnes]')
+#a1.set_xlabel('Scenario')
+a1.set_xticks(ind, ('S1', 'S2'))
+#a1.yaxis.set_ticklabels([]) 
+#plt.yticks(np.arange(0, 81, 10))
+#a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver'))
+#a1.set_ylim([0, 28])
+
+
+plt.sca(a1)
+plt.xticks(range(2), ['Same\n Installs\n', 'Reduced\n Installs'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
-f.tight_layout()
+print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
+change1 = dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
-fig.savefig(os.path.join(testfolder,'Fig_2x1_Yearly EoL Waste by SCenario and Cumulatives_NREL2018.png'), dpi=600)
 
+# In[51]:
+
+
+print("Reduction in Manufacturing needs for Reduced Installs of {} %".format(round((change1[0]-change1[1])*100/change1[0],2)))
+
+
+# In[52]:
+
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (15, 8)
+keyw='VirginStock_'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
+
+
+f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [2,0.8]})
+
+########################    
+# SUBPLOT 1
+########################
+#######################
+   
+# Loop over CASES
+name2 = 'Irena_EL_Bifacial'
+name3 = 'BifacialProjection'
+
+# SCENARIO 2 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
+            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
+            USyearly[keyw+materials[4]+'_'+name2])
+glassmat = (USyearly[keyw+materials[0]+'_'+name2])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'lightcoral', linestyle='dotted', linewidth=5, label='Irena Installs (no MFG losses): module')
+a0.plot(USyearly.index, glassmat, 'lightcoral', linewidth=5, label='Irena Installs (no MFG losses):: glass')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='lightcoral', alpha=0.3,
+                 interpolate=True)
+
+# SCENARIO 3 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name3]+USyearly[keyw+materials[1]+'_'+name3]+
+            USyearly[keyw+materials[2]+'_'+name3]+USyearly[keyw+materials[3]+'_'+name3]+
+            USyearly[keyw+materials[4]+'_'+name3])
+glassmat = (USyearly[keyw+materials[0]+'_'+name3])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'gold', linestyle='dotted', linewidth=5, label='Reduced Installs: module')
+a0.plot(USyearly.index, glassmat, 'gold', linewidth=5, label='Reduced Installs: glass')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='lightcoral', alpha=0.3,
+                 interpolate=True)
+
+
+a0.legend(loc=2)
+#a0.set_title('Yearly End of Life Material by Scenario')
+a0.set_ylabel('Mass [Million Tonnes]')
+a0.set_xlim([2020, 2050])
+a0.set_xlabel('Years')
+#a0.set_ylim([0, 1.8])
+    
+########################    
+# SUBPLOT 2
+########################
+#######################
+# Calculate    
+
+cumulations2050 = {}
+for ii in range(0, len(materials)):
+    matcum = []
+    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name3].loc[2050])
+    empty = 0
+    cumulations2050[materials[ii]] = matcum
+
+dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
+dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
+
+dfcumulations2050['bottom1'] = dfcumulations2050['glass']
+dfcumulations2050['bottom2'] = dfcumulations2050['bottom1']+dfcumulations2050['aluminium_frames']
+dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['silicon']
+dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
+
+
+## Plot BARS Stuff
+ind=np.arange(2)
+width=0.35 # width of the bars.
+p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
+p1 = a1.bar(ind, dfcumulations2050['aluminium_frames'], width,
+             bottom=dfcumulations2050['bottom1'])
+p2 = a1.bar(ind, dfcumulations2050['silicon'], width,
+             bottom=dfcumulations2050['bottom2'])
+p3 = a1.bar(ind, dfcumulations2050['copper'], width,
+             bottom=dfcumulations2050['bottom3'])
+p4 = a1.bar(ind, dfcumulations2050['silver'], width,
+             bottom=dfcumulations2050['bottom4'])
+
+a1.yaxis.set_label_position("right")
+a1.yaxis.tick_right()
+#a1.yaxis.set_ticklabels([]) 
+
+a1.set_ylabel('Cumulative End of Life Material by 2050 [Million Tonnes]')
+#a1.set_xlabel('Scenario')
+a1.set_xticks(ind, ('S1', 'S2'))
+#a1.yaxis.set_ticklabels([]) 
+#plt.yticks(np.arange(0, 81, 10))
+#a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver'))
+#a1.set_ylim([0, 28])
+
+
+plt.sca(a1)
+plt.xticks(range(2), ['\n Irena Installs \n(no MFG losses)) \n', 'Reduced\n Installs'], color='black', rotation=45)
+plt.tick_params(axis='y', which='minor', bottom=False)
 
 print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
-dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+change2 = dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+
+
+# In[53]:
+
+
+print("Manufacturing Loss represents {} % of Virgin Stock Needs ".format(round((change1[0]-change2[0])*100/change1[0],2)))
+
+
+# # Installed Capacity
+
+# In[ ]:
+
+
+
+
+
+# In[54]:
+
+
+filter_col_Capacity = [col for col in UScum if col.startswith('Capacity')]
+filter_col_Capacity
+
+
+# In[55]:
+
+
+UScum[filter_col_Capacity].loc[2050]/1e12
+
+
+# In[56]:
+
+
+# Sanity Check
+plt.plot(UScum['Capacity_Irena_EL_Today']/1e12, 'r', linewidth=4.0, label='Irena Early Loss')
+plt.plot(UScum['Capacity_Irena_EL_Bifacial']/1e12, 'b.', linewidth=4.0, label='Irena Regular Loss')
+print("No difference in Capacity between Today and Bifacial for Irena", sum(UScum['Capacity_Irena_EL_Today']/1e12-UScum['Capacity_Irena_EL_Bifacial']/1e12))
+
+
+# In[57]:
+
+
+UScum['new_Installed_Capacity_[MW]SameInstalls'] + p1
+
+
+# In[ ]:
+
+
+p1 = (UScum['new_Installed_Capacity_[MW]BifacialProjection']-
+UScum['new_Installed_Capacity_[MW]BifacialProjection_p2'])
+
+UScum['new_Installed_Capacity_[MW]SameInstalls_p2'] = UScum['new_Installed_Capacity_[MW]SameInstalls'] + p1
+
+
+# In[ ]:
+
+
+filter_col_newInstalls = [col for col in UScum if col.startswith('new_Installed_Capacity_[MW]')]
+UScum[filter_col_newInstalls].loc[2050]/1e6
+
+
+# In[ ]:
+
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (7.5, 8)
+keyw='Waste_'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
+
+f, (a0) = plt.subplots(1, 1, gridspec_kw={'width_ratios': [2]})
+
+plt.plot(UScum['new_Installed_Capacity_[MW]BifacialProjection']/1e6, 'k', label='Cumulative New Installs')
+plt.plot(UScum['Capacity_Irena_EL_Bifacial']/1e12, 'r', linewidth=4.0, label='Irena EL Reliability')
+#plt.plot(UScum['Capacity_Irena_RL_Bifacial']/1e12, 'g', linewidth=4.0, label='Irena RL Reliability')
+#plt.plot(UScum['Capacity_BifacialProjection_SameInstalls']/1e12, 'lightcoral', linewidth=4.0, label='PV ICE Reliability')
+#plt.plot(UScum['Capacity_BifacialProjection']/1e12, 'gold', linestyle='dashed', linewidth=4.0, label='PV ICE Reduced Installs')
+
+plt.legend()
+#plt.yscale('log')
+plt.xlim([2020, 2050])
+#plt.ylim([5e10, 1e12])
+plt.ylabel('Installed Capacity [TW]')
+
+
+# In[ ]:
+
+
+print("Nameplate Capcaity of Bifacial Installations augment by", (UScum['Capacity_BifacialProjection_SameInstalls'][2050]-UScum['Capacity_BifacialProjection'][2050])*100/UScum['Capacity_BifacialProjection_SameInstalls'][2050])
+
+
+# In[ ]:
+
+
+UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]
+
+
+# In[ ]:
+
+
+print("% loss with Irena RL ")
+((UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)-(UScum['Capacity_Irena_RL_Bifacial'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)
+
+
+# In[ ]:
+
+
+print("% loss with Irena EL ")
+((UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)-(UScum['Capacity_Irena_EL_Bifacial'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)
+
+
+# In[ ]:
+
+
+print("% loss with PV ICE, Reducing Bifacial Installs ")
+((UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)-(UScum['Capacity_BifacialProjection'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)
+
+
+# In[ ]:
+
+
+print("% loss with PV ICE, Keeping Bifacial Installs ")
+((UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)-(UScum['Capacity_BifacialProjection_SameInstalls'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
@@ -2182,7 +2606,7 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 # # WEIBULL PLOTS
 
-# In[193]:
+# In[ ]:
 
 
 firstgen = r1.scenario['Today'].data.WeibullParams.iloc[0]
@@ -2212,7 +2636,7 @@ IrenaReg = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
 
 
 
-# In[220]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2233,7 +2657,7 @@ ax.axes.yaxis.set_visible(False)
 #plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
 
 
-# In[219]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2254,7 +2678,7 @@ ax.axes.yaxis.set_visible(False)
 #plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
 
 
-# In[203]:
+# In[ ]:
 
 
 from matplotlib.pyplot import gca,show
@@ -2266,7 +2690,7 @@ from matplotlib.pyplot import gca,show
 
 
 
-# In[245]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2304,12 +2728,6 @@ gca().annotate('',xy=(38,0.5), xycoords='data',xytext =(18,0.5),textcoords = 'da
 
 
 
-# In[122]:
-
-
-
-
-
 # In[ ]:
 
 
@@ -2373,26 +2791,13 @@ gca().annotate('',xy=(38,0.5), xycoords='data',xytext =(18,0.5),textcoords = 'da
 # In[ ]:
 
 
-# Loop over CASES
-name0 = 'PV_ICE_base'
-name2 = 'PV_ICE_high'
-name3 = 'Irena_EL_high'
-name4 = 'Irena_RL_high'
 
-cumulations2050 = {}
-for ii in range(0, len(materials)):
-    matcum = []
-    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2040])
-    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2040])
-    matcum.append(UScum[keyw+materials[ii]+'_'+name3].loc[2040])
-    matcum.append(UScum[keyw+materials[ii]+'_'+name4].loc[2040])
-    
-    cumulations2050[materials[ii]] = matcum
 
-dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
-dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
-dfcumulations2050['Module'] = dfcumulations2050.sum(axis=1)
-dfcumulations2050['Module']
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
@@ -2404,412 +2809,19 @@ dfcumulations2050['Module']
 # In[ ]:
 
 
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (15, 8)
-keyw='Waste_'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
 
-
-f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
-
-########################    
-# SUBPLOT 1
-########################
-#######################
-   
-# Loop over CASES
-name2 = 'PV_ICE_high'
-name0 = 'PV_ICE_base'
-
-
-# SCENARIO 1 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
-            USyearly[keyw+materials[2]+'_'+name0]+USyearly[keyw+materials[3]+'_'+name0]+
-            USyearly[keyw+materials[4]+'_'+name0])
-glassmat = (USyearly[keyw+materials[0]+'_'+name0])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(USyearly.index, modulemat, 'k.', linewidth=5, label='S1: '+name0+' module mass')
-a0.plot(USyearly.index, glassmat, 'k', linewidth=5, label='S1: '+name0+' glass mass only')
-a0.fill_between(USyearly.index, glassmat, modulemat, color='k', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 2 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
-            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
-            USyearly[keyw+materials[4]+'_'+name2])
-glassmat = (USyearly[keyw+materials[0]+'_'+name2])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(USyearly.index, modulemat, 'c.', linewidth=5, label='S2: '+name2+' module mass')
-a0.plot(USyearly.index, glassmat, 'c', linewidth=5, label='S2: '+name2+' glass mass only')
-a0.fill_between(USyearly.index, glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
-a0.legend()
-a0.set_title('Yearly Manufacturing Scrap and EoL Material by Scenario')
-a0.set_ylabel('Mass [Million Tonnes]')
-a0.set_xlim([2020, 2050])
-a0.set_xlabel('Years')
-    
-    
-########################    
-# SUBPLOT 2
-########################
-#######################
-# Calculate    
-
-cumulations2050 = {}
-for ii in range(0, len(materials)):
-    matcum = []
-    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
-    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
-    cumulations2050[materials[ii]] = matcum
-
-dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
-dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
-
-dfcumulations2050['bottom1'] = dfcumulations2050['glass']
-dfcumulations2050['bottom2'] = dfcumulations2050['bottom1']+dfcumulations2050['aluminium_frames']
-dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['silicon']
-dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
-
-
-## Plot BARS Stuff
-ind=np.arange(2)
-width=0.35 # width of the bars.
-p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
-p1 = a1.bar(ind, dfcumulations2050['aluminium_frames'], width,
-             bottom=dfcumulations2050['bottom1'])
-p2 = a1.bar(ind, dfcumulations2050['silicon'], width,
-             bottom=dfcumulations2050['bottom2'])
-p3 = a1.bar(ind, dfcumulations2050['copper'], width,
-             bottom=dfcumulations2050['bottom3'])
-p4 = a1.bar(ind, dfcumulations2050['silver'], width,
-             bottom=dfcumulations2050['bottom4'])
-
-a1.yaxis.set_label_position("right")
-a1.yaxis.tick_right()
-a1.set_ylabel('Cumulative Manufacturing Scrap and EoL Material \n by 2050 [Million Tonnes]')
-a1.set_xlabel('Scenario')
-a1.set_xticks(ind, ('S1', 'S2'))
-#plt.yticks(np.arange(0, 81, 10))
-a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver'))
-
-f.tight_layout()
-
-fig.savefig(os.path.join(testfolder,'Fig_2x1_Yearly MFG and EOL Material by Scenario and Cumulatives_NREL2018.png'), dpi=600)
-
-
-print("Cumulative Waste Scrap and EoL 2050 Million Tones by Scenario")
-dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
 # In[ ]:
 
 
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (15, 8)
-keyw='Waste_MFG_'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
 
-
-f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
-
-########################    
-# SUBPLOT 1
-########################
-#######################
-   
-# Loop over CASES
-name2 = 'PV_ICE_high'
-name0 = 'PV_ICE_base'
-
-
-# SCENARIO 1 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
-            USyearly[keyw+materials[2]+'_'+name0]+USyearly[keyw+materials[3]+'_'+name0]+
-            USyearly[keyw+materials[4]+'_'+name0])
-glassmat = (USyearly[keyw+materials[0]+'_'+name0])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(USyearly.index, modulemat, 'k.', linewidth=5, label='S1: '+name0+' module mass')
-a0.plot(USyearly.index, glassmat, 'k', linewidth=5, label='S1: '+name0+' glass mass only')
-a0.fill_between(USyearly.index, glassmat, modulemat, color='k', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 2 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
-            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
-            USyearly[keyw+materials[4]+'_'+name2])
-glassmat = (USyearly[keyw+materials[0]+'_'+name2])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-a0.plot(USyearly.index, modulemat, 'c.', linewidth=5, label='S2: '+name2+' module mass')
-a0.plot(USyearly.index, glassmat, 'c', linewidth=5, label='S2: '+name2+' glass mass only')
-a0.fill_between(USyearly.index, glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
-a0.legend()
-a0.set_title('Yearly Manufacturing Scrap by Scenario')
-a0.set_ylabel('Mass [Million Tonnes]')
-a0.set_xlim([2020, 2050])
-a0.set_xlabel('Years')
-    
-    
-########################    
-# SUBPLOT 2
-########################
-#######################
-# Calculate    
-
-cumulations2050 = {}
-for ii in range(0, len(materials)):
-    matcum = []
-    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
-    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
-    cumulations2050[materials[ii]] = matcum
-
-dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
-dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
-
-dfcumulations2050['bottom1'] = dfcumulations2050['glass']
-dfcumulations2050['bottom2'] = dfcumulations2050['bottom1']+dfcumulations2050['aluminium_frames']
-dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['silicon']
-dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
-
-
-## Plot BARS Stuff
-ind=np.arange(2)
-width=0.35 # width of the bars.
-p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
-p1 = a1.bar(ind, dfcumulations2050['aluminium_frames'], width,
-             bottom=dfcumulations2050['bottom1'])
-p2 = a1.bar(ind, dfcumulations2050['silicon'], width,
-             bottom=dfcumulations2050['bottom2'])
-p3 = a1.bar(ind, dfcumulations2050['copper'], width,
-             bottom=dfcumulations2050['bottom3'])
-p4 = a1.bar(ind, dfcumulations2050['silver'], width,
-             bottom=dfcumulations2050['bottom4'])
-
-a1.yaxis.set_label_position("right")
-a1.yaxis.tick_right()
-a1.set_ylabel('Cumulative Manufacturing Scrap by 2050 [Million Tonnes]')
-a1.set_xlabel('Scenario')
-a1.set_xticks(ind, ('S1', 'S2'))
-#plt.yticks(np.arange(0, 81, 10))
-a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver'))
-
-f.tight_layout()
-
-fig.savefig(os.path.join(testfolder,'Fig_2x1_YYearly MFG Waste by Scenario and Cumulatives_NREL2018.png'), dpi=600)
-
-
-print("Cumulative MFG Scrap 2050 Million Tones by Scenario")
-dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
 # In[ ]:
 
 
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (15, 8)
-keyw='VirginStock_'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
 
-fig, axs = plt.subplots(3,2, figsize=(18, 10), facecolor='w', edgecolor='k')
-fig.subplots_adjust(hspace = .5, wspace=.2)
-axs = axs.ravel()
-
-########################    
-# SUBPLOT 1
-########################
-#######################
-   
-# Loop over CASES
-name2 = 'PV_ICE_high'
-name0 = 'PV_ICE_base'
-name3 = 'Irena_EL_high'
-name4 = 'Irena_RL_high'
-
-
-# SCENARIO 1 ***************
-
-modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
-            USyearly[keyw+materials[2]+'_'+name0]+USyearly[keyw+materials[3]+'_'+name0]+
-            USyearly[keyw+materials[4]+'_'+name0])
-glassmat = (USyearly[keyw+materials[0]+'_'+name0])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[0].plot(USyearly.index, modulemat, 'k.', linewidth=5, label='S1: '+name0+' module mass')
-axs[0].plot(USyearly.index, glassmat, 'k', linewidth=5, label='S1: '+name0+' glass mass only')
-axs[0].fill_between(USyearly.index, glassmat, modulemat, color='k', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 2 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
-            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
-            USyearly[keyw+materials[4]+'_'+name2])
-glassmat = (USyearly[keyw+materials[0]+'_'+name2])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[0].plot(USyearly.index, modulemat, 'c.', linewidth=5, label='S2: '+name2+' module mass')
-axs[0].plot(USyearly.index, glassmat, 'c', linewidth=5, label='S2: '+name2+' glass mass only')
-axs[0].fill_between(USyearly.index, glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
-#axs[0].legend()
-axs[0].set_title('Yearly Virgin Material Needs by Scenario')
-axs[0].set_ylabel('Mass [Million Tonnes]')
-axs[0].set_xlim([2020, 2050])
-axs[0].set_xlabel('Years')
-    
-# SCENARIO 3 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name3]+USyearly[keyw+materials[1]+'_'+name3]+
-            USyearly[keyw+materials[2]+'_'+name3]+USyearly[keyw+materials[3]+'_'+name3]+
-            USyearly[keyw+materials[4]+'_'+name3])
-glassmat = (USyearly[keyw+materials[0]+'_'+name3])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[1].plot(USyearly.index, modulemat, 'g.', linewidth=5, label='S2: '+name3+' module mass')
-axs[1].plot(USyearly.index, glassmat, 'g', linewidth=5, label='S2: '+name3+' glass mass only')
-axs[1].fill_between(USyearly.index, glassmat, modulemat, color='g', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 4 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name4]+USyearly[keyw+materials[1]+'_'+name4]+
-            USyearly[keyw+materials[2]+'_'+name4]+USyearly[keyw+materials[3]+'_'+name4]+
-            USyearly[keyw+materials[4]+'_'+name4])
-glassmat = (USyearly[keyw+materials[0]+'_'+name4])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[1].plot(USyearly.index, modulemat, 'b.', linewidth=5, label='S4: '+name4+' module mass')
-axs[1].plot(USyearly.index, glassmat, 'b', linewidth=5, label='S4: '+name4+' glass mass only')
-axs[1].fill_between(USyearly.index, glassmat, modulemat, color='b', alpha=0.3,
-                 interpolate=True)
-
-#axs[1].legend()
-axs[1].set_title('Yearly Virgin Material Needs by Scenario')
-axs[1].set_ylabel('Mass [Million Tonnes]')
-axs[1].set_xlim([2020, 2050])
-axs[1].set_xlabel('Years')
-
-#### ROW 2
-keyw='Waste_EOL_'
-
-
-# SCENARIO 1 ***************
-
-modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
-            USyearly[keyw+materials[2]+'_'+name0]+USyearly[keyw+materials[3]+'_'+name0]+
-            USyearly[keyw+materials[4]+'_'+name0])
-glassmat = (USyearly[keyw+materials[0]+'_'+name0])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[2].plot(USyearly.index, modulemat, 'k.', linewidth=5, label='S1: '+name0+' module mass')
-axs[2].plot(USyearly.index, glassmat, 'k', linewidth=5, label='S1: '+name0+' glass mass only')
-axs[2].fill_between(USyearly.index, glassmat, modulemat, color='k', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 2 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
-            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
-            USyearly[keyw+materials[4]+'_'+name2])
-glassmat = (USyearly[keyw+materials[0]+'_'+name2])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[2].plot(USyearly.index, modulemat, 'c.', linewidth=5, label='S2: '+name2+' module mass')
-axs[2].plot(USyearly.index, glassmat, 'c', linewidth=5, label='S2: '+name2+' glass mass only')
-axs[2].fill_between(USyearly.index, glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
-#axs[0].legend()
-axs[2].set_title('Yearly EoL Material by Scenario')
-axs[2].set_ylabel('Mass [Million Tonnes]')
-axs[2].set_xlim([2020, 2050])
-axs[2].set_xlabel('Years')
-    
-# SCENARIO 3 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name3]+USyearly[keyw+materials[1]+'_'+name3]+
-            USyearly[keyw+materials[2]+'_'+name3]+USyearly[keyw+materials[3]+'_'+name3]+
-            USyearly[keyw+materials[4]+'_'+name3])
-glassmat = (USyearly[keyw+materials[0]+'_'+name3])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[3].plot(USyearly.index, modulemat, 'g.', linewidth=5, label='S2: '+name3+' module mass')
-axs[3].plot(USyearly.index, glassmat, 'g', linewidth=5, label='S2: '+name3+' glass mass only')
-axs[3].fill_between(USyearly.index, glassmat, modulemat, color='g', alpha=0.3,
-                 interpolate=True)
-
-
-
-# SCENARIO 4 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name4]+USyearly[keyw+materials[1]+'_'+name4]+
-            USyearly[keyw+materials[2]+'_'+name4]+USyearly[keyw+materials[3]+'_'+name4]+
-            USyearly[keyw+materials[4]+'_'+name4])
-glassmat = (USyearly[keyw+materials[0]+'_'+name4])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[3].plot(USyearly.index, modulemat, 'b.', linewidth=5, label='S4: '+name4+' module mass')
-axs[3].plot(USyearly.index, glassmat, 'b', linewidth=5, label='S4: '+name4+' glass mass only')
-axs[3].fill_between(USyearly.index, glassmat, modulemat, color='b', alpha=0.3,
-                 interpolate=True)
-
-#axs[1].legend()
-axs[3].set_title('Yearly EoL Material by Scenario')
-axs[3].set_ylabel('Mass [Million Tonnes]')
-axs[3].set_xlim([2020, 2050])
-axs[3].set_xlabel('Years')
-
-
-
-#### ROW 3
-keyw='Waste_MFG_'
-
-
-# SCENARIO 1 ***************
-
-modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
-            USyearly[keyw+materials[2]+'_'+name0]+USyearly[keyw+materials[3]+'_'+name0]+
-            USyearly[keyw+materials[4]+'_'+name0])
-glassmat = (USyearly[keyw+materials[0]+'_'+name0])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[4].plot(USyearly.index, modulemat, 'k.', linewidth=5, label='S1: '+name0+' module mass')
-axs[4].plot(USyearly.index, glassmat, 'k', linewidth=5, label='S1: '+name0+' glass mass only')
-axs[4].fill_between(USyearly.index, glassmat, modulemat, color='k', alpha=0.3,
-                 interpolate=True)
-
-# SCENARIO 2 ***************
-modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
-            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
-            USyearly[keyw+materials[4]+'_'+name2])
-glassmat = (USyearly[keyw+materials[0]+'_'+name2])
-modulemat = modulemat/1000000
-glassmat = glassmat/1000000 
-axs[4].plot(USyearly.index, modulemat, 'c.', linewidth=5, label='S2: '+name2+' module mass')
-axs[4].plot(USyearly.index, glassmat, 'c', linewidth=5, label='S2: '+name2+' glass mass only')
-axs[4].fill_between(USyearly.index, glassmat, modulemat, color='c', alpha=0.3,
-                 interpolate=True)
-
-#axs[0].legend()
-axs[4].set_title('Yearly Manufacturing Waste by Scenario')
-axs[4].set_ylabel('Mass [Million Tonnes]')
-axs[4].set_xlim([2020, 2050])
-axs[4].set_xlabel('Years')
-    
-
-
-########################    
-# SUBPLOT 2
-########################
-#######################
-# Calculate    
-
-fig.savefig(os.path.join(testfolder,'Fig_2x1_Yearly Virgin Material Needs by Scenario and Cumulatives_NREL2018.png'), dpi=600)
-
-
-print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 
 
 # ### TABLES

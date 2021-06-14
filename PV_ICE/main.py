@@ -315,7 +315,8 @@ class Simulation:
         
 
 
-    def calculateMassFlow(self, weibullInputParams = None, debugflag=False):
+    def calculateMassFlow(self, weibullInputParams = None, 
+                          bifacialityfactors = None, reducecapacity = True, debugflag=False):
         '''
         Function takes as input a baseline dataframe already imported, 
         with the right number of columns and content.
@@ -329,6 +330,8 @@ class Simulation:
             Irena 2016 values beta = 30. If weibullInputParams = None,
             alfa and beta are calcualted from the t50 and t90 columns on the
             module baseline.
+        bifacialityfactors : str
+            File with bifacialtiy factors for each year under consideration
         
         Returns
         --------
@@ -346,15 +349,23 @@ class Simulation:
             df = self.scenario[scen].data
 
             # Constant
-            irradiance_stc = 1000 # W/m^2
-        
+            if bifacialityfactors is not None:   
+                bf = pd.read_csv(bifacialityfactors)
+                df['irradiance_stc'] = 1000.0 + bf['bifi']*100.0 # W/m^2 (min. Bifacial STC Increase)
+            else:
+                df['irradiance_stc'] = 1000.0 # W/m^2
+
             # Renaming and re-scaling
             df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
             df['t50'] = df['mod_reliability_t50']
             df['t90'] = df['mod_reliability_t90']
             
             # Calculating Area and Mass
-            df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/irradiance_stc # m^2                
+            if reducecapacity:
+                df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/df['irradiance_stc'] # m^2                
+            else:
+                df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/1000.0 # m^2
+                
             df['Area'] = df['Area'].fillna(0) # Chagne na's to 0s.
 
             # Calculating Wast by Generation by Year, and Cumulative Waste by Year.
@@ -416,7 +427,7 @@ class Simulation:
                             disposed_projectlifetime = activearea_temp-activearea
                         areadisposed_projectlifetime.append(disposed_projectlifetime)
                         activeareacount.append(activearea)
-                        areapowergen.append(activearea*row['mod_eff']*0.01*irradiance_stc*(1-row['mod_degradation']*0.01)**active)                            
+                        areapowergen.append(activearea*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
                 
                 try:
                     # becuase the clip starts with 0 for the installation year, identifying installation year
@@ -424,7 +435,7 @@ class Simulation:
                     fixinitialareacount = next((i for i, e in enumerate(x) if e), None) - 1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
                     areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
-                                         row['Area'] * row['mod_eff'] *0.01 * irradiance_stc)
+                                         row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])
                 except:
                     # Last value does not have a xclip value of nonzero so it goes
                     # to except. But it also means the loop finished for the calculations
@@ -432,7 +443,7 @@ class Simulation:
                     fixinitialareacount = len(cdf)-1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
                     areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
-                                         row['Area'] * row['mod_eff'] *0.01 * irradiance_stc)                   
+                                         row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])                   
                     print("Finished Area+Power Generation Calculations")
                     
             
