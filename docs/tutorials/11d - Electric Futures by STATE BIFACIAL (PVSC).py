@@ -217,7 +217,7 @@ MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper']
 MATERIALBASELINE_GLASS_TODAY = r'..\..\baselines\baseline_material_glass_hold2020.csv'
 MATERIALBASELINE_ALFrames_TODAY = r'..\..\baselines\baseline_material_aluminium_frames_hold2020.csv'
 MATERIALBASELINE_GLASS_BIFACIALPROJECTION = r'..\..\baselines\baseline_material_glass_bifacialTrend.csv'
-MATERIALBASELINE_ALFrames_BIFACIALPROJEcTION = r'..\..\baselines\baseline_material_aluminium_frames_hold2020.csv'
+MATERIALBASELINE_ALFrames_BIFACIALPROJECTION = r'..\..\baselines\baseline_material_aluminium_frames_bifacialTrend.csv'
 
 
 # TODAY
@@ -252,7 +252,7 @@ for jj in range (0, len(STATEs)):
     r2.scenario[scen].material['glass'].materialdata = r2.scenario[scen].material['glass'].materialdata.iloc[23:].reset_index(drop=True)
     
     r2.scenario[scen].material['glass'].materialdata = r2.scenario[scen].material['glass'].materialdata
-    r2.scenario[scen].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_BIFACIALPROJEcTION)
+    r2.scenario[scen].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_BIFACIALPROJECTION)
     r2.scenario[scen].material['aluminium_frames'].materialdata = r2.scenario[scen].material['aluminium_frames'].materialdata.iloc[23:].reset_index(drop=True)
     
     for mat in range (2, len(MATERIALS)):
@@ -372,7 +372,7 @@ scenariolist.head(5)
 
 csvtitle = 'OPEN EI 2 - STATE - PVSC 2021 PV ICE Today and Bifacial Projection Selected Columns.csv'
 colNames = scenariolist.columns[scenariolist.columns.str.contains('CumulativeEOLMaterial')] 
-
+print(colNames)
 scenariolist['@value|CumulativeEOLMaterial|Module#MetricTonnes'] = scenariolist[colNames].sum(axis=1)
 foo = scenariolist[['@states', '@scenario|Module Composition Scenario', '@timeseries|Year', 
                     '@value|NewInstalledCapacity|PV#MW', '@value|CumulativeNewInstalledCapacity|PV#MW', 
@@ -380,4 +380,10 @@ foo = scenariolist[['@states', '@scenario|Module Composition Scenario', '@timese
                    '@value|CumulativeEOLMaterial|Module#MetricTonnes']]
 foo.to_csv(csvtitle, index=False)
 foo.head(5)
+
+
+# In[ ]:
+
+
+
 
