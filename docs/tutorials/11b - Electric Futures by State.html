@@ -13209,7 +13209,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;0+untagged.365.g187f205.dirty&#39;</pre>
+<pre>&#39;0+untagged.379.g2e74b7a.dirty&#39;</pre>
 </div>
 
 </div>
@@ -13401,7 +13401,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">MODULEBASELINE</span><span class="p">)</span>
@@ -13419,7 +13419,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[7]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
@@ -13455,26 +13455,26 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th rowspan="5" valign="top">Rooftop_MW</th>
+      <th rowspan="5" valign="top">PV</th>
       <th rowspan="5" valign="top">AL</th>
       <th>2018</th>
-      <td>4.652727</td>
+      <td>205.018300</td>
     </tr>
     <tr>
       <th>2019</th>
-      <td>7.016364</td>
+      <td>2.210001</td>
     </tr>
     <tr>
       <th>2020</th>
-      <td>2.363637</td>
+      <td>2.210001</td>
     </tr>
     <tr>
       <th>2021</th>
-      <td>9.192727</td>
+      <td>4.017780</td>
     </tr>
     <tr>
       <th>2022</th>
-      <td>2.176363</td>
+      <td>4.017780</td>
     </tr>
   </tbody>
 </table>
@@ -13489,7 +13489,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
@@ -13504,7 +13504,7 @@ div#notebook {
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="c1"># 0.85 marketshares[&#39;Si&#39;] already included</span>
     <span class="c1"># Add other columns</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     
@@ -13532,7 +13532,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">MODULEBASELINE_High</span><span class="p">)</span>
@@ -13550,7 +13550,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[10]:</div>
 
 
 
@@ -13586,26 +13586,26 @@ div#notebook {
   </thead>
   <tbody>
     <tr>
-      <th rowspan="5" valign="top">Rooftop_MW</th>
+      <th rowspan="5" valign="top">PV</th>
       <th rowspan="5" valign="top">AL</th>
       <th>2018</th>
-      <td>5.432727</td>
+      <td>174.875599</td>
     </tr>
     <tr>
       <th>2019</th>
-      <td>9.000909</td>
+      <td>397.278611</td>
     </tr>
     <tr>
       <th>2020</th>
-      <td>3.568182</td>
+      <td>397.278611</td>
     </tr>
     <tr>
       <th>2021</th>
-      <td>12.890000</td>
+      <td>990.743340</td>
     </tr>
     <tr>
       <th>2022</th>
-      <td>3.889091</td>
+      <td>990.743340</td>
     </tr>
   </tbody>
 </table>
@@ -13620,7 +13620,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
@@ -13635,7 +13635,7 @@ div#notebook {
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
     <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="c1"># 0.85 marketshares[&#39;Si&#39;] already included</span>
     <span class="c1"># Add other columns</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     
@@ -13661,6 +13661,39 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ict</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;_io.TextIOWrapper name=&#39;C:\\Users\\sayala\\Documents\\GitHub\\CircularEconomy-MassFlowCalculator\\PV_ICE\\TEMP\\ElectricFutures\\baselines\\LowREHighElec_PV_WY.csv&#39; mode=&#39;w&#39; encoding=&#39;cp1252&#39;&gt;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13670,7 +13703,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Sims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">,</span><span class="s1">&#39;LowREHighElec&#39;</span><span class="p">]</span>
@@ -13683,7 +13716,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">baselineinstalls</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;baselines&#39;</span><span class="p">)</span>
@@ -13697,7 +13730,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">onlyfiles</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">Sims</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
@@ -13711,7 +13744,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">STATEs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sim1</span><span class="p">]</span>
@@ -13739,7 +13772,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for ii in range (0, 1): #len(scenarios):</span>

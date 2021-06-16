@@ -61,7 +61,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[7]:
+# In[8]:
 
 
 df = pd.read_csv(MODULEBASELINE)
@@ -69,7 +69,7 @@ df.set_index(['Type','State','year'], inplace=True)
 df.head()
 
 
-# In[8]:
+# In[9]:
 
 
 for ii in range (len(df.unstack(level=2))):   
@@ -84,7 +84,7 @@ for ii in range (len(df.unstack(level=2))):
     A = pd.DataFrame(A)
     A.index=pd.PeriodIndex(A.index, freq='A')
     A = pd.DataFrame(A)
-    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 0.85 # marketshares['Si']
+    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] # 0.85 marketshares['Si'] already included
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
     
@@ -102,7 +102,7 @@ for ii in range (len(df.unstack(level=2))):
         A.to_csv(ict, header=False)
 
 
-# In[11]:
+# In[10]:
 
 
 df = pd.read_csv(MODULEBASELINE_High)
@@ -110,7 +110,7 @@ df.set_index(['Type','State','year'], inplace=True)
 df.head()
 
 
-# In[12]:
+# In[18]:
 
 
 for ii in range (len(df.unstack(level=2))):   
@@ -125,7 +125,7 @@ for ii in range (len(df.unstack(level=2))):
     A = pd.DataFrame(A)
     A.index=pd.PeriodIndex(A.index, freq='A')
     A = pd.DataFrame(A)
-    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] * 0.85 # marketshares['Si']
+    A['new_Installed_Capacity_[MW]'] = A['new_Installed_Capacity_[MW]'] # 0.85 marketshares['Si'] already included
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
     
@@ -143,29 +143,35 @@ for ii in range (len(df.unstack(level=2))):
         A.to_csv(ict, header=False)
 
 
+# In[12]:
+
+
+ict
+
+
 # # DO SIMULATIONS
 
-# In[14]:
+# In[13]:
 
 
 Sims=['base','LowREHighElec']
 
 
-# In[16]:
+# In[14]:
 
 
 baselineinstalls = os.path.join(testfolder, 'baselines')
 onlyfiles = [f for f in os.listdir(baselineinstalls)]
 
 
-# In[17]:
+# In[15]:
 
 
 sim1 = [f for f in onlyfiles if f.startswith(Sims[0])]
 sim2 = [f for f in onlyfiles if f.startswith(Sims[1])]
 
 
-# In[34]:
+# In[16]:
 
 
 STATEs = [i.split('_', 4)[3] for i in sim1]
@@ -179,7 +185,7 @@ Type = [i.split('_', 4)[1] for i in sim1]
 
 
 
-# In[40]:
+# In[17]:
 
 
 #for ii in range (0, 1): #len(scenarios):

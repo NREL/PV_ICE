@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>11b - Electric Futures by STATE BIFACIAL (PVSC)</title>
+<title>11d - Electric Futures by STATE BIFACIAL (PVSC)</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13115,13 +13115,15 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
-<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span> <span class="o">/</span> <span class="s1">&#39;ElectricFutures&#39;</span><span class="p">)</span>
+<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span> <span class="o">/</span> <span class="s1">&#39;PVSC&#39;</span><span class="p">)</span>
+<span class="c1">#testfolder = str(Path().resolve().parent.parent / &#39;PV_ICE&#39; / &#39;TEMP&#39; / &#39;ElectricFutures&#39;)</span>
+
 
 <span class="c1"># Another option using relative address; for some operative systems you might need &#39;/&#39; instead of &#39;\&#39;</span>
 <span class="c1"># testfolder = os.path.abspath(r&#39;..\..\PV_DEMICE\TEMP&#39;)  </span>
@@ -13143,7 +13145,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\ElectricFutures
+<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\PVSC
 </pre>
 </div>
 </div>
@@ -13154,14 +13156,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">MATERIALS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;copper&#39;</span><span class="p">,</span><span class="s1">&#39;aluminium_frames&#39;</span><span class="p">]</span>
 <span class="n">MATERIAL</span> <span class="o">=</span> <span class="n">MATERIALS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="n">MODULEBASELINE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\baselines\LiteratureProjections\EF-CapacityByState-basecase.csv&#39;</span>
-<span class="n">MODULEBASELINE_High</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\baselines\LiteratureProjections\EF-CapacityByState-LowREHighElec.csv&#39;</span>
 </pre></div>
 
     </div>
@@ -13171,7 +13172,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
@@ -13187,7 +13188,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">PV_ICE</span><span class="o">.</span><span class="n">__version__</span>
@@ -13203,13 +13204,13 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[4]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;0+untagged.379.g2e74b7a.dirty&#39;</pre>
+<pre>&#39;0+untagged.380.g7b32fd5.dirty&#39;</pre>
 </div>
 
 </div>
@@ -13227,7 +13228,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Simulation1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
@@ -13253,14 +13254,14 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\ElectricFutures
+<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\PVSC
 </pre>
 </div>
 </div>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[5]:</div>
+    <div class="prompt output_prompt">Out[9]:</div>
 
 
 
@@ -13387,7 +13388,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
@@ -13401,7 +13402,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">MODULEBASELINE</span><span class="p">)</span>
@@ -13413,83 +13414,10 @@ div#notebook {
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th></th>
-      <th>New Installs</th>
-    </tr>
-    <tr>
-      <th>Type</th>
-      <th>State</th>
-      <th>year</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="5" valign="top">PV</th>
-      <th rowspan="5" valign="top">AL</th>
-      <th>2018</th>
-      <td>205.018300</td>
-    </tr>
-    <tr>
-      <th>2019</th>
-      <td>2.210001</td>
-    </tr>
-    <tr>
-      <th>2020</th>
-      <td>2.210001</td>
-    </tr>
-    <tr>
-      <th>2021</th>
-      <td>4.017780</td>
-    </tr>
-    <tr>
-      <th>2022</th>
-      <td>4.017780</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
@@ -13532,7 +13460,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">MODULEBASELINE_High</span><span class="p">)</span>
@@ -13544,83 +13472,10 @@ div#notebook {
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[9]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th></th>
-      <th>New Installs</th>
-    </tr>
-    <tr>
-      <th>Type</th>
-      <th>State</th>
-      <th>year</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="5" valign="top">PV</th>
-      <th rowspan="5" valign="top">AL</th>
-      <th>2018</th>
-      <td>174.875599</td>
-    </tr>
-    <tr>
-      <th>2019</th>
-      <td>397.278611</td>
-    </tr>
-    <tr>
-      <th>2020</th>
-      <td>397.278611</td>
-    </tr>
-    <tr>
-      <th>2021</th>
-      <td>990.743340</td>
-    </tr>
-    <tr>
-      <th>2022</th>
-      <td>990.743340</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
@@ -13664,33 +13519,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ict</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[11]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&lt;_io.TextIOWrapper name=&#39;C:\\Users\\sayala\\Documents\\GitHub\\CircularEconomy-MassFlowCalculator\\PV_ICE\\TEMP\\ElectricFutures\\baselines\\LowREHighElec_PV_WY.csv&#39; mode=&#39;w&#39; encoding=&#39;cp1252&#39;&gt;</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -13704,7 +13539,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Sims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">,</span><span class="s1">&#39;LowREHighElec&#39;</span><span class="p">]</span>
@@ -13717,7 +13552,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">baselineinstalls</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;baselines&#39;</span><span class="p">)</span>
@@ -13744,7 +13579,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">onlyfiles</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">Sims</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
@@ -13758,7 +13593,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">STATEs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sim1</span><span class="p">]</span>
@@ -13824,7 +13659,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">testfolder</span>
@@ -13834,30 +13669,10 @@ div#notebook {
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[30]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;C:\\Users\\sayala\\Documents\\GitHub\\CircularEconomy-MassFlowCalculator\\PV_ICE\\TEMP\\ElectricFutures&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for ii in range (0, 1): #len(scenarios):</span>
@@ -13903,29 +13718,10 @@ div#notebook {
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\ElectricFutures
-path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\ElectricFutures
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
@@ -13933,791 +13729,6 @@ path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_IC
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Working on Scenario:  AL
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  AR
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  AZ
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  CA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  CO
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  CT
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  DE
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  FL
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  GA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  IA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  ID
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  IL
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  IN
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  KS
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  KY
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  LA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MD
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  ME
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MI
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MN
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MO
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MS
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MT
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NC
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  ND
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NE
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NH
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NJ
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NM
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NV
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NY
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  OH
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  OK
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  OR
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  PA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  RI
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  SC
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  SD
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  TN
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  TX
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  UT
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  VA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  VT
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  WA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  WI
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  WV
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  WY
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  AL
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  AR
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  AZ
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  CA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  CO
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  CT
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  DE
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  FL
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  GA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  IA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  ID
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  IL
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  IN
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  KS
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  KY
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  LA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MD
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  ME
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MI
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MN
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MO
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MS
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  MT
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NC
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  ND
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NE
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NH
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NJ
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NM
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NV
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  NY
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  OH
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  OK
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  OR
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  PA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  RI
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  SC
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  SD
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  TN
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  TX
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  UT
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  VA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  VT
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  WA
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  WI
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  WV
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-Working on Scenario:  WY
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminum
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -14731,7 +13742,7 @@ Finished Area+Power Generation Calculations
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">kk</span><span class="o">=</span><span class="mi">0</span>
@@ -14743,63 +13754,23 @@ Finished Area+Power Generation Calculations
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[37]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;Today&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">name</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[42]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;Today&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># WORK ON THIS FOIR OPENEI</span>
@@ -14877,28 +13848,10 @@ Finished Area+Power Generation Calculations
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Done
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">scenariolist</span>
@@ -14908,1597 +13861,10 @@ Finished Area+Power Generation Calculations
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[58]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>@states</th>
-      <th>@scenario|Module Composition Scenario</th>
-      <th>@timeseries|Year</th>
-      <th>@value|VirginMaterialDemand|Glass#MetricTonnes</th>
-      <th>@value|VirginMaterialDemand|Silicon#MetricTonnes</th>
-      <th>@value|VirginMaterialDemand|Silver#MetricTonnes</th>
-      <th>@value|VirginMaterialDemand|Copper#MetricTonnes</th>
-      <th>@value|VirginMaterialDemand|Aluminum#MetricTonnes</th>
-      <th>@value|CumulativeVirginMaterialDemand|Glass#MetricTonnes</th>
-      <th>@value|CumulativeVirginMaterialDemand|Silicon#MetricTonnes</th>
-      <th>...</th>
-      <th>@value|ManufacturingScrapAndEOLMaterial|Copper#MetricTonnes</th>
-      <th>@value|ManufacturingScrapAndEOLMaterial|Aluminum#MetricTonnes</th>
-      <th>@value|CumulativeManufacturingScrapAndEOLMaterial|Glass#MetricTonnes</th>
-      <th>@value|CumulativeManufacturingScrapAndEOLMaterial|Silicon#MetricTonnes</th>
-      <th>@value|CumulativeManufacturingScrapAndEOLMaterial|Silver#MetricTonnes</th>
-      <th>@value|CumulativeManufacturingScrapAndEOLMaterial|Copper#MetricTonnes</th>
-      <th>@value|CumulativeManufacturingScrapAndEOLMaterial|Aluminum#MetricTonnes</th>
-      <th>@value|NewInstalledCapacity|PV#MW</th>
-      <th>@value|CumulativeNewInstalledCapacity|PV#MW</th>
-      <th>@value|InstalledCapacity|PV#MW</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2018</td>
-      <td>9864.362332</td>
-      <td>734.473996</td>
-      <td>6.129449</td>
-      <td>9.417542</td>
-      <td>1535.850331</td>
-      <td>9864.362332</td>
-      <td>734.473996</td>
-      <td>...</td>
-      <td>1.111270</td>
-      <td>18.640630</td>
-      <td>338.936866</td>
-      <td>276.687066</td>
-      <td>1.323961</td>
-      <td>1.111270</td>
-      <td>18.640630</td>
-      <td>205.018300</td>
-      <td>205.018300</td>
-      <td>206.132530</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2019</td>
-      <td>104.826957</td>
-      <td>7.259433</td>
-      <td>0.060889</td>
-      <td>0.107811</td>
-      <td>15.655958</td>
-      <td>9969.189288</td>
-      <td>741.733430</td>
-      <td>...</td>
-      <td>0.012722</td>
-      <td>0.190017</td>
-      <td>342.415305</td>
-      <td>279.317691</td>
-      <td>1.337113</td>
-      <td>1.123992</td>
-      <td>18.830647</td>
-      <td>2.210001</td>
-      <td>207.228300</td>
-      <td>207.239811</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2020</td>
-      <td>103.414636</td>
-      <td>6.342070</td>
-      <td>0.050037</td>
-      <td>0.101764</td>
-      <td>14.842271</td>
-      <td>10072.603925</td>
-      <td>748.075500</td>
-      <td>...</td>
-      <td>0.012008</td>
-      <td>0.180145</td>
-      <td>345.725185</td>
-      <td>281.512542</td>
-      <td>1.347921</td>
-      <td>1.136000</td>
-      <td>19.010792</td>
-      <td>2.210001</td>
-      <td>209.438301</td>
-      <td>208.834158</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2021</td>
-      <td>181.668781</td>
-      <td>10.891912</td>
-      <td>0.081949</td>
-      <td>0.180297</td>
-      <td>26.153816</td>
-      <td>10254.272706</td>
-      <td>758.967411</td>
-      <td>...</td>
-      <td>0.021275</td>
-      <td>0.317515</td>
-      <td>351.219410</td>
-      <td>285.340288</td>
-      <td>1.365622</td>
-      <td>1.157275</td>
-      <td>19.328307</td>
-      <td>4.017780</td>
-      <td>213.456081</td>
-      <td>212.240403</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2022</td>
-      <td>177.325576</td>
-      <td>10.378806</td>
-      <td>0.074213</td>
-      <td>0.177302</td>
-      <td>25.580839</td>
-      <td>10431.598283</td>
-      <td>769.346217</td>
-      <td>...</td>
-      <td>0.020925</td>
-      <td>0.311179</td>
-      <td>356.377384</td>
-      <td>289.048233</td>
-      <td>1.381655</td>
-      <td>1.178201</td>
-      <td>19.639486</td>
-      <td>4.017780</td>
-      <td>217.473861</td>
-      <td>215.628637</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2023</td>
-      <td>75.070344</td>
-      <td>4.239897</td>
-      <td>0.029530</td>
-      <td>0.075940</td>
-      <td>10.862788</td>
-      <td>10506.668627</td>
-      <td>773.586115</td>
-      <td>...</td>
-      <td>0.008981</td>
-      <td>0.135438</td>
-      <td>358.448703</td>
-      <td>290.505975</td>
-      <td>1.388045</td>
-      <td>1.187181</td>
-      <td>19.774923</td>
-      <td>1.735700</td>
-      <td>219.209561</td>
-      <td>216.705827</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2024</td>
-      <td>73.873283</td>
-      <td>3.998755</td>
-      <td>0.027050</td>
-      <td>0.075521</td>
-      <td>10.711354</td>
-      <td>10580.541910</td>
-      <td>777.584870</td>
-      <td>...</td>
-      <td>0.008986</td>
-      <td>0.143640</td>
-      <td>360.461982</td>
-      <td>291.813314</td>
-      <td>1.393930</td>
-      <td>1.196167</td>
-      <td>19.918563</td>
-      <td>1.735700</td>
-      <td>220.945261</td>
-      <td>217.774307</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2025</td>
-      <td>128.260630</td>
-      <td>6.770788</td>
-      <td>0.044439</td>
-      <td>0.127305</td>
-      <td>18.635136</td>
-      <td>10708.802540</td>
-      <td>784.355657</td>
-      <td>...</td>
-      <td>0.015253</td>
-      <td>0.268259</td>
-      <td>363.919463</td>
-      <td>293.993196</td>
-      <td>1.403663</td>
-      <td>1.211420</td>
-      <td>20.186822</td>
-      <td>3.055750</td>
-      <td>224.001012</td>
-      <td>220.158428</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2026</td>
-      <td>126.563377</td>
-      <td>6.532274</td>
-      <td>0.041534</td>
-      <td>0.121962</td>
-      <td>18.444512</td>
-      <td>10835.365917</td>
-      <td>790.887931</td>
-      <td>...</td>
-      <td>0.015003</td>
-      <td>0.335569</td>
-      <td>367.538242</td>
-      <td>296.087741</td>
-      <td>1.412988</td>
-      <td>1.226423</td>
-      <td>20.522391</td>
-      <td>3.055750</td>
-      <td>227.056762</td>
-      <td>222.520858</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2027</td>
-      <td>31958.127133</td>
-      <td>1613.428302</td>
-      <td>9.920715</td>
-      <td>29.836154</td>
-      <td>4666.788744</td>
-      <td>42793.493050</td>
-      <td>2404.316234</td>
-      <td>...</td>
-      <td>3.522114</td>
-      <td>56.905113</td>
-      <td>1072.316232</td>
-      <td>799.770827</td>
-      <td>3.556699</td>
-      <td>4.748537</td>
-      <td>77.427504</td>
-      <td>780.202887</td>
-      <td>1007.259648</td>
-      <td>1005.414926</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2028</td>
-      <td>31636.038270</td>
-      <td>1574.841357</td>
-      <td>9.244755</td>
-      <td>28.534820</td>
-      <td>4629.081369</td>
-      <td>74429.531320</td>
-      <td>3979.157591</td>
-      <td>...</td>
-      <td>3.370235</td>
-      <td>56.753963</td>
-      <td>1734.662289</td>
-      <td>1284.323553</td>
-      <td>5.555373</td>
-      <td>8.118772</td>
-      <td>134.181466</td>
-      <td>780.202887</td>
-      <td>1787.462535</td>
-      <td>1784.810605</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2029</td>
-      <td>62247.561982</td>
-      <td>3058.076869</td>
-      <td>17.072597</td>
-      <td>54.222745</td>
-      <td>9135.778589</td>
-      <td>136677.093302</td>
-      <td>7037.234460</td>
-      <td>...</td>
-      <td>6.404557</td>
-      <td>112.026156</td>
-      <td>2928.177278</td>
-      <td>2211.172674</td>
-      <td>9.246681</td>
-      <td>14.523329</td>
-      <td>246.207622</td>
-      <td>1551.120510</td>
-      <td>3338.583045</td>
-      <td>3334.491401</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2030</td>
-      <td>61707.959883</td>
-      <td>2988.472054</td>
-      <td>15.797271</td>
-      <td>51.782157</td>
-      <td>9074.774592</td>
-      <td>198385.053185</td>
-      <td>10025.706514</td>
-      <td>...</td>
-      <td>6.122134</td>
-      <td>112.301762</td>
-      <td>4045.035043</td>
-      <td>3103.338752</td>
-      <td>12.665735</td>
-      <td>20.645464</td>
-      <td>358.509385</td>
-      <td>1551.120510</td>
-      <td>4889.703555</td>
-      <td>4876.802785</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2031</td>
-      <td>67083.619607</td>
-      <td>3248.811382</td>
-      <td>17.173443</td>
-      <td>56.293135</td>
-      <td>9865.319287</td>
-      <td>265468.672792</td>
-      <td>13274.517896</td>
-      <td>...</td>
-      <td>6.663807</td>
-      <td>123.608079</td>
-      <td>5268.531195</td>
-      <td>4073.685000</td>
-      <td>16.387461</td>
-      <td>27.309271</td>
-      <td>482.117464</td>
-      <td>1696.670550</td>
-      <td>6586.374105</td>
-      <td>6557.354394</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2032</td>
-      <td>66701.909533</td>
-      <td>3230.325438</td>
-      <td>17.075725</td>
-      <td>55.972824</td>
-      <td>9809.184991</td>
-      <td>332170.582325</td>
-      <td>16504.843334</td>
-      <td>...</td>
-      <td>6.641148</td>
-      <td>125.689274</td>
-      <td>6502.147247</td>
-      <td>5039.349986</td>
-      <td>20.096828</td>
-      <td>33.950419</td>
-      <td>607.806738</td>
-      <td>1696.670550</td>
-      <td>8283.044655</td>
-      <td>8229.251551</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2033</td>
-      <td>3056.324855</td>
-      <td>148.015612</td>
-      <td>0.782421</td>
-      <td>2.564711</td>
-      <td>449.463233</td>
-      <td>335226.907181</td>
-      <td>16652.858946</td>
-      <td>...</td>
-      <td>0.362501</td>
-      <td>16.380659</td>
-      <td>6623.829241</td>
-      <td>5086.801805</td>
-      <td>20.300424</td>
-      <td>34.312920</td>
-      <td>624.187397</td>
-      <td>78.156650</td>
-      <td>8361.201305</td>
-      <td>8266.878519</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2034</td>
-      <td>3041.174229</td>
-      <td>147.281878</td>
-      <td>0.778542</td>
-      <td>2.551998</td>
-      <td>447.235181</td>
-      <td>338268.081410</td>
-      <td>16800.140823</td>
-      <td>...</td>
-      <td>0.396217</td>
-      <td>22.779615</td>
-      <td>6784.663129</td>
-      <td>5135.973300</td>
-      <td>20.523526</td>
-      <td>34.709137</td>
-      <td>646.967012</td>
-      <td>78.156650</td>
-      <td>8439.357955</td>
-      <td>8302.239780</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2035</td>
-      <td>3229.175888</td>
-      <td>156.386663</td>
-      <td>0.826671</td>
-      <td>2.709759</td>
-      <td>474.882711</td>
-      <td>341497.257298</td>
-      <td>16956.527486</td>
-      <td>...</td>
-      <td>0.465718</td>
-      <td>32.399884</td>
-      <td>7005.822350</td>
-      <td>5190.661773</td>
-      <td>20.786415</td>
-      <td>35.174855</td>
-      <td>679.366896</td>
-      <td>83.376501</td>
-      <td>8522.734456</td>
-      <td>8341.470605</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2036</td>
-      <td>3214.994876</td>
-      <td>155.699886</td>
-      <td>0.823040</td>
-      <td>2.697859</td>
-      <td>472.797251</td>
-      <td>344712.252173</td>
-      <td>17112.227372</td>
-      <td>...</td>
-      <td>0.535116</td>
-      <td>45.292334</td>
-      <td>7305.984142</td>
-      <td>5249.042018</td>
-      <td>21.089408</td>
-      <td>35.709971</td>
-      <td>724.659230</td>
-      <td>83.376501</td>
-      <td>8606.110957</td>
-      <td>8378.852088</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2037</td>
-      <td>2388.091029</td>
-      <td>115.653529</td>
-      <td>0.611353</td>
-      <td>2.003964</td>
-      <td>351.192745</td>
-      <td>347100.343202</td>
-      <td>17227.880901</td>
-      <td>...</td>
-      <td>0.547674</td>
-      <td>61.044555</td>
-      <td>7697.066026</td>
-      <td>5300.672303</td>
-      <td>21.401201</td>
-      <td>36.257645</td>
-      <td>785.703785</td>
-      <td>62.190250</td>
-      <td>8668.301206</td>
-      <td>8392.569295</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2038</td>
-      <td>2378.677665</td>
-      <td>115.197646</td>
-      <td>0.608943</td>
-      <td>1.996064</td>
-      <td>349.808415</td>
-      <td>349479.020867</td>
-      <td>17343.078547</td>
-      <td>...</td>
-      <td>0.666510</td>
-      <td>82.873898</td>
-      <td>8222.034402</td>
-      <td>5358.755584</td>
-      <td>21.781599</td>
-      <td>36.924156</td>
-      <td>868.577683</td>
-      <td>62.190250</td>
-      <td>8730.491456</td>
-      <td>8403.415361</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2039</td>
-      <td>1755.949815</td>
-      <td>85.039385</td>
-      <td>0.449524</td>
-      <td>1.473503</td>
-      <td>258.230037</td>
-      <td>351234.970683</td>
-      <td>17428.117932</td>
-      <td>...</td>
-      <td>0.747305</td>
-      <td>107.742067</td>
-      <td>8895.304165</td>
-      <td>5415.676881</td>
-      <td>22.209746</td>
-      <td>37.671460</td>
-      <td>976.319749</td>
-      <td>46.081900</td>
-      <td>8776.573356</td>
-      <td>8394.732164</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2040</td>
-      <td>1749.671182</td>
-      <td>84.735315</td>
-      <td>0.447917</td>
-      <td>1.468234</td>
-      <td>257.306701</td>
-      <td>352984.641865</td>
-      <td>17512.853247</td>
-      <td>...</td>
-      <td>0.901921</td>
-      <td>136.032410</td>
-      <td>9742.183541</td>
-      <td>5481.040714</td>
-      <td>22.727030</td>
-      <td>38.573381</td>
-      <td>1112.352159</td>
-      <td>46.081900</td>
-      <td>8822.655257</td>
-      <td>8382.495214</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2041</td>
-      <td>1176.045334</td>
-      <td>56.955029</td>
-      <td>0.301068</td>
-      <td>0.986877</td>
-      <td>172.949265</td>
-      <td>354160.687199</td>
-      <td>17569.808276</td>
-      <td>...</td>
-      <td>0.993379</td>
-      <td>162.022156</td>
-      <td>10744.682301</td>
-      <td>5546.258816</td>
-      <td>23.297928</td>
-      <td>39.566760</td>
-      <td>1274.374315</td>
-      <td>31.080250</td>
-      <td>8853.735507</td>
-      <td>8351.849284</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2042</td>
-      <td>1172.197635</td>
-      <td>56.768687</td>
-      <td>0.300083</td>
-      <td>0.983648</td>
-      <td>172.383422</td>
-      <td>355332.884834</td>
-      <td>17626.576963</td>
-      <td>...</td>
-      <td>1.104553</td>
-      <td>182.311907</td>
-      <td>11871.864114</td>
-      <td>5617.531929</td>
-      <td>23.932566</td>
-      <td>40.671313</td>
-      <td>1456.686222</td>
-      <td>31.080250</td>
-      <td>8884.815757</td>
-      <td>8318.794610</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2043</td>
-      <td>863.070933</td>
-      <td>41.797904</td>
-      <td>0.220947</td>
-      <td>0.724245</td>
-      <td>126.923240</td>
-      <td>356195.955767</td>
-      <td>17668.374866</td>
-      <td>...</td>
-      <td>1.114442</td>
-      <td>189.067598</td>
-      <td>13038.690768</td>
-      <td>5686.524207</td>
-      <td>24.572775</td>
-      <td>41.785755</td>
-      <td>1645.753820</td>
-      <td>22.955950</td>
-      <td>8907.771706</td>
-      <td>8276.840739</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2044</td>
-      <td>860.468395</td>
-      <td>41.671865</td>
-      <td>0.220280</td>
-      <td>0.722061</td>
-      <td>126.540510</td>
-      <td>357056.424162</td>
-      <td>17710.046731</td>
-      <td>...</td>
-      <td>1.057402</td>
-      <td>178.593764</td>
-      <td>14141.723966</td>
-      <td>5752.291462</td>
-      <td>25.178986</td>
-      <td>42.843158</td>
-      <td>1824.347585</td>
-      <td>22.955950</td>
-      <td>8930.727656</td>
-      <td>8236.410811</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2045</td>
-      <td>871.377787</td>
-      <td>42.200199</td>
-      <td>0.223073</td>
-      <td>0.731216</td>
-      <td>128.144846</td>
-      <td>357927.801949</td>
-      <td>17752.246930</td>
-      <td>...</td>
-      <td>0.903511</td>
-      <td>150.203272</td>
-      <td>15071.308676</td>
-      <td>5809.602616</td>
-      <td>25.694806</td>
-      <td>43.746668</td>
-      <td>1974.550857</td>
-      <td>23.314649</td>
-      <td>8954.042306</td>
-      <td>8200.097413</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2046</td>
-      <td>868.941074</td>
-      <td>42.082190</td>
-      <td>0.222449</td>
-      <td>0.729171</td>
-      <td>127.786503</td>
-      <td>358796.743023</td>
-      <td>17794.329120</td>
-      <td>...</td>
-      <td>0.685378</td>
-      <td>110.288247</td>
-      <td>15756.857287</td>
-      <td>5854.775423</td>
-      <td>26.082598</td>
-      <td>44.432046</td>
-      <td>2084.839104</td>
-      <td>23.314649</td>
-      <td>8977.356955</td>
-      <td>8168.931656</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>AL</td>
-      <td>Today</td>
-      <td>2047</td>
-      <td>997.806955</td>
-      <td>48.323072</td>
-      <td>0.255439</td>
-      <td>0.837308</td>
-      <td>146.737523</td>
-      <td>359794.549978</td>
-      <td>17842.652192</td>
-      <td>...</td>
-      <td>0.479487</td>
-      <td>70.455489</td>
-      <td>16200.053392</td>
-      <td>5889.631938</td>
-      <td>26.348423</td>
-      <td>44.911533</td>
-      <td>2155.294592</td>
-      <td>26.844701</td>
-      <td>9004.201656</td>
-      <td>8146.418582</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2021</td>
-      <td>98.877460</td>
-      <td>5.825242</td>
-      <td>0.043828</td>
-      <td>0.096427</td>
-      <td>13.179646</td>
-      <td>2556.434973</td>
-      <td>186.852801</td>
-      <td>...</td>
-      <td>0.011378</td>
-      <td>0.159981</td>
-      <td>87.054370</td>
-      <td>69.936321</td>
-      <td>0.335214</td>
-      <td>0.289540</td>
-      <td>4.776084</td>
-      <td>2.148800</td>
-      <td>53.320500</td>
-      <td>53.044604</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2022</td>
-      <td>98.467118</td>
-      <td>5.550822</td>
-      <td>0.039691</td>
-      <td>0.094825</td>
-      <td>12.391688</td>
-      <td>2654.902091</td>
-      <td>192.403623</td>
-      <td>...</td>
-      <td>0.011190</td>
-      <td>0.150559</td>
-      <td>89.917132</td>
-      <td>71.919349</td>
-      <td>0.343787</td>
-      <td>0.300730</td>
-      <td>4.926643</td>
-      <td>2.148800</td>
-      <td>55.469300</td>
-      <td>55.035960</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2023</td>
-      <td>95.407943</td>
-      <td>5.091198</td>
-      <td>0.035459</td>
-      <td>0.091187</td>
-      <td>11.338441</td>
-      <td>2750.310035</td>
-      <td>197.494821</td>
-      <td>...</td>
-      <td>0.010765</td>
-      <td>0.138438</td>
-      <td>92.526624</td>
-      <td>73.668728</td>
-      <td>0.351449</td>
-      <td>0.311495</td>
-      <td>5.065081</td>
-      <td>2.084200</td>
-      <td>57.553501</td>
-      <td>56.952135</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2024</td>
-      <td>95.631494</td>
-      <td>4.801638</td>
-      <td>0.032481</td>
-      <td>0.090684</td>
-      <td>10.711049</td>
-      <td>2845.941528</td>
-      <td>202.296459</td>
-      <td>...</td>
-      <td>0.010718</td>
-      <td>0.133131</td>
-      <td>95.043833</td>
-      <td>75.234563</td>
-      <td>0.358475</td>
-      <td>0.322212</td>
-      <td>5.198212</td>
-      <td>2.084200</td>
-      <td>59.637701</td>
-      <td>58.858140</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2025</td>
-      <td>141.207790</td>
-      <td>6.793388</td>
-      <td>0.044588</td>
-      <td>0.127730</td>
-      <td>14.888253</td>
-      <td>2987.149319</td>
-      <td>209.089848</td>
-      <td>...</td>
-      <td>0.015125</td>
-      <td>0.190383</td>
-      <td>98.625585</td>
-      <td>77.411902</td>
-      <td>0.368136</td>
-      <td>0.337338</td>
-      <td>5.388595</td>
-      <td>3.065950</td>
-      <td>62.703651</td>
-      <td>61.739628</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2026</td>
-      <td>142.113265</td>
-      <td>6.554078</td>
-      <td>0.041672</td>
-      <td>0.122369</td>
-      <td>14.060683</td>
-      <td>3129.262584</td>
-      <td>215.643926</td>
-      <td>...</td>
-      <td>0.014581</td>
-      <td>0.196409</td>
-      <td>102.077709</td>
-      <td>79.487392</td>
-      <td>0.377219</td>
-      <td>0.351919</td>
-      <td>5.585003</td>
-      <td>3.065950</td>
-      <td>65.769601</td>
-      <td>64.604792</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2027</td>
-      <td>29006.543240</td>
-      <td>1283.828477</td>
-      <td>7.894058</td>
-      <td>23.741064</td>
-      <td>2685.917464</td>
-      <td>32135.805824</td>
-      <td>1499.472403</td>
-      <td>...</td>
-      <td>2.801780</td>
-      <td>32.660035</td>
-      <td>740.667395</td>
-      <td>480.230352</td>
-      <td>2.082529</td>
-      <td>3.153699</td>
-      <td>38.245039</td>
-      <td>620.818838</td>
-      <td>686.588439</td>
-      <td>687.920260</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2028</td>
-      <td>29248.546317</td>
-      <td>1253.124281</td>
-      <td>7.356187</td>
-      <td>22.705573</td>
-      <td>2529.809486</td>
-      <td>61384.352142</td>
-      <td>2752.596684</td>
-      <td>...</td>
-      <td>2.679982</td>
-      <td>30.836343</td>
-      <td>1350.601635</td>
-      <td>865.698838</td>
-      <td>3.671883</td>
-      <td>5.833681</td>
-      <td>69.081382</td>
-      <td>620.818838</td>
-      <td>1307.407277</td>
-      <td>1308.473262</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2029</td>
-      <td>4299.636918</td>
-      <td>178.440853</td>
-      <td>0.996198</td>
-      <td>3.163934</td>
-      <td>346.671390</td>
-      <td>65683.989060</td>
-      <td>2931.037538</td>
-      <td>...</td>
-      <td>0.374801</td>
-      <td>4.472806</td>
-      <td>1434.184777</td>
-      <td>919.840968</td>
-      <td>3.887901</td>
-      <td>6.208482</td>
-      <td>73.554188</td>
-      <td>90.508931</td>
-      <td>1397.916208</td>
-      <td>1393.301603</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2030</td>
-      <td>4340.157764</td>
-      <td>174.379365</td>
-      <td>0.921781</td>
-      <td>3.021524</td>
-      <td>325.034679</td>
-      <td>70024.146824</td>
-      <td>3105.416903</td>
-      <td>...</td>
-      <td>0.359293</td>
-      <td>4.446207</td>
-      <td>1514.882978</td>
-      <td>972.012624</td>
-      <td>4.088593</td>
-      <td>6.567775</td>
-      <td>78.000395</td>
-      <td>90.508931</td>
-      <td>1488.425138</td>
-      <td>1477.325063</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2031</td>
-      <td>35198.415151</td>
-      <td>1421.102197</td>
-      <td>7.512045</td>
-      <td>24.623867</td>
-      <td>2648.865566</td>
-      <td>105222.561975</td>
-      <td>4526.519100</td>
-      <td>...</td>
-      <td>2.910556</td>
-      <td>33.048644</td>
-      <td>2149.903217</td>
-      <td>1396.223818</td>
-      <td>5.714040</td>
-      <td>9.478331</td>
-      <td>111.049039</td>
-      <td>742.161351</td>
-      <td>2230.586490</td>
-      <td>2215.314574</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2032</td>
-      <td>34998.133924</td>
-      <td>1413.016035</td>
-      <td>7.469301</td>
-      <td>24.483755</td>
-      <td>2633.793352</td>
-      <td>140220.695900</td>
-      <td>5939.535134</td>
-      <td>...</td>
-      <td>2.897559</td>
-      <td>33.509091</td>
-      <td>2785.293570</td>
-      <td>1818.216831</td>
-      <td>7.332291</td>
-      <td>12.375890</td>
-      <td>144.558129</td>
-      <td>742.161351</td>
-      <td>2972.747841</td>
-      <td>2950.000957</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2033</td>
-      <td>34864.613162</td>
-      <td>1407.625262</td>
-      <td>7.440805</td>
-      <td>24.390348</td>
-      <td>2623.745214</td>
-      <td>175085.309061</td>
-      <td>7347.160396</td>
-      <td>...</td>
-      <td>2.892038</td>
-      <td>34.387679</td>
-      <td>3424.443026</td>
-      <td>2238.903468</td>
-      <td>8.947551</td>
-      <td>15.267928</td>
-      <td>178.945808</td>
-      <td>743.268050</td>
-      <td>3716.015891</td>
-      <td>3681.996513</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2034</td>
-      <td>34691.784438</td>
-      <td>1400.647468</td>
-      <td>7.403920</td>
-      <td>24.269441</td>
-      <td>2610.738945</td>
-      <td>209777.093500</td>
-      <td>8747.807865</td>
-      <td>...</td>
-      <td>2.886023</td>
-      <td>35.730457</td>
-      <td>4069.722967</td>
-      <td>2657.961115</td>
-      <td>10.559590</td>
-      <td>18.153951</td>
-      <td>214.676265</td>
-      <td>743.268050</td>
-      <td>4459.283941</td>
-      <td>4410.139725</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2035</td>
-      <td>509.009275</td>
-      <td>20.550760</td>
-      <td>0.108633</td>
-      <td>0.356089</td>
-      <td>38.305621</td>
-      <td>210286.102775</td>
-      <td>8768.358625</td>
-      <td>...</td>
-      <td>0.076193</td>
-      <td>6.680297</td>
-      <td>4117.016324</td>
-      <td>2665.966440</td>
-      <td>10.602714</td>
-      <td>18.230143</td>
-      <td>221.356562</td>
-      <td>10.956500</td>
-      <td>4470.240441</td>
-      <td>4398.984843</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2036</td>
-      <td>506.773947</td>
-      <td>20.460511</td>
-      <td>0.108156</td>
-      <td>0.354525</td>
-      <td>38.137401</td>
-      <td>210792.876722</td>
-      <td>8788.819137</td>
-      <td>...</td>
-      <td>0.092663</td>
-      <td>9.704682</td>
-      <td>4182.877632</td>
-      <td>2674.857579</td>
-      <td>10.655303</td>
-      <td>18.322807</td>
-      <td>231.061244</td>
-      <td>10.956500</td>
-      <td>4481.196941</td>
-      <td>4386.900373</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2037</td>
-      <td>76185.715256</td>
-      <td>3075.925062</td>
-      <td>16.259554</td>
-      <td>53.297482</td>
-      <td>5733.375122</td>
-      <td>286978.591978</td>
-      <td>11864.744198</td>
-      <td>...</td>
-      <td>6.362203</td>
-      <td>82.872680</td>
-      <td>5627.080775</td>
-      <td>3596.467632</td>
-      <td>14.209376</td>
-      <td>24.685009</td>
-      <td>313.933924</td>
-      <td>1654.013932</td>
-      <td>6135.210873</td>
-      <td>6024.236629</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2038</td>
-      <td>75885.406827</td>
-      <td>3063.800398</td>
-      <td>16.195462</td>
-      <td>53.087394</td>
-      <td>5710.775336</td>
-      <td>362863.998805</td>
-      <td>14928.544596</td>
-      <td>...</td>
-      <td>6.365750</td>
-      <td>87.741683</td>
-      <td>7097.566964</td>
-      <td>4516.011664</td>
-      <td>17.765854</td>
-      <td>31.050760</td>
-      <td>401.675607</td>
-      <td>1654.013932</td>
-      <td>7789.224805</td>
-      <td>7654.129342</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2039</td>
-      <td>709.581638</td>
-      <td>28.648677</td>
-      <td>0.151439</td>
-      <td>0.496404</td>
-      <td>53.399744</td>
-      <td>363573.580443</td>
-      <td>14957.193273</td>
-      <td>...</td>
-      <td>0.193879</td>
-      <td>25.218586</td>
-      <td>7261.411360</td>
-      <td>4531.967811</td>
-      <td>17.876209</td>
-      <td>31.244639</td>
-      <td>426.894193</td>
-      <td>15.524401</td>
-      <td>7804.749206</td>
-      <td>7629.850702</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2040</td>
-      <td>707.044434</td>
-      <td>28.546240</td>
-      <td>0.150897</td>
-      <td>0.494629</td>
-      <td>53.208806</td>
-      <td>364280.624877</td>
-      <td>14985.739513</td>
-      <td>...</td>
-      <td>0.230848</td>
-      <td>31.946961</td>
-      <td>7466.725043</td>
-      <td>4549.922597</td>
-      <td>18.007675</td>
-      <td>31.475487</td>
-      <td>458.841155</td>
-      <td>15.524401</td>
-      <td>7820.273607</td>
-      <td>7603.386470</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2041</td>
-      <td>576.928054</td>
-      <td>23.292916</td>
-      <td>0.123128</td>
-      <td>0.403603</td>
-      <td>43.416865</td>
-      <td>364857.552930</td>
-      <td>15009.032429</td>
-      <td>...</td>
-      <td>0.256101</td>
-      <td>38.325136</td>
-      <td>7709.892127</td>
-      <td>4568.268490</td>
-      <td>18.153593</td>
-      <td>31.731587</td>
-      <td>497.166291</td>
-      <td>12.710900</td>
-      <td>7832.984506</td>
-      <td>7573.404022</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2042</td>
-      <td>575.040503</td>
-      <td>23.216708</td>
-      <td>0.122725</td>
-      <td>0.402283</td>
-      <td>43.274817</td>
-      <td>365432.593433</td>
-      <td>15032.249137</td>
-      <td>...</td>
-      <td>0.283926</td>
-      <td>43.337999</td>
-      <td>7984.248144</td>
-      <td>4588.102248</td>
-      <td>18.315130</td>
-      <td>32.015514</td>
-      <td>540.504289</td>
-      <td>12.710900</td>
-      <td>7845.695406</td>
-      <td>7542.931057</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2043</td>
-      <td>586.805834</td>
-      <td>23.691722</td>
-      <td>0.125236</td>
-      <td>0.410514</td>
-      <td>44.160220</td>
-      <td>366019.399267</td>
-      <td>15055.940858</td>
-      <td>...</td>
-      <td>0.296927</td>
-      <td>45.429145</td>
-      <td>8272.225681</td>
-      <td>4608.702801</td>
-      <td>18.483559</td>
-      <td>32.312441</td>
-      <td>585.933434</td>
-      <td>13.011800</td>
-      <td>7858.707206</td>
-      <td>7512.642823</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2044</td>
-      <td>585.036357</td>
-      <td>23.620281</td>
-      <td>0.124858</td>
-      <td>0.409276</td>
-      <td>44.027058</td>
-      <td>366604.435624</td>
-      <td>15079.561139</td>
-      <td>...</td>
-      <td>0.286758</td>
-      <td>43.455816</td>
-      <td>8548.990330</td>
-      <td>4628.684728</td>
-      <td>18.645339</td>
-      <td>32.599199</td>
-      <td>629.389251</td>
-      <td>13.011800</td>
-      <td>7871.719006</td>
-      <td>7482.740948</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2045</td>
-      <td>589.473872</td>
-      <td>23.799441</td>
-      <td>0.125806</td>
-      <td>0.412380</td>
-      <td>44.361004</td>
-      <td>367193.909496</td>
-      <td>15103.360580</td>
-      <td>...</td>
-      <td>0.254808</td>
-      <td>37.382941</td>
-      <td>8789.855242</td>
-      <td>4646.885145</td>
-      <td>18.787643</td>
-      <td>32.854007</td>
-      <td>666.772192</td>
-      <td>13.148650</td>
-      <td>7884.867656</td>
-      <td>7453.865942</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2046</td>
-      <td>587.825472</td>
-      <td>23.732889</td>
-      <td>0.125454</td>
-      <td>0.411227</td>
-      <td>44.236953</td>
-      <td>367781.734969</td>
-      <td>15127.093469</td>
-      <td>...</td>
-      <td>0.208297</td>
-      <td>28.683662</td>
-      <td>8979.210364</td>
-      <td>4662.442365</td>
-      <td>18.901743</td>
-      <td>33.062304</td>
-      <td>695.455854</td>
-      <td>13.148650</td>
-      <td>7898.016306</td>
-      <td>7426.188524</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2047</td>
-      <td>595.031594</td>
-      <td>24.023829</td>
-      <td>0.126992</td>
-      <td>0.416268</td>
-      <td>44.779252</td>
-      <td>368376.766563</td>
-      <td>15151.117298</td>
-      <td>...</td>
-      <td>0.163141</td>
-      <td>20.018937</td>
-      <td>9118.251291</td>
-      <td>4675.475855</td>
-      <td>18.987930</td>
-      <td>33.225445</td>
-      <td>715.474791</td>
-      <td>13.345851</td>
-      <td>7911.362157</td>
-      <td>7399.876634</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2048</td>
-      <td>593.480338</td>
-      <td>23.961198</td>
-      <td>0.126661</td>
-      <td>0.415183</td>
-      <td>44.662512</td>
-      <td>368970.246901</td>
-      <td>15175.078497</td>
-      <td>...</td>
-      <td>0.131900</td>
-      <td>13.881775</td>
-      <td>9223.705256</td>
-      <td>4686.654276</td>
-      <td>19.053564</td>
-      <td>33.357345</td>
-      <td>729.356566</td>
-      <td>13.345851</td>
-      <td>7924.708007</td>
-      <td>7374.381991</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2049</td>
-      <td>16490.097384</td>
-      <td>665.771840</td>
-      <td>3.519316</td>
-      <td>11.536030</td>
-      <td>1240.966417</td>
-      <td>385460.344285</td>
-      <td>15840.850337</td>
-      <td>...</td>
-      <td>1.437657</td>
-      <td>26.557502</td>
-      <td>9608.238214</td>
-      <td>4888.771071</td>
-      <td>19.844768</td>
-      <td>34.795001</td>
-      <td>755.914068</td>
-      <td>371.757430</td>
-      <td>8296.465438</td>
-      <td>7708.973344</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>WY</td>
-      <td>Bifacial</td>
-      <td>2050</td>
-      <td>16449.834106</td>
-      <td>664.146249</td>
-      <td>3.510723</td>
-      <td>11.507862</td>
-      <td>1237.936394</td>
-      <td>401910.178391</td>
-      <td>16504.996585</td>
-      <td>...</td>
-      <td>1.435267</td>
-      <td>25.747458</td>
-      <td>9996.451985</td>
-      <td>5090.228802</td>
-      <td>20.629777</td>
-      <td>36.230268</td>
-      <td>781.661526</td>
-      <td>371.757430</td>
-      <td>8668.222868</td>
-      <td>8042.177473</td>
-    </tr>
-  </tbody>
-</table>
-<p>3168 rows × 46 columns</p>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[62]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># OpenEI 1 - Cumulative EOL by State, Module</span>
-<span class="n">csvtitle</span> <span class="o">=</span> <span class="s1">&#39;OPENEI 1 - Cumulative EOL Module Material, by State.csv&#39;</span>
-<span class="n">colNames</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;CumulativeEOLMaterial&#39;</span><span class="p">)]</span> 
-
-<span class="n">scenariolist</span><span class="p">[</span><span class="s1">&#39;@value|CumulativeEOLMaterial|Module#MetricTonnes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="p">[</span><span class="n">colNames</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">foo</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="p">[[</span><span class="s1">&#39;@states&#39;</span><span class="p">,</span> <span class="s1">&#39;@scenario|Module Composition Scenario&#39;</span><span class="p">,</span> <span class="s1">&#39;@timeseries|Year&#39;</span><span class="p">,</span> 
-                    <span class="s1">&#39;@value|CumulativeEOLMaterial|Module#MetricTonnes&#39;</span><span class="p">]]</span>
-<span class="n">foo</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csvtitle</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[64]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[64]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>Index([&#39;@value|CumulativeEOLMaterial|Glass#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Silicon#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Silver#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Copper#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Aluminum#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Module#MetricTonnes&#39;],
-      dtype=&#39;object&#39;)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">scenariolist</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
@@ -16508,81 +13874,23 @@ Finished Area+Power Generation Calculations
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[59]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>Index([&#39;@states&#39;, &#39;@scenario|Module Composition Scenario&#39;, &#39;@timeseries|Year&#39;,
-       &#39;@value|VirginMaterialDemand|Glass#MetricTonnes&#39;,
-       &#39;@value|VirginMaterialDemand|Silicon#MetricTonnes&#39;,
-       &#39;@value|VirginMaterialDemand|Silver#MetricTonnes&#39;,
-       &#39;@value|VirginMaterialDemand|Copper#MetricTonnes&#39;,
-       &#39;@value|VirginMaterialDemand|Aluminum#MetricTonnes&#39;,
-       &#39;@value|CumulativeVirginMaterialDemand|Glass#MetricTonnes&#39;,
-       &#39;@value|CumulativeVirginMaterialDemand|Silicon#MetricTonnes&#39;,
-       &#39;@value|CumulativeVirginMaterialDemand|Silver#MetricTonnes&#39;,
-       &#39;@value|CumulativeVirginMaterialDemand|Copper#MetricTonnes&#39;,
-       &#39;@value|CumulativeVirginMaterialDemand|Aluminum#MetricTonnes&#39;,
-       &#39;@value|EOLMaterial|Glass#MetricTonnes&#39;,
-       &#39;@value|EOLMaterial|Silicon#MetricTonnes&#39;,
-       &#39;@value|EOLMaterial|Silver#MetricTonnes&#39;,
-       &#39;@value|EOLMaterial|Copper#MetricTonnes&#39;,
-       &#39;@value|EOLMaterial|Aluminum#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Glass#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Silicon#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Silver#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Copper#MetricTonnes&#39;,
-       &#39;@value|CumulativeEOLMaterial|Aluminum#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrap|Glass#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrap|Silicon#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrap|Silver#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrap|Copper#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrap|Aluminum#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrap|Glass#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrap|Silicon#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrap|Silver#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrap|Copper#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrap|Aluminum#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrapAndEOLMaterial|Glass#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrapAndEOLMaterial|Silicon#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrapAndEOLMaterial|Silver#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrapAndEOLMaterial|Copper#MetricTonnes&#39;,
-       &#39;@value|ManufacturingScrapAndEOLMaterial|Aluminum#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrapAndEOLMaterial|Glass#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrapAndEOLMaterial|Silicon#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrapAndEOLMaterial|Silver#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrapAndEOLMaterial|Copper#MetricTonnes&#39;,
-       &#39;@value|CumulativeManufacturingScrapAndEOLMaterial|Aluminum#MetricTonnes&#39;,
-       &#39;@value|NewInstalledCapacity|PV#MW&#39;,
-       &#39;@value|CumulativeNewInstalledCapacity|PV#MW&#39;,
-       &#39;@value|InstalledCapacity|PV#MW&#39;],
-      dtype=&#39;object&#39;)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span>  <span class="s1">&#39;@value|CumulativeEOLMaterial|Glass#MetricTonnes&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;@value|CumulativeEOLMaterial|Silicon#MetricTonnes&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;@value|CumulativeEOLMaterial|Silver#MetricTonnes&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;@value|CumulativeEOLMaterial|Copper#MetricTonnes&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;@value|CumulativeEOLMaterial|Aluminum#MetricTonnes&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># OpenEI 1 - Cumulative EOL by State, Module</span>
+<span class="n">csvtitle</span> <span class="o">=</span> <span class="s1">&#39;OPENEI 1 - PVSC by State.csv&#39;</span>
+<span class="n">colNames</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">scenariolist</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;CumulativeEOLMaterial&#39;</span><span class="p">)]</span> 
+
+<span class="n">scenariolist</span><span class="p">[</span><span class="s1">&#39;@value|CumulativeEOLMaterial|Module#MetricTonnes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="p">[</span><span class="n">colNames</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">foo</span> <span class="o">=</span> <span class="n">scenariolist</span><span class="p">[[</span><span class="s1">&#39;@states&#39;</span><span class="p">,</span> <span class="s1">&#39;@scenario|Module Composition Scenario&#39;</span><span class="p">,</span> <span class="s1">&#39;@timeseries|Year&#39;</span><span class="p">,</span> 
+                    <span class="s1">&#39;@value|NewInstalledCapacity|PV#MW&#39;</span><span class="p">,</span> <span class="s1">&#39;@value|CumulativeNewInstalledCapacity|PV#MW&#39;</span><span class="p">,</span> 
+                    <span class="s1">&#39;@value|InstalledCapacity|PV#MW&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;@value|CumulativeEOLMaterial|Module#MetricTonnes&#39;</span><span class="p">]]</span>
+<span class="n">foo</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csvtitle</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">foo</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 
     </div>

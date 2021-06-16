@@ -62,7 +62,7 @@ r1.scenario['Today'].addMaterial('aluminium_frames', file=MATERIALBASELINE)
 for mat in range (2, len(MATERIALS)):
     MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
     r1.scenario['Today'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-
+    
 r1.createScenario(name='Bifacial', file=MODULEBASELINE)
 MATERIALBASELINE = r'..\..\baselines\baseline_material_glass_bifacialTrend.csv'
 r1.scenario['Bifacial'].addMaterial('glass', file=MATERIALBASELINE)
@@ -71,8 +71,6 @@ r1.scenario['Bifacial'].addMaterial('aluminium_frames', file=MATERIALBASELINE)
 for mat in range (2, len(MATERIALS)):
     MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
     r1.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-
-    
 
 
 # In[7]:
@@ -120,6 +118,12 @@ for mat in range (2, len(MATERIALS)):
     r0c.scenario['Bifacial_SameInstalls'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
+# In[ ]:
+
+
+
+
+
 # In[9]:
 
 
@@ -165,9 +169,7 @@ for mat in range (2, len(MATERIALS)):
     MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
     r2.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
     r2.scenario['Bifacial'].material[MATERIALS[mat]].materialdata['mat_MFG_eff'] = 100.0   
-    r2.scenario['Bifacial'].material[MATERIALS[mat]].materialdata['mat_MFG_scrap_Recycled'] = 0.0
-    
-    
+    r2.scenario['Bifacial'].material[MATERIALS[mat]].materialdata['mat_MFG_scrap_Recycled'] = 0.0   
 
 
 # In[10]:
@@ -370,9 +372,9 @@ for i in range(0, len(Life_Good)):
 # In[16]:
 
 
-r0a.calculateMassFlow()
-r0b.calculateMassFlow(bifacialityfactors=bifacialityfactors)
-r0c.calculateMassFlow(bifacialityfactors=bifacialityfactors, reducecapacity=False)
+r0a.calculateMassFlow() # Monofacial
+r0b.calculateMassFlow(bifacialityfactors=bifacialityfactors) #  Reduced Capacity
+r0c.calculateMassFlow(bifacialityfactors=bifacialityfactors, reducecapacity=False) # Same Installs
 r1.calculateMassFlow()
 
 
@@ -2465,29 +2467,39 @@ plt.plot(UScum['Capacity_Irena_EL_Bifacial']/1e12, 'b.', linewidth=4.0, label='I
 print("No difference in Capacity between Today and Bifacial for Irena", sum(UScum['Capacity_Irena_EL_Today']/1e12-UScum['Capacity_Irena_EL_Bifacial']/1e12))
 
 
-# In[57]:
-
-
-UScum['new_Installed_Capacity_[MW]SameInstalls'] + p1
-
-
 # In[ ]:
 
 
+
+
+
+# In[58]:
+
+
+"""
 p1 = (UScum['new_Installed_Capacity_[MW]BifacialProjection']-
 UScum['new_Installed_Capacity_[MW]BifacialProjection_p2'])
 
 UScum['new_Installed_Capacity_[MW]SameInstalls_p2'] = UScum['new_Installed_Capacity_[MW]SameInstalls'] + p1
 
+""" 
+pass
+
 
 # In[ ]:
+
+
+
+
+
+# In[59]:
 
 
 filter_col_newInstalls = [col for col in UScum if col.startswith('new_Installed_Capacity_[MW]')]
 UScum[filter_col_newInstalls].loc[2050]/1e6
 
 
-# In[ ]:
+# In[219]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2499,9 +2511,9 @@ f, (a0) = plt.subplots(1, 1, gridspec_kw={'width_ratios': [2]})
 
 plt.plot(UScum['new_Installed_Capacity_[MW]BifacialProjection']/1e6, 'k', label='Cumulative New Installs')
 plt.plot(UScum['Capacity_Irena_EL_Bifacial']/1e12, 'r', linewidth=4.0, label='Irena EL Reliability')
-#plt.plot(UScum['Capacity_Irena_RL_Bifacial']/1e12, 'g', linewidth=4.0, label='Irena RL Reliability')
-#plt.plot(UScum['Capacity_BifacialProjection_SameInstalls']/1e12, 'lightcoral', linewidth=4.0, label='PV ICE Reliability')
-#plt.plot(UScum['Capacity_BifacialProjection']/1e12, 'gold', linestyle='dashed', linewidth=4.0, label='PV ICE Reduced Installs')
+plt.plot(UScum['Capacity_Irena_RL_Bifacial']/1e12, 'g', linewidth=4.0, label='Irena RL Reliability')#
+plt.plot(UScum['Capacity_BifacialProjection']/1e12, 'gold', linestyle='dashed', linewidth=4.0, label='PV ICE Reduced Installs')
+plt.plot(UScum['Capacity_BifacialProjection_SameInstalls']/1e12, 'lightcoral', linewidth=4.0, label='PV ICE Reliability')
 
 plt.legend()
 #plt.yscale('log')
@@ -2510,40 +2522,34 @@ plt.xlim([2020, 2050])
 plt.ylabel('Installed Capacity [TW]')
 
 
-# In[ ]:
+# In[61]:
 
 
 print("Nameplate Capcaity of Bifacial Installations augment by", (UScum['Capacity_BifacialProjection_SameInstalls'][2050]-UScum['Capacity_BifacialProjection'][2050])*100/UScum['Capacity_BifacialProjection_SameInstalls'][2050])
 
 
-# In[ ]:
-
-
-UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]
-
-
-# In[ ]:
+# In[62]:
 
 
 print("% loss with Irena RL ")
 ((UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)-(UScum['Capacity_Irena_RL_Bifacial'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)
 
 
-# In[ ]:
+# In[63]:
 
 
 print("% loss with Irena EL ")
 ((UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)-(UScum['Capacity_Irena_EL_Bifacial'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)
 
 
-# In[ ]:
+# In[64]:
 
 
 print("% loss with PV ICE, Reducing Bifacial Installs ")
 ((UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)-(UScum['Capacity_BifacialProjection'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]BifacialProjection'].loc[2050]/1e6)
 
 
-# In[ ]:
+# In[65]:
 
 
 print("% loss with PV ICE, Keeping Bifacial Installs ")
@@ -2556,10 +2562,303 @@ print("% loss with PV ICE, Keeping Bifacial Installs ")
 
 
 
+# # SAVE RESULTS OPENEI
+
+# In[ ]:
+
+
+Simulations
+
+
+# In[68]:
+
+
+# WORK ON THIS FOIR OPENEI
+
+keyw=['mat_Virgin_Stock','mat_Total_EOL_Landfilled','mat_Total_MFG_Landfilled', 'mat_Total_Landfilled', 
+      'new_Installed_Capacity_[MW]','Installed_Capacity_[W]']
+keywprint = ['VirginMaterialDemand','EOLMaterial', 'ManufacturingScrap','ManufacturingScrapAndEOLMaterial',
+             'NewInstalledCapacity','InstalledCapacity'] 
+keywunits = ['MetricTonnes', 'MetricTonnes', 'MetricTonnes', 'MetricTonnes', 
+            'MW','MW']
+keywdcumneed = [True,True,True,True,
+                True,False]
+keywdlevel = ['material','material','material','material',
+             'module','module']
+keywscale = [1000000, 1000000, 1000000, 1000000,
+            1,1e6]
+#materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+materials = ['glass','aluminium_frames','silver','silicon', 'copper',]
+
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+
+# Loop over Simularionts r1 r2 ... 
+for kk in range(0, len(Simulations)):
+    obj = Simulations[kk]
+
+    # Loop over Scenarios
+    for zz in range(0, len(obj.scenario)):
+        case = list(obj.scenario.keys())[zz]
+        
+        foo = pd.DataFrame()
+        for jj in range (0, len(keyw)):
+
+            if keywdlevel[jj] == 'material':
+                for ii in range (0, len(materials)):    
+                    sentit = '@value|'+keywprint[jj]+'|'+materials[ii].capitalize() +'#'+keywunits[jj]
+                    foo[sentit] = obj.scenario[case].material[materials[ii]].materialdata[keyw[jj]]/keywscale[jj] 
+            
+            else:
+                sentit = '@value|'+keywprint[jj]+'|'+'PV' +'#'+keywunits[jj]
+                #sentit = '@value|'+keywprint[jj]+'#'+keywunits[jj]
+                foo[sentit] = obj.scenario[case].data[keyw[jj]]/keywscale[jj] 
+
+
+
+        foo['@case'] = case
+        foo['@scenario|Solar Futures'] = obj.name
+        foo['@timeseries|Year'] = obj.scenario[case].data.year
+
+        scenariolist = scenariolist.append(foo)   
+
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+#scenariolist = scenariolist/1000000 # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv('PVSC Nation OpenEI Yearly Only.csv', index=False)
+
+print("Done")
+
+
+# In[98]:
+
+
+kk=0
+obj = Simulations[kk]
+print(Simulations[kk].name)
+list(obj.scenario.keys())
+
+
+# In[73]:
+
+
+0 + 1   ---> reduced installs           
+0 + 2  ---> same installs             PVICE bifacial
+3 not.
+4: Irena_EL
+5: Irena RL
+
+[0 ] --> r0a.calculateMassFlow() # Monofacial
+[1] --> r0b.calculateMassFlow(bifacialityfactors=bifacialityfactors) #  Reduced Capacity
+[2] --> r0c.calculateMassFlow(bifacialityfactors=bifacialityfactors, reducecapacity=False) # Same Installs
+[3] r1.calculateMassFlow()
+[4] r2. Irena EL
+[5] r3. Irena RL
+
+
 # In[ ]:
 
 
 
+
+
+# In[205]:
+
+
+df1 = scenariolist[scenariolist['@scenario|Solar Futures'] == 'BifacialProjection']
+Bifacial_ReducedInstalls = df1[df1['@case']=='Bifacial']
+Mono = scenariolist[scenariolist['@case']=='Mono']
+
+
+# In[206]:
+
+
+foo = pd.DataFrame()
+foo = Mono[Mono.columns[3:-1]].add(Bifacial_ReducedInstalls[Bifacial_ReducedInstalls.columns[3:-1]], lambda x, y: f(x, y))
+
+foo['@timeseries|Year'] = Mono['@timeseries|Year']
+cols = [foo.columns[-1]] + [col for col in foo if col != foo.columns[-1]]
+foo = foo[cols]
+foo ['@scenario|Module Composition Scenario'] = 'PVICE Bifacial Reduced Installs' 
+cols = [foo.columns[-1]] + [col for col in foo if col != foo.columns[-1]]
+foo = foo[cols]
+foo ['@case'] = 'Bifacial' 
+cols = [foo.columns[-1]] + [col for col in foo if col != foo.columns[-1]]
+foo = foo[cols]
+#foo = [foo.columns[-1]] + [col for col in foo if col != scenariolist.columns[-1]]
+ReducedInstalls= foo
+
+
+# In[207]:
+
+
+Mono = scenariolist[scenariolist['@case']=='Mono']
+df1 = scenariolist[scenariolist['@scenario|Solar Futures'] == 'SameInstalls']
+Bifacial_SameInstalls = df1[df1['@case']=='Bifacial_SameInstalls']
+
+
+# In[208]:
+
+
+foo = pd.DataFrame()
+foo = Mono[Mono.columns[3:-1]].add(Bifacial_SameInstalls[Bifacial_SameInstalls.columns[3:-1]], lambda x, y: f(x, y))
+
+foo['@timeseries|Year'] = Mono['@timeseries|Year']
+cols = [foo.columns[-1]] + [col for col in foo if col != foo.columns[-1]]
+foo = foo[cols]
+foo ['@scenario|Module Composition Scenario'] = 'PVICE Bifacial Same Installs' 
+cols = [foo.columns[-1]] + [col for col in foo if col != foo.columns[-1]]
+foo = foo[cols]
+foo ['@case'] = 'Bifacial' 
+cols = [foo.columns[-1]] + [col for col in foo if col != foo.columns[-1]]
+foo = foo[cols]
+#foo = [foo.columns[-1]] + [col for col in foo if col != scenariolist.columns[-1]]
+SameInstalls= foo
+
+
+# In[216]:
+
+
+colNames = result.columns[result.columns.str.contains('|ManufacturingScrapAndEOLMaterial|')] 
+colNames
+
+
+# In[215]:
+
+
+ManufacturingScrapAndEOLMaterial
+
+
+# In[209]:
+
+
+mask = (scenariolist['@case']=='Bifacial') & (scenariolist['@scenario|Solar Futures']=='PV_ICE')
+df1 = scenariolist[~mask]
+mask = df1['@scenario|Solar Futures']=='BifacialProjection'
+df1 = df1[~mask]
+mask = df1['@scenario|Solar Futures']=='SameInstalls'
+df1 = df1[~mask]
+df1.rename(columns={'@scenario|Solar Futures': '@scenario|Module Composition Scenario'}, inplace=True)
+frames = [df1, SameInstalls, ReducedInstalls]
+result = pd.concat(frames)
+
+
+colNames = result.columns[result.columns.str.contains('|EOLMaterial|')] 
+result['@value|EOLMaterial|Module#MetricTonnes'] = result[colNames].sum(axis=1)
+
+colNames = result.columns[result.columns.str.contains('|ManufacturingScrapAndEOLMaterial|')] 
+result['@value|ManufacturingScrapAndEOLMaterial|Module#MetricTonnes'] = result[colNames].sum(axis=1)
+
+colNames = result.columns[result.columns.str.contains('|ManufacturingScrap|')] 
+result['@value|ManufacturingScrap|Module#MetricTonnes'] = result[colNames].sum(axis=1)
+
+colNames = result.columns[result.columns.str.contains('|VirginMaterialDemand|')] 
+result['@value|VirginMaterialDemand|Module#MetricTonnes'] = result[colNames].sum(axis=1)
+
+
+result.to_csv('OPENEI Merged Scenarios 1 to 3.csv', index=False)
+
+
+# In[202]:
+
+
+result.keys()
+
+
+# In[189]:
+
+
+
+
+
+# In[ ]:
+
+
+# WORK ON THIS FOIR OPENEI
+
+keyw=['mat_Virgin_Stock','mat_Total_EOL_Landfilled','mat_Total_MFG_Landfilled', 'mat_Total_Landfilled', 
+      'new_Installed_Capacity_[MW]','Installed_Capacity_[W]']
+keywprint = ['VirginMaterialDemand','EOLMaterial', 'ManufacturingScrap','ManufacturingScrapAndEOLMaterial',
+             'NewInstalledCapacity','InstalledCapacity'] 
+keywunits = ['MetricTonnes', 'MetricTonnes', 'MetricTonnes', 'MetricTonnes', 
+            'MW','MW']
+keywdcumneed = [True,True,True,True,
+                True,False]
+keywdlevel = ['material','material','material','material',
+             'module','module']
+keywscale = [1000000, 1000000, 1000000, 1000000,
+            1,1e6]
+#materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+materials = ['glass','aluminium_frames','silver','silicon', 'copper',]
+
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+
+# Loop over Simularionts r1 r2 ... 
+for kk in range(0, len(Simulations)):
+    obj = Simulations[kk]
+
+    # Loop over Scenarios
+    for zz in range(0, len(obj.scenario)):
+        case = list(obj.scenario.keys())[zz]
+        
+        foo = pd.DataFrame()
+        for jj in range (0, len(keyw)):
+
+            if keywdlevel[jj] == 'material':
+                for ii in range (0, len(materials)):    
+                    sentit = '@value|'+keywprint[jj]+'|'+materials[ii].capitalize() +'#'+keywunits[jj]
+                    foo[sentit] = obj.scenario[case].material[materials[ii]].materialdata[keyw[jj]]/keywscale[jj] 
+            
+            else:
+                sentit = '@value|'+keywprint[jj]+'|'+'PV' +'#'+keywunits[jj]
+                #sentit = '@value|'+keywprint[jj]+'#'+keywunits[jj]
+                foo[sentit] = obj.scenario[case].data[keyw[jj]]/keywscale[jj] 
+
+
+
+        foo['@case'] = case
+        foo['@scenario|Solar Futures'] = obj.name
+        foo['@timeseries|Year'] = obj.scenario[case].data.year
+
+        scenariolist = scenariolist.append(foo)   
+
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+#scenariolist = scenariolist/1000000 # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv('PVSC Nation OpenEI Yearly Only.csv', index=False)
+
+print("Done")
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+#plt.plot(UScum['new_Installed_Capacity_[MW]BifacialProjection']/1e6, 'k', label='Cumulative New Installs')
+#plt.plot(UScum['Capacity_Irena_EL_Bifacial']/1e12, 'r', linewidth=4.0, label='Irena EL Reliability')
+#plt.plot(UScum['Capacity_Irena_RL_Bifacial']/1e12, 'g', linewidth=4.0, label='Irena RL Reliability')
+#plt.plot(UScum['Capacity_BifacialProjection_SameInstalls']/1e12, 'lightcoral', linewidth=4.0, label='PV ICE Reliability')
+#plt.plot(UScum['Capacity_BifacialProjection']/1e12, 'gold', linestyle='dashed', linewidth=4.0, label='PV ICE Reduced Installs')
 
 
 # In[ ]:
