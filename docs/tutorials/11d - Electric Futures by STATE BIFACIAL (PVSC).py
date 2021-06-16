@@ -1,32 +1,42 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# # PVSC 2021 Paper: by STATES
+# ### Electrification Futures BASE Installations, 
+# ### with Module Composition Scenarios for 'TODAY' and 'Bifacial Projection';
+# ### Just PV ICE Reliability Approach, no Bifaciality Factor Assumptions
+# 
+# 
+# SUMMARY OF OBJECTS:
+# r1 - Today. scenarios: STATES
+# r2 - Bifacial Projection. scenarios: STATES
+# 
+# 
+
+# In[1]:
 
 
 import os
 from pathlib import Path
 
 testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'PVSC')
-#testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'ElectricFutures')
-
-
-# Another option using relative address; for some operative systems you might need '/' instead of '\'
-# testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
 
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[6]:
+# In[2]:
 
 
 MATERIALS = ['glass','silver','silicon', 'copper','aluminium_frames']
 MATERIAL = MATERIALS[0]
 
 MODULEBASELINE = r'..\..\baselines\LiteratureProjections\EF-CapacityByState-basecase.csv'
+## COMMENTED OUT BECAUSE WE ARE NOT DOING THE "HIGH ELECTRIFICATION SCENARIO¶
+#MODULEBASELINE_High = r'..\..\baselines\LiteratureProjections\EF-CapacityByState-LowREHighElec.csv'
+MODULEBASELINE_OtherParams = r'..\..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2021_basecase.csv'
 
 
-# In[7]:
+# In[3]:
 
 
 import PV_ICE
@@ -35,19 +45,27 @@ import pandas as pd
 import numpy as np
 
 
-# In[8]:
+# In[4]:
 
 
 PV_ICE.__version__
 
 
-# ### Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
+# In[5]:
 
-# In[9]:
+
+plt.rcParams.update({'font.size': 22})
+plt.rcParams['figure.figsize'] = (12, 5)
+
+
+# # Loading Module Baseline. 
+# ## Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
+
+# In[6]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='US', file=r'..\..\baselines\ReedsSubset\baseline_modules_US_Reeds_EF.csv')
+r1.createScenario(name='US', file=MODULEBASELINE_OtherParams)
 baseline = r1.scenario['US'].data
 baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
 baseline.set_index('year', inplace=True)
@@ -55,14 +73,17 @@ baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
 baseline.head()
 
 
-# In[10]:
+# ## Important: STATE DATA STARTS ON 2018, so dropping columns for making the baselines
+
+# In[7]:
 
 
-plt.rcParams.update({'font.size': 22})
-plt.rcParams['figure.figsize'] = (12, 5)
+baseline = baseline.iloc[23:]
 
 
-# In[ ]:
+# ## MERGE Baseline with States Instals
+
+# In[8]:
 
 
 df = pd.read_csv(MODULEBASELINE)
@@ -70,7 +91,7 @@ df.set_index(['Type','State','year'], inplace=True)
 df.head()
 
 
-# In[ ]:
+# In[9]:
 
 
 for ii in range (len(df.unstack(level=2))):   
@@ -78,7 +99,7 @@ for ii in range (len(df.unstack(level=2))):
     SCEN = df.unstack(level=2).iloc[ii].name[0]
     SCEN=SCEN.replace('+', '_')
     filetitle = 'base_'+SCEN+'_'+STATE +'.csv'
-    filetitle = os.path.join(testfolder, 'baselines', filetitle)
+    filetitle = os.path.join(testfolder, 'STATES', filetitle)
     A = df.unstack(level=2).iloc[ii]
     A = A.droplevel(level=0)
     A.name = 'new_Installed_Capacity_[MW]'
@@ -103,23 +124,23 @@ for ii in range (len(df.unstack(level=2))):
         A.to_csv(ict, header=False)
 
 
-# In[ ]:
+# #### COMMENTED OUT BECAUSE WE ARE NOT DOING THE "HIGH ELECTRIFICATION SCENARIO
+
+# In[10]:
 
 
+## COMMENTED OUT BECAUSE WE ARE NOT DOING THE "HIGH ELECTRIFICATION SCENARIO
+"""
 df = pd.read_csv(MODULEBASELINE_High)
 df.set_index(['Type','State','year'], inplace=True)
 df.head()
-
-
-# In[ ]:
-
 
 for ii in range (len(df.unstack(level=2))):   
     STATE = df.unstack(level=2).iloc[ii].name[1]
     SCEN = df.unstack(level=2).iloc[ii].name[0]
     SCEN=SCEN.replace('+', '_')
     filetitle = 'LowREHighElec_'+SCEN+'_'+STATE +'.csv'
-    filetitle = os.path.join(testfolder, 'baselines', filetitle)
+    filetitle = os.path.join(testfolder, 'STATEs', filetitle)
     A = df.unstack(level=2).iloc[ii]
     A = A.droplevel(level=0)
     A.name = 'new_Installed_Capacity_[MW]'
@@ -132,7 +153,10 @@ for ii in range (len(df.unstack(level=2))):
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
     
     
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repowering,mod_Repairing\n"    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"\
+    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"\
+    "mod_Repowering,mod_Repairing\n"\
+    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -143,122 +167,101 @@ for ii in range (len(df.unstack(level=2))):
 
         #    savedata.to_csv(ict, index=False)
         A.to_csv(ict, header=False)
-
-
-# In[ ]:
-
-
-ict
+"""
+pass
 
 
 # # DO SIMULATIONS
 
-# In[ ]:
+# In[11]:
 
 
+#### Not really doing anything with Sims 'LowReHighElec' at the moment
 Sims=['base','LowREHighElec']
 
 
-# In[ ]:
+# In[12]:
 
 
-baselineinstalls = os.path.join(testfolder, 'baselines')
+baselineinstalls = os.path.join(testfolder, 'STATEs')
 onlyfiles = [f for f in os.listdir(baselineinstalls)]
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
+# In[13]:
 
 
 sim1 = [f for f in onlyfiles if f.startswith(Sims[0])]
-sim2 = [f for f in onlyfiles if f.startswith(Sims[1])]
+## Not really doing anything with Sims 'LowReHighElec' at the moment
+#sim2 = [f for f in onlyfiles if f.startswith(Sims[1])]
+sim1[2]
 
 
-# In[ ]:
+# #### Get List of States
+
+# In[14]:
 
 
 STATEs = [i.split('_', 4)[2] for i in sim1]
 STATEs = [i.split('.', 1)[0] for i in STATEs]
 
 
-# In[ ]:
+# In[15]:
 
 
+MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper']
 
 
-
-# In[ ]:
-
+# In[16]:
 
 
+MATERIALBASELINE_GLASS_TODAY = r'..\..\baselines\baseline_material_glass_hold2020.csv'
+MATERIALBASELINE_ALFrames_TODAY = r'..\..\baselines\baseline_material_aluminium_frames_hold2020.csv'
+MATERIALBASELINE_GLASS_BIFACIALPROJECTION = r'..\..\baselines\baseline_material_glass_bifacialTrend.csv'
+MATERIALBASELINE_ALFrames_BIFACIALPROJEcTION = r'..\..\baselines\baseline_material_aluminium_frames_hold2020.csv'
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-testfolder
-
-
-# In[ ]:
-
-
-#for ii in range (0, 1): #len(scenarios):
-i = 0
+# TODAY
 r1 = PV_ICE.Simulation(name='Today', path=testfolder)
-
-MATERIALBASELINE_GLASS = r'materialsubsets\baseline_material_glass_hold2020.csv'
-MATERIALBASELINE_ALFrames = r'materialsubsets\baseline_material_aluminium_frames_hold2020.csv'
-
 
 for jj in range (0, len(STATEs)): 
     filetitle = sim1[jj]
-    filetitle = os.path.join(testfolder, 'baselines', filetitle) 
+    filetitle = os.path.join(testfolder, 'STATEs', filetitle) 
     scen = STATEs[jj]
     r1.createScenario(name=scen, file=filetitle)
-    r1.scenario[scen].addMaterial('glass', file=MATERIALBASELINE_GLASS)
-    r1.scenario[scen].addMaterial('aluminum', file=MATERIALBASELINE_ALFrames)
-    r1.scenario[scen].addMaterial('silicon', file=r'materialsubsets\baseline_material_silicon_Reeds.csv')
-    r1.scenario[scen].addMaterial('silver', file=r'materialsubsets\baseline_material_silver_Reeds.csv')
-    r1.scenario[scen].addMaterial('copper', file=r'materialsubsets\baseline_material_copper_Reeds.csv')
+    r1.scenario[scen].addMaterial('glass', file=MATERIALBASELINE_GLASS_TODAY)
+    r1.scenario[scen].material['glass'].materialdata = r1.scenario[scen].material['glass'].materialdata.iloc[23:].reset_index(drop=True)
+    
+    r1.scenario[scen].material['glass'].materialdata = r1.scenario[scen].material['glass'].materialdata
+    r1.scenario[scen].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_TODAY)
+    r1.scenario[scen].material['aluminium_frames'].materialdata = r1.scenario[scen].material['aluminium_frames'].materialdata.iloc[23:].reset_index(drop=True)
+    
+    for mat in range (2, len(MATERIALS)):
+        MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+        r1.scenario[scen].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+        r1.scenario[scen].material[MATERIALS[mat]].materialdata = r1.scenario[scen].material[MATERIALS[mat]].materialdata.iloc[23:].reset_index(drop=True)
 
-
-i = 1
+# Bifacial Projection
 r2 = PV_ICE.Simulation(name='Bifacial', path=testfolder)
 
-MATERIALBASELINE_GLASS = r'materialsubsets\baseline_material_glass_bifacialTrend.csv'
-MATERIALBASELINE_ALFrames = r'materialsubsets\baseline_material_aluminium_frames_bifacialTrend.csv'
-
-
 for jj in range (0, len(STATEs)): 
-    filetitle = sim2[jj]
-    filetitle = os.path.join(testfolder, 'baselines', filetitle)    
+    filetitle = sim1[jj]
+    filetitle = os.path.join(testfolder, 'STATEs', filetitle) 
     scen = STATEs[jj]
     r2.createScenario(name=scen, file=filetitle)
-    r2.scenario[scen].addMaterial('glass', file=MATERIALBASELINE_GLASS)
-    r2.scenario[scen].addMaterial('aluminum', file=MATERIALBASELINE_ALFrames)
-    r2.scenario[scen].addMaterial('silicon', file=r'materialsubsets\baseline_material_silicon_Reeds.csv')
-    r2.scenario[scen].addMaterial('silver', file=r'materialsubsets\baseline_material_silver_Reeds.csv')
-    r2.scenario[scen].addMaterial('copper', file=r'materialsubsets\baseline_material_copper_Reeds.csv')
+    r2.scenario[scen].addMaterial('glass', file=MATERIALBASELINE_GLASS_BIFACIALPROJECTION)
+    r2.scenario[scen].material['glass'].materialdata = r2.scenario[scen].material['glass'].materialdata.iloc[23:].reset_index(drop=True)
+    
+    r2.scenario[scen].material['glass'].materialdata = r2.scenario[scen].material['glass'].materialdata
+    r2.scenario[scen].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_BIFACIALPROJEcTION)
+    r2.scenario[scen].material['aluminium_frames'].materialdata = r2.scenario[scen].material['aluminium_frames'].materialdata.iloc[23:].reset_index(drop=True)
+    
+    for mat in range (2, len(MATERIALS)):
+        MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+        r2.scenario[scen].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+        r2.scenario[scen].material[MATERIALS[mat]].materialdata = r2.scenario[scen].material[MATERIALS[mat]].materialdata.iloc[23:].reset_index(drop=True)
 
 
-# In[ ]:
+# In[17]:
 
 
 r1.calculateMassFlow()
@@ -267,21 +270,14 @@ r2.calculateMassFlow()
 
 # # OPEN EI
 
-# In[ ]:
+# In[18]:
 
 
-kk=0
 SFScenarios = [r1, r2]
-SFScenarios[kk].name
+SFScenarios[0].name
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
+# In[19]:
 
 
 # WORK ON THIS FOIR OPENEI
@@ -299,6 +295,7 @@ keywdlevel = ['material','material','material','material',
 keywscale = [1000000, 1000000, 1000000, 1000000,
             1,1e6]
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+materials = ['glass','aluminium_frames','silver','silicon', 'copper']
 
 # Loop over SF Scenarios
 
@@ -350,28 +347,30 @@ scenariolist = scenariolist[cols]
 #scenariolist = scenariolist/1000000 # Converting to Metric Tons
 #scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
 #scenariolist = scenariolist.applymap(lambda x: int(x))
-scenariolist.to_csv('OPEN EI PVSC by State ELECTRIF FUTURES.csv', index=False)
+scenariolist.to_csv('OPEN EI 1 - STATE - PVSC 2021 PV ICE Today and Bifacial Projection All columns.csv', index=False)
 
 print("Done")
 
 
-# In[ ]:
+# In[20]:
 
 
-scenariolist
+scenariolist.head(5)
 
 
-# In[ ]:
+# In[21]:
 
 
-scenariolist.keys()
+#scenariolist.keys()
 
 
-# In[ ]:
+# ### Save REDUCED CSV
+# ###### Just Capacity & Module EOL Waste Columns
+
+# In[22]:
 
 
-# OpenEI 1 - Cumulative EOL by State, Module
-csvtitle = 'OPENEI 1 - PVSC by State.csv'
+csvtitle = 'OPEN EI 2 - STATE - PVSC 2021 PV ICE Today and Bifacial Projection Selected Columns.csv'
 colNames = scenariolist.columns[scenariolist.columns.str.contains('CumulativeEOLMaterial')] 
 
 scenariolist['@value|CumulativeEOLMaterial|Module#MetricTonnes'] = scenariolist[colNames].sum(axis=1)
