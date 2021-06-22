@@ -50,7 +50,7 @@ Documentation
 
 The calculator follows the following diagram for calculating Mass Flow. Baseline inputs are available in the PV_ICE \ baselines folder for US and World past and projected values. Full documentation can be found at [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/latest/).
 
-<img src="docs/images_wiki/PV_ICE_Diagram-AltLegend.PNG" width="550">
+<img src="docs/images_wiki/PV_ICE_Diagram-AltLegend.png" width="550">
 
 [Input data](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing) references include:
 
