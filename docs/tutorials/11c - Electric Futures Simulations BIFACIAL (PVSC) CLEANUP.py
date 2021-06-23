@@ -25,7 +25,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper']
 MATERIAL = MATERIALS[0]
 
-MODULEBASELINE = r'..\..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2021_basecase.csv'
+MODULEBASELINE = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv'
 
 
 # In[3]:

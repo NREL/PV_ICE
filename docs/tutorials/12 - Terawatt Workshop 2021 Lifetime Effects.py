@@ -6,7 +6,7 @@
 # ### RELIABILITY APPROACHES: PV ICE, modifying lifetime (t50, t90, ProjecT) and Degradation
 # 
 
-# In[ ]:
+# In[1]:
 
 
 import os
@@ -17,16 +17,16 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'PVSC')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[ ]:
+# In[9]:
 
 
 MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper']
 MATERIAL = MATERIALS[0]
 
-MODULEBASELINE = r'..\..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2021_basecase.csv'
+MODULEBASELINE = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv'
 
 
-# In[ ]:
+# In[10]:
 
 
 import PV_ICE
@@ -35,13 +35,13 @@ import pandas as pd
 import numpy as np
 
 
-# In[ ]:
+# In[11]:
 
 
 PV_ICE.__version__
 
 
-# In[ ]:
+# In[12]:
 
 
 plt.rcParams.update({'font.size': 22})
@@ -50,16 +50,14 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # # Simulation 1: Regular PV ICE
 
-# In[ ]:
+# In[13]:
 
 
 MATERIALBASELINE_GLASS = r'..\..\baselines\baseline_material_glass.csv'
 MATERIALBASELINE_ALFrames = r'..\..\baselines\baseline_material_aluminium_frames.csv'
-MATERIALBASELINE_GLASS_TODAY
-MATERIALBASELINE_ALFrames_TODAY
 
 
-# In[ ]:
+# In[14]:
 
 
 r1 = PV_ICE.Simulation(name='PV_ICE', path=testfolder)
@@ -84,7 +82,7 @@ for mat in range (2, len(MATERIALS)):
 # <li> Case3 -- r6: mod_degradation
 # 
 
-# In[ ]:
+# In[15]:
 
 
 Life_Good = [3, 6, 9, 12, 15, 18, 21, 24]
@@ -93,7 +91,7 @@ Life_Bad = [element * -1 for element in Life_Good]
 degradation_Bad = [0.2, 0.4, 0.6, 0.8, 1.2, 1.6, 2.0, 3.0]
 
 
-# In[ ]:
+# In[16]:
 
 
 r4 = PV_ICE.Simulation(name='Reliability_Case1', path=testfolder)
@@ -126,7 +124,7 @@ for i in range(0, len(Life_Good)):
         r4.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)   
 
 
-# In[ ]:
+# In[17]:
 
 
 # Sanity Check
@@ -134,7 +132,7 @@ print('Scenario', list(r4.scenario.keys())[0] , 't50 in 2030: ', r4.scenario[lis
 print('Scenario', list(r4.scenario.keys())[1] , 't50 in 2030: ', r4.scenario[list(r4.scenario.keys())[1]].data['mod_reliability_t50'][35])
 
 
-# In[ ]:
+# In[18]:
 
 
 r5 = PV_ICE.Simulation(name='Reliability_Case2', path=testfolder)
@@ -172,7 +170,7 @@ for i in range(0, len(Life_Good)):
         r5.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)   
 
 
-# In[ ]:
+# In[19]:
 
 
 r6 = PV_ICE.Simulation(name='Reliability_Case3', path=testfolder)
