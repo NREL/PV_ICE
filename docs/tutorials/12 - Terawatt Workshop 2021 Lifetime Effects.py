@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # PVSC 2021 Paper
+# # TERAWATT WORKSHOP 2021
 # ### Electrification Futures BASE Installations, 
-# ### with Module Composition Scenarios for 'TODAY' and 'Bifacial Projection';
-# ### RELIABILITY APPROACHES: IRENA EL, IRENA RL, PV ICE
-# ### And Bifaciality Factor Considerations PV ICE Same Installs and PV ICE Reduced Installs
+# ### RELIABILITY APPROACHES: PV ICE, modifying lifetime (t50, t90, ProjecT) and Degradation
 # 
 
-# In[1]:
+# In[ ]:
 
 
 import os
@@ -19,7 +17,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'PVSC')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[2]:
+# In[ ]:
 
 
 MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper']
@@ -28,7 +26,7 @@ MATERIAL = MATERIALS[0]
 MODULEBASELINE = r'..\..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2021_basecase.csv'
 
 
-# In[3]:
+# In[ ]:
 
 
 import PV_ICE
@@ -37,13 +35,13 @@ import pandas as pd
 import numpy as np
 
 
-# In[4]:
+# In[ ]:
 
 
 PV_ICE.__version__
 
 
-# In[5]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 22})
@@ -52,208 +50,188 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # # Simulation 1: Regular PV ICE
 
-# In[6]:
+# In[ ]:
 
 
-MATERIALBASELINE_GLASS_TODAY = r'..\..\baselines\baseline_material_glass_hold2020.csv'
-MATERIALBASELINE_ALFrames_TODAY = r'..\..\baselines\baseline_material_aluminium_frames_hold2020.csv'
-MATERIALBASELINE_GLASS_BIFACIALPROJECTION = r'..\..\baselines\baseline_material_glass_bifacialTrend.csv'
-MATERIALBASELINE_ALFrames_BIFACIALPROJECTION = r'..\..\baselines\baseline_material_aluminium_frames_bifacialTrend.csv'
+MATERIALBASELINE_GLASS = r'..\..\baselines\baseline_material_glass.csv'
+MATERIALBASELINE_ALFrames = r'..\..\baselines\baseline_material_aluminium_frames.csv'
+MATERIALBASELINE_GLASS_TODAY
+MATERIALBASELINE_ALFrames_TODAY
 
 
-# In[7]:
+# In[ ]:
 
 
 r1 = PV_ICE.Simulation(name='PV_ICE', path=testfolder)
 
 r1.createScenario(name='Today', file=MODULEBASELINE)
-r1.scenario['Today'].addMaterial('glass', file=MATERIALBASELINE_GLASS_TODAY)
-r1.scenario['Today'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_TODAY)
+r1.scenario['Today'].addMaterial('glass', file=MATERIALBASELINE_GLASS)
+r1.scenario['Today'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames)
 for mat in range (2, len(MATERIALS)):
     MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
     r1.scenario['Today'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
     
-r1.createScenario(name='Bifacial', file=MODULEBASELINE)
-r1.scenario['Bifacial'].addMaterial('glass', file=MATERIALBASELINE_GLASS_BIFACIALPROJECTION)
-r1.scenario['Bifacial'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_BIFACIALPROJECTION)
-for mat in range (2, len(MATERIALS)):
-    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r1.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
-# In[8]:
+# # LIFETIMES
+# 
+
+# # RELIABILITY MESS
+
+# ### Variables modified on each case:
+# <li> Case1 -- r4 : mod_lifetime, mod_reliability_t50, mod_reliability_t90
+# <li> Case2 -- r5: mod_lifetime, mod_reliability_t50, mod_reliability_t90, mod_degradation
+# <li> Case3 -- r6: mod_degradation
+# 
+
+# In[ ]:
 
 
-MATERIALBASELINE_Mono = r'..\..\baselines\baseline_modules_US_ITRPVPrediction_monofacialModules.csv'
-MATERIALBASELINE_Bifi = r'..\..\baselines\baseline_modules_US_ITRPVPrediction_bifacialModules.csv'
-bifacialityfactors = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\baselines\bifaciality_factor.csv'
-
-r0a = PV_ICE.Simulation(name='Mono', path=testfolder)
-
-r0a.createScenario(name='Bifacial', file=MATERIALBASELINE_Mono)
-r0a.scenario['Bifacial'].addMaterial('glass', file=MATERIALBASELINE_GLASS_TODAY)
-r0a.scenario['Bifacial'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_TODAY)
-for mat in range (2, len(MATERIALS)):
-    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r0a.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-
-r0b = PV_ICE.Simulation(name='Bifacial_ReducedInstalls', path=testfolder)
-
-r0b.createScenario(name='Bifacial', file=MATERIALBASELINE_Bifi)
-r0b.scenario['Bifacial'].addMaterial('glass', file=MATERIALBASELINE_GLASS_BIFACIALPROJECTION)
-r0b.scenario['Bifacial'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_BIFACIALPROJECTION)
-for mat in range (2, len(MATERIALS)):
-    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r0b.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+Life_Good = [3, 6, 9, 12, 15, 18, 21, 24]
+degradation_Good = [-0.1, -0.2, -0.3, -0.4, -0.5, -0.6, -0.7, -0.8]
+Life_Bad = [element * -1 for element in Life_Good]
+degradation_Bad = [0.2, 0.4, 0.6, 0.8, 1.2, 1.6, 2.0, 3.0]
 
 
-# In[9]:
+# In[ ]:
 
 
-r0c = PV_ICE.Simulation(name='Bifacial_SameInstalls', path=testfolder)
+r4 = PV_ICE.Simulation(name='Reliability_Case1', path=testfolder)
 
-r0c.createScenario(name='Bifacial', file=MATERIALBASELINE_Bifi)
-r0c.scenario['Bifacial'].addMaterial('glass', file=MATERIALBASELINE_GLASS_BIFACIALPROJECTION)
-r0c.scenario['Bifacial'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_BIFACIALPROJECTION)
-for mat in range (2, len(MATERIALS)):
-    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r0c.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+for i in range(0, len(Life_Good)):
+    scenname = 'Lifetime_Improvements_of_'+str(Life_Good[i])+'_years'
+    r4.createScenario(name=scenname, file=MODULEBASELINE)
+    r4.scenario[scenname].data['mod_reliability_t50'] = r4.scenario[scenname].data['mod_reliability_t50'] + Life_Good[i]
+    r4.scenario[scenname].data['mod_reliability_t90'] = r4.scenario[scenname].data['mod_reliability_t90'] + Life_Good[i]
+    r4.scenario[scenname].data['mod_lifetime'] = r4.scenario[scenname].data['mod_lifetime'] + Life_Good[i]
+    r4.scenario[scenname].addMaterial('glass', file=MATERIALBASELINE_GLASS)
+    r4.scenario[scenname].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames)
+    for mat in range (2, len(MATERIALS)):
+        MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+        r4.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+
+    scenname = 'Lifetime_Decline_of_'+str(Life_Good[i])+'_years'
+    r4.createScenario(name=scenname, file=MODULEBASELINE)
+    r4.scenario[scenname].data['mod_reliability_t50'] = r4.scenario[scenname].data['mod_reliability_t50'] + Life_Bad[i]
+    r4.scenario[scenname].data['mod_reliability_t90'] = r4.scenario[scenname].data['mod_reliability_t90'] + Life_Bad[i]
+    r4.scenario[scenname].data['mod_lifetime'] = r4.scenario[scenname].data['mod_lifetime'] + Life_Bad[i]
+    r4.scenario[scenname].data['mod_reliability_t50'][r4.scenario[scenname].data['mod_reliability_t50']<=3.0] = 1.0
+    r4.scenario[scenname].data['mod_reliability_t90'][r4.scenario[scenname].data['mod_reliability_t90']<=3.0] = 2.0
+    r4.scenario[scenname].data['mod_lifetime'][r4.scenario[scenname].data['mod_lifetime']<=3.0] = 3.0
+
+    r4.scenario[scenname].addMaterial('glass', file=MATERIALBASELINE_GLASS)
+    r4.scenario[scenname].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames)
+    for mat in range (2, len(MATERIALS)):
+        MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+        r4.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)   
 
 
-# In[10]:
+# In[ ]:
 
 
-# BifacialProjection.Bifacial --> now "Bifacial_ReducedInstalls.Bifacial"
-# BifacialProjection.Mono --> now 'Mono.Bifacial'
-# SameInstalls.Bifacial_SameInstalls --> now Bifacial_SameInstalls.Bifacial"
+# Sanity Check
+print('Scenario', list(r4.scenario.keys())[0] , 't50 in 2030: ', r4.scenario[list(r4.scenario.keys())[0]].data['mod_reliability_t50'][35])
+print('Scenario', list(r4.scenario.keys())[1] , 't50 in 2030: ', r4.scenario[list(r4.scenario.keys())[1]].data['mod_reliability_t50'][35])
 
 
-# In[11]:
+# In[ ]:
 
 
-# Irena EL 
-r2 = PV_ICE.Simulation(name='Irena_EL', path=testfolder)
+r5 = PV_ICE.Simulation(name='Reliability_Case2', path=testfolder)
 
-r2.createScenario(name='Today', file=MODULEBASELINE)
-r2.scenario['Today'].data['mod_lifetime'] = 40
-r2.scenario['Today'].data['mod_MFG_eff'] = 100.0
-
-r2.scenario['Today'].addMaterial('glass', file=MATERIALBASELINE_GLASS_TODAY)
-r2.scenario['Today'].material['glass'].materialdata['mat_MFG_eff'] = 100.0   
-r2.scenario['Today'].material['glass'].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
-
-r2.scenario['Today'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_TODAY)
-r2.scenario['Today'].material['aluminium_frames'].materialdata['mat_MFG_eff'] = 100.0   
-r2.scenario['Today'].material['aluminium_frames'].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
-
-for mat in range (2, len(MATERIALS)):
-    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r2.scenario['Today'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-    r2.scenario['Today'].material[MATERIALS[mat]].materialdata['mat_MFG_eff'] = 100.0   
-    r2.scenario['Today'].material[MATERIALS[mat]].materialdata['mat_MFG_scrap_Recycled'] = 0.0
+for i in range(0, len(Life_Good)):
+    scenname = 'Lifetime_Improvements_of_'+str(Life_Good[i])+'_years'
+    r5.createScenario(name=scenname, file=MODULEBASELINE)
+    r5.scenario[scenname].data['mod_reliability_t50'] = r5.scenario[scenname].data['mod_reliability_t50'] + Life_Good[i]
+    r5.scenario[scenname].data['mod_reliability_t90'] = r5.scenario[scenname].data['mod_reliability_t90'] + Life_Good[i]
+    r5.scenario[scenname].data['mod_lifetime'] = r5.scenario[scenname].data['mod_lifetime'] + Life_Good[i]
+    r5.scenario[scenname].data['mod_degradation'] = r5.scenario[scenname].data['mod_degradation'] + degradation_Good[i]
+    r5.scenario[scenname].data['mod_degradation'][r5.scenario[scenname].data['mod_degradation']<=0.0] = 0.000000001
     
+    r5.scenario[scenname].addMaterial('glass', file=MATERIALBASELINE_GLASS)
+    r5.scenario[scenname].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames)
+    for mat in range (2, len(MATERIALS)):
+        MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+        r5.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
-r2.createScenario(name='Bifacial', file=MODULEBASELINE)
-r2.scenario['Bifacial'].data['mod_lifetime'] = 40
-r2.scenario['Bifacial'].data['mod_MFG_eff'] = 100.0
+    scenname = 'Lifetime_Decline_of_'+str(Life_Good[i])+'_years'
+    r5.createScenario(name=scenname, file=MODULEBASELINE)
+    r5.scenario[scenname].data['mod_reliability_t50'] = r5.scenario[scenname].data['mod_reliability_t50'] + Life_Bad[i]
+    r5.scenario[scenname].data['mod_reliability_t90'] = r5.scenario[scenname].data['mod_reliability_t90'] + Life_Bad[i]
+    r5.scenario[scenname].data['mod_lifetime'] = r5.scenario[scenname].data['mod_lifetime'] + Life_Bad[i]
+    r5.scenario[scenname].data['mod_degradation'] = r5.scenario[scenname].data['mod_degradation'] + degradation_Bad[i]
 
-r2.scenario['Bifacial'].addMaterial('glass', file=MATERIALBASELINE_GLASS_BIFACIALPROJECTION)
-r2.scenario['Bifacial'].material['glass'].materialdata['mat_MFG_eff'] = 100.0   
-r2.scenario['Bifacial'].material['glass'].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+    r5.scenario[scenname].data['mod_reliability_t50'][r5.scenario[scenname].data['mod_reliability_t50']<=3.0] = 1.0
+    r5.scenario[scenname].data['mod_reliability_t90'][r5.scenario[scenname].data['mod_reliability_t90']<=3.0] = 2.0
+    r5.scenario[scenname].data['mod_lifetime'][r5.scenario[scenname].data['mod_lifetime']<=3.0] = 3.0
 
-r2.scenario['Bifacial'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_BIFACIALPROJECTION)
-r2.scenario['Bifacial'].material['aluminium_frames'].materialdata['mat_MFG_eff'] = 100.0   
-r2.scenario['Bifacial'].material['aluminium_frames'].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
-
-for mat in range (2, len(MATERIALS)):
-    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r2.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-    r2.scenario['Bifacial'].material[MATERIALS[mat]].materialdata['mat_MFG_eff'] = 100.0   
-    r2.scenario['Bifacial'].material[MATERIALS[mat]].materialdata['mat_MFG_scrap_Recycled'] = 0.0   
-
-
-# In[12]:
+    r5.scenario[scenname].addMaterial('glass', file=MATERIALBASELINE_GLASS)
+    r5.scenario[scenname].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames)
+    for mat in range (2, len(MATERIALS)):
+        MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+        r5.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)   
 
 
-# Irena RL
-r3 = PV_ICE.Simulation(name='Irena_RL', path=testfolder)
+# In[ ]:
 
-r3.createScenario(name='Today', file=MODULEBASELINE)
-r3.scenario['Today'].data['mod_lifetime'] = 40
-r3.scenario['Today'].data['mod_MFG_eff'] = 100.0
 
-r3.scenario['Today'].addMaterial('glass', file=MATERIALBASELINE_GLASS_TODAY)
-r3.scenario['Today'].material['glass'].materialdata['mat_MFG_eff'] = 100.0   
-r3.scenario['Today'].material['glass'].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+r6 = PV_ICE.Simulation(name='Reliability_Case3', path=testfolder)
 
-r3.scenario['Today'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_TODAY)
-r3.scenario['Today'].material['aluminium_frames'].materialdata['mat_MFG_eff'] = 100.0   
-r3.scenario['Today'].material['aluminium_frames'].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
-
-for mat in range (2, len(MATERIALS)):
-    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r3.scenario['Today'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-    r3.scenario['Today'].material[MATERIALS[mat]].materialdata['mat_MFG_eff'] = 100.0   
-    r3.scenario['Today'].material[MATERIALS[mat]].materialdata['mat_MFG_scrap_Recycled'] = 0.0
+for i in range(0, len(Life_Good)):
+    scenname = 'Lifetime_Improvements_of_'+str(Life_Good[i])+'_years'
+    r6.createScenario(name=scenname, file=MODULEBASELINE)
+    r6.scenario[scenname].data['mod_degradation'] = r6.scenario[scenname].data['mod_degradation'] + degradation_Good[i]
+    r6.scenario[scenname].data['mod_degradation'][r6.scenario[scenname].data['mod_degradation']<=0.0] = 0.000000001
     
+    r6.scenario[scenname].addMaterial('glass', file=MATERIALBASELINE_GLASS)
+    r6.scenario[scenname].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames)
+    for mat in range (2, len(MATERIALS)):
+        MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+        r6.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
-r3.createScenario(name='Bifacial', file=MODULEBASELINE)
-r3.scenario['Bifacial'].data['mod_lifetime'] = 40
-r3.scenario['Bifacial'].data['mod_MFG_eff'] = 100.0
+    scenname = 'Lifetime_Decline_of_'+str(Life_Good[i])+'_years'
+    r6.createScenario(name=scenname, file=MODULEBASELINE)
+    r6.scenario[scenname].data['mod_degradation'] = r6.scenario[scenname].data['mod_degradation'] + degradation_Bad[i]
 
-r3.scenario['Bifacial'].addMaterial('glass', file=MATERIALBASELINE_GLASS_BIFACIALPROJECTION)
-r3.scenario['Bifacial'].material['glass'].materialdata['mat_MFG_eff'] = 100.0   
-r3.scenario['Bifacial'].material['glass'].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+    r6.scenario[scenname].data['mod_reliability_t50'][r6.scenario[scenname].data['mod_reliability_t50']<=3.0] = 1.0
+    r6.scenario[scenname].data['mod_reliability_t90'][r6.scenario[scenname].data['mod_reliability_t90']<=3.0] = 2.0
+    r6.scenario[scenname].data['mod_lifetime'][r6.scenario[scenname].data['mod_lifetime']<=3.0] = 3.0
 
-r3.scenario['Bifacial'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames_BIFACIALPROJECTION)
-r3.scenario['Bifacial'].material['aluminium_frames'].materialdata['mat_MFG_eff'] = 100.0   
-r3.scenario['Bifacial'].material['aluminium_frames'].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
-
-for mat in range (2, len(MATERIALS)):
-    MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r3.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-    r3.scenario['Bifacial'].material[MATERIALS[mat]].materialdata['mat_MFG_eff'] = 100.0   
-    r3.scenario['Bifacial'].material[MATERIALS[mat]].materialdata['mat_MFG_scrap_Recycled'] = 0.0
-    
-
-
-# # Run Simulations 
-
-# In[13]:
+    r6.scenario[scenname].addMaterial('glass', file=MATERIALBASELINE_GLASS)
+    r6.scenario[scenname].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames)
+    for mat in range (2, len(MATERIALS)):
+        MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
+        r6.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)   
 
 
-r0a.calculateMassFlow() # Mono.Bifacial
-r0b.calculateMassFlow(bifacialityfactors=bifacialityfactors) #  Bifacial_ReducedInstalls.Bifacial
-r0c.calculateMassFlow(bifacialityfactors=bifacialityfactors, reducecapacity=False) # Bifacial_SameInstalls.Bifacial
+# ### Run Simulations 
+
+# In[ ]:
+
+
 r1.calculateMassFlow()
-
-
-# In[14]:
-
-
-weibullInputParams = {'alpha': 2.49, 'beta':30}  # Early-loss scenario IRENA
-r2.calculateMassFlow(weibullInputParams=weibullInputParams)
-
-weibullInputParams = {'alpha': 5.3759, 'beta':30}  # Regular-loss scenario IRENA
-r3.calculateMassFlow(weibullInputParams=weibullInputParams)
+r4.calculateMassFlow()
+r5.calculateMassFlow()
+r6.calculateMassFlow()
+r4.scenario[list(r4.scenario.keys())[-1]].data
 
 
 # ## Creating Summary of results 
 # 
 
-# In[15]:
+# In[ ]:
 
 
 Simulations = [r0a, r0b, r0c, r1, r2, r3]
 
 
-# In[16]:
+# In[ ]:
 
 
 USyearly=pd.DataFrame()
 
 
-# In[17]:
+# In[ ]:
 
 
 keyword='mat_Total_Landfilled'
@@ -277,7 +255,7 @@ for kk in range(0, len(Simulations)):
         USyearly['Waste_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[18]:
+# In[ ]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -301,7 +279,7 @@ for kk in range(0, len(Simulations)):
         USyearly['Waste_EOL_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[19]:
+# In[ ]:
 
 
 keyword='mat_Total_MFG_Landfilled'
@@ -325,7 +303,7 @@ for kk in range(0, len(Simulations)):
         USyearly['Waste_MFG_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[20]:
+# In[ ]:
 
 
 keyword='mat_Virgin_Stock'
@@ -352,7 +330,7 @@ for kk in range(0, len(Simulations)):
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[21]:
+# In[ ]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
@@ -361,7 +339,7 @@ USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 
 # ### Adding NEW Installed Capacity to US
 
-# In[22]:
+# In[ ]:
 
 
 keyword='new_Installed_Capacity_[MW]'
@@ -381,7 +359,7 @@ USyearly.head(10)
 
 # # Combining BifacialProjection
 
-# In[23]:
+# In[ ]:
 
 
 filter_col_Bifacial_ReducedInstalls = [col for col in USyearly if col.endswith('Bifacial_ReducedInstalls_Bifacial')]
@@ -389,7 +367,7 @@ filter_col_Mono = [col for col in USyearly if col.endswith('Mono_Bifacial')]
 filter_col_Bifacial_SameInstalls = [col for col in USyearly if col.endswith('Bifacial_SameInstalls_Bifacial')]
 
 
-# In[24]:
+# In[ ]:
 
 
 new_col_titles = filter_col_Bifacial_ReducedInstalls.copy()
@@ -399,7 +377,7 @@ USyearly = pd.concat([USyearly, df_Bifacial_ReducedInstalls], axis=1)
 USyearly = USyearly[USyearly.columns.drop(filter_col_Bifacial_ReducedInstalls)]
 
 
-# In[25]:
+# In[ ]:
 
 
 new_col_titles = filter_col_Bifacial_SameInstalls.copy()
@@ -409,7 +387,7 @@ USyearly = pd.concat([USyearly, df_Bifacial_SameInstalls], axis=1)
 USyearly = USyearly[USyearly.columns.drop(filter_col_Bifacial_SameInstalls)]
 
 
-# In[26]:
+# In[ ]:
 
 
 USyearly = USyearly[USyearly.columns.drop(filter_col_Mono)]
@@ -417,7 +395,7 @@ USyearly = USyearly[USyearly.columns.drop(filter_col_Mono)]
 
 # ### Creating Cuulatives 
 
-# In[27]:
+# In[ ]:
 
 
 UScum = USyearly.copy()
@@ -427,7 +405,7 @@ UScum.head()
 
 # ### Adding Installed Capacity to US
 
-# In[28]:
+# In[ ]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -446,14 +424,14 @@ for kk in range(0, len(Simulations)):
         
 
 
-# In[29]:
+# In[ ]:
 
 
 UScum['Capacity_Bifacial_ReducedInstalls'] = UScum['Capacity_Mono_Bifacial'] + UScum['Capacity_Bifacial_ReducedInstalls_Bifacial']
 UScum['Capacity_Bifacial_SameInstalls'] = UScum['Capacity_Mono_Bifacial'] + UScum['Capacity_Bifacial_SameInstalls_Bifacial']
 
 
-# In[30]:
+# In[ ]:
 
 
 UScum = UScum[UScum.columns.drop(['Capacity_Mono_Bifacial','Capacity_Bifacial_ReducedInstalls_Bifacial', 'Capacity_Bifacial_SameInstalls_Bifacial'])]
@@ -461,20 +439,20 @@ UScum = UScum[UScum.columns.drop(['Capacity_Mono_Bifacial','Capacity_Bifacial_Re
 
 # ### Reindexing
 
-# In[31]:
+# In[ ]:
 
 
 USyearly.index = r1.scenario['Today'].data['year']
 UScum.index = r1.scenario['Today'].data['year']
 
 
-# In[32]:
+# In[ ]:
 
 
 UScum.tail(5)
 
 
-# In[34]:
+# In[ ]:
 
 
 UScum.to_csv('Cumulative_Results.csv')
@@ -489,7 +467,7 @@ USyearly.to_csv('Yearly_Results.csv')
 
 # ## Mining Capacity
 
-# In[35]:
+# In[ ]:
 
 
 mining2020_aluminum = 65267000
@@ -500,7 +478,7 @@ mining2020_silicon = 8000000
 
 # # PLOTTING GALORE
 
-# In[36]:
+# In[ ]:
 
 
 list(USyearly.keys())
@@ -512,7 +490,7 @@ list(USyearly.keys())
 
 
 
-# In[37]:
+# In[ ]:
 
 
 #VirginStock_glass_PVSC_Today
@@ -575,7 +553,7 @@ axs.set_ylabel('Virgin material needs as a percentage of \n 2020 global mining p
 #fig.savefig(os.path.join(testfolder,'Fig_1x1_MaterialNeeds Ratio to Production_NREL2018.png'), dpi=600)
 
 
-# In[38]:
+# In[ ]:
 
 
 bifacial_foo = USyearly[keyw+materials[4]+'_'+name0].iloc[-1]*100/mining2020_aluminum
@@ -585,7 +563,7 @@ print(bifacial_foo)
 print("In Year 2050, AL Needs Ratio to Mining Supply REDUCTION Of ", (today_foo-bifacial_foo)*100/today_foo-bifacial_foo)
 
 
-# In[39]:
+# In[ ]:
 
 
 bifacial_foo = USyearly[keyw+materials[4]+'_'+name0].sum()*100/mining2020_aluminum
@@ -595,7 +573,7 @@ print(bifacial_foo)
 print("Cumulative 2020-2050 AL Needs Ratio to Mining Supply REDUCTION Of ", (today_foo-bifacial_foo)*100/today_foo-bifacial_foo)
 
 
-# In[40]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -699,7 +677,7 @@ print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[41]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -804,7 +782,7 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 # # Waste_ EOL 
 
-# In[42]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -981,7 +959,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[43]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1161,13 +1139,13 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[44]:
+# In[ ]:
 
 
 list(USyearly.keys())
 
 
-# In[49]:
+# In[ ]:
 
 
 
@@ -1366,7 +1344,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[62]:
+# In[ ]:
 
 
 # PLOT FOR PAPER 
@@ -2619,106 +2597,6 @@ print("% loss with PV ICE, Keeping Bifacial Installs ")
 
 
 
-# # WEIBULL PLOTS
-
-# In[ ]:
-
-
-from matplotlib.pyplot import gca,show
-
-
-# In[ ]:
-
-
-firstgen = r1.scenario['Today'].data.WeibullParams.iloc[0]
-ares = PV_ICE.weibull_cdf_vis(firstgen['alpha'],firstgen['beta'])
-
-twentythirtygen = firstgen = r1.scenario['Today'].data.WeibullParams.iloc[-1]
-bres = PV_ICE.weibull_cdf_vis(twentythirtygen['alpha'],twentythirtygen['beta'])
-
-#userWeibulls = {'alpha': 3.4,
-#               'beta': 4.5}
-#userres = PV_ICE.weibull_cdf_vis(userWeibulls['alpha'],userWeibulls['beta'])
-
-# Irena 'EL' 2016
-alpha = 2.4928
-Lifetime = 30
-IrenaEarly = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
-
-# Irena 'RL' 2016
-alpha = 5.3759
-Lifetime = 30
-IrenaReg = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
-
-
-# In[ ]:
-
-
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (10, 8)
-    
-#plt.plot(ares, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
-#plt.plot(bres, color='b', label=r'$ \alpha $ : '+str(round(twentythirtygen['alpha'],2))+ r' $ \beta $ : '+ str(round(twentythirtygen['beta'],2)) + ' PV ICE, gen 2050')
-plt.plot(IrenaEarly, color='red', linewidth=16.0, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
-#plt.plot(IrenaReg, color='orange', linewidth=4.0, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
-#plt.legend()
-plt.ylabel('Cumulative Distribution Function (CDF)')
-plt.xlabel('Years since install')
-plt.xlim([0,50])
-ax = plt.gca()
-ax.axes.xaxis.set_visible(False)
-ax.axes.yaxis.set_visible(False)
-
-#plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
-
-
-# In[ ]:
-
-
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (10, 8)
-    
-#plt.plot(ares, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
-#plt.plot(bres, color='b', label=r'$ \alpha $ : '+str(round(twentythirtygen['alpha'],2))+ r' $ \beta $ : '+ str(round(twentythirtygen['beta'],2)) + ' PV ICE, gen 2050')
-#plt.plot(IrenaEarly, color='red', linewidth=4.0, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
-plt.plot(IrenaReg, color='darkgreen', linewidth=16.0, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
-#plt.legend()
-plt.ylabel('Cumulative Distribution Function (CDF)')
-plt.xlabel('Years since install')
-plt.xlim([0,50])
-ax = plt.gca()
-ax.axes.xaxis.set_visible(False)
-ax.axes.yaxis.set_visible(False)
-
-#plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
-
-
-# In[ ]:
-
-
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (10, 8)
-    
-plt.plot(ares, linewidth=16.0, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
-plt.plot(bres, linewidth=16.0, color='b', label=r'$ \alpha $ : '+str(round(twentythirtygen['alpha'],2))+ r' $ \beta $ : '+ str(round(twentythirtygen['beta'],2)) + ' PV ICE, gen 2050')
-#plt.plot(IrenaEarly, color='red', linewidth=4.0, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
-#plt.plot(IrenaReg, color='orange', linewidth=4.0, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
-#plt.legend()
-plt.ylabel('Cumulative Distribution Function (CDF)')
-plt.xlabel('Years since install')
-plt.xlim([0,50])
-ax = plt.gca()
-ax.axes.xaxis.set_visible(False)
-ax.axes.yaxis.set_visible(False)
-
-
-opt = dict(color='r',width=12, headwidth=60, headlength=60)
-
-gca().annotate('',xy=(38,0.5), xycoords='data',xytext =(18,0.5),textcoords = 'data',arrowprops=opt)
-
-#plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
-
-
 # # SAVE RESULTS OPENEI
 
 # In[ ]:
@@ -2788,12 +2666,10 @@ scenariolist.to_csv('OPENEI 4 - Nation by Year.csv', index=False)
 print("Done")
 
 
-# ### UNFINISHED FOR OPENEI STARTING HERE
-
 # In[ ]:
 
 
-
+scenariolist
 
 
 # In[ ]:
@@ -2892,6 +2768,753 @@ df1.rename(columns={'@scenario|Solar Futures': '@scenario|Module Composition Sce
 # @scenario   @ timeseries    @ value|VirginMateiralDemand|Glass#MEtric Tonnes ........
 # PVV_ICE             2020
 # PV_ICE               2030
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+# WORK ON THIS FOIR OPENEI
+
+keyw=['mat_Virgin_Stock','mat_Total_EOL_Landfilled','mat_Total_MFG_Landfilled', 'mat_Total_Landfilled', 
+      'new_Installed_Capacity_[MW]','Installed_Capacity_[W]']
+keywprint = ['VirginMaterialDemand','EOLMaterial', 'ManufacturingScrap','ManufacturingScrapAndEOLMaterial',
+             'NewInstalledCapacity','InstalledCapacity'] 
+keywunits = ['MetricTonnes', 'MetricTonnes', 'MetricTonnes', 'MetricTonnes', 
+            'MW','MW']
+keywdcumneed = [True,True,True,True,
+                True,False]
+keywdlevel = ['material','material','material','material',
+             'module','module']
+keywscale = [1000000, 1000000, 1000000, 1000000,
+            1,1e6]
+#materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+materials = ['glass','aluminium_frames','silver','silicon', 'copper']
+
+# Loop over SF Scenarios
+
+scenariolist = pd.DataFrame()
+
+# Loop over Simularionts r1 r2 ... 
+for kk in range(0, len(Simulations)):
+    obj = Simulations[kk]
+
+    # Loop over Scenarios
+    for zz in range(0, len(obj.scenario)):
+        case = list(obj.scenario.keys())[zz]
+        
+        foo = pd.DataFrame()
+        for jj in range (0, len(keyw)):
+
+            if keywdlevel[jj] == 'material':
+                for ii in range (0, len(materials)):    
+                    sentit = '@value|'+keywprint[jj]+'|'+materials[ii].capitalize() +'#'+keywunits[jj]
+                    foo[sentit] = obj.scenario[case].material[materials[ii]].materialdata[keyw[jj]]/keywscale[jj] 
+            
+            else:
+                sentit = '@value|'+keywprint[jj]+'|'+'PV' +'#'+keywunits[jj]
+                #sentit = '@value|'+keywprint[jj]+'#'+keywunits[jj]
+                foo[sentit] = obj.scenario[case].data[keyw[jj]]/keywscale[jj] 
+
+
+
+        foo['@case'] = case
+        foo['@scenario|Solar Futures'] = obj.name
+        foo['@timeseries|Year'] = obj.scenario[case].data.year
+
+        scenariolist = scenariolist.append(foo)   
+
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
+scenariolist = scenariolist[cols]
+#scenariolist = scenariolist/1000000 # Converting to Metric Tons
+#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+#scenariolist = scenariolist.applymap(lambda x: int(x))
+scenariolist.to_csv('OPENEI 4 - Nation by Year.csv', index=False)
+
+print("Done")
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+#plt.plot(UScum['new_Installed_Capacity_[MW]BifacialProjection']/1e6, 'k', label='Cumulative New Installs')
+#plt.plot(UScum['Capacity_Irena_EL_Bifacial']/1e12, 'r', linewidth=4.0, label='Irena EL Reliability')
+#plt.plot(UScum['Capacity_Irena_RL_Bifacial']/1e12, 'g', linewidth=4.0, label='Irena RL Reliability')
+#plt.plot(UScum['Capacity_BifacialProjection_SameInstalls']/1e12, 'lightcoral', linewidth=4.0, label='PV ICE Reliability')
+#plt.plot(UScum['Capacity_BifacialProjection']/1e12, 'gold', linestyle='dashed', linewidth=4.0, label='PV ICE Reduced Installs')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# # WEIBULL PLOTS
+
+# In[ ]:
+
+
+firstgen = r1.scenario['Today'].data.WeibullParams.iloc[0]
+ares = PV_ICE.weibull_cdf_vis(firstgen['alpha'],firstgen['beta'])
+
+twentythirtygen = firstgen = r1.scenario['Today'].data.WeibullParams.iloc[-1]
+bres = PV_ICE.weibull_cdf_vis(twentythirtygen['alpha'],twentythirtygen['beta'])
+
+#userWeibulls = {'alpha': 3.4,
+#               'beta': 4.5}
+#userres = PV_ICE.weibull_cdf_vis(userWeibulls['alpha'],userWeibulls['beta'])
+
+# Irena 'EL' 2016
+alpha = 2.4928
+Lifetime = 30
+IrenaEarly = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
+
+# Irena 'RL' 2016
+alpha = 5.3759
+Lifetime = 30
+IrenaReg = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (10, 8)
+    
+#plt.plot(ares, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
+#plt.plot(bres, color='b', label=r'$ \alpha $ : '+str(round(twentythirtygen['alpha'],2))+ r' $ \beta $ : '+ str(round(twentythirtygen['beta'],2)) + ' PV ICE, gen 2050')
+plt.plot(IrenaEarly, color='red', linewidth=16.0, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
+#plt.plot(IrenaReg, color='orange', linewidth=4.0, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
+#plt.legend()
+plt.ylabel('Cumulative Distribution Function (CDF)')
+plt.xlabel('Years since install')
+plt.xlim([0,50])
+ax = plt.gca()
+ax.axes.xaxis.set_visible(False)
+ax.axes.yaxis.set_visible(False)
+
+#plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
+
+
+# In[ ]:
+
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (10, 8)
+    
+#plt.plot(ares, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
+#plt.plot(bres, color='b', label=r'$ \alpha $ : '+str(round(twentythirtygen['alpha'],2))+ r' $ \beta $ : '+ str(round(twentythirtygen['beta'],2)) + ' PV ICE, gen 2050')
+#plt.plot(IrenaEarly, color='red', linewidth=4.0, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
+plt.plot(IrenaReg, color='darkgreen', linewidth=16.0, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
+#plt.legend()
+plt.ylabel('Cumulative Distribution Function (CDF)')
+plt.xlabel('Years since install')
+plt.xlim([0,50])
+ax = plt.gca()
+ax.axes.xaxis.set_visible(False)
+ax.axes.yaxis.set_visible(False)
+
+#plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
+
+
+# In[ ]:
+
+
+from matplotlib.pyplot import gca,show
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (10, 8)
+    
+plt.plot(ares, linewidth=16.0, label=r'$ \alpha $ : '+str(round(firstgen['alpha'],2))+ r' $ \beta $ : '+ str(round(firstgen['beta'],2)) + ' PV ICE, gen 1995')
+plt.plot(bres, linewidth=16.0, color='b', label=r'$ \alpha $ : '+str(round(twentythirtygen['alpha'],2))+ r' $ \beta $ : '+ str(round(twentythirtygen['beta'],2)) + ' PV ICE, gen 2050')
+#plt.plot(IrenaEarly, color='red', linewidth=4.0, label=r'$ \alpha $ : 2.49, Early Loss Baseline Irena 2016')
+#plt.plot(IrenaReg, color='orange', linewidth=4.0, label=r'$ \alpha $ : 5.3759, Regular Loss Baseline Irena 2016')
+#plt.legend()
+plt.ylabel('Cumulative Distribution Function (CDF)')
+plt.xlabel('Years since install')
+plt.xlim([0,50])
+ax = plt.gca()
+ax.axes.xaxis.set_visible(False)
+ax.axes.yaxis.set_visible(False)
+
+
+opt = dict(color='r',width=12, headwidth=60, headlength=60)
+
+gca().annotate('',xy=(38,0.5), xycoords='data',xytext =(18,0.5),textcoords = 'data',arrowprops=opt)
+
+#plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# ### TABLES
+
+# In[ ]:
+
+
+# 3 sig figs
+
+USyearly3sig = USyearly.copy()
+UScum3sig = UScum.copy()
+N = 2
+
+UScum3sig = UScum3sig.drop(UScum3sig.index[0])
+USyearly3sig = USyearly3sig.drop(USyearly3sig.index[0])
+
+UScum3sig = UScum3sig.loc[:, ~UScum3sig.columns.str.startswith('Waste_MFG_')]
+USyearly3sig = USyearly3sig.loc[:, ~USyearly3sig.columns.str.startswith('Waste_MFG_')]
+
+USyearly3sig = USyearly3sig.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+USyearly3sig = USyearly3sig.applymap(lambda x: int(x))
+
+UScum3sig = UScum3sig.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
+UScum3sig = UScum3sig.applymap(lambda x: int(x))
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+materials = ['Module','glass', 'aluminium_frames', 'copper', 'silicon', 'silver']
+scencases = ['_base', '_high']
+
+print(" Appendix Table I: Metric Tonnes Installed in field in 2030")
+print(" ########################################################### \n")
+#Loop over scenarios
+for zz in range(0, len(scencases)):
+    scencase = scencases[zz]
+    for kk in range (0, len(objects)):
+        obj = objects[kk].name
+        print("SCENARIO :", obj),      print("~~~~>>>> Case ", scencase)
+
+
+        print("********************************")
+        print("********************************")
+
+        modulemat = 0
+        for ii in range(0, len(materials)):
+            installedmat = (UScum3sig['VirginStock_'+materials[ii]+'_'+obj+scencase].loc[2030]-
+                  UScum3sig['Waste_'+materials[ii]+'_'+obj+'_base'].loc[2030])
+            print(materials[ii], ':', round(installedmat/1000)*1000, 'tons')
+
+        print("Capacity in Year 2030 [GW]:", round(UScum3sig['Capacity_'+obj+scencase].loc[2030]/1e9))
+        print("Capacity in Year 2050 [GW]:", round(UScum3sig['Capacity_'+obj+scencase].loc[2050]/1e9))
+        print("****************************\n")
+
+
+# In[ ]:
+
+
+UScum3sig
+
+
+# In[ ]:
+
+
+print(" WASTE EoL CUMULATIVE RESULTS [Tonnes] ")
+print(" ******************************************")
+filter_col = [col for col in UScum3sig if (col.startswith('Waste_EOL_Module')) ]
+display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
+
+
+# In[ ]:
+
+
+UScum['Waste_EOL_Module_PV_ICE_base'].iloc[-1]
+
+
+# In[ ]:
+
+
+print(" WASTE EoL CUMULATIVE RESULTS [Tonnes] ")
+print(" ******************************************")
+filter_col = [col for col in UScum if (col.startswith('Waste_EOL_Module')) ]
+display(UScum[filter_col].loc[[2016,2020,2030, 2040, 050]])
+
+
+# ### Bonus: Bifacial Trend Cumulative Virgin Needs (not plotted, just values)
+
+# In[ ]:
+
+
+name2 = 'bifacialTrend_high'
+name0 = 'bifacialTrend_base'
+
+cumulations2050 = {}
+for ii in range(0, len(materials)):
+    matcum = []
+    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
+    cumulations2050[materials[ii]] = matcum
+
+dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
+dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
+ 
+print("Cumulative Virgin Needs by 2050 Million Tones by Scenario for Bifacial Trend")
+dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+
+
+# In[ ]:
+
+
+name2 = 'Irena_EL_high'
+name0 = 'Irena_EL_base'
+
+cumulations2050 = {}
+for ii in range(0, len(materials)):
+    matcum = []
+    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
+    cumulations2050[materials[ii]] = matcum
+
+dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
+dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
+ 
+print("Cumulative Virgin Needs by 2050 Million Tones by Scenario for Irena_EL")
+dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+
+
+# In[ ]:
+
+
+name2 = 'Irena_RL_high'
+name0 = 'Irena_RL_base'
+
+cumulations2050 = {}
+for ii in range(0, len(materials)):
+    matcum = []
+    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
+    cumulations2050[materials[ii]] = matcum
+
+dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
+dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
+ 
+print("Cumulative Virgin Needs by 2050 Million Tones by Scenario for Irena_RL")
+dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+
+
+# ### Waste by year
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (15, 8)
+keyw='Waste_'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
+
+
+f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
+
+########################    
+# SUBPLOT 1
+########################
+#######################
+   
+# loop plotting over scenarios
+name2 = 'Simulation1_high'
+name0 = 'Simulation1_base'
+
+
+# SCENARIO 1 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
+            USyearly[keyw+materials[2]+'_'+name0]+USyearly[keyw+materials[3]+'_'+name0]+
+            USyearly[keyw+materials[4]+'_'+name0])
+glassmat = (USyearly[keyw+materials[0]+'_'+name0])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'k.', linewidth=5, label='S1: '+name0+' module mass')
+a0.plot(USyearly.index, glassmat, 'k', linewidth=5, label='S1: '+name0+' glass mass only')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='k', alpha=0.3,
+                 interpolate=True)
+
+# SCENARIO 2 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
+            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
+            USyearly[keyw+materials[4]+'_'+name2])
+glassmat = (USyearly[keyw+materials[0]+'_'+name2])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'c.', linewidth=5, label='S2: '+name2+' module mass')
+a0.plot(USyearly.index, glassmat, 'c', linewidth=5, label='S2: '+name2+' glass mass only')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='c', alpha=0.3,
+                 interpolate=True)
+
+a0.legend()
+a0.set_title('Yearly Material Waste by Scenario')
+a0.set_ylabel('Mass [Million Tonnes]')
+a0.set_xlim([2020, 2050])
+a0.set_xlabel('Years')
+    
+    
+########################    
+# SUBPLOT 2
+########################
+#######################
+# Calculate    
+
+cumulations2050 = {}
+for ii in range(0, len(materials)):
+    matcum = []
+    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
+    cumulations2050[materials[ii]] = matcum
+
+dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
+dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
+
+dfcumulations2050['bottom1'] = dfcumulations2050['glass']
+dfcumulations2050['bottom2'] = dfcumulations2050['bottom1']+dfcumulations2050['aluminium_frames']
+dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['silicon']
+dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
+
+
+## Plot BARS Stuff
+ind=np.arange(2)
+width=0.35 # width of the bars.
+p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
+p1 = a1.bar(ind, dfcumulations2050['aluminium_frames'], width,
+             bottom=dfcumulations2050['bottom1'])
+p2 = a1.bar(ind, dfcumulations2050['silicon'], width,
+             bottom=dfcumulations2050['bottom2'])
+p3 = a1.bar(ind, dfcumulations2050['copper'], width,
+             bottom=dfcumulations2050['bottom3'])
+p4 = a1.bar(ind, dfcumulations2050['silver'], width,
+             bottom=dfcumulations2050['bottom4'])
+
+a1.yaxis.set_label_position("right")
+a1.yaxis.tick_right()
+a1.set_ylabel('Cumulative Waste by 2050 [Million Tonnes]')
+a1.set_xlabel('Scenario')
+a1.set_xticks(ind, ('S1', 'S2'))
+#plt.yticks(np.arange(0, 81, 10))
+a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver'))
+
+f.tight_layout()
+
+f.savefig(title_Method+' Fig_2x1_Yearly WASTE by Scenario and Cumulatives_NREL2018.png', dpi=600)
+
+print("Cumulative Waste by 2050 Million Tones by case")
+dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+
+
+# In[ ]:
+
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (15, 8)
+keyw='Waste_EOL_'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
+
+
+f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
+
+########################    
+# SUBPLOT 1
+########################
+#######################
+   
+# loop plotting over scenarios
+name2 = 'Simulation1_high'
+name0 = 'Simulation1_base'
+
+
+# SCENARIO 1 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name0]+USyearly[keyw+materials[1]+'_'+name0]+
+            USyearly[keyw+materials[2]+'_'+name0]+USyearly[keyw+materials[3]+'_'+name0]+
+            USyearly[keyw+materials[4]+'_'+name0])
+glassmat = (USyearly[keyw+materials[0]+'_'+name0])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'k.', linewidth=5, label='S1: '+name0+' module mass')
+a0.plot(USyearly.index, glassmat, 'k', linewidth=5, label='S1: '+name0+' glass mass only')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='k', alpha=0.3,
+                 interpolate=True)
+
+# SCENARIO 2 ***************
+modulemat = (USyearly[keyw+materials[0]+'_'+name2]+USyearly[keyw+materials[1]+'_'+name2]+
+            USyearly[keyw+materials[2]+'_'+name2]+USyearly[keyw+materials[3]+'_'+name2]+
+            USyearly[keyw+materials[4]+'_'+name2])
+glassmat = (USyearly[keyw+materials[0]+'_'+name2])
+modulemat = modulemat/1000000
+glassmat = glassmat/1000000 
+a0.plot(USyearly.index, modulemat, 'c.', linewidth=5, label='S2: '+name2+' module mass')
+a0.plot(USyearly.index, glassmat, 'c', linewidth=5, label='S2: '+name2+' glass mass only')
+a0.fill_between(USyearly.index, glassmat, modulemat, color='c', alpha=0.3,
+                 interpolate=True)
+
+a0.legend()
+a0.set_title('Yearly Material Waste by Scenario')
+a0.set_ylabel('Mass [Million Tonnes]')
+a0.set_xlim([2020, 2050])
+a0.set_xlabel('Years')
+    
+    
+########################    
+# SUBPLOT 2
+########################
+#######################
+# Calculate    
+
+cumulations2050 = {}
+for ii in range(0, len(materials)):
+    matcum = []
+    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2050])
+    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2050])
+    cumulations2050[materials[ii]] = matcum
+
+dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
+dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
+
+dfcumulations2050['bottom1'] = dfcumulations2050['glass']
+dfcumulations2050['bottom2'] = dfcumulations2050['bottom1']+dfcumulations2050['aluminium_frames']
+dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['silicon']
+dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
+
+
+## Plot BARS Stuff
+ind=np.arange(2)
+width=0.35 # width of the bars.
+p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
+p1 = a1.bar(ind, dfcumulations2050['aluminium_frames'], width,
+             bottom=dfcumulations2050['bottom1'])
+p2 = a1.bar(ind, dfcumulations2050['silicon'], width,
+             bottom=dfcumulations2050['bottom2'])
+p3 = a1.bar(ind, dfcumulations2050['copper'], width,
+             bottom=dfcumulations2050['bottom3'])
+p4 = a1.bar(ind, dfcumulations2050['silver'], width,
+             bottom=dfcumulations2050['bottom4'])
+
+a1.yaxis.set_label_position("right")
+a1.yaxis.tick_right()
+a1.set_ylabel('Cumulative EOL Only Waste by 2050 [Million Tonnes]')
+a1.set_xlabel('Scenario')
+a1.set_xticks(ind, ('S1', 'S2'))
+#plt.yticks(np.arange(0, 81, 10))
+a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver'))
+
+f.tight_layout()
+
+f.savefig(title_Method+' Fig_2x1_Yearly EOL Only WASTE by Scenario and Cumulatives_NREL2018.png', dpi=600)
+
+print("Cumulative Eol Only Waste by 2050 Million Tones by case")
+dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+
+
+# In[ ]:
+
+
+
+
 
 # In[ ]:
 
