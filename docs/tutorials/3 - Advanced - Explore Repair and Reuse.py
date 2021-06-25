@@ -51,8 +51,8 @@ r1.scenario['Repair_50'].addMaterial('silicon', file=r'..\baselines\baseline_mat
 # In[5]:
 
 
-r1.scenario['Repair_0'].data['mod_Repairing'] = 0
-r1.scenario['Repair_50'].data['mod_Repairing'] = 50
+r1.scenario['Repair_0'].data['mod_Repair'] = 0
+r1.scenario['Repair_50'].data['mod_Repair'] = 50
 
 r1.scenario['Repair_0'].data['mod_reliability_t50'] = 25
 r1.scenario['Repair_0'].data['mod_reliability_t90'] = 35
@@ -172,30 +172,30 @@ r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='Repower_0', file=r'..\baselines\baseline_modules_US.csv')
-r1.scenario['Repower_0'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['Repower_0'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
+r1.createScenario(name='Reuse_0', file=r'..\baselines\baseline_modules_US.csv')
+r1.scenario['Reuse_0'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+r1.scenario['Reuse_0'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
-r1.createScenario(name='Repower_50', file=r'..\baselines\baseline_modules_US.csv')
-r1.scenario['Repower_50'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['Repower_50'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
+r1.createScenario(name='Reuse_50', file=r'..\baselines\baseline_modules_US.csv')
+r1.scenario['Reuse_50'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+r1.scenario['Reuse_50'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
 
 # In[16]:
 
 
-r1.scenario['Repower_0'].data['mod_Repowering'] = 0
-r1.scenario['Repower_50'].data['mod_Repowering'] = 50
-r1.scenario['Repower_50'].data['mod_Repowering'] = 50
+r1.scenario['Reuse_0'].data['mod_Reuse'] = 0
+r1.scenario['Reuse_50'].data['mod_Reuse'] = 50
+r1.scenario['Reuse_50'].data['mod_Reuse'] = 50
 
-r1.scenario['Repower_0'].data['mod_reliability_t50'] = 35
-r1.scenario['Repower_0'].data['mod_reliability_t90'] = 45
-r1.scenario['Repower_50'].data['mod_reliability_t50'] = 35
-r1.scenario['Repower_50'].data['mod_reliability_t90'] = 45
+r1.scenario['Reuse_0'].data['mod_reliability_t50'] = 35
+r1.scenario['Reuse_0'].data['mod_reliability_t90'] = 45
+r1.scenario['Reuse_50'].data['mod_reliability_t50'] = 35
+r1.scenario['Reuse_50'].data['mod_reliability_t90'] = 45
 
 # Setting Project Lifetime beyond Failures
-r1.scenario['Repower_0'].data['mod_lifetime'] = 25
-r1.scenario['Repower_50'].data['mod_lifetime'] = 25
+r1.scenario['Reuse_0'].data['mod_lifetime'] = 25
+r1.scenario['Reuse_50'].data['mod_lifetime'] = 25
 
 
 # In[17]:
@@ -207,19 +207,19 @@ r1.calculateMassFlow()
 # In[18]:
 
 
-r1.scenario['Repower_50'].data.keys()
+r1.scenario['Reuse_50'].data.keys()
 
 
 # In[19]:
 
 
-AREA = r1.scenario['Repower_50'].data['Area'].iloc[0]
+AREA = r1.scenario['Reuse_50'].data['Area'].iloc[0]
 
 
 # In[20]:
 
 
-filter_col = [col for col in r1.scenario['Repower_50'].data if col.startswith('EOL_on_Year_')]
+filter_col = [col for col in r1.scenario['Reuse_50'].data if col.startswith('EOL_on_Year_')]
 
 
 # In[21]:
@@ -231,8 +231,8 @@ Cumul_EOL_R50 = []
 foo=0
 foo2=0
 for life in range (0, len(filter_col)):
-    foo +=  r1.scenario['Repower_0'].data[filter_col[life]].iloc[0]
-    foo2 += r1.scenario['Repower_50'].data[filter_col[life]].iloc[0]
+    foo +=  r1.scenario['Reuse_0'].data[filter_col[life]].iloc[0]
+    foo2 += r1.scenario['Reuse_50'].data[filter_col[life]].iloc[0]
     Cumul_EOL_R0.append(foo)
     Cumul_EOL_R50.append(foo2)
 

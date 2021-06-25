@@ -69,14 +69,14 @@ r1.scenario['PV_ICE_idealMFG'].addMaterial('glass', file=r'..\baselines\baseline
 r1.scenario['PV_ICE_idealMFG'].data['mod_MFG_eff'] = 100.0
 r1.scenario['PV_ICE_idealMFG'].material['glass'].materialdata['mat_MFG_eff'] = 100.0
 
-r1.createScenario(name='Irena_2019', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2019.csv')
-r1.scenario['Irena_2019'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena.csv')
+r1.createScenario(name='Irena_2019', file=r'..\baselines\IRENA\baseline_modules_World_Irena_2019.csv')
+r1.scenario['Irena_2019'].addMaterial('glass', file=r'..\baselines\IRENA\baseline_material_glass_Irena.csv')
 
-r1.createScenario(name='A_MassBased', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2019_A_MassBased.csv')
-r1.scenario['A_MassBased'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena_A_MassBased.csv')
+r1.createScenario(name='A_MassBased', file=r'..\baselines\IRENA\baseline_modules_World_Irena_2019_A_MassBased.csv')
+r1.scenario['A_MassBased'].addMaterial('glass', file=r'..\baselines\IRENA\baseline_material_glass_Irena_A_MassBased.csv')
 
-r1.createScenario(name='Irena_2016', file=r'..\baselines\ValidationBaselines\baseline_modules_World_Irena_2016.csv')
-r1.scenario['Irena_2016'].addMaterial('glass', file=r'..\baselines\ValidationBaselines\baseline_material_glass_Irena.csv')
+r1.createScenario(name='Irena_2016', file=r'..\baselines\IRENA\baseline_modules_World_Irena_2016.csv')
+r1.scenario['Irena_2016'].addMaterial('glass', file=r'..\baselines\IRENA\baseline_material_glass_Irena.csv')
 
 Wambach = True
 if Wambach:
@@ -150,18 +150,45 @@ plt.ylim([0, 400])
 # In[9]:
 
 
-IRENA= True
-ELorRL = 'RL'
-if IRENA:
-    if ELorRL == 'RL':
-        weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
-    if ELorRL == 'EL':
-        weibullInputParams = {'alpha': 2.49, 'beta': 30}  # Regular-loss scenario IRENA
-    r1.calculateMassFlow(weibullInputParams=weibullInputParams)
-    title_Method = 'Irena_'+ELorRL
-else:
-    r1.calculateMassFlow()
-    title_Method = 'PVICE'
+r1.scenario.keys()
+
+
+# In[10]:
+
+
+# Selecting only the ones we want with IRENA Assumptions
+Irenify = ['Irena_2019', 'A_MassBased', 'Irena_2016', 'Wambach2020']
+r1.scenMod_IRENIFY(scens=Irenify)
+
+
+# In[11]:
+
+
+r1.scenario['PV_ICE_base'].data.keys()
+
+
+# In[12]:
+
+
+r1.scenario['Irena_2019'].data.keys()
+
+
+# In[13]:
+
+
+r1.calculateMassFlow()
+
+
+# In[14]:
+
+
+r1.scenario['PV_ICE_base'].data['WeibullParams'].head(10)
+
+
+# In[15]:
+
+
+r1.scenario['Irena_2019'].data['WeibullParams'].head(10)
 
 
 # ## Irena Conversion from Mass to Energy --> 
@@ -170,7 +197,7 @@ else:
 
 # Querying some of the values for plotting the flags
 
-# In[10]:
+# In[16]:
 
 
 x2020 = r1.scenario['Irena_2019'].data['year'].iloc[25]
@@ -189,7 +216,7 @@ t2050 = r1.scenario['Irena_2019'].data['Installed_Capacity_[W]'].iloc[55]/(1E12)
 print(x2050)
 
 
-# In[11]:
+# In[17]:
 
 
 if Wambach:
@@ -213,7 +240,7 @@ if Wambach:
 # Using glass for proxy of the module; glass is ~76% of the module's mass [REF]
 # 
 
-# In[12]:
+# In[18]:
 
 
 cumWaste = r1.scenario['PV_ICE_base'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
@@ -236,7 +263,7 @@ if Wambach:
     cumWaste3 = (cumWaste3*100/76)/1000000  # Converting to tonnes
 
 
-# In[13]:
+# In[19]:
 
 
 x2020_irena = 2020
@@ -252,7 +279,7 @@ y2050_irena = 3.41E+08
 t2050_irena = 4.5
 
 
-# In[14]:
+# In[20]:
 
 
 Garvin2020_litCumWaste_X = [2020, 2021.1, 2022.1, 2023.2, 2024.6, 2026.3, 2027.3, 2028.7,
@@ -272,7 +299,7 @@ Garvin2020_litMassService_Y = [3.96E+07, 4.79E+07, 5.44E+07, 6.57E+07, 7.95E+07,
 
 # PLOT:
 
-# In[15]:
+# In[21]:
 
 
 fig = plt.figure(figsize=(10,10))
@@ -428,7 +455,7 @@ plt.show()
 
 
 
-# In[39]:
+# In[22]:
 
 
 fig = plt.figure(figsize=(10,5))
@@ -576,7 +603,7 @@ plt.show()
 
 
 
-# In[40]:
+# In[23]:
 
 
 fig = plt.figure(figsize=(4,5))

@@ -7,7 +7,7 @@
 # Next steps: modify distribution to random distribution between limits, or triangular. 
 #     Also, check with experts the boundaries guestimates.
 
-# In[ ]:
+# In[1]:
 
 
 import matplotlib.pyplot as plt
@@ -24,7 +24,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[4]:
+# In[2]:
 
 
 plt.rcParams.update({'font.size': 22})
@@ -33,13 +33,13 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # ### Start PV_ICE baseline
 
-# In[ ]:
+# In[3]:
 
 
 import PV_ICE
 
 
-# In[2]:
+# In[4]:
 
 
 MATERIAL = 'glass'
@@ -63,7 +63,7 @@ r1.scenario['baseline'].addMaterial(MATERIAL, file=MATERIALBASELINE)
 
 # ### Montecarlo Parameters
 
-# In[14]:
+# In[6]:
 
 
 avg = 1
@@ -74,7 +74,7 @@ num_simulations = 500
 
 # ### Variables that are  being MonteCarlo-ed
 
-# In[15]:
+# In[7]:
 
 
 stages_mod = ['mod_eff', 'mod_degradation', 'mod_MFG_eff', 'mod_EOL_collection_eff',
@@ -88,7 +88,7 @@ stages_mat = ['mat_massperm2', 'mat_MFG_eff', 'mat_MFG_scrap_Recycled',
 
 # ### Creating the Multiple Monte Carlo Scenarios
 
-# In[16]:
+# In[8]:
 
 
 for i in range (0, num_simulations):
@@ -107,13 +107,13 @@ for i in range (0, num_simulations):
 
 # ##### Visual Check of changes
 
-# In[18]:
+# In[9]:
 
 
 r1.scenario['baseline'].data.head()
 
 
-# In[59]:
+# In[10]:
 
 
 r1.scenario['mod_0'].data.head()
@@ -123,7 +123,7 @@ r1.scenario['mod_0'].data.head()
 # 
 # This might take a wile depending on number. ~1.5 mississipis per simulation.
 
-# In[22]:
+# In[11]:
 
 
 r1.calculateMassFlow()
@@ -131,13 +131,13 @@ r1.calculateMassFlow()
 
 # ### Compiling Results
 
-# In[58]:
+# In[12]:
 
 
 scenarios = list(r1.scenario.keys())
 
 
-# In[32]:
+# In[13]:
 
 
 virginStock_Changes = []
@@ -155,7 +155,7 @@ for i in range (1, len(scenarios)):
     waste_Changes.append(round(100*r1.scenario[stage_name].material[MATERIAL].materialdata[waste_keyword].sum()/waste_baseline_cum2050,2))
 
 
-# In[33]:
+# In[14]:
 
 
 stages = scenarios[1::]    # Removing the baseline
@@ -164,7 +164,7 @@ df = pd.DataFrame(list(zip(virginStock_Changes, waste_Changes)),
                columns=['Virgin Needs Change', 'Waste Change'],index=stages) 
 
 
-# In[57]:
+# In[15]:
 
 
 df.hist()

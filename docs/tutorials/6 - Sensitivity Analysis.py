@@ -330,18 +330,6 @@ df2_Neg
 
 # https://observablehq.com/@mbostock/flow-o-matic
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # In[20]:
 
 
@@ -469,7 +457,7 @@ print('HQ,HQ Other Uses,',mat_MFG_Recycled_HQ_into_OU)
 # # Modifing the installed capacity to stay fixed at BASELINE
 # Needs to run each year becuase it needs to calculate the acumulated installs and deads.
 
-# In[24]:
+# In[23]:
 
 
 Diff_Installment = []
@@ -484,7 +472,7 @@ for i in range (0, len(r1.scenario['baseline'].data)):
 
 # #### Compile Changes
 
-# In[26]:
+# In[24]:
 
 
 virginStock_Changes = []
@@ -513,13 +501,13 @@ for i in range (1, len(scenarios)):
     installedCapacity_Changes.append(round(100*r1.scenario[stage_name].data[installs_keyword].iloc[-1]/installedCapacity_baselined_2050,5)-100)
 
 
-# In[27]:
+# In[25]:
 
 
 stages = scenarios[1::] # removing baseline as we want a dataframe with only changes
 
 
-# In[28]:
+# In[26]:
 
 
 df = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Changes, installedCapacity_Changes)), 
@@ -528,7 +516,7 @@ df = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Ch
 
 # #### Present Results
 
-# In[30]:
+# In[27]:
 
 
 df_Pos = df[['high' in s for s in df.index]].copy()
@@ -547,7 +535,7 @@ df_Pos = df_Pos.reset_index()
 df_Pos = df_Pos.rename(columns={'index':'variable'})
 
 
-# In[31]:
+# In[28]:
 
 
 df_Neg = df[['low' in s for s in df.index]].copy()
@@ -566,14 +554,14 @@ df_Neg = df_Neg.reset_index()
 df_Neg = df_Neg.rename(columns={'index':'variable'})
 
 
-# In[32]:
+# In[29]:
 
 
 print("Keeping Installs, the modifications to Virgin Needs, Virgin STock and Waste")
 df_Pos[df_Pos['InstalledCapacity Change']!=0.000]
 
 
-# In[33]:
+# In[30]:
 
 
 print("Keeping Installs, the modifications to Virgin Needs, Virgin STock and Waste")

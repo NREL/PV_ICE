@@ -2139,7 +2139,7 @@ USyearly.keys()
 
 # # BIFACIAL PROJECTION COMPARISON
 
-# In[ ]:
+# In[50]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2249,13 +2249,13 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 change = dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[ ]:
+# In[51]:
 
 
 print("Reduced Installs reduces EOL Material & MFG Scrap landfilled by {} % ".format(round((change[0] - change[1])*100/change[0],2)))
 
 
-# In[ ]:
+# In[52]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2366,13 +2366,13 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 change1 = dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[ ]:
+# In[53]:
 
 
 print("Reduction in Manufacturing needs for Reduced Installs of {} %".format(round((change1[0]-change1[1])*100/change1[0],2)))
 
 
-# In[ ]:
+# In[54]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2482,7 +2482,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 change2 = dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[ ]:
+# In[55]:
 
 
 print("Manufacturing Loss represents {} % of Virgin Stock Needs ".format(round((change1[0]-change2[0])*100/change1[0],2)))
@@ -2490,20 +2490,20 @@ print("Manufacturing Loss represents {} % of Virgin Stock Needs ".format(round((
 
 # # Installed Capacity
 
-# In[ ]:
+# In[56]:
 
 
 filter_col_Capacity = [col for col in UScum if col.startswith('Capacity')]
 filter_col_Capacity
 
 
-# In[ ]:
+# In[57]:
 
 
 UScum[filter_col_Capacity].loc[2050]/1e12
 
 
-# In[ ]:
+# In[58]:
 
 
 # Sanity Check
@@ -2512,7 +2512,7 @@ plt.plot(UScum['Capacity_Irena_EL_Bifacial']/1e12, 'b.', linewidth=4.0, label='I
 print("No difference in Capacity between Today and Bifacial for Irena", sum(UScum['Capacity_Irena_EL_Today']/1e12-UScum['Capacity_Irena_EL_Bifacial']/1e12))
 
 
-# In[ ]:
+# In[59]:
 
 
 """
@@ -2531,14 +2531,14 @@ pass
 
 
 
-# In[ ]:
+# In[60]:
 
 
 filter_col_newInstalls = [col for col in UScum if col.startswith('new_Installed_Capacity_[MW]')]
 UScum[filter_col_newInstalls].loc[2050]/1e6
 
 
-# In[ ]:
+# In[61]:
 
 
 list(UScum.keys())
@@ -2556,7 +2556,7 @@ list(UScum.keys())
 
 
 
-# In[ ]:
+# In[62]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2579,34 +2579,34 @@ plt.xlim([2020, 2050])
 plt.ylabel('Installed Capacity [TW]')
 
 
-# In[ ]:
+# In[63]:
 
 
 print("Nameplate Capcaity of Bifacial Installations augment by", (UScum['Capacity_Bifacial_SameInstalls'][2050]-UScum['Capacity_Bifacial_ReducedInstalls'][2050])*100/UScum['Capacity_Bifacial_SameInstalls'][2050])
 
 
-# In[ ]:
+# In[64]:
 
 
 print("% loss with Irena EL ")
 ((UScum['new_Installed_Capacity_[MW]_Irena_EL'].loc[2050]/1e6)-(UScum['Capacity_Irena_EL_Bifacial'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]_Irena_EL'].loc[2050]/1e6)
 
 
-# In[ ]:
+# In[65]:
 
 
 print("% loss with Irena RL ")
 ((UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)-(UScum['Capacity_Irena_RL_Bifacial'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)
 
 
-# In[ ]:
+# In[66]:
 
 
 print("% loss with PV ICE, Reducing Bifacial Installs ")
 ((UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)-(UScum['Capacity_Bifacial_ReducedInstalls'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)
 
 
-# In[ ]:
+# In[67]:
 
 
 print("% loss with PV ICE, Keeping Bifacial Installs ")
@@ -2621,13 +2621,13 @@ print("% loss with PV ICE, Keeping Bifacial Installs ")
 
 # # WEIBULL PLOTS
 
-# In[ ]:
+# In[68]:
 
 
 from matplotlib.pyplot import gca,show
 
 
-# In[ ]:
+# In[69]:
 
 
 firstgen = r1.scenario['Today'].data.WeibullParams.iloc[0]
@@ -2651,7 +2651,7 @@ Lifetime = 30
 IrenaReg = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
 
 
-# In[ ]:
+# In[70]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2672,7 +2672,7 @@ ax.axes.yaxis.set_visible(False)
 #plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
 
 
-# In[ ]:
+# In[71]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2693,7 +2693,7 @@ ax.axes.yaxis.set_visible(False)
 #plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
 
 
-# In[ ]:
+# In[72]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2721,7 +2721,7 @@ gca().annotate('',xy=(38,0.5), xycoords='data',xytext =(18,0.5),textcoords = 'da
 
 # # SAVE RESULTS OPENEI
 
-# In[ ]:
+# In[73]:
 
 
 # WORK ON THIS FOIR OPENEI

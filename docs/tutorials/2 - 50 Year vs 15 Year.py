@@ -60,7 +60,6 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 
 moduleFile = r'..\baselines\baseline_modules_US.csv'
-#moduleFile = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv'
 
 
 # In[5]:
@@ -401,7 +400,7 @@ Area_15years_Increased_Installs = r1.scenario['15_Year_Module_IncreasedInstalls'
 
 # #### First we calculate the Area, based on the glass thickness and glass density and the Total Landfilled Waste [kg]. The PV panel area will be equal to the Glass Area for our modeled scenarios so far.
 
-# In[42]:
+# In[30]:
 
 
 [acidification, carcinogenics, ecotoxicity, eutrophication, 
@@ -409,7 +408,7 @@ fossil_fuel_depletion, global_warming,
 non_carcinogenics, ozone_depletion, respiratory_effects, smog] = PV_ICE.calculateLCA(Area_50years)
 
 
-# In[43]:
+# In[31]:
 
 
 [acidification2, carcinogenics2, ecotoxicity2, eutrophication2, 
@@ -417,7 +416,7 @@ fossil_fuel_depletion2, global_warming2,
 non_carcinogenics2, ozone_depletion2, respiratory_effects2, smog2] = PV_ICE.calculateLCA(Area_15years)
 
 
-# In[44]:
+# In[32]:
 
 
 [acidification3, carcinogenics3, ecotoxicity3, eutrophication3, 
@@ -425,14 +424,14 @@ fossil_fuel_depletion3, global_warming3,
 non_carcinogenics3, ozone_depletion3, respiratory_effects3, smog3] = PV_ICE.calculateLCA(Area_15years_Increased_Installs)
 
 
-# In[45]:
+# In[33]:
 
 
 global_warming = pd.DataFrame({'Global warming':['50 year', '15 year', '15 year Increased Installs'], 
                                'val':[global_warming, global_warming2, global_warming3]})
 
 
-# In[46]:
+# In[34]:
 
 
 ax = global_warming.plot.bar(x='Global warming', y='val', rot=0)

@@ -35,7 +35,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[13]:
+# In[4]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -44,7 +44,7 @@ r1.scenario['standard'].addMaterial('glass', file=r'..\baselines\baseline_materi
 r1.scenario['standard'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
 # Ideal Manufacturing Scenario
-r1.createScenario(name='ideal', file=r'..\baselines\baseline_modules_World.csv')
+r1.createScenario(name='ideal', file=r'..\baselines\baseline_modules_US.csv')
 r1.scenario['ideal'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['ideal'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
@@ -58,12 +58,13 @@ r1.scenario['ideal'].material['silicon'].materialdata['mat_virgin_eff'] = 100.0
 # Considering only waste, no circularity paths at EOL or Manufacturing.
 r1.scenario['standard'].material['silicon'].materialdata['mat_MFG_scrap_Recycled'] = 0.0
 r1.scenario['standard'].material['glass'].materialdata['mat_MFG_scrap_Recycled'] = 0.0
+
 # not necessary to set mat_MFG_scrap_Recycled for ideal scenario, as the mat_MFG effis 100
 r1.scenario['standard'].data['mod_EOL_collection_eff'] = 0.0
 r1.scenario['ideal'].data['mod_EOL_collection_eff'] = 0.0
 
 
-# In[14]:
+# In[5]:
 
 
 IRENA= True
@@ -80,25 +81,25 @@ else:
     title_Method = 'PVICE'
 
 
-# In[15]:
+# In[6]:
 
 
 r1.scenario['standard'].material['glass'].materialdata.keys()
 
 
-# In[16]:
+# In[7]:
 
 
 r1.scenario['standard'].data.iloc[-1]
 
 
-# In[17]:
+# In[8]:
 
 
 r1.scenario['standard'].material['glass'].materialdata.iloc[-1]
 
 
-# In[18]:
+# In[9]:
 
 
 r1.scenario['standard'].material['glass'].materialdata.tail()
@@ -110,7 +111,7 @@ r1.scenario['standard'].material['glass'].materialdata.tail()
 
 
 
-# In[19]:
+# In[10]:
 
 
 cumWaste_ideal_glass = r1.scenario['ideal'].material['glass'].materialdata['mat_Total_Landfilled'].cumsum()
@@ -126,7 +127,7 @@ cumWaste_std_Si = r1.scenario['standard'].material['silicon'].materialdata['mat_
 cumWaste_std_Si = cumWaste_std_Si/1000000  # Converting to tonnes
 
 
-# In[20]:
+# In[11]:
 
 
 x = r1.scenario['standard'].data['year']

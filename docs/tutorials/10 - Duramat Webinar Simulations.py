@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # US NREL ENERGY FUTURES 2021
+# # Duramat Webinar: US NREL Electric Futures 2021
+# 
+# Simulate REference and High Electrification scenarios, comparing to a glass baseline with High bifacial future projection.
 
 # In[1]:
 
@@ -23,14 +25,8 @@ print ("Your simulation will be stored in %s" % testfolder)
 MATERIALS = ['glass','silver','silicon', 'copper','aluminium_frames']
 MATERIAL = MATERIALS[0]
 
-
-MODULEBASELINE = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_basecase_noKittyCat.csv'
-MODULEBASELINE_High = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_LowREHighElec_noKittyCat.csv'
-MODULEBASELINE = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2021_basecase.csv'
-MODULEBASELINE_High = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2021_LowREHighElec.csv'
-
-MODULEBASELINE = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_basecase.csv'
-MODULEBASELINE_High = r'..\baselines\LiteratureProjections\baseline_modules_US_NREL_Energy_Futures_2018_LowREHighElec.csv'
+MODULEBASELINE = r'..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv'
+MODULEBASELINE_High = r'..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_LowREHighElec.csv'
 
 
 # In[3]:
@@ -71,14 +67,14 @@ for mat in range (0, len(MATERIALS)):
 
 r2 = PV_ICE.Simulation(name='bifacialTrend', path=testfolder)
 r2.createScenario(name='base', file=MODULEBASELINE)
-MATERIALBASELINE = r'..\baselines\baseline_material_glass_bifacialTrend.csv'
+MATERIALBASELINE = r'..\baselines\PVSC_2021\baseline_material_glass_bifacialTrend.csv'
 r2.scenario['base'].addMaterial('glass', file=MATERIALBASELINE)
 for mat in range (1, len(MATERIALS)):
     MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
     r2.scenario['base'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
     
 r2.createScenario(name='high', file=MODULEBASELINE_High)
-MATERIALBASELINE = r'..\baselines\baseline_material_glass_bifacialTrend.csv'
+MATERIALBASELINE = r'..\baselines\PVSC_2021\baseline_material_glass_bifacialTrend.csv'
 r2.scenario['high'].addMaterial('glass', file=MATERIALBASELINE)
 for mat in range (1, len(MATERIALS)):
     MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
@@ -477,12 +473,6 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 
 # ### Waste by year
-
-# In[ ]:
-
-
-
-
 
 # In[25]:
 

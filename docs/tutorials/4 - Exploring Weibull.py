@@ -135,7 +135,6 @@ plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
 t50 = 25
 t90 = 35
 
-
 weibullIParams = PV_ICE.weibull_params({t50: 0.50, t90: 0.90})    
 print(weibullIParams)
 
@@ -150,7 +149,7 @@ mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $
 plt.plot(calc_cdf, linewidth=4.0, label=mylabel)
 plt.axhline(y=0.9, color='r', linestyle='--')
 plt.axhline(y=0.5, color='r', linestyle='--')
-plt.axvline(x=28, color='c', linestyle='--')
+plt.axvline(x=25, color='c', linestyle='--')
 plt.axvline(x=t90, color='c', linestyle='--')
 #plt.axhline(y=0.1, color='r', linestyle='--')
 plt.ylabel("CDF")
@@ -276,4 +275,10 @@ plt.axvline(x=t90, color='c', linestyle='--')
 #plt.axhline(y=0.1, color='r', linestyle='--')
 plt.title('Probability Density Function (PDF) \na.k.a. Density')
 plt.ylabel("DENSITY")
+
+
+# In[ ]:
+
+
+
 

@@ -190,8 +190,8 @@ upperlimit = {'new_Installed_Capacity_[MW]': 5,    # relative
  'mod_MFG_eff': 5,                                 # absolute
  'mod_EOL_collection_eff': 10,                     # absolute
  'mod_EOL_collected_recycled': 10,                 # absolute
- 'mod_Repowering': 10,                             #absolute
- 'mod_Repairing':10}
+ 'mod_Reuse': 10,                             #absolute
+ 'mod_Repair':10}
 
 lowerlimit = {'new_Installed_Capacity_[MW]': 5,        # relative
  'mod_eff': 3,                                     # absolute
@@ -202,8 +202,8 @@ lowerlimit = {'new_Installed_Capacity_[MW]': 5,        # relative
  'mod_MFG_eff': 5,                                 # absolute
  'mod_EOL_collection_eff': 10,                     # absolute
  'mod_EOL_collected_recycled': 10,                 # absolute
- 'mod_Repowering': 10,                             #absolute
- 'mod_Repairing':10}
+ 'mod_Reuse': 10,                             #absolute
+ 'mod_Repair':10}
 
 
 # In[13]:
@@ -249,8 +249,14 @@ keys = ['new_Installed_Capacity_[MW]',
  'mod_MFG_eff',
  'mod_EOL_collection_eff',
  'mod_EOL_collected_recycled',
- 'mod_Repowering',
- 'mod_Repairing']
+ 'mod_Reuse',
+ 'mod_Repair']
+
+
+# In[ ]:
+
+
+
 
 
 # In[15]:
