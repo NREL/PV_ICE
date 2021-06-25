@@ -59,21 +59,28 @@ plt.rcParams['figure.figsize'] = (12, 5)
 # In[4]:
 
 
+moduleFile = r'..\baselines\baseline_modules_US.csv'
+#moduleFile = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv'
+
+
+# In[5]:
+
+
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='50_Year_Module', file=r'..\baselines\baseline_modules_US.csv')
+r1.createScenario(name='50_Year_Module', file=moduleFile)
 r1.scenario['50_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['50_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
-r1.createScenario(name='15_Year_Module', file=r'..\baselines\baseline_modules_US.csv')
+r1.createScenario(name='15_Year_Module', file=moduleFile)
 r1.scenario['15_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['15_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
-r1.createScenario(name='base', file=r'..\baselines\baseline_modules_US.csv')
+r1.createScenario(name='base', file=moduleFile)
 r1.scenario['base'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['base'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
 
-# In[5]:
+# In[6]:
 
 
 r1.scenario['50_Year_Module'].data.keys()
@@ -81,7 +88,8 @@ r1.scenario['50_Year_Module'].data.keys()
 
 # ## Change Reliability Values
 
-# In[6]:
+# In[7]:
+
 
 
 r1.scenario['50_Year_Module'].data['mod_reliability_t50'] = 60
@@ -97,37 +105,35 @@ r1.scenario['15_Year_Module'].data['mod_degradation'] = 1.4
 
 # ## Change Recyclability Values
 
-# In[7]:
-
-
-r1.scenario['15_Year_Module'].data['mod_EOL_collected_recycled'] = 100 #100% collection
-r1.scenario['15_Year_Module'].data['mod_EOL_collection_eff'] = 100
-#r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_eff'] = 100 #100% efficiency of recycling
-r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_recycled'] = 100
-r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_recycling_eff'] = 90
-r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 100
-r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 100
-r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_EOL_collected_Recycled'] = 100
-r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_EOL_Recycling_eff'] = 90 
-r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_EOL_Recycled_into_HQ'] = 100 
-r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 100 #95% of the above 2 gets turned into new panels
-
-r1.scenario['50_Year_Module'].data['mod_EOL_collected_recycled'] = 100 #100% collection
-r1.scenario['50_Year_Module'].data['mod_EOL_collection_eff'] = 100
-#r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_eff'] = 100 #100% efficiency of recycling
-r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_recycled'] = 100
-r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_recycling_eff'] = 30
-r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 100
-r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 100
-r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EOL_collected_Recycled'] = 100
-r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EOL_Recycling_eff'] = 30 
-r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EOL_Recycled_into_HQ'] = 100 
-r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 100 #95% of the above 2 gets turned into new panels
- 
-    
-
-
 # In[8]:
+
+
+r1.scenario['15_Year_Module'].data['mod_EOL_collected_recycled'] = 100.0 #100% collection
+r1.scenario['15_Year_Module'].data['mod_EOL_collection_eff'] = 100.0
+#r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_eff'] = 100 #100% efficiency of recycling
+r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_recycled'] = 100.0
+r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_recycling_eff'] = 90.0
+r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 100.0
+r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 100.0
+r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_EOL_collected_Recycled'] = 100.0
+r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_EOL_Recycling_eff'] = 90.0
+r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_EOL_Recycled_into_HQ'] = 100.0
+r1.scenario['15_Year_Module'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 100.0 #95% of the above 2 gets turned into new panels
+
+r1.scenario['50_Year_Module'].data['mod_EOL_collected_recycled'] = 100.0 #100% collection
+r1.scenario['50_Year_Module'].data['mod_EOL_collection_eff'] = 100.0
+#r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_eff'] = 100 #100% efficiency of recycling
+r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_recycled'] = 100.0
+r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_recycling_eff'] = 30.0
+r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 100.0
+r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 100.0
+r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EOL_collected_Recycled'] = 100.0
+r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EOL_Recycling_eff'] = 30.0
+r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EOL_Recycled_into_HQ'] = 100.0
+r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 100.0 #95% of the above 2 gets turned into new panels
+
+
+# In[9]:
 
 
 IRENA= False
@@ -144,25 +150,35 @@ else:
     title_Method = 'PVICE'
 
 
-# In[9]:
-
-
-r1.calculateMassFlow()
-
-
 # In[10]:
 
 
-r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
+r1.scenario['base'].material['glass'].materialdata.keys()
+
+
+# In[ ]:
+
+
+
 
 
 # In[11]:
 
 
-r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
+r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
+print("Modules installed between 2010 and 2020 become decommissioned on ~2035-2045, that is why the baseline has 'jaggedy' lines that follow the installs on those years.")
+print("This jaggedy lines are not seen in the 15_Year_Module example, because 90% of it is going into recycling. You can still see a bit of effect on 2025-2035.")
+print("For base, after 2045, and for 15_years, after 2035 become nice curves because the installs follow a CAGR projection.")
+print("IF more years where plotted for the 50_year_module, we would see the same jaggediness around 2065-2075")
 
 
 # In[12]:
+
+
+r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
+
+
+# In[13]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
@@ -170,7 +186,7 @@ r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 # ### Modifying Installed Capacity requirements to match 50 Year Module
 
-# In[13]:
+# In[14]:
 
 
 r1.createScenario(name='15_Year_Module_IncreasedInstalls', file=r'..\baselines\baseline_modules_US.csv')
@@ -200,7 +216,7 @@ r1.calculateMassFlow()
 # Needs to run each year becuase it needs to calculate the acumulated installs and deads.
 # 
 
-# In[14]:
+# In[15]:
 
 
 Under_Installment = []
@@ -211,7 +227,7 @@ for i in range (0, len(r1.scenario['base'].data)):
     r1.calculateMassFlow()
 
 
-# In[15]:
+# In[16]:
 
 
 r1.createScenario(name='50_Year_Module_DecreasedInstalls', file=r'..\baselines\baseline_modules_US.csv')
@@ -236,7 +252,7 @@ r1.scenario['50_Year_Module_DecreasedInstalls'].material['glass'].materialdata['
 r1.calculateMassFlow()
 
 
-# In[16]:
+# In[17]:
 
 
 Over_Installment = []
@@ -247,25 +263,25 @@ for i in range (0, len(r1.scenario['base'].data)):
     r1.calculateMassFlow()
 
 
-# In[17]:
+# In[18]:
 
 
 r1.plotScenariosComparison(keyword='new_Installed_Capacity_[MW]')
 
 
-# In[18]:
+# In[19]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
-# In[19]:
+# In[20]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Virgin_Stock')
 
 
-# In[20]:
+# In[21]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
@@ -273,7 +289,7 @@ r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_La
 
 # ## Same plots but not automatic from the software to control more the parameters
 
-# In[53]:
+# In[22]:
 
 
 plt.plot(r1.scenario['base'].data['year'], r1.scenario['base'].data['Installed_Capacity_[W]']/1e12, 'g', label='base')
@@ -289,7 +305,7 @@ plt.xlim([2000, 2050])
 plt.legend()
 
 
-# In[60]:
+# In[23]:
 
 
 plt.plot(r1.scenario['base'].data['year'], r1.scenario['base'].data['new_Installed_Capacity_[MW]']/1e3, 'g', label='base')
@@ -305,7 +321,7 @@ plt.xlim([2000, 2050])
 plt.legend()
 
 
-# In[54]:
+# In[24]:
 
 
 plt.plot(r1.scenario['base'].data['year'], r1.scenario['base'].material['glass'].materialdata['mat_Virgin_Stock']/1e9, 'g', label='base')
@@ -320,7 +336,7 @@ plt.title('Annual Virgin Material Input')
 plt.xlim([2000, 2050])
 
 
-# In[55]:
+# In[25]:
 
 
 plt.plot(r1.scenario['base'].data['year'], r1.scenario['base'].material['glass'].materialdata['mat_Total_Landfilled']/1e9, 'g', label='base')
@@ -337,7 +353,7 @@ plt.xlim([2000, 2050])
 
 # # Calculating Overall changes between the Scenarios
 
-# In[107]:
+# In[26]:
 
 
 cum_Waste = []
@@ -359,13 +375,13 @@ df = pd.DataFrame(list(zip(list(r1.scenario.keys()), cum_Waste, cum_VirginNeeds,
 
 # ##  Normalize by Base Scenario (row 2)
 
-# In[108]:
+# In[27]:
 
 
 df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']] = df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']]*100/df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']].iloc[2] -100
 
 
-# In[113]:
+# In[28]:
 
 
 df.round(2)
@@ -375,7 +391,7 @@ df.round(2)
 # 
 # We have previously obtained results for ladnfilled waste for 50 year module, 15 year module, and 15 year module with increased installations to reach to 50 year module installed capacity. This is applies the LCA methodology to evaluate environmetnal impacts based on landfilled area.
 
-# In[31]:
+# In[29]:
 
 
 Area_50years = r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_Total_Landfilled'].sum()
@@ -385,7 +401,7 @@ Area_15years_Increased_Installs = r1.scenario['15_Year_Module_IncreasedInstalls'
 
 # #### First we calculate the Area, based on the glass thickness and glass density and the Total Landfilled Waste [kg]. The PV panel area will be equal to the Glass Area for our modeled scenarios so far.
 
-# In[32]:
+# In[42]:
 
 
 [acidification, carcinogenics, ecotoxicity, eutrophication, 
@@ -393,7 +409,7 @@ fossil_fuel_depletion, global_warming,
 non_carcinogenics, ozone_depletion, respiratory_effects, smog] = PV_ICE.calculateLCA(Area_50years)
 
 
-# In[33]:
+# In[43]:
 
 
 [acidification2, carcinogenics2, ecotoxicity2, eutrophication2, 
@@ -401,7 +417,7 @@ fossil_fuel_depletion2, global_warming2,
 non_carcinogenics2, ozone_depletion2, respiratory_effects2, smog2] = PV_ICE.calculateLCA(Area_15years)
 
 
-# In[34]:
+# In[44]:
 
 
 [acidification3, carcinogenics3, ecotoxicity3, eutrophication3, 
@@ -409,16 +425,28 @@ fossil_fuel_depletion3, global_warming3,
 non_carcinogenics3, ozone_depletion3, respiratory_effects3, smog3] = PV_ICE.calculateLCA(Area_15years_Increased_Installs)
 
 
-# In[35]:
+# In[45]:
 
 
-global_warming = pd.DataFrame({'Global warming':['50 year', '15 year', '15 year*'], 
+global_warming = pd.DataFrame({'Global warming':['50 year', '15 year', '15 year Increased Installs'], 
                                'val':[global_warming, global_warming2, global_warming3]})
 
 
-# In[36]:
+# In[46]:
 
 
 ax = global_warming.plot.bar(x='Global warming', y='val', rot=0)
 plt.title('Global Warming Effect, in kg CO2 eq')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
