@@ -55,10 +55,10 @@ plt.rcParams['figure.figsize'] = (12, 5)
 # In[6]:
 
 
-MATERIALBASELINE_GLASS_TODAY = r'..\..\baselines\baseline_material_glass_hold2020.csv'
-MATERIALBASELINE_ALFrames_TODAY = r'..\..\baselines\baseline_material_aluminium_frames_hold2020.csv'
-MATERIALBASELINE_GLASS_BIFACIALPROJECTION = r'..\..\baselines\baseline_material_glass_bifacialTrend.csv'
-MATERIALBASELINE_ALFrames_BIFACIALPROJECTION = r'..\..\baselines\baseline_material_aluminium_frames_bifacialTrend.csv'
+MATERIALBASELINE_GLASS_TODAY = r'..\..\baselines\PVSC_2021\baseline_material_glass_hold2020.csv'
+MATERIALBASELINE_ALFrames_TODAY = r'..\..\baselines\PVSC_2021\baseline_material_aluminium_frames_hold2020.csv'
+MATERIALBASELINE_GLASS_BIFACIALPROJECTION = r'..\..\baselines\PVSC_2021\baseline_material_glass_bifacialTrend.csv'
+MATERIALBASELINE_ALFrames_BIFACIALPROJECTION = r'..\..\baselines\PVSC_2021\baseline_material_aluminium_frames_bifacialTrend.csv'
 
 
 # In[7]:
@@ -84,9 +84,9 @@ for mat in range (2, len(MATERIALS)):
 # In[8]:
 
 
-MATERIALBASELINE_Mono = r'..\..\baselines\baseline_modules_US_ITRPVPrediction_monofacialModules.csv'
-MATERIALBASELINE_Bifi = r'..\..\baselines\baseline_modules_US_ITRPVPrediction_bifacialModules.csv'
-bifacialityfactors = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\baselines\bifaciality_factor.csv'
+MATERIALBASELINE_Mono = r'..\..\baselines\PVSC_2021\baseline_modules_US_ITRPVPrediction_monofacialModules.csv'
+MATERIALBASELINE_Bifi = r'..\..\baselines\PVSC_2021\baseline_modules_US_ITRPVPrediction_bifacialModules.csv'
+bifacialityfactors = r'..\..\baselines\baseline_bifaciality_factor.csv'
 
 r0a = PV_ICE.Simulation(name='Mono', path=testfolder)
 
@@ -474,7 +474,7 @@ UScum.index = r1.scenario['Today'].data['year']
 UScum.tail(5)
 
 
-# In[34]:
+# In[33]:
 
 
 UScum.to_csv('Cumulative_Results.csv')
@@ -489,7 +489,7 @@ USyearly.to_csv('Yearly_Results.csv')
 
 # ## Mining Capacity
 
-# In[35]:
+# In[34]:
 
 
 mining2020_aluminum = 65267000
@@ -500,7 +500,7 @@ mining2020_silicon = 8000000
 
 # # PLOTTING GALORE
 
-# In[36]:
+# In[35]:
 
 
 list(USyearly.keys())
@@ -512,7 +512,7 @@ list(USyearly.keys())
 
 
 
-# In[37]:
+# In[36]:
 
 
 #VirginStock_glass_PVSC_Today
@@ -575,7 +575,7 @@ axs.set_ylabel('Virgin material needs as a percentage of \n 2020 global mining p
 #fig.savefig(os.path.join(testfolder,'Fig_1x1_MaterialNeeds Ratio to Production_NREL2018.png'), dpi=600)
 
 
-# In[38]:
+# In[37]:
 
 
 bifacial_foo = USyearly[keyw+materials[4]+'_'+name0].iloc[-1]*100/mining2020_aluminum
@@ -585,7 +585,7 @@ print(bifacial_foo)
 print("In Year 2050, AL Needs Ratio to Mining Supply REDUCTION Of ", (today_foo-bifacial_foo)*100/today_foo-bifacial_foo)
 
 
-# In[39]:
+# In[38]:
 
 
 bifacial_foo = USyearly[keyw+materials[4]+'_'+name0].sum()*100/mining2020_aluminum
@@ -595,7 +595,7 @@ print(bifacial_foo)
 print("Cumulative 2020-2050 AL Needs Ratio to Mining Supply REDUCTION Of ", (today_foo-bifacial_foo)*100/today_foo-bifacial_foo)
 
 
-# In[40]:
+# In[39]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -699,7 +699,7 @@ print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[41]:
+# In[40]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -804,7 +804,7 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 # # Waste_ EOL 
 
-# In[42]:
+# In[41]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -981,7 +981,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[43]:
+# In[42]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1161,13 +1161,13 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[44]:
+# In[43]:
 
 
 list(USyearly.keys())
 
 
-# In[49]:
+# In[44]:
 
 
 
@@ -1366,7 +1366,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[62]:
+# In[45]:
 
 
 # PLOT FOR PAPER 
@@ -1587,7 +1587,7 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 
 
-# In[ ]:
+# In[46]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1764,7 +1764,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[ ]:
+# In[47]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1944,7 +1944,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[ ]:
+# In[48]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2131,7 +2131,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[ ]:
+# In[49]:
 
 
 USyearly.keys()
