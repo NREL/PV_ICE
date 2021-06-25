@@ -59,8 +59,9 @@ def _unitReferences(keyword):
                         'mod_MFG_eff': {'unit': 'Efficiency $\eta$ [%]', 'source':'input'},
                         'mod_EOL_collection_eff': {'unit': 'Efficiency $\eta$ [%]', 'source':'input'},
                         'mod_EOL_collected_recycled': {'unit': 'Percentage [%]', 'source':'input'},
-                        'mod_Repowering': {'unit': 'Percentage [%]', 'source':'input'},
-                        'mod_Repairing': {'unit': 'Percentage [%]', 'source':'input'},
+                        'mod_Repair': {'unit': 'Percentage [%]', 'source':'input'},
+                        'mod_MerchantTail': {'unit': 'Percentage [%]', 'source':'input'},
+                        'mod_Reuse': {'unit': 'Percentage [%]', 'source':'input'},
                         'Area': {'unit': 'm$^2$', 'source': 'generated'},
                         'Cumulative_Area_disposedby_Failure': {'unit': 'm$^2$', 'source': 'generated'},
                         'Cumulative_Area_disposedby_ProjectLifetime': {'unit': 'm$^2$', 'source': 'generated'},
@@ -384,11 +385,15 @@ class Simulation:
                 #generation=4
                 #row=df.iloc[generation]
                 
-                t50, t90 = row['t50'], row['t90']
-                if not weibullInputParams:
-                    weibullIParams = weibull_params({t50: 0.50, t90: 0.90})      
-                else: 
+                if weibullInputParams:
                     weibullIParams = weibullInputParams
+                elif 'weibull_alpha' in row:
+                    # "Weibull Input Params passed internally as a column"
+                    weibullIParams = {'alpha': row['weibull_alpha'], 'beta': row['weibull_beta']}
+                else:
+                    # "Calculating Weibull Params from Modules t50 and T90"
+                    t50, t90 = row['t50'], row['t90']
+                    weibullIParams = weibull_params({t50: 0.50, t90: 0.90})      
                
                 f = weibull_cdf(weibullIParams['alpha'], weibullIParams['beta'])
                 
@@ -419,11 +424,13 @@ class Simulation:
                     else:
                         active += 1
                         activeareaprev = activearea                            
-                        activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repairing']*0.01))
+                        activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repair']*0.01))
                         areadisposed_failure.append(activeareaprev-activearea)
                         if age == int(row['mod_lifetime']+generation):
                             activearea_temp = activearea
-                            activearea = 0+activearea*(df.iloc[age]['mod_Repowering']*0.01)
+                            activearea = 0+activearea*(df.iloc[age]['mod_MerchantTail']*0.01)
+                            disposed_projectlifetime = activearea_temp-activearea
+                            activearea = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01)
                             disposed_projectlifetime = activearea_temp-activearea
                         areadisposed_projectlifetime.append(disposed_projectlifetime)
                         activeareacount.append(activearea)
@@ -621,7 +628,29 @@ class Simulation:
                 self.scenario[scen].material[mat].materialdata = dm
 
     
-    
+    def scenMod_IRENIFY(self, scens=None, ELorRL='RL'):
+        
+        if ELorRL == 'RL':
+            weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
+        if ELorRL == 'EL':
+            weibullInputParams = {'alpha': 2.49, 'beta': 30}  # Regular-loss scenario IRENA
+        
+        if scens is None:
+            scens = list(self.scenario.keys())
+
+        for scen in scens:
+            self.scenario[scen].data['weibull_alpha'] = weibullInputParams['alpha']
+            self.scenario[scen].data['weibull_beta'] = weibullInputParams['beta']
+            self.scenario[scen].data['mod_lifetime'] = 40
+            self.scenario[scen].data['mod_MFG_eff'] = 100.0
+            
+            for mat in self.scenario[scen].material:
+                self.scenario[scen].material[mat].materialdata['mat_MFG_eff'] = 100.0   
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+              
+        return
+        
+        
     def plotScenariosComparison(self, keyword=None):
     
         if keyword is None:
@@ -860,7 +889,8 @@ def sens_StageImprovement(df, stage, improvement=1.3, start_year=None):
         'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
         'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
         'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
-        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_repowering', 'mod_eff', etc.
+        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_Repair',
+        'mod_MerchantTail', 'mod_Reuse', 'mod_eff', etc.
     improvement : decimal
         Percent increase in decimal (i.e. "1.3" for 30% increase in value) 
         or percent decrease (i.e. "0.3") relative to values in df.
@@ -902,7 +932,8 @@ def sens_StageEfficiency(df, stage, target_eff = 95.0, start_year = None,
         'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
         'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
         'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
-        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_repowering', 'mod_eff', etc.
+        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_Repair',
+        'mod_MerchantTail', 'mod_Reuse', 'mod_eff', etc.
     start_year: int
         Year to start modifying the value. This specifies the initial efficiency 
         value that is going to be modified. If None is passed, current year is used.
