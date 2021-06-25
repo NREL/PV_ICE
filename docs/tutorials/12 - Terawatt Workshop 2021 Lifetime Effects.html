@@ -13128,7 +13128,7 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
-<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span> <span class="o">/</span> <span class="s1">&#39;PVSC&#39;</span><span class="p">)</span>
+<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span> <span class="o">/</span> <span class="s1">&#39;TeraWattWorkshop&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Your simulation will be stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">testfolder</span><span class="p">)</span>
 </pre></div>
@@ -13147,7 +13147,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\PVSC
+<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\TeraWattWorkshop
 </pre>
 </div>
 </div>
@@ -13158,7 +13158,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">MATERIALS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span><span class="s1">&#39;aluminium_frames&#39;</span><span class="p">,</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;copper&#39;</span><span class="p">]</span>
@@ -13174,7 +13174,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
@@ -13190,7 +13190,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">PV_ICE</span><span class="o">.</span><span class="n">__version__</span>
@@ -13206,13 +13206,13 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[4]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;0+untagged.403.g64bdcc7&#39;</pre>
+<pre>&#39;0+untagged.404.gb10d1fc.dirty&#39;</pre>
 </div>
 
 </div>
@@ -13223,7 +13223,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
@@ -13244,7 +13244,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">MATERIALBASELINE_GLASS</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\baselines\baseline_material_glass.csv&#39;</span>
@@ -13258,17 +13258,17 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
 
-<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Today&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">MODULEBASELINE</span><span class="p">)</span>
-<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;Today&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE_GLASS</span><span class="p">)</span>
-<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;Today&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;aluminium_frames&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE_ALFrames</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;baseline&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">MODULEBASELINE</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE_GLASS</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;aluminium_frames&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE_ALFrames</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">)):</span>
     <span class="n">MATERIALBASELINE</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\..\baselines\baseline_material_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
-    <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;Today&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">],</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE</span><span class="p">)</span>
+    <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;baseline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">],</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE</span><span class="p">)</span>
     
 </pre></div>
 
@@ -13286,7 +13286,7 @@ div#notebook {
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\PVSC
+<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\TeraWattWorkshop
 </pre>
 </div>
 </div>
@@ -13321,7 +13321,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Life_Good</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">24</span><span class="p">]</span>
@@ -13337,7 +13337,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r4</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Reliability_Case1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
@@ -13374,10 +13374,50 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\TeraWattWorkshop
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:20: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:21: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:22: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Sanity Check</span>
@@ -13389,10 +13429,29 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Scenario Lifetime_Improvements_of_3_years t50 in 2030:  43.0
+Scenario Lifetime_Decline_of_3_years t50 in 2030:  37.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r5</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Reliability_Case2&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
@@ -13434,10 +13493,55 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\TeraWattWorkshop
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:10: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  # Remove the CWD from sys.path while we load stuff.
+C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:25: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:26: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:27: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r6</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Reliability_Case3&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
@@ -13473,6 +13577,51 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP\TeraWattWorkshop
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:7: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  import sys
+C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:19: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:20: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+C:\ProgramData\Anaconda3\lib\site-packages\ipykernel_launcher.py:21: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13483,7 +13632,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
@@ -13497,6 +13646,1816 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Working on Scenario:  baseline
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_3_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_3_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_6_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_6_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_9_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_9_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_12_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_12_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_15_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_15_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_18_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_18_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_21_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_21_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_24_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_24_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_3_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_3_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_6_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_6_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_9_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_9_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_12_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_12_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_15_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_15_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_18_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_18_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_21_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_21_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_24_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_24_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_3_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_3_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_6_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_6_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_9_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_9_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_12_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_12_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_15_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_15_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_18_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_18_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_21_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_21_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Improvements_of_24_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+Working on Scenario:  Lifetime_Decline_of_24_years
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  glass
+==&gt; Working on Material :  aluminium_frames
+==&gt; Working on Material :  silver
+==&gt; Working on Material :  silicon
+==&gt; Working on Material :  copper
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>new_Installed_Capacity_[MW]</th>
+      <th>mod_eff</th>
+      <th>mod_reliability_t50</th>
+      <th>mod_reliability_t90</th>
+      <th>mod_degradation</th>
+      <th>mod_lifetime</th>
+      <th>mod_MFG_eff</th>
+      <th>mod_EOL_collection_eff</th>
+      <th>mod_EOL_collected_recycled</th>
+      <th>...</th>
+      <th>EOL_on_Year_50</th>
+      <th>EOL_on_Year_51</th>
+      <th>EOL_on_Year_52</th>
+      <th>EOL_on_Year_53</th>
+      <th>EOL_on_Year_54</th>
+      <th>EOL_on_Year_55</th>
+      <th>EoL_Collected</th>
+      <th>EoL_NotCollected</th>
+      <th>EoL_Recycled</th>
+      <th>EoL_NotRecycled_Landfilled</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1995</td>
+      <td>12.500000</td>
+      <td>12.500000</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.55</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1996</td>
+      <td>9.667667</td>
+      <td>12.700000</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.55</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>7.500000e+03</td>
+      <td>4.250000e+04</td>
+      <td>3.000000e+03</td>
+      <td>4.500000e+03</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1997</td>
+      <td>11.622000</td>
+      <td>12.880000</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.55</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.245925e+04</td>
+      <td>7.060243e+04</td>
+      <td>4.983701e+03</td>
+      <td>7.475551e+03</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1998</td>
+      <td>11.781000</td>
+      <td>13.060000</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.55</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.265580e+04</td>
+      <td>7.171618e+04</td>
+      <td>5.062318e+03</td>
+      <td>7.593477e+03</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1999</td>
+      <td>16.884667</td>
+      <td>13.240000</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.55</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.342715e+04</td>
+      <td>7.608720e+04</td>
+      <td>5.370861e+03</td>
+      <td>8.056292e+03</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2000</td>
+      <td>20.926667</td>
+      <td>13.420000</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.60</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.633028e+04</td>
+      <td>9.253825e+04</td>
+      <td>6.532112e+03</td>
+      <td>9.798167e+03</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2001</td>
+      <td>27.985000</td>
+      <td>13.600000</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.60</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>2.097990e+04</td>
+      <td>1.188861e+05</td>
+      <td>8.391960e+03</td>
+      <td>1.258794e+04</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2002</td>
+      <td>42.476000</td>
+      <td>13.722222</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.60</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>2.691507e+04</td>
+      <td>1.525187e+05</td>
+      <td>1.076603e+04</td>
+      <td>1.614904e+04</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2003</td>
+      <td>59.745000</td>
+      <td>13.844444</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.60</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>3.827476e+04</td>
+      <td>2.168903e+05</td>
+      <td>1.530991e+04</td>
+      <td>2.296486e+04</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2004</td>
+      <td>94.752000</td>
+      <td>13.966667</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.60</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>5.480323e+04</td>
+      <td>3.105516e+05</td>
+      <td>2.192129e+04</td>
+      <td>3.288194e+04</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>2005</td>
+      <td>96.581173</td>
+      <td>14.088889</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.60</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>8.233199e+04</td>
+      <td>4.665480e+05</td>
+      <td>3.293280e+04</td>
+      <td>4.939920e+04</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>2006</td>
+      <td>98.213072</td>
+      <td>14.211111</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.60</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.004431e+05</td>
+      <td>5.691776e+05</td>
+      <td>4.017724e+04</td>
+      <td>6.026586e+04</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>2007</td>
+      <td>324.232748</td>
+      <td>14.333333</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.60</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.031928e+05</td>
+      <td>5.847591e+05</td>
+      <td>4.127712e+04</td>
+      <td>6.191567e+04</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>2008</td>
+      <td>314.585109</td>
+      <td>14.455556</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>0.60</td>
+      <td>3.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>2.214473e+05</td>
+      <td>1.254868e+06</td>
+      <td>8.857892e+04</td>
+      <td>1.328684e+05</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>2009</td>
+      <td>431.244804</td>
+      <td>14.577778</td>
+      <td>1.0</td>
+      <td>5.0</td>
+      <td>0.60</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>3.210910e+05</td>
+      <td>1.819516e+06</td>
+      <td>1.284364e+05</td>
+      <td>1.926546e+05</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>2010</td>
+      <td>719.844438</td>
+      <td>14.700000</td>
+      <td>1.0</td>
+      <td>6.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>3.857283e+05</td>
+      <td>2.185794e+06</td>
+      <td>1.542913e+05</td>
+      <td>2.314370e+05</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>2011</td>
+      <td>1781.377078</td>
+      <td>15.100000</td>
+      <td>1.0</td>
+      <td>6.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>5.360749e+05</td>
+      <td>3.037758e+06</td>
+      <td>2.144300e+05</td>
+      <td>3.216449e+05</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>2012</td>
+      <td>3064.162281</td>
+      <td>15.400000</td>
+      <td>1.0</td>
+      <td>6.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.185146e+06</td>
+      <td>6.715830e+06</td>
+      <td>4.740586e+05</td>
+      <td>7.110879e+05</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>2013</td>
+      <td>4037.449113</td>
+      <td>16.000000</td>
+      <td>4.0</td>
+      <td>9.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>2.188970e+06</td>
+      <td>1.240416e+07</td>
+      <td>8.755880e+05</td>
+      <td>1.313382e+06</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>2014</td>
+      <td>3722.199485</td>
+      <td>16.300000</td>
+      <td>4.0</td>
+      <td>9.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.569525e+06</td>
+      <td>8.893974e+06</td>
+      <td>6.278100e+05</td>
+      <td>9.417149e+05</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>2015</td>
+      <td>6834.328813</td>
+      <td>17.000000</td>
+      <td>4.0</td>
+      <td>9.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.493855e+06</td>
+      <td>8.465178e+06</td>
+      <td>5.975420e+05</td>
+      <td>8.963130e+05</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>2016</td>
+      <td>12897.665950</td>
+      <td>17.500000</td>
+      <td>4.0</td>
+      <td>9.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>2.293812e+06</td>
+      <td>1.299827e+07</td>
+      <td>9.175247e+05</td>
+      <td>1.376287e+06</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>2017</td>
+      <td>9784.506215</td>
+      <td>17.700000</td>
+      <td>4.0</td>
+      <td>9.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>3.922948e+06</td>
+      <td>2.223004e+07</td>
+      <td>1.569179e+06</td>
+      <td>2.353769e+06</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>2018</td>
+      <td>9352.529448</td>
+      <td>18.400000</td>
+      <td>4.0</td>
+      <td>9.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>5.808920e+06</td>
+      <td>3.291721e+07</td>
+      <td>2.323568e+06</td>
+      <td>3.485352e+06</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>2019</td>
+      <td>10949.782340</td>
+      <td>19.200000</td>
+      <td>4.0</td>
+      <td>9.0</td>
+      <td>0.30</td>
+      <td>6.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>7.366915e+06</td>
+      <td>4.174585e+07</td>
+      <td>2.946766e+06</td>
+      <td>4.420149e+06</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>2020</td>
+      <td>14454.770400</td>
+      <td>20.252588</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>8.068484e+06</td>
+      <td>4.572141e+07</td>
+      <td>3.227394e+06</td>
+      <td>4.841090e+06</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>2021</td>
+      <td>29515.260990</td>
+      <td>20.894865</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>7.676332e+06</td>
+      <td>4.349921e+07</td>
+      <td>3.070533e+06</td>
+      <td>4.605799e+06</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>2022</td>
+      <td>29515.260990</td>
+      <td>21.362882</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>6.234010e+06</td>
+      <td>3.532606e+07</td>
+      <td>2.493604e+06</td>
+      <td>3.740406e+06</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>2023</td>
+      <td>18890.512640</td>
+      <td>21.733112</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>4.373405e+06</td>
+      <td>2.478263e+07</td>
+      <td>1.749362e+06</td>
+      <td>2.624043e+06</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>2024</td>
+      <td>18890.512640</td>
+      <td>22.040370</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>3.593989e+06</td>
+      <td>2.036594e+07</td>
+      <td>1.437595e+06</td>
+      <td>2.156393e+06</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>2025</td>
+      <td>16238.879780</td>
+      <td>22.303539</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>4.341541e+06</td>
+      <td>2.460206e+07</td>
+      <td>1.736616e+06</td>
+      <td>2.604924e+06</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>2026</td>
+      <td>16238.879780</td>
+      <td>22.534045</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>6.203179e+06</td>
+      <td>3.515135e+07</td>
+      <td>2.481272e+06</td>
+      <td>3.721908e+06</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>2027</td>
+      <td>31283.159550</td>
+      <td>22.739342</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>9.161912e+06</td>
+      <td>5.191750e+07</td>
+      <td>3.664765e+06</td>
+      <td>5.497147e+06</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>2028</td>
+      <td>31283.159550</td>
+      <td>22.924572</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.180528e+07</td>
+      <td>6.689659e+07</td>
+      <td>4.722112e+06</td>
+      <td>7.083169e+06</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>2029</td>
+      <td>43951.271440</td>
+      <td>23.093431</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.339193e+07</td>
+      <td>7.588760e+07</td>
+      <td>5.356772e+06</td>
+      <td>8.035158e+06</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>2030</td>
+      <td>43951.271440</td>
+      <td>23.248674</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.350141e+07</td>
+      <td>7.650797e+07</td>
+      <td>5.400563e+06</td>
+      <td>8.100844e+06</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>2031</td>
+      <td>48105.304320</td>
+      <td>23.392405</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.240654e+07</td>
+      <td>7.030375e+07</td>
+      <td>4.962618e+06</td>
+      <td>7.443927e+06</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>2032</td>
+      <td>48105.304320</td>
+      <td>23.526271</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1.029561e+07</td>
+      <td>5.834176e+07</td>
+      <td>4.118242e+06</td>
+      <td>6.177363e+06</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>2033</td>
+      <td>32257.627380</td>
+      <td>23.651585</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>7.668820e+06</td>
+      <td>4.345665e+07</td>
+      <td>3.067528e+06</td>
+      <td>4.601292e+06</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>2034</td>
+      <td>32257.627380</td>
+      <td>23.769414</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>1.207536e+08</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>5.219179e+06</td>
+      <td>2.957535e+07</td>
+      <td>2.087672e+06</td>
+      <td>3.131507e+06</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>2035</td>
+      <td>20055.842860</td>
+      <td>23.880631</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>4.247878e+06</td>
+      <td>7.472766e+07</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>3.573031e+06</td>
+      <td>2.024718e+07</td>
+      <td>1.429212e+06</td>
+      <td>2.143819e+06</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>2036</td>
+      <td>20055.842860</td>
+      <td>23.985966</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>2.505287e+06</td>
+      <td>4.229223e+06</td>
+      <td>7.439949e+07</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>2.744367e+06</td>
+      <td>1.555141e+07</td>
+      <td>1.097747e+06</td>
+      <td>1.646620e+06</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>2037</td>
+      <td>19293.698110</td>
+      <td>24.086032</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>1.304452e+06</td>
+      <td>2.400070e+06</td>
+      <td>4.051605e+06</td>
+      <td>7.127488e+07</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>3.066658e+06</td>
+      <td>1.737773e+07</td>
+      <td>1.226663e+06</td>
+      <td>1.839995e+06</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>2038</td>
+      <td>19293.698110</td>
+      <td>24.181350</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>6.413271e+05</td>
+      <td>1.299310e+06</td>
+      <td>2.390610e+06</td>
+      <td>4.035635e+06</td>
+      <td>7.099393e+07</td>
+      <td>0.000000e+00</td>
+      <td>2.110666e+07</td>
+      <td>1.196044e+08</td>
+      <td>8.442663e+06</td>
+      <td>1.266399e+07</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>2039</td>
+      <td>50646.427670</td>
+      <td>24.272366</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>7.360841e+05</td>
+      <td>1.677186e+06</td>
+      <td>3.397930e+06</td>
+      <td>6.251878e+06</td>
+      <td>1.055392e+07</td>
+      <td>1.856620e+08</td>
+      <td>2.136106e+07</td>
+      <td>1.210460e+08</td>
+      <td>8.544424e+06</td>
+      <td>1.281664e+07</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>2040</td>
+      <td>50646.427670</td>
+      <td>24.359467</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>2.756905e+05</td>
+      <td>7.334521e+05</td>
+      <td>1.671189e+06</td>
+      <td>3.385780e+06</td>
+      <td>6.229523e+06</td>
+      <td>1.051618e+07</td>
+      <td>2.851869e+07</td>
+      <td>1.616059e+08</td>
+      <td>1.140748e+07</td>
+      <td>1.711121e+07</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>2041</td>
+      <td>19860.369070</td>
+      <td>24.442987</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>3.246075e+04</td>
+      <td>1.077392e+05</td>
+      <td>2.866314e+05</td>
+      <td>6.530970e+05</td>
+      <td>1.323155e+06</td>
+      <td>2.434483e+06</td>
+      <td>2.827512e+07</td>
+      <td>1.602257e+08</td>
+      <td>1.131005e+07</td>
+      <td>1.696507e+07</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>2042</td>
+      <td>19860.369070</td>
+      <td>24.523220</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>6.884172e+03</td>
+      <td>3.235455e+04</td>
+      <td>1.073867e+05</td>
+      <td>2.856936e+05</td>
+      <td>6.509602e+05</td>
+      <td>1.318826e+06</td>
+      <td>3.011204e+07</td>
+      <td>1.706349e+08</td>
+      <td>1.204481e+07</td>
+      <td>1.806722e+07</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>2043</td>
+      <td>39937.784020</td>
+      <td>24.600425</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>1.557782e+03</td>
+      <td>1.380013e+04</td>
+      <td>6.485850e+04</td>
+      <td>2.152693e+05</td>
+      <td>5.727065e+05</td>
+      <td>1.304926e+06</td>
+      <td>2.931505e+07</td>
+      <td>1.661186e+08</td>
+      <td>1.172602e+07</td>
+      <td>1.758903e+07</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>2044</td>
+      <td>39937.784020</td>
+      <td>24.674830</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>3.729162e+01</td>
+      <td>1.553085e+03</td>
+      <td>1.375852e+04</td>
+      <td>6.466292e+04</td>
+      <td>2.146202e+05</td>
+      <td>5.709795e+05</td>
+      <td>2.000853e+07</td>
+      <td>1.133817e+08</td>
+      <td>8.003412e+06</td>
+      <td>1.200512e+07</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>2045</td>
+      <td>32400.914340</td>
+      <td>24.746640</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>3.016633e+01</td>
+      <td>1.256338e+03</td>
+      <td>1.112969e+04</td>
+      <td>5.230781e+04</td>
+      <td>1.736128e+05</td>
+      <td>1.957579e+07</td>
+      <td>1.109295e+08</td>
+      <td>7.830318e+06</td>
+      <td>1.174548e+07</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>2046</td>
+      <td>32400.914340</td>
+      <td>24.816035</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>3.008198e+01</td>
+      <td>1.252824e+03</td>
+      <td>1.109856e+04</td>
+      <td>5.216154e+04</td>
+      <td>1.278336e+07</td>
+      <td>7.243902e+07</td>
+      <td>5.113343e+06</td>
+      <td>7.670014e+06</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>2047</td>
+      <td>44431.939710</td>
+      <td>24.883180</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>4.114063e+01</td>
+      <td>1.713384e+03</td>
+      <td>1.517858e+04</td>
+      <td>1.295771e+07</td>
+      <td>7.342704e+07</td>
+      <td>5.183085e+06</td>
+      <td>7.774627e+06</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>2048</td>
+      <td>44431.939710</td>
+      <td>24.948220</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>4.103337e+01</td>
+      <td>1.708917e+03</td>
+      <td>1.292690e+07</td>
+      <td>7.325242e+07</td>
+      <td>5.170759e+06</td>
+      <td>7.756139e+06</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>2049</td>
+      <td>62577.899930</td>
+      <td>25.011289</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>5.764563e+01</td>
+      <td>1.359060e+07</td>
+      <td>7.701337e+07</td>
+      <td>5.436238e+06</td>
+      <td>8.154357e+06</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>2050</td>
+      <td>62577.899930</td>
+      <td>25.072508</td>
+      <td>16.0</td>
+      <td>20.0</td>
+      <td>0.50</td>
+      <td>11.0</td>
+      <td>98.0</td>
+      <td>15.0</td>
+      <td>40.0</td>
+      <td>...</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>3.030751e+07</td>
+      <td>1.717426e+08</td>
+      <td>1.212301e+07</td>
+      <td>1.818451e+07</td>
+    </tr>
+  </tbody>
+</table>
+<p>56 rows × 80 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13507,10 +15466,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Simulations</span> <span class="o">=</span> <span class="p">[</span><span class="n">r0a</span><span class="p">,</span> <span class="n">r0b</span><span class="p">,</span> <span class="n">r0c</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">r3</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Simulations</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r4</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="n">r6</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -13520,7 +15479,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -13533,7 +15492,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;mat_Total_Landfilled&#39;</span>
@@ -13564,7 +15523,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;mat_Total_EOL_Landfilled&#39;</span>
@@ -13595,7 +15554,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;mat_Total_MFG_Landfilled&#39;</span>
@@ -13626,7 +15585,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;mat_Virgin_Stock&#39;</span>
@@ -13664,7 +15623,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span> <span class="o">=</span> <span class="n">USyearly</span><span class="o">/</span><span class="mi">1000000</span>  <span class="c1"># This is the ratio for Metric tonnes</span>
@@ -13685,7 +15644,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
@@ -13707,72 +15666,307 @@ div#notebook {
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Combining-BifacialProjection">Combining BifacialProjection<a class="anchor-link" href="#Combining-BifacialProjection">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">filter_col_Bifacial_ReducedInstalls</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">USyearly</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;Bifacial_ReducedInstalls_Bifacial&#39;</span><span class="p">)]</span>
-<span class="n">filter_col_Mono</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">USyearly</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;Mono_Bifacial&#39;</span><span class="p">)]</span>
-<span class="n">filter_col_Bifacial_SameInstalls</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">USyearly</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;Bifacial_SameInstalls_Bifacial&#39;</span><span class="p">)]</span>
-</pre></div>
+<div class="output_wrapper">
+<div class="output">
 
-    </div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Waste_glass_PV_ICE_baseline</th>
+      <th>Waste_aluminium_frames_PV_ICE_baseline</th>
+      <th>Waste_silicon_PV_ICE_baseline</th>
+      <th>Waste_silver_PV_ICE_baseline</th>
+      <th>Waste_copper_PV_ICE_baseline</th>
+      <th>Waste_Module_PV_ICE_baseline</th>
+      <th>Waste_glass_Reliability_Case1_Lifetime_Improvements_of_3_years</th>
+      <th>Waste_aluminium_frames_Reliability_Case1_Lifetime_Improvements_of_3_years</th>
+      <th>Waste_silicon_Reliability_Case1_Lifetime_Improvements_of_3_years</th>
+      <th>Waste_silver_Reliability_Case1_Lifetime_Improvements_of_3_years</th>
+      <th>...</th>
+      <th>VirginStock_glass_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_aluminium_frames_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_silicon_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_silver_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_copper_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_Module_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>new_Installed_Capacity_[MW]_PV_ICE</th>
+      <th>new_Installed_Capacity_[MW]_Reliability_Case1</th>
+      <th>new_Installed_Capacity_[MW]_Reliability_Case2</th>
+      <th>new_Installed_Capacity_[MW]_Reliability_Case3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>35.574651</td>
+      <td>3.797870</td>
+      <td>70.644070</td>
+      <td>0.190322</td>
+      <td>0.002848</td>
+      <td>110.209761</td>
+      <td>35.574651</td>
+      <td>3.797870</td>
+      <td>70.644070</td>
+      <td>0.190322</td>
+      <td>...</td>
+      <td>858.816756</td>
+      <td>312.916411</td>
+      <td>173.147230</td>
+      <td>10.735207</td>
+      <td>0.590784</td>
+      <td>1102.097610</td>
+      <td>12.500000</td>
+      <td>12.500000</td>
+      <td>12.500000</td>
+      <td>12.500000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>27.083240</td>
+      <td>2.823082</td>
+      <td>52.722477</td>
+      <td>0.139265</td>
+      <td>0.002170</td>
+      <td>82.770233</td>
+      <td>27.080765</td>
+      <td>2.822129</td>
+      <td>52.722211</td>
+      <td>0.139237</td>
+      <td>...</td>
+      <td>653.760167</td>
+      <td>232.517931</td>
+      <td>129.221067</td>
+      <td>7.853611</td>
+      <td>0.449724</td>
+      <td>827.710217</td>
+      <td>9.667667</td>
+      <td>9.667667</td>
+      <td>9.667667</td>
+      <td>9.667667</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>32.157941</td>
+      <td>3.015525</td>
+      <td>61.250645</td>
+      <td>0.159002</td>
+      <td>0.002610</td>
+      <td>96.585723</td>
+      <td>32.105284</td>
+      <td>2.995271</td>
+      <td>61.244996</td>
+      <td>0.158411</td>
+      <td>...</td>
+      <td>774.935415</td>
+      <td>246.621562</td>
+      <td>150.108906</td>
+      <td>8.931884</td>
+      <td>0.532907</td>
+      <td>966.031357</td>
+      <td>11.622000</td>
+      <td>11.622000</td>
+      <td>11.622000</td>
+      <td>11.622000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>32.468039</td>
+      <td>2.960336</td>
+      <td>60.017556</td>
+      <td>0.155840</td>
+      <td>0.002828</td>
+      <td>95.604599</td>
+      <td>32.135830</td>
+      <td>2.832799</td>
+      <td>59.981973</td>
+      <td>0.152122</td>
+      <td>...</td>
+      <td>774.710482</td>
+      <td>231.970461</td>
+      <td>147.002794</td>
+      <td>8.551998</td>
+      <td>0.532939</td>
+      <td>957.180125</td>
+      <td>11.781000</td>
+      <td>11.781000</td>
+      <td>11.781000</td>
+      <td>11.781000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>46.813626</td>
+      <td>4.447433</td>
+      <td>83.179517</td>
+      <td>0.221035</td>
+      <td>0.004625</td>
+      <td>134.666236</td>
+      <td>45.579554</td>
+      <td>3.974414</td>
+      <td>83.047507</td>
+      <td>0.207258</td>
+      <td>...</td>
+      <td>1095.228821</td>
+      <td>320.746671</td>
+      <td>203.492186</td>
+      <td>11.556799</td>
+      <td>0.753571</td>
+      <td>1351.006942</td>
+      <td>16.884667</td>
+      <td>16.884667</td>
+      <td>16.884667</td>
+      <td>16.884667</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>59.565837</td>
+      <td>6.229870</td>
+      <td>99.797207</td>
+      <td>0.198543</td>
+      <td>0.007252</td>
+      <td>165.798708</td>
+      <td>56.180048</td>
+      <td>4.933714</td>
+      <td>99.435369</td>
+      <td>0.160818</td>
+      <td>...</td>
+      <td>1339.206963</td>
+      <td>384.165960</td>
+      <td>243.529034</td>
+      <td>8.626585</td>
+      <td>0.921667</td>
+      <td>1670.276141</td>
+      <td>20.926667</td>
+      <td>20.926667</td>
+      <td>20.926667</td>
+      <td>20.926667</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>82.722903</td>
+      <td>9.677156</td>
+      <td>129.280686</td>
+      <td>0.297994</td>
+      <td>0.012400</td>
+      <td>221.991139</td>
+      <td>75.086780</td>
+      <td>6.757242</td>
+      <td>128.465244</td>
+      <td>0.213042</td>
+      <td>...</td>
+      <td>1767.202399</td>
+      <td>497.229656</td>
+      <td>314.372312</td>
+      <td>10.832734</td>
+      <td>1.215639</td>
+      <td>2248.492608</td>
+      <td>27.985000</td>
+      <td>27.985000</td>
+      <td>27.985000</td>
+      <td>27.985000</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>129.411801</td>
+      <td>16.288027</td>
+      <td>190.718124</td>
+      <td>0.488621</td>
+      <td>0.022068</td>
+      <td>336.928640</td>
+      <td>114.425282</td>
+      <td>10.564930</td>
+      <td>189.118906</td>
+      <td>0.322137</td>
+      <td>...</td>
+      <td>2658.390880</td>
+      <td>734.567652</td>
+      <td>462.399348</td>
+      <td>15.467028</td>
+      <td>1.825065</td>
+      <td>3427.187458</td>
+      <td>42.476000</td>
+      <td>42.476000</td>
+      <td>42.476000</td>
+      <td>42.476000</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>188.717650</td>
+      <td>25.714931</td>
+      <td>260.793459</td>
+      <td>0.752367</td>
+      <td>0.036466</td>
+      <td>476.014873</td>
+      <td>162.303897</td>
+      <td>15.645360</td>
+      <td>257.977109</td>
+      <td>0.459434</td>
+      <td>...</td>
+      <td>3706.170965</td>
+      <td>1012.217029</td>
+      <td>629.999002</td>
+      <td>20.408053</td>
+      <td>2.546397</td>
+      <td>4865.730868</td>
+      <td>59.745000</td>
+      <td>59.745000</td>
+      <td>59.745000</td>
+      <td>59.745000</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>300.242888</td>
+      <td>41.223945</td>
+      <td>410.905403</td>
+      <td>1.188847</td>
+      <td>0.059776</td>
+      <td>753.620860</td>
+      <td>257.733923</td>
+      <td>25.058935</td>
+      <td>406.377665</td>
+      <td>0.718538</td>
+      <td>...</td>
+      <td>5826.328448</td>
+      <td>1548.742479</td>
+      <td>979.795300</td>
+      <td>30.266716</td>
+      <td>4.005670</td>
+      <td>7712.784010</td>
+      <td>94.752000</td>
+      <td>94.752000</td>
+      <td>94.752000</td>
+      <td>94.752000</td>
+    </tr>
+  </tbody>
+</table>
+<p>10 rows × 1180 columns</p>
 </div>
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_col_titles</span> <span class="o">=</span> <span class="n">filter_col_Bifacial_ReducedInstalls</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">new_col_titles</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">new_col_titles</span><span class="p">]</span>
-<span class="n">df_Bifacial_ReducedInstalls</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">USyearly</span><span class="p">[</span><span class="n">filter_col_Bifacial_ReducedInstalls</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">+</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">filter_col_Mono</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">new_col_titles</span><span class="p">)</span>
-<span class="n">USyearly</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">USyearly</span><span class="p">,</span> <span class="n">df_Bifacial_ReducedInstalls</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">USyearly</span> <span class="o">=</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">USyearly</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">filter_col_Bifacial_ReducedInstalls</span><span class="p">)]</span>
-</pre></div>
 
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_col_titles</span> <span class="o">=</span> <span class="n">filter_col_Bifacial_SameInstalls</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">new_col_titles</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">new_col_titles</span><span class="p">]</span>
-<span class="n">df_Bifacial_SameInstalls</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">USyearly</span><span class="p">[</span><span class="n">filter_col_Bifacial_SameInstalls</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">+</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">filter_col_Mono</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">new_col_titles</span><span class="p">)</span>
-<span class="n">USyearly</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">USyearly</span><span class="p">,</span> <span class="n">df_Bifacial_SameInstalls</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">USyearly</span> <span class="o">=</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">USyearly</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">filter_col_Bifacial_SameInstalls</span><span class="p">)]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span> <span class="o">=</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">USyearly</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">filter_col_Mono</span><span class="p">)]</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
@@ -13786,7 +15980,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">UScum</span> <span class="o">=</span> <span class="n">USyearly</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -13795,6 +15989,190 @@ div#notebook {
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Waste_glass_PV_ICE_baseline</th>
+      <th>Waste_aluminium_frames_PV_ICE_baseline</th>
+      <th>Waste_silicon_PV_ICE_baseline</th>
+      <th>Waste_silver_PV_ICE_baseline</th>
+      <th>Waste_copper_PV_ICE_baseline</th>
+      <th>Waste_Module_PV_ICE_baseline</th>
+      <th>Waste_glass_Reliability_Case1_Lifetime_Improvements_of_3_years</th>
+      <th>Waste_aluminium_frames_Reliability_Case1_Lifetime_Improvements_of_3_years</th>
+      <th>Waste_silicon_Reliability_Case1_Lifetime_Improvements_of_3_years</th>
+      <th>Waste_silver_Reliability_Case1_Lifetime_Improvements_of_3_years</th>
+      <th>...</th>
+      <th>VirginStock_glass_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_aluminium_frames_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_silicon_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_silver_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_copper_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>VirginStock_Module_Reliability_Case3_Lifetime_Decline_of_24_years</th>
+      <th>new_Installed_Capacity_[MW]_PV_ICE</th>
+      <th>new_Installed_Capacity_[MW]_Reliability_Case1</th>
+      <th>new_Installed_Capacity_[MW]_Reliability_Case2</th>
+      <th>new_Installed_Capacity_[MW]_Reliability_Case3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>35.574651</td>
+      <td>3.797870</td>
+      <td>70.644070</td>
+      <td>0.190322</td>
+      <td>0.002848</td>
+      <td>110.209761</td>
+      <td>35.574651</td>
+      <td>3.797870</td>
+      <td>70.644070</td>
+      <td>0.190322</td>
+      <td>...</td>
+      <td>858.816756</td>
+      <td>312.916411</td>
+      <td>173.147230</td>
+      <td>10.735207</td>
+      <td>0.590784</td>
+      <td>1102.097610</td>
+      <td>12.500000</td>
+      <td>12.500000</td>
+      <td>12.500000</td>
+      <td>12.500000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>62.657891</td>
+      <td>6.620951</td>
+      <td>123.366547</td>
+      <td>0.329587</td>
+      <td>0.005018</td>
+      <td>192.979994</td>
+      <td>62.655416</td>
+      <td>6.619998</td>
+      <td>123.366281</td>
+      <td>0.329559</td>
+      <td>...</td>
+      <td>1512.576923</td>
+      <td>545.434342</td>
+      <td>302.368298</td>
+      <td>18.588818</td>
+      <td>1.040508</td>
+      <td>1929.807828</td>
+      <td>22.167667</td>
+      <td>22.167667</td>
+      <td>22.167667</td>
+      <td>22.167667</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>94.815832</td>
+      <td>9.636476</td>
+      <td>184.617192</td>
+      <td>0.488589</td>
+      <td>0.007628</td>
+      <td>289.565717</td>
+      <td>94.760700</td>
+      <td>9.615269</td>
+      <td>184.611277</td>
+      <td>0.487970</td>
+      <td>...</td>
+      <td>2287.512338</td>
+      <td>792.055903</td>
+      <td>452.477204</td>
+      <td>27.520702</td>
+      <td>1.573415</td>
+      <td>2895.839185</td>
+      <td>33.789667</td>
+      <td>33.789667</td>
+      <td>33.789667</td>
+      <td>33.789667</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>127.283871</td>
+      <td>12.596813</td>
+      <td>244.634747</td>
+      <td>0.644429</td>
+      <td>0.010456</td>
+      <td>385.170316</td>
+      <td>126.896530</td>
+      <td>12.448068</td>
+      <td>244.593250</td>
+      <td>0.640092</td>
+      <td>...</td>
+      <td>3062.222820</td>
+      <td>1024.026364</td>
+      <td>599.479998</td>
+      <td>36.072700</td>
+      <td>2.106354</td>
+      <td>3853.019310</td>
+      <td>45.570667</td>
+      <td>45.570667</td>
+      <td>45.570667</td>
+      <td>45.570667</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>174.097497</td>
+      <td>17.044245</td>
+      <td>327.814264</td>
+      <td>0.865463</td>
+      <td>0.015082</td>
+      <td>519.836552</td>
+      <td>172.476083</td>
+      <td>16.422482</td>
+      <td>327.640757</td>
+      <td>0.847350</td>
+      <td>...</td>
+      <td>4157.451641</td>
+      <td>1344.773035</td>
+      <td>802.972184</td>
+      <td>47.629499</td>
+      <td>2.859925</td>
+      <td>5204.026252</td>
+      <td>62.455333</td>
+      <td>62.455333</td>
+      <td>62.455333</td>
+      <td>62.455333</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 1180 columns</p>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13808,7 +16186,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;Installed_Capacity_[W]&#39;</span>
@@ -13832,33 +16210,6 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">UScum</span><span class="p">[</span><span class="s1">&#39;Capacity_Bifacial_ReducedInstalls&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UScum</span><span class="p">[</span><span class="s1">&#39;Capacity_Mono_Bifacial&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">UScum</span><span class="p">[</span><span class="s1">&#39;Capacity_Bifacial_ReducedInstalls_Bifacial&#39;</span><span class="p">]</span>
-<span class="n">UScum</span><span class="p">[</span><span class="s1">&#39;Capacity_Bifacial_SameInstalls&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UScum</span><span class="p">[</span><span class="s1">&#39;Capacity_Mono_Bifacial&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">UScum</span><span class="p">[</span><span class="s1">&#39;Capacity_Bifacial_SameInstalls_Bifacial&#39;</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">UScum</span> <span class="o">=</span> <span class="n">UScum</span><span class="p">[</span><span class="n">UScum</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Capacity_Mono_Bifacial&#39;</span><span class="p">,</span><span class="s1">&#39;Capacity_Bifacial_ReducedInstalls_Bifacial&#39;</span><span class="p">,</span> <span class="s1">&#39;Capacity_Bifacial_SameInstalls_Bifacial&#39;</span><span class="p">])]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13868,7 +16219,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;Today&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span>
@@ -13876,6 +16227,30 @@ div#notebook {
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-24-cbbbe618b4f7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>USyearly<span class="ansi-yellow-intense-fg ansi-bold">.</span>index <span class="ansi-yellow-intense-fg ansi-bold">=</span> r1<span class="ansi-yellow-intense-fg ansi-bold">.</span>scenario<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Today&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;year&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
+<span class="ansi-green-fg">      2</span> UScum<span class="ansi-yellow-intense-fg ansi-bold">.</span>index <span class="ansi-yellow-intense-fg ansi-bold">=</span> r1<span class="ansi-yellow-intense-fg ansi-bold">.</span>scenario<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;Today&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;year&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
+
+<span class="ansi-red-intense-fg ansi-bold">KeyError</span>: &#39;Today&#39;</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13898,8 +16273,8 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">UScum</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;Cumulative_Results.csv&#39;</span><span class="p">)</span>
-<span class="n">USyearly</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;Yearly_Results.csv&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">UScum</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;TERAWATT_Cumulative_Results.csv&#39;</span><span class="p">)</span>
+<span class="n">USyearly</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;TERAWATT_Yearly_Results.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13912,7 +16287,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">UScum</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 
     </div>

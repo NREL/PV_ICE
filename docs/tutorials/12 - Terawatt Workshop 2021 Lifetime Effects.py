@@ -12,12 +12,12 @@
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'PVSC')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'TeraWattWorkshop')
 
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[9]:
+# In[2]:
 
 
 MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper']
@@ -26,7 +26,7 @@ MATERIAL = MATERIALS[0]
 MODULEBASELINE = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv'
 
 
-# In[10]:
+# In[3]:
 
 
 import PV_ICE
@@ -35,13 +35,13 @@ import pandas as pd
 import numpy as np
 
 
-# In[11]:
+# In[4]:
 
 
 PV_ICE.__version__
 
 
-# In[12]:
+# In[5]:
 
 
 plt.rcParams.update({'font.size': 22})
@@ -50,24 +50,24 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # # Simulation 1: Regular PV ICE
 
-# In[13]:
+# In[6]:
 
 
 MATERIALBASELINE_GLASS = r'..\..\baselines\baseline_material_glass.csv'
 MATERIALBASELINE_ALFrames = r'..\..\baselines\baseline_material_aluminium_frames.csv'
 
 
-# In[14]:
+# In[7]:
 
 
 r1 = PV_ICE.Simulation(name='PV_ICE', path=testfolder)
 
-r1.createScenario(name='Today', file=MODULEBASELINE)
-r1.scenario['Today'].addMaterial('glass', file=MATERIALBASELINE_GLASS)
-r1.scenario['Today'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames)
+r1.createScenario(name='baseline', file=MODULEBASELINE)
+r1.scenario['baseline'].addMaterial('glass', file=MATERIALBASELINE_GLASS)
+r1.scenario['baseline'].addMaterial('aluminium_frames', file=MATERIALBASELINE_ALFrames)
 for mat in range (2, len(MATERIALS)):
     MATERIALBASELINE=r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r1.scenario['Today'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+    r1.scenario['baseline'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
     
 
 
@@ -82,7 +82,7 @@ for mat in range (2, len(MATERIALS)):
 # <li> Case3 -- r6: mod_degradation
 # 
 
-# In[15]:
+# In[8]:
 
 
 Life_Good = [3, 6, 9, 12, 15, 18, 21, 24]
@@ -91,7 +91,7 @@ Life_Bad = [element * -1 for element in Life_Good]
 degradation_Bad = [0.2, 0.4, 0.6, 0.8, 1.2, 1.6, 2.0, 3.0]
 
 
-# In[16]:
+# In[9]:
 
 
 r4 = PV_ICE.Simulation(name='Reliability_Case1', path=testfolder)
@@ -124,7 +124,7 @@ for i in range(0, len(Life_Good)):
         r4.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)   
 
 
-# In[17]:
+# In[10]:
 
 
 # Sanity Check
@@ -132,7 +132,7 @@ print('Scenario', list(r4.scenario.keys())[0] , 't50 in 2030: ', r4.scenario[lis
 print('Scenario', list(r4.scenario.keys())[1] , 't50 in 2030: ', r4.scenario[list(r4.scenario.keys())[1]].data['mod_reliability_t50'][35])
 
 
-# In[18]:
+# In[11]:
 
 
 r5 = PV_ICE.Simulation(name='Reliability_Case2', path=testfolder)
@@ -170,7 +170,7 @@ for i in range(0, len(Life_Good)):
         r5.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)   
 
 
-# In[19]:
+# In[12]:
 
 
 r6 = PV_ICE.Simulation(name='Reliability_Case3', path=testfolder)
@@ -204,7 +204,7 @@ for i in range(0, len(Life_Good)):
 
 # ### Run Simulations 
 
-# In[ ]:
+# In[13]:
 
 
 r1.calculateMassFlow()
@@ -217,19 +217,19 @@ r4.scenario[list(r4.scenario.keys())[-1]].data
 # ## Creating Summary of results 
 # 
 
-# In[ ]:
+# In[14]:
 
 
-Simulations = [r0a, r0b, r0c, r1, r2, r3]
+Simulations = [r1, r4, r5, r6]
 
 
-# In[ ]:
+# In[15]:
 
 
 USyearly=pd.DataFrame()
 
 
-# In[ ]:
+# In[16]:
 
 
 keyword='mat_Total_Landfilled'
@@ -253,7 +253,7 @@ for kk in range(0, len(Simulations)):
         USyearly['Waste_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[17]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -277,7 +277,7 @@ for kk in range(0, len(Simulations)):
         USyearly['Waste_EOL_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[18]:
 
 
 keyword='mat_Total_MFG_Landfilled'
@@ -301,7 +301,7 @@ for kk in range(0, len(Simulations)):
         USyearly['Waste_MFG_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[19]:
 
 
 keyword='mat_Virgin_Stock'
@@ -328,7 +328,7 @@ for kk in range(0, len(Simulations)):
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[ ]:
+# In[20]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
@@ -337,7 +337,7 @@ USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 
 # ### Adding NEW Installed Capacity to US
 
-# In[ ]:
+# In[21]:
 
 
 keyword='new_Installed_Capacity_[MW]'
@@ -355,45 +355,9 @@ for kk in range(0, len(Simulations)):
 USyearly.head(10)
 
 
-# # Combining BifacialProjection
-
-# In[ ]:
-
-
-filter_col_Bifacial_ReducedInstalls = [col for col in USyearly if col.endswith('Bifacial_ReducedInstalls_Bifacial')]
-filter_col_Mono = [col for col in USyearly if col.endswith('Mono_Bifacial')]
-filter_col_Bifacial_SameInstalls = [col for col in USyearly if col.endswith('Bifacial_SameInstalls_Bifacial')]
-
-
-# In[ ]:
-
-
-new_col_titles = filter_col_Bifacial_ReducedInstalls.copy()
-new_col_titles = [x[:-9] for x in new_col_titles]
-df_Bifacial_ReducedInstalls = pd.DataFrame(USyearly[filter_col_Bifacial_ReducedInstalls].values + USyearly[filter_col_Mono].values, columns=new_col_titles)
-USyearly = pd.concat([USyearly, df_Bifacial_ReducedInstalls], axis=1)
-USyearly = USyearly[USyearly.columns.drop(filter_col_Bifacial_ReducedInstalls)]
-
-
-# In[ ]:
-
-
-new_col_titles = filter_col_Bifacial_SameInstalls.copy()
-new_col_titles = [x[:-9] for x in new_col_titles]
-df_Bifacial_SameInstalls = pd.DataFrame(USyearly[filter_col_Bifacial_SameInstalls].values + USyearly[filter_col_Mono].values, columns=new_col_titles)
-USyearly = pd.concat([USyearly, df_Bifacial_SameInstalls], axis=1)
-USyearly = USyearly[USyearly.columns.drop(filter_col_Bifacial_SameInstalls)]
-
-
-# In[ ]:
-
-
-USyearly = USyearly[USyearly.columns.drop(filter_col_Mono)]
-
-
 # ### Creating Cuulatives 
 
-# In[ ]:
+# In[22]:
 
 
 UScum = USyearly.copy()
@@ -403,7 +367,7 @@ UScum.head()
 
 # ### Adding Installed Capacity to US
 
-# In[ ]:
+# In[23]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -422,22 +386,9 @@ for kk in range(0, len(Simulations)):
         
 
 
-# In[ ]:
-
-
-UScum['Capacity_Bifacial_ReducedInstalls'] = UScum['Capacity_Mono_Bifacial'] + UScum['Capacity_Bifacial_ReducedInstalls_Bifacial']
-UScum['Capacity_Bifacial_SameInstalls'] = UScum['Capacity_Mono_Bifacial'] + UScum['Capacity_Bifacial_SameInstalls_Bifacial']
-
-
-# In[ ]:
-
-
-UScum = UScum[UScum.columns.drop(['Capacity_Mono_Bifacial','Capacity_Bifacial_ReducedInstalls_Bifacial', 'Capacity_Bifacial_SameInstalls_Bifacial'])]
-
-
 # ### Reindexing
 
-# In[ ]:
+# In[24]:
 
 
 USyearly.index = r1.scenario['Today'].data['year']
@@ -453,14 +404,14 @@ UScum.tail(5)
 # In[ ]:
 
 
-UScum.to_csv('Cumulative_Results.csv')
-USyearly.to_csv('Yearly_Results.csv')
+UScum.to_csv('TERAWATT_Cumulative_Results.csv')
+USyearly.to_csv('TERAWATT_Yearly_Results.csv')
 
 
 # In[ ]:
 
 
-
+UScum.keys()
 
 
 # ## Mining Capacity
