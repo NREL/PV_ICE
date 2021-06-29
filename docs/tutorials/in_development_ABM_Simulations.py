@@ -77,7 +77,7 @@ file_scenario_names = ABM_outputs['Scenario'].unique().tolist()
 ABM_outputs = ABM_outputs.replace(file_scenario_names, ABM_SCENARIOS)
 
 
-# In[9]:
+# In[6]:
 
 
 #changing repair, eol collection eff, and reuse module baselines for all ABM scenarios
@@ -117,7 +117,7 @@ for myscenario in ABM_SCENARIOS:
 
 # ## Run Mass Flow Calculations
 
-# In[10]:
+# In[7]:
 
 
 r1.calculateMassFlow()
@@ -125,25 +125,25 @@ r1.calculateMassFlow()
 
 # ## Initial plotting of results
 
-# In[ ]:
+# In[8]:
 
 
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposed')
 
 
-# In[ ]:
+# In[9]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 
 
-# In[ ]:
+# In[10]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 
 
-# In[ ]:
+# In[11]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silver', keyword='mat_Virgin_Stock') #all the same values?
@@ -151,7 +151,7 @@ r1.plotMaterialComparisonAcrossScenarios(material='silver', keyword='mat_Virgin_
 
 # ### Creating a summary of results in a new data frame
 
-# In[11]:
+# In[12]:
 
 
 USyearly=pd.DataFrame()
@@ -176,7 +176,7 @@ for jj in range(0, len(r1.scenario)): #goes from 0 to 9
 #took module sum out of inner loop to fix module sum error
 
 
-# In[ ]:
+# In[14]:
 
 
 keyword='mat_Total_Landfilled'
@@ -194,7 +194,7 @@ for jj in range(0, len(r1.scenario)): #goes from 0 to 9
     USyearly['Waste_Module_'+r1.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[15]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -212,14 +212,14 @@ for jj in range(0, len(r1.scenario)): #goes from 0 to 9
     USyearly['Waste_EOL_Module_'+r1.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[16]:
 
 
 USyearly = USyearly/1000000  #Convert to metric tonnes
 #907185 -- this is for US tons
 
 
-# In[ ]:
+# In[17]:
 
 
 keyword='new_Installed_Capacity_[MW]'
@@ -232,14 +232,14 @@ else:
     USyearly[keyword+'_'+r1.name] = r1.scenario[list(r1.scenario.keys())[0]].data[keyword]
 
 
-# In[ ]:
+# In[18]:
 
 
 UScum = USyearly.copy()
 UScum = UScum.cumsum()
 
 
-# In[ ]:
+# In[19]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -250,16 +250,17 @@ for i in range(0, len(r1.scenario)):
     foo = r1.scenario[case].data[keyword]
     foo = foo.to_frame(name=keyword)
     UScum["Capacity_"+r1.name+'_'+case] = foo[keyword].values #this needs to be .values
+    ########SHOULD THIS BE CHANGED TO BE IN MW?
 
 
-# In[ ]:
+# In[20]:
 
 
 USyearly.index = r1.scenario['standard_PVICE'].data['year']
 UScum.index = r1.scenario['standard_PVICE'].data['year']
 
 
-# In[ ]:
+# In[21]:
 
 
 USyearly.to_csv('ABM_Yearly_Results.csv')
@@ -268,7 +269,7 @@ UScum.to_csv('ABM_Cumulative_Results.csv')
 
 # ### Plotting with USyearly and UScum data frames
 
-# In[ ]:
+# In[22]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -370,7 +371,7 @@ print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[ ]:
+# In[23]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -474,13 +475,13 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 # ### Yearly Results
 
-# In[ ]:
+# In[24]:
 
 
 yearly_scenario_comparison = pd.DataFrame()
 
 
-# In[ ]:
+# In[25]:
 
 
 #use scenarios as values
@@ -488,7 +489,7 @@ years = USyearly.index
 yearly_scenario_comparison['@timeseries|Year'] = list(years)
 
 
-# In[ ]:
+# In[26]:
 
 
 scenarios = ['standard_PVICE','landfill_ban','high_mat_recovery_cheap_recycling','cheap_recycling','high_landfill_costs','better_lifetime','better_learning','reuse_warranties','seeding_reuse','juliens_baseline']
@@ -502,7 +503,7 @@ for myscenario in scenarios:
     
 
 
-# In[ ]:
+# In[27]:
 
 
 #EOL material columns
@@ -512,13 +513,13 @@ for myscenario in scenarios:
     yearly_scenario_comparison['@value|TotalEOLMaterial|' + better_scenario_name + '#MetricTonnes'] = list(total_eol_material.values)
 
 
-# In[ ]:
+# In[28]:
 
 
 ###############WHAT NEXT?
 
 
-# In[ ]:
+# In[29]:
 
 
 yearly_scenario_comparison.to_csv('ABM_Yearly, with Scenario Comparison, Materials Summed.csv')
@@ -526,13 +527,13 @@ yearly_scenario_comparison.to_csv('ABM_Yearly, with Scenario Comparison, Materia
 
 # ### Cumulative Results
 
-# In[ ]:
+# In[30]:
 
 
 cumulative_ABM = pd.DataFrame()
 
 
-# In[ ]:
+# In[31]:
 
 
 scenarios = ['standard_PVICE','landfill_ban','high_mat_recovery_cheap_recycling','cheap_recycling','high_landfill_costs','better_lifetime','better_learning','reuse_warranties','seeding_reuse','juliens_baseline']
@@ -543,14 +544,14 @@ for myscenario in pretty_scenarios:
 cumulative_ABM['@scenario|Intervention Scenario'] = list1
 
 
-# In[ ]:
+# In[32]:
 
 
 years = USyearly.index
 cumulative_ABM['@timeseries|Year'] = list(years) * 10
 
 
-# In[ ]:
+# In[33]:
 
 
 #Virgin Material Demand Columns
@@ -564,7 +565,7 @@ for mymaterial in materials:
     cumulative_ABM['@value|VirginMaterialDemand|' + better_material_name + '#MetricTonnes'] = virgin_material_demand
 
 
-# In[ ]:
+# In[34]:
 
 
 #EOL Material Columns
@@ -578,7 +579,7 @@ for mymaterial in materials:
     cumulative_ABM['@value|EOLMaterial|' + better_material_name + '#MetricTonnes'] = eol_material
 
 
-# In[ ]:
+# In[36]:
 
 
 #filter for decade increments
@@ -587,16 +588,54 @@ cumulative_ABM = cumulative_ABM[df_new.year.isin([2020, 2030,2040,2050])]
 cumulative_ABM = cumulative_ABM.rename(columns={'year':'@timeseries|Year'})
 
 
-# In[ ]:
+# In[37]:
 
 
 ###############WHAT NEXT?
 
 
-# In[ ]:
+# In[38]:
 
 
 cumulative_ABM.to_csv('ABM_Cumulative with Decade Increments.csv')
+
+
+# ### Create Installed Capacity CSV
+
+# In[46]:
+
+
+installed_capacity = pd.DataFrame()
+
+
+# In[47]:
+
+
+years = USyearly.index
+installed_capacity['@timeseries|Year'] = years
+
+
+# In[48]:
+
+
+scenarios = ['standard_PVICE','landfill_ban','high_mat_recovery_cheap_recycling','cheap_recycling','high_landfill_costs','better_lifetime','better_learning','reuse_warranties','seeding_reuse','juliens_baseline']
+pretty_scenarios = ['PV ICE Baseline','Landfill Ban','High material recovery and Lower recycling costs','Lower recycling costs','Higher landfill costs','Improved lifetime','Improved learning effect','Reuse warranties','Seeding reuse','ABM Baseline']
+for myscenario in scenarios:
+    capacity = UScum['Capacity_ABM_Simulation_'+ myscenario]
+    better_scenario_name = pretty_scenarios[scenarios.index(myscenario)]
+    installed_capacity['@value|InstalledCapacity|' + better_scenario_name + '#MW'] = list(capacity.values)
+
+
+# In[ ]:
+
+
+###Change installed capacity to MW and save
+
+
+# In[49]:
+
+
+installed_capacity
 
 
 # In[ ]:
