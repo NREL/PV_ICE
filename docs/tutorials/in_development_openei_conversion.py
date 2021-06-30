@@ -4,7 +4,7 @@
 # # Converting output files from "11c - Electric Futures Simulations BIFACIAL (PVSC) CLEANUP" 
 # ## into OpenEi format for the various graphs shown on the PVSC PVICE wiki page
 
-# In[1]:
+# In[8]:
 
 
 import PV_ICE
@@ -14,7 +14,7 @@ import os,sys
 from pathlib import Path
 
 
-# In[2]:
+# In[9]:
 
 
 testfolder = str(Path().resolve().parent.parent /'PV_ICE' / 'TEMP')
@@ -26,29 +26,29 @@ print ("Your simulation will be stored in %s" % testfolder)
 print(baselinesfolder)
 
 
-# In[3]:
+# In[11]:
 
 
-yearly_results = pd.read_csv(r'C:\Users\ahegedus\Documents\Open EI Data\PVSC PVICE Python Data Files to Convert to Open EI\CONVERT FROM THESE\Yearly_Results.csv')
-cumulative_results = pd.read_csv(r'C:\Users\ahegedus\Documents\Open EI Data\PVSC PVICE Python Data Files to Convert to Open EI\CONVERT FROM THESE\PVSC_Cumulative_Results.csv')
+yearly_results = pd.read_csv(r'C:\Users\ahegedus\Documents\PV ICE Open EI Data\PVSC PVICE Python Data Files to Convert to Open EI\CONVERT FROM THESE\Yearly_Results.csv')
+cumulative_results = pd.read_csv(r'C:\Users\ahegedus\Documents\PV ICE Open EI Data\PVSC PVICE Python Data Files to Convert to Open EI\CONVERT FROM THESE\PVSC_Cumulative_Results.csv')
 
 
 # ## Create "PVSC_Yearly, with Source Comparison, Materials Summed.csv"
 
-# In[4]:
+# In[12]:
 
 
 yearly_source_comparison = pd.DataFrame()
 
 
-# In[5]:
+# In[13]:
 
 
 scenario_col = ["Today"]*(2050-1994)+["Bifacial Projection"]*(2050-1994)
 yearly_source_comparison['@scenario|Module Composition Scenario'] = scenario_col
 
 
-# In[6]:
+# In[14]:
 
 
 yearly_source_comparison['@timeseries|Year'] = list(yearly_results['year'])*2
@@ -56,21 +56,21 @@ yearly_source_comparison['@timeseries|Year'] = list(yearly_results['year'])*2
 
 # ### Total Virgin Material Demand Columns
 
-# In[7]:
+# In[15]:
 
 
 virgin_material_demand_PVICE_bireduced = yearly_results['VirginStock_glass_Bifacial_ReducedInstalls'] + yearly_results['VirginStock_aluminium_frames_Bifacial_ReducedInstalls'] + yearly_results['VirginStock_silver_Bifacial_ReducedInstalls'] + yearly_results['VirginStock_silicon_Bifacial_ReducedInstalls'] + yearly_results['VirginStock_copper_Bifacial_ReducedInstalls']
 yearly_source_comparison['@value|TotalVirginMaterialDemand|PV ICE Bifacial Reduced Installs#MetricTonnes'] = ["NA"]*(2050-1994) + list(virgin_material_demand_PVICE_bireduced.values)
 
 
-# In[8]:
+# In[16]:
 
 
 virgin_material_demand_PVICE_bi = yearly_results['VirginStock_glass_Bifacial_SameInstalls'] + yearly_results['VirginStock_aluminium_frames_Bifacial_SameInstalls'] + yearly_results['VirginStock_silver_Bifacial_SameInstalls'] + yearly_results['VirginStock_silicon_Bifacial_SameInstalls'] + yearly_results['VirginStock_copper_Bifacial_SameInstalls']
 yearly_source_comparison['@value|TotalVirginMaterialDemand|PV ICE Bifacial#MetricTonnes'] = ["NA"]*(2050-1994) + list(virgin_material_demand_PVICE_bi.values)
 
 
-# In[9]:
+# In[17]:
 
 
 virgin_material_demand_PVICE_today = yearly_results['VirginStock_glass_PV_ICE_Today'] + yearly_results['VirginStock_aluminium_frames_PV_ICE_Today'] + yearly_results['VirginStock_silver_PV_ICE_Today'] + yearly_results['VirginStock_silicon_PV_ICE_Today'] + yearly_results['VirginStock_copper_PV_ICE_Today']
@@ -78,7 +78,7 @@ virgin_material_demand_PVICE_bifacialproj = yearly_results['VirginStock_glass_PV
 yearly_source_comparison['@value|TotalVirginMaterialDemand|PV ICE#MetricTonnes'] = list(virgin_material_demand_PVICE_today.values) + list(virgin_material_demand_PVICE_bifacialproj.values)
 
 
-# In[10]:
+# In[18]:
 
 
 lit_sources = ["PV_ICE","Irena_EL","Irena_RL"]
@@ -94,7 +94,7 @@ for source in lit_sources:
 
 # ### Total EOL Material Columns
 
-# In[11]:
+# In[19]:
 
 
 bifacial_scenarios = ["Bifacial_ReducedInstalls","Bifacial_SameInstalls"]
@@ -105,7 +105,7 @@ for myscenario in bifacial_scenarios:
     yearly_source_comparison['@value|TotalEOLMaterial|' + better_scenario_name + '#MetricTonnes'] = ["NA"]*(2050-1994) + list(total_eol_material_bifacialproj.values) 
 
 
-# In[12]:
+# In[20]:
 
 
 lit_sources = ["PV_ICE","Irena_EL","Irena_RL"]
@@ -120,7 +120,7 @@ for source in lit_sources:
 
 # ### Manufacturing Scrap Columns
 
-# In[13]:
+# In[21]:
 
 
 bifacial_scenarios = ["Bifacial_ReducedInstalls","Bifacial_SameInstalls"]
@@ -131,7 +131,7 @@ for myscenario in bifacial_scenarios:
     yearly_source_comparison['@value|ManufacturingScrap|' + better_scenario_name + '#MetricTonnes'] = ["NA"]*(2050-1994) + list(total_mfg_scrap_bifacialproj.values) 
 
 
-# In[14]:
+# In[22]:
 
 
 lit_sources = ["PV_ICE","Irena_EL","Irena_RL"]
@@ -145,7 +145,7 @@ for source in lit_sources:
 
 # ### Manufacturing Scrap and EOL Material Columns
 
-# In[15]:
+# In[23]:
 
 
 bifacial_scenarios = ["Bifacial_ReducedInstalls","Bifacial_SameInstalls"]
@@ -156,7 +156,7 @@ for myscenario in bifacial_scenarios:
     yearly_source_comparison['@value|ManufacturingScrapAndEOLMaterial|' + better_scenario_name + '#MetricTonnes'] = ["NA"]*(2050-1994) + list(total_waste.values)[56:] 
 
 
-# In[16]:
+# In[24]:
 
 
 lit_sources = ["PV_ICE","Irena_EL","Irena_RL"]
@@ -169,7 +169,7 @@ for source in lit_sources:
 
 # ### New Installed Capacity Columns
 
-# In[17]:
+# In[25]:
 
 
 bifacial_scenarios = ["Bifacial_ReducedInstalls","Bifacial_SameInstalls"]
@@ -180,7 +180,7 @@ for myscenario in bifacial_scenarios:
     yearly_source_comparison['@value|NewInstalledCapacity|' + better_scenario_name + '#MW'] = ["NA"]*(2050-1994) + list(new_installs.values) 
 
 
-# In[18]:
+# In[26]:
 
 
 lit_sources = ["PV_ICE","Irena_EL","Irena_RL"]
@@ -193,7 +193,7 @@ for source in lit_sources:
 
 # ### Installed Capacity Columns
 
-# In[19]:
+# In[27]:
 
 
 bifacial_scenarios = ["Bifacial_ReducedInstalls","Bifacial_SameInstalls"]
@@ -201,10 +201,10 @@ pretty_scenarios = ["PV ICE Bifacial Reduced Installs", "PV ICE Bifacial"]
 for myscenario in bifacial_scenarios:
     capacity = cumulative_results['Capacity_' + myscenario]
     better_scenario_name = pretty_scenarios[bifacial_scenarios.index(myscenario)]
-    yearly_source_comparison['@value|InstalledCapacity|' + better_scenario_name + '#MW'] = ["NA"]*(2050-1994) + list(capacity.values) 
+    yearly_source_comparison['@value|InstalledCapacity|' + better_scenario_name + '#MW'] = ["NA"]*(2050-1994) + list(capacity.values/1000000) #convert to MW 
 
 
-# In[20]:
+# In[28]:
 
 
 lit_sources = ["PV_ICE","Irena_EL","Irena_RL"]
@@ -213,16 +213,16 @@ for source in lit_sources:
     capacity_today = cumulative_results['Capacity_' + source + '_Today']
     capacity_bifacialproj = cumulative_results['Capacity_' + source + '_Bifacial']
     better_source_name = pretty_sources[lit_sources.index(source)]
-    yearly_source_comparison['@value|InstalledCapacity|' + better_source_name + '#MW'] = list(capacity_today.values) + list(capacity_bifacialproj.values)
+    yearly_source_comparison['@value|InstalledCapacity|' + better_source_name + '#MW'] = list(capacity_today.values) + list(capacity_bifacialproj.values/1000000) #convert to MW
 
 
-# In[21]:
+# In[29]:
 
 
 yearly_source_comparison['@value|InstalledCapacity|Cumulative New Installs#MW'] = cumulative_results['new_Installed_Capacity_[MW]_PV_ICE']
 
 
-# In[22]:
+# In[30]:
 
 
 ### Save results as CSV, saves in tutorial folder
@@ -232,37 +232,38 @@ yearly_source_comparison.to_csv('New_PVSC_Yearly, with Source Comparison, Materi
 # ## Create "PVSC_Installed Capacity.csv"
 # ### Using Capacity_Today values
 
-# In[23]:
+# In[31]:
 
 
 installed_capacity = pd.DataFrame()
 
 
-# In[24]:
+# In[32]:
 
 
 scenario_col = ["Bifacial Projection"]*(2050-1994)
 installed_capacity['@scenario|Module Composition Scenario'] = scenario_col
 
 
-# In[25]:
+# In[33]:
 
 
 installed_capacity['@timeseries|Year'] = list(yearly_results['year'])
 
 
-# In[26]:
+# In[34]:
 
 
+####CHANGED INSTALLED CAPACITY VALUES TO MW
 bifacial_scenarios = ["Bifacial_ReducedInstalls","Bifacial_SameInstalls"]
 pretty_scenarios = ["PV ICE Bifacial Reduced Installs", "PV ICE Bifacial"]
 for myscenario in bifacial_scenarios:
     capacity = cumulative_results['Capacity_' + myscenario]
     better_scenario_name = pretty_scenarios[bifacial_scenarios.index(myscenario)]
-    installed_capacity['@value|InstalledCapacity|' + better_scenario_name + '#MW'] = list(capacity.values) 
+    installed_capacity['@value|InstalledCapacity|' + better_scenario_name + '#MW'] = list(capacity.values/1000000) #convert to MW 
 
 
-# In[27]:
+# In[35]:
 
 
 lit_sources = ["Irena_EL","Irena_RL"]
@@ -270,16 +271,16 @@ pretty_sources = ['Irena EL','Irena RL']
 for source in lit_sources:
     capacity_today = cumulative_results['Capacity_' + source + '_Today']
     better_source_name = pretty_sources[lit_sources.index(source)]
-    installed_capacity['@value|InstalledCapacity|' + better_source_name + '#MW'] = list(capacity_today.values)
+    installed_capacity['@value|InstalledCapacity|' + better_source_name + '#MW'] = list(capacity_today.values/1000000) #convert to MW
 
 
-# In[28]:
+# In[36]:
 
 
 installed_capacity['@value|InstalledCapacity|Cumulative New Installs#MW'] = cumulative_results['new_Installed_Capacity_[MW]_PV_ICE']
 
 
-# In[29]:
+# In[37]:
 
 
 ### Save results as CSV, saves in tutorial folder
@@ -359,8 +360,8 @@ for mymaterial in materials:
 
 
 #New Installed Capacity (NA) -- not used in OpenEI
-cumulative_today['@value|NewInstalledCapacity|PV|#MetricTonnes'] = ["NA"] * len(cumulative_today)
-cumulative_today['@value|InstalledCapacity|PV|#MetricTonnes'] = ["NA"] * len(cumulative_today)
+cumulative_today['@value|NewInstalledCapacity|PV|#MW'] = ["NA"] * len(cumulative_today)
+cumulative_today['@value|InstalledCapacity|PV|#W'] = ["NA"] * len(cumulative_today)
 
 
 # In[ ]:
@@ -458,8 +459,8 @@ for mymaterial in materials:
 
 
 #New Installed Capacity (NA) -- not used in OpenEI
-cumulative_bifacial['@value|NewInstalledCapacity|PV|#MetricTonnes'] = ["NA"] * len(cumulative_bifacial)
-cumulative_bifacial['@value|InstalledCapacity|PV|#MetricTonnes'] = ["NA"] * len(cumulative_bifacial)
+cumulative_bifacial['@value|NewInstalledCapacity|PV|#MW'] = ["NA"] * len(cumulative_bifacial)
+cumulative_bifacial['@value|InstalledCapacity|PV|#W'] = ["NA"] * len(cumulative_bifacial)
 
 
 # In[73]:
