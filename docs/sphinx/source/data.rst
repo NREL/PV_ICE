@@ -39,10 +39,13 @@ Percentage of modules collected from the field at end of life for sorting and di
 module_EOL_collected_recycled_[%] : float
 Percentage of collected end of life modules that are sent to recycling
 
-module_repowering_[%]: float
-Percentage of modules at EOL from degradation that are repowered.
+module_merchantTail_[%]: float
+Percentage of modules at EOL that are reused on-site.
 
-module_repairing_[%]: float
+module_reuse_[%]: float
+Percentage of modules at EOL that are reused at EoL at a different location.
+
+module_repair_[%]: float
 Percentage of modules at EOL from failure that are repaired and go back to functioning  in the field.
 
 
@@ -85,7 +88,7 @@ Percentage of end of life recycled material that is recycled into high quality m
 
 Output Data
 ------------------
-The CEMFC calculates virgin material, landfilled and recycled materials, and the many other  steps in the Mass Flow Diagram for each year dynamically. It appends these annual results to the dataframe loaded from baseline_module and baseline_materials. A description of the output columns is below.
+PV ICE calculates virgin material, landfilled and recycled materials, and the many other steps in the Mass Flow Diagram for each year dynamically. It appends these annual results to the dataframe loaded from baseline_module and baseline_materials. A description of the output columns is below.
 
 
 CEMFC Outputs
