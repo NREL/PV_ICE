@@ -14,6 +14,9 @@ from pathlib import Path
 
 testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'TeraWattWorkshop')
 
+if not os.path.exists('my_folder'):
+    os.makedirs('my_folder')
+    
 print ("Your simulation will be stored in %s" % testfolder)
 
 

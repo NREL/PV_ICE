@@ -132,11 +132,11 @@ for jj in range (0, len(PCAs)):
     filetitle = SFscenarios[i]+'_'+PCAs[jj]+'.csv'
     filetitle = os.path.join(testfolder, 'PCAs', filetitle)    
     r1.createScenario(name=PCAs[jj], file=filetitle)
-    r1.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    r1.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    r1.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    r1.scenario[PCAs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    r1.scenario[PCAs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\SolarFutures_2021\baseline_material_glass_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\SolarFutures_2021\baseline_material_silicon_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\SolarFutures_2021\baseline_material_silver_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('copper', file=r'..\baselines\SolarFutures_2021\baseline_material_copper_Reeds.csv')
+    r1.scenario[PCAs[jj]].addMaterial('aluminum', file=r'..\baselines\SolarFutures_2021\baseline_material_aluminium_Reeds.csv')
     r1.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
     r1.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
@@ -147,11 +147,11 @@ for jj in range (0, len(PCAs)):
     filetitle = SFscenarios[i]+'_'+PCAs[jj]+'.csv'
     filetitle = os.path.join(testfolder, 'PCAs', filetitle)        
     r2.createScenario(name=PCAs[jj], file=filetitle)
-    r2.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    r2.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    r2.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    r2.scenario[PCAs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    r2.scenario[PCAs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\SolarFutures_2021\baseline_material_glass_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\SolarFutures_2021\baseline_material_silicon_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\SolarFutures_2021\baseline_material_silver_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('copper', file=r'..\baselines\SolarFutures_2021\baseline_material_copper_Reeds.csv')
+    r2.scenario[PCAs[jj]].addMaterial('aluminum', file=r'..\baselines\SolarFutures_2021\baseline_material_aluminium_Reeds.csv')
     r2.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
     r2.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
@@ -161,11 +161,11 @@ for jj in range (0, len(PCAs)):
     filetitle = SFscenarios[i]+'_'+PCAs[jj]+'.csv'
     filetitle = os.path.join(testfolder, 'PCAs', filetitle)        
     r3.createScenario(name=PCAs[jj], file=filetitle)
-    r3.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    r3.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    r3.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    r3.scenario[PCAs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    r3.scenario[PCAs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('glass', file=r'..\baselines\SolarFutures_2021\baseline_material_glass_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('silicon', file=r'..\baselines\SolarFutures_2021\baseline_material_silicon_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('silver', file=r'..\baselines\SolarFutures_2021\baseline_material_silver_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('copper', file=r'..\baselines\SolarFutures_2021\baseline_material_copper_Reeds.csv')
+    r3.scenario[PCAs[jj]].addMaterial('aluminum', file=r'..\baselines\SolarFutures_2021\baseline_material_aluminium_Reeds.csv')
     r3.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
     r3.scenario[PCAs[jj]].longitude = GIS.loc[PCAs[jj]].long
 
@@ -173,12 +173,18 @@ for jj in range (0, len(PCAs)):
 # In[11]:
 
 
+list(r1.scenario[PCAs[0]].data.year)
+
+
+# In[12]:
+
+
 r1.scenario[PCAs[0]].data
 
 
 # # 2 FINISH: Set characteristics of Recycling to SF values.
 
-# In[12]:
+# In[13]:
 
 
 #r1.scenario[]
@@ -186,7 +192,7 @@ r1.scenario[PCAs[0]].data
 
 # #### Calculate Mass Flow
 
-# In[13]:
+# In[14]:
 
 
 IRENA= False
@@ -227,7 +233,7 @@ else:
     title_Method = 'PVICE'
 
 
-# In[14]:
+# In[15]:
 
 
 print("PCAs:", r1.scenario.keys())
@@ -235,7 +241,7 @@ print("Module Keys:", r1.scenario[PCAs[jj]].data.keys())
 print("Material Keys: ", r1.scenario[PCAs[jj]].material['glass'].materialdata.keys())
 
 
-# In[15]:
+# In[16]:
 
 
 """
@@ -253,7 +259,7 @@ pass
 # ### PCA vs. Cumulative Waste by 2050
 # 
 
-# In[16]:
+# In[17]:
 
 
 #for 3 significant numbers rounding
@@ -441,7 +447,7 @@ for scen in r1.scenario.keys():
     cumulativewaste2050.append(r1.scenario[scen].material['glass'].materialdata['mat_Total_Landfilled'].sum())
 
 
-# In[25]:
+# In[24]:
 
 
 import pandas as pd
@@ -457,33 +463,33 @@ from shapely.geometry import Point, Polygon
 #street_map.plot(ax=ax)
 
 
-# In[26]:
+# In[25]:
 
 
 frame = { 'Latitude': latitude_all, 'Longitude': longitude_all, 'CumulativeWaste2050': cumulativewaste2050}   
 df = pd.DataFrame(frame) 
 
 
-# In[27]:
+# In[26]:
 
 
 df.head()
 
 
-# In[28]:
+# In[27]:
 
 
 geometry = [Point(xy) for xy in zip(df['Longitude'], df['Latitude'])]
 geometry[:3]
 
 
-# In[29]:
+# In[28]:
 
 
 crs = {'init':'epsg:4326'}
 
 
-# In[30]:
+# In[29]:
 
 
 geo_df = gpd.GeoDataFrame(df, # specify our data
@@ -492,7 +498,7 @@ geo_df = gpd.GeoDataFrame(df, # specify our data
 geo_df.head()
 
 
-# In[31]:
+# In[30]:
 
 
 fig, ax = plt.subplots(figsize = (15,15))
@@ -504,7 +510,7 @@ plt.ylim([20, 50])
 plt.legend(prop={'size':15})
 
 
-# In[32]:
+# In[ ]:
 
 
 import random

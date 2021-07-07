@@ -21,7 +21,7 @@
 # o	95-by-35+Elec.Adv+DR ones
 # 
 
-# In[39]:
+# In[1]:
 
 
 import PV_ICE
@@ -127,11 +127,11 @@ for jj in range (0, len(STATEs)):
     filetitle = SFscenarios[i]+'_'+STATEs[jj]+'.csv'
     filetitle = os.path.join(testfolder, 'STATEs', filetitle)    
     r1.createScenario(name=STATEs[jj], file=filetitle)
-    r1.scenario[STATEs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    r1.scenario[STATEs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    r1.scenario[STATEs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    r1.scenario[STATEs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    r1.scenario[STATEs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
+    r1.scenario[STATEs[jj]].addMaterial('glass', file=r'..\baselines\SolarFutures_2021\baseline_material_glass_Reeds.csv')
+    r1.scenario[STATEs[jj]].addMaterial('silicon', file=r'..\baselines\SolarFutures_2021\baseline_material_silicon_Reeds.csv')
+    r1.scenario[STATEs[jj]].addMaterial('silver', file=r'..\baselines\SolarFutures_2021\baseline_material_silver_Reeds.csv')
+    r1.scenario[STATEs[jj]].addMaterial('copper', file=r'..\baselines\SolarFutures_2021\baseline_material_copper_Reeds.csv')
+    r1.scenario[STATEs[jj]].addMaterial('aluminum', file=r'..\baselines\SolarFutures_2021\baseline_material_aluminium_Reeds.csv')
 
 
 i = 1
@@ -141,11 +141,11 @@ for jj in range (0, len(STATEs)):
     filetitle = SFscenarios[i]+'_'+STATEs[jj]+'.csv'
     filetitle = os.path.join(testfolder, 'STATEs', filetitle)        
     r2.createScenario(name=STATEs[jj], file=filetitle)
-    r2.scenario[STATEs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    r2.scenario[STATEs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    r2.scenario[STATEs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    r2.scenario[STATEs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    r2.scenario[STATEs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
+    r2.scenario[STATEs[jj]].addMaterial('glass', file=r'..\baselines\SolarFutures_2021\baseline_material_glass_Reeds.csv')
+    r2.scenario[STATEs[jj]].addMaterial('silicon', file=r'..\baselines\SolarFutures_2021\baseline_material_silicon_Reeds.csv')
+    r2.scenario[STATEs[jj]].addMaterial('silver', file=r'..\baselines\SolarFutures_2021\baseline_material_silver_Reeds.csv')
+    r2.scenario[STATEs[jj]].addMaterial('copper', file=r'..\baselines\SolarFutures_2021\baseline_material_copper_Reeds.csv')
+    r2.scenario[STATEs[jj]].addMaterial('aluminum', file=r'..\baselines\SolarFutures_2021\baseline_material_aluminium_Reeds.csv')
 
 
 i = 2
@@ -154,11 +154,11 @@ for jj in range (0, len(STATEs)):
     filetitle = SFscenarios[i]+'_'+STATEs[jj]+'.csv'
     filetitle = os.path.join(testfolder, 'STATEs', filetitle)        
     r3.createScenario(name=STATEs[jj], file=filetitle)
-    r3.scenario[STATEs[jj]].addMaterial('glass', file=r'..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv')
-    r3.scenario[STATEs[jj]].addMaterial('silicon', file=r'..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv')
-    r3.scenario[STATEs[jj]].addMaterial('silver', file=r'..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv')
-    r3.scenario[STATEs[jj]].addMaterial('copper', file=r'..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv')
-    r3.scenario[STATEs[jj]].addMaterial('aluminum', file=r'..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv')
+    r3.scenario[STATEs[jj]].addMaterial('glass', file=r'..\baselines\SolarFutures_2021\baseline_material_glass_Reeds.csv')
+    r3.scenario[STATEs[jj]].addMaterial('silicon', file=r'..\baselines\SolarFutures_2021\baseline_material_silicon_Reeds.csv')
+    r3.scenario[STATEs[jj]].addMaterial('silver', file=r'..\baselines\SolarFutures_2021\baseline_material_silver_Reeds.csv')
+    r3.scenario[STATEs[jj]].addMaterial('copper', file=r'..\baselines\SolarFutures_2021\baseline_material_copper_Reeds.csv')
+    r3.scenario[STATEs[jj]].addMaterial('aluminum', file=r'..\baselines\SolarFutures_2021\baseline_material_aluminium_Reeds.csv')
 
 
 # # Calculate Mass Flow
@@ -214,7 +214,7 @@ print("Material Keys: ", r1.scenario[STATEs[jj]].material['glass'].materialdata.
 
 # # OPEN EI
 
-# In[12]:
+# In[10]:
 
 
 kk=0
@@ -222,7 +222,7 @@ SFScenarios = [r1, r2, r3]
 SFScenarios[kk].name
 
 
-# In[13]:
+# In[11]:
 
 
 # WORK ON THIS FOIR OPENEI
@@ -293,7 +293,7 @@ scenariolist.to_csv(title_Method+' OpenEI.csv', index=False)
 print("Done")
 
 
-# In[14]:
+# In[12]:
 
 
 # WORK ON THIS FOIR OPENEI
@@ -356,7 +356,7 @@ scenariolist.to_csv(title_Method+' OpenEI Yearly Only.csv', index=False)
 print("Done")
 
 
-# In[15]:
+# In[13]:
 
 
 # WORK ON THIS FOIR OPENEI
@@ -421,7 +421,7 @@ scenariolist.to_csv(title_Method+' OpenEI Cumulatives Only.csv', index=False)
 print("Done")
 
 
-# In[40]:
+# In[14]:
 
 
 # WORK ON THIS FOIR OPENEI
@@ -477,7 +477,7 @@ scenariolist.to_csv(title_Method+' OpenEI ScenarioDifferences.csv', index=False)
 print("Done")
 
 
-# In[17]:
+# In[15]:
 
 
 scenariolist.head()
@@ -485,7 +485,7 @@ scenariolist.head()
 
 # # SAVE DATA FOR BILLY: STATES
 
-# In[18]:
+# In[16]:
 
 
 #for 3 significant numbers rounding
@@ -500,7 +500,7 @@ N = 2
 # 
 # Index 40 --> 2050
 
-# In[19]:
+# In[17]:
 
 
 idx2030 = 20
@@ -514,7 +514,7 @@ print("index ", idx2050, " is year ", r1.scenario[STATEs[0]].data['year'].iloc[i
 # #### 6 - STATE Cumulative Virgin Needs by 2050
 # 
 
-# In[20]:
+# In[18]:
 
 
 keyword='mat_Virgin_Stock'
@@ -546,7 +546,7 @@ scenariolist = scenariolist.applymap(lambda x: int(x))
 scenariolist.to_csv(title_Method+' 6 - STATE Cumulative2050 VirginMaterialNeeds_tons.csv')
 
 
-# In[21]:
+# In[19]:
 
 
 SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keyword]
@@ -554,7 +554,7 @@ SFScenarios[kk].scenario[STATEs[zz]].material[materials[ii]].materialdata[keywor
 
 # #### 7 - STATE Cumulative EoL Only Waste by 2050
 
-# In[22]:
+# In[20]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -588,7 +588,7 @@ scenariolist.to_csv(title_Method+' 7 - STATE Cumulative2050 Waste_EOL_tons.csv')
 
 # ##### 8 - STATE Yearly Virgin Needs 2030 2040 2050
 
-# In[23]:
+# In[21]:
 
 
 keyword='mat_Virgin_Stock'
@@ -628,7 +628,7 @@ scenariolist.to_csv(title_Method+' 8 - STATE Yearly 2030 2040 2050 VirginMateria
 
 # #### 9 - STATE Yearly EoL Waste 2030 2040 205
 
-# In[24]:
+# In[22]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -672,7 +672,7 @@ scenariolist.to_csv(title_Method+' 9 - STATE Yearly 2030 2040 2050 Waste_EOL_ton
 
 # #### Appendix - Cumulative Virgin Stock
 
-# In[25]:
+# In[23]:
 
 
 keyword='mat_Virgin_Stock'
@@ -725,7 +725,7 @@ for kk in range(0, 3):
 
 # #### Appendix - Yearly Virgin Stock
 
-# In[26]:
+# In[24]:
 
 
 keyword='mat_Virgin_Stock'
@@ -779,7 +779,7 @@ for kk in range(0, 3):
 
 # #### Appendix - Cumulative EOL_ WASTE by State
 
-# In[27]:
+# In[25]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -829,13 +829,13 @@ for kk in range(0, 3):
 
 # #####  Sparkplots  +  APPENDIX - Yearly EoL Waste 
 
-# In[37]:
+# In[26]:
 
 
 sparkplotfolder = os.path.join(testfolder, 'SPARKPLOTS')
 
 
-# In[38]:
+# In[27]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -903,7 +903,7 @@ for kk in range(0, 3):
     reduced.to_csv(title_Method+' Appendix - '+ SFScenarios[kk].name + ' Yearly EOL Waste by State.csv')
 
 
-# In[29]:
+# In[28]:
 
 
 # PLOT HERE
@@ -968,7 +968,7 @@ axs.axis('off');
 
 # # OBSOLETE BECAUSE FASTER TO DO ON NATION LEVEL
 
-# In[32]:
+# In[29]:
 
 
 print(failtest)
