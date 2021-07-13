@@ -14087,7 +14087,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">REEDSInput</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">reedsFile</span><span class="p">,</span>
@@ -14115,7 +14115,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -14138,7 +14138,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
 
 
 
@@ -14298,7 +14298,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
@@ -14336,7 +14336,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
 
 
 
@@ -14476,7 +14476,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">))):</span>
@@ -14484,7 +14484,10 @@ a.anchor-link {
     <span class="n">SCEN</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
     <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">PCA</span> <span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;PCAs&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;PCAs&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
@@ -14541,10 +14544,10 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Reassign-data-from-REEDS-Input,-as-we-need-one-of-the-columns-we-dropped.">Reassign data from REEDS Input, as we need one of the columns we dropped.<a class="anchor-link" href="#Reassign-data-from-REEDS-Input,-as-we-need-one-of-the-columns-we-dropped.">&#182;</a></h4>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -14559,15 +14562,198 @@ a.anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>Capacity (GW)</th>
+    </tr>
+    <tr>
+      <th>Scenario</th>
+      <th>Year</th>
+      <th>PCA</th>
+      <th>State</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="21" valign="top">95-by-35.Adv</th>
+      <th>2010</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.000017</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.105931</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.105931</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h4 id="Group-data-so-we-can-work-with-the-States-instead">Group data so we can work with the States instead<a class="anchor-link" href="#Group-data-so-we-can-work-with-the-States-instead">&#182;</a></h4>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#df = rawdf.groupby([&#39;Scenario&#39;,&#39;State&#39;, &#39;Year&#39;])[&#39;Capacity (GW)&#39;].sum(axis=0)</span>
@@ -14581,6 +14767,82 @@ a.anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>Capacity (GW)</th>
+    </tr>
+    <tr>
+      <th>Scenario</th>
+      <th>State</th>
+      <th>Year</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">95-by-35+Elec.Adv</th>
+      <th rowspan="5" valign="top">AL</th>
+      <th>2010</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>0.000951</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>0.000951</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
@@ -14589,7 +14851,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
@@ -14597,7 +14859,12 @@ a.anchor-link {
     <span class="n">SCEN</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
     <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">STATE</span> <span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;STATEs&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+    
+    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;STATEs&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+
     <span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
@@ -14641,10 +14908,10 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Create-a-copy-of-the-REEDS-Input-and-modify-structure-for-PCA-focus">Create a copy of the REEDS Input and modify structure for PCA focus<a class="anchor-link" href="#Create-a-copy-of-the-REEDS-Input-and-modify-structure-for-PCA-focus">&#182;</a></h3>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -14659,10 +14926,193 @@ a.anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>PCA</th>
+      <th>State</th>
+      <th>Capacity (GW)</th>
+    </tr>
+    <tr>
+      <th>Scenario</th>
+      <th>Year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="21" valign="top">95-by-35.Adv</th>
+      <th>2010</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.000017</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.105931</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.105931</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#df = rawdf.groupby([&#39;Scenario&#39;,&#39;Year&#39;])[&#39;Capacity (GW)&#39;].sum(axis=0)</span>
@@ -14679,10 +15129,10 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Loading-Module-Baseline.-Will-be-used-later-to-populate-all-the-columsn-other-than-'new_InstalledCapacity%5BMW%5D'-which-will-be-supplied-by-the-REEDS-model">Loading Module Baseline. Will be used later to populate all the columsn other than 'new_Installed<em>Capacity</em>[MW]' which will be supplied by the REEDS model<a class="anchor-link" href="#Loading-Module-Baseline.-Will-be-used-later-to-populate-all-the-columsn-other-than-'new_InstalledCapacity%5BMW%5D'-which-will-be-supplied-by-the-REEDS-model">&#182;</a></h3>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
@@ -14700,6 +15150,158 @@ a.anchor-link {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP
+</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mod_eff</th>
+      <th>mod_reliability_t50</th>
+      <th>mod_reliability_t90</th>
+      <th>mod_degradation</th>
+      <th>mod_lifetime</th>
+      <th>mod_MFG_eff</th>
+      <th>mod_EOL_collection_eff</th>
+      <th>mod_EOL_collected_recycled</th>
+      <th>mod_Repair</th>
+      <th>mod_MerchantTail</th>
+      <th>mod_Reuse</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2010</th>
+      <td>14.7</td>
+      <td>25.0</td>
+      <td>30.0</td>
+      <td>0.3</td>
+      <td>22.7</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>15.1</td>
+      <td>25.0</td>
+      <td>30.0</td>
+      <td>0.3</td>
+      <td>23.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>15.4</td>
+      <td>25.0</td>
+      <td>30.0</td>
+      <td>0.3</td>
+      <td>23.5</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>16.0</td>
+      <td>28.0</td>
+      <td>33.0</td>
+      <td>0.3</td>
+      <td>24.2</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>16.3</td>
+      <td>28.0</td>
+      <td>33.0</td>
+      <td>0.3</td>
+      <td>26.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
@@ -14708,14 +15310,19 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">))):</span>
     <span class="n">SCEN</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
     <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
     <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;USA&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+    
+    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;USA&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+    
     <span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
 
     <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>

@@ -45,7 +45,7 @@ reedsFile = str(Path().resolve().parent.parent.parent.parent / 'December Core Sc
 print ("Input file is stored in %s" % reedsFile)
 
 
-# In[6]:
+# In[4]:
 
 
 REEDSInput = pd.read_excel(reedsFile,
@@ -59,7 +59,7 @@ REEDSInput = pd.read_excel(reedsFile,
 
 # #### Create a copy of the REEDS Input and modify structure for PCA focus
 
-# In[7]:
+# In[5]:
 
 
 rawdf = REEDSInput.copy()
@@ -71,7 +71,7 @@ rawdf.head(21)
 
 # #### Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[8]:
+# In[6]:
 
 
 import PV_ICE
@@ -86,7 +86,7 @@ baseline.head()
 
 # #### For each Scenario and for each PCA, combine with baseline and save as input file
 
-# In[11]:
+# In[8]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -94,7 +94,10 @@ for ii in range (len(rawdf.unstack(level=1))):
     SCEN = rawdf.unstack(level=1).iloc[ii].name[0]
     SCEN=SCEN.replace('+', '_')
     filetitle = SCEN+'_'+PCA +'.csv'
-    filetitle = os.path.join(testfolder, 'PCAs', filetitle)
+    subtestfolder = os.path.join(testfolder, 'PCAs')
+    if not os.path.exists(subtestfolder):
+        os.makedirs(subtestfolder)
+    filetitle = os.path.join(subtestfolder, filetitle)
     A = rawdf.unstack(level=1).iloc[ii]
     A = A.droplevel(level=0)
     A.name = 'new_Installed_Capacity_[MW]'
@@ -129,7 +132,7 @@ for ii in range (len(rawdf.unstack(level=1))):
 
 # #### Reassign data from REEDS Input, as we need one of the columns we dropped.
 
-# In[ ]:
+# In[9]:
 
 
 rawdf = REEDSInput.copy()
@@ -141,7 +144,7 @@ rawdf.head(21)
 
 # #### Group data so we can work with the States instead
 
-# In[ ]:
+# In[10]:
 
 
 #df = rawdf.groupby(['Scenario','State', 'Year'])['Capacity (GW)'].sum(axis=0)
@@ -152,7 +155,7 @@ df.head()
 
 # #### For each Scenario and for each STATE, combine with baseline and save as input file
 
-# In[ ]:
+# In[11]:
 
 
 for ii in range (len(df.unstack(level=2))):   
@@ -160,7 +163,12 @@ for ii in range (len(df.unstack(level=2))):
     SCEN = df.unstack(level=2).iloc[ii].name[0]
     SCEN=SCEN.replace('+', '_')
     filetitle = SCEN+'_'+STATE +'.csv'
-    filetitle = os.path.join(testfolder, 'STATEs', filetitle)
+    
+    subtestfolder = os.path.join(testfolder, 'STATEs')
+    if not os.path.exists(subtestfolder):
+        os.makedirs(subtestfolder)
+    filetitle = os.path.join(subtestfolder, filetitle)
+
     A = df.unstack(level=2).iloc[ii]
     A = A.droplevel(level=0)
     A.name = 'new_Installed_Capacity_[MW]'
@@ -190,7 +198,7 @@ for ii in range (len(df.unstack(level=2))):
 
 # ### Create a copy of the REEDS Input and modify structure for PCA focus
 
-# In[ ]:
+# In[12]:
 
 
 rawdf = REEDSInput.copy()
@@ -200,7 +208,7 @@ rawdf.set_index(['Scenario','Year'], inplace=True)
 rawdf.head(21)
 
 
-# In[ ]:
+# In[13]:
 
 
 #df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum(axis=0)
@@ -209,7 +217,7 @@ df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum()
 
 # ### Loading Module Baseline. Will be used later to populate all the columsn other than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[ ]:
+# In[14]:
 
 
 import PV_ICE
@@ -224,14 +232,19 @@ baseline.head()
 
 # ### For each Scenario, combine with baseline and save as input file¶
 
-# In[ ]:
+# In[15]:
 
 
 for ii in range (len(df.unstack(level=1))):
     SCEN = df.unstack(level=1).index[ii]
     SCEN=SCEN.replace('+', '_')
     filetitle = SCEN+'.csv'
-    filetitle = os.path.join(testfolder, 'USA', filetitle)
+    
+    subtestfolder = os.path.join(testfolder, 'USA')
+    if not os.path.exists(subtestfolder):
+        os.makedirs(subtestfolder)
+    filetitle = os.path.join(subtestfolder, filetitle)
+    
     A = df.unstack(level=1).iloc[ii]
 
     A.name = 'new_Installed_Capacity_[MW]'
