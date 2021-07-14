@@ -14346,7 +14346,10 @@ C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\baselines
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create simulations</span>
 <span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ABM_Simulation1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
 <span class="n">r2</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ABM_Simulation2&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
-<span class="n">r3</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ABM_Simulation3&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="n">r3A</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ABM_Simulation3A&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="n">r3B</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ABM_Simulation3A&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="n">r3C</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ABM_Simulation3A&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="n">r3D</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ABM_Simulation3A&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
 <span class="n">r4</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;ABM_Simulation4&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
 
 <span class="c1">#create 10 scenarios in each simulation: 1st is standard in PV ICE, 2-10 are scenarios a-i in ABM</span>
@@ -14361,19 +14364,19 @@ C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\baselines
         <span class="n">mysimulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_silicon.csv&#39;</span><span class="p">)</span>
         <span class="n">mysimulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_copper.csv&#39;</span><span class="p">)</span>
 
-<span class="c1">#create r3 for select scenarios</span>
+<span class="c1">#create r3 for select scenarios: split up into 4 separate simulations: r3A, r3B, r3C, r3D</span>
 <span class="c1">#Henry Hieslmair gives four classes of repair bins: A, B, C, D; with A being lowest quality, D being highest quality</span>
-<span class="n">REPAIR_SCENARIOS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;better_lifetime_A&#39;</span><span class="p">,</span><span class="s1">&#39;better_lifetime_B&#39;</span><span class="p">,</span><span class="s1">&#39;better_lifetime_C&#39;</span><span class="p">,</span><span class="s1">&#39;better_lifetime_D&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;better_learning_A&#39;</span><span class="p">,</span><span class="s1">&#39;better_learning_B&#39;</span><span class="p">,</span> <span class="s1">&#39;better_learning_C&#39;</span><span class="p">,</span> <span class="s1">&#39;better_learning_D&#39;</span><span class="p">,</span> 
-                    <span class="s1">&#39;juliens_baseline_A&#39;</span><span class="p">,</span><span class="s1">&#39;juliens_baseline_B&#39;</span><span class="p">,</span> <span class="s1">&#39;juliens_baseline_C&#39;</span><span class="p">,</span> <span class="s1">&#39;juliens_baseline_D&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;landfill_ban_A&#39;</span><span class="p">,</span> <span class="s1">&#39;landfill_ban_B&#39;</span><span class="p">,</span> <span class="s1">&#39;landfill_ban_C&#39;</span><span class="p">,</span> <span class="s1">&#39;landfill_ban_D&#39;</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">myscenario</span> <span class="ow">in</span> <span class="n">REPAIR_SCENARIOS</span><span class="p">:</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">myscenario</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_modules_US.csv&#39;</span><span class="p">)</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_glass.csv&#39;</span><span class="p">)</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;aluminium_frames&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_aluminium_frames.csv&#39;</span><span class="p">)</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_silver.csv&#39;</span><span class="p">)</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_silicon.csv&#39;</span><span class="p">)</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_copper.csv&#39;</span><span class="p">)</span>
+<span class="n">REPAIR_SCENARIOS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;better_learning&#39;</span><span class="p">,</span> <span class="s1">&#39;juliens_baseline&#39;</span><span class="p">,</span> <span class="s1">&#39;landfill_ban&#39;</span><span class="p">]</span>
+<span class="n">r3_simulations</span> <span class="o">=</span> <span class="p">[</span><span class="n">r3A</span><span class="p">,</span> <span class="n">r3B</span><span class="p">,</span> <span class="n">r3C</span><span class="p">,</span> <span class="n">r3D</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">myr3simulation</span> <span class="ow">in</span> <span class="n">r3_simulations</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">myscenario</span> <span class="ow">in</span> <span class="n">REPAIR_SCENARIOS</span><span class="p">:</span>
+        <span class="n">scenario_name</span> <span class="o">=</span> <span class="n">myscenario</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">myscenario</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_modules_US.csv&#39;</span><span class="p">)</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_glass.csv&#39;</span><span class="p">)</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;aluminium_frames&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_aluminium_frames.csv&#39;</span><span class="p">)</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_silver.csv&#39;</span><span class="p">)</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_silicon.csv&#39;</span><span class="p">)</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_material_copper.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14397,12 +14400,30 @@ C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\baselines
 path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
+path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
+path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
+path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </pre>
 </div>
 </div>
 
 </div>
 
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Irena RL Weibull Parameters to use for r1 and r2</span>
+<span class="n">weibull_IrenaRL</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">5.3759</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div>
@@ -14413,7 +14434,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify values of each scenario 2-10 based on ABM outputs</span>
@@ -14445,7 +14466,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#next, modify 3 additional inputs for each scenario 2-10, with values depending on the scenario, coming from ABM outputs</span>
@@ -14463,7 +14484,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#ABM_outputs</span>
@@ -14480,7 +14501,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#changing repair, eol collection eff, and reuse module baselines for all ABM scenarios</span>
@@ -14532,7 +14553,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">lifetime_line</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
@@ -14554,7 +14575,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create list of mod_lifetime values based on linear regression</span>
@@ -14572,7 +14593,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod_lifetimes_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -14586,7 +14607,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod_lifetimes_df</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">years</span>
@@ -14601,7 +14622,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#changing mod_lifetime in scenario e) better_lifetime</span>
@@ -14617,7 +14638,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create linear regression for mod_reliability_t50 &amp; mod_reliability_t90 vs. mod_lifetime </span>
@@ -14636,7 +14657,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_lifetime</span> <span class="o">=</span> <span class="n">reliability_baselines</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># values converts it into a numpy array</span>
@@ -14663,7 +14684,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#changing mod_reliability_t50 &amp; mod_reliability_t90 in scenario e) better_lifetime</span>
@@ -14687,7 +14708,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#copy same parameter modifications for r2 as in r1</span>
@@ -14746,7 +14767,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#FRELP recovery rates and qualities</span>
@@ -14764,7 +14785,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">frelp_results</span>
@@ -14783,7 +14804,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
 
 
 
@@ -14856,7 +14877,7 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Modify &#39;mat_EOL_Recycling_eff&#39;, &#39;mat_EOL_Recycled_into_HQ&#39;, &#39;mat_EOL_RecycledHQ_Reused4MFG&#39; </span>
@@ -14892,12 +14913,13 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Figure out which scenarios to include</span>
 <span class="c1">#ABM_outputs.groupby(&#39;Scenario&#39;).sum()[&#39;mass_fraction_PV_materials_repaired_milliontonnes&#39;].sort_values()</span>
 <span class="c1">#calculate scenarios with highest repair rates: better lifetime, better learning, julien’s baseline, landfill ban</span>
+<span class="c1">#only do better learning, julien’s baseline, landfill ban as better lifetime already had different reliability</span>
 </pre></div>
 
      </div>
@@ -14905,81 +14927,132 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#copy same parameter modifications for r3 as in r2</span>
-<span class="k">for</span> <span class="n">myscenario</span> <span class="ow">in</span> <span class="n">REPAIR_SCENARIOS</span><span class="p">:</span>
-    <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collected_recycled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mod_recycled</span>
-<span class="k">for</span> <span class="n">mymaterial</span> <span class="ow">in</span> <span class="n">MATERIALS</span><span class="p">:</span>
-    <span class="n">past_years_collected_recycled</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard_PVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_collected_Recycled&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="p">(</span><span class="mi">2022</span><span class="o">-</span><span class="mi">1995</span><span class="p">)</span>
-    <span class="n">new_collected_recycled</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2021</span><span class="p">)</span>
-    <span class="c1">#create new list to replace &#39;mod_EOL_collected_Recycled&#39; with, with 1995-2021 original baseline module values, and 2022-2050 at 100%</span>
-    <span class="n">new_mat_recycled</span> <span class="o">=</span> <span class="n">past_years_collected_recycled</span> <span class="o">+</span> <span class="n">new_collected_recycled</span>
-    <span class="k">for</span> <span class="n">myscenario</span> <span class="ow">in</span> <span class="n">REPAIR_SCENARIOS</span><span class="p">:</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_collected_Recycled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mat_recycled</span>
-<span class="k">for</span> <span class="n">myscenario</span> <span class="ow">in</span> <span class="n">REPAIR_SCENARIOS</span><span class="p">:</span>
-    <span class="n">frames1</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">frames2</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">frames3</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">new_outputs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">scenario_filter</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">new_mod_Repairing</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">new_mod_Recycling</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">new_mod_Reuse</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">scenario_filter</span> <span class="o">=</span> <span class="s1">&#39;Scenario == &#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">myscenario</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span>
-    <span class="n">new_outputs</span> <span class="o">=</span> <span class="n">ABM_outputs</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">scenario_filter</span><span class="p">)</span>
-    <span class="c1">#replace repairing baselines</span>
-    <span class="n">repairs</span> <span class="o">=</span> <span class="n">new_outputs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;mass_fraction_PV_materials_repaired_milliontonnes&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
-    <span class="n">repairs</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">31</span><span class="p">))</span>
-    <span class="n">frames1</span> <span class="o">=</span> <span class="p">[</span><span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_Repair&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">27</span><span class="p">],</span><span class="n">repairs</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>
-    <span class="n">new_mod_Repairing</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames1</span><span class="p">)</span>
-    <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_Repair&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mod_Repairing</span><span class="o">.</span><span class="n">values</span>
-    <span class="c1">#replace recycling baselines</span>
-    <span class="n">recycled</span> <span class="o">=</span> <span class="n">new_outputs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;mass_fraction_PV_materials_recycled_milliontonnes&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
-    <span class="k">if</span> <span class="n">myscenario</span> <span class="o">==</span> <span class="s1">&#39;high_mat_recovery_cheap_recycling&#39;</span><span class="p">:</span>
-        <span class="n">recycles</span> <span class="o">=</span> <span class="n">recycled</span><span class="o">/</span><span class="mf">0.96</span> <span class="c1">#reflects higher material recovery rate (must change as ABM gives effective recycling rate)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">recycles</span> <span class="o">=</span> <span class="n">recycled</span><span class="o">/</span><span class="mf">0.80</span> <span class="c1">#must change as ABM gives effective recycling rate</span>
-    <span class="n">recycles</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">31</span><span class="p">))</span>
-    <span class="n">frames2</span> <span class="o">=</span> <span class="p">[</span><span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collection_eff&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">27</span><span class="p">],</span><span class="n">recycles</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>
-    <span class="n">new_mod_Recycling</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames2</span><span class="p">)</span>
-    <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collection_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mod_Recycling</span><span class="o">.</span><span class="n">values</span>
-    <span class="c1">#replace reuse baselines</span>
-    <span class="n">reuses</span> <span class="o">=</span> <span class="n">new_outputs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;mass_fraction_PV_materials_reused_milliontonnes&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
-    <span class="n">reuses</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">31</span><span class="p">))</span>
-    <span class="n">frames3</span> <span class="o">=</span> <span class="p">[</span><span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_Reuse&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">27</span><span class="p">],</span><span class="n">reuses</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>
-    <span class="n">new_mod_Reuse</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames3</span><span class="p">)</span>
-    <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_Reuse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mod_Reuse</span><span class="o">.</span><span class="n">values</span>
-<span class="c1">#r3.scenario[&#39;better_lifetime&#39;].data[&#39;mod_lifetime&#39;] = new_mod_lifetime don&#39;t modify?</span>
-<span class="c1">#r3.scenario[&#39;better_lifetime&#39;].data[&#39;mod_reliability_t50&#39;] = new_mod_t50 don&#39;t modify?</span>
-<span class="c1">#r3.scenario[&#39;better_lifetime&#39;].data[&#39;mod_reliability_t90&#39;] = new_mod_t90 don&#39;t modify?</span>
-
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##START HERE FIX ERROR</span>
+<span class="c1">#copy same parameter modifications for each r3 simulation as in r2</span>
 <span class="n">new_HQ4MFG</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2021</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">mymaterial</span> <span class="ow">in</span> <span class="n">MATERIALS</span><span class="p">:</span> 
-    <span class="c1">#modifying &#39;mat_EOL_Recycling_eff&#39;</span>
-    <span class="n">past_recycling_eff</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard_PVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycling_eff&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="p">(</span><span class="mi">2022</span><span class="o">-</span><span class="mi">1995</span><span class="p">)</span>
-    <span class="n">new_recycling_eff</span> <span class="o">=</span> <span class="n">frelp_results</span><span class="p">[</span><span class="n">frelp_results</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">mymaterial</span><span class="p">])][</span><span class="s1">&#39;recovery_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2021</span><span class="p">)</span>
-    <span class="n">new_mat_EOL_recycling_eff</span> <span class="o">=</span> <span class="n">past_recycling_eff</span> <span class="o">+</span> <span class="n">new_recycling_eff</span>
-    <span class="c1">#modifiying &#39;mat_EOL_Recycled_into_HQ&#39;</span>
-    <span class="n">past_HQ_recycling</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard_PVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_into_HQ&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="p">(</span><span class="mi">2022</span><span class="o">-</span><span class="mi">1995</span><span class="p">)</span>
-    <span class="n">new_HQ_recycling</span> <span class="o">=</span> <span class="n">frelp_results</span><span class="p">[</span><span class="n">frelp_results</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">mymaterial</span><span class="p">])][</span><span class="s1">&#39;mat_recycled_into_HQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2021</span><span class="p">)</span>
-    <span class="n">new_mat_EOL_recycled_into_HQ</span> <span class="o">=</span> <span class="n">past_HQ_recycling</span> <span class="o">+</span> <span class="n">new_HQ_recycling</span>
-    <span class="c1">#modifying &#39;mat_EOL_RecycledHQ_Reused4MFG&#39; </span>
-    <span class="n">past_HQ4MFG</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard_PVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_RecycledHQ_Reused4MFG&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">27</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">new_recycledHQ_reused4MFG</span> <span class="o">=</span> <span class="n">past_HQ4MFG</span> <span class="o">+</span> <span class="n">new_HQ4MFG</span>
+<span class="k">for</span> <span class="n">myr3simulation</span> <span class="ow">in</span> <span class="n">r3_simulations</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">myscenario</span> <span class="ow">in</span> <span class="n">REPAIR_SCENARIOS</span><span class="p">:</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycling_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mat_EOL_recycling_eff</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_into_HQ&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mat_EOL_recycled_into_HQ</span>
-        <span class="n">r3</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_RecycledHQ_Reused4MFG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_recycledHQ_reused4MFG</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collected_recycled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mod_recycled</span>
+    <span class="k">for</span> <span class="n">mymaterial</span> <span class="ow">in</span> <span class="n">MATERIALS</span><span class="p">:</span>
+        <span class="n">past_years_collected_recycled</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard_PVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_collected_Recycled&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="p">(</span><span class="mi">2022</span><span class="o">-</span><span class="mi">1995</span><span class="p">)</span>
+        <span class="n">new_collected_recycled</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2021</span><span class="p">)</span>
+        <span class="c1">#create new list to replace &#39;mod_EOL_collected_Recycled&#39; with, with 1995-2021 original baseline module values, and 2022-2050 at 100%</span>
+        <span class="n">new_mat_recycled</span> <span class="o">=</span> <span class="n">past_years_collected_recycled</span> <span class="o">+</span> <span class="n">new_collected_recycled</span>
+        <span class="k">for</span> <span class="n">myscenario</span> <span class="ow">in</span> <span class="n">REPAIR_SCENARIOS</span><span class="p">:</span>
+            <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_collected_Recycled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mat_recycled</span>
+    <span class="k">for</span> <span class="n">myscenario</span> <span class="ow">in</span> <span class="n">REPAIR_SCENARIOS</span><span class="p">:</span>
+        <span class="n">frames1</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">frames2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">frames3</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">scenario_filter</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_mod_Repairing</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_mod_Recycling</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_mod_Reuse</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">scenario_filter</span> <span class="o">=</span> <span class="s1">&#39;Scenario == &#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">myscenario</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span>
+        <span class="n">new_outputs</span> <span class="o">=</span> <span class="n">ABM_outputs</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">scenario_filter</span><span class="p">)</span>
+        <span class="c1">#replace repairing baselines</span>
+        <span class="n">repairs</span> <span class="o">=</span> <span class="n">new_outputs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;mass_fraction_PV_materials_repaired_milliontonnes&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
+        <span class="n">repairs</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">31</span><span class="p">))</span>
+        <span class="n">frames1</span> <span class="o">=</span> <span class="p">[</span><span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_Repair&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">27</span><span class="p">],</span><span class="n">repairs</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>
+        <span class="n">new_mod_Repairing</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames1</span><span class="p">)</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_Repair&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mod_Repairing</span><span class="o">.</span><span class="n">values</span>
+        <span class="c1">#replace recycling baselines</span>
+        <span class="n">recycled</span> <span class="o">=</span> <span class="n">new_outputs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;mass_fraction_PV_materials_recycled_milliontonnes&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
+        <span class="k">if</span> <span class="n">myscenario</span> <span class="o">==</span> <span class="s1">&#39;high_mat_recovery_cheap_recycling&#39;</span><span class="p">:</span>
+            <span class="n">recycles</span> <span class="o">=</span> <span class="n">recycled</span><span class="o">/</span><span class="mf">0.96</span> <span class="c1">#reflects higher material recovery rate (must change as ABM gives effective recycling rate)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">recycles</span> <span class="o">=</span> <span class="n">recycled</span><span class="o">/</span><span class="mf">0.80</span> <span class="c1">#must change as ABM gives effective recycling rate</span>
+        <span class="n">recycles</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">31</span><span class="p">))</span>
+        <span class="n">frames2</span> <span class="o">=</span> <span class="p">[</span><span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collection_eff&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">27</span><span class="p">],</span><span class="n">recycles</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>
+        <span class="n">new_mod_Recycling</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames2</span><span class="p">)</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collection_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mod_Recycling</span><span class="o">.</span><span class="n">values</span>
+        <span class="c1">#replace reuse baselines</span>
+        <span class="n">reuses</span> <span class="o">=</span> <span class="n">new_outputs</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;mass_fraction_PV_materials_reused_milliontonnes&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span>
+        <span class="n">reuses</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">31</span><span class="p">))</span>
+        <span class="n">frames3</span> <span class="o">=</span> <span class="p">[</span><span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_Reuse&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">27</span><span class="p">],</span><span class="n">reuses</span><span class="p">[</span><span class="mi">2</span><span class="p">:]]</span>
+        <span class="n">new_mod_Reuse</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames3</span><span class="p">)</span>
+        <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_Reuse&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mod_Reuse</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">for</span> <span class="n">mymaterial</span> <span class="ow">in</span> <span class="n">MATERIALS</span><span class="p">:</span> 
+        <span class="c1">#modifying &#39;mat_EOL_Recycling_eff&#39;</span>
+        <span class="n">past_recycling_eff</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard_PVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycling_eff&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="p">(</span><span class="mi">2022</span><span class="o">-</span><span class="mi">1995</span><span class="p">)</span>
+        <span class="n">new_recycling_eff</span> <span class="o">=</span> <span class="n">frelp_results</span><span class="p">[</span><span class="n">frelp_results</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">mymaterial</span><span class="p">])][</span><span class="s1">&#39;recovery_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2021</span><span class="p">)</span>
+        <span class="n">new_mat_EOL_recycling_eff</span> <span class="o">=</span> <span class="n">past_recycling_eff</span> <span class="o">+</span> <span class="n">new_recycling_eff</span>
+        <span class="c1">#modifiying &#39;mat_EOL_Recycled_into_HQ&#39;</span>
+        <span class="n">past_HQ_recycling</span> <span class="o">=</span> <span class="p">[</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard_PVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_into_HQ&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="p">(</span><span class="mi">2022</span><span class="o">-</span><span class="mi">1995</span><span class="p">)</span>
+        <span class="n">new_HQ_recycling</span> <span class="o">=</span> <span class="n">frelp_results</span><span class="p">[</span><span class="n">frelp_results</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">mymaterial</span><span class="p">])][</span><span class="s1">&#39;mat_recycled_into_HQ&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="mi">2050</span><span class="o">-</span><span class="mi">2021</span><span class="p">)</span>
+        <span class="n">new_mat_EOL_recycled_into_HQ</span> <span class="o">=</span> <span class="n">past_HQ_recycling</span> <span class="o">+</span> <span class="n">new_HQ_recycling</span>
+        <span class="c1">#modifying &#39;mat_EOL_RecycledHQ_Reused4MFG&#39; </span>
+        <span class="n">past_HQ4MFG</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard_PVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_RecycledHQ_Reused4MFG&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">27</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">new_recycledHQ_reused4MFG</span> <span class="o">=</span> <span class="n">past_HQ4MFG</span> <span class="o">+</span> <span class="n">new_HQ4MFG</span>
+        <span class="k">for</span> <span class="n">myscenario</span> <span class="ow">in</span> <span class="n">REPAIR_SCENARIOS</span><span class="p">:</span>
+            <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycling_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mat_EOL_recycling_eff</span>
+            <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_Recycled_into_HQ&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_mat_EOL_recycled_into_HQ</span>
+            <span class="n">myr3simulation</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">myscenario</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mymaterial</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_EOL_RecycledHQ_Reused4MFG&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_recycledHQ_reused4MFG</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-22-e68c85d05993&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">     24</span>         <span class="ansi-red-intense-fg ansi-bold">#replace repairing baselines</span>
+<span class="ansi-green-fg">     25</span>         repairs <span class="ansi-yellow-intense-fg ansi-bold">=</span> new_outputs<span class="ansi-yellow-intense-fg ansi-bold">.</span>loc<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-yellow-intense-fg ansi-bold">:</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-blue-intense-fg ansi-bold">&#39;mass_fraction_PV_materials_repaired_milliontonnes&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">*</span><span class="ansi-cyan-intense-fg ansi-bold">100</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 26</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>repairs<span class="ansi-yellow-intense-fg ansi-bold">.</span>index <span class="ansi-yellow-intense-fg ansi-bold">=</span> list<span class="ansi-yellow-intense-fg ansi-bold">(</span>range<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">31</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     27</span>         frames1 <span class="ansi-yellow-intense-fg ansi-bold">=</span> <span class="ansi-yellow-intense-fg ansi-bold">[</span>myr3simulation<span class="ansi-yellow-intense-fg ansi-bold">.</span>scenario<span class="ansi-yellow-intense-fg ansi-bold">[</span>myscenario<span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;mod_Repair&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">0</span><span class="ansi-yellow-intense-fg ansi-bold">:</span><span class="ansi-cyan-intense-fg ansi-bold">27</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>repairs<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">2</span><span class="ansi-yellow-intense-fg ansi-bold">:</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
+<span class="ansi-green-fg">     28</span>         new_mod_Repairing <span class="ansi-yellow-intense-fg ansi-bold">=</span> pd<span class="ansi-yellow-intense-fg ansi-bold">.</span>concat<span class="ansi-yellow-intense-fg ansi-bold">(</span>frames1<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\generic.py</span> in <span class="ansi-cyan-fg">__setattr__</span><span class="ansi-blue-intense-fg ansi-bold">(self, name, value)</span>
+<span class="ansi-green-fg">   5476</span>         <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">   5477</span>             object<span class="ansi-yellow-intense-fg ansi-bold">.</span>__getattribute__<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 5478</span><span class="ansi-yellow-intense-fg ansi-bold">             </span><span class="ansi-green-intense-fg ansi-bold">return</span> object<span class="ansi-yellow-intense-fg ansi-bold">.</span>__setattr__<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> name<span class="ansi-yellow-intense-fg ansi-bold">,</span> value<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">   5479</span>         <span class="ansi-green-intense-fg ansi-bold">except</span> AttributeError<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">   5480</span>             <span class="ansi-green-intense-fg ansi-bold">pass</span>
+
+<span class="ansi-green-intense-fg ansi-bold">pandas\_libs\properties.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.properties.AxisProperty.__set__</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+
+<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\series.py</span> in <span class="ansi-cyan-fg">_set_axis</span><span class="ansi-blue-intense-fg ansi-bold">(self, axis, labels, fastpath)</span>
+<span class="ansi-green-fg">    468</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> fastpath<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    469</span>             <span class="ansi-red-intense-fg ansi-bold"># The ensure_index call above ensures we have an Index object</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 470</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_mgr<span class="ansi-yellow-intense-fg ansi-bold">.</span>set_axis<span class="ansi-yellow-intense-fg ansi-bold">(</span>axis<span class="ansi-yellow-intense-fg ansi-bold">,</span> labels<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    471</span> 
+<span class="ansi-green-fg">    472</span>     <span class="ansi-red-intense-fg ansi-bold"># ndarray compatibility</span>
+
+<span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\internals\managers.py</span> in <span class="ansi-cyan-fg">set_axis</span><span class="ansi-blue-intense-fg ansi-bold">(self, axis, new_labels)</span>
+<span class="ansi-green-fg">    218</span> 
+<span class="ansi-green-fg">    219</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> new_len <span class="ansi-yellow-intense-fg ansi-bold">!=</span> old_len<span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 220</span><span class="ansi-yellow-intense-fg ansi-bold">             raise ValueError(
+</span><span class="ansi-green-fg">    221</span>                 <span class="ansi-blue-intense-fg ansi-bold">f&#34;Length mismatch: Expected axis has {old_len} elements, new &#34;</span>
+<span class="ansi-green-fg">    222</span>                 <span class="ansi-blue-intense-fg ansi-bold">f&#34;values have {new_len} elements&#34;</span>
+
+<span class="ansi-red-intense-fg ansi-bold">ValueError</span>: Length mismatch: Expected axis has 0 elements, new values have 31 elements</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -14988,7 +15061,11 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify t50 and t90</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify shape parameters (overrides t50 and t90 baselines) -- values from Henry Hieslmair</span>
+<span class="n">weibullInputParamsA</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">2.810</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="mf">100.238</span><span class="p">}</span> 
+<span class="n">weibullInputParamsB</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">3.841</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="mf">57.491</span><span class="p">}</span>
+<span class="n">weibullInputParamsC</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">4.602</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="mf">40.767</span><span class="p">}</span>
+<span class="n">weibullInputParamsD</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">5.692</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="mf">29.697</span><span class="p">}</span>
 </pre></div>
 
      </div>
@@ -15012,8 +15089,12 @@ path = C:\Users\ahegedus\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
-<span class="n">r2</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span> <span class="n">weibull_IrenaRL</span><span class="p">)</span>
+<span class="n">r2</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span> <span class="n">weibull_IrenaRL</span><span class="p">)</span>
+<span class="n">r3A</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span> <span class="n">weibullInputParamsA</span><span class="p">)</span>
+<span class="n">r3B</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span> <span class="n">weibullInputParamsB</span><span class="p">)</span>
+<span class="n">r3C</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span> <span class="n">weibullInputParamsC</span><span class="p">)</span>
+<span class="n">r3D</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span> <span class="n">weibullInputParamsD</span><span class="p">)</span>
 </pre></div>
 
      </div>
