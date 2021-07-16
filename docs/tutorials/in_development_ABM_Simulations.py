@@ -42,13 +42,17 @@ print(baselinesfolder)
 r1 = PV_ICE.Simulation(name='ABM_Simulation1', path=testfolder)
 r2 = PV_ICE.Simulation(name='ABM_Simulation2', path=testfolder)
 r3A = PV_ICE.Simulation(name='ABM_Simulation3A', path=testfolder)
-r3B = PV_ICE.Simulation(name='ABM_Simulation3A', path=testfolder)
-r3C = PV_ICE.Simulation(name='ABM_Simulation3A', path=testfolder)
-r3D = PV_ICE.Simulation(name='ABM_Simulation3A', path=testfolder)
+r3B = PV_ICE.Simulation(name='ABM_Simulation3B', path=testfolder)
+r3C = PV_ICE.Simulation(name='ABM_Simulation3C', path=testfolder)
+r3D = PV_ICE.Simulation(name='ABM_Simulation3D', path=testfolder)
 r4 = PV_ICE.Simulation(name='ABM_Simulation4', path=testfolder)
+r4A = PV_ICE.Simulation(name='ABM_Simulation4A', path=testfolder)
+r4B = PV_ICE.Simulation(name='ABM_Simulation4B', path=testfolder)
+r4C = PV_ICE.Simulation(name='ABM_Simulation4C', path=testfolder)
+r4D = PV_ICE.Simulation(name='ABM_Simulation4D', path=testfolder)
 
 #create 10 scenarios in each simulation: 1st is standard in PV ICE, 2-10 are scenarios a-i in ABM
-SIMULATIONS = [r1,r2]
+SIMULATIONS = [r1,r2,r4]
 SCENARIOS = ['standard_PVICE','landfill_ban','high_mat_recovery_cheap_recycling','cheap_recycling','high_landfill_costs','better_lifetime','better_learning','reuse_warranties','seeding_reuse','juliens_baseline']
 for mysimulation in SIMULATIONS: 
     for myscenario in SCENARIOS:
@@ -72,18 +76,41 @@ for myr3simulation in r3_simulations:
         myr3simulation.scenario[myscenario].addMaterial('silver', file=r'..\baselines\baseline_material_silver.csv')
         myr3simulation.scenario[myscenario].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
         myr3simulation.scenario[myscenario].addMaterial('copper', file=r'..\baselines\baseline_material_copper.csv')
+        
+#create r4 for select scenarios: r4A, r4B, r4C, r4D
+REPAIR_SCENARIOS = ['better_learning', 'juliens_baseline', 'landfill_ban']
+r4_simulations = [r4A, r4B, r4C, r4D]
+for myr4simulation in r4_simulations:
+    for myscenario in REPAIR_SCENARIOS:
+        scenario_name = myscenario
+        myr4simulation.createScenario(name=myscenario, file=r'..\baselines\baseline_modules_US.csv')
+        myr4simulation.scenario[myscenario].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+        myr4simulation.scenario[myscenario].addMaterial('aluminium_frames', file=r'..\baselines\baseline_material_aluminium_frames.csv')
+        myr4simulation.scenario[myscenario].addMaterial('silver', file=r'..\baselines\baseline_material_silver.csv')
+        myr4simulation.scenario[myscenario].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
+        myr4simulation.scenario[myscenario].addMaterial('copper', file=r'..\baselines\baseline_material_copper.csv')
 
 
 # In[4]:
 
 
-#Irena RL Weibull Parameters to use for r1 and r2
+#Irena RL Weibull Parameters to use for r1, r2, r4
 weibull_IrenaRL = {'alpha': 5.3759, 'beta': 30}
+
+
+# In[5]:
+
+
+#Henry Hieslmair Weibull Parameters to use for r3A, r3B, r3C, r3D, r4A, r4B, r4C, r4D
+weibullInputParamsA = {'alpha': 2.810, 'beta': 100.238} 
+weibullInputParamsB = {'alpha': 3.841, 'beta': 57.491}
+weibullInputParamsC = {'alpha': 4.602, 'beta': 40.767}
+weibullInputParamsD = {'alpha': 5.692, 'beta': 29.697}
 
 
 # ## Modify parameters: Simulation 1 (r1), same installs for all scenarios: what is the effect of different reuse, recycle, and repair rates?
 
-# In[5]:
+# In[6]:
 
 
 #modify values of each scenario 2-10 based on ABM outputs
@@ -101,13 +128,13 @@ MATERIALS = ['glass','aluminium_frames','silver','silicon','copper']
 for mymaterial in MATERIALS:
     past_years_collected_recycled = [r1.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_collected_Recycled'][0]]*(2022-1995)
     new_collected_recycled = [100]*(2050-2021)
-    #create new list to replace 'mod_EOL_collected_Recycled' with, with 1995-2021 original baseline module values, and 2022-2050 at 100%
+    #create new list to replace 'mat_EOL_collected_Recycled' with, with 1995-2021 original baseline module values, and 2022-2050 at 100%
     new_mat_recycled = past_years_collected_recycled + new_collected_recycled
     for myscenario in ABM_SCENARIOS:
         r1.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_collected_Recycled'] = new_mat_recycled
 
 
-# In[6]:
+# In[7]:
 
 
 #next, modify 3 additional inputs for each scenario 2-10, with values depending on the scenario, coming from ABM outputs
@@ -117,7 +144,7 @@ len(r1.scenario['landfill_ban'].data['mod_Reuse']) #all inputs have 56 rows
 ABM_outputs = pd.read_csv(r'..\baselines\ABM\abm_outputs_mass_fractions.csv')
 
 
-# In[7]:
+# In[8]:
 
 
 #ABM_outputs
@@ -126,7 +153,7 @@ file_scenario_names = ABM_outputs['Scenario'].unique().tolist()
 ABM_outputs = ABM_outputs.replace(file_scenario_names, ABM_SCENARIOS)
 
 
-# In[8]:
+# In[9]:
 
 
 #changing repair, eol collection eff, and reuse module baselines for all ABM scenarios
@@ -165,9 +192,19 @@ for myscenario in ABM_SCENARIOS:
     r1.scenario[myscenario].data['mod_Reuse'] = new_mod_Reuse.values
 
 
+# In[10]:
+
+
+#also change mod_lifetime = 40 to agree with Irena RL
+for myscenario in ABM_SCENARIOS:
+    old_lifetime = list(r1.scenario[myscenario].data['mod_lifetime'][0:27])
+    irena_lifetime = [40] * (2050-2021)
+    r1.scenario[myscenario].data['mod_lifetime'] = old_lifetime + irena_lifetime
+
+
 # ### Modify better_lifetime scenario reliability inputs: mod_lifetime, mod_reliability_t50, & mod_reliability_t90
 
-# In[9]:
+# In[11]:
 
 
 def lifetime_line(year):
@@ -181,7 +218,7 @@ def lifetime_line(year):
     return(y)
 
 
-# In[10]:
+# In[12]:
 
 
 #create list of mod_lifetime values based on linear regression
@@ -191,20 +228,20 @@ for myyear in years:
     mod_lifetimes_list += [lifetime_line(myyear)]
 
 
-# In[11]:
+# In[13]:
 
 
 mod_lifetimes_df = pd.DataFrame()
 
 
-# In[12]:
+# In[14]:
 
 
 mod_lifetimes_df['year'] = years
 mod_lifetimes_df['mod_lifetime'] = mod_lifetimes_list
 
 
-# In[13]:
+# In[15]:
 
 
 #changing mod_lifetime in scenario e) better_lifetime
@@ -212,7 +249,7 @@ new_mod_lifetime = list(r1.scenario[myscenario].data['mod_lifetime'][0:27].value
 r1.scenario['better_lifetime'].data['mod_lifetime'] = new_mod_lifetime
 
 
-# In[14]:
+# In[16]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -223,7 +260,7 @@ reliability_baselines['mod_reliability_t50'] = r1.scenario['standard_PVICE'].dat
 reliability_baselines['mod_reliability_t90'] = r1.scenario['standard_PVICE'].data['mod_reliability_t90']
 
 
-# In[15]:
+# In[17]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -242,7 +279,7 @@ better_lifetime_t90_list = linear_regressor_Y2.predict(better_lifetimes).tolist(
 better_lifetime_t90_list = list(chain(*better_lifetime_t90_list)) #unnest list
 
 
-# In[16]:
+# In[18]:
 
 
 #changing mod_reliability_t50 & mod_reliability_t90 in scenario e) better_lifetime
@@ -255,7 +292,7 @@ r1.scenario['better_lifetime'].data['mod_reliability_t90'] = new_mod_t90
 
 # ## Modify parameters: Simulation 2 (r2), same installs for all scenarios: what is effect of different reuse, recycle, and repair rates when recycling efficiency is improved?
 
-# In[17]:
+# In[19]:
 
 
 #copy same parameter modifications for r2 as in r1
@@ -264,7 +301,6 @@ for myscenario in ABM_SCENARIOS:
 for mymaterial in MATERIALS:
     past_years_collected_recycled = [r2.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_collected_Recycled'][0]]*(2022-1995)
     new_collected_recycled = [100]*(2050-2021)
-    #create new list to replace 'mod_EOL_collected_Recycled' with, with 1995-2021 original baseline module values, and 2022-2050 at 100%
     new_mat_recycled = past_years_collected_recycled + new_collected_recycled
     for myscenario in ABM_SCENARIOS:
         r2.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_collected_Recycled'] = new_mat_recycled
@@ -301,12 +337,19 @@ for myscenario in ABM_SCENARIOS:
     frames3 = [r2.scenario[myscenario].data['mod_Reuse'][0:27],reuses[2:]]
     new_mod_Reuse = pd.concat(frames3)
     r2.scenario[myscenario].data['mod_Reuse'] = new_mod_Reuse.values
+    
+#also change mod_lifetime = 40 to agree with Irena RL
+for myscenario in ABM_SCENARIOS:
+    old_lifetime = list(r2.scenario[myscenario].data['mod_lifetime'][0:27])
+    irena_lifetime = [40] * (2050-2021)
+    r2.scenario[myscenario].data['mod_lifetime'] = old_lifetime + irena_lifetime
+    
 r2.scenario['better_lifetime'].data['mod_lifetime'] = new_mod_lifetime
 r2.scenario['better_lifetime'].data['mod_reliability_t50'] = new_mod_t50
 r2.scenario['better_lifetime'].data['mod_reliability_t90'] = new_mod_t90
 
 
-# In[18]:
+# In[20]:
 
 
 #FRELP recovery rates and qualities
@@ -316,13 +359,13 @@ frelp_results['recovery_rate'] = [94,97,99.4,97,98]
 frelp_results['mat_recycled_into_HQ'] = [100,100,100,100,100] #########MODIFY THIS BASED ON RESEARCH VALUES!
 
 
-# In[19]:
+# In[21]:
 
 
 frelp_results
 
 
-# In[20]:
+# In[22]:
 
 
 #Modify 'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG' 
@@ -345,9 +388,9 @@ for mymaterial in MATERIALS:
         r2.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = new_recycledHQ_reused4MFG
 
 
-# ## Modify parameters: Simulation 3 (r3), same installs for some scenarios: what is the effect of module reliability (and lifetime?) when recycle rates, reuse rates, repair rates, and recycling efficiencies changed for select scenarios with different repair bins?
+# ## Modify parameters: Simulation 3 (r3), same installs for some scenarios: what is the effect of module reliability when recycle rates, reuse rates, repair rates, and recycling efficiencies changed for select scenarios with different repair bins?
 
-# In[21]:
+# In[23]:
 
 
 #Figure out which scenarios to include
@@ -356,10 +399,9 @@ for mymaterial in MATERIALS:
 #only do better learning, julien’s baseline, landfill ban as better lifetime already had different reliability
 
 
-# In[22]:
+# In[24]:
 
 
-##START HERE FIX ERROR
 #copy same parameter modifications for each r3 simulation as in r2
 new_HQ4MFG = [100]*(2050-2021)
 for myr3simulation in r3_simulations:
@@ -381,7 +423,7 @@ for myr3simulation in r3_simulations:
         new_mod_Repairing = []
         new_mod_Recycling = []
         new_mod_Reuse = []
-        scenario_filter = 'Scenario == ' + '\"' + myscenario[:-2] + '\"'
+        scenario_filter = 'Scenario == ' + '\"' + myscenario + '\"'
         new_outputs = ABM_outputs.query(scenario_filter)
         #replace repairing baselines
         repairs = new_outputs.loc[:,'mass_fraction_PV_materials_repaired_milliontonnes']*100
@@ -421,9 +463,17 @@ for myr3simulation in r3_simulations:
             myr3simulation.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_Recycling_eff'] = new_mat_EOL_recycling_eff
             myr3simulation.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_Recycled_into_HQ'] = new_mat_EOL_recycled_into_HQ
             myr3simulation.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = new_recycledHQ_reused4MFG
+            
+#also change mod_lifetime = 40 to agree with Irena RL
+for myr3simulation in r3_simulations:
+    for myscenario in REPAIR_SCENARIOS:
+        old_lifetime = list(myr3simulation.scenario[myscenario].data['mod_lifetime'][0:27])
+        irena_lifetime = [40] * (2050-2021)
+        myr3simulation.scenario[myscenario].data['mod_lifetime'] = old_lifetime + irena_lifetime
+    
 
 
-# In[ ]:
+# In[25]:
 
 
 #modify shape parameters (overrides t50 and t90 baselines) -- values from Henry Hieslmair
@@ -433,11 +483,161 @@ weibullInputParamsC = {'alpha': 4.602, 'beta': 40.767}
 weibullInputParamsD = {'alpha': 5.692, 'beta': 29.697}
 
 
-# ## Modify parameters: Simulation 4 (r4), change new installs due to increased installed capacity for all scenarios: what is effect of accounting for less installs for all scenarios on virgin material demand vs. case 2? what is the effect on installed capacity for different repair bins?
+# ## Modify parameters: Simulation 4 (r4), change new installs due to increased installed capacity for all scenarios: what is effect of accounting for fewer installs for all scenarios on virgin material demand vs. r2? what is the effect on cumulative new installs and yearly virgin material demand for different repair bins?
+
+# In[26]:
+
+
+#modify parameters for r4
+#copy same parameter modifications for r4 as in r2
+for myscenario in ABM_SCENARIOS:
+    r4.scenario[myscenario].data['mod_EOL_collected_recycled'] = new_mod_recycled
+for mymaterial in MATERIALS:
+    past_years_collected_recycled = [r4.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_collected_Recycled'][0]]*(2022-1995)
+    new_collected_recycled = [100]*(2050-2021)
+    #create new list to replace 'mod_EOL_collected_Recycled' with, with 1995-2021 original baseline module values, and 2022-2050 at 100%
+    new_mat_recycled = past_years_collected_recycled + new_collected_recycled
+    for myscenario in ABM_SCENARIOS:
+        r4.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_collected_Recycled'] = new_mat_recycled
+for myscenario in ABM_SCENARIOS:
+    frames1 = []
+    frames2 = []
+    frames3 = []
+    new_outputs = []
+    scenario_filter = []
+    new_mod_Repairing = []
+    new_mod_Recycling = []
+    new_mod_Reuse = []
+    scenario_filter = 'Scenario == ' + '\"' + myscenario + '\"'
+    new_outputs = ABM_outputs.query(scenario_filter)
+    #replace repairing baselines
+    repairs = new_outputs.loc[:,'mass_fraction_PV_materials_repaired_milliontonnes']*100
+    repairs.index = list(range(31))
+    frames1 = [r4.scenario[myscenario].data['mod_Repair'][0:27],repairs[2:]]
+    new_mod_Repairing = pd.concat(frames1)
+    r4.scenario[myscenario].data['mod_Repair'] = new_mod_Repairing.values
+    #replace recycling baselines
+    recycled = new_outputs.loc[:,'mass_fraction_PV_materials_recycled_milliontonnes']*100
+    if myscenario == 'high_mat_recovery_cheap_recycling':
+        recycles = recycled/0.96 #reflects higher material recovery rate (must change as ABM gives effective recycling rate)
+    else:
+        recycles = recycled/0.80 #must change as ABM gives effective recycling rate
+    recycles.index = list(range(31))
+    frames2 = [r4.scenario[myscenario].data['mod_EOL_collection_eff'][0:27],recycles[2:]]
+    new_mod_Recycling = pd.concat(frames2)
+    r4.scenario[myscenario].data['mod_EOL_collection_eff'] = new_mod_Recycling.values
+    #replace reuse baselines
+    reuses = new_outputs.loc[:,'mass_fraction_PV_materials_reused_milliontonnes']*100
+    reuses.index = list(range(31))
+    frames3 = [r4.scenario[myscenario].data['mod_Reuse'][0:27],reuses[2:]]
+    new_mod_Reuse = pd.concat(frames3)
+    r4.scenario[myscenario].data['mod_Reuse'] = new_mod_Reuse.values
+
+#also change mod_lifetime = 40 to agree with Irena RL
+for myscenario in ABM_SCENARIOS:
+    old_lifetime = list(r4.scenario[myscenario].data['mod_lifetime'][0:27])
+    irena_lifetime = [40] * (2050-2021)
+    r4.scenario[myscenario].data['mod_lifetime'] = old_lifetime + irena_lifetime    
+
+r4.scenario['better_lifetime'].data['mod_lifetime'] = new_mod_lifetime
+r4.scenario['better_lifetime'].data['mod_reliability_t50'] = new_mod_t50
+r4.scenario['better_lifetime'].data['mod_reliability_t90'] = new_mod_t90
+
+new_HQ4MFG = [100]*(2050-2021)
+for mymaterial in MATERIALS: 
+    #modifying 'mat_EOL_Recycling_eff'
+    past_recycling_eff = [r4.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_Recycling_eff'][0]]*(2022-1995)
+    new_recycling_eff = frelp_results[frelp_results.mat.isin([mymaterial])]['recovery_rate'].values.tolist()*(2050-2021)
+    new_mat_EOL_recycling_eff = past_recycling_eff + new_recycling_eff
+    #modifiying 'mat_EOL_Recycled_into_HQ'
+    past_HQ_recycling = [r4.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_Recycled_into_HQ'][0]]*(2022-1995)
+    new_HQ_recycling = frelp_results[frelp_results.mat.isin([mymaterial])]['mat_recycled_into_HQ'].values.tolist()*(2050-2021)
+    new_mat_EOL_recycled_into_HQ = past_HQ_recycling + new_HQ_recycling
+    #modifying 'mat_EOL_RecycledHQ_Reused4MFG' 
+    past_HQ4MFG = list(r4.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_RecycledHQ_Reused4MFG'][0:27].values)
+    new_recycledHQ_reused4MFG = past_HQ4MFG + new_HQ4MFG
+    for myscenario in ABM_SCENARIOS:
+        r4.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_Recycling_eff'] = new_mat_EOL_recycling_eff
+        r4.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_Recycled_into_HQ'] = new_mat_EOL_recycled_into_HQ
+        r4.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = new_recycledHQ_reused4MFG
+
+
+# In[27]:
+
+
+#modify parameters for r4A, r4B, r4C, r4D (same as r3 modifications)
+new_HQ4MFG = [100]*(2050-2021)
+for myr4simulation in r4_simulations:
+    for myscenario in REPAIR_SCENARIOS:
+        myr4simulation.scenario[myscenario].data['mod_EOL_collected_recycled'] = new_mod_recycled
+    for mymaterial in MATERIALS:
+        past_years_collected_recycled = [r1.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_collected_Recycled'][0]]*(2022-1995)
+        new_collected_recycled = [100]*(2050-2021)
+        #create new list to replace 'mod_EOL_collected_Recycled' with, with 1995-2021 original baseline module values, and 2022-2050 at 100%
+        new_mat_recycled = past_years_collected_recycled + new_collected_recycled
+        for myscenario in REPAIR_SCENARIOS:
+            myr4simulation.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_collected_Recycled'] = new_mat_recycled
+    for myscenario in REPAIR_SCENARIOS:
+        frames1 = []
+        frames2 = []
+        frames3 = []
+        new_outputs = []
+        scenario_filter = []
+        new_mod_Repairing = []
+        new_mod_Recycling = []
+        new_mod_Reuse = []
+        scenario_filter = 'Scenario == ' + '\"' + myscenario + '\"'
+        new_outputs = ABM_outputs.query(scenario_filter)
+        #replace repairing baselines
+        repairs = new_outputs.loc[:,'mass_fraction_PV_materials_repaired_milliontonnes']*100
+        repairs.index = list(range(31))
+        frames1 = [myr4simulation.scenario[myscenario].data['mod_Repair'][0:27],repairs[2:]]
+        new_mod_Repairing = pd.concat(frames1)
+        myr4simulation.scenario[myscenario].data['mod_Repair'] = new_mod_Repairing.values
+        #replace recycling baselines
+        recycled = new_outputs.loc[:,'mass_fraction_PV_materials_recycled_milliontonnes']*100
+        if myscenario == 'high_mat_recovery_cheap_recycling':
+            recycles = recycled/0.96 #reflects higher material recovery rate (must change as ABM gives effective recycling rate)
+        else:
+            recycles = recycled/0.80 #must change as ABM gives effective recycling rate
+        recycles.index = list(range(31))
+        frames2 = [myr4simulation.scenario[myscenario].data['mod_EOL_collection_eff'][0:27],recycles[2:]]
+        new_mod_Recycling = pd.concat(frames2)
+        myr4simulation.scenario[myscenario].data['mod_EOL_collection_eff'] = new_mod_Recycling.values
+        #replace reuse baselines
+        reuses = new_outputs.loc[:,'mass_fraction_PV_materials_reused_milliontonnes']*100
+        reuses.index = list(range(31))
+        frames3 = [myr4simulation.scenario[myscenario].data['mod_Reuse'][0:27],reuses[2:]]
+        new_mod_Reuse = pd.concat(frames3)
+        myr4simulation.scenario[myscenario].data['mod_Reuse'] = new_mod_Reuse.values
+    for mymaterial in MATERIALS: 
+        #modifying 'mat_EOL_Recycling_eff'
+        past_recycling_eff = [r1.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_Recycling_eff'][0]]*(2022-1995)
+        new_recycling_eff = frelp_results[frelp_results.mat.isin([mymaterial])]['recovery_rate'].values.tolist()*(2050-2021)
+        new_mat_EOL_recycling_eff = past_recycling_eff + new_recycling_eff
+        #modifiying 'mat_EOL_Recycled_into_HQ'
+        past_HQ_recycling = [r1.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_Recycled_into_HQ'][0]]*(2022-1995)
+        new_HQ_recycling = frelp_results[frelp_results.mat.isin([mymaterial])]['mat_recycled_into_HQ'].values.tolist()*(2050-2021)
+        new_mat_EOL_recycled_into_HQ = past_HQ_recycling + new_HQ_recycling
+        #modifying 'mat_EOL_RecycledHQ_Reused4MFG' 
+        past_HQ4MFG = list(r1.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_RecycledHQ_Reused4MFG'][0:27].values)
+        new_recycledHQ_reused4MFG = past_HQ4MFG + new_HQ4MFG
+        for myscenario in REPAIR_SCENARIOS:
+            myr4simulation.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_Recycling_eff'] = new_mat_EOL_recycling_eff
+            myr4simulation.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_Recycled_into_HQ'] = new_mat_EOL_recycled_into_HQ
+            myr4simulation.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = new_recycledHQ_reused4MFG
+            
+#also change mod_lifetime = 40 to agree with Irena RL
+for myr4simulation in r4_simulations:
+    for myscenario in REPAIR_SCENARIOS:
+        old_lifetime = list(myr4simulation.scenario[myscenario].data['mod_lifetime'][0:27])
+        irena_lifetime = [40] * (2050-2021)
+        myr4simulation.scenario[myscenario].data['mod_lifetime'] = old_lifetime + irena_lifetime
+
 
 # ## Run Mass Flow Calculations
 
-# In[ ]:
+# In[35]:
 
 
 r1.calculateMassFlow(weibullInputParams= weibull_IrenaRL)
@@ -446,27 +646,60 @@ r3A.calculateMassFlow(weibullInputParams= weibullInputParamsA)
 r3B.calculateMassFlow(weibullInputParams= weibullInputParamsB)
 r3C.calculateMassFlow(weibullInputParams= weibullInputParamsC)
 r3D.calculateMassFlow(weibullInputParams= weibullInputParamsD)
+r4.calculateMassFlow(weibullInputParams= weibull_IrenaRL)
+r4A.calculateMassFlow(weibullInputParams= weibullInputParamsA)
+r4B.calculateMassFlow(weibullInputParams= weibullInputParamsB)
+r4C.calculateMassFlow(weibullInputParams= weibullInputParamsC)
+r4D.calculateMassFlow(weibullInputParams= weibullInputParamsD)
+
+
+# In[36]:
+
+
+Under_Installment = []
+scenarios = ['standard_PVICE','landfill_ban','high_mat_recovery_cheap_recycling','cheap_recycling','high_landfill_costs','better_lifetime','better_learning','reuse_warranties','seeding_reuse','juliens_baseline']
+for i in range (0, len(r4.scenario['juliens_baseline'].data)): #runs for each year
+    for myscenario in scenarios[1:9]:
+        Under_Installment = ( (r4.scenario['juliens_baseline'].data['Installed_Capacity_[W]'][i] - 
+                         r4.scenario[myscenario].data['Installed_Capacity_[W]'][i])/1000000 )  # MWATTS
+        r4.scenario[myscenario].data['new_Installed_Capacity_[MW]'][i] += Under_Installment
+    r4.calculateMassFlow(weibullInputParams= weibull_IrenaRL)
+
+
+# In[37]:
+
+
+Under_Installment = []
+weibullparams = [weibullInputParamsA, weibullInputParamsB, weibullInputParamsC, weibullInputParamsD]
+for myr4simulation in r4_simulations:
+    myweibullparams = weibullparams[r4_simulations.index(myr4simulation)]
+    for i in range (0, len(myr4simulation.scenario['juliens_baseline'].data)): #runs for each year
+        for myscenario in REPAIR_SCENARIOS:
+            Under_Installment = ((myr4simulation.scenario['juliens_baseline'].data['Installed_Capacity_[W]'][i] - 
+                             myr4simulation.scenario[myscenario].data['Installed_Capacity_[W]'][i])/1000000 )  # MWATTS
+            myr4simulation.scenario[myscenario].data['new_Installed_Capacity_[MW]'][i] += Under_Installment
+        myr4simulation.calculateMassFlow(weibullInputParams= myweibullparams)
 
 
 # ## Creating a summary of results in a new data frame
 
-# In[ ]:
+# In[38]:
 
 
 USyearly=pd.DataFrame()
 
 
-# In[ ]:
+# In[39]:
 
 
 keyword='mat_Virgin_Stock'
 materials = ['glass', 'aluminium_frames','silicon', 'silver', 'copper']
-SIMULATIONS = [r1,r2] #CHANGE THIS WHEN I HAVE ALL MY SIMULATIONS DONE
+SIMULATIONS = [r1,r2, r3A, r3B, r3C, r3D, r4, r4A, r4B, r4C, r4D]
 
 # Loop over Simulations
 for mysimulation in SIMULATIONS:
-    for jj in range(0, len(mysimulation.scenario)): #goes from 0 to 9; Loop over Scenarios
-        case = list(mysimulation.scenario.keys())[jj] #case gives scenario name
+    for jj in range(0, len(mysimulation.scenario)): # Loop over Scenarios
+        case = list(mysimulation.scenario.keys())[jj] # case gives scenario name
         for ii in range (0, len(materials)):    
             material = materials[ii]
             foo = mysimulation.scenario[case].material[material].materialdata[keyword].copy()
@@ -476,7 +709,7 @@ for mysimulation in SIMULATIONS:
         USyearly['VirginStock_Module_'+mysimulation.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[40]:
 
 
 keyword='mat_Total_Landfilled'
@@ -493,7 +726,7 @@ for mysimulation in SIMULATIONS:
         USyearly['Waste_Module_'+mysimulation.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[41]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -510,34 +743,45 @@ for mysimulation in SIMULATIONS:
         USyearly['Waste_EOL_Module_'+mysimulation.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[42]:
 
 
 USyearly = USyearly/1000000  #Convert to metric tonnes
 #907185 -- this is for US tons
 
 
-# In[ ]:
+# In[43]:
 
 
 keyword='new_Installed_Capacity_[MW]'
 
-for mysimulation in SIMULATIONS:
+#for simulations r1 through r4
+for mysimulation in SIMULATIONS[0:7]:
     newcolname = keyword+'_'+mysimulation.name 
     if newcolname in USyearly:
         USyearly[newcolname] = USyearly[newcolname]+mysimulation.scenario[list(mysimulation.scenario.keys())[0]].data[keyword]
     else:
         USyearly[keyword+'_'+mysimulation.name] = mysimulation.scenario[list(mysimulation.scenario.keys())[0]].data[keyword]
 
+#for simulations r4A through r4D
+#this is not working for some reason...
+for mysimulation in SIMULATIONS[7:]:
+    for myscenario in REPAIR_SCENARIOS:
+        newcolname = keyword+'_'+mysimulation.name+'_'+myscenario
+        if newcolname in USyearly:
+            USyearly[newcolname] = USyearly[newcolname]+mysimulation.scenario[myscenario].data[keyword]
+        else:
+            USyearly[newcolname] = mysimulation.scenario[myscenario].data[keyword]
 
-# In[ ]:
+
+# In[44]:
 
 
 UScum = USyearly.copy()
 UScum = UScum.cumsum()
 
 
-# In[ ]:
+# In[45]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -550,14 +794,14 @@ for mysimulation in SIMULATIONS:
         UScum["Capacity_"+mysimulation.name+'_'+case] = foo[keyword].values/1000000 #change to MW
 
 
-# In[ ]:
+# In[46]:
 
 
 USyearly.index = r1.scenario['standard_PVICE'].data['year']
 UScum.index = r1.scenario['standard_PVICE'].data['year']
 
 
-# In[ ]:
+# In[47]:
 
 
 USyearly.to_csv('ABM_Yearly_Results.csv')
@@ -566,7 +810,7 @@ UScum.to_csv('ABM_Cumulative_Results.csv')
 
 # ### Plotting with USyearly and UScum data frames: r1
 
-# In[ ]:
+# In[48]:
 
 
 filter_col = [col for col in USyearly if (col.startswith('VirginStock_Module_ABM_Simulation1'))]
@@ -575,16 +819,17 @@ pretty_scenarios = ['PV ICE Baseline','Landfill Ban','High material recovery and
 df = df.set_axis(pretty_scenarios, axis=1)
 df['year'] = list(range(1995,2051))
 df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
 fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
                      "year": "Year",
-                     "value": "Virgin Material Demand in metric tonnes",
+                     "value": "Virgin Material Demand [metric tonnes]",
                     "variable" :"Scenario"
                  })
 fig1.update_layout(title_text='Simulation 1: Yearly Virgin Material Demand', title_x=0.2)
 fig1.show()
 
 
-# In[ ]:
+# In[49]:
 
 
 filter_col = [col for col in USyearly if (col.startswith('Waste_Module_ABM_Simulation1'))]
@@ -592,16 +837,17 @@ df = USyearly[filter_col]
 df = df.set_axis(pretty_scenarios, axis=1)
 df['year'] = list(range(1995,2051))
 df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
 fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
                      "year": "Year",
-                     "value": "Waste in metric tonnes",
+                     "value": "Waste [metric tonnes]",
                     "variable" :"Scenario"
                  })
 fig1.update_layout(title_text='Simulation 1: Yearly Waste', title_x=0.25)
 fig1.show()
 
 
-# In[ ]:
+# In[50]:
 
 
 filter_col = [col for col in UScum if (col.startswith('Capacity_ABM_Simulation1'))]
@@ -609,9 +855,10 @@ df = UScum[filter_col]
 df = df.set_axis(pretty_scenarios, axis=1)
 df['year'] = list(range(1995,2051))
 df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
 fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
                      "year": "Year",
-                     "value": "Installed Capacity in MW",
+                     "value": "Installed Capacity [MW]",
                     "variable" :"Scenario"
                  })
 fig1.update_layout(title_text='Simulation 1: Installed Capacity', title_x=0.2)
@@ -620,7 +867,7 @@ fig1.show()
 
 # ### Plotting with USyearly and UScum data frames: r2
 
-# In[ ]:
+# In[51]:
 
 
 filter_col = [col for col in USyearly if (col.startswith('VirginStock_Module_ABM_Simulation2'))]
@@ -629,16 +876,30 @@ pretty_scenarios = ['PV ICE Baseline','Landfill Ban','High material recovery and
 df = df.set_axis(pretty_scenarios, axis=1)
 df['year'] = list(range(1995,2051))
 df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
 fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
                      "year": "Year",
-                     "value": "Virgin Material Demand in metric tonnes",
+                     "value": "Virgin Material Demand [metric tonnes]",
                     "variable" :"Scenario"
                  })
 fig1.update_layout(title_text='Simulation 2: Yearly Virgin Material Demand', title_x=0.2)
 fig1.show()
 
 
-# In[ ]:
+# In[52]:
+
+
+#cumulative at 2050 results for Virgin Material Demand
+filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation2'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin([2050])]
+df.sort_values('value')
+
+
+# In[53]:
 
 
 filter_col = [col for col in USyearly if (col.startswith('Waste_Module_ABM_Simulation2'))]
@@ -646,37 +907,185 @@ df = USyearly[filter_col]
 df = df.set_axis(pretty_scenarios, axis=1)
 df['year'] = list(range(1995,2051))
 df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
 fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
                      "year": "Year",
-                     "value": "Waste in metric tonnes",
+                     "value": "Waste [metric tonnes]",
                     "variable" :"Scenario"
                  })
-fig1.update_layout(title_text='Simulation 2: Yearly Waste', title_x=0.2)
+fig1.update_layout(title_text='Simulation 2: Yearly Waste', title_x=0.25)
 fig1.show()
 
 
-# In[ ]:
+# In[54]:
 
 
+#cumulative at 2050 results for Waste
+filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation2'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin([2050])]
+df.sort_values('value')
 
 
+# ### Plotting with USyearly and UScum data frames: r3
 
-# In[ ]:
-
-
-
+# In[55]:
 
 
-# In[ ]:
+filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation3'))]
+df = UScum[filter_col]
+#pretty_repair_scenarios = ['Improved Learning Effect', 'ABM Baseline', 'Landfill Ban']
+#df = df.set_axis(pretty_repair_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+scenario_splices = []
+for i in range(0,len(df['variable'])):
+    scenario_splices += [df.loc[i,'variable'][30:]]
+quality_splices = []
+for i in range(0,len(df['variable'])):
+    quality_splices += [df.loc[i,'variable'][28]]
+df['scenario'] = scenario_splices
+df['repair_bin'] = quality_splices
+df = df.drop("variable", axis=1)
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'repair_bin', facet_col = 'scenario', labels={
+                     "year": "Year",
+                     "value": "Cumulative Waste [metric tonnes]",
+                    "repair_bin":"Repair Bin"
+                })
+fig1.update_layout(title_text='Simulation 3: Cumulative Waste for Different Repair Bins', title_x=0.5)
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=better_learning", "Improved Learning Effect")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=juliens_baseline", "ABM Baseline")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=landfill_ban", "Landfill Ban")))
+fig1.update_xaxes(tickangle=-45)
+fig1.show()
 
 
+# In[56]:
 
 
+filter_col = [col for col in UScum if (col.startswith('Capacity_ABM_Simulation3'))]
+df = UScum[filter_col]
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+scenario_splices = []
+for i in range(0,len(df['variable'])):
+    scenario_splices += [df.loc[i,'variable'][26:]]
+quality_splices = []
+for i in range(0,len(df['variable'])):
+    quality_splices += [df.loc[i,'variable'][24]]
+df['scenario'] = scenario_splices
+df['repair_bin'] = quality_splices
+df = df.drop("variable", axis=1)
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'repair_bin', facet_col = 'scenario', labels={
+                     "year": "Year",
+                     "value": "Installed Capacity [MW]",
+                    "repair_bin":"Repair Bin"
+                })
+fig1.update_layout(title_text='Simulation 3: Installed Capacity for Different Repair Bins', title_x=0.5)
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=better_learning", "Improved Learning Effect")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=juliens_baseline", "ABM Baseline")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=landfill_ban", "Landfill Ban")))
+fig1.update_xaxes(tickangle=-45)
+fig1.show()
 
-# In[ ]:
+
+# ### Plotting with USyearly and UScum data frames: r4
+
+# In[57]:
 
 
+filter_col = [col for col in USyearly if (col.startswith('VirginStock_Module_ABM_Simulation4_'))]
+df = USyearly[filter_col]
+pretty_scenarios = ['PV ICE Baseline','Landfill Ban','High material recovery and Lower recycling costs','Lower recycling costs','Higher landfill costs','Improved lifetime','Improved learning effect','Reuse warranties','Seeding reuse','ABM Baseline']
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
+                     "year": "Year",
+                     "value": "Virgin Material Demand [metric tonnes]",
+                    "variable" :"Scenario"
+                 })
+fig1.update_layout(title_text='Simulation 4: Yearly Virgin Material Demand with Fewer New Installs', title_x=0.07)
+fig1.show()
 
+
+# In[58]:
+
+
+#cumulative at 2050 results for Virgin Material Demand
+filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation4_'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin([2050])]
+df.sort_values('value')
+
+
+# In[59]:
+
+
+filter_col = [col for col in UScum if (col.startswith(('new_Installed_Capacity_[MW]_ABM_Simulation4A','new_Installed_Capacity_[MW]_ABM_Simulation4B','new_Installed_Capacity_[MW]_ABM_Simulation4C','new_Installed_Capacity_[MW]_ABM_Simulation4D')))]
+df = UScum[filter_col]
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+scenario_splices = []
+for i in range(0,len(df['variable'])):
+    scenario_splices += [df.loc[i,'variable'][45:]]
+quality_splices = []
+for i in range(0,len(df['variable'])):
+    quality_splices += [df.loc[i,'variable'][43]]
+df['scenario'] = scenario_splices
+df['repair_bin'] = quality_splices
+df = df.drop("variable", axis=1)
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'repair_bin', facet_col = 'scenario', labels={
+                     "year": "Year",
+                     "value": "Cumulative Waste [metric tonnes]",
+                    "repair_bin":"Repair Bin"
+                })
+fig1.update_layout(title_text='Simulation 4: Cumulative New Installs for Different Repair Bins with Fewer New Installs', title_x=0.5)
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=better_learning", "Improved Learning Effect")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=juliens_baseline", "ABM Baseline")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=landfill_ban", "Landfill Ban")))
+fig1.update_xaxes(tickangle=-45)
+fig1.show()
+
+
+# In[60]:
+
+
+filter_col = [col for col in USyearly if (col.startswith(('VirginStock_Module_ABM_Simulation4A','VirginStock_Module_ABM_Simulation4B','VirginStock_Module_ABM_Simulation4C','VirginStock_Module_ABM_Simulation4D')))]
+df = USyearly[filter_col]
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+scenario_splices = []
+for i in range(0,len(df['variable'])):
+    scenario_splices += [df.loc[i,'variable'][36:]]
+quality_splices = []
+for i in range(0,len(df['variable'])):
+    quality_splices += [df.loc[i,'variable'][34]]
+df['scenario'] = scenario_splices
+df['repair_bin'] = quality_splices
+df = df.drop("variable", axis=1)
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'repair_bin', facet_col = 'scenario', labels={
+                     "year": "Year",
+                     "value": "Yearly Virgin Material Demand [metric tonnes]",
+                    "repair_bin":"Repair Bin"
+                })
+fig1.update_layout(title_text='Simulation 4: Yearly Virgin Material Demand for Different Repair Bins with Fewer New Installs', title_x=0.5)
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=better_learning", "Improved Learning Effect")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=juliens_baseline", "ABM Baseline")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=landfill_ban", "Landfill Ban")))
+fig1.update_xaxes(tickangle=-45)
+fig1.show()
 
 
 # ## Clean up results for OpenEI export
@@ -719,12 +1128,6 @@ for myscenario in scenarios:
     better_scenario_name = pretty_scenarios[scenarios.index(myscenario)]
     total_eol_material = USyearly['Waste_EOL_glass_ABM_Simulation_' + myscenario] + USyearly['Waste_EOL_aluminium_frames_ABM_Simulation_' + myscenario] + USyearly['Waste_EOL_silver_ABM_Simulation_' + myscenario] + USyearly['Waste_EOL_silicon_ABM_Simulation_' + myscenario] + USyearly['Waste_EOL_copper_ABM_Simulation_' + myscenario]
     yearly_scenario_comparison['@value|TotalEOLMaterial|' + better_scenario_name + '#MetricTonnes'] = list(total_eol_material.values)
-
-
-# In[ ]:
-
-
-###############WHAT NEXT?
 
 
 # In[ ]:
