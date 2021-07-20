@@ -516,6 +516,8 @@ class Simulation:
             # Cleanup of internal renaming and internal use columns
             df.drop(['new_Installed_Capacity_[W]', 't50', 't90'], axis = 1, inplace=True) 
             
+            df['ModuleTotal_MFG']=df['Area']*100/df['mod_MFG_eff']
+            
             self.scenario[scen].data = df
             
             # collection losses here
