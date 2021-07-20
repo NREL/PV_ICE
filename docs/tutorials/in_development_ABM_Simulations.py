@@ -942,7 +942,7 @@ UScum.to_csv('ABM_Cumulative_Results.csv')
 
 # ### Plotting with USyearly and UScum data frames: r1
 
-# In[49]:
+# In[73]:
 
 
 filter_col = [col for col in USyearly if (col.startswith('VirginStock_Module_ABM_Simulation1'))]
@@ -959,6 +959,15 @@ fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
                  })
 fig1.update_layout(title_text='Simulation 1: Yearly Virgin Material Demand', title_x=0.2)
 fig1.show()
+
+
+# In[86]:
+
+
+# average yearly virgin material demand for later simulation 2 comparison
+df_avg_r1_virgin_material_demand_yearly = df.groupby(['year']).mean()
+df_avg_r1_virgin_material_demand_yearly['year'] = list(range(2020,2051))
+df_avg_r1_virgin_material_demand_yearly['variable'] = 'Average Yearly Virgin Material Demand from Simulation 1'
 
 
 # In[50]:
@@ -1041,7 +1050,49 @@ fig1.update_layout(title_text='Simulation 1: Yearly Waste', title_x=0.25)
 fig1.show()
 
 
+# In[70]:
+
+
+filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation1'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
+                     "year": "Year",
+                     "value": "Waste [metric tonnes]",
+                    "variable" :"Scenario"
+                 })
+fig1.update_layout(title_text='Simulation 1: Cumulative Waste', title_x=0.25)
+fig1.show()
+
+
 # In[53]:
+
+
+# comparing to Julien's: making a cumulative at 2050 df for r1
+ABM_outputs_mass_cum_2050 = ABM_outputs_mass_cum[ABM_outputs_mass_cum.Year.isin([2050])]
+ABM_outputs_mass_cum_2050 = ABM_outputs_mass_cum_2050.replace(ABM_SCENARIOS, pretty_scenarios[1:])
+ABM_outputs_mass_cum_2050 = ABM_outputs_mass_cum_2050.rename(columns = {'Waste':'Cumulative Waste at 2050 ABM [metric tonnes]'})
+
+filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation1'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin([2050])]
+df = df.rename(columns = {'variable':'Scenario',
+                   'value':'Cumulative Waste at 2050 PV ICE [metric tonnes]'})
+df['Cumulative Waste at 2050 ABM [metric tonnes]'] = [0] + list(ABM_outputs_mass_cum_2050['Cumulative Waste at 2050 ABM [metric tonnes]'].values)
+df = df.drop(columns = ['year'])
+df['Cumulative Waste at 2050 PV ICE [million metric tonnes]'] = df['Cumulative Waste at 2050 PV ICE [metric tonnes]'].round(0)/1000000
+df['Cumulative Waste at 2050 ABM [million metric tonnes]'] = df['Cumulative Waste at 2050 ABM [metric tonnes]']/1000000
+
+df.to_csv("r1_cum_waste_2050_ABM_comparison.csv")
+
+
+# In[54]:
 
 
 filter_col = [col for col in UScum if (col.startswith('Capacity_ABM_Simulation1'))]
@@ -1059,9 +1110,26 @@ fig1.update_layout(title_text='Simulation 1: Installed Capacity', title_x=0.2)
 fig1.show()
 
 
+# In[55]:
+
+
+df_2050 = df[df.year.isin([2050])]
+df_avg = pd.DataFrame()
+df_avg['Installed Capacity at 2050 [MW]'] = [df_2050['value'].mean()]
+df_avg['high'] = [df_2050['value'].max()]
+df_avg['low'] = [df_2050['value'].min()]
+df_avg['year'] = [2050]
+print( "The installed capacity at 2050 for all scenarios is approx. " + str(df_avg['Installed Capacity at 2050 [MW]'][0]) + ' MW.')
+
+#calculate max and min relative to average
+bigger_range = max(df_avg['high'][0] - df_avg['Installed Capacity at 2050 [MW]'][0],abs(df_avg['low'][0] - df_avg['Installed Capacity at 2050 [MW]'][0]))
+percent_diff = (bigger_range/df_avg['Installed Capacity at 2050 [MW]'][0]*100).round(1)
+print("The percent difference that this is off by depending on the scenario is +/- " + str(percent_diff) + ' %.')
+
+
 # ### Plotting with USyearly and UScum data frames: r2
 
-# In[54]:
+# In[92]:
 
 
 filter_col = [col for col in USyearly if (col.startswith('VirginStock_Module_ABM_Simulation2'))]
@@ -1071,16 +1139,23 @@ df = df.set_axis(pretty_scenarios, axis=1)
 df['year'] = list(range(1995,2051))
 df = df.melt(id_vars = 'year')
 df = df[df.year.isin(list(range(2020,2051)))]
-fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
+
+##include average line from simulation 1 yearly virgin material demand
+new_df = pd.concat([df, df_avg_r1_virgin_material_demand_yearly])
+
+
+fig1 = px.line(new_df, x='year', y='value', color = 'variable', labels={
                      "year": "Year",
                      "value": "Virgin Material Demand [metric tonnes]",
                     "variable" :"Scenario"
-                 })
+                 },
+              color_discrete_map={
+                "Average Yearly Virgin Material Demand from Simulation 1": "black"})
 fig1.update_layout(title_text='Simulation 2: Yearly Virgin Material Demand', title_x=0.2)
 fig1.show()
 
 
-# In[55]:
+# In[57]:
 
 
 #cumulative at 2050 results for Virgin Material Demand
@@ -1093,7 +1168,7 @@ df = df[df.year.isin([2050])]
 df.sort_values('value')
 
 
-# In[56]:
+# In[58]:
 
 
 filter_col = [col for col in USyearly if (col.startswith('Waste_Module_ABM_Simulation2'))]
@@ -1111,7 +1186,7 @@ fig1.update_layout(title_text='Simulation 2: Yearly Waste', title_x=0.25)
 fig1.show()
 
 
-# In[57]:
+# In[59]:
 
 
 #cumulative at 2050 results for Waste
@@ -1126,7 +1201,7 @@ df.sort_values('value')
 
 # ### Plotting with USyearly and UScum data frames: r3
 
-# In[58]:
+# In[60]:
 
 
 filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation3'))]
@@ -1158,7 +1233,7 @@ fig1.update_xaxes(tickangle=-45)
 fig1.show()
 
 
-# In[59]:
+# In[61]:
 
 
 filter_col = [col for col in UScum if (col.startswith('Capacity_ABM_Simulation3'))]
@@ -1190,7 +1265,7 @@ fig1.show()
 
 # ### Plotting with USyearly and UScum data frames: r4
 
-# In[60]:
+# In[62]:
 
 
 filter_col = [col for col in USyearly if (col.startswith('VirginStock_Module_ABM_Simulation4_'))]
@@ -1209,7 +1284,7 @@ fig1.update_layout(title_text='Simulation 4: Yearly Virgin Material Demand with 
 fig1.show()
 
 
-# In[61]:
+# In[63]:
 
 
 #cumulative at 2050 results for Virgin Material Demand
@@ -1222,7 +1297,7 @@ df = df[df.year.isin([2050])]
 df.sort_values('value')
 
 
-# In[62]:
+# In[64]:
 
 
 filter_col = [col for col in UScum if (col.startswith(('new_Installed_Capacity_[MW]_ABM_Simulation4A','new_Installed_Capacity_[MW]_ABM_Simulation4B','new_Installed_Capacity_[MW]_ABM_Simulation4C','new_Installed_Capacity_[MW]_ABM_Simulation4D')))]
@@ -1252,7 +1327,7 @@ fig1.update_xaxes(tickangle=-45)
 fig1.show()
 
 
-# In[63]:
+# In[65]:
 
 
 filter_col = [col for col in USyearly if (col.startswith(('VirginStock_Module_ABM_Simulation4A','VirginStock_Module_ABM_Simulation4B','VirginStock_Module_ABM_Simulation4C','VirginStock_Module_ABM_Simulation4D')))]
@@ -1304,7 +1379,7 @@ fig1.update_xaxes(tickangle=-45)
 fig1.show()
 
 
-# In[65]:
+# In[67]:
 
 
 file_scenario_names = ABM_outputs_mass_yearly['Scenario'].unique().tolist()
@@ -1315,10 +1390,15 @@ fig1.update_layout(title_text='ABM Outputs: Yearly Waste', title_x=0.2)
 fig1.show()
 
 
-# In[ ]:
+# In[69]:
 
 
-
+file_scenario_names = ABM_outputs_mass_cum['Scenario'].unique().tolist()
+ABM_outputs_mass_cum = ABM_outputs_mass_cum.replace(file_scenario_names, pretty_scenarios[1:])
+fig1 = px.line(ABM_outputs_mass_cum, x='Year', y='Waste', color = 'Scenario',
+              labels = {'Waste':'Waste [metric tonnes]'})
+fig1.update_layout(title_text='ABM Outputs: Cumulative Waste', title_x=0.2)
+fig1.show()
 
 
 # In[ ]:
