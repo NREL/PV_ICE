@@ -468,8 +468,8 @@ class Simulation:
                 df['Cumulative_Area_disposed'] += areadisposed_projectlifetime
                 
                 
-                df['arearepaired_powergen'] += arearepaired_powergen
-                df['arearepaired'] += arearepaired
+                df['Repaired_[W]'] += arearepaired_powergen
+                df['Repaired_Area'] += arearepaired
                 df['Cumulative_Active_Area'] += activeareacount
                 df['Installed_Capacity_[W]'] += areapowergen
                 Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_projectlifetime)])
