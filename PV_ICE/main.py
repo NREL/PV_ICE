@@ -410,7 +410,8 @@ class Simulation:
                 activeareacount = []
                 areadisposed_failure = []
                 areadisposed_projectlifetime = []
-            
+                arearepaired = []
+                arearepaired_powergen = []
                 areapowergen = []
                 active=-1
                 disposed_projectlifetime=0
@@ -421,10 +422,16 @@ class Simulation:
                         areadisposed_failure.append(0)
                         areadisposed_projectlifetime.append(0)
                         areapowergen.append(0)
+                        arearepaired.append(0)
+                        arearepaired_powergen.append(0)
                     else:
                         active += 1
                         activeareaprev = activearea                            
                         activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repair']*0.01))
+                        arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
+                        arearepaired.append(arearepaired_failure)
+                        arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**arearepaired_failure)                            
+                                        
                         areadisposed_failure.append(activeareaprev-activearea)
                         if age == int(row['mod_lifetime']+generation):
                             activearea_temp = activearea
@@ -461,6 +468,8 @@ class Simulation:
                 df['Cumulative_Area_disposed'] += areadisposed_projectlifetime
                 
                 
+                df['Repaired_[W]'] += arearepaired_powergen
+                df['Repaired_Area'] += arearepaired
                 df['Cumulative_Active_Area'] += activeareacount
                 df['Installed_Capacity_[W]'] += areapowergen
                 Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_projectlifetime)])
@@ -515,6 +524,8 @@ class Simulation:
     
             # Cleanup of internal renaming and internal use columns
             df.drop(['new_Installed_Capacity_[W]', 't50', 't90'], axis = 1, inplace=True) 
+            
+            df['ModuleTotal_MFG']=df['Area']*100/df['mod_MFG_eff']
             
             self.scenario[scen].data = df
             
