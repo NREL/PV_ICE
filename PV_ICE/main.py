@@ -378,6 +378,8 @@ class Simulation:
             df['Cumulative_Area_disposedby_Failure'] = 0
             df['Cumulative_Area_disposedby_ProjectLifetime'] = 0
             df['Cumulative_Area_disposed'] = 0
+            df['Repaired_[W]'] = 0
+            df['Repaired_Area'] = 0
             df['Cumulative_Active_Area'] = 0
             df['Installed_Capacity_[W]'] = 0
             for generation, row in df.iterrows(): 
