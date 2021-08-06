@@ -1,6 +1,6 @@
 ﻿year,e_mod_MFG,e_mod_Install,e_mod_OandM,e_mod_Repair,e_mod_MerchantTail,e_mod_Demount,e_mod_Landfill,e_mod_CollectedDisposition,e_mod_Resell,e_mod_Remanufacture,e_mod_Recycled
-year,kWh,kWh,kWh,kWh,kWh,kWh,kWh,kWh,kWh,kWh,kWh
-1995,=layup+lamination+framing+testing,=shipping+install,,,0,=demount,,=transport+testing,=transportation+certification?,=processing+transport,=deframe+crush
+year,kWh/m2,kWh/m2,kWh/m2,kWh/m2,kWh/m2,kWh/m2,kWh/m2,kWh/m2,kWh/m2,kWh/m2,kWh/m2
+1995,,,,,0,,,,,,
 1996,,,,,,,,,,,
 1997,,,,,,,,,,,
 1998,,,,,,,,,,,
