@@ -1,7 +1,27 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Inputting ABM outputs into PV ICE 
+# # Evaluating material circular efficacy of ABM waste-management scenarios using PV ICE
+
+# This Jupyter journal uses results from Walzberg et al.'s PV ABM and inputs them into PV ICE, exploring the effect of increasing CE EoL pathway rates, recycling efficiency, and module reliability.
+# 
+# Steps include: 
+# <ol>
+#     <li> <a href='#step1'> Import libraries and create test folder for simulations </a> </li>
+#     <li> <a href='#step2'> Create simulations and scenarios </a> </li>
+#     <li> <a href='#step3'> Modify parameters </a> </li>
+#     <ol>
+#         <li> <a href='#step4'> Current Recovery (S1) </a> </li>
+#         <li> <a href='#step5'> Ideal Recovery (S2) </a> </li>
+#         <li> <a href='#step6'> Reliability Same New Installs (S3) </a> </li>
+#         <li> <a href='#step7'> Reliability Maintaining Capacity (S4) </a> </li>
+#     </ol>
+#     <li> <a href='#step8'> Run mass flow calculations </a> </li>
+#     <li> <a href='#step9'> Compile results </a> </li>
+#     <li> <a href='#step10'> Plotting results </a> </li>
+#     <li> <a href='#step11'> Graphing ABM outputs </a> </li>
+#     <li> <a href='#step12'> Results validation </a> </li>
+# </ol>
 
 # ## Simulation Descriptions:
 # - r1: For all 10 scenarios, the recycle ('mod_EOL_collection_eff'), reuse (mod_reuse), and repair (mod_Repair) rates are modified with outputs from ABM. Percent of collected modules & materials that are recycled ('mod_EOL_collected_recycled' & 'mat_EOL_collected_recycled') is set to 100 (i.e. it is assumed all collected modules are sent to recycling). Weibull parameters and lifetime is set to Irena Regular Loss values for all ABM scenarios (not PV ICE baseline). For the better_lifetime scenario, an improved lifetime, t50, t90 values are set (based on what was used in ABM) in a separate simulation called r1_better_lifetime. All other values are set to PV ICE defaults. 
@@ -10,9 +30,11 @@
 # - r4A-r4D: For 3 select scenarios, the same parameters are modified as in r3A-r3D. The new installs needed are calculated and modified to account for the increased installed capacity as in r4. 
 # 
 
-# ## Import libraries and create test folder
+# <a id='step1'></a>
 
-# In[2]:
+# ## 1. Import libraries and create test folder for simulations
+
+# In[1]:
 
 
 import PV_ICE
@@ -28,7 +50,7 @@ import plotly.io as pio
 import plotly.express as px
 
 
-# In[3]:
+# In[2]:
 
 
 testfolder = str(Path().resolve().parent.parent /'PV_ICE' / 'TEMP')
@@ -40,9 +62,11 @@ print ("Your simulation will be stored in %s" % testfolder)
 print(baselinesfolder)
 
 
-# ## Create initial simulations
+# <a id='step2'></a>
 
-# In[4]:
+# ## 2. Create simulations and scenarios
+
+# In[3]:
 
 
 #create simulations
@@ -110,7 +134,7 @@ for myr4simulation in r4_simulations:
         myr4simulation.scenario[myscenario].addMaterial('copper', file=r'..\baselines\baseline_material_copper.csv')
 
 
-# In[5]:
+# In[4]:
 
 
 #Irena RL Weibull Parameters to use for r1, r2
@@ -118,7 +142,7 @@ for myr4simulation in r4_simulations:
 weibull_IrenaRL = {'alpha': 5.3759, 'beta': 30}
 
 
-# In[6]:
+# In[5]:
 
 
 #Henry Hieslmair Weibull Parameters to use for r3A, r3B, r3C, r3D, r4A, r4B, r4C, r4D
@@ -128,7 +152,7 @@ weibullInputParamsC = {'alpha': 4.602, 'beta': 40.767}
 weibullInputParamsD = {'alpha': 5.692, 'beta': 29.697} #least reliable
 
 
-# In[7]:
+# In[6]:
 
 
 #cleaning up ABM outputs
@@ -181,9 +205,16 @@ ABM_outputs_mass_fraction_yearly = ABM_outputs_mass_fraction_yearly.drop(columns
 ABM_outputs = ABM_outputs_mass_fraction_yearly.copy()
 
 
-# ## Modify parameters: Simulation 1 (r1), same installs for all scenarios: what is the effect of different reuse, recycle, and repair rates?
+# <a id='step3'></a>
 
-# In[8]:
+# ## Modify Parameters
+
+# <a id='step4'></a>
+
+# ### Current Recovery (r1) 
+# What is the effect of different reuse, recycle, and repair rates using PV ICE default recycling values?
+
+# In[7]:
 
 
 #modify values of each scenario 2-10 based on ABM outputs
@@ -206,7 +237,7 @@ for mymaterial in MATERIALS:
         r1.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_collected_Recycled'] = new_mat_recycled
 
 
-# In[9]:
+# In[8]:
 
 
 #next, modify 3 additional inputs for each scenario 2-10, with values depending on the scenario, coming from ABM outputs
@@ -215,7 +246,7 @@ len(r1.scenario['landfill_ban'].data['mod_Reuse']) #all inputs have 56 rows
 #keep first 27 rows corresponding to 1995-2021 values
 
 
-# In[10]:
+# In[9]:
 
 
 #changing repair, eol collection eff, and reuse module baselines for all ABM scenarios
@@ -254,7 +285,7 @@ for myscenario in ABM_SCENARIOS:
     r1.scenario[myscenario].data['mod_Reuse'] = new_mod_Reuse.values
 
 
-# In[11]:
+# In[10]:
 
 
 #also change mod_lifetime = 40 for all years to agree with Irena RL
@@ -262,7 +293,7 @@ for myscenario in ABM_SCENARIOS:
     r1.scenario[myscenario].data['mod_lifetime'] = 40
 
 
-# In[12]:
+# In[11]:
 
 
 #use electrification futures base new installs
@@ -274,7 +305,7 @@ for myscenario in SCENARIOS:
 
 # #### For r1_better_lifetime, modify same parameters as above, while also modifying scenario reliability inputs: mod_lifetime, mod_reliability_t50, & mod_reliability_t90
 
-# In[13]:
+# In[12]:
 
 
 #modify same values as in r1_better_lifetime simulation
@@ -323,7 +354,7 @@ r1_better_lifetime.scenario['better_lifetime'].data['mod_Reuse'] = new_mod_Reuse
 r1_better_lifetime.scenario['better_lifetime'].data['new_Installed_Capacity_[MW]'] = electric_new_installs
 
 
-# In[14]:
+# In[13]:
 
 
 #modify reliability for better_lifetime
@@ -338,7 +369,7 @@ def lifetime_line(year):
     return(y)
 
 
-# In[15]:
+# In[14]:
 
 
 #create list of mod_lifetime values based on linear regression
@@ -348,20 +379,20 @@ for myyear in years:
     mod_lifetimes_list += [lifetime_line(myyear)]
 
 
-# In[16]:
+# In[15]:
 
 
 mod_lifetimes_df = pd.DataFrame()
 
 
-# In[17]:
+# In[16]:
 
 
 mod_lifetimes_df['year'] = years
 mod_lifetimes_df['mod_lifetime'] = mod_lifetimes_list
 
 
-# In[18]:
+# In[17]:
 
 
 #changing mod_lifetime in scenario e) better_lifetime
@@ -369,7 +400,7 @@ new_mod_lifetime = list(r1_better_lifetime.scenario['better_lifetime'].data['mod
 r1_better_lifetime.scenario['better_lifetime'].data['mod_lifetime'] = new_mod_lifetime
 
 
-# In[19]:
+# In[18]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -380,7 +411,7 @@ reliability_baselines['mod_reliability_t50'] = r1.scenario['standard_PVICE'].dat
 reliability_baselines['mod_reliability_t90'] = r1.scenario['standard_PVICE'].data['mod_reliability_t90']
 
 
-# In[20]:
+# In[19]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -399,7 +430,7 @@ better_lifetime_t90_list = linear_regressor_Y2.predict(better_lifetimes).tolist(
 better_lifetime_t90_list = list(chain(*better_lifetime_t90_list)) #unnest list
 
 
-# In[21]:
+# In[20]:
 
 
 #changing mod_reliability_t50 & mod_reliability_t90 in scenario e) better_lifetime
@@ -410,9 +441,12 @@ new_mod_t90 = list(r1.scenario['standard_PVICE'].data['mod_reliability_t90'][0:2
 r1_better_lifetime.scenario['better_lifetime'].data['mod_reliability_t90'] = new_mod_t90
 
 
-# ## Modify parameters: Simulation 2 (r2), same installs for all scenarios: what is effect of different reuse, recycle, and repair rates when recycling efficiency is improved?
+# <a id='step5'></a>
 
-# In[22]:
+# ### Ideal Recovery (r2)
+# What is the effect of different reuse, recycle, and repair rates when FRELP recycling efficiencies are used and all recycled material is closed-loop?
+
+# In[21]:
 
 
 #copy same parameter modifications for r2 as in r1
@@ -463,7 +497,7 @@ for myscenario in ABM_SCENARIOS:
     r2.scenario[myscenario].data['mod_lifetime'] = 40
 
 
-# In[23]:
+# In[22]:
 
 
 #FRELP recovery rates and qualities
@@ -473,13 +507,13 @@ frelp_results['recovery_rate'] = [94,97,99.4,97,98]
 frelp_results['mat_recycled_into_HQ'] = [100,100,100,100,100]
 
 
-# In[24]:
+# In[23]:
 
 
 frelp_results
 
 
-# In[25]:
+# In[24]:
 
 
 #Modify 'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG' 
@@ -502,7 +536,7 @@ for mymaterial in MATERIALS:
         r2.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = new_recycledHQ_reused4MFG
 
 
-# In[26]:
+# In[25]:
 
 
 #use electrification futures base new installs
@@ -512,7 +546,7 @@ for myscenario in SCENARIOS:
 
 # #### For r2_better_lifetime, modify same parameters as in r2, while also modifying scenario reliability inputs as in r1_better_lifetime: mod_lifetime, mod_reliability_t50, & mod_reliability_t90
 
-# In[27]:
+# In[26]:
 
 
 #modify same values as in r2_better_lifetime simulation
@@ -584,9 +618,12 @@ r2_better_lifetime.scenario['better_lifetime'].data['mod_reliability_t50'] = new
 r2_better_lifetime.scenario['better_lifetime'].data['mod_reliability_t90'] = new_mod_t90
 
 
-# ## Modify parameters: Simulation 3 (r3), same installs for some scenarios: what is the effect of module reliability when recycle rates, reuse rates, repair rates, and recycling efficiencies changed for select scenarios with different repair bins?
+# <a id='step6'></a>
 
-# In[28]:
+# ### Reliability Same New Installs (r3)
+# What is the effect of module reliability when recycle rates, reuse rates, repair rates, and recycling efficiencies are changed for select scenarios with different repair bins? Using the same new installs (from NREL's 2021 Electrification Futures Study) as inputs. 
+
+# In[27]:
 
 
 #Figure out which scenarios to include
@@ -595,7 +632,7 @@ r2_better_lifetime.scenario['better_lifetime'].data['mod_reliability_t90'] = new
 #only do better learning, julien’s baseline, landfill ban as better lifetime already had different reliability
 
 
-# In[29]:
+# In[28]:
 
 
 #copy same parameter modifications for each r3 simulation as in r2
@@ -667,7 +704,7 @@ for myr3simulation in r3_simulations:
     
 
 
-# In[30]:
+# In[29]:
 
 
 #modify shape parameters (overrides t50 and t90 baselines) -- values from Henry Hieslmair
@@ -677,7 +714,7 @@ weibullInputParamsC = {'alpha': 4.602, 'beta': 40.767}
 weibullInputParamsD = {'alpha': 5.692, 'beta': 29.697}
 
 
-# In[31]:
+# In[30]:
 
 
 #use electrification futures base new installs
@@ -686,9 +723,12 @@ for myr3simulation in r3_simulations:
         myr3simulation.scenario[myscenario].data['new_Installed_Capacity_[MW]'] = electric_new_installs
 
 
-# ## Modify parameters: Simulation 4 (r4), change new installs due to increased installed capacity for all scenarios:  what is the effect on cumulative new installs and yearly virgin material demand for different repair bins?
+# <a id='step7'></a>
 
-# In[32]:
+# ### Reliability Maintaining Capacity (r4)
+# What is the effect on cumulative new installs and yearly virgin material demand for different repair bins, when capacity is set for all repair bins at bin A's capacity?
+
+# In[31]:
 
 
 #modify parameters for r4A, r4B, r4C, r4D (same as r3 modifications)
@@ -759,7 +799,7 @@ for myr4simulation in r4_simulations:
         myr4simulation.scenario[myscenario].data['mod_lifetime'] = 40
 
 
-# In[33]:
+# In[32]:
 
 
 #use electrification futures base new installs
@@ -768,9 +808,11 @@ for myr4simulation in r4_simulations:
         myr4simulation.scenario[myscenario].data['new_Installed_Capacity_[MW]'] = electric_new_installs
 
 
-# ## Run Mass Flow Calculations
+# <a id='step8'></a>
 
-# In[34]:
+# ## Run mass flow calculations
+
+# In[33]:
 
 
 r1.calculateMassFlow(weibullInputParams= weibull_IrenaRL)
@@ -787,7 +829,7 @@ r4C.calculateMassFlow(weibullInputParams= weibullInputParamsC)
 r4D.calculateMassFlow(weibullInputParams= weibullInputParamsD)
 
 
-# In[ ]:
+# In[34]:
 
 
 Under_Installment = []
@@ -802,15 +844,17 @@ for myr4simulation in r4_simulations:
         myr4simulation.calculateMassFlow(weibullInputParams= myweibullparams)
 
 
-# ## Creating a summary of results in a new data frame
+# <a id='step9'></a>
 
-# In[ ]:
+# ## Compile results
+
+# In[35]:
 
 
 USyearly=pd.DataFrame()
 
 
-# In[ ]:
+# In[36]:
 
 
 keyword='mat_Virgin_Stock'
@@ -850,7 +894,7 @@ for mysimulation in SIMULATIONS:
             USyearly['VirginStock_Module_'+mysimulation.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[37]:
 
 
 keyword='mat_Total_Landfilled'
@@ -887,7 +931,7 @@ for mysimulation in SIMULATIONS:
             USyearly['Waste_Module_'+mysimulation.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[38]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -924,7 +968,7 @@ for mysimulation in SIMULATIONS:
             USyearly['Waste_EOL_Module_'+mysimulation.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[39]:
 
 
 keyword='mat_EoL_Recycled_HQ_into_MFG'
@@ -962,7 +1006,7 @@ for mysimulation in r1_r2:
             USyearly['EOL_Recycled_HQ_into_MFG_Module_'+mysimulation.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[40]:
 
 
 keyword='mat_EOL_Recycled_HQ_into_OU'
@@ -999,7 +1043,7 @@ for mysimulation in r1_r2:
             USyearly['EOL_Recycled_HQ_into_OU_Module_'+mysimulation.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[41]:
 
 
 keyword='mat_EOL_Recycled_2_OQ'
@@ -1036,14 +1080,14 @@ for mysimulation in r1_r2:
             USyearly['EOL_Recycled_2_OQ_Module_'+mysimulation.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[ ]:
+# In[42]:
 
 
 USyearly = USyearly/1000000  #Convert to metric tonnes
 #907185 -- this is for US tons
 
 
-# In[45]:
+# In[43]:
 
 
 keyword='new_Installed_Capacity_[MW]'
@@ -1066,14 +1110,14 @@ for mysimulation in SIMULATIONS[6:]:
             USyearly[newcolname] = mysimulation.scenario[myscenario].data[keyword]
 
 
-# In[46]:
+# In[44]:
 
 
 UScum = USyearly.copy()
 UScum = UScum.cumsum()
 
 
-# In[47]:
+# In[45]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -1095,42 +1139,27 @@ for mysimulation in SIMULATIONS:
             UScum["Capacity_"+mysimulation.name+'_'+case] = foo[keyword].values/1000000 #change to MW
 
 
-# In[48]:
+# In[46]:
 
 
 USyearly.index = r1.scenario['standard_PVICE'].data['year']
 UScum.index = r1.scenario['standard_PVICE'].data['year']
 
 
-# In[49]:
+# In[47]:
 
 
 USyearly.to_csv('ABM_Yearly_Results.csv')
 UScum.to_csv('ABM_Cumulative_Results.csv')
 
 
+# <a id='step10'></a>
+
+# ## Plotting results
+
 # ## Plotting with USyearly and UScum data frames: r1
 
-# In[50]:
-
-
-filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation1'))]
-df = UScum[filter_col]
-pretty_scenarios = ['PV ICE baseline','Landfill ban','High material recovery & <br> lower recycling costs','Lower recycling costs','Higher landfill costs','Improved lifetime','Improved learning effect','Reuse warranties','Seeding reuse','ABM baseline']
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin(list(range(2020,2051)))]
-fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
-                     "year": "Year",
-                     "value": "Virgin Material Demand [metric tonnes]",
-                    "variable" :"Scenario"
-                 })
-fig1.update_layout(title_text='Simulation 1: Cumulative Virgin Material Demand', title_x=0.2)
-fig1.show()
-
-
-# In[51]:
+# In[49]:
 
 
 # average cumulative virgin material demand for later simulation 2 comparison
@@ -1146,7 +1175,7 @@ df_avg_r1_virgin_material_demand_cum['year'] = list(range(2020,2051))
 df_avg_r1_virgin_material_demand_cum['variable'] = 'Average Cumulative Virgin Material Demand from Simulation 1'
 
 
-# In[52]:
+# In[50]:
 
 
 #cumulative at 2050 results for Virgin Material Demand
@@ -1190,91 +1219,7 @@ fig1.update_xaxes(type='category')
 fig1.show()
 
 
-# In[53]:
-
-
-#graph recycled material stacked bar chart cumulative at 2050
-filter_col = [col for col in UScum if (col.startswith(('EOL_Recycled_HQ_into_MFG_Module_ABM_Simulation1','EOL_Recycled_HQ_into_OU_Module_ABM_Simulation1','EOL_Recycled_2_OQ_Module_ABM_Simulation1')))]
-df = UScum[filter_col]
-df['year'] = list(range(1995,2051))
-df = df[df.year.isin([2050])]
-df = df.melt(id_vars = 'year')
-df = df.drop(columns = ['year'])
-df['Scenario'] = pretty_scenarios * 3
-df['Recycled Material Type'] = ['HQ Closed Loop'] * 10 + ['HQ Open Loop'] * 10 + ['OQ Open Loop'] * 10
-fig1 = px.bar(df, x="Scenario", y="value", color="Recycled Material Type", title="Simulation 1: Cumulative Recycled Material at 2050",
-             labels={'value':'Recycled Material [metric tonnes]'})
-fig1.update_layout(title_x=0.2)
-fig1.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.78
-))
-fig1.show()
-
-
-# In[54]:
-
-
-filter_col = [col for col in USyearly if (col.startswith('Waste_Module_ABM_Simulation1'))]
-df = USyearly[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin(list(range(2020,2051)))]
-fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
-                     "year": "Year",
-                     "value": "Waste [metric tonnes]",
-                    "variable" :"Scenario"
-                 })
-fig1.update_layout(title_text='Simulation 1: Yearly Waste', title_x=0.25)
-fig1.show()
-
-
 # In[55]:
-
-
-filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation1'))]
-df = UScum[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin(list(range(2020,2051)))]
-fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
-                     "year": "Year",
-                     "value": "Waste [metric tonnes]",
-                    "variable" :"Scenario"
-                 })
-fig1.update_layout(title_text='Simulation 1: Cumulative Waste', title_x=0.25)
-fig1.show()
-
-
-# In[56]:
-
-
-# comparing to Julien's: making a cumulative at 2050 df for r1
-ABM_outputs_mass_cum_2050 = ABM_outputs_mass_cum[ABM_outputs_mass_cum.Year.isin([2050])]
-ABM_outputs_mass_cum_2050 = ABM_outputs_mass_cum_2050.replace(ABM_SCENARIOS, pretty_scenarios[1:])
-ABM_outputs_mass_cum_2050 = ABM_outputs_mass_cum_2050.rename(columns = {'Waste':'Cumulative Waste at 2050 ABM [metric tonnes]'})
-
-filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation1'))]
-df = UScum[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin([2050])]
-df = df.rename(columns = {'variable':'Scenario',
-                   'value':'Cumulative Waste at 2050 PV ICE [metric tonnes]'})
-df['Cumulative Waste at 2050 ABM [metric tonnes]'] = [0] + list(ABM_outputs_mass_cum_2050['Cumulative Waste at 2050 ABM [metric tonnes]'].values)
-df = df.drop(columns = ['year'])
-df['Cumulative Waste at 2050 PV ICE [million metric tonnes]'] = df['Cumulative Waste at 2050 PV ICE [metric tonnes]'].round(0)/1000000
-df['Cumulative Waste at 2050 ABM [million metric tonnes]'] = df['Cumulative Waste at 2050 ABM [metric tonnes]']/1000000
-
-df.to_csv("r1_cum_waste_2050_ABM_comparison.csv")
-
-
-# In[57]:
 
 
 filter_col = [col for col in UScum if (col.startswith('Capacity_ABM_Simulation1'))]
@@ -1307,7 +1252,7 @@ fig1.add_trace(go.Scatter(x=list(range(2020,2051)), y=ef_values,
 fig1.show()
 
 
-# In[58]:
+# In[56]:
 
 
 df_2050 = df[df.year.isin([2050])]
@@ -1326,7 +1271,7 @@ print("The percent difference that this is off by depending on the scenario is +
 
 # ## Plotting with USyearly and UScum data frames: r2
 
-# In[59]:
+# In[57]:
 
 
 #simulation 2 lines
@@ -1369,34 +1314,7 @@ fig.update_yaxes(range=[0,66000000])
 fig.show()
 
 
-# In[60]:
-
-
-filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation2'))]
-df = UScum[filter_col]
-s2_scenarios = ['S2 PV ICE baseline','S2 Landfill ban','S2 High material recovery & <br> lower recycling costs','S2 Lower recycling costs','S2 Higher landfill costs','S2 Improved lifetime','S2 Improved learning effect','S2 Reuse warranties','S2 Seeding reuse','S2 ABM baseline']
-df = df.set_axis(s2_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df[df.year.isin(list(range(2020,2051)))]
-
-##include average line from simulation 1 yearly virgin material demand
-df["S1 Average"] = list(df_avg_r1_virgin_material_demand_cum["value"][:].values)
-cols = s2_scenarios + ["S1 Average"]
-
-fig1 = px.line(df, x='year', y = cols, labels = {
-            'variable':'Scenario',
-            'value':'Virgin Material Demand [metric tonnes]',
-            'year':'Year'},
-              color_discrete_map={
-                "S1 Average": "black"},
-              line_dash_map={
-                  "S1 Average": "dash" #get this dashed line to work
-              })
-fig1.update_layout(title_text='Simulations 1 & 2: Cumulative Virgin Material Demand', title_x=0.5)
-fig1.show()
-
-
-# In[61]:
+# In[59]:
 
 
 #cumulative at 2050 results for Virgin Material Demand
@@ -1409,31 +1327,7 @@ df = df[df.year.isin([2050])]
 df.sort_values('value')
 
 
-# In[62]:
-
-
-#graph recycled material stacked bar chart cumulative at 2050
-filter_col = [col for col in UScum if (col.startswith(('EOL_Recycled_HQ_into_MFG_Module_ABM_Simulation2','EOL_Recycled_HQ_into_OU_Module_ABM_Simulation2','EOL_Recycled_2_OQ_Module_ABM_Simulation2')))]
-df = UScum[filter_col]
-df['year'] = list(range(1995,2051))
-df = df[df.year.isin([2050])]
-df = df.melt(id_vars = 'year')
-df = df.drop(columns = ['year'])
-df['Scenario'] = pretty_scenarios * 3
-df['Recycled Material Type'] = ['HQ Closed Loop'] * 10 + ['HQ Open Loop'] * 10 + ['OQ Open Loop'] * 10
-fig1 = px.bar(df, x="Scenario", y="value", color="Recycled Material Type", title="Simulation 2: Cumulative Recycled Material at 2050",
-             labels={'value':'Recycled Material [metric tonnes]'})
-fig1.update_layout(title_x=0.2)
-fig1.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.79
-))
-fig1.show()
-
-
-# In[63]:
+# In[61]:
 
 
 #add above graph to recycled material bar chart from simulation 1
@@ -1491,31 +1385,7 @@ fig.update_layout(legend=dict(
 fig.show()
 
 
-# In[64]:
-
-
-filter_col = [col for col in USyearly if (col.startswith('Waste_Module_ABM_Simulation2'))]
-df = USyearly[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin(list(range(2020,2051)))]
-fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
-                     "year": "Year",
-                     "value": "Waste [metric tonnes]",
-                    "variable" :"Scenario"
-                 })
-fig1.update_layout(title_text='Simulation 2: Yearly Waste', title_x=0.5)
-fig1.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.01
-))
-fig1.show()
-
-
-# In[65]:
+# In[63]:
 
 
 #use max and min lines from simulation 1 for simulation 2 yearly waste
@@ -1574,7 +1444,7 @@ fig.update_layout(legend=dict(
 fig.show()
 
 
-# In[66]:
+# In[64]:
 
 
 #cumulative at 2050 results for Waste
@@ -1588,31 +1458,7 @@ df.sort_values('value')
 df.to_csv('s2_cum_waste_results.csv')
 
 
-# In[67]:
-
-
-filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation2'))]
-df = UScum[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin(list(range(2020,2051)))]
-fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
-                     "year": "Year",
-                     "value": "Waste [metric tonnes]",
-                    "variable" :"Scenario"
-                 })
-fig1.update_layout(title_text='Simulation 2: Cumulative Waste', title_x=0.5)
-fig1.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.01
-))
-fig1.show()
-
-
-# In[68]:
+# In[66]:
 
 
 #cumulative waste at 2050 bar chart sim 1 vs. sim 2
@@ -1671,7 +1517,7 @@ fig.show()
 
 # ## Plotting with USyearly and UScum data frames: r3
 
-# In[69]:
+# In[67]:
 
 
 filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation3'))]
@@ -1730,7 +1576,7 @@ fig1.update_layout(legend=dict(
 fig1.show()
 
 
-# In[70]:
+# In[68]:
 
 
 filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation3'))]
@@ -1791,7 +1637,7 @@ fig1.update_yaxes(range=[0,66000000])
 fig1.show()
 
 
-# In[71]:
+# In[69]:
 
 
 filter_col = [col for col in UScum if (col.startswith('Capacity_ABM_Simulation3'))]
@@ -1851,106 +1697,9 @@ fig1.add_trace(go.Scatter(x=list(range(2030,2051)), y=ef_values,
 fig1.show()
 
 
-# In[72]:
-
-
-filter_col = [col for col in UScum if (col.startswith(('new_Installed_Capacity_[MW]_ABM_Simulation3A','new_Installed_Capacity_[MW]_ABM_Simulation3B','new_Installed_Capacity_[MW]_ABM_Simulation3C','new_Installed_Capacity_[MW]_ABM_Simulation3D')))]
-df = UScum[filter_col]
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-scenario_splices = []
-for i in range(0,len(df['variable'])):
-    scenario_splices += [df.loc[i,'variable'][45:]]
-quality_splices = []
-for i in range(0,len(df['variable'])):
-    quality_splices += [df.loc[i,'variable'][43]]
-df['scenario'] = scenario_splices
-df['reliability_bin'] = quality_splices
-df = df.drop("variable", axis=1)
-df = df[df.year.isin(list(range(2020,2051)))]
-
-#make bin labels more descriptive
-df = df.reset_index()
-new_reliability_bin = []
-for i in range(0,len(df['reliability_bin'])):
-    if df.loc[i,'reliability_bin'] == 'A':
-        new_reliability_bin += ['A (most reliable)']
-    elif df.loc[i,'reliability_bin'] == 'D':
-        new_reliability_bin += ['D (least reliable)'] 
-    else:
-        new_reliability_bin += [df.loc[i,'reliability_bin']]
-df['new_reliability_bin'] = new_reliability_bin
-
-fig1 = px.line(df, x='year', y='value', color = 'new_reliability_bin', labels={
-                     "year": "Year",
-                     "value": "Cumulative Waste [metric tonnes]",
-                    "new_reliability_bin":"Reliability Bin"
-                },  color_discrete_sequence=px.colors.qualitative.Set1)
-fig1.update_layout(title_text='Simulation 3: Cumulative New Installs for Different Reliability Bins', title_x=0.5)
-fig1.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.01
-))
-fig1.show()
-
-
 # ## Plotting with USyearly and UScum data frames: r4A-r4D
 
-# In[73]:
-
-
-filter_col = [col for col in UScum if (col.startswith(('Waste_Module_ABM_Simulation4A','Waste_Module_ABM_Simulation4B','Waste_Module_ABM_Simulation4C','Waste_Module_ABM_Simulation4D')))]
-df = UScum[filter_col]
-#pretty_repair_scenarios = ['Improved Learning Effect', 'ABM Baseline', 'Landfill Ban']
-#df = df.set_axis(pretty_repair_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-scenario_splices = []
-for i in range(0,len(df['variable'])):
-    scenario_splices += [df.loc[i,'variable'][30:]]
-quality_splices = []
-for i in range(0,len(df['variable'])):
-    quality_splices += [df.loc[i,'variable'][28]]
-df['scenario'] = scenario_splices
-df['reliability_bin'] = quality_splices
-df = df.drop("variable", axis=1)
-df = df[df.year.isin(list(range(2020,2051)))]
-
-#make bin labels more descriptive
-df = df.reset_index()
-new_reliability_bin = []
-for i in range(0,len(df['reliability_bin'])):
-    if df.loc[i,'reliability_bin'] == 'A':
-        new_reliability_bin += ['A (most reliable)']
-    elif df.loc[i,'reliability_bin'] == 'D':
-        new_reliability_bin += ['D (least reliable)'] 
-    else:
-        new_reliability_bin += [df.loc[i,'reliability_bin']]
-df['new_reliability_bin'] = new_reliability_bin
-
-fig1 = px.line(df, x='year', y='value', color = 'new_reliability_bin', facet_col = 'scenario', labels={
-                     "year": "Year",
-                     "value": "Cumulative Waste [metric tonnes]",
-                    "new_reliability_bin":"Reliability Bin"
-                },  color_discrete_sequence=px.colors.qualitative.Set1,
-              category_orders={"scenario": ["juliens_baseline", "better_learning", "landfill_ban"]})
-fig1.update_layout(title_text='Simulation 4: Cumulative Waste for Different Reliability Bins', title_x=0.5)
-fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=better_learning", "Improved learning effect")))
-fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=juliens_baseline", "ABM baseline")))
-fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=landfill_ban", "Landfill ban")))
-fig1.update_xaxes(tickangle=45)
-fig1.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.01
-))
-fig1.show()
-
-
-# In[74]:
+# In[72]:
 
 
 filter_col = [col for col in UScum if (col.startswith(('VirginStock_Module_ABM_Simulation4A','VirginStock_Module_ABM_Simulation4B','VirginStock_Module_ABM_Simulation4C','VirginStock_Module_ABM_Simulation4D')))]
@@ -2012,6 +1761,703 @@ fig1.show()
 # In[75]:
 
 
+#simulation 4 lines
+filter_col = [col for col in UScum if (col.startswith(('new_Installed_Capacity_[MW]_ABM_Simulation4A_landfill_ban','new_Installed_Capacity_[MW]_ABM_Simulation4B_landfill_ban','new_Installed_Capacity_[MW]_ABM_Simulation4C_landfill_ban','new_Installed_Capacity_[MW]_ABM_Simulation4D_landfill_ban')))]
+df4 = UScum[filter_col]
+s4_traces = ['S4A (most reliable)','S4B','S4C','S4D (least reliable)']
+df4 = df4.set_axis(s4_traces, axis=1)
+df4['year'] = list(range(1995,2051))
+df4 = df4.melt(id_vars = 'year')
+df4 = df4[df4.year.isin(list(range(2020,2051)))]
+
+#simulation 3A
+filter_col = [col for col in UScum if (col.startswith('new_Installed_Capacity_[MW]_ABM_Simulation3A'))]
+df3 = UScum[filter_col]
+df3 = df3.set_axis(['S3A (most reliable)'], axis=1)
+df3['year'] = list(range(1995,2051))
+df3 = df3.melt(id_vars = 'year')
+df3 = df3[df3.year.isin(list(range(2020,2051)))]
+
+fig = go.Figure()
+
+for mytrace in s4_traces:
+    y_values = list(df4[df4.variable.isin([mytrace])].loc[:,'value'].values)
+    fig.add_trace(go.Scatter(x=list(range(2020,2051)), y=y_values,
+                    mode='lines',
+                    name=mytrace, marker_color = px.colors.qualitative.Set1[s4_traces.index(mytrace)]))   
+
+y_values = list(df3.loc[:,'value'].values)
+fig.add_trace(go.Scatter(x=list(range(2020,2051)), y=y_values,
+                    mode='markers',
+                    name='Electrification Futures Study',
+                    marker_color = 'black')) 
+    
+fig.update_layout(title_text='Simulations 3 & 4: Cumulative New Installs for Different Reliability Bins', title_x=0.5, 
+                 xaxis_title="Year",
+    yaxis_title="New Installs [metric tonnes]",
+    legend_title="Scenario", height = 800, width = 1000)
+fig.update_layout(font=dict(size=18))
+fig.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.01
+))
+fig.show()
+
+
+# <a id='step11'></a>
+
+# ## Graphing ABM outputs
+
+# In[76]:
+
+
+df = ABM_outputs.rename(columns={'mass_fraction_PV_materials_repaired_milliontonnes':'Repaired',
+                                'mass_fraction_PV_materials_reused_milliontonnes':'Reused',
+                                'mass_fraction_PV_materials_recycled_milliontonnes':'Recycled',
+                                'mass_fraction_PV_materials_landfilled_milliontonnes':'Landfilled',
+                                'mass_fraction_PV_materials_stored_milliontonnes':'Stored'})
+df['Scenario'] = [pretty_scenarios[1]] * 31 + [pretty_scenarios[2]] * 31 + [pretty_scenarios[3]] * 31 + [pretty_scenarios[4]] * 31 + [pretty_scenarios[5]] * 31 + [pretty_scenarios[6]] * 31 + [pretty_scenarios[7]] * 31 + [pretty_scenarios[8]] * 31 + [pretty_scenarios[9]] * 31
+df = df.melt(id_vars = ('Year','Scenario'))
+fig1 = px.bar(df, x="Year", y="value", color="variable", #title="ABM Outputs: Yearly Mass Fraction of Material in EOL Pathways",
+             labels={'value':'Mass Fraction',
+                    'variable':'EoL Pathway'}, 
+              facet_col = 'Scenario',
+             facet_col_wrap=3, width = 1200, height = 1000,
+             category_orders={"Scenario": ["ABM baseline", "Improved learning effect", "Landfill ban","Lower recycling costs"]})
+fig1.update_layout(title_x=0.5, title_y=0.98,font=dict(size=24))
+fig1.update_xaxes(tickangle=45)
+#make scenario annotations nicer
+for myscenario in pretty_scenarios[1:]:    
+    fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("Scenario=" + myscenario, myscenario)))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace(pretty_scenarios[2], 'High material recovery<br> and lower recycling costs')))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace(pretty_scenarios[1], '<b>Landfill ban</b>')))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace(pretty_scenarios[9], '<b>ABM baseline</b>')))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace(pretty_scenarios[6], '<b>Improved learning effect</b>')))
+fig1.show()
+
+
+# In[77]:
+
+
+# PV ICE baseline graphing (to compare to above graph)
+pv_ice_baseline_eol_rates = pd.DataFrame()
+pv_ice_baseline_eol_rates['Repaired'] = list(r1.scenario['standard_PVICE'].data['mod_Repair']/100)
+pv_ice_baseline_eol_rates['Reused'] = list(r1.scenario['standard_PVICE'].data['mod_Reuse']/100)
+pv_ice_baseline_eol_rates['Recycled'] = list(r1.scenario['standard_PVICE'].data['mod_EOL_collection_eff']/100 * r1.scenario['standard_PVICE'].data['mod_EOL_collected_recycled']/100)
+pv_ice_baseline_eol_rates['Landfilled'] = 1 - (pv_ice_baseline_eol_rates['Repaired']+pv_ice_baseline_eol_rates['Reused']+pv_ice_baseline_eol_rates['Recycled'])
+pv_ice_baseline_eol_rates['Year'] = list(range(1995,2051))
+df = pv_ice_baseline_eol_rates.melt(id_vars = 'Year')
+df = df[df.Year.isin([2020])]
+
+fig1 = px.bar(df, x="Year", y="value", color="variable", #title="PV ICE Baseline: Yearly Mass Fraction of Material in EOL Pathways",
+             labels={'value':'Mass Fraction',
+                    'variable':'EoL Pathway',
+                    'Year':'All Years'}, 
+              width = 400, height = 500)
+fig1.update_xaxes(showticklabels=False)
+fig1.update_layout(title_x=0.5, title_y=0.98,font=dict(size=24))
+
+for data in fig1.data:
+    data["width"] = 0.20 #Change this value for bar widths
+fig1.show()
+
+
+# In[78]:
+
+
+file_scenario_names = ABM_outputs_mass_cum['Scenario'].unique().tolist()
+ABM_outputs_mass_cum = ABM_outputs_mass_cum.replace(file_scenario_names, pretty_scenarios[1:])
+fig1 = px.line(ABM_outputs_mass_cum, x='Year', y='Waste', color = 'Scenario',
+              labels = {'Waste':'Waste [metric tonnes]'})
+fig1.update_layout(title_text='ABM Outputs: Cumulative Waste', title_x=0.5,
+                   height = 800, width = 1000)
+fig1.update_layout(font=dict(size=20))
+fig1.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.01
+))
+fig1.update_yaxes(range=[0,9000000])
+fig1.show()
+
+
+# <a id='step12'></a>
+
+# ## Results validation
+
+# In[96]:
+
+
+##graphing ABM inputs: yearly new installs
+ABM_input_cum_installs = pd.read_csv(r'..\baselines\ABM\abm_input_new_installs_cumulative.csv') #changed to MW from GW in excel
+
+#undo cumsum to get yearly new installs
+#add yearly installs col
+ABM_input_new_installs = ABM_input_cum_installs.copy()
+installs_diff = ABM_input_cum_installs.diff().fillna(0).astype(int)
+installs_diff.loc[0,'Cumulative_New_Installs_[MW]'] = ABM_input_cum_installs.loc[0,'Cumulative_New_Installs_[MW]'] #get rid of first 0
+ABM_input_new_installs['Yearly_New_Installs_[MW]'] = installs_diff['Cumulative_New_Installs_[MW]']
+
+
+# In[100]:
+
+
+fig = go.Figure()
+
+abm_y_values = list(ABM_input_new_installs['Cumulative_New_Installs_[MW]'].values)
+ef_y_values = list(r2.scenario['landfill_ban'].data['new_Installed_Capacity_[MW]'].cumsum()[5:].values) #only show 2000 onwards
+    
+fig.add_trace(go.Scatter(x=list(range(2000,2051)), y=abm_y_values,
+                    mode='lines',
+                    name='ABM'))
+
+fig.add_trace(go.Scatter(x=list(range(2000,2051)), y=ef_y_values,
+                    mode='lines',
+                    name='Electrification Futures Study'))
+
+fig.update_layout(title_text='Cumulative New Installs by Source', title_x=0.5, 
+                 xaxis_title="Year",
+    yaxis_title="Cumulative New Installs [MW]",
+    legend_title="Source")
+fig.update_layout(font=dict(size=20))
+fig.update_layout(legend=dict(
+    yanchor="top",
+    y=0.98,
+    xanchor="left",
+    x=0.01
+))
+fig.show()
+
+
+# #### Rerun r2 with Julien's new installs and recovery rates and see results
+
+# In[101]:
+
+
+#CHANGE NEW INSTALLS TO MATCH JULIENS
+abm_new_installs = list(ABM_input_new_installs['Yearly_New_Installs_[MW]'].values) # yearly new installs 2020-2050
+ef_new_installs = list(r2.scenario['landfill_ban'].data["new_Installed_Capacity_[MW]"][:5].values)
+for myscenario in ABM_SCENARIOS: 
+    r2.scenario[myscenario].data['new_Installed_Capacity_[MW]'] = ef_new_installs + abm_new_installs
+r2_better_lifetime.scenario['better_lifetime'].data['new_Installed_Capacity_[MW]'] = ef_new_installs + abm_new_installs
+
+
+# In[102]:
+
+
+#CHANGE RECYCLING EFFICIENCIES TO MATCH JULIENS
+regular_recovery_rate = pd.DataFrame() #recycling eff used in ABM for all scenarios except high material recovery that uses FRELP
+regular_recovery_rate['mat'] = ['silver','copper','aluminium_frames','silicon','glass']
+regular_recovery_rate['recovery_rate'] = [0,72,92,0,85]
+
+regular_recovery_scenarios = [ABM_SCENARIOS[0]] + ABM_SCENARIOS[2:]
+   
+#Modify 'mat_EOL_Recycling_eff'
+for mymaterial in MATERIALS: 
+    past_recycling_eff = [r1.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_Recycling_eff'][0]]*(2022-1995)
+    new_recycling_eff = regular_recovery_rate[regular_recovery_rate.mat.isin([mymaterial])]['recovery_rate'].values.tolist()*(2050-2021)
+    new_mat_EOL_recycling_eff = past_recycling_eff + new_recycling_eff
+    for myscenario in regular_recovery_scenarios:
+        r2.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_Recycling_eff'] = new_mat_EOL_recycling_eff
+    r2_better_lifetime.scenario['better_lifetime'].material[mymaterial].materialdata['mat_EOL_Recycling_eff'] = new_mat_EOL_recycling_eff
+
+
+# In[103]:
+
+
+r2.calculateMassFlow(weibullInputParams = weibull_IrenaRL)
+r2_better_lifetime.calculateMassFlow()
+
+
+# In[104]:
+
+
+# create dataframe of results for WASTE only
+USyearly_validation=pd.DataFrame()
+
+
+# In[105]:
+
+
+keyword='mat_Total_Landfilled'
+
+for jj in range(0, len(r2.scenario)): # Loop over Scenarios
+    case = list(r2.scenario.keys())[jj] # case gives scenario name
+    if case == 'better_lifetime':
+        for ii in range (0, len(materials)):    
+            material = materials[ii]
+            foo = r2_better_lifetime.scenario[case].material[material].materialdata[keyword].copy()
+            foo = foo.to_frame(name=material)
+            USyearly_validation["Waste_"+material+'_'+r2.name+'_'+case] = foo[material]
+        filter_col = [col for col in USyearly_validation if (col.startswith('Waste') and col.endswith(r2.name+'_'+case)) ]
+        USyearly_validation['Waste_Module_'+r2.name+'_'+case] = USyearly_validation[filter_col].sum(axis=1)
+    else:
+        for ii in range (0, len(materials)):    
+            material = materials[ii]
+            foo = r2.scenario[case].material[material].materialdata[keyword].copy()
+            foo = foo.to_frame(name=material)
+            USyearly_validation["Waste_"+material+'_'+r2.name+'_'+case] = foo[material]
+        filter_col = [col for col in USyearly_validation if (col.startswith('Waste') and col.endswith(r2.name+'_'+case)) ]
+        USyearly_validation['Waste_Module_'+r2.name+'_'+case] = USyearly_validation[filter_col].sum(axis=1)
+
+
+# In[106]:
+
+
+USyearly_validation = USyearly_validation/1000000  #Convert to metric tonnes
+#907185 -- this is for US tons
+
+
+# In[107]:
+
+
+UScum_validation = USyearly_validation.copy()
+UScum_validation = UScum_validation.cumsum()
+
+
+# In[108]:
+
+
+USyearly_validation.index = r1.scenario['standard_PVICE'].data['year']
+UScum_validation.index = r1.scenario['standard_PVICE'].data['year']
+
+
+# In[109]:
+
+
+#Graphing Cumulative Waste
+filter_col = [col for col in UScum_validation if (col.startswith('Waste_Module_ABM_Simulation2'))]
+df = UScum_validation[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
+df = df[df.variable.isin(pretty_scenarios[1:])]
+fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
+                     "year": "Year",
+                     "value": "Waste [metric tonnes]",
+                    "variable" :"Scenario"
+                 })
+fig1.update_layout(title_text='Simulation 2 Validation: Cumulative Waste', title_x=0.5,
+                   height = 800, width = 1000)
+fig1.update_layout(font=dict(size=20))
+fig1.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.01
+))
+fig1.show()
+
+
+# In[110]:
+
+
+#cumulative at 2050 results for Waste
+filter_col = [col for col in UScum_validation if (col.startswith('Waste_Module_ABM_Simulation2'))]
+df = UScum_validation[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin([2050])]
+df = df[df.variable.isin(pretty_scenarios[1:])]
+df['value'] = df['value']/1000000 #convert from metric tonnes to million metric tonnes
+df.to_csv('s2_validation_cum_waste_results.csv')
+cum_waste_validation = df.copy()
+
+
+# In[111]:
+
+
+#cum waste at 2050 comparison
+cum_waste_validation = cum_waste_validation.rename(columns={"value": "S2 Cum Waste at 2050 with ABM New Installs"})
+abm_waste_2050 = ABM_outputs_mass_cum[ABM_outputs_mass_cum.Year.isin([2050])]['Waste']/1000000
+cum_waste_validation['ABM Cum Waste at 2050'] = list(abm_waste_2050.values)
+
+
+# In[112]:
+
+
+# graph cum waste at 2050 for PV ICE vs. ABM
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=pretty_scenarios[1:], y=cum_waste_validation["S2 Cum Waste at 2050 with ABM New Installs"],
+                    mode='markers',
+                    name='PV ICE S2 with ABM New Installs <br> and Recovery Rates',
+                        marker_color = 'black')) 
+fig.add_trace(go.Scatter(x=pretty_scenarios[1:], y=cum_waste_validation["ABM Cum Waste at 2050"],
+                    mode='markers',
+                    name='ABM (Landfilled + Stored)',
+                        marker_color = 'red')) 
+    
+fig.update_layout(title_text='Cumulative Waste at 2050 Validation', title_x=0.5, 
+                 xaxis_title="Year",
+    yaxis_title="Waste [million metric tonnes]",
+    legend_title="Scenario", height = 1000, width = 1000)
+fig.update_layout(font=dict(size=20))
+fig.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.01
+))
+fig.show()
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# ## Plots not used in Paper/Poster:
+
+# In[48]:
+
+
+filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation1'))]
+df = UScum[filter_col]
+pretty_scenarios = ['PV ICE baseline','Landfill ban','High material recovery & <br> lower recycling costs','Lower recycling costs','Higher landfill costs','Improved lifetime','Improved learning effect','Reuse warranties','Seeding reuse','ABM baseline']
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
+                     "year": "Year",
+                     "value": "Virgin Material Demand [metric tonnes]",
+                    "variable" :"Scenario"
+                 })
+fig1.update_layout(title_text='Simulation 1: Cumulative Virgin Material Demand', title_x=0.2)
+fig1.show()
+
+
+# In[84]:
+
+
+#graph recycled material stacked bar chart cumulative at 2050
+filter_col = [col for col in UScum if (col.startswith(('EOL_Recycled_HQ_into_MFG_Module_ABM_Simulation1','EOL_Recycled_HQ_into_OU_Module_ABM_Simulation1','EOL_Recycled_2_OQ_Module_ABM_Simulation1')))]
+df = UScum[filter_col]
+df['year'] = list(range(1995,2051))
+df = df[df.year.isin([2050])]
+df = df.melt(id_vars = 'year')
+df = df.drop(columns = ['year'])
+df['Scenario'] = pretty_scenarios * 3
+df['Recycled Material Type'] = ['HQ Closed Loop'] * 10 + ['HQ Open Loop'] * 10 + ['OQ Open Loop'] * 10
+fig1 = px.bar(df, x="Scenario", y="value", color="Recycled Material Type", title="Simulation 1: Cumulative Recycled Material at 2050",
+             labels={'value':'Recycled Material [metric tonnes]'})
+fig1.update_layout(title_x=0.2)
+fig1.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.78
+))
+fig1.show()
+
+
+# In[85]:
+
+
+filter_col = [col for col in USyearly if (col.startswith('Waste_Module_ABM_Simulation1'))]
+df = USyearly[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
+                     "year": "Year",
+                     "value": "Waste [metric tonnes]",
+                    "variable" :"Scenario"
+                 })
+fig1.update_layout(title_text='Simulation 1: Yearly Waste', title_x=0.25)
+fig1.show()
+
+
+# In[86]:
+
+
+filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation1'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
+                     "year": "Year",
+                     "value": "Waste [metric tonnes]",
+                    "variable" :"Scenario"
+                 })
+fig1.update_layout(title_text='Simulation 1: Cumulative Waste', title_x=0.25)
+fig1.show()
+
+
+# In[87]:
+
+
+# comparing to Julien's: making a cumulative at 2050 df for r1
+ABM_outputs_mass_cum_2050 = ABM_outputs_mass_cum[ABM_outputs_mass_cum.Year.isin([2050])]
+ABM_outputs_mass_cum_2050 = ABM_outputs_mass_cum_2050.replace(ABM_SCENARIOS, pretty_scenarios[1:])
+ABM_outputs_mass_cum_2050 = ABM_outputs_mass_cum_2050.rename(columns = {'Waste':'Cumulative Waste at 2050 ABM [metric tonnes]'})
+
+filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation1'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin([2050])]
+df = df.rename(columns = {'variable':'Scenario',
+                   'value':'Cumulative Waste at 2050 PV ICE [metric tonnes]'})
+df['Cumulative Waste at 2050 ABM [metric tonnes]'] = [0] + list(ABM_outputs_mass_cum_2050['Cumulative Waste at 2050 ABM [metric tonnes]'].values)
+df = df.drop(columns = ['year'])
+df['Cumulative Waste at 2050 PV ICE [million metric tonnes]'] = df['Cumulative Waste at 2050 PV ICE [metric tonnes]'].round(0)/1000000
+df['Cumulative Waste at 2050 ABM [million metric tonnes]'] = df['Cumulative Waste at 2050 ABM [metric tonnes]']/1000000
+
+df.to_csv("r1_cum_waste_2050_ABM_comparison.csv")
+
+
+# In[88]:
+
+
+filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation2'))]
+df = UScum[filter_col]
+s2_scenarios = ['S2 PV ICE baseline','S2 Landfill ban','S2 High material recovery & <br> lower recycling costs','S2 Lower recycling costs','S2 Higher landfill costs','S2 Improved lifetime','S2 Improved learning effect','S2 Reuse warranties','S2 Seeding reuse','S2 ABM baseline']
+df = df.set_axis(s2_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df[df.year.isin(list(range(2020,2051)))]
+
+##include average line from simulation 1 yearly virgin material demand
+df["S1 Average"] = list(df_avg_r1_virgin_material_demand_cum["value"][:].values)
+cols = s2_scenarios + ["S1 Average"]
+
+fig1 = px.line(df, x='year', y = cols, labels = {
+            'variable':'Scenario',
+            'value':'Virgin Material Demand [metric tonnes]',
+            'year':'Year'},
+              color_discrete_map={
+                "S1 Average": "black"},
+              line_dash_map={
+                  "S1 Average": "dash" #get this dashed line to work
+              })
+fig1.update_layout(title_text='Simulations 1 & 2: Cumulative Virgin Material Demand', title_x=0.5)
+fig1.show()
+
+
+# In[89]:
+
+
+#graph recycled material stacked bar chart cumulative at 2050
+filter_col = [col for col in UScum if (col.startswith(('EOL_Recycled_HQ_into_MFG_Module_ABM_Simulation2','EOL_Recycled_HQ_into_OU_Module_ABM_Simulation2','EOL_Recycled_2_OQ_Module_ABM_Simulation2')))]
+df = UScum[filter_col]
+df['year'] = list(range(1995,2051))
+df = df[df.year.isin([2050])]
+df = df.melt(id_vars = 'year')
+df = df.drop(columns = ['year'])
+df['Scenario'] = pretty_scenarios * 3
+df['Recycled Material Type'] = ['HQ Closed Loop'] * 10 + ['HQ Open Loop'] * 10 + ['OQ Open Loop'] * 10
+fig1 = px.bar(df, x="Scenario", y="value", color="Recycled Material Type", title="Simulation 2: Cumulative Recycled Material at 2050",
+             labels={'value':'Recycled Material [metric tonnes]'})
+fig1.update_layout(title_x=0.2)
+fig1.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.79
+))
+fig1.show()
+
+
+# In[90]:
+
+
+filter_col = [col for col in USyearly if (col.startswith('Waste_Module_ABM_Simulation2'))]
+df = USyearly[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
+                     "year": "Year",
+                     "value": "Waste [metric tonnes]",
+                    "variable" :"Scenario"
+                 })
+fig1.update_layout(title_text='Simulation 2: Yearly Waste', title_x=0.5)
+fig1.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.01
+))
+fig1.show()
+
+
+# In[91]:
+
+
+filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation2'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
+fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
+                     "year": "Year",
+                     "value": "Waste [metric tonnes]",
+                    "variable" :"Scenario"
+                 })
+fig1.update_layout(title_text='Simulation 2: Cumulative Waste', title_x=0.5)
+fig1.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.01
+))
+fig1.show()
+
+
+# In[92]:
+
+
+filter_col = [col for col in UScum if (col.startswith(('new_Installed_Capacity_[MW]_ABM_Simulation3A','new_Installed_Capacity_[MW]_ABM_Simulation3B','new_Installed_Capacity_[MW]_ABM_Simulation3C','new_Installed_Capacity_[MW]_ABM_Simulation3D')))]
+df = UScum[filter_col]
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+scenario_splices = []
+for i in range(0,len(df['variable'])):
+    scenario_splices += [df.loc[i,'variable'][45:]]
+quality_splices = []
+for i in range(0,len(df['variable'])):
+    quality_splices += [df.loc[i,'variable'][43]]
+df['scenario'] = scenario_splices
+df['reliability_bin'] = quality_splices
+df = df.drop("variable", axis=1)
+df = df[df.year.isin(list(range(2020,2051)))]
+
+#make bin labels more descriptive
+df = df.reset_index()
+new_reliability_bin = []
+for i in range(0,len(df['reliability_bin'])):
+    if df.loc[i,'reliability_bin'] == 'A':
+        new_reliability_bin += ['A (most reliable)']
+    elif df.loc[i,'reliability_bin'] == 'D':
+        new_reliability_bin += ['D (least reliable)'] 
+    else:
+        new_reliability_bin += [df.loc[i,'reliability_bin']]
+df['new_reliability_bin'] = new_reliability_bin
+
+fig1 = px.line(df, x='year', y='value', color = 'new_reliability_bin', labels={
+                     "year": "Year",
+                     "value": "Cumulative Waste [metric tonnes]",
+                    "new_reliability_bin":"Reliability Bin"
+                },  color_discrete_sequence=px.colors.qualitative.Set1)
+fig1.update_layout(title_text='Simulation 3: Cumulative New Installs for Different Reliability Bins', title_x=0.5)
+fig1.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.01
+))
+fig1.show()
+
+
+# In[93]:
+
+
+filter_col = [col for col in UScum if (col.startswith(('Waste_Module_ABM_Simulation4A','Waste_Module_ABM_Simulation4B','Waste_Module_ABM_Simulation4C','Waste_Module_ABM_Simulation4D')))]
+df = UScum[filter_col]
+#pretty_repair_scenarios = ['Improved Learning Effect', 'ABM Baseline', 'Landfill Ban']
+#df = df.set_axis(pretty_repair_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+scenario_splices = []
+for i in range(0,len(df['variable'])):
+    scenario_splices += [df.loc[i,'variable'][30:]]
+quality_splices = []
+for i in range(0,len(df['variable'])):
+    quality_splices += [df.loc[i,'variable'][28]]
+df['scenario'] = scenario_splices
+df['reliability_bin'] = quality_splices
+df = df.drop("variable", axis=1)
+df = df[df.year.isin(list(range(2020,2051)))]
+
+#make bin labels more descriptive
+df = df.reset_index()
+new_reliability_bin = []
+for i in range(0,len(df['reliability_bin'])):
+    if df.loc[i,'reliability_bin'] == 'A':
+        new_reliability_bin += ['A (most reliable)']
+    elif df.loc[i,'reliability_bin'] == 'D':
+        new_reliability_bin += ['D (least reliable)'] 
+    else:
+        new_reliability_bin += [df.loc[i,'reliability_bin']]
+df['new_reliability_bin'] = new_reliability_bin
+
+fig1 = px.line(df, x='year', y='value', color = 'new_reliability_bin', facet_col = 'scenario', labels={
+                     "year": "Year",
+                     "value": "Cumulative Waste [metric tonnes]",
+                    "new_reliability_bin":"Reliability Bin"
+                },  color_discrete_sequence=px.colors.qualitative.Set1,
+              category_orders={"scenario": ["juliens_baseline", "better_learning", "landfill_ban"]})
+fig1.update_layout(title_text='Simulation 4: Cumulative Waste for Different Reliability Bins', title_x=0.5)
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=better_learning", "Improved learning effect")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=juliens_baseline", "ABM baseline")))
+fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("scenario=landfill_ban", "Landfill ban")))
+fig1.update_xaxes(tickangle=45)
+fig1.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.01
+))
+fig1.show()
+
+
+# In[94]:
+
+
 filter_col = [col for col in UScum if (col.startswith(('Capacity_ABM_Simulation4A','Capacity_ABM_Simulation4B','Capacity_ABM_Simulation4C','Capacity_ABM_Simulation4D')))]
 
 df = UScum[filter_col]
@@ -2060,7 +2506,7 @@ fig1.update_layout(legend=dict(
 fig1.show()
 
 
-# In[76]:
+# In[95]:
 
 
 filter_col = [col for col in UScum if (col.startswith(('new_Installed_Capacity_[MW]_ABM_Simulation4A','new_Installed_Capacity_[MW]_ABM_Simulation4B','new_Installed_Capacity_[MW]_ABM_Simulation4C','new_Installed_Capacity_[MW]_ABM_Simulation4D')))]
@@ -2110,147 +2556,7 @@ fig1.update_layout(legend=dict(
 fig1.show()
 
 
-# In[77]:
-
-
-#simulation 4 lines
-filter_col = [col for col in UScum if (col.startswith(('new_Installed_Capacity_[MW]_ABM_Simulation4A_landfill_ban','new_Installed_Capacity_[MW]_ABM_Simulation4B_landfill_ban','new_Installed_Capacity_[MW]_ABM_Simulation4C_landfill_ban','new_Installed_Capacity_[MW]_ABM_Simulation4D_landfill_ban')))]
-df4 = UScum[filter_col]
-s4_traces = ['S4A (most reliable)','S4B','S4C','S4D (least reliable)']
-df4 = df4.set_axis(s4_traces, axis=1)
-df4['year'] = list(range(1995,2051))
-df4 = df4.melt(id_vars = 'year')
-df4 = df4[df4.year.isin(list(range(2020,2051)))]
-
-#simulation 3A
-filter_col = [col for col in UScum if (col.startswith('new_Installed_Capacity_[MW]_ABM_Simulation3A'))]
-df3 = UScum[filter_col]
-df3 = df3.set_axis(['S3A (most reliable)'], axis=1)
-df3['year'] = list(range(1995,2051))
-df3 = df3.melt(id_vars = 'year')
-df3 = df3[df3.year.isin(list(range(2020,2051)))]
-
-fig = go.Figure()
-
-for mytrace in s4_traces:
-    y_values = list(df4[df4.variable.isin([mytrace])].loc[:,'value'].values)
-    fig.add_trace(go.Scatter(x=list(range(2020,2051)), y=y_values,
-                    mode='lines',
-                    name=mytrace, marker_color = px.colors.qualitative.Set1[s4_traces.index(mytrace)]))   
-
-y_values = list(df3.loc[:,'value'].values)
-fig.add_trace(go.Scatter(x=list(range(2020,2051)), y=y_values,
-                    mode='markers',
-                    name='Electrification Futures Study',
-                    marker_color = 'black')) 
-    
-fig.update_layout(title_text='Simulations 3 & 4: Cumulative New Installs for Different Reliability Bins', title_x=0.5, 
-                 xaxis_title="Year",
-    yaxis_title="New Installs [metric tonnes]",
-    legend_title="Scenario", height = 800, width = 1000)
-fig.update_layout(font=dict(size=18))
-fig.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.01
-))
-fig.show()
-
-
-# ## Graphing ABM outputs
-
-# In[82]:
-
-
-df = ABM_outputs.rename(columns={'mass_fraction_PV_materials_repaired_milliontonnes':'Repaired',
-                                'mass_fraction_PV_materials_reused_milliontonnes':'Reused',
-                                'mass_fraction_PV_materials_recycled_milliontonnes':'Recycled',
-                                'mass_fraction_PV_materials_landfilled_milliontonnes':'Landfilled',
-                                'mass_fraction_PV_materials_stored_milliontonnes':'Stored'})
-df['Scenario'] = [pretty_scenarios[1]] * 31 + [pretty_scenarios[2]] * 31 + [pretty_scenarios[3]] * 31 + [pretty_scenarios[4]] * 31 + [pretty_scenarios[5]] * 31 + [pretty_scenarios[6]] * 31 + [pretty_scenarios[7]] * 31 + [pretty_scenarios[8]] * 31 + [pretty_scenarios[9]] * 31
-df = df.melt(id_vars = ('Year','Scenario'))
-fig1 = px.bar(df, x="Year", y="value", color="variable", #title="ABM Outputs: Yearly Mass Fraction of Material in EOL Pathways",
-             labels={'value':'Mass Fraction',
-                    'variable':'EoL Pathway'}, 
-              facet_col = 'Scenario',
-             facet_col_wrap=3, width = 1200, height = 1000,
-             category_orders={"Scenario": ["ABM baseline", "Improved learning effect", "Landfill ban","Lower recycling costs"]})
-fig1.update_layout(title_x=0.5, title_y=0.98,font=dict(size=24))
-fig1.update_xaxes(tickangle=45)
-#make scenario annotations nicer
-for myscenario in pretty_scenarios[1:]:    
-    fig1.for_each_annotation(lambda a: a.update(text=a.text.replace("Scenario=" + myscenario, myscenario)))
-fig1.for_each_annotation(lambda a: a.update(text=a.text.replace(pretty_scenarios[2], 'High material recovery<br> and lower recycling costs')))
-fig1.for_each_annotation(lambda a: a.update(text=a.text.replace(pretty_scenarios[1], '<b>Landfill ban</b>')))
-fig1.for_each_annotation(lambda a: a.update(text=a.text.replace(pretty_scenarios[9], '<b>ABM baseline</b>')))
-fig1.for_each_annotation(lambda a: a.update(text=a.text.replace(pretty_scenarios[6], '<b>Improved learning effect</b>')))
-fig1.show()
-
-
-# In[ ]:
-
-
-# PV ICE baseline graphing (to compare to above graph)
-pv_ice_baseline_eol_rates = pd.DataFrame()
-pv_ice_baseline_eol_rates['Repaired'] = list(r1.scenario['standard_PVICE'].data['mod_Repair']/100)
-pv_ice_baseline_eol_rates['Reused'] = list(r1.scenario['standard_PVICE'].data['mod_Reuse']/100)
-pv_ice_baseline_eol_rates['Recycled'] = list(r1.scenario['standard_PVICE'].data['mod_EOL_collection_eff']/100 * r1.scenario['standard_PVICE'].data['mod_EOL_collected_recycled']/100)
-pv_ice_baseline_eol_rates['Landfilled'] = 1 - (pv_ice_baseline_eol_rates['Repaired']+pv_ice_baseline_eol_rates['Reused']+pv_ice_baseline_eol_rates['Recycled'])
-pv_ice_baseline_eol_rates['Year'] = list(range(1995,2051))
-df = pv_ice_baseline_eol_rates.melt(id_vars = 'Year')
-df = df[df.Year.isin([2020])]
-
-fig1 = px.bar(df, x="Year", y="value", color="variable", #title="PV ICE Baseline: Yearly Mass Fraction of Material in EOL Pathways",
-             labels={'value':'Mass Fraction',
-                    'variable':'EoL Pathway',
-                    'Year':'All Years'}, 
-              width = 400, height = 500)
-fig1.update_xaxes(showticklabels=False)
-fig1.update_layout(title_x=0.5, title_y=0.98,font=dict(size=24))
-
-for data in fig1.data:
-    data["width"] = 0.20 #Change this value for bar widths
-fig1.show()
-
-
-# In[83]:
-
-
-file_scenario_names = ABM_outputs_mass_cum['Scenario'].unique().tolist()
-ABM_outputs_mass_cum = ABM_outputs_mass_cum.replace(file_scenario_names, pretty_scenarios[1:])
-fig1 = px.line(ABM_outputs_mass_cum, x='Year', y='Waste', color = 'Scenario',
-              labels = {'Waste':'Waste [metric tonnes]'})
-fig1.update_layout(title_text='ABM Outputs: Cumulative Waste', title_x=0.5,
-                   height = 800, width = 1000)
-fig1.update_layout(font=dict(size=20))
-fig1.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.01
-))
-fig1.update_yaxes(range=[0,9000000])
-fig1.show()
-
-
-# ## Data Validation
-
-# In[84]:
-
-
-##graphing ABM inputs: yearly new installs
-ABM_input_cum_installs = pd.read_csv(r'..\baselines\ABM\abm_input_new_installs_cumulative.csv') #changed to MW from GW in excel
-
-#undo cumsum to get yearly new installs
-#add yearly installs col
-ABM_input_new_installs = ABM_input_cum_installs.copy()
-installs_diff = ABM_input_cum_installs.diff().fillna(0).astype(int)
-installs_diff.loc[0,'Cumulative_New_Installs_[MW]'] = ABM_input_cum_installs.loc[0,'Cumulative_New_Installs_[MW]'] #get rid of first 0
-ABM_input_new_installs['Yearly_New_Installs_[MW]'] = installs_diff['Cumulative_New_Installs_[MW]']
-
-
-# In[85]:
+# In[99]:
 
 
 fig = go.Figure()
@@ -2280,206 +2586,8 @@ fig.update_layout(legend=dict(
 fig.show()
 
 
-# In[86]:
-
-
-fig = go.Figure()
-
-abm_y_values = list(ABM_input_new_installs['Cumulative_New_Installs_[MW]'].values)
-ef_y_values = list(r2.scenario['landfill_ban'].data['new_Installed_Capacity_[MW]'].cumsum()[5:].values) #only show 2000 onwards
-    
-fig.add_trace(go.Scatter(x=list(range(2000,2051)), y=abm_y_values,
-                    mode='lines',
-                    name='ABM'))
-
-fig.add_trace(go.Scatter(x=list(range(2000,2051)), y=ef_y_values,
-                    mode='lines',
-                    name='Electrification Futures Study'))
-
-fig.update_layout(title_text='Cumulative New Installs by Source', title_x=0.5, 
-                 xaxis_title="Year",
-    yaxis_title="Cumulative New Installs [MW]",
-    legend_title="Source")
-fig.update_layout(font=dict(size=20))
-fig.update_layout(legend=dict(
-    yanchor="top",
-    y=0.98,
-    xanchor="left",
-    x=0.01
-))
-fig.show()
-
-
-# #### Rerun r2 with Julien's new installs and recovery rates and see results
-
 # In[ ]:
 
 
-#CHANGE NEW INSTALLS TO MATCH JULIENS
-abm_new_installs = list(ABM_input_new_installs['Yearly_New_Installs_[MW]'].values) # yearly new installs 2020-2050
-ef_new_installs = list(r2.scenario['landfill_ban'].data["new_Installed_Capacity_[MW]"][:5].values)
-for myscenario in ABM_SCENARIOS: 
-    r2.scenario[myscenario].data['new_Installed_Capacity_[MW]'] = ef_new_installs + abm_new_installs
-r2_better_lifetime.scenario['better_lifetime'].data['new_Installed_Capacity_[MW]'] = ef_new_installs + abm_new_installs
 
-
-# In[ ]:
-
-
-#CHANGE RECYCLING EFFICIENCIES TO MATCH JULIENS
-regular_recovery_rate = pd.DataFrame() #recycling eff used in ABM for all scenarios except high material recovery that uses FRELP
-regular_recovery_rate['mat'] = ['silver','copper','aluminium_frames','silicon','glass']
-regular_recovery_rate['recovery_rate'] = [0,72,92,0,85]
-
-regular_recovery_scenarios = [ABM_SCENARIOS[0]] + ABM_SCENARIOS[2:]
-   
-#Modify 'mat_EOL_Recycling_eff'
-for mymaterial in MATERIALS: 
-    past_recycling_eff = [r1.scenario['standard_PVICE'].material[mymaterial].materialdata['mat_EOL_Recycling_eff'][0]]*(2022-1995)
-    new_recycling_eff = regular_recovery_rate[regular_recovery_rate.mat.isin([mymaterial])]['recovery_rate'].values.tolist()*(2050-2021)
-    new_mat_EOL_recycling_eff = past_recycling_eff + new_recycling_eff
-    for myscenario in regular_recovery_scenarios:
-        r2.scenario[myscenario].material[mymaterial].materialdata['mat_EOL_Recycling_eff'] = new_mat_EOL_recycling_eff
-    r2_better_lifetime.scenario['better_lifetime'].material[mymaterial].materialdata['mat_EOL_Recycling_eff'] = new_mat_EOL_recycling_eff
-
-
-# In[ ]:
-
-
-r2.calculateMassFlow(weibullInputParams = weibull_IrenaRL)
-r2_better_lifetime.calculateMassFlow()
-
-
-# In[ ]:
-
-
-# create dataframe of results for WASTE only
-USyearly_validation=pd.DataFrame()
-
-
-# In[ ]:
-
-
-keyword='mat_Total_Landfilled'
-
-for jj in range(0, len(r2.scenario)): # Loop over Scenarios
-    case = list(r2.scenario.keys())[jj] # case gives scenario name
-    if case == 'better_lifetime':
-        for ii in range (0, len(materials)):    
-            material = materials[ii]
-            foo = r2_better_lifetime.scenario[case].material[material].materialdata[keyword].copy()
-            foo = foo.to_frame(name=material)
-            USyearly_validation["Waste_"+material+'_'+r2.name+'_'+case] = foo[material]
-        filter_col = [col for col in USyearly_validation if (col.startswith('Waste') and col.endswith(r2.name+'_'+case)) ]
-        USyearly_validation['Waste_Module_'+r2.name+'_'+case] = USyearly_validation[filter_col].sum(axis=1)
-    else:
-        for ii in range (0, len(materials)):    
-            material = materials[ii]
-            foo = r2.scenario[case].material[material].materialdata[keyword].copy()
-            foo = foo.to_frame(name=material)
-            USyearly_validation["Waste_"+material+'_'+r2.name+'_'+case] = foo[material]
-        filter_col = [col for col in USyearly_validation if (col.startswith('Waste') and col.endswith(r2.name+'_'+case)) ]
-        USyearly_validation['Waste_Module_'+r2.name+'_'+case] = USyearly_validation[filter_col].sum(axis=1)
-
-
-# In[ ]:
-
-
-USyearly_validation = USyearly_validation/1000000  #Convert to metric tonnes
-#907185 -- this is for US tons
-
-
-# In[ ]:
-
-
-UScum_validation = USyearly_validation.copy()
-UScum_validation = UScum_validation.cumsum()
-
-
-# In[ ]:
-
-
-USyearly_validation.index = r1.scenario['standard_PVICE'].data['year']
-UScum_validation.index = r1.scenario['standard_PVICE'].data['year']
-
-
-# In[ ]:
-
-
-#Graphing Cumulative Waste
-filter_col = [col for col in UScum_validation if (col.startswith('Waste_Module_ABM_Simulation2'))]
-df = UScum_validation[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin(list(range(2020,2051)))]
-df = df[df.variable.isin(pretty_scenarios[1:])]
-fig1 = px.line(df, x='year', y='value', color = 'variable', labels={
-                     "year": "Year",
-                     "value": "Waste [metric tonnes]",
-                    "variable" :"Scenario"
-                 })
-fig1.update_layout(title_text='Simulation 2 Validation: Cumulative Waste', title_x=0.5,
-                   height = 800, width = 1000)
-fig1.update_layout(font=dict(size=20))
-fig1.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.01
-))
-fig1.show()
-
-
-# In[ ]:
-
-
-#cumulative at 2050 results for Waste
-filter_col = [col for col in UScum_validation if (col.startswith('Waste_Module_ABM_Simulation2'))]
-df = UScum_validation[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin([2050])]
-df = df[df.variable.isin(pretty_scenarios[1:])]
-df['value'] = df['value']/1000000 #convert from metric tonnes to million metric tonnes
-df.to_csv('s2_validation_cum_waste_results.csv')
-cum_waste_validation = df.copy()
-
-
-# In[ ]:
-
-
-#cum waste at 2050 comparison
-cum_waste_validation = cum_waste_validation.rename(columns={"value": "S2 Cum Waste at 2050 with ABM New Installs"})
-abm_waste_2050 = ABM_outputs_mass_cum[ABM_outputs_mass_cum.Year.isin([2050])]['Waste']/1000000
-cum_waste_validation['ABM Cum Waste at 2050'] = list(abm_waste_2050.values)
-
-
-# In[ ]:
-
-
-# graph cum waste at 2050 for PV ICE vs. ABM
-fig = go.Figure()
-fig.add_trace(go.Scatter(x=pretty_scenarios[1:], y=cum_waste_validation["S2 Cum Waste at 2050 with ABM New Installs"],
-                    mode='markers',
-                    name='PV ICE S2 with ABM New Installs <br> and Recovery Rates',
-                        marker_color = 'black')) 
-fig.add_trace(go.Scatter(x=pretty_scenarios[1:], y=cum_waste_validation["ABM Cum Waste at 2050"],
-                    mode='markers',
-                    name='ABM (Landfilled + Stored)',
-                        marker_color = 'red')) 
-    
-fig.update_layout(title_text='Cumulative Waste at 2050 Validation', title_x=0.5, 
-                 xaxis_title="Year",
-    yaxis_title="Waste [million metric tonnes]",
-    legend_title="Scenario", height = 1000, width = 1000)
-fig.update_layout(font=dict(size=20))
-fig.update_layout(legend=dict(
-    yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.01
-))
-fig.show()
 
