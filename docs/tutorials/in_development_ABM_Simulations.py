@@ -1187,31 +1187,13 @@ UScum.to_csv('ABM_Cumulative_Results.csv')
 
 # ## Plotting results
 
-# ## Plotting with USyearly and UScum data frames: r1
-
 # In[51]:
 
 
 pretty_scenarios = ['PV ICE baseline','Landfill ban','High material recovery & <br> lower recycling costs','Lower recycling costs','Higher landfill costs','Improved lifetime','Improved learning effect','Reuse warranties','Seeding reuse','ABM baseline']
 
 
-# In[52]:
-
-
-# average cumulative virgin material demand for later simulation 2 comparison
-filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation1'))]
-df = UScum[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin(list(range(2020,2051)))]
-
-df_avg_r1_virgin_material_demand_cum = df.groupby(['year']).mean()
-df_avg_r1_virgin_material_demand_cum['year'] = list(range(2020,2051))
-df_avg_r1_virgin_material_demand_cum['variable'] = 'Average Cumulative Virgin Material Demand from Simulation 1'
-
-
-# In[96]:
+# In[146]:
 
 
 filter_col = [col for col in UScum if (col.startswith('Capacity_ABM_Simulation1'))]
@@ -1244,16 +1226,22 @@ fig1.add_trace(go.Scatter(x=list(range(2020,2051)), y=ef_values,
 fig1.show()
 
 
-# In[55]:
+# In[150]:
 
 
+filter_col = [col for col in UScum if (col.startswith('Capacity_ABM_Simulation1'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
 df_2050 = df[df.year.isin([2050])]
+df_2050 = df_2050[df_2050.variable.isin(pretty_scenarios[0:5] + pretty_scenarios[6:])]
 df_avg = pd.DataFrame()
 df_avg['Installed Capacity at 2050 [MW]'] = [df_2050['value'].mean()]
 df_avg['high'] = [df_2050['value'].max()]
 df_avg['low'] = [df_2050['value'].min()]
 df_avg['year'] = [2050]
-print( "The installed capacity at 2050 for all scenarios is approx. " + str(df_avg['Installed Capacity at 2050 [MW]'][0]) + ' MW.')
+print( "The installed capacity at 2050 for all scenarios except Improved lifetime is approx. " + str(df_avg['Installed Capacity at 2050 [MW]'][0]) + ' MW.')
 
 #calculate max and min relative to average
 bigger_range = max(df_avg['high'][0] - df_avg['Installed Capacity at 2050 [MW]'][0],abs(df_avg['low'][0] - df_avg['Installed Capacity at 2050 [MW]'][0]))
@@ -1261,10 +1249,20 @@ percent_diff = (bigger_range/df_avg['Installed Capacity at 2050 [MW]'][0]*100).r
 print("The percent difference that this is off by depending on the scenario is +/- " + str(percent_diff) + ' %.')
 
 
-# ## Plotting with USyearly and UScum data frames: r2
+# In[152]:
 
-# In[88]:
 
+# average cumulative virgin material demand for simulation 2 comparison
+filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation1'))]
+df = UScum[filter_col]
+df = df.set_axis(pretty_scenarios, axis=1)
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+df = df[df.year.isin(list(range(2020,2051)))]
+
+df_avg_r1_virgin_material_demand_cum = df.groupby(['year']).mean()
+df_avg_r1_virgin_material_demand_cum['year'] = list(range(2020,2051))
+df_avg_r1_virgin_material_demand_cum['variable'] = 'Average Cumulative Virgin Material Demand from Simulation 1'
 
 #simulation 2 lines
 filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation2'))]
@@ -1306,23 +1304,9 @@ fig.update_yaxes(range=[0,66000000])
 fig.show()
 
 
-# In[57]:
+# In[153]:
 
 
-#cumulative at 2050 results for Virgin Material Demand
-filter_col = [col for col in UScum if (col.startswith('VirginStock_Module_ABM_Simulation2'))]
-df = UScum[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin([2050])]
-df.sort_values('value')
-
-
-# In[58]:
-
-
-#add above graph to recycled material bar chart from simulation 1
 #simulation 1 trace
 filter_col = [col for col in UScum if (col.startswith(('EOL_Recycled_HQ_into_MFG_Module_ABM_Simulation1','EOL_Recycled_HQ_into_OU_Module_ABM_Simulation1','EOL_Recycled_2_OQ_Module_ABM_Simulation1')))]
 df = UScum[filter_col]
@@ -1439,20 +1423,6 @@ fig.update_layout(legend=dict(
 fig.show()
 
 
-# In[60]:
-
-
-#cumulative at 2050 results for Waste
-filter_col = [col for col in UScum if (col.startswith('Waste_Module_ABM_Simulation2'))]
-df = UScum[filter_col]
-df = df.set_axis(pretty_scenarios, axis=1)
-df['year'] = list(range(1995,2051))
-df = df.melt(id_vars = 'year')
-df = df[df.year.isin([2050])]
-df.sort_values('value')
-df.to_csv('s2_cum_waste_results.csv')
-
-
 # In[94]:
 
 
@@ -1509,8 +1479,6 @@ fig.update_layout(legend=dict(
 fig.update_layout(font=dict(size=23), height = 850, width = 800)
 fig.show()
 
-
-# ## Plotting with USyearly and UScum data frames: r3
 
 # In[100]:
 
@@ -1633,6 +1601,36 @@ fig1.update_yaxes(range=[0,66000000])
 fig1.show()
 
 
+# In[181]:
+
+
+#quantify difference across scenarios / bins for installed capacity S3
+filter_col = [col for col in UScum if (col.startswith('Capacity_ABM_Simulation3'))]
+df = UScum[filter_col]
+df['year'] = list(range(1995,2051))
+df = df.melt(id_vars = 'year')
+scenario_splices = []
+for i in range(0,len(df['variable'])):
+    scenario_splices += [df.loc[i,'variable'][26:]]
+quality_splices = []
+for i in range(0,len(df['variable'])):
+    quality_splices += [df.loc[i,'variable'][24]]
+df['scenario'] = scenario_splices
+df['reliability_bin'] = quality_splices
+df = df.drop("variable", axis=1)
+df = df[df.year.isin([2050])]
+
+percent_diff = []
+for mybin in ['A','B','C','D']:
+    mydf = df[df.reliability_bin.isin([mybin])]
+    better_learning_diff = list((mydf[mydf.scenario.isin(['better_learning'])]['value'].values - mydf[mydf.scenario.isin(['juliens_baseline'])]['value'].values)/ (mydf[mydf.scenario.isin(['juliens_baseline'])]['value'].values))
+    landfill_ban_diff = list((mydf[mydf.scenario.isin(['juliens_baseline'])]['value'].values - mydf[mydf.scenario.isin(['landfill_ban'])]['value'].values)/ (mydf[mydf.scenario.isin(['juliens_baseline'])]['value'].values))
+    percent_diff += better_learning_diff + [0] + landfill_ban_diff
+    
+df['percent_diff'] = percent_diff
+print("The maximum percent difference for all bins and scenarios in S3 relative to ABM baseline installed capacity is " + str(df['percent_diff'].max() * 100) + "%")
+
+
 # In[129]:
 
 
@@ -1750,8 +1748,6 @@ fig1.update_layout(legend=dict(
 fig1.update_xaxes(tickangle=45)
 fig1.show()
 
-
-# ## Plotting with USyearly and UScum data frames: r4A-r4D
 
 # In[105]:
 
