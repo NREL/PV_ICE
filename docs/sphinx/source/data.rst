@@ -359,3 +359,35 @@ Module Energies
 ~~~~~~~~~~~~~~~~~
 Module Manufacturing Energies from:
 1. G. J. M. Phylipsen and E. A. Alsema, “Environmental life-cycle assessment of multicrystalline silicon solar cell modules,” Netherlands Agency for Energy and the Environment,NOVEM, Netherlands, Sep. 1995.
+2. 
+
+Material Energies
+~~~~~~~~~~~~~~~~~~
+Glass
+^^^^^^^
+
+
+Silicon
+^^^^^^^^^
+
+
+Silver
+^^^^^^^^
+
+
+Copper
+^^^^^^^^
+
+
+Aluminum Frames
+^^^^^^^^^^^^^^^^
+
+
+Encapsulants
+^^^^^^^^^^^^^^
+
+
+Backsheets
+^^^^^^^^^^^
+
+
