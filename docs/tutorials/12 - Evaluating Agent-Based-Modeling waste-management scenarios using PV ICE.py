@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Evaluating material circular efficacy of ABM waste-management scenarios using PV ICE
+# # 12 - Evaluating material circular efficacy of ABM waste-management scenarios using PV ICE
 
-# This Jupyter journal uses results from Walzberg et al.'s PV ABM and inputs them into PV ICE, exploring the effect of increasing CE EoL pathway rates, recycling efficiency, and module reliability.
+# This Jupyter journal uses results from Walzberg et al.'s PV ABM and inputs them into PV ICE, exploring the effect of increasing CE EoL pathway rates, recycling efficiency, and module reliability. The results of this journals were published on 
+# 
+# > <b> Acadia Hegedus, Silvana Ovaitt, Julien Walzberg, Heather Mirletz, Teresa Barnes. <i> Evaluating material circular efficacy of waste-management scenarios using PV ICE (PV in hte Circular Economy) tool</i>. NREL Student Intern Symposium, 2021.<b>
 # 
 # Steps include: 
 # <ol>
