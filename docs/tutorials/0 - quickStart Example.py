@@ -3,7 +3,7 @@
 
 # # 0 - quickStart Example
 
-# ### 1. Create a folder for your simulation, and load PV_DEMICE
+# #### 1. Create a folder for your simulation, and load PV_DEMICE
 # 
 # First let's set the folder where the simulation will be saved. By default, this is the TEMP folder in the PV_DEMICE distribution.
 # 
@@ -17,7 +17,7 @@
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_DEMICE' / 'TEMP')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 
 # Another option using relative address; for some operative systems you might need '/' instead of '\'
 # testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
@@ -28,7 +28,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[2]:
 
 
-import PV_DEMICE
+import PV_ICE
 
 
 # ### 2. Create your Simulation Object
@@ -38,7 +38,7 @@ import PV_DEMICE
 # In[3]:
 
 
-r1 = PV_DEMICE.Simulation(name='Simulation1', path=testfolder)
+r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 
 
 # ### 3. Specify your baseline Scenario 
@@ -86,10 +86,4 @@ r1.scenario['standard'].data.head()
 
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_EOL_Recycled_2_HQ')
-
-
-# In[ ]:
-
-
-
 

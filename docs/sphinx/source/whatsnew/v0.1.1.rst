@@ -1,0 +1,11 @@
+.. _whatsnew_0110:
+
+v0.1.1 (03 / 24 / 2021)
+=======================
+
+Updates to baselines, and inclusion of software on PyPI for automatic installation with `pip install PV_ICE`
+
+Contributors
+~~~~~~~~~~~~
+* Silvana Ayala (:ghuser:`shirubana`)
+* Heather Mirletz (:ghuser:`heathermirletz`)

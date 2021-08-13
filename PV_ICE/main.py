@@ -59,8 +59,9 @@ def _unitReferences(keyword):
                         'mod_MFG_eff': {'unit': 'Efficiency $\eta$ [%]', 'source':'input'},
                         'mod_EOL_collection_eff': {'unit': 'Efficiency $\eta$ [%]', 'source':'input'},
                         'mod_EOL_collected_recycled': {'unit': 'Percentage [%]', 'source':'input'},
-                        'mod_Repowering': {'unit': 'Percentage [%]', 'source':'input'},
-                        'mod_Repairing': {'unit': 'Percentage [%]', 'source':'input'},
+                        'mod_Repair': {'unit': 'Percentage [%]', 'source':'input'},
+                        'mod_MerchantTail': {'unit': 'Percentage [%]', 'source':'input'},
+                        'mod_Reuse': {'unit': 'Percentage [%]', 'source':'input'},
                         'Area': {'unit': 'm$^2$', 'source': 'generated'},
                         'Cumulative_Area_disposedby_Failure': {'unit': 'm$^2$', 'source': 'generated'},
                         'Cumulative_Area_disposedby_ProjectLifetime': {'unit': 'm$^2$', 'source': 'generated'},
@@ -315,7 +316,8 @@ class Simulation:
         
 
 
-    def calculateMassFlow(self, weibullInputParams = None, debugflag=False):
+    def calculateMassFlow(self, weibullInputParams = None, 
+                          bifacialityfactors = None, reducecapacity = True, debugflag=False):
         '''
         Function takes as input a baseline dataframe already imported, 
         with the right number of columns and content.
@@ -329,6 +331,8 @@ class Simulation:
             Irena 2016 values beta = 30. If weibullInputParams = None,
             alfa and beta are calcualted from the t50 and t90 columns on the
             module baseline.
+        bifacialityfactors : str
+            File with bifacialtiy factors for each year under consideration
         
         Returns
         --------
@@ -346,15 +350,23 @@ class Simulation:
             df = self.scenario[scen].data
 
             # Constant
-            irradiance_stc = 1000 # W/m^2
-        
+            if bifacialityfactors is not None:   
+                bf = pd.read_csv(bifacialityfactors)
+                df['irradiance_stc'] = 1000.0 + bf['bifi']*100.0 # W/m^2 (min. Bifacial STC Increase)
+            else:
+                df['irradiance_stc'] = 1000.0 # W/m^2
+
             # Renaming and re-scaling
             df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
             df['t50'] = df['mod_reliability_t50']
             df['t90'] = df['mod_reliability_t90']
             
             # Calculating Area and Mass
-            df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/irradiance_stc # m^2                
+            if reducecapacity:
+                df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/df['irradiance_stc'] # m^2                
+            else:
+                df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/1000.0 # m^2
+                
             df['Area'] = df['Area'].fillna(0) # Chagne na's to 0s.
 
             # Calculating Wast by Generation by Year, and Cumulative Waste by Year.
@@ -366,6 +378,8 @@ class Simulation:
             df['Cumulative_Area_disposedby_Failure'] = 0
             df['Cumulative_Area_disposedby_ProjectLifetime'] = 0
             df['Cumulative_Area_disposed'] = 0
+            df['Repaired_[W]'] = 0
+            df['Repaired_Area'] = 0
             df['Cumulative_Active_Area'] = 0
             df['Installed_Capacity_[W]'] = 0
             for generation, row in df.iterrows(): 
@@ -373,11 +387,15 @@ class Simulation:
                 #generation=4
                 #row=df.iloc[generation]
                 
-                t50, t90 = row['t50'], row['t90']
-                if not weibullInputParams:
-                    weibullIParams = weibull_params({t50: 0.50, t90: 0.90})      
-                else: 
+                if weibullInputParams:
                     weibullIParams = weibullInputParams
+                elif 'weibull_alpha' in row:
+                    # "Weibull Input Params passed internally as a column"
+                    weibullIParams = {'alpha': row['weibull_alpha'], 'beta': row['weibull_beta']}
+                else:
+                    # "Calculating Weibull Params from Modules t50 and T90"
+                    t50, t90 = row['t50'], row['t90']
+                    weibullIParams = weibull_params({t50: 0.50, t90: 0.90})      
                
                 f = weibull_cdf(weibullIParams['alpha'], weibullIParams['beta'])
                 
@@ -394,29 +412,38 @@ class Simulation:
                 activeareacount = []
                 areadisposed_failure = []
                 areadisposed_projectlifetime = []
-            
+                arearepaired = []
+                arearepaired_powergen = []
                 areapowergen = []
                 active=-1
                 disposed_projectlifetime=0
                 for age in range(len(cdf)):
                     disposed_projectlifetime=0
-                    if cdf[age] == 0.0:
+                    if x[age] == 0.0:
                         activeareacount.append(0)
                         areadisposed_failure.append(0)
                         areadisposed_projectlifetime.append(0)
                         areapowergen.append(0)
+                        arearepaired.append(0)
+                        arearepaired_powergen.append(0)
                     else:
                         active += 1
                         activeareaprev = activearea                            
-                        activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repairing']*0.01))
+                        activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repair']*0.01))
+                        arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
+                        arearepaired.append(arearepaired_failure)
+                        arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
+                                        
                         areadisposed_failure.append(activeareaprev-activearea)
                         if age == int(row['mod_lifetime']+generation):
                             activearea_temp = activearea
-                            activearea = 0+activearea*(df.iloc[age]['mod_Repowering']*0.01)
+                            activearea = 0+activearea*(df.iloc[age]['mod_MerchantTail']*0.01)
+                            disposed_projectlifetime = activearea_temp-activearea
+                            activearea = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01)
                             disposed_projectlifetime = activearea_temp-activearea
                         areadisposed_projectlifetime.append(disposed_projectlifetime)
                         activeareacount.append(activearea)
-                        areapowergen.append(activearea*row['mod_eff']*0.01*irradiance_stc*(1-row['mod_degradation']*0.01)**active)                            
+                        areapowergen.append(activearea*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
                 
                 try:
                     # becuase the clip starts with 0 for the installation year, identifying installation year
@@ -424,7 +451,7 @@ class Simulation:
                     fixinitialareacount = next((i for i, e in enumerate(x) if e), None) - 1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
                     areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
-                                         row['Area'] * row['mod_eff'] *0.01 * irradiance_stc)
+                                         row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])
                 except:
                     # Last value does not have a xclip value of nonzero so it goes
                     # to except. But it also means the loop finished for the calculations
@@ -432,7 +459,7 @@ class Simulation:
                     fixinitialareacount = len(cdf)-1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
                     areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
-                                         row['Area'] * row['mod_eff'] *0.01 * irradiance_stc)                   
+                                         row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])                   
                     print("Finished Area+Power Generation Calculations")
                     
             
@@ -443,6 +470,8 @@ class Simulation:
                 df['Cumulative_Area_disposed'] += areadisposed_projectlifetime
                 
                 
+                df['Repaired_[W]'] += arearepaired_powergen
+                df['Repaired_Area'] += arearepaired
                 df['Cumulative_Active_Area'] += activeareacount
                 df['Installed_Capacity_[W]'] += areapowergen
                 Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_projectlifetime)])
@@ -498,6 +527,8 @@ class Simulation:
             # Cleanup of internal renaming and internal use columns
             df.drop(['new_Installed_Capacity_[W]', 't50', 't90'], axis = 1, inplace=True) 
             
+            df['ModuleTotal_MFG']=df['Area']*100/df['mod_MFG_eff']
+            
             self.scenario[scen].data = df
             
             # collection losses here
@@ -530,8 +561,10 @@ class Simulation:
                 #
                 
                 mat_modules_EOL_sentoRecycling = EOL_Recycled.multiply(dm['mat_massperm2'], axis=0)
-                dm['mat_modules_NotRecycled'] = list(EOL_NotRecycled_Landfilled.multiply(dm['mat_massperm2'], axis=0).sum())
+                dm['mat_modules_Collected'] = list(EOL_Collected.multiply(dm['mat_massperm2'], axis=0).sum())
                 dm['mat_modules_NotCollected'] = list(landfill_Collection.multiply(dm['mat_massperm2'], axis=0).sum())
+                dm['mat_modules_Recycled'] = list(EOL_Recycled.multiply(dm['mat_massperm2'], axis=0).sum())
+                dm['mat_modules_NotRecycled'] = list(EOL_NotRecycled_Landfilled.multiply(dm['mat_massperm2'], axis=0).sum())
                                    
                                                                             
                 # mat_EOL_collected_Recycled CHANGE NAME
@@ -608,7 +641,29 @@ class Simulation:
                 self.scenario[scen].material[mat].materialdata = dm
 
     
-    
+    def scenMod_IRENIFY(self, scens=None, ELorRL='RL'):
+        
+        if ELorRL == 'RL':
+            weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
+        if ELorRL == 'EL':
+            weibullInputParams = {'alpha': 2.49, 'beta': 30}  # Regular-loss scenario IRENA
+        
+        if scens is None:
+            scens = list(self.scenario.keys())
+
+        for scen in scens:
+            self.scenario[scen].data['weibull_alpha'] = weibullInputParams['alpha']
+            self.scenario[scen].data['weibull_beta'] = weibullInputParams['beta']
+            self.scenario[scen].data['mod_lifetime'] = 40
+            self.scenario[scen].data['mod_MFG_eff'] = 100.0
+            
+            for mat in self.scenario[scen].material:
+                self.scenario[scen].material[mat].materialdata['mat_MFG_eff'] = 100.0   
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+              
+        return
+        
+        
     def plotScenariosComparison(self, keyword=None):
     
         if keyword is None:
@@ -847,7 +902,8 @@ def sens_StageImprovement(df, stage, improvement=1.3, start_year=None):
         'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
         'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
         'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
-        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_repowering', 'mod_eff', etc.
+        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_Repair',
+        'mod_MerchantTail', 'mod_Reuse', 'mod_eff', etc.
     improvement : decimal
         Percent increase in decimal (i.e. "1.3" for 30% increase in value) 
         or percent decrease (i.e. "0.3") relative to values in df.
@@ -889,7 +945,8 @@ def sens_StageEfficiency(df, stage, target_eff = 95.0, start_year = None,
         'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
         'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
         'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
-        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_repowering', 'mod_eff', etc.
+        'mat_EOL_RecycledHQ_Reused4MFG', 'mod_Repair',
+        'mod_MerchantTail', 'mod_Reuse', 'mod_eff', etc.
     start_year: int
         Year to start modifying the value. This specifies the initial efficiency 
         value that is going to be modified. If None is passed, current year is used.

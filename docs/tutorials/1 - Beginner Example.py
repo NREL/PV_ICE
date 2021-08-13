@@ -72,10 +72,17 @@ r1.calculateMassFlow()
 
 # ### Step 5: Use internal plotting functions to plot results
 
+# Pull out the keywords by printing the keys to the module data or the material data:
+# 
+#     print(r1.scenario.keys())
+#     
+#     print(r1.scenario['standard'].data.keys())
+#     
+#     print(r1.scenario['standard'].material['glass'].materialdata.keys())
+
 # In[6]:
 
 
-#pull out the keywords for choosing plots below
 #print(r1.scenario.keys())
 #print(r1.scenario['standard'].data.keys())
 print(r1.scenario['standard'].material['glass'].materialdata.keys())
@@ -91,6 +98,12 @@ r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:

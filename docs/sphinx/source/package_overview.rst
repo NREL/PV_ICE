@@ -5,12 +5,14 @@ Package Overview
 
 The PV ICE tool considers the following material flow:
 
-.. image:: ../../images_wiki/MFC-Diagram.PNG
+.. image:: ../../images_wiki/PV_ICE_Diagram-Legend.PNG
   :width: 450
 
-The starting point is the installed capacity. From there, the percentage of probability of each arrow determines the amount of material on each stage. For example, if 20% gets Recycled, that means the other 80% goes to landfill.
+PV ICE system boundaries include “Virgin Extraction & Refinement,” “PV Manufacturing,”  “Use Phase,” and “End-of-Life,”. Mass flows (arrows) are affected by process efficiencies (circles) and decision points (hexagons) are either module or material properties (background color). All materials are tracked on a mass-per-module-area basis, allowing conversion between module and material. The module and its materials can follow a linear flow (double arrows, Figure 2) from extraction to EoL, or follow circular pathways (teal arrows). Process efficiencies or yields (circles) dictate extra material demands and wastes generated in a process step (ex: kerf loss of silicon). Decision points (hexagons) are influenced by stakeholders or policy decisions and regulations, dictating the fraction of modules or materials which follow a specific pathway (ex: fraction of modules recycled at EoL).
 
-Input to the calculator is an excel file with the appropriate columns to establish all the paths in the diagram. Examples for baseline input files for the US and World past and projected values are available in the ``PV_ICE/baselines`` folder.
+Calculations are based around annual installed capacity. From there, the percentage of probability of each arrow determines the amount of material on each stage. For example, if 20% gets Recycled, that means the other 80% goes to landfill.
+
+Input to the calculator are csvs with the columns corresponding to the paths in the diagram. Baseline input files of module and materials for the US and World 1995-2050 are available in the ``PV_ICE/baselines`` folder.
 
 For contrast, a completely linear economy would look like:
 
@@ -21,10 +23,7 @@ For contrast, a completely linear economy would look like:
 Framework and Definitions
 ----------------------------
 PV Life Stages/Phases:
-We are setting the boundaries of the PV Life stages at mining/extraction and processing of the virgin materials, which are all represented as a single stage ("Extraction and Material Prep"). Subsequent stages are 
-"Manufacturing", where the processed materials are made into a module; 
-"Lifetime/UsePhase"; where the module is installed and used to generate electricity; and 
-"End of Life" (EOL), where the module has either failed or degraded beyond use. The "R's" modify the linear life stages of a PV module.
+Mining/extraction and processing of the virgin materials are represented as a single efficiency ("Extraction and Material Prep") to capture the order of magnitude of material extraction. Subsequent stages are "Manufacturing", where the processed materials are made into a module; "Lifetime/UsePhase"; where the module is installed and used to generate electricity; and "End of Life" (EOL), where the module has either failed or degraded beyond use. The "R's" modify the linear life stages of a PV module.
 
 EOL
 ~~~~~
@@ -61,9 +60,13 @@ Refurbish
 ^^^^^^^^^^
 Module is at EOL (through failure or degradation), and the module is demounted and taken offsite to resolve defects or problems.
 
-Reuse
-^^^^^^^
-Module is at EOL (through degradation) and is demounted and removed from the field. Offsite, the module is assessed/tested/recertified and found to be in sufficient working condition to be reinstalled at the same site or on a new site. Could be as a result of a solar PV farm "Repowering".
+Resell Reuse
+^^^^^^^^^^^^^^
+Module is at EOL (through degradation) and is demounted and removed from the field. Offsite, the module is assessed/tested/recertified and found to be in sufficient working condition to be sold and reinstalled at a new site. Could be as a result of a solar PV farm "Repowering".
+
+Merchant Tail
+^^^^^^^^^^^^^^^^
+Module is at EOL (through degradation) but is left to continue generating power in the field until a later date.
 
 Recycle
 ^^^^^^^^
