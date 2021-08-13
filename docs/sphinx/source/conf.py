@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# CircularEconomy-MassFlowCalculator documentation build configuration file, April 2020
+# PV ICE documentation build configuration file, April 2020
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -77,7 +77,7 @@ extensions = [
 # Document Python Code
 #autodoc_mock_imports = ['bs4', 'requests']
 #autoapi_type = 'python'
-#autoapi_dirs = '../../../CircularEconomy-MassFlowCalculator'
+#autoapi_dirs = '../../../PV_ICE'
 
 napoleon_use_rtype = False  # group rtype on same line together with return
 
@@ -94,7 +94,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'Circular Economy - Mass Flow Calculator'
+project = 'PV ICE'
 copyright = '2020, NREL'
 author = 'Silvana Ayala, Heather Mirletz'
 release = '0.1.0'
@@ -140,7 +140,7 @@ html_static_path = ['_static']
 html_show_copyright = True
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'CircularEconomy-MassFlowCalculatordoc'
+htmlhelp_basename = 'PV_ICEdoc'
 
 # A workaround for the responsive tables always having annoying scrollbars.
 def setup(app):
@@ -164,7 +164,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'CircularEconomy-MassFlowCalculator.tex', u'CircularEconomy-MassFlowCalculator\\_Python Documentation',
+  ('index', 'PV_ICE.tex', u'PV_ICE\\_Python Documentation',
    u'NREL, github contributors', 'manual'),
 ]
 
@@ -189,9 +189,9 @@ latex_documents = [
 #latex_domain_indices = True
 """
 # extlinks alias
-extlinks = {'issue': ('https://github.com/NREL/CircularEconomy-MassFlowCalculator/issues/%s', 'GH'),
-            'pull': ('https://github.com/NREL/CircularEconomy-MassFlowCalculator/pull/%s', 'GH'),
-            'wiki': ('https://github.com/NREL/CircularEconomy-MassFlowCalculator/wiki/%s', 'wiki '),
+extlinks = {'issue': ('https://github.com/NREL/PV_ICE/issues/%s', 'GH'),
+            'pull': ('https://github.com/NREL/PV_ICE/pull/%s', 'GH'),
+            'wiki': ('https://github.com/NREL/PV_ICE/wiki/%s', 'wiki '),
             'doi': ('http://dx.doi.org/%s', 'DOI: '),
             'ghuser': ('https://github.com/%s', '@')}
 """
@@ -200,7 +200,7 @@ extlinks = {'issue': ('https://github.com/NREL/CircularEconomy-MassFlowCalculato
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'CircularEconomy-MassFlowCalculator', u'CircularEconomy-MassFlowCalculator Documentation',
+    ('index', 'PV_ICE', u'PV_ICE Documentation',
      [u'NREL, github contributors'], 1)
 ]
 
@@ -214,8 +214,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'CircularEconomy-MassFlowCalculator', u'CircularEconomy-MassFlowCalculator Documentation',
-   u'NREL, github contributors', 'CircularEconomy-MassFlowCalculator', 'One line description of project.',
+  ('index', 'PV_ICE', u'PV_ICE Documentation',
+   u'NREL, github contributors', 'PV_ICE', 'One line description of project.',
    'Miscellaneous'),
 ]
 

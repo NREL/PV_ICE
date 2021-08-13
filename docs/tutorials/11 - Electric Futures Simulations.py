@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # US NREL ENERGY FUTURES 2021
+# # US NREL ELECTRIC FUTURES 2021
 
 # In[1]:
 
@@ -1200,30 +1200,6 @@ UScum3sig = UScum3sig.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(
 UScum3sig = UScum3sig.applymap(lambda x: int(x))
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # In[34]:
 
 
@@ -1252,12 +1228,6 @@ for zz in range(0, len(scencases)):
         print("Capacity in Year 2030 [GW]:", round(UScum3sig['Capacity_'+obj+scencase].loc[2030]/1e9))
         print("Capacity in Year 2050 [GW]:", round(UScum3sig['Capacity_'+obj+scencase].loc[2050]/1e9))
         print("****************************\n")
-
-
-# In[35]:
-
-
-UScum3sig
 
 
 # In[36]:
@@ -1347,12 +1317,6 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 
 # ### Waste by year
-
-# In[ ]:
-
-
-
-
 
 # In[42]:
 
@@ -1558,6 +1522,12 @@ f.savefig('Fig_2x1_Yearly EOL Only WASTE by Scenario and Cumulatives_NREL2018.pn
 
 print("Cumulative Eol Only Waste by 2050 Million Tones by case")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:

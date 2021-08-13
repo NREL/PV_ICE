@@ -1,0 +1,32 @@
+.. _whatsnew_0200:
+
+
+v0.2.0 (07 / 07 / 2021)
+=======================
+
+* Renamed Repower to Reuse, added Merchant Tail as possible pathway to continue using modules at EoL.
+* Added tracking of various variables, including Repaired area and repaired power.
+* Implemented bifacial technology considerations in the Mass Flow.
+* Journal with Sensitivy Anylisis for the various functions
+* Journal with Senki inputs for the cumulative mass flows
+* New folder with Open Energy Information (OpenEI) datasets and jupyter journal showing how to save data into format.
+* New page showing baselines on `OpenEI <https://openei.org/wiki/PV_ICE>`_.
+* New page showing results from PVSC Proceedings on `OpenEI PVSC <https://openei.org/wiki/PVSC_PVICE>`_.
+
+
+Baseline Updates
+-----------------
+
+* All baselines updated with 2021 ITRPV Data.
+* Improved lifetime projections and approach, considering T50 and T90s so that 90% of the population has not failed by the end of Project Lifetime. Project Lifetimes follow LBNL data. More documentation in baseline development journals.
+* Glass baseline improvement in manufacturing efficiency values used. 
+* Bifaciality factor baseline added
+* Completed baselines for Glass, Silicon, Silver, Copper and Aluminum Frames
+* Electrification Futures 2021 deployment projections added for US modules.
+
+
+Contributors
+~~~~~~~~~~~~
+* Silvana Ayala (:ghuser:`shirubana`)
+* Heather Mirletz (:ghuser:`heathermirletz`)
+* Acadia Hegedus (:ghuser:`acadiajean`)

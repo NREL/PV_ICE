@@ -3,9 +3,18 @@
 
 # # Duramat Webinar: US NREL Electric Futures 2021
 # 
+<<<<<<< HEAD
 # Simulate Reference and High Electrification scenarios from Electrification Futures
 # 
 # And compares to a glass baseline with High bifacial future projection.
+=======
+# This journal simulates the Reference and High Electrification scenarios from Electrification Futures, and comparing to a glass baseline with High bifacial future projection. 
+# 
+# Installed Capacity considerations from bifacial installations are not considered here.
+# 
+# Results from this journal were presented during Duramat's webinar April 2021 – “The Impacts of Module Reliability and Lifetime on PV in the Circular Economy" presented by Teresa Barnes, Silvana Ayala, and Heather Mirletz, NREL. 
+# 
+>>>>>>> main
 
 # In[1]:
 
@@ -271,17 +280,7 @@ objects = [r1, r2]
 scenarios = ['base', 'high']
 
 
-# In[20]:
-
-
-# PLOTTING GALORE
-
-
-# In[21]:
-
-
-USyearly.keys()
-
+# ## PLOTTING GALORE
 
 # In[22]:
 
@@ -444,12 +443,6 @@ f.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cu
 
 print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
-
-
-# In[ ]:
-
-
-
 
 
 # ### Bonus: Bifacial Trend Cumulative Virgin Needs (not plotted, just values)
@@ -680,10 +673,4 @@ f.savefig(title_Method+' Fig_2x1_Yearly EOL Only WASTE by Scenario and Cumulativ
 
 print("Cumulative Eol Only Waste by 2050 Million Tones by case")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
-
-
-# In[ ]:
-
-
-
 

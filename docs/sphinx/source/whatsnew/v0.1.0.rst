@@ -13,6 +13,7 @@ First official release. This software is still under development, in particular 
 * Added baseline for PV modules installations at US and World level
 * Added baseline for materials Silicon & Glass
 * Added simple pytest
+* Pypi registration
 
 Contributors
 ~~~~~~~~~~~~

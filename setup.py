@@ -9,18 +9,20 @@ usage: pip install -e .
 """
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 # To use a consistent encoding
 from codecs import open
 from os import path
 
-import versioneer
-
 here = path.abspath(path.dirname(__file__))
+
+import sys
+sys.path.insert(0, here)  # make sure local files are available to an isolated build
+import versioneer
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+    long_description = f.read().replace('\r\n', '\n')
 
 setup(
     name='PV_ICE',
@@ -33,7 +35,7 @@ setup(
     cmdclass=versioneer.get_cmdclass(),
 
 
-    description='Tool to evaluate Photovoltaic Dynamic Energy and Material in the Circular Economy',
+    description='Tool to evaluate Circular Economy',
     long_description=long_description,
     long_description_content_type='text/markdown',
 

@@ -39,10 +39,13 @@ Percentage of modules collected from the field at end of life for sorting and di
 module_EOL_collected_recycled_[%] : float
 Percentage of collected end of life modules that are sent to recycling
 
-module_repowering_[%]: float
-Percentage of modules at EOL from degradation that are repowered.
+module_merchantTail_[%]: float
+Percentage of modules at EOL that are reused on-site.
 
-module_repairing_[%]: float
+module_reuse_[%]: float
+Percentage of modules at EOL that are reused at EoL at a different location.
+
+module_repair_[%]: float
 Percentage of modules at EOL from failure that are repaired and go back to functioning  in the field.
 
 
@@ -193,6 +196,7 @@ IRENA Solar Energy Data (https://www.irena.org/solar, and https://irena.org/Stat
 
 Installed Capacity - Projections
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<<<<<<< HEAD
 Projection installation data for 2019 through 2050 options include:
 
 * Increasing deployment of 8.9% compound annual growth rate (CAGR) through 2050 (IRENA, "Future of Solar PV 2019," IRENA, 2019. Accessed: Apr. 02, 2020. [Online]. Available: https://irena.org/-/media/Files/IRENA/Agency/Publication/2019/Nov/IRENA_Future_of_Solar_PV_2019.pdf.)
@@ -212,12 +216,32 @@ Degradation rate (in percentage power loss per year) from:
 
 Failure probability data, i.e. T50 and T90, in years from:
 (D. C. Jordan, B. Marion, C. Deline, T. Barnes, and M. Bolinger, "PV field reliability status - Analysis of 100 000 solar systems," Progress in Photovoltaics: Research and Applications, vol. n/a, no. n/a, Feb. 2020, doi: 10.1002/pip.3262.)
+=======
+Projection installation options through 2050 include:
+1. An 8.9% compound annual growth rate through 2050 (IRENA, "Future of Solar PV 2019," IRENA, 2019. Accessed: Apr. 02, 2020. [Online]. Available: https://irena.org/-/media/Files/IRENA/Agency/Publication/2019/Nov/IRENA_Future_of_Solar_PV_2019.pdf.)
+2. Electrification Futures 2021 US projection data for reference case and High electrification case.
+
+More installation projection options will be available in future.
+
+Module Baselines
+~~~~~~~~~~~~~~~~~~
+Degradation rate (in percentage power loss per year): 
+*D. C. Jordan, S. R. Kurtz, K. VanSant, and J. Newmiller, "Compendium of photovoltaic degradation rates," Progress in Photovoltaics: Research and Applications, vol. 24, no. 7, pp. 978–989, 2016, doi: 10.1002/pip.2744.*
+
+Failure probability data, i.e. T50 and T90, in years: 
+*D. C. Jordan, B. Marion, C. Deline, T. Barnes, and M. Bolinger, "PV field reliability status - Analysis of 100 000 solar systems," Progress in Photovoltaics: Research and Applications, vol. n/a, no. n/a, Feb. 2020, doi: 10.1002/pip.3262.*
+
+Project lifetimes: 
+*M. Bolinger, J. Seel, and D. Robson, “Utility-Scale Solar 2019,” LBNL, Dec. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/lbnl_utility_scale_solar_2019_edition_final.pdf*
+
+>>>>>>> main
 
 Module lifetime, representing the economic project life in years from:
 (R. Wiser, M. Bolinger, and J. Seel, “Benchmarking Utility-Scale PV Operational Expenses and Project Lifetimes: Results from a Survey of U.S. Solar Industry Professionals,” None, 1631678, ark:/13030/qt2pd8608q, Jun. 2020. doi: 10.2172/1631678.)
 
 Material Baselines
 ~~~~~~~~~~~~~~~~~~~~
+<<<<<<< HEAD
 
 Glass
 ^^^^^^^
@@ -391,3 +415,30 @@ Backsheets
 ^^^^^^^^^^^
 
 
+=======
+Calculations for material baseline values can be found in Jupyter Journals "PV_ICE\docs\tutorials\baseline development documentation". Some of the primary references utilized for these calculations are listed here.
+
+Glass 
+^^^^^^^
+*thickness data: ITRPV 2010-2021 
+*module package (g-g vs g-b): ITRPV 2010-2021
+
+Silicon
+^^^^^^^^^
+*wafer thickness, cell size, kerf loss: ITRPV 2010-2021
+*mono-Si vs mc-Si marketshares: *M. Bolinger, J. Seel, and D. Robson, “Utility-Scale Solar 2019,” LBNL, Dec. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/lbnl_utility_scale_solar_2019_edition_final.pdf* and *G. Barbose and N. Darghouth, “Tracking the Sun 2019,” LBNL, Oct. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/tracking_the_sun_2019_report.pdf*
+
+Silver
+^^^^^^^
+*silver per cell: ITRPV 2010-2021
+
+Copper
+^^^^^^^^
+*number of busbars: ITRPV 2010-2021
+*busbar dimensions: *“Standard PV Ribbon Datasheet.” Ulbrich Solar Technologies. Accessed: Jan. 14, 2021. [Online]. Available: https://www.pvribbon.com/wp-content/uploads/Datasheets/SPR_Datasheet.pdf*
+
+Aluminum Frames
+^^^^^^^^^^^^^^^^^
+*framed vs frameless: ITRPV 2010-2021
+*module size: *J. R. Peeters, D. Altamirano, W. Dewulf, and J. R. Duflou, “Forecasting the composition of emerging waste streams with sensitivity analysis: A case study for photovoltaic (PV) panels in Flanders,” Resources, Conservation and Recycling, vol. 120, pp. 14–26, May 2017, doi: 10.1016/j.resconrec.2017.01.001.*
+>>>>>>> main

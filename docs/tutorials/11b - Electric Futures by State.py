@@ -18,14 +18,21 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[2]:
 
 
-MATERIALS = ['glass','silver','silicon', 'copper','aluminium_frames']
-MATERIAL = MATERIALS[0]
-
-MODULEBASELINE = r'..\..\baselines\LiteratureProjections\EF-CapacityByState-basecase.csv'
-MODULEBASELINE_High = r'..\..\baselines\LiteratureProjections\EF-CapacityByState-LowREHighElec.csv'
+if not os.path.exists(testfolder):
+    os.makedirs(testfolder)
 
 
 # In[3]:
+
+
+MATERIALS = ['glass','silver','silicon', 'copper','aluminium_frames']
+MATERIAL = MATERIALS[0]
+
+MODULEBASELINE = r'..\..\baselines\ElectrificationFutures_2021\EF-CapacityByState-basecase.csv'
+MODULEBASELINE_High = r'..\..\baselines\ElectrificationFutures_2021\EF-CapacityByState-LowREHighElec.csv'
+
+
+# In[4]:
 
 
 import PV_ICE
@@ -34,7 +41,7 @@ import pandas as pd
 import numpy as np
 
 
-# In[4]:
+# In[5]:
 
 
 PV_ICE.__version__
@@ -42,11 +49,13 @@ PV_ICE.__version__
 
 # ### Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[5]:
+# In[6]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='US', file=r'..\..\baselines\ReedsSubset\baseline_modules_US_Reeds_EF.csv')
+#r1.createScenario(name='US', file=r'..\..\baselines\ReedsSubset\baseline_modules_US_Reeds_EF.csv')
+r1.createScenario(name='US', file=r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv')
+
 baseline = r1.scenario['US'].data
 baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
 baseline.set_index('year', inplace=True)
@@ -54,7 +63,7 @@ baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
 baseline.head()
 
 
-# In[6]:
+# In[7]:
 
 
 plt.rcParams.update({'font.size': 22})
@@ -77,7 +86,12 @@ for ii in range (len(df.unstack(level=2))):
     SCEN = df.unstack(level=2).iloc[ii].name[0]
     SCEN=SCEN.replace('+', '_')
     filetitle = 'base_'+SCEN+'_'+STATE +'.csv'
-    filetitle = os.path.join(testfolder, 'baselines', filetitle)
+    
+    subtestfolder = os.path.join(testfolder, 'baselines')
+    if not os.path.exists(subtestfolder):
+        os.makedirs(subtestfolder)
+    filetitle = os.path.join(subtestfolder, filetitle)
+
     A = df.unstack(level=2).iloc[ii]
     A = A.droplevel(level=0)
     A.name = 'new_Installed_Capacity_[MW]'
@@ -89,7 +103,7 @@ for ii in range (len(df.unstack(level=2))):
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
     
     
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repowering,mod_Repairing\n"    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repair,mod_MerchantTail,mod_Reuse\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -110,15 +124,20 @@ df.set_index(['Type','State','year'], inplace=True)
 df.head()
 
 
-# In[18]:
+# In[11]:
 
 
 for ii in range (len(df.unstack(level=2))):   
     STATE = df.unstack(level=2).iloc[ii].name[1]
     SCEN = df.unstack(level=2).iloc[ii].name[0]
     SCEN=SCEN.replace('+', '_')
+    
+    subtestfolder = os.path.join(testfolder, 'baselines')
+    if not os.path.exists(subtestfolder):
+        os.makedirs(subtestfolder)
+    
     filetitle = 'LowREHighElec_'+SCEN+'_'+STATE +'.csv'
-    filetitle = os.path.join(testfolder, 'baselines', filetitle)
+    filetitle = os.path.join(subtestfolder, filetitle)
     A = df.unstack(level=2).iloc[ii]
     A = A.droplevel(level=0)
     A.name = 'new_Installed_Capacity_[MW]'
@@ -130,7 +149,7 @@ for ii in range (len(df.unstack(level=2))):
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
     
     
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repowering,mod_Repairing\n"    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repair,mod_MerchantTail,mod_Reuse\n"    "year,MW,%,years,years,%,years,%,%,%,%,%\n"
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -174,18 +193,12 @@ sim2 = [f for f in onlyfiles if f.startswith(Sims[1])]
 # In[16]:
 
 
-STATEs = [i.split('_', 4)[3] for i in sim1]
+STATEs = [i.split('_', 4)[2] for i in sim1]
 STATEs = [i.split('.', 1)[0] for i in STATEs]
 Type = [i.split('_', 4)[1] for i in sim1]
 
 
-# In[ ]:
-
-
-
-
-
-# In[17]:
+# In[31]:
 
 
 #for ii in range (0, 1): #len(scenarios):
@@ -197,12 +210,16 @@ for jj in range (0, len(sim1)):
     filetitle = os.path.join(testfolder, 'baselines', filetitle) 
     scen = Type[jj]+'_'+STATEs[jj]
     r1.createScenario(name=scen, file=filetitle)
-    r1.scenario[scen].addMaterial('glass', file=r'materialsubsets\baseline_material_glass_Reeds.csv')
-    r1.scenario[scen].addMaterial('silicon', file=r'materialsubsets\baseline_material_silicon_Reeds.csv')
-    r1.scenario[scen].addMaterial('silver', file=r'materialsubsets\baseline_material_silver_Reeds.csv')
-    r1.scenario[scen].addMaterial('copper', file=r'materialsubsets\baseline_material_copper_Reeds.csv')
-    r1.scenario[scen].addMaterial('aluminum', file=r'materialsubsets\baseline_material_aluminium_Reeds.csv')
-
+    r1.scenario[scen].addMaterial('glass', file=r'..\..\baselines\SolarFutures_2021\baseline_material_glass_Reeds.csv')
+    r1.scenario[scen].addMaterial('silicon', file=r'..\..\baselines\SolarFutures_2021\baseline_material_silicon_Reeds.csv')
+    r1.scenario[scen].addMaterial('silver', file=r'..\..\baselines\SolarFutures_2021\baseline_material_silver_Reeds.csv')
+    r1.scenario[scen].addMaterial('copper', file=r'..\..\baselines\SolarFutures_2021\baseline_material_copper_Reeds.csv')
+    r1.scenario[scen].addMaterial('aluminum', file=r'..\..\baselines\SolarFutures_2021\baseline_material_aluminium_Reeds.csv')
+    r1.scenario[scen].material['glass'].materialdata = r1.scenario[scen].material['glass'].materialdata[8:].reset_index(drop=True)
+    r1.scenario[scen].material['silicon'].materialdata = r1.scenario[scen].material['silicon'].materialdata[8:].reset_index(drop=True)
+    r1.scenario[scen].material['silver'].materialdata = r1.scenario[scen].material['silver'].materialdata[8:].reset_index(drop=True)
+    r1.scenario[scen].material['copper'].materialdata = r1.scenario[scen].material['copper'].materialdata[8:].reset_index(drop=True)
+    r1.scenario[scen].material['aluminum'].materialdata = r1.scenario[scen].material['aluminum'].materialdata[8:].reset_index(drop=True)
 
 i = 1
 r2 = PV_ICE.Simulation(name=Sims[i], path=testfolder)
@@ -212,14 +229,19 @@ for jj in range (0, len(STATEs)):
     filetitle = os.path.join(testfolder, 'baselines', filetitle)    
     scen = Type[jj]+'_'+STATEs[jj]
     r2.createScenario(name=scen, file=filetitle)
-    r2.scenario[scen].addMaterial('glass', file=r'materialsubsets\baseline_material_glass_Reeds.csv')
-    r2.scenario[scen].addMaterial('silicon', file=r'materialsubsets\baseline_material_silicon_Reeds.csv')
-    r2.scenario[scen].addMaterial('silver', file=r'materialsubsets\baseline_material_silver_Reeds.csv')
-    r2.scenario[scen].addMaterial('copper', file=r'materialsubsets\baseline_material_copper_Reeds.csv')
-    r2.scenario[scen].addMaterial('aluminum', file=r'materialsubsets\baseline_material_aluminium_Reeds.csv')
+    r2.scenario[scen].addMaterial('glass', file=r'..\..\baselines\SolarFutures_2021\baseline_material_glass_Reeds.csv')
+    r2.scenario[scen].addMaterial('silicon', file=r'..\..\baselines\SolarFutures_2021\baseline_material_silicon_Reeds.csv')
+    r2.scenario[scen].addMaterial('silver', file=r'..\..\baselines\SolarFutures_2021\baseline_material_silver_Reeds.csv')
+    r2.scenario[scen].addMaterial('copper', file=r'..\..\baselines\SolarFutures_2021\baseline_material_copper_Reeds.csv')
+    r2.scenario[scen].addMaterial('aluminum', file=r'..\..\baselines\SolarFutures_2021\baseline_material_aluminium_Reeds.csv')
+    r2.scenario[scen].material['glass'].materialdata = r2.scenario[scen].material['glass'].materialdata[8:].reset_index(drop=True)
+    r2.scenario[scen].material['silicon'].materialdata = r2.scenario[scen].material['silicon'].materialdata[8:].reset_index(drop=True)
+    r2.scenario[scen].material['silver'].materialdata = r2.scenario[scen].material['silver'].materialdata[8:].reset_index(drop=True)
+    r2.scenario[scen].material['copper'].materialdata = r2.scenario[scen].material['copper'].materialdata[8:].reset_index(drop=True)
+    r2.scenario[scen].material['aluminum'].materialdata = r2.scenario[scen].material['aluminum'].materialdata[8:].reset_index(drop=True)
 
 
-# In[41]:
+# In[33]:
 
 
 IRENA= False
@@ -259,7 +281,7 @@ else:
 
 # # OPEN EI
 
-# In[42]:
+# In[34]:
 
 
 kk=0
@@ -267,7 +289,7 @@ SFScenarios = [r1, r2]
 SFScenarios[kk].name
 
 
-# In[43]:
+# In[35]:
 
 
 # WORK ON THIS FOIR OPENEI

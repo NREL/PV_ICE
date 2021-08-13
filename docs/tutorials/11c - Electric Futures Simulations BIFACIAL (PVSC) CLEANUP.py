@@ -22,13 +22,20 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[2]:
 
 
+if not os.path.exists(testfolder):
+    os.makedirs(testfolder)
+
+
+# In[3]:
+
+
 MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper']
 MATERIAL = MATERIALS[0]
 
 MODULEBASELINE = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv'
 
 
-# In[3]:
+# In[4]:
 
 
 import PV_ICE
@@ -37,13 +44,13 @@ import pandas as pd
 import numpy as np
 
 
-# In[4]:
+# In[5]:
 
 
 PV_ICE.__version__
 
 
-# In[5]:
+# In[6]:
 
 
 plt.rcParams.update({'font.size': 22})
@@ -52,7 +59,7 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # # Simulation 1: Regular PV ICE
 
-# In[6]:
+# In[7]:
 
 
 MATERIALBASELINE_GLASS_TODAY = r'..\..\baselines\PVSC_2021\baseline_material_glass_hold2020.csv'
@@ -61,7 +68,7 @@ MATERIALBASELINE_GLASS_BIFACIALPROJECTION = r'..\..\baselines\PVSC_2021\baseline
 MATERIALBASELINE_ALFrames_BIFACIALPROJECTION = r'..\..\baselines\PVSC_2021\baseline_material_aluminium_frames_bifacialTrend.csv'
 
 
-# In[7]:
+# In[8]:
 
 
 r1 = PV_ICE.Simulation(name='PV_ICE', path=testfolder)
@@ -81,7 +88,7 @@ for mat in range (2, len(MATERIALS)):
     r1.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
-# In[8]:
+# In[9]:
 
 
 MATERIALBASELINE_Mono = r'..\..\baselines\PVSC_2021\baseline_modules_US_ITRPVPrediction_monofacialModules.csv'
@@ -107,7 +114,7 @@ for mat in range (2, len(MATERIALS)):
     r0b.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
-# In[9]:
+# In[10]:
 
 
 r0c = PV_ICE.Simulation(name='Bifacial_SameInstalls', path=testfolder)
@@ -120,7 +127,7 @@ for mat in range (2, len(MATERIALS)):
     r0c.scenario['Bifacial'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
-# In[10]:
+# In[11]:
 
 
 # BifacialProjection.Bifacial --> now "Bifacial_ReducedInstalls.Bifacial"
@@ -128,7 +135,7 @@ for mat in range (2, len(MATERIALS)):
 # SameInstalls.Bifacial_SameInstalls --> now Bifacial_SameInstalls.Bifacial"
 
 
-# In[11]:
+# In[12]:
 
 
 # Irena EL 
@@ -172,7 +179,7 @@ for mat in range (2, len(MATERIALS)):
     r2.scenario['Bifacial'].material[MATERIALS[mat]].materialdata['mat_MFG_scrap_Recycled'] = 0.0   
 
 
-# In[12]:
+# In[13]:
 
 
 # Irena RL
@@ -219,7 +226,7 @@ for mat in range (2, len(MATERIALS)):
 
 # # Run Simulations 
 
-# In[13]:
+# In[14]:
 
 
 r0a.calculateMassFlow() # Mono.Bifacial
@@ -228,7 +235,7 @@ r0c.calculateMassFlow(bifacialityfactors=bifacialityfactors, reducecapacity=Fals
 r1.calculateMassFlow()
 
 
-# In[14]:
+# In[15]:
 
 
 weibullInputParams = {'alpha': 2.49, 'beta':30}  # Early-loss scenario IRENA
@@ -241,19 +248,19 @@ r3.calculateMassFlow(weibullInputParams=weibullInputParams)
 # ## Creating Summary of results 
 # 
 
-# In[15]:
+# In[16]:
 
 
 Simulations = [r0a, r0b, r0c, r1, r2, r3]
 
 
-# In[16]:
+# In[17]:
 
 
 USyearly=pd.DataFrame()
 
 
-# In[17]:
+# In[18]:
 
 
 keyword='mat_Total_Landfilled'
@@ -277,7 +284,7 @@ for kk in range(0, len(Simulations)):
         USyearly['Waste_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[18]:
+# In[19]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -301,7 +308,7 @@ for kk in range(0, len(Simulations)):
         USyearly['Waste_EOL_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[19]:
+# In[20]:
 
 
 keyword='mat_Total_MFG_Landfilled'
@@ -325,7 +332,7 @@ for kk in range(0, len(Simulations)):
         USyearly['Waste_MFG_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 
-# In[20]:
+# In[21]:
 
 
 keyword='mat_Virgin_Stock'
@@ -352,7 +359,7 @@ for kk in range(0, len(Simulations)):
 # ### Converting to grams to METRIC Tons. 
 # 
 
-# In[21]:
+# In[22]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
@@ -361,7 +368,7 @@ USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 
 # ### Adding NEW Installed Capacity to US
 
-# In[22]:
+# In[23]:
 
 
 keyword='new_Installed_Capacity_[MW]'
@@ -381,7 +388,7 @@ USyearly.head(10)
 
 # # Combining BifacialProjection
 
-# In[23]:
+# In[24]:
 
 
 filter_col_Bifacial_ReducedInstalls = [col for col in USyearly if col.endswith('Bifacial_ReducedInstalls_Bifacial')]
@@ -389,7 +396,7 @@ filter_col_Mono = [col for col in USyearly if col.endswith('Mono_Bifacial')]
 filter_col_Bifacial_SameInstalls = [col for col in USyearly if col.endswith('Bifacial_SameInstalls_Bifacial')]
 
 
-# In[24]:
+# In[25]:
 
 
 new_col_titles = filter_col_Bifacial_ReducedInstalls.copy()
@@ -399,7 +406,7 @@ USyearly = pd.concat([USyearly, df_Bifacial_ReducedInstalls], axis=1)
 USyearly = USyearly[USyearly.columns.drop(filter_col_Bifacial_ReducedInstalls)]
 
 
-# In[25]:
+# In[26]:
 
 
 new_col_titles = filter_col_Bifacial_SameInstalls.copy()
@@ -409,7 +416,7 @@ USyearly = pd.concat([USyearly, df_Bifacial_SameInstalls], axis=1)
 USyearly = USyearly[USyearly.columns.drop(filter_col_Bifacial_SameInstalls)]
 
 
-# In[26]:
+# In[27]:
 
 
 USyearly = USyearly[USyearly.columns.drop(filter_col_Mono)]
@@ -417,7 +424,7 @@ USyearly = USyearly[USyearly.columns.drop(filter_col_Mono)]
 
 # ### Creating Cuulatives 
 
-# In[27]:
+# In[28]:
 
 
 UScum = USyearly.copy()
@@ -427,7 +434,7 @@ UScum.head()
 
 # ### Adding Installed Capacity to US
 
-# In[28]:
+# In[29]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -446,14 +453,14 @@ for kk in range(0, len(Simulations)):
         
 
 
-# In[29]:
+# In[30]:
 
 
 UScum['Capacity_Bifacial_ReducedInstalls'] = UScum['Capacity_Mono_Bifacial'] + UScum['Capacity_Bifacial_ReducedInstalls_Bifacial']
 UScum['Capacity_Bifacial_SameInstalls'] = UScum['Capacity_Mono_Bifacial'] + UScum['Capacity_Bifacial_SameInstalls_Bifacial']
 
 
-# In[30]:
+# In[31]:
 
 
 UScum = UScum[UScum.columns.drop(['Capacity_Mono_Bifacial','Capacity_Bifacial_ReducedInstalls_Bifacial', 'Capacity_Bifacial_SameInstalls_Bifacial'])]
@@ -461,20 +468,20 @@ UScum = UScum[UScum.columns.drop(['Capacity_Mono_Bifacial','Capacity_Bifacial_Re
 
 # ### Reindexing
 
-# In[31]:
+# In[32]:
 
 
 USyearly.index = r1.scenario['Today'].data['year']
 UScum.index = r1.scenario['Today'].data['year']
 
 
-# In[32]:
+# In[33]:
 
 
 UScum.tail(5)
 
 
-# In[33]:
+# In[34]:
 
 
 UScum.to_csv('Cumulative_Results.csv')
@@ -489,7 +496,7 @@ USyearly.to_csv('Yearly_Results.csv')
 
 # ## Mining Capacity
 
-# In[34]:
+# In[35]:
 
 
 mining2020_aluminum = 65267000
@@ -500,7 +507,7 @@ mining2020_silicon = 8000000
 
 # # PLOTTING GALORE
 
-# In[35]:
+# In[36]:
 
 
 list(USyearly.keys())
@@ -512,7 +519,7 @@ list(USyearly.keys())
 
 
 
-# In[36]:
+# In[37]:
 
 
 #VirginStock_glass_PVSC_Today
@@ -575,7 +582,7 @@ axs.set_ylabel('Virgin material needs as a percentage of \n 2020 global mining p
 #fig.savefig(os.path.join(testfolder,'Fig_1x1_MaterialNeeds Ratio to Production_NREL2018.png'), dpi=600)
 
 
-# In[37]:
+# In[38]:
 
 
 bifacial_foo = USyearly[keyw+materials[4]+'_'+name0].iloc[-1]*100/mining2020_aluminum
@@ -585,7 +592,7 @@ print(bifacial_foo)
 print("In Year 2050, AL Needs Ratio to Mining Supply REDUCTION Of ", (today_foo-bifacial_foo)*100/today_foo-bifacial_foo)
 
 
-# In[38]:
+# In[39]:
 
 
 bifacial_foo = USyearly[keyw+materials[4]+'_'+name0].sum()*100/mining2020_aluminum
@@ -595,7 +602,7 @@ print(bifacial_foo)
 print("Cumulative 2020-2050 AL Needs Ratio to Mining Supply REDUCTION Of ", (today_foo-bifacial_foo)*100/today_foo-bifacial_foo)
 
 
-# In[39]:
+# In[40]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -699,7 +706,7 @@ print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[40]:
+# In[41]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -804,7 +811,7 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 # # Waste_ EOL 
 
-# In[41]:
+# In[42]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -907,7 +914,7 @@ a1.set_ylim([0, 28])
 
 
 plt.sca(a1)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -968,7 +975,7 @@ a2.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'S
 a2.set_ylim([0, 28])
 
 plt.sca(a2)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -981,7 +988,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[42]:
+# In[43]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1085,7 +1092,7 @@ a1.set_ylim([0, 28])
 
 
 plt.sca(a1)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -1148,7 +1155,7 @@ a2.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'S
 a2.set_ylim([0, 28])
 
 plt.sca(a2)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -1159,12 +1166,6 @@ fig.savefig(os.path.join(testfolder,'Fig_2x1_Yearly EoL Waste by SCenario and Cu
 
 print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
-
-
-# In[43]:
-
-
-list(USyearly.keys())
 
 
 # In[44]:
@@ -1354,7 +1355,7 @@ a2.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'S
 a2.set_ylim([0, 28])
 
 plt.sca(a2)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 f.tight_layout()
@@ -1370,7 +1371,6 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 
 # PLOT FOR PAPER 
-
 
 plt.rcParams.update({'font.size': 20})
 plt.rcParams['figure.figsize'] = (15, 8)
@@ -1560,7 +1560,7 @@ a2.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'S
 a2.set_ylim([0, 28])
 
 plt.sca(a2)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45, fontsize=17)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45, fontsize=17)
 plt.tick_params(axis='y', which='minor', bottom=False)
 plt.title('Increased bifacial')
 
@@ -1574,18 +1574,6 @@ dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(
 
 
 # # Waste_ EOL + MFG
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
 
 # In[46]:
 
@@ -1690,7 +1678,7 @@ a1.set_ylim([0, 28])
 
 
 plt.sca(a1)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -1751,7 +1739,7 @@ a2.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'S
 a2.set_ylim([0, 28])
 
 plt.sca(a2)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -1868,7 +1856,7 @@ a1.set_ylim([0, 28])
 
 
 plt.sca(a1)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -1931,7 +1919,7 @@ a2.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'S
 a2.set_ylim([0, 28])
 
 plt.sca(a2)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'High\nElec.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -2053,7 +2041,7 @@ a1.set_ylim([0, 28])
 
 
 plt.sca(a1)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'Bifacial'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -2118,7 +2106,7 @@ a2.legend((p0[0], p1[0], p2[0], p3[0], p4[0] ), ('Glass', 'aluminium_frames', 'S
 a2.set_ylim([0, 28])
 
 plt.sca(a2)
-plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n', 'BIFACIAL.'], color='black', rotation=45)
+plt.xticks(range(3), ['Irena\nEarly Loss', 'Irena\nRegular Loss', 'PV ICE\n'], color='black', rotation=45)
 plt.tick_params(axis='y', which='minor', bottom=False)
 
 
@@ -2131,15 +2119,9 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[49]:
-
-
-USyearly.keys()
-
-
 # # BIFACIAL PROJECTION COMPARISON
 
-# In[50]:
+# In[49]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2249,13 +2231,13 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 change = dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[51]:
+# In[50]:
 
 
 print("Reduced Installs reduces EOL Material & MFG Scrap landfilled by {} % ".format(round((change[0] - change[1])*100/change[0],2)))
 
 
-# In[52]:
+# In[51]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2366,13 +2348,13 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 change1 = dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[53]:
+# In[52]:
 
 
 print("Reduction in Manufacturing needs for Reduced Installs of {} %".format(round((change1[0]-change1[1])*100/change1[0],2)))
 
 
-# In[54]:
+# In[53]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2482,7 +2464,7 @@ print("Cumulative Waste by EoL 2050 Million Tones by Scenario")
 change2 = dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[55]:
+# In[54]:
 
 
 print("Manufacturing Loss represents {} % of Virgin Stock Needs ".format(round((change1[0]-change2[0])*100/change1[0],2)))
@@ -2490,20 +2472,20 @@ print("Manufacturing Loss represents {} % of Virgin Stock Needs ".format(round((
 
 # # Installed Capacity
 
-# In[56]:
+# In[55]:
 
 
 filter_col_Capacity = [col for col in UScum if col.startswith('Capacity')]
 filter_col_Capacity
 
 
-# In[57]:
+# In[56]:
 
 
 UScum[filter_col_Capacity].loc[2050]/1e12
 
 
-# In[58]:
+# In[57]:
 
 
 # Sanity Check
@@ -2512,51 +2494,14 @@ plt.plot(UScum['Capacity_Irena_EL_Bifacial']/1e12, 'b.', linewidth=4.0, label='I
 print("No difference in Capacity between Today and Bifacial for Irena", sum(UScum['Capacity_Irena_EL_Today']/1e12-UScum['Capacity_Irena_EL_Bifacial']/1e12))
 
 
-# In[59]:
-
-
-"""
-p1 = (UScum['new_Installed_Capacity_[MW]BifacialProjection']-
-UScum['new_Installed_Capacity_[MW]BifacialProjection_p2'])
-
-UScum['new_Installed_Capacity_[MW]SameInstalls_p2'] = UScum['new_Installed_Capacity_[MW]SameInstalls'] + p1
-
-""" 
-pass
-
-
-# In[ ]:
-
-
-
-
-
-# In[60]:
+# In[58]:
 
 
 filter_col_newInstalls = [col for col in UScum if col.startswith('new_Installed_Capacity_[MW]')]
 UScum[filter_col_newInstalls].loc[2050]/1e6
 
 
-# In[61]:
-
-
-list(UScum.keys())
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[62]:
+# In[59]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2579,55 +2524,49 @@ plt.xlim([2020, 2050])
 plt.ylabel('Installed Capacity [TW]')
 
 
-# In[63]:
+# In[60]:
 
 
 print("Nameplate Capcaity of Bifacial Installations augment by", (UScum['Capacity_Bifacial_SameInstalls'][2050]-UScum['Capacity_Bifacial_ReducedInstalls'][2050])*100/UScum['Capacity_Bifacial_SameInstalls'][2050])
 
 
-# In[64]:
+# In[61]:
 
 
 print("% loss with Irena EL ")
 ((UScum['new_Installed_Capacity_[MW]_Irena_EL'].loc[2050]/1e6)-(UScum['Capacity_Irena_EL_Bifacial'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]_Irena_EL'].loc[2050]/1e6)
 
 
-# In[65]:
+# In[62]:
 
 
 print("% loss with Irena RL ")
 ((UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)-(UScum['Capacity_Irena_RL_Bifacial'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)
 
 
-# In[66]:
+# In[63]:
 
 
 print("% loss with PV ICE, Reducing Bifacial Installs ")
 ((UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)-(UScum['Capacity_Bifacial_ReducedInstalls'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)
 
 
-# In[67]:
+# In[64]:
 
 
 print("% loss with PV ICE, Keeping Bifacial Installs ")
 ((UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)-(UScum['Capacity_Bifacial_SameInstalls'].loc[2050]/1e12))*100/(UScum['new_Installed_Capacity_[MW]_Irena_RL'].loc[2050]/1e6)
 
 
-# In[ ]:
-
-
-
-
-
 # # WEIBULL PLOTS
 
-# In[68]:
+# In[65]:
 
 
 from matplotlib.pyplot import gca,show
 
 
-# In[69]:
+# In[66]:
 
 
 firstgen = r1.scenario['Today'].data.WeibullParams.iloc[0]
@@ -2651,7 +2590,7 @@ Lifetime = 30
 IrenaReg = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
 
 
-# In[70]:
+# In[67]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2672,7 +2611,7 @@ ax.axes.yaxis.set_visible(False)
 #plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
 
 
-# In[71]:
+# In[68]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2693,7 +2632,7 @@ ax.axes.yaxis.set_visible(False)
 #plt.legend(bbox_to_anchor=(1.05, 1.0), loc='bottom');
 
 
-# In[72]:
+# In[69]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -2721,10 +2660,9 @@ gca().annotate('',xy=(38,0.5), xycoords='data',xytext =(18,0.5),textcoords = 'da
 
 # # SAVE RESULTS OPENEI
 
-# In[73]:
+# In[70]:
 
 
-# WORK ON THIS FOIR OPENEI
 
 keyw=['mat_Virgin_Stock','mat_Total_EOL_Landfilled','mat_Total_MFG_Landfilled', 'mat_Total_Landfilled', 
       'new_Installed_Capacity_[MW]','Installed_Capacity_[W]']
@@ -2786,115 +2724,4 @@ scenariolist = scenariolist[cols]
 scenariolist.to_csv('OPENEI 4 - Nation by Year.csv', index=False)
 
 print("Done")
-
-
-# ### UNFINISHED FOR OPENEI STARTING HERE
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-ReliabilityApproach=['Irena_RL', 'Irena_EL', 'PV_ICE', 'Bifacial_ReducedInstalls', 'Bifacial_SameInstalls']
-
-ReliabilityApproachandScenario=['Irena_RL_Today', 'Irena_RL_Bifacial',
-                                'Irena_EL_Today', 'Irena_EL_Bifacial',
-                                'PV_ICE_Today','PV_ICE_Today', 
-                                'Bifacial_ReducedInstalls', 
-                                'Bifacial_SameInstalls']
-TodayModuleComposition = ['Irena_RL_Today', 'Irena_EL_Today', 'PV_ICE_Today']
-BifacialModuleComposition = ['Irena_RL_Bifacial', 'Irena_EL_Bifacial', 'Bifacial_SameInstalls', 'Bifacial_ReducedInstalls']
-
-
-# In[ ]:
-
-
-# WORK ON THIS FOIR OPENEI
-
-keyw=['VirginStock','Waste_EOL','Waste_MFG', 'Waste', 
-      'new_Installed_Capacity_[MW]','Capacity']
-keywprint = ['VirginMaterialDemand','EOLMaterial', 'ManufacturingScrap','ManufacturingScrapAndEOLMaterial',
-             'NewInstalledCapacity','InstalledCapacity'] 
-keywunits = ['MetricTonnes', 'MetricTonnes', 'MetricTonnes', 'MetricTonnes', 
-            'MW','MW']
-keywdcumneed = [True,True,True,True,
-                True,False]
-keywdlevel = ['material','material','material','material',
-             'module','module']
-keywscale = [1000000, 1000000, 1000000, 1000000,
-            1,1e6]
-#materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
-materials = ['glass','aluminium_frames','silver','silicon', 'copper','Module']
-
-# Loop over SF Scenarios
-
-scenariolist = pd.DataFrame()
-
-# Loop over Simularionts r1 r2, r3... 
-for kk in range(3, len(TodayModuleComposition)):
-    obj = Simulations[kk]
-
-        
-        foo = pd.DataFrame()
-        for jj in range (0, len(keyw)):
-
-            if keywdlevel[jj] == 'material':
-                for ii in range (0, len(materials)):    
-                    sentit = '@value|'+keywprint[jj]+'|'+materials[ii].capitalize() +'#'+keywunits[jj]
-                    foo[sentit] = obj.scenario[case].material[materials[ii]].materialdata[keyw[jj]]/keywscale[jj] 
-            
-            else:
-                sentit = '@value|'+keywprint[jj]+'|'+'PV' +'#'+keywunits[jj]
-                #sentit = '@value|'+keywprint[jj]+'#'+keywunits[jj]
-                foo[sentit] = obj.scenario[case].data[keyw[jj]]/keywscale[jj] 
-
-
-
-        foo['@case'] = case
-        foo['@scenario|Solar Futures'] = obj.name
-        foo['@timeseries|Year'] = obj.scenario[case].data.year
-
-        scenariolist = scenariolist.append(foo)   
-
-cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
-scenariolist = scenariolist[cols]
-cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
-scenariolist = scenariolist[cols]
-cols = [scenariolist.columns[-1]] + [col for col in scenariolist if col != scenariolist.columns[-1]]
-scenariolist = scenariolist[cols]
-#scenariolist = scenariolist/1000000 # Converting to Metric Tons
-#scenariolist = scenariolist.applymap(lambda x: round(x, N - int(np.floor(np.log10(abs(x))))))
-#scenariolist = scenariolist.applymap(lambda x: int(x))
-scenariolist.to_csv('OPENEI 4 - Nation by Year.csv', index=False)
-
-print("Done")
-
-
-# In[ ]:
-
-
-"""
-colNames = result.columns[result.columns.str.contains('|ManufacturingScrap|')] 
-result['@value|ManufacturingScrap|Module#MetricTonnes'] = result[colNames].sum(axis=1)
-
-mask = df1['@scenario|Solar Futures']=='SameInstalls'
-df1 = df1[~mask]
-
-df1.rename(columns={'@scenario|Solar Futures': '@scenario|Module Composition Scenario'}, inplace=True)
-
-"""
-
-
-# @scenario   @ timeseries    @ value|VirginMateiralDemand|Glass#MEtric Tonnes ........
-# PVV_ICE             2020
-# PV_ICE               2030
-
-# In[ ]:
-
-
-
 
