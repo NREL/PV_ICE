@@ -432,7 +432,7 @@ class Simulation:
                         activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repair']*0.01))
                         arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
                         arearepaired.append(arearepaired_failure)
-                        arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**arearepaired_failure)                            
+                        arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
                                         
                         areadisposed_failure.append(activeareaprev-activearea)
                         if age == int(row['mod_lifetime']+generation):
