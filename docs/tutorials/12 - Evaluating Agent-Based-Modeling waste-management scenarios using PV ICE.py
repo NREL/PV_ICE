@@ -11,7 +11,8 @@
 #     
 # > <b>    Walzberg, J., Efficiency, U.O.o.E., Renewable Energy , E.E.O.A.M.O., 2020. <i>ABSiCE (Agent-Based Simulations of the Circular Economy).</i> ; National Renewable Energy Lab. (NREL), Golden, CO (United States). ISBN:ABSiCE United States 10.11578/dc.20210114.2 Repository Link: https://github.com/NREL/ABSiCE NREL
 #   
-# This is based on currently accepted work; the manuscript reference and dataset for running this willbe u
+# This is based on currently accepted work by Walzberg et al; the manuscript reference and dataset for running this will be updated upon final release by the scientific journal.
+#     
 #     
 # Steps include: 
 # <ol>
