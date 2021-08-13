@@ -5,8 +5,14 @@
 
 # This Jupyter journal uses results from Walzberg et al.'s PV ABM and inputs them into PV ICE, exploring the effect of increasing CE EoL pathway rates, recycling efficiency, and module reliability. The results of this journals were published on 
 # 
-# > <b> Acadia Hegedus, Silvana Ovaitt, Julien Walzberg, Heather Mirletz, Teresa Barnes. <i> Evaluating material circular efficacy of waste-management scenarios using PV ICE (PV in hte Circular Economy) tool</i>. NREL Student Intern Symposium, 2021.<b>
+# > <b> Acadia Hegedus, Silvana Ovaitt, Julien Walzberg, Heather Mirletz, Teresa Barnes. <i> Evaluating material circular efficacy of waste-management scenarios using PV ICE (PV in the Circular Economy) tool</i>. NREL Student Intern Symposium, 2021.<b>
 # 
+# The agent-based-modeling citation and repository is: 
+#     
+# > <b>    Walzberg, J., Efficiency, U.O.o.E., Renewable Energy , E.E.O.A.M.O., 2020. <i>ABSiCE (Agent-Based Simulations of the Circular Economy).</i> ; National Renewable Energy Lab. (NREL), Golden, CO (United States). ISBN:ABSiCE United States 10.11578/dc.20210114.2 Repository Link: https://github.com/NREL/ABSiCE NREL
+#   
+# This is based on currently accepted work; the manuscript reference and dataset for running this willbe u
+#     
 # Steps include: 
 # <ol>
 #     <li> <a href='#step1'> Import libraries and create test folder for simulations </a> </li>
