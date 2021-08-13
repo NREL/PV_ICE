@@ -2,8 +2,10 @@
 # coding: utf-8
 
 # # TERAWATT WORKSHOP 2021
-# ### Electrification Futures BASE Installations, 
-# ### RELIABILITY APPROACHES: PV ICE, modifying lifetime (t50, t90, ProjecT) and Degradation
+# 
+# Lifetime Analysis of 
+# Electrification Futures BASE Installations
+# with RELIABILITY APPROACHES: PV ICE, modifying lifetime (t50, t90, ProjecT) and Degradation
 # 
 
 # In[1]:

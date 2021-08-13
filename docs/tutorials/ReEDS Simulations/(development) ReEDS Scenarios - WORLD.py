@@ -49,6 +49,12 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[3]:
 
 
+PV_ICE.__version__
+
+
+# In[3]:
+
+
 SFscenarios = ['World']
 
 

@@ -3,7 +3,9 @@
 
 # # Duramat Webinar: US NREL Electric Futures 2021
 # 
-# Simulate REference and High Electrification scenarios, comparing to a glass baseline with High bifacial future projection.
+# Simulate Reference and High Electrification scenarios from Electrification Futures
+# 
+# And compares to a glass baseline with High bifacial future projection.
 
 # In[1]:
 

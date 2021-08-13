@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>(development) ReEDS Scenarios - USA + Circular Economy Pathways</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>PVSC 2021 Fig. 3</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -13971,25 +13971,7 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="ReEDS-Scenarios-on-PV-ICE-Tool-USA">ReEDS Scenarios on PV ICE Tool USA<a class="anchor-link" href="#ReEDS-Scenarios-on-PV-ICE-Tool-USA">&#182;</a></h1>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>To explore different scenarios for furture installation projections of PV (or any technology), ReEDS output data can be useful in providing standard scenarios. ReEDS installation projections are used in this journal as input data to the PV ICE tool.</p>
-<p>Current sections include:</p>
-<p><ol>
-    <li> ### Reading a standard ReEDS output file and saving it in a PV ICE input format </li></p>
-<p><li>### Reading scenarios of interest and running PV ICE tool </li></p>
-<p><li>###Plotting </li></p>
-<p><li>### GeoPlotting.</li>
-&lt;/ol&gt;
-    Notes:</p>
-<p>Scenarios of Interest:
-    the Ref.Mod, 
-o   95-by-35.Adv, and 
-o   95-by-35+Elec.Adv+DR ones</p>
-
+<h1 id="PVSC-2021-Fig.-3">PVSC 2021 Fig. 3<a class="anchor-link" href="#PVSC-2021-Fig.-3">&#182;</a></h1>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
@@ -14002,7 +13984,6 @@ o   95-by-35+Elec.Adv+DR ones</p>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 </pre></div>
@@ -14043,93 +14024,7 @@ o   95-by-35+Elec.Adv+DR ones</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\docs\PV_ICE\TEMP
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">PV_ICE</span><span class="o">.</span><span class="n">__version__</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;0+untagged.469.g6e6de9b.dirty&#39;</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Reading-REEDS-original-file-to-get-list-of-SCENARIOs,-PCAs,-and-STATEs">Reading REEDS original file to get list of SCENARIOs, PCAs, and STATEs<a class="anchor-link" href="#Reading-REEDS-original-file-to-get-list-of-SCENARIOs,-PCAs,-and-STATEs">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reedsFile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx&#39;</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Input file is stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">reedsFile</span><span class="p">)</span>
-
-<span class="n">rawdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">reedsFile</span><span class="p">,</span>
-                        <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;UPV Capacity (GW)&quot;</span><span class="p">)</span>
-                        <span class="c1">#index_col=[0,2,3]) #this casts scenario, PCA and State as levels</span>
-<span class="c1">#now set year as an index in place</span>
-<span class="c1">#rawdf.drop(columns=[&#39;State&#39;], inplace=True)</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Tech&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span><span class="s1">&#39;PCA&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Input file is stored in C:\Users\sayala\Documents\GitHub\December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx
+<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP
 </pre>
 </div>
 </div>
@@ -14141,12 +14036,10 @@ o   95-by-35+Elec.Adv+DR ones</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scenarios</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;Scenario&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-<span class="n">PCAs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;PCA&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-<span class="n">STATEs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;State&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">years</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span><span class="mi">2051</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -14154,20 +14047,13 @@ o   95-by-35+Elec.Adv+DR ones</p>
 </div>
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Reading-GIS-inputs">Reading GIS inputs<a class="anchor-link" href="#Reading-GIS-inputs">&#182;</a></h3>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GISfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;gis_centroid_n.xlsx&#39;</span><span class="p">)</span>
-<span class="n">GIS</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">GISfile</span><span class="p">)</span>
-<span class="n">GIS</span> <span class="o">=</span> <span class="n">GIS</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span><span class="s1">&#39;PVSC_USYearly_DataforPlot.csv&#39;</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -14178,266 +14064,100 @@ o   95-by-35+Elec.Adv+DR ones</p>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># USyearly.to_csv(&#39;PVSC_USYearly_DataforPlot.csv&#39;)</span>
 
 
-<div class="jp-OutputArea jp-Cell-outputArea">
 
-<div class="jp-OutputArea-child">
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    
+<span class="n">keywords</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;VirginStock_&#39;</span><span class="p">,</span> <span class="s1">&#39;Waste_&#39;</span><span class="p">]</span>
+<span class="n">SFScenarios</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Reference.Mod&#39;</span><span class="p">,</span> <span class="s1">&#39;95-by-35.Adv&#39;</span><span class="p">,</span> <span class="s1">&#39;95-by-35_Elec.Adv_DR&#39;</span><span class="p">]</span>
+<span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="s1">&#39;aluminum&#39;</span><span class="p">]</span>
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span> <span class="o">=</span> <span class="mf">.6</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">.001</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span> <span class="o">=</span> <span class="mf">.3</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">.001</span><span class="p">)</span>
 
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>long</th>
-      <th>lat</th>
-      <th>country</th>
-    </tr>
-    <tr>
-      <th>id</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>p1</th>
-      <td>-121.452252</td>
-      <td>47.820991</td>
-      <td>USA</td>
-    </tr>
-    <tr>
-      <th>p10</th>
-      <td>-117.159039</td>
-      <td>35.120104</td>
-      <td>USA</td>
-    </tr>
-    <tr>
-      <th>p100</th>
-      <td>-78.257714</td>
-      <td>38.791108</td>
-      <td>USA</td>
-    </tr>
-    <tr>
-      <th>p101</th>
-      <td>-82.192477</td>
-      <td>28.708695</td>
-      <td>USA</td>
-    </tr>
-    <tr>
-      <th>p102</th>
-      <td>-80.563731</td>
-      <td>26.677092</td>
-      <td>USA</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;p1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">long</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>-121.4522522</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Create-Scenarios-in-PV_ICE">Create Scenarios in PV_ICE<a class="anchor-link" href="#Create-Scenarios-in-PV_ICE">&#182;</a></h3>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Rename-difficult-characters-from-Scenarios-Names">Rename difficult characters from Scenarios Names<a class="anchor-link" href="#Rename-difficult-characters-from-Scenarios-Names">&#182;</a></h4>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">simulationname</span> <span class="o">=</span> <span class="n">scenarios</span>
-<span class="n">simulationname</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">simulationname</span><span class="p">]</span>
-<span class="n">simulationname</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;Reference.Mod&#39;,
- &#39;Reference.Adv&#39;,
- &#39;Reference.Adv_DR&#39;,
- &#39;95-by-35.Mod&#39;,
- &#39;95-by-35.Adv&#39;,
- &#39;95-by-35.Adv_DR&#39;,
- &#39;95-by-35_Elec.Mod&#39;,
- &#39;95-by-35_Elec.Adv&#39;,
- &#39;95-by-35_Elec.Adv_DR&#39;]</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Downselect-to-Solar-Future-scenarios-of-interest">Downselect to Solar Future scenarios of interest<a class="anchor-link" href="#Downselect-to-Solar-Future-scenarios-of-interest">&#182;</a></h4><p>Scenarios of Interest:</p>
-<p><li> Ref.Mod</p>
-<p><li> 95-by-35.Adv</p>
-<p><li> 95-by-35+Elec.Adv+DR</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">SFscenarios</span> <span class="o">=</span> <span class="p">[</span><span class="n">simulationname</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">simulationname</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">simulationname</span><span class="p">[</span><span class="mi">8</span><span class="p">]]</span>
-<span class="n">SFscenarios</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;Reference.Mod&#39;, &#39;95-by-35.Adv&#39;, &#39;95-by-35_Elec.Adv_DR&#39;]</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Create-the-REFERENCE-Scenario-and-assign-Baselines">Create the REFERENCE Scenario and assign Baselines<a class="anchor-link" href="#Create-the-REFERENCE-Scenario-and-assign-Baselines">&#182;</a></h4><p>Keeping track of each scenario as its own PV ICE Object.</p>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for ii in range (0, 1): #len(scenarios):</span>
+<span class="n">axs</span> <span class="o">=</span> <span class="n">axs</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">rr</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;USA&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;USA&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>    
-    <span class="n">rr</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">file</span><span class="o">=</span><span class="n">filetitle</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv&#39;</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv&#39;</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv&#39;</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv&#39;</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;aluminum&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv&#39;</span><span class="p">)</span>
+
+<span class="c1">### PLOT 1</span>
+
+<span class="c1"># Loop over Keywords</span>
+<span class="n">ii</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">keyw</span> <span class="o">=</span> <span class="n">keywords</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+<span class="c1"># Loop over SF Scenarios</span>
+<span class="n">kk</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2018</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mf">2050.5</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;aluminum&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">stackplot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> 
+                                                  <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> 
+                                                  <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> 
+                                                  <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> 
+                                                  <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> 
+                                                  <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">])</span>
+<span class="c1">#axs[i].ylabel(&#39;Mass [Tons]&#39;)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2050</span><span class="p">])</span>
+<span class="c1">#axs[i].set_title(keyw+ &#39; &#39; + obj.name)</span>
+<span class="c1">#axs[i].legend(materials)</span>
+
+<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span> 
+
+<span class="c1">### PLOT 2</span>
+
+<span class="n">ii</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">keyw</span> <span class="o">=</span> <span class="n">keywords</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+<span class="c1"># Loop over SF Scenarios</span>
+<span class="n">kk</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="n">obj</span> <span class="o">=</span> <span class="n">SFScenarios</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2018</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mf">2050.5</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;aluminum&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">stackplot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="mi">907185</span><span class="p">,</span> 
+                                                  <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="mi">907185</span><span class="p">,</span> 
+                                                  <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="mi">907185</span><span class="p">,</span> 
+                                                  <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="mi">907185</span><span class="p">,</span> 
+                                                  <span class="n">USyearly</span><span class="p">[</span><span class="n">keyw</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">SFScenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="mi">907185</span><span class="p">,</span> 
+                                                  <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">])</span>
+<span class="c1">#axs[i].ylabel(&#39;Mass [Tons]&#39;)</span>
+<span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2050</span><span class="p">])</span>
+<span class="c1">#axs[i].set_title(keyw+ &#39; &#39; + obj.name)</span>
+<span class="c1">#axs[i].legend(materials)</span>
+
+<span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span> 
+
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2e7</span><span class="p">])</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">5e6</span><span class="p">])</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Virgin Stock Needs&quot;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Waste&quot;</span><span class="p">)</span>
+        
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Mass [Tons]&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Mass [Tons]&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">materials</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span><span class="s1">&#39;testplot.png&#39;</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14456,787 +14176,18 @@ o   95-by-35+Elec.Adv+DR ones</p>
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="2-FINISH:-Set-characteristics-of-Recycling-to-SF-values.">2 FINISH: Set characteristics of Recycling to SF values.<a class="anchor-link" href="#2-FINISH:-Set-characteristics-of-Recycling-to-SF-values.">&#182;</a></h1>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Calculate-Mass-Flow">Calculate Mass Flow<a class="anchor-link" href="#Calculate-Mass-Flow">&#182;</a></h4>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">IRENA</span><span class="o">=</span> <span class="kc">False</span>
-<span class="n">ELorRL</span> <span class="o">=</span> <span class="s1">&#39;RL&#39;</span>
-<span class="k">if</span> <span class="n">IRENA</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">ELorRL</span> <span class="o">==</span> <span class="s1">&#39;RL&#39;</span><span class="p">:</span>
-        <span class="n">weibullInputParams</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">5.3759</span><span class="p">}</span>  <span class="c1"># Regular-loss scenario IRENA</span>
-    <span class="k">if</span> <span class="n">ELorRL</span> <span class="o">==</span> <span class="s1">&#39;EL&#39;</span><span class="p">:</span>
-        <span class="n">weibullInputParams</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">2.49</span><span class="p">}</span>  <span class="c1"># Regular-loss scenario IRENA</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span><span class="n">weibullInputParams</span><span class="p">,</span> <span class="n">weibullAlphaOnly</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">title_Method</span> <span class="o">=</span> <span class="s1">&#39;Irena_&#39;</span><span class="o">+</span><span class="n">ELorRL</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
-    <span class="n">title_Method</span> <span class="o">=</span> <span class="s1">&#39;PVICE&#39;</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Working on Scenario:  Reference.Mod
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-==&gt; Working on Material :  aluminum
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scenarios:&quot;</span><span class="p">,</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Module Keys:&quot;</span><span class="p">,</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Material Keys: &quot;</span><span class="p">,</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Scenarios: dict_keys([&#39;Reference.Mod&#39;])
-Module Keys: Index([&#39;year&#39;, &#39;new_Installed_Capacity_[MW]&#39;, &#39;mod_eff&#39;, &#39;mod_reliability_t50&#39;,
-       &#39;mod_reliability_t90&#39;, &#39;mod_degradation&#39;, &#39;mod_lifetime&#39;, &#39;mod_MFG_eff&#39;,
-       &#39;mod_EOL_collection_eff&#39;, &#39;mod_EOL_collected_recycled&#39;,
-       &#39;mod_Repowering&#39;, &#39;mod_Repairing&#39;, &#39;Area&#39;,
-       &#39;Cumulative_Area_disposedby_Failure&#39;,
-       &#39;Cumulative_Area_disposedby_ProjectLifetime&#39;,
-       &#39;Cumulative_Area_disposed&#39;, &#39;Cumulative_Active_Area&#39;,
-       &#39;Installed_Capacity_[W]&#39;, &#39;WeibullParams&#39;, &#39;EOL_on_Year_0&#39;,
-       &#39;EOL_on_Year_1&#39;, &#39;EOL_on_Year_2&#39;, &#39;EOL_on_Year_3&#39;, &#39;EOL_on_Year_4&#39;,
-       &#39;EOL_on_Year_5&#39;, &#39;EOL_on_Year_6&#39;, &#39;EOL_on_Year_7&#39;, &#39;EOL_on_Year_8&#39;,
-       &#39;EOL_on_Year_9&#39;, &#39;EOL_on_Year_10&#39;, &#39;EOL_on_Year_11&#39;, &#39;EOL_on_Year_12&#39;,
-       &#39;EOL_on_Year_13&#39;, &#39;EOL_on_Year_14&#39;, &#39;EOL_on_Year_15&#39;, &#39;EOL_on_Year_16&#39;,
-       &#39;EOL_on_Year_17&#39;, &#39;EOL_on_Year_18&#39;, &#39;EOL_on_Year_19&#39;, &#39;EOL_on_Year_20&#39;,
-       &#39;EOL_on_Year_21&#39;, &#39;EOL_on_Year_22&#39;, &#39;EOL_on_Year_23&#39;, &#39;EOL_on_Year_24&#39;,
-       &#39;EOL_on_Year_25&#39;, &#39;EOL_on_Year_26&#39;, &#39;EOL_on_Year_27&#39;, &#39;EOL_on_Year_28&#39;,
-       &#39;EOL_on_Year_29&#39;, &#39;EOL_on_Year_30&#39;, &#39;EOL_on_Year_31&#39;, &#39;EOL_on_Year_32&#39;,
-       &#39;EOL_on_Year_33&#39;, &#39;EOL_on_Year_34&#39;, &#39;EOL_on_Year_35&#39;, &#39;EOL_on_Year_36&#39;,
-       &#39;EOL_on_Year_37&#39;, &#39;EOL_on_Year_38&#39;, &#39;EOL_on_Year_39&#39;, &#39;EOL_on_Year_40&#39;,
-       &#39;EOL_on_Year_41&#39;, &#39;EoL_Collected&#39;, &#39;EoL_NotCollected&#39;, &#39;EoL_Recycled&#39;,
-       &#39;EoL_NotRecycled_Landfilled&#39;],
-      dtype=&#39;object&#39;)
-Material Keys:  Index([&#39;year&#39;, &#39;mat_virgin_eff&#39;, &#39;mat_massperm2&#39;, &#39;mat_MFG_eff&#39;,
-       &#39;mat_MFG_scrap_Recycled&#39;, &#39;mat_MFG_scrap_Recycling_eff&#39;,
-       &#39;mat_MFG_scrap_Recycled_into_HQ&#39;,
-       &#39;mat_MFG_scrap_Recycled_into_HQ_Reused4MFG&#39;,
-       &#39;mat_EOL_collected_Recycled&#39;, &#39;mat_EOL_Recycling_eff&#39;,
-       &#39;mat_EOL_Recycled_into_HQ&#39;, &#39;mat_EOL_RecycledHQ_Reused4MFG&#39;,
-       &#39;mat_modules_NotRecycled&#39;, &#39;mat_modules_NotCollected&#39;,
-       &#39;mat_EOL_sento_Recycling&#39;, &#39;mat_EOL_NotRecycled_Landfilled&#39;,
-       &#39;mat_EOL_Recycled&#39;, &#39;mat_EOL_Recycled_Losses_Landfilled&#39;,
-       &#39;mat_EOL_Recycled_2_HQ&#39;, &#39;mat_EOL_Recycled_2_OQ&#39;,
-       &#39;mat_EoL_Recycled_HQ_into_MFG&#39;, &#39;mat_EOL_Recycled_HQ_into_OU&#39;,
-       &#39;mat_UsedinManufacturing&#39;, &#39;mat_Manufacturing_Input&#39;, &#39;mat_MFG_Scrap&#39;,
-       &#39;mat_MFG_Scrap_Sentto_Recycling&#39;, &#39;mat_MFG_Scrap_Landfilled&#39;,
-       &#39;mat_MFG_Scrap_Recycled_Successfully&#39;,
-       &#39;mat_MFG_Scrap_Recycled_Losses_Landfilled&#39;, &#39;mat_MFG_Recycled_into_HQ&#39;,
-       &#39;mat_MFG_Recycled_into_OQ&#39;, &#39;mat_MFG_Recycled_HQ_into_MFG&#39;,
-       &#39;mat_MFG_Recycled_HQ_into_OU&#39;, &#39;mat_Virgin_Stock&#39;,
-       &#39;mat_Total_EOL_Landfilled&#39;, &#39;mat_Total_MFG_Landfilled&#39;,
-       &#39;mat_Total_Landfilled&#39;, &#39;mat_Total_Recycled_OU&#39;],
-      dtype=&#39;object&#39;)
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">r1.plotScenariosComparison(keyword=&#39;Cumulative_Area_disposedby_Failure&#39;)</span>
-<span class="sd">r1.plotMaterialComparisonAcrossScenarios(material=&#39;silicon&#39;, keyword=&#39;mat_Total_Landfilled&#39;)</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="k">pass</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Aggregating-PCAs-Material-Landfilled-to-obtain-US-totals-by-Year">Aggregating PCAs Material Landfilled to obtain US totals by Year<a class="anchor-link" href="#Aggregating-PCAs-Material-Landfilled-to-obtain-US-totals-by-Year">&#182;</a></h2>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;mat_Total_Landfilled&#39;</span>
-<span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;mat_Virgin_Stock&#39;</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_Total_Landfilled&#39;</span><span class="p">]</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
 
-<div class="jp-OutputArea-child">
 
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>0     1.677604e+09
-1     1.542129e+09
-2     1.864615e+10
-3     1.794693e+10
-4     5.755228e+10
-5     5.626462e+10
-6     1.190584e+11
-7     1.099151e+11
-8     1.465299e+11
-9     1.493990e+11
-10    2.683464e+11
-11    2.427442e+11
-12    2.560304e+11
-13    2.518589e+11
-14    3.347866e+11
-15    3.314195e+11
-16    5.099833e+11
-17    5.069446e+11
-18    6.629206e+11
-19    6.673354e+11
-20    9.351717e+11
-21    9.371938e+11
-22    9.883536e+11
-23    9.976634e+11
-24    1.063537e+12
-25    1.083313e+12
-26    1.167408e+12
-27    1.200502e+12
-28    1.360140e+12
-29    1.403517e+12
-30    1.564731e+12
-31    1.604215e+12
-32    1.736414e+12
-33    1.760313e+12
-34    1.967942e+12
-35    1.991998e+12
-36    2.157762e+12
-37    2.236637e+12
-38    2.591186e+12
-39    2.765081e+12
-40    3.447321e+12
-41    3.559147e+12
-Name: mat_Total_Landfilled, dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="s1">&#39;aluminum&#39;</span><span class="p">]</span>
-<span class="n">keywd</span> <span class="o">=</span> <span class="s1">&#39;mat_Total_Landfilled&#39;</span>
-
-<span class="n">USyearly</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-
-<span class="c1">#for jj in range(len(SFscenarios)):</span>
-<span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-    <span class="n">obj</span> <span class="o">=</span> <span class="n">SFscenarios</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">materials</span><span class="p">)):</span>
-        <span class="n">USyearly</span><span class="p">[</span><span class="s1">&#39;Waste_&#39;</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_Total_Landfilled&#39;</span><span class="p">]</span>
-
-    <span class="n">filter_col</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">USyearly</span> <span class="k">if</span> <span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Waste&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">col</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span> <span class="p">]</span>
-    <span class="n">USyearly</span><span class="p">[</span><span class="s1">&#39;Waste_Module_&#39;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">filter_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="s1">&#39;aluminum&#39;</span><span class="p">]</span>
-<span class="n">keywd</span> <span class="o">=</span> <span class="s1">&#39;VirginStock_Module_&#39;</span>
-
-<span class="c1">#for jj in range(len(SFscenarios)):</span>
-<span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">obj</span> <span class="o">=</span> <span class="n">SFscenarios</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">materials</span><span class="p">)):</span>
-        <span class="n">USyearly</span><span class="p">[</span><span class="s1">&#39;VirginStock_&#39;</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_Total_Landfilled&#39;</span><span class="p">]</span>
-
-    <span class="n">filter_col</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">USyearly</span> <span class="k">if</span> <span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Waste&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">col</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span> <span class="p">]</span>
-    <span class="n">USyearly</span><span class="p">[</span><span class="s1">&#39;VirginStock_Module_&#39;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">filter_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Converting-to-grams-to-METRIC-Tons.">Converting to grams to METRIC Tons.<a class="anchor-link" href="#Converting-to-grams-to-METRIC-Tons.">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span> <span class="o">=</span> <span class="n">USyearly</span><span class="o">/</span><span class="mi">1000000</span>  <span class="c1"># This is the ratio for Metric tonnes</span>
-<span class="c1">#907185 -- this is for US tons</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Adding-Installed-Capacity-to-US">Adding Installed Capacity to US<a class="anchor-link" href="#Adding-Installed-Capacity-to-US">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;Installed_Capacity_[W]&#39;</span>
-
-<span class="c1">#for jj in range(len(SFscenarios)):</span>
-<span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-    <span class="n">obj</span> <span class="o">=</span> <span class="n">SFscenarios</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
-    <span class="n">USyearly</span><span class="p">[</span><span class="s2">&quot;Capacity_&quot;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">keyword</span><span class="p">]</span>
- 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
+<div class="jp-RenderedImage jp-OutputArea-output ">
+<img src="data:image/png;base64,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
+"
+>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Waste_glass_Reference.Mod</th>
-      <th>Waste_silicon_Reference.Mod</th>
-      <th>Waste_silver_Reference.Mod</th>
-      <th>Waste_copper_Reference.Mod</th>
-      <th>Waste_aluminum_Reference.Mod</th>
-      <th>Waste_Module_Reference.Mod</th>
-      <th>VirginStock_glass_Reference.Mod</th>
-      <th>VirginStock_silicon_Reference.Mod</th>
-      <th>VirginStock_silver_Reference.Mod</th>
-      <th>VirginStock_copper_Reference.Mod</th>
-      <th>VirginStock_aluminum_Reference.Mod</th>
-      <th>VirginStock_Module_Reference.Mod</th>
-      <th>Capacity_Reference.Mod</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1677.604029</td>
-      <td>645.569495</td>
-      <td>4.493061</td>
-      <td>0.419352</td>
-      <td>0.000000e+00</td>
-      <td>2328.085937</td>
-      <td>1677.604029</td>
-      <td>645.569495</td>
-      <td>4.493061</td>
-      <td>0.419352</td>
-      <td>0.000000e+00</td>
-      <td>4.656172e+03</td>
-      <td>1.039020e+08</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1542.129396</td>
-      <td>294.232988</td>
-      <td>2.106274</td>
-      <td>0.408244</td>
-      <td>3.034419e-07</td>
-      <td>1838.876902</td>
-      <td>1542.129396</td>
-      <td>294.232988</td>
-      <td>2.106274</td>
-      <td>0.408244</td>
-      <td>3.034419e-07</td>
-      <td>3.677754e+03</td>
-      <td>2.070834e+08</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>18646.154082</td>
-      <td>3511.463031</td>
-      <td>21.222768</td>
-      <td>4.936146</td>
-      <td>2.942192e-05</td>
-      <td>22183.776056</td>
-      <td>18646.154082</td>
-      <td>3511.463031</td>
-      <td>21.222768</td>
-      <td>4.936146</td>
-      <td>2.942192e-05</td>
-      <td>4.436755e+04</td>
-      <td>1.486954e+09</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>17946.926697</td>
-      <td>3521.239799</td>
-      <td>16.341542</td>
-      <td>4.751042</td>
-      <td>4.524681e-04</td>
-      <td>21489.259533</td>
-      <td>17946.926697</td>
-      <td>3521.239799</td>
-      <td>16.341542</td>
-      <td>4.751042</td>
-      <td>4.524681e-04</td>
-      <td>4.297852e+04</td>
-      <td>2.758626e+09</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>57552.283109</td>
-      <td>11158.429476</td>
-      <td>38.159242</td>
-      <td>15.848832</td>
-      <td>3.548157e-03</td>
-      <td>68764.724207</td>
-      <td>57552.283109</td>
-      <td>11158.429476</td>
-      <td>38.159242</td>
-      <td>15.848832</td>
-      <td>3.548157e-03</td>
-      <td>1.375294e+05</td>
-      <td>7.097585e+09</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>56264.623717</td>
-      <td>10608.341226</td>
-      <td>33.974876</td>
-      <td>15.196321</td>
-      <td>1.984699e-02</td>
-      <td>66922.155988</td>
-      <td>56264.623717</td>
-      <td>10608.341226</td>
-      <td>33.974876</td>
-      <td>15.196321</td>
-      <td>1.984699e-02</td>
-      <td>1.338443e+05</td>
-      <td>1.141307e+10</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>119058.391060</td>
-      <td>23596.223473</td>
-      <td>64.995132</td>
-      <td>36.990533</td>
-      <td>8.563095e-02</td>
-      <td>142756.685829</td>
-      <td>119058.391060</td>
-      <td>23596.223473</td>
-      <td>64.995132</td>
-      <td>36.990533</td>
-      <td>8.563095e-02</td>
-      <td>2.855134e+05</td>
-      <td>2.148921e+10</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>109915.057687</td>
-      <td>20789.522414</td>
-      <td>58.288941</td>
-      <td>39.177919</td>
-      <td>2.989630e-01</td>
-      <td>130802.345924</td>
-      <td>109915.057687</td>
-      <td>20789.522414</td>
-      <td>58.288941</td>
-      <td>39.177919</td>
-      <td>2.989630e-01</td>
-      <td>2.616047e+05</td>
-      <td>3.151968e+10</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>146529.920393</td>
-      <td>23328.102403</td>
-      <td>82.772508</td>
-      <td>64.962707</td>
-      <td>8.845051e-01</td>
-      <td>170006.642516</td>
-      <td>146529.920393</td>
-      <td>23328.102403</td>
-      <td>82.772508</td>
-      <td>64.962707</td>
-      <td>8.845051e-01</td>
-      <td>3.400133e+05</td>
-      <td>4.641201e+10</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>149399.000328</td>
-      <td>18288.276839</td>
-      <td>83.887837</td>
-      <td>64.431714</td>
-      <td>2.303586e+00</td>
-      <td>167837.900304</td>
-      <td>149399.000328</td>
-      <td>18288.276839</td>
-      <td>83.887837</td>
-      <td>64.431714</td>
-      <td>2.303586e+00</td>
-      <td>3.356758e+05</td>
-      <td>6.124645e+10</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>268346.381637</td>
-      <td>29993.592149</td>
-      <td>144.082104</td>
-      <td>127.520478</td>
-      <td>5.435968e+00</td>
-      <td>298617.012336</td>
-      <td>268346.381637</td>
-      <td>29993.592149</td>
-      <td>144.082104</td>
-      <td>127.520478</td>
-      <td>5.435968e+00</td>
-      <td>5.972340e+05</td>
-      <td>8.929771e+10</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>242744.160050</td>
-      <td>25518.195785</td>
-      <td>121.143841</td>
-      <td>123.100164</td>
-      <td>1.187290e+01</td>
-      <td>268518.472738</td>
-      <td>242744.160050</td>
-      <td>25518.195785</td>
-      <td>121.143841</td>
-      <td>123.100164</td>
-      <td>1.187290e+01</td>
-      <td>5.370369e+05</td>
-      <td>1.172382e+11</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>256030.389040</td>
-      <td>26657.458969</td>
-      <td>118.860036</td>
-      <td>130.560119</td>
-      <td>2.437564e+01</td>
-      <td>282961.643808</td>
-      <td>256030.389040</td>
-      <td>26657.458969</td>
-      <td>118.860036</td>
-      <td>130.560119</td>
-      <td>2.437564e+01</td>
-      <td>5.659233e+05</td>
-      <td>1.472412e+11</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>251858.925093</td>
-      <td>25985.937441</td>
-      <td>108.453226</td>
-      <td>129.158501</td>
-      <td>4.756387e+01</td>
-      <td>278130.038129</td>
-      <td>251858.925093</td>
-      <td>25985.937441</td>
-      <td>108.453226</td>
-      <td>129.158501</td>
-      <td>4.756387e+01</td>
-      <td>5.562601e+05</td>
-      <td>1.770916e+11</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>334786.612997</td>
-      <td>31874.954165</td>
-      <td>135.290536</td>
-      <td>173.196073</td>
-      <td>8.889422e+01</td>
-      <td>367058.947994</td>
-      <td>334786.612997</td>
-      <td>31874.954165</td>
-      <td>135.290536</td>
-      <td>173.196073</td>
-      <td>8.889422e+01</td>
-      <td>7.341179e+05</td>
-      <td>2.173628e+11</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>331419.539472</td>
-      <td>28517.495370</td>
-      <td>124.956107</td>
-      <td>173.007376</td>
-      <td>1.599653e+02</td>
-      <td>360394.963586</td>
-      <td>331419.539472</td>
-      <td>28517.495370</td>
-      <td>124.956107</td>
-      <td>173.007376</td>
-      <td>1.599653e+02</td>
-      <td>7.207899e+05</td>
-      <td>2.574262e+11</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>509983.268330</td>
-      <td>41891.286540</td>
-      <td>181.799905</td>
-      <td>258.042130</td>
-      <td>2.781347e+02</td>
-      <td>552592.531583</td>
-      <td>509983.268330</td>
-      <td>41891.286540</td>
-      <td>181.799905</td>
-      <td>258.042130</td>
-      <td>2.781347e+02</td>
-      <td>1.105185e+06</td>
-      <td>3.199980e+11</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>506944.641317</td>
-      <td>39930.745596</td>
-      <td>171.904117</td>
-      <td>248.637798</td>
-      <td>4.683517e+02</td>
-      <td>547764.280542</td>
-      <td>506944.641317</td>
-      <td>39930.745596</td>
-      <td>171.904117</td>
-      <td>248.637798</td>
-      <td>4.683517e+02</td>
-      <td>1.095529e+06</td>
-      <td>3.822394e+11</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>662920.565219</td>
-      <td>50372.466961</td>
-      <td>213.158637</td>
-      <td>314.766054</td>
-      <td>7.649938e+02</td>
-      <td>714585.950669</td>
-      <td>662920.565219</td>
-      <td>50372.466961</td>
-      <td>213.158637</td>
-      <td>314.766054</td>
-      <td>7.649938e+02</td>
-      <td>1.429172e+06</td>
-      <td>4.642583e+11</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>667335.384769</td>
-      <td>48638.144454</td>
-      <td>202.550788</td>
-      <td>304.014195</td>
-      <td>1.213381e+03</td>
-      <td>717693.475035</td>
-      <td>667335.384769</td>
-      <td>48638.144454</td>
-      <td>202.550788</td>
-      <td>304.014195</td>
-      <td>1.213381e+03</td>
-      <td>1.435387e+06</td>
-      <td>5.458083e+11</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
 </div>
 
 </div>
 
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
 </div>
 
 </div>

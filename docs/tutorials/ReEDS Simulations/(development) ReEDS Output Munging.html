@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>(development) ReEDS Scenarios - USA + Circular Economy Pathways</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>(development) ReEDS Output Munging</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -13971,25 +13971,19 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="ReEDS-Scenarios-on-PV-ICE-Tool-USA">ReEDS Scenarios on PV ICE Tool USA<a class="anchor-link" href="#ReEDS-Scenarios-on-PV-ICE-Tool-USA">&#182;</a></h1>
+<h1 id="ReEDS-Scenarios-on-PV-ICE-Tool">ReEDS Scenarios on PV ICE Tool<a class="anchor-link" href="#ReEDS-Scenarios-on-PV-ICE-Tool">&#182;</a></h1>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>To explore different scenarios for furture installation projections of PV (or any technology), ReEDS output data can be useful in providing standard scenarios. ReEDS installation projections are used in this journal as input data to the PV ICE tool.</p>
 <p>Current sections include:</p>
-<p><ol>
-    <li> ### Reading a standard ReEDS output file and saving it in a PV ICE input format </li></p>
-<p><li>### Reading scenarios of interest and running PV ICE tool </li></p>
-<p><li>###Plotting </li></p>
-<p><li>### GeoPlotting.</li>
-&lt;/ol&gt;
-    Notes:</p>
-<p>Scenarios of Interest:
-    the Ref.Mod, 
-o   95-by-35.Adv, and 
-o   95-by-35+Elec.Adv+DR ones</p>
-
+<ol>
+    <li> ### Reading a cumulative capacity ReEDS output file </li>
+    <li> ### Reading an annual built ReEDS output file </li>
+    <li> ### Saving PCA data as PV ICE input format </li>
+    <li> ### Saving State data as PV ICE input format </li>
+</ol>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
@@ -13997,12 +13991,10 @@ o   95-by-35+Elec.Adv+DR ones</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 </pre></div>
@@ -14021,7 +14013,7 @@ o   95-by-35+Elec.Adv+DR ones</p>
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">)</span>
+<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Your simulation will be stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">testfolder</span><span class="p">)</span>
 </pre></div>
@@ -14043,46 +14035,9 @@ o   95-by-35+Elec.Adv+DR ones</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\docs\PV_ICE\TEMP
+<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP
 </pre>
 </div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">PV_ICE</span><span class="o">.</span><span class="n">__version__</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;0+untagged.469.g6e6de9b.dirty&#39;</pre>
-</div>
-
 </div>
 
 </div>
@@ -14092,24 +14047,20 @@ o   95-by-35+Elec.Adv+DR ones</p>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Reading-REEDS-original-file-to-get-list-of-SCENARIOs,-PCAs,-and-STATEs">Reading REEDS original file to get list of SCENARIOs, PCAs, and STATEs<a class="anchor-link" href="#Reading-REEDS-original-file-to-get-list-of-SCENARIOs,-PCAs,-and-STATEs">&#182;</a></h3>
+<h1 id="Reading-a-ReEDS-cumulative-capacity-output-file">Reading a ReEDS cumulative capacity output file<a class="anchor-link" href="#Reading-a-ReEDS-cumulative-capacity-output-file">&#182;</a></h1><p>This reEDS output file is the cumulative capacity every other year. To get GW/yr installed, we need to take the difference between the years, then divide by 2. This is less accurate than getting an "annual built" data file because the cumulative capacity accounts for 30 year lifetime removal from field (default ReEDS assumption). This munging also neglects PCA region.</p>
+
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[77]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reedsFile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#We need to come up with a default location to save ReEDS output files</span>
+<span class="c1">#reedsFile = str(Path().resolve().parent.parent.parent.parent / &#39;December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx&#39;)</span>
+<span class="c1">#print (&quot;Input file is stored in %s&quot; % reedsFile)</span>
+<span class="n">reedsFile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span> <span class="o">/</span> <span class="s1">&#39;SupportingMaterial&#39;</span> <span class="o">/</span> <span class="s1">&#39;100REby2035-cumulative.csv&#39;</span><span class="p">)</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Input file is stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">reedsFile</span><span class="p">)</span>
-
-<span class="n">rawdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">reedsFile</span><span class="p">,</span>
-                        <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;UPV Capacity (GW)&quot;</span><span class="p">)</span>
-                        <span class="c1">#index_col=[0,2,3]) #this casts scenario, PCA and State as levels</span>
-<span class="c1">#now set year as an index in place</span>
-<span class="c1">#rawdf.drop(columns=[&#39;State&#39;], inplace=True)</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Tech&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span><span class="s1">&#39;PCA&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14129,7 +14080,7 @@ o   95-by-35+Elec.Adv+DR ones</p>
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Input file is stored in C:\Users\sayala\Documents\GitHub\December Core Scenarios ReEDS Outputs Solar Futures v2a.xlsx
+<pre>Input file is stored in C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\baselines\SupportingMaterial\100REby2035-ReEDS.csv
 </pre>
 </div>
 </div>
@@ -14138,50 +14089,14 @@ o   95-by-35+Elec.Adv+DR ones</p>
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scenarios</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;Scenario&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-<span class="n">PCAs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;PCA&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-<span class="n">STATEs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s1">&#39;State&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Reading-GIS-inputs">Reading GIS inputs<a class="anchor-link" href="#Reading-GIS-inputs">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GISfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;gis_centroid_n.xlsx&#39;</span><span class="p">)</span>
-<span class="n">GIS</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">GISfile</span><span class="p">)</span>
-<span class="n">GIS</span> <span class="o">=</span> <span class="n">GIS</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[78]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">REEDSInput</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">reedsFile</span><span class="p">)</span>
+<span class="n">REEDSInput</span><span class="o">.</span><span class="n">head</span>
 </pre></div>
 
      </div>
@@ -14193,6 +14108,853 @@ o   95-by-35+Elec.Adv+DR ones</p>
 
 
 <div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[78]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&lt;bound method NDFrame.head of       scenario  year   PCA  Capacity (GW)
+0     a1_RE100  2010    p1       0.000016
+1     a1_RE100  2010   p10       0.486023
+2     a1_RE100  2010  p100       0.000000
+3     a1_RE100  2010  p101       0.021315
+4     a1_RE100  2010  p102       0.014625
+...        ...   ...   ...            ...
+8437    a1_Ref  2050   p95      38.563516
+8438    a1_Ref  2050   p96      16.298854
+8439    a1_Ref  2050   p97      18.744921
+8440    a1_Ref  2050   p98       6.378485
+8441    a1_Ref  2050   p99      28.449829
+
+[8442 rows x 4 columns]&gt;</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Aggregate-down-to-simple-MW-Installed-input">Aggregate down to simple MW Installed input<a class="anchor-link" href="#Aggregate-down-to-simple-MW-Installed-input">&#182;</a></h3>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[79]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1">#currently, we&#39;re ignoring region, so drop PCA</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PCA&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#aggregate and sum by scenarios and year to get an annual (bi-annual) installation by scenario</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;scenario&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">])[</span><span class="s1">&#39;Capacity (GW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">df_evens</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df_evens_byscen</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;scenario&#39;</span><span class="p">)</span><span class="c1">#this df contains all the scenarios, even years only</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_evens_byscen</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>scenario     a1_RE100      a1_RE95      a1_Ref
+year                                          
+2010         1.246592     1.246592    1.246592
+2012         6.242318     6.242318    6.242318
+2014        16.090783    16.090783   16.090783
+2016        34.276154    34.276154   34.276154
+2018        52.093001    52.093001   52.093001
+2020        83.778187    83.778187   83.533329
+2022       146.553694   146.553694  102.993795
+2024       191.078858   191.078858  128.602753
+2026       326.268392   326.268392  177.112068
+2028       431.634770   431.634770  230.392738
+2030       580.819921   580.819921  309.015319
+2032       702.410947   702.410947  333.157319
+2034       812.257622   812.257622  354.101299
+2036       934.894845   934.894845  385.447237
+2038      1078.186255  1078.186255  417.757467
+2040      1237.253347  1237.253347  464.569087
+2042      1283.271124  1283.384991  512.675339
+2044      1320.858174  1322.752809  569.486607
+2046      1363.860206  1374.601619  614.658599
+2048      1418.708071  1421.546054  683.068153
+2050      1485.376422  1471.914866  731.232567
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Take-the-difference-and-Divide-by-2">Take the difference and Divide by 2<a class="anchor-link" href="#Take-the-difference-and-Divide-by-2">&#182;</a></h3><p>The file provided is cumulative installs, therefore we need to take the difference between years</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[80]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#take the difference between years to get the annual installs (not cumulative)</span>
+<span class="c1">#grab scenario names</span>
+<span class="n">SCEN</span> <span class="o">=</span> <span class="n">df_evens</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#len(SCEN)</span>
+<span class="c1">#create a for loop to iterate through all the provided scenarios</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">SCEN</span><span class="p">)):</span>
+    <span class="n">df_evens_byscen</span><span class="p">[</span><span class="n">SCEN</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_added_cap(GW)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">SCEN</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="c1">#takes diff between rows and creates new column</span>
+<span class="c1">#print(df_evens_byscen)</span>
+<span class="n">df_addedCap_evens</span> <span class="o">=</span> <span class="n">df_evens_byscen</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span> <span class="o">=</span> <span class="s1">&#39;added_cap&#39;</span><span class="p">)</span> <span class="c1">#create df of just added capacity, removes multiIndex</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_addedCap_evens</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>scenario  a1_RE100_added_cap(GW)  a1_RE95_added_cap(GW)  a1_Ref_added_cap(GW)
+year                                                                         
+2010                         NaN                    NaN                   NaN
+2012                    4.995726               4.995726              4.995726
+2014                    9.848465               9.848465              9.848465
+2016                   18.185371              18.185371             18.185371
+2018                   17.816847              17.816847             17.816847
+2020                   31.685186              31.685186             31.440328
+2022                   62.775507              62.775507             19.460466
+2024                   44.525164              44.525164             25.608958
+2026                  135.189534             135.189534             48.509315
+2028                  105.366378             105.366378             53.280670
+2030                  149.185151             149.185151             78.622581
+2032                  121.591026             121.591026             24.142000
+2034                  109.846674             109.846674             20.943980
+2036                  122.637223             122.637223             31.345937
+2038                  143.291410             143.291410             32.310230
+2040                  159.067093             159.067093             46.811620
+2042                   46.017777              46.131643             48.106252
+2044                   37.587050              39.367819             56.811268
+2046                   43.002032              51.848810             45.171992
+2048                   54.847865              46.944435             68.409554
+2050                   66.668351              50.368813             48.164414
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Because we prefer to use real world data whereever possible, anything prior to the current year will use real world installs. Therefore, we can ignore the NaN values in 2010.</p>
+<p>Now we divide this added installations in half.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[81]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_annualAdds_evens</span> <span class="o">=</span> <span class="n">df_addedCap_evens</span><span class="o">/</span><span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_annualAdds_evens</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>scenario  a1_RE100_added_cap(GW)  a1_RE95_added_cap(GW)  a1_Ref_added_cap(GW)
+year                                                                         
+2010                         NaN                    NaN                   NaN
+2012                    2.497863               2.497863              2.497863
+2014                    4.924232               4.924232              4.924232
+2016                    9.092685               9.092685              9.092685
+2018                    8.908424               8.908424              8.908424
+2020                   15.842593              15.842593             15.720164
+2022                   31.387753              31.387753              9.730233
+2024                   22.262582              22.262582             12.804479
+2026                   67.594767              67.594767             24.254658
+2028                   52.683189              52.683189             26.640335
+2030                   74.592576              74.592576             39.311291
+2032                   60.795513              60.795513             12.071000
+2034                   54.923337              54.923337             10.471990
+2036                   61.318612              61.318612             15.672969
+2038                   71.645705              71.645705             16.155115
+2040                   79.533546              79.533546             23.405810
+2042                   23.008888              23.065822             24.053126
+2044                   18.793525              19.683909             28.405634
+2046                   21.501016              25.924405             22.585996
+2048                   27.423932              23.472217             34.204777
+2050                   33.334176              25.184406             24.082207
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Create-the-odd-years">Create the odd years<a class="anchor-link" href="#Create-the-odd-years">&#182;</a></h3>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[82]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Now create the odd years by duplicating the even years and changing the index</span>
+<span class="n">df_odds</span> <span class="o">=</span> <span class="n">df_annualAdds_evens</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_odds</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df_odds</span><span class="o">.</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span> <span class="c1">#set the index = one year less</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_odds</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>scenario  a1_RE100_added_cap(GW)  a1_RE95_added_cap(GW)  a1_Ref_added_cap(GW)
+year                                                                         
+2009                         NaN                    NaN                   NaN
+2011                    2.497863               2.497863              2.497863
+2013                    4.924232               4.924232              4.924232
+2015                    9.092685               9.092685              9.092685
+2017                    8.908424               8.908424              8.908424
+2019                   15.842593              15.842593             15.720164
+2021                   31.387753              31.387753              9.730233
+2023                   22.262582              22.262582             12.804479
+2025                   67.594767              67.594767             24.254658
+2027                   52.683189              52.683189             26.640335
+2029                   74.592576              74.592576             39.311291
+2031                   60.795513              60.795513             12.071000
+2033                   54.923337              54.923337             10.471990
+2035                   61.318612              61.318612             15.672969
+2037                   71.645705              71.645705             16.155115
+2039                   79.533546              79.533546             23.405810
+2041                   23.008888              23.065822             24.053126
+2043                   18.793525              19.683909             28.405634
+2045                   21.501016              25.924405             22.585996
+2047                   27.423932              23.472217             34.204777
+2049                   33.334176              25.184406             24.082207
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[83]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#put the evens and odds together, sort by year</span>
+<span class="n">df_allyrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_annualAdds_evens</span><span class="p">,</span> <span class="n">df_odds</span><span class="p">])</span>
+<span class="n">df_allyrs</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#df_allyrs_byscen = df_allyrs.unstack(level=0)</span>
+<span class="c1">#print(df_allyrs_byscen)</span>
+
+<span class="c1">#modify by DC:AC ratio(1.2 avg) and 85% average marketshare of c-Si technology and convert to MW</span>
+<span class="n">df_cSi_installs</span> <span class="o">=</span> <span class="n">df_allyrs</span><span class="o">*</span><span class="mf">1.2</span><span class="o">*</span><span class="mf">0.85</span><span class="o">*</span><span class="mi">1000</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_cSi_installs</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>scenario  a1_RE100_added_cap(GW)  a1_RE95_added_cap(GW)  a1_Ref_added_cap(GW)
+year                                                                         
+2009                         NaN                    NaN                   NaN
+2010                         NaN                    NaN                   NaN
+2011                 2547.820449            2547.820449           2547.820449
+2012                 2547.820449            2547.820449           2547.820449
+2013                 5022.716968            5022.716968           5022.716968
+2014                 5022.716968            5022.716968           5022.716968
+2015                 9274.539118            9274.539118           9274.539118
+2016                 9274.539118            9274.539118           9274.539118
+2017                 9086.592100            9086.592100           9086.592100
+2018                 9086.592100            9086.592100           9086.592100
+2019                16159.444770           16159.444770          16034.567311
+2020                16159.444770           16159.444770          16034.567311
+2021                32015.508487           32015.508487           9924.837597
+2022                32015.508487           32015.508487           9924.837597
+2023                22707.833880           22707.833880          13060.568829
+2024                22707.833880           22707.833880          13060.568829
+2025                68946.662206           68946.662206          24739.750702
+2026                68946.662206           68946.662206          24739.750702
+2027                53736.853006           53736.853006          27173.141573
+2028                53736.853006           53736.853006          27173.141573
+2029                76084.427036           76084.427036          40097.516316
+2030                76084.427036           76084.427036          40097.516316
+2031                62011.423352           62011.423352          12312.419957
+2032                62011.423352           62011.423352          12312.419957
+2033                56021.803858           56021.803858          10681.429981
+2034                56021.803858           56021.803858          10681.429981
+2035                62544.983737           62544.983737          15986.427974
+2036                62544.983737           62544.983737          15986.427974
+2037                73078.619190           73078.619190          16478.217382
+2038                73078.619190           73078.619190          16478.217382
+2039                81124.217218           81124.217218          23873.926119
+2040                81124.217218           81124.217218          23873.926119
+2041                23469.066030           23527.138071          24534.188658
+2042                23469.066030           23527.138071          24534.188658
+2043                19169.395344           20077.587485          28973.746541
+2044                19169.395344           20077.587485          28973.746541
+2045                21931.036440           26442.892874          23037.716088
+2046                21931.036440           26442.892874          23037.716088
+2047                27972.410948           23941.661800          34888.872539
+2048                27972.410948           23941.661800          34888.872539
+2049                34000.859042           25688.094448          24563.851264
+2050                34000.859042           25688.094448          24563.851264
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[84]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#output the file</span>
+<span class="n">df_cSi_installs</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;output_reeds4PVICE.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Reading-a-ReEDS-annual-built-capacity-file">Reading a ReEDS annual built capacity file<a class="anchor-link" href="#Reading-a-ReEDS-annual-built-capacity-file">&#182;</a></h1><p>This data file is the "annual built capacity", or the additions (not net additions) to the grid. This is an annual number reported biannually, so the assumption is that the previous odd year installed the same amount of PV capacity.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reedsFile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span> <span class="o">/</span> <span class="s1">&#39;SupportingMaterial&#39;</span> <span class="o">/</span> <span class="s1">&#39;100REby2035-annuals.csv&#39;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Input file is stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">reedsFile</span><span class="p">)</span>
+<span class="n">REEDSInput</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">reedsFile</span><span class="p">)</span>
+<span class="n">REEDSInput</span><span class="o">.</span><span class="n">head</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Input file is stored in C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\baselines\SupportingMaterial\100REby2035-annuals.csv
+</pre>
+</div>
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&lt;bound method NDFrame.head of          tech  scenario region  year  Capacity (GW)
+0         upv  a1_RE100     p1  2012       0.000000
+1         upv  a1_RE100     p1  2014       0.000000
+2         upv  a1_RE100     p1  2016       0.000000
+3         upv  a1_RE100     p1  2018       0.000000
+4         upv  a1_RE100     p1  2020       0.012500
+...       ...       ...    ...   ...            ...
+24115  distpv    a1_Ref    p99  2042       0.131880
+24116  distpv    a1_Ref    p99  2044       0.146862
+24117  distpv    a1_Ref    p99  2046       0.257416
+24118  distpv    a1_Ref    p99  2048       0.112180
+24119  distpv    a1_Ref    p99  2050       0.213627
+
+[24120 rows x 5 columns]&gt;</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1">#currently, we&#39;re ignoring region, so drop PCA</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#aggregate and sum by scenarios and year to get an annual (bi-annual) installation by scenario</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;tech&#39;</span><span class="p">,</span> <span class="s1">&#39;scenario&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">])[</span><span class="s1">&#39;Capacity (GW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[39]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&lt;bound method NDFrame.head of                       Capacity (GW)
+tech   scenario year               
+distpv a1_RE100 2012       1.328463
+                2014       1.872017
+                2016       3.352236
+                2018       4.041324
+                2020       2.483214
+...                             ...
+upv    a1_Ref   2042      21.048414
+                2044      26.540308
+                2046      22.716836
+                2048      36.073316
+                2050      33.473629
+
+[180 rows x 1 columns]&gt;</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now we multiply each technology by it's respective DC:AC ratio, because distributed PV (i.e. rooftop) in ReEDS is reported in AC with a 1.1 DC:AC ratio. We install in DC, therefore, we multiply ReEDS output by 1.1. For both types of utility PV (Distributed UPV and UPV), the DC:AC ratio is 1.3.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create a litte dataframe of the factors with index that matches tech names</span>
+<span class="n">dc_ac</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;factor&#39;</span><span class="p">:[</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">1.3</span><span class="p">,</span><span class="mf">1.3</span><span class="p">]},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;distpv&#39;</span><span class="p">,</span><span class="s1">&#39;dupv&#39;</span><span class="p">,</span><span class="s1">&#39;upv&#39;</span><span class="p">])</span>
+<span class="c1">#multiply techs by DC:AC ratios</span>
+<span class="n">df_dc</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">dc_ac</span><span class="p">[</span><span class="s1">&#39;factor&#39;</span><span class="p">],</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_dc</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>                      Capacity (GW)
+tech   scenario year               
+distpv a1_RE100 2012       1.461310
+                2014       2.059218
+                2016       3.687460
+                2018       4.445456
+                2020       2.731536
+...                             ...
+upv    a1_Ref   2042      27.362938
+                2044      34.502400
+                2046      29.531887
+                2048      46.895311
+                2050      43.515717
+
+[180 rows x 1 columns]
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now we're in DC, we can sum the techs for each scenario and year.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_byscen</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_dc</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;scenario&#39;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">])[</span><span class="s1">&#39;Capacity (GW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">df_evens_byscen</span> <span class="o">=</span> <span class="n">df_byscen</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;scenario&#39;</span><span class="p">)</span>
+<span class="c1">#print(df_evens_byscen)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>This gives us the annual added capacity, by scenario, but only on even years. ReEDS recommendation is to back duplicate the installation, i.e. the same amount of PV is installed in 2049 and 2050. Now we create an odd year data set.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Now create the odd years by duplicating the even years and changing the index</span>
+<span class="n">df_odds</span> <span class="o">=</span> <span class="n">df_evens_byscen</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_odds</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df_odds</span><span class="o">.</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span> <span class="c1">#set the index = one year less</span>
+<span class="c1">#print(df_odds)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Now concatinate the two dataframes, and reorder by year number.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#put the evens and odds together, sort by year</span>
+<span class="n">df_allyrs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_evens_byscen</span><span class="p">,</span> <span class="n">df_odds</span><span class="p">])</span>
+<span class="n">df_allyrs</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#print(df_allyrs)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Finally, we only consider c-Si installations right now, and the historical average is 85% c-Si market share in the US (most of the rest is CdTe). Therefore, we multiply everything by 0.85 to account for only c-Si material.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#multiply by 85% average marketshare of c-Si technology and convert to MW</span>
+<span class="n">df_cSi_installs</span> <span class="o">=</span> <span class="n">df_allyrs</span><span class="o">*</span><span class="mf">0.85</span><span class="o">*</span><span class="mi">1000</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_cSi_installs</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>         Capacity (GW)                            
+scenario      a1_RE100       a1_RE95        a1_Ref
+year                                              
+2011       2534.300109   2534.300109   2534.300109
+2012       2534.300109   2534.300109   2534.300109
+2013       5123.033732   5123.033732   5123.033732
+2014       5123.033732   5123.033732   5123.033732
+2015       9477.537310   9477.537310   9477.537310
+2016       9477.537310   9477.537310   9477.537310
+2017       9156.783125   9156.783125   9156.783125
+2018       9156.783125   9156.783125   9156.783125
+2019      17083.918896  17083.918896  16948.634981
+2020      17083.918896  17083.918896  16948.634981
+2021      34309.524105  34309.524105  10377.963980
+2022      34309.524105  34309.524105  10377.963980
+2023      24236.415968  24236.415968  13785.212152
+2024      24236.415968  24236.415968  13785.212152
+2025      74146.088485  74146.088485  26255.267659
+2026      74146.088485  74146.088485  26255.267659
+2027      57401.301559  57401.301559  28623.947560
+2028      57401.301559  57401.301559  28623.947560
+2029      81197.986505  81197.986505  42212.166639
+2030      81197.986505  81197.986505  42212.166639
+2031      66012.061777  66012.061777  12171.474714
+2032      66012.061777  66012.061777  12171.474714
+2033      59935.855225  59935.855225  10817.116828
+2034      59935.855225  59935.855225  10817.116828
+2035      67039.351511  67039.351511  16600.916044
+2036      67039.351511  67039.351511  16600.916044
+2037      78553.287849  78553.287849  17236.185916
+2038      78553.287849  78553.287849  17236.185916
+2039      87426.894743  87426.894743  25405.746051
+2040      87426.894743  87426.894743  25405.746051
+2041      26258.301319  26321.212680  27412.184132
+2042      26258.301319  26321.212680  27412.184132
+2043      23596.728957  24580.603779  34218.109410
+2044      23596.728957  24580.603779  34218.109410
+2045      29613.993354  34501.837845  30812.896325
+2046      29613.993354  34501.837845  30812.896325
+2047      35203.627130  30836.982267  42696.460528
+2048      35203.627130  30836.982267  42696.460528
+2049      51033.756041  42028.261028  40675.047032
+2050      51033.756041  42028.261028  40675.047032
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#output the file</span>
+<span class="n">df_cSi_installs</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;output_reeds4PVICE.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Append-to-Projections-Options-File">Append to Projections Options File<a class="anchor-link" href="#Append-to-Projections-Options-File">&#182;</a></h1>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Save-Input-Files-by-PCA">Save Input Files by PCA<a class="anchor-link" href="#Save-Input-Files-by-PCA">&#182;</a></h2>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Create-a-copy-of-the-REEDS-Input-and-modify-structure-for-PCA-focus">Create a copy of the REEDS Input and modify structure for PCA focus<a class="anchor-link" href="#Create-a-copy-of-the-REEDS-Input-and-modify-structure-for-PCA-focus">&#182;</a></h4>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Loading-Module-Baseline.-Will-be-used-later-to-populate-all-the-columsn-otehr-than-'new_InstalledCapacity%5BMW%5D'-which-will-be-supplied-by-the-REEDS-model">Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed<em>Capacity</em>[MW]' which will be supplied by the REEDS model<a class="anchor-link" href="#Loading-Module-Baseline.-Will-be-used-later-to-populate-all-the-columsn-otehr-than-'new_InstalledCapacity%5BMW%5D'-which-will-be-supplied-by-the-REEDS-model">&#182;</a></h4>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Simulation1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\SolarFutures_2021\baseline_modules_US_Reeds.csv&#39;</span><span class="p">)</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;US&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">])</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>  <span class="c1"># A -- Annual</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>path = C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\TEMP
+</pre>
+</div>
+</div>
 
 <div class="jp-OutputArea-child">
 
@@ -14220,12 +14982,28 @@ o   95-by-35+Elec.Adv+DR ones</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>long</th>
-      <th>lat</th>
-      <th>country</th>
+      <th>mod_eff</th>
+      <th>mod_reliability_t50</th>
+      <th>mod_reliability_t90</th>
+      <th>mod_degradation</th>
+      <th>mod_lifetime</th>
+      <th>mod_MFG_eff</th>
+      <th>mod_EOL_collection_eff</th>
+      <th>mod_EOL_collected_recycled</th>
+      <th>mod_Repair</th>
+      <th>mod_MerchantTail</th>
+      <th>mod_Reuse</th>
     </tr>
     <tr>
-      <th>id</th>
+      <th>year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -14233,34 +15011,74 @@ o   95-by-35+Elec.Adv+DR ones</p>
   </thead>
   <tbody>
     <tr>
-      <th>p1</th>
-      <td>-121.452252</td>
-      <td>47.820991</td>
-      <td>USA</td>
+      <th>2010</th>
+      <td>14.7</td>
+      <td>25.0</td>
+      <td>30.0</td>
+      <td>0.3</td>
+      <td>22.7</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>p10</th>
-      <td>-117.159039</td>
-      <td>35.120104</td>
-      <td>USA</td>
+      <th>2011</th>
+      <td>15.1</td>
+      <td>25.0</td>
+      <td>30.0</td>
+      <td>0.3</td>
+      <td>23.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>p100</th>
-      <td>-78.257714</td>
-      <td>38.791108</td>
-      <td>USA</td>
+      <th>2012</th>
+      <td>15.4</td>
+      <td>25.0</td>
+      <td>30.0</td>
+      <td>0.3</td>
+      <td>23.5</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>p101</th>
-      <td>-82.192477</td>
-      <td>28.708695</td>
-      <td>USA</td>
+      <th>2013</th>
+      <td>16.0</td>
+      <td>28.0</td>
+      <td>33.0</td>
+      <td>0.3</td>
+      <td>24.2</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>p102</th>
-      <td>-80.563731</td>
-      <td>26.677092</td>
-      <td>USA</td>
+      <th>2014</th>
+      <td>16.3</td>
+      <td>28.0</td>
+      <td>33.0</td>
+      <td>0.3</td>
+      <td>26.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
   </tbody>
 </table>
@@ -14273,62 +15091,51 @@ o   95-by-35+Elec.Adv+DR ones</p>
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;p1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">long</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>-121.4522522</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Create-Scenarios-in-PV_ICE">Create Scenarios in PV_ICE<a class="anchor-link" href="#Create-Scenarios-in-PV_ICE">&#182;</a></h3>
+<h4 id="For-each-Scenario-and-for-each-PCA,-combine-with-baseline-and-save-as-input-file">For each Scenario and for each PCA, combine with baseline and save as input file<a class="anchor-link" href="#For-each-Scenario-and-for-each-PCA,-combine-with-baseline-and-save-as-input-file">&#182;</a></h4>
 </div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Rename-difficult-characters-from-Scenarios-Names">Rename difficult characters from Scenarios Names<a class="anchor-link" href="#Rename-difficult-characters-from-Scenarios-Names">&#182;</a></h4>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">simulationname</span> <span class="o">=</span> <span class="n">scenarios</span>
-<span class="n">simulationname</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">simulationname</span><span class="p">]</span>
-<span class="n">simulationname</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">))):</span>
+    <span class="n">PCA</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">SCEN</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">PCA</span> <span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
+    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;PCAs&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
+    <span class="c1"># Add other columns</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+   
+    <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,&quot;</span>\
+    <span class="s2">&quot;mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,&quot;</span>\
+    <span class="s2">&quot;mod_Repair,mod_MerchantTail,mod_Reuse</span><span class="se">\n</span><span class="s2">&quot;</span>\
+    <span class="s2">&quot;year,MW,%,years,years,%,years,%,%,%,%,%,%</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
+    <span class="c1"># Write the header lines, including the index variable for</span>
+    <span class="c1"># the last one if you&#39;re letting Pandas produce that for you.</span>
+    <span class="c1"># (see above).</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+            <span class="n">ict</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="c1">#    savedata.to_csv(ict, index=False)</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ict</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14336,45 +15143,29 @@ o   95-by-35+Elec.Adv+DR ones</p>
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
 
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;Reference.Mod&#39;,
- &#39;Reference.Adv&#39;,
- &#39;Reference.Adv_DR&#39;,
- &#39;95-by-35.Mod&#39;,
- &#39;95-by-35.Adv&#39;,
- &#39;95-by-35.Adv_DR&#39;,
- &#39;95-by-35_Elec.Mod&#39;,
- &#39;95-by-35_Elec.Adv&#39;,
- &#39;95-by-35_Elec.Adv_DR&#39;]</pre>
+     </div>
 </div>
-
 </div>
-
-</div>
-
 </div>
 
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Downselect-to-Solar-Future-scenarios-of-interest">Downselect to Solar Future scenarios of interest<a class="anchor-link" href="#Downselect-to-Solar-Future-scenarios-of-interest">&#182;</a></h4><p>Scenarios of Interest:</p>
-<p><li> Ref.Mod</p>
-<p><li> 95-by-35.Adv</p>
-<p><li> 95-by-35+Elec.Adv+DR</p>
-
+<h2 id="Save-Input-Files-By-States">Save Input Files By States<a class="anchor-link" href="#Save-Input-Files-By-States">&#182;</a></h2>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="Reassign-data-from-REEDS-Input,-as-we-need-one-of-the-columns-we-dropped.">Reassign data from REEDS Input, as we need one of the columns we dropped.<a class="anchor-link" href="#Reassign-data-from-REEDS-Input,-as-we-need-one-of-the-columns-we-dropped.">&#182;</a></h4>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -14382,8 +15173,11 @@ o   95-by-35+Elec.Adv+DR ones</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">SFscenarios</span> <span class="o">=</span> <span class="p">[</span><span class="n">simulationname</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">simulationname</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">simulationname</span><span class="p">[</span><span class="mi">8</span><span class="p">]]</span>
-<span class="n">SFscenarios</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1">#rawdf.drop(columns=[&#39;State&#39;], inplace=True)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Tech&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span><span class="s1">&#39;PCA&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14403,9 +15197,169 @@ o   95-by-35+Elec.Adv+DR ones</p>
 
 
 
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;Reference.Mod&#39;, &#39;95-by-35.Adv&#39;, &#39;95-by-35_Elec.Adv_DR&#39;]</pre>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>Capacity (GW)</th>
+    </tr>
+    <tr>
+      <th>Scenario</th>
+      <th>Year</th>
+      <th>PCA</th>
+      <th>State</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="21" valign="top">95-by-35.Adv</th>
+      <th>2010</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.000017</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.105931</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <th>p1</th>
+      <th>WA</th>
+      <td>0.105931</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -14417,8 +15371,7 @@ o   95-by-35+Elec.Adv+DR ones</p>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Create-the-REFERENCE-Scenario-and-assign-Baselines">Create the REFERENCE Scenario and assign Baselines<a class="anchor-link" href="#Create-the-REFERENCE-Scenario-and-assign-Baselines">&#182;</a></h4><p>Keeping track of each scenario as its own PV ICE Object.</p>
-
+<h4 id="Group-data-so-we-can-work-with-the-States-instead">Group data so we can work with the States instead<a class="anchor-link" href="#Group-data-so-we-can-work-with-the-States-instead">&#182;</a></h4>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -14426,18 +15379,393 @@ o   95-by-35+Elec.Adv+DR ones</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for ii in range (0, 1): #len(scenarios):</span>
-<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">rr</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;USA&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;USA&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>    
-    <span class="n">rr</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">file</span><span class="o">=</span><span class="n">filetitle</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_glass_Reeds.csv&#39;</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_silicon_Reeds.csv&#39;</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_silver_Reeds.csv&#39;</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_copper_Reeds.csv&#39;</span><span class="p">)</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="s1">&#39;aluminum&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\ReedsSubset\baseline_material_aluminium_Reeds.csv&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#df = rawdf.groupby([&#39;Scenario&#39;,&#39;State&#39;, &#39;Year&#39;])[&#39;Capacity (GW)&#39;].sum(axis=0)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">])[</span><span class="s1">&#39;Capacity (GW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>Capacity (GW)</th>
+    </tr>
+    <tr>
+      <th>Scenario</th>
+      <th>State</th>
+      <th>Year</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">95-by-35+Elec.Adv</th>
+      <th rowspan="5" valign="top">AL</th>
+      <th>2010</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>0.000951</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>0.000951</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h4 id="For-each-Scenario-and-for-each-STATE,-combine-with-baseline-and-save-as-input-file">For each Scenario and for each STATE, combine with baseline and save as input file<a class="anchor-link" href="#For-each-Scenario-and-for-each-STATE,-combine-with-baseline-and-save-as-input-file">&#182;</a></h4>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
+    <span class="n">STATE</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">SCEN</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">STATE</span> <span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
+    
+    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;STATEs&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
+    <span class="c1"># Add other columns</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    
+    <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,&quot;</span>\
+    <span class="s2">&quot;mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,&quot;</span>\
+    <span class="s2">&quot;mod_Repair,mod_MerchantTail,mod_Reuse</span><span class="se">\n</span><span class="s2">&quot;</span>\
+    <span class="s2">&quot;year,MW,%,years,years,%,years,%,%,%,%,%,%</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
+    <span class="c1"># Write the header lines, including the index variable for</span>
+    <span class="c1"># the last one if you&#39;re letting Pandas produce that for you.</span>
+    <span class="c1"># (see above).</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+            <span class="n">ict</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="c1">#    savedata.to_csv(ict, index=False)</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ict</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Saving-US-Baseline">Saving US Baseline<a class="anchor-link" href="#Saving-US-Baseline">&#182;</a></h1>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Create-a-copy-of-the-REEDS-Input-and-modify-structure-for-PCA-focus">Create a copy of the REEDS Input and modify structure for PCA focus<a class="anchor-link" href="#Create-a-copy-of-the-REEDS-Input-and-modify-structure-for-PCA-focus">&#182;</a></h3>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1">#rawdf.drop(columns=[&#39;State&#39;], inplace=True)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Tech&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>PCA</th>
+      <th>State</th>
+      <th>Capacity (GW)</th>
+    </tr>
+    <tr>
+      <th>Scenario</th>
+      <th>Year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="21" valign="top">95-by-35.Adv</th>
+      <th>2010</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.000017</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.005158</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.007146</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.018253</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.019460</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.036320</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.002434</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.010066</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.049445</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.051342</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.105931</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>p1</td>
+      <td>WA</td>
+      <td>0.105931</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#df = rawdf.groupby([&#39;Scenario&#39;,&#39;Year&#39;])[&#39;Capacity (GW)&#39;].sum(axis=0)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">])[</span><span class="s1">&#39;Capacity (GW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Loading-Module-Baseline.-Will-be-used-later-to-populate-all-the-columsn-other-than-'new_InstalledCapacity%5BMW%5D'-which-will-be-supplied-by-the-REEDS-model">Loading Module Baseline. Will be used later to populate all the columsn other than 'new_Installed<em>Capacity</em>[MW]' which will be supplied by the REEDS model<a class="anchor-link" href="#Loading-Module-Baseline.-Will-be-used-later-to-populate-all-the-columsn-other-than-'new_InstalledCapacity%5BMW%5D'-which-will-be-supplied-by-the-REEDS-model">&#182;</a></h3>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Simulation1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\SolarFutures_2021\baseline_modules_US_Reeds.csv&#39;</span><span class="p">)</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;US&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">])</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>  <span class="c1"># A -- Annual</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14462,400 +15790,10 @@ o   95-by-35+Elec.Adv+DR ones</p>
 </div>
 </div>
 
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="2-FINISH:-Set-characteristics-of-Recycling-to-SF-values.">2 FINISH: Set characteristics of Recycling to SF values.<a class="anchor-link" href="#2-FINISH:-Set-characteristics-of-Recycling-to-SF-values.">&#182;</a></h1>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h4 id="Calculate-Mass-Flow">Calculate Mass Flow<a class="anchor-link" href="#Calculate-Mass-Flow">&#182;</a></h4>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">IRENA</span><span class="o">=</span> <span class="kc">False</span>
-<span class="n">ELorRL</span> <span class="o">=</span> <span class="s1">&#39;RL&#39;</span>
-<span class="k">if</span> <span class="n">IRENA</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">ELorRL</span> <span class="o">==</span> <span class="s1">&#39;RL&#39;</span><span class="p">:</span>
-        <span class="n">weibullInputParams</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">5.3759</span><span class="p">}</span>  <span class="c1"># Regular-loss scenario IRENA</span>
-    <span class="k">if</span> <span class="n">ELorRL</span> <span class="o">==</span> <span class="s1">&#39;EL&#39;</span><span class="p">:</span>
-        <span class="n">weibullInputParams</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">2.49</span><span class="p">}</span>  <span class="c1"># Regular-loss scenario IRENA</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">weibullInputParams</span><span class="o">=</span><span class="n">weibullInputParams</span><span class="p">,</span> <span class="n">weibullAlphaOnly</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">title_Method</span> <span class="o">=</span> <span class="s1">&#39;Irena_&#39;</span><span class="o">+</span><span class="n">ELorRL</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">rr</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
-    <span class="n">title_Method</span> <span class="o">=</span> <span class="s1">&#39;PVICE&#39;</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Working on Scenario:  Reference.Mod
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  copper
-==&gt; Working on Material :  aluminum
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scenarios:&quot;</span><span class="p">,</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Module Keys:&quot;</span><span class="p">,</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Material Keys: &quot;</span><span class="p">,</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Scenarios: dict_keys([&#39;Reference.Mod&#39;])
-Module Keys: Index([&#39;year&#39;, &#39;new_Installed_Capacity_[MW]&#39;, &#39;mod_eff&#39;, &#39;mod_reliability_t50&#39;,
-       &#39;mod_reliability_t90&#39;, &#39;mod_degradation&#39;, &#39;mod_lifetime&#39;, &#39;mod_MFG_eff&#39;,
-       &#39;mod_EOL_collection_eff&#39;, &#39;mod_EOL_collected_recycled&#39;,
-       &#39;mod_Repowering&#39;, &#39;mod_Repairing&#39;, &#39;Area&#39;,
-       &#39;Cumulative_Area_disposedby_Failure&#39;,
-       &#39;Cumulative_Area_disposedby_ProjectLifetime&#39;,
-       &#39;Cumulative_Area_disposed&#39;, &#39;Cumulative_Active_Area&#39;,
-       &#39;Installed_Capacity_[W]&#39;, &#39;WeibullParams&#39;, &#39;EOL_on_Year_0&#39;,
-       &#39;EOL_on_Year_1&#39;, &#39;EOL_on_Year_2&#39;, &#39;EOL_on_Year_3&#39;, &#39;EOL_on_Year_4&#39;,
-       &#39;EOL_on_Year_5&#39;, &#39;EOL_on_Year_6&#39;, &#39;EOL_on_Year_7&#39;, &#39;EOL_on_Year_8&#39;,
-       &#39;EOL_on_Year_9&#39;, &#39;EOL_on_Year_10&#39;, &#39;EOL_on_Year_11&#39;, &#39;EOL_on_Year_12&#39;,
-       &#39;EOL_on_Year_13&#39;, &#39;EOL_on_Year_14&#39;, &#39;EOL_on_Year_15&#39;, &#39;EOL_on_Year_16&#39;,
-       &#39;EOL_on_Year_17&#39;, &#39;EOL_on_Year_18&#39;, &#39;EOL_on_Year_19&#39;, &#39;EOL_on_Year_20&#39;,
-       &#39;EOL_on_Year_21&#39;, &#39;EOL_on_Year_22&#39;, &#39;EOL_on_Year_23&#39;, &#39;EOL_on_Year_24&#39;,
-       &#39;EOL_on_Year_25&#39;, &#39;EOL_on_Year_26&#39;, &#39;EOL_on_Year_27&#39;, &#39;EOL_on_Year_28&#39;,
-       &#39;EOL_on_Year_29&#39;, &#39;EOL_on_Year_30&#39;, &#39;EOL_on_Year_31&#39;, &#39;EOL_on_Year_32&#39;,
-       &#39;EOL_on_Year_33&#39;, &#39;EOL_on_Year_34&#39;, &#39;EOL_on_Year_35&#39;, &#39;EOL_on_Year_36&#39;,
-       &#39;EOL_on_Year_37&#39;, &#39;EOL_on_Year_38&#39;, &#39;EOL_on_Year_39&#39;, &#39;EOL_on_Year_40&#39;,
-       &#39;EOL_on_Year_41&#39;, &#39;EoL_Collected&#39;, &#39;EoL_NotCollected&#39;, &#39;EoL_Recycled&#39;,
-       &#39;EoL_NotRecycled_Landfilled&#39;],
-      dtype=&#39;object&#39;)
-Material Keys:  Index([&#39;year&#39;, &#39;mat_virgin_eff&#39;, &#39;mat_massperm2&#39;, &#39;mat_MFG_eff&#39;,
-       &#39;mat_MFG_scrap_Recycled&#39;, &#39;mat_MFG_scrap_Recycling_eff&#39;,
-       &#39;mat_MFG_scrap_Recycled_into_HQ&#39;,
-       &#39;mat_MFG_scrap_Recycled_into_HQ_Reused4MFG&#39;,
-       &#39;mat_EOL_collected_Recycled&#39;, &#39;mat_EOL_Recycling_eff&#39;,
-       &#39;mat_EOL_Recycled_into_HQ&#39;, &#39;mat_EOL_RecycledHQ_Reused4MFG&#39;,
-       &#39;mat_modules_NotRecycled&#39;, &#39;mat_modules_NotCollected&#39;,
-       &#39;mat_EOL_sento_Recycling&#39;, &#39;mat_EOL_NotRecycled_Landfilled&#39;,
-       &#39;mat_EOL_Recycled&#39;, &#39;mat_EOL_Recycled_Losses_Landfilled&#39;,
-       &#39;mat_EOL_Recycled_2_HQ&#39;, &#39;mat_EOL_Recycled_2_OQ&#39;,
-       &#39;mat_EoL_Recycled_HQ_into_MFG&#39;, &#39;mat_EOL_Recycled_HQ_into_OU&#39;,
-       &#39;mat_UsedinManufacturing&#39;, &#39;mat_Manufacturing_Input&#39;, &#39;mat_MFG_Scrap&#39;,
-       &#39;mat_MFG_Scrap_Sentto_Recycling&#39;, &#39;mat_MFG_Scrap_Landfilled&#39;,
-       &#39;mat_MFG_Scrap_Recycled_Successfully&#39;,
-       &#39;mat_MFG_Scrap_Recycled_Losses_Landfilled&#39;, &#39;mat_MFG_Recycled_into_HQ&#39;,
-       &#39;mat_MFG_Recycled_into_OQ&#39;, &#39;mat_MFG_Recycled_HQ_into_MFG&#39;,
-       &#39;mat_MFG_Recycled_HQ_into_OU&#39;, &#39;mat_Virgin_Stock&#39;,
-       &#39;mat_Total_EOL_Landfilled&#39;, &#39;mat_Total_MFG_Landfilled&#39;,
-       &#39;mat_Total_Landfilled&#39;, &#39;mat_Total_Recycled_OU&#39;],
-      dtype=&#39;object&#39;)
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">r1.plotScenariosComparison(keyword=&#39;Cumulative_Area_disposedby_Failure&#39;)</span>
-<span class="sd">r1.plotMaterialComparisonAcrossScenarios(material=&#39;silicon&#39;, keyword=&#39;mat_Total_Landfilled&#39;)</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="k">pass</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Aggregating-PCAs-Material-Landfilled-to-obtain-US-totals-by-Year">Aggregating PCAs Material Landfilled to obtain US totals by Year<a class="anchor-link" href="#Aggregating-PCAs-Material-Landfilled-to-obtain-US-totals-by-Year">&#182;</a></h2>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;mat_Total_Landfilled&#39;</span>
-<span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;mat_Virgin_Stock&#39;</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">SFscenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_Total_Landfilled&#39;</span><span class="p">]</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>0     1.677604e+09
-1     1.542129e+09
-2     1.864615e+10
-3     1.794693e+10
-4     5.755228e+10
-5     5.626462e+10
-6     1.190584e+11
-7     1.099151e+11
-8     1.465299e+11
-9     1.493990e+11
-10    2.683464e+11
-11    2.427442e+11
-12    2.560304e+11
-13    2.518589e+11
-14    3.347866e+11
-15    3.314195e+11
-16    5.099833e+11
-17    5.069446e+11
-18    6.629206e+11
-19    6.673354e+11
-20    9.351717e+11
-21    9.371938e+11
-22    9.883536e+11
-23    9.976634e+11
-24    1.063537e+12
-25    1.083313e+12
-26    1.167408e+12
-27    1.200502e+12
-28    1.360140e+12
-29    1.403517e+12
-30    1.564731e+12
-31    1.604215e+12
-32    1.736414e+12
-33    1.760313e+12
-34    1.967942e+12
-35    1.991998e+12
-36    2.157762e+12
-37    2.236637e+12
-38    2.591186e+12
-39    2.765081e+12
-40    3.447321e+12
-41    3.559147e+12
-Name: mat_Total_Landfilled, dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="s1">&#39;aluminum&#39;</span><span class="p">]</span>
-<span class="n">keywd</span> <span class="o">=</span> <span class="s1">&#39;mat_Total_Landfilled&#39;</span>
-
-<span class="n">USyearly</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-
-<span class="c1">#for jj in range(len(SFscenarios)):</span>
-<span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-    <span class="n">obj</span> <span class="o">=</span> <span class="n">SFscenarios</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">materials</span><span class="p">)):</span>
-        <span class="n">USyearly</span><span class="p">[</span><span class="s1">&#39;Waste_&#39;</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_Total_Landfilled&#39;</span><span class="p">]</span>
-
-    <span class="n">filter_col</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">USyearly</span> <span class="k">if</span> <span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Waste&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">col</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span> <span class="p">]</span>
-    <span class="n">USyearly</span><span class="p">[</span><span class="s1">&#39;Waste_Module_&#39;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">filter_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;copper&#39;</span><span class="p">,</span> <span class="s1">&#39;aluminum&#39;</span><span class="p">]</span>
-<span class="n">keywd</span> <span class="o">=</span> <span class="s1">&#39;VirginStock_Module_&#39;</span>
-
-<span class="c1">#for jj in range(len(SFscenarios)):</span>
-<span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">obj</span> <span class="o">=</span> <span class="n">SFscenarios</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">materials</span><span class="p">)):</span>
-        <span class="n">USyearly</span><span class="p">[</span><span class="s1">&#39;VirginStock_&#39;</span><span class="o">+</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">materials</span><span class="p">[</span><span class="n">ii</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="s1">&#39;mat_Total_Landfilled&#39;</span><span class="p">]</span>
-
-    <span class="n">filter_col</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">USyearly</span> <span class="k">if</span> <span class="p">(</span><span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Waste&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">col</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span> <span class="p">]</span>
-    <span class="n">USyearly</span><span class="p">[</span><span class="s1">&#39;VirginStock_Module_&#39;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">USyearly</span><span class="p">[</span><span class="n">filter_col</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Converting-to-grams-to-METRIC-Tons.">Converting to grams to METRIC Tons.<a class="anchor-link" href="#Converting-to-grams-to-METRIC-Tons.">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span> <span class="o">=</span> <span class="n">USyearly</span><span class="o">/</span><span class="mi">1000000</span>  <span class="c1"># This is the ratio for Metric tonnes</span>
-<span class="c1">#907185 -- this is for US tons</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Adding-Installed-Capacity-to-US">Adding Installed Capacity to US<a class="anchor-link" href="#Adding-Installed-Capacity-to-US">&#182;</a></h3>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;Installed_Capacity_[W]&#39;</span>
-
-<span class="c1">#for jj in range(len(SFscenarios)):</span>
-<span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-    <span class="n">obj</span> <span class="o">=</span> <span class="n">SFscenarios</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span>
-    <span class="n">USyearly</span><span class="p">[</span><span class="s2">&quot;Capacity_&quot;</span><span class="o">+</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">keyword</span><span class="p">]</span>
- 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
 
 
 
@@ -14878,341 +15816,103 @@ Name: mat_Total_Landfilled, dtype: float64</pre>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Waste_glass_Reference.Mod</th>
-      <th>Waste_silicon_Reference.Mod</th>
-      <th>Waste_silver_Reference.Mod</th>
-      <th>Waste_copper_Reference.Mod</th>
-      <th>Waste_aluminum_Reference.Mod</th>
-      <th>Waste_Module_Reference.Mod</th>
-      <th>VirginStock_glass_Reference.Mod</th>
-      <th>VirginStock_silicon_Reference.Mod</th>
-      <th>VirginStock_silver_Reference.Mod</th>
-      <th>VirginStock_copper_Reference.Mod</th>
-      <th>VirginStock_aluminum_Reference.Mod</th>
-      <th>VirginStock_Module_Reference.Mod</th>
-      <th>Capacity_Reference.Mod</th>
+      <th>mod_eff</th>
+      <th>mod_reliability_t50</th>
+      <th>mod_reliability_t90</th>
+      <th>mod_degradation</th>
+      <th>mod_lifetime</th>
+      <th>mod_MFG_eff</th>
+      <th>mod_EOL_collection_eff</th>
+      <th>mod_EOL_collected_recycled</th>
+      <th>mod_Repair</th>
+      <th>mod_MerchantTail</th>
+      <th>mod_Reuse</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>1677.604029</td>
-      <td>645.569495</td>
-      <td>4.493061</td>
-      <td>0.419352</td>
-      <td>0.000000e+00</td>
-      <td>2328.085937</td>
-      <td>1677.604029</td>
-      <td>645.569495</td>
-      <td>4.493061</td>
-      <td>0.419352</td>
-      <td>0.000000e+00</td>
-      <td>4.656172e+03</td>
-      <td>1.039020e+08</td>
+      <th>2010</th>
+      <td>14.7</td>
+      <td>25.0</td>
+      <td>30.0</td>
+      <td>0.3</td>
+      <td>22.7</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>1542.129396</td>
-      <td>294.232988</td>
-      <td>2.106274</td>
-      <td>0.408244</td>
-      <td>3.034419e-07</td>
-      <td>1838.876902</td>
-      <td>1542.129396</td>
-      <td>294.232988</td>
-      <td>2.106274</td>
-      <td>0.408244</td>
-      <td>3.034419e-07</td>
-      <td>3.677754e+03</td>
-      <td>2.070834e+08</td>
+      <th>2011</th>
+      <td>15.1</td>
+      <td>25.0</td>
+      <td>30.0</td>
+      <td>0.3</td>
+      <td>23.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>18646.154082</td>
-      <td>3511.463031</td>
-      <td>21.222768</td>
-      <td>4.936146</td>
-      <td>2.942192e-05</td>
-      <td>22183.776056</td>
-      <td>18646.154082</td>
-      <td>3511.463031</td>
-      <td>21.222768</td>
-      <td>4.936146</td>
-      <td>2.942192e-05</td>
-      <td>4.436755e+04</td>
-      <td>1.486954e+09</td>
+      <th>2012</th>
+      <td>15.4</td>
+      <td>25.0</td>
+      <td>30.0</td>
+      <td>0.3</td>
+      <td>23.5</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>17946.926697</td>
-      <td>3521.239799</td>
-      <td>16.341542</td>
-      <td>4.751042</td>
-      <td>4.524681e-04</td>
-      <td>21489.259533</td>
-      <td>17946.926697</td>
-      <td>3521.239799</td>
-      <td>16.341542</td>
-      <td>4.751042</td>
-      <td>4.524681e-04</td>
-      <td>4.297852e+04</td>
-      <td>2.758626e+09</td>
+      <th>2013</th>
+      <td>16.0</td>
+      <td>28.0</td>
+      <td>33.0</td>
+      <td>0.3</td>
+      <td>24.2</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>57552.283109</td>
-      <td>11158.429476</td>
-      <td>38.159242</td>
-      <td>15.848832</td>
-      <td>3.548157e-03</td>
-      <td>68764.724207</td>
-      <td>57552.283109</td>
-      <td>11158.429476</td>
-      <td>38.159242</td>
-      <td>15.848832</td>
-      <td>3.548157e-03</td>
-      <td>1.375294e+05</td>
-      <td>7.097585e+09</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>56264.623717</td>
-      <td>10608.341226</td>
-      <td>33.974876</td>
-      <td>15.196321</td>
-      <td>1.984699e-02</td>
-      <td>66922.155988</td>
-      <td>56264.623717</td>
-      <td>10608.341226</td>
-      <td>33.974876</td>
-      <td>15.196321</td>
-      <td>1.984699e-02</td>
-      <td>1.338443e+05</td>
-      <td>1.141307e+10</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>119058.391060</td>
-      <td>23596.223473</td>
-      <td>64.995132</td>
-      <td>36.990533</td>
-      <td>8.563095e-02</td>
-      <td>142756.685829</td>
-      <td>119058.391060</td>
-      <td>23596.223473</td>
-      <td>64.995132</td>
-      <td>36.990533</td>
-      <td>8.563095e-02</td>
-      <td>2.855134e+05</td>
-      <td>2.148921e+10</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>109915.057687</td>
-      <td>20789.522414</td>
-      <td>58.288941</td>
-      <td>39.177919</td>
-      <td>2.989630e-01</td>
-      <td>130802.345924</td>
-      <td>109915.057687</td>
-      <td>20789.522414</td>
-      <td>58.288941</td>
-      <td>39.177919</td>
-      <td>2.989630e-01</td>
-      <td>2.616047e+05</td>
-      <td>3.151968e+10</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>146529.920393</td>
-      <td>23328.102403</td>
-      <td>82.772508</td>
-      <td>64.962707</td>
-      <td>8.845051e-01</td>
-      <td>170006.642516</td>
-      <td>146529.920393</td>
-      <td>23328.102403</td>
-      <td>82.772508</td>
-      <td>64.962707</td>
-      <td>8.845051e-01</td>
-      <td>3.400133e+05</td>
-      <td>4.641201e+10</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>149399.000328</td>
-      <td>18288.276839</td>
-      <td>83.887837</td>
-      <td>64.431714</td>
-      <td>2.303586e+00</td>
-      <td>167837.900304</td>
-      <td>149399.000328</td>
-      <td>18288.276839</td>
-      <td>83.887837</td>
-      <td>64.431714</td>
-      <td>2.303586e+00</td>
-      <td>3.356758e+05</td>
-      <td>6.124645e+10</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>268346.381637</td>
-      <td>29993.592149</td>
-      <td>144.082104</td>
-      <td>127.520478</td>
-      <td>5.435968e+00</td>
-      <td>298617.012336</td>
-      <td>268346.381637</td>
-      <td>29993.592149</td>
-      <td>144.082104</td>
-      <td>127.520478</td>
-      <td>5.435968e+00</td>
-      <td>5.972340e+05</td>
-      <td>8.929771e+10</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>242744.160050</td>
-      <td>25518.195785</td>
-      <td>121.143841</td>
-      <td>123.100164</td>
-      <td>1.187290e+01</td>
-      <td>268518.472738</td>
-      <td>242744.160050</td>
-      <td>25518.195785</td>
-      <td>121.143841</td>
-      <td>123.100164</td>
-      <td>1.187290e+01</td>
-      <td>5.370369e+05</td>
-      <td>1.172382e+11</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>256030.389040</td>
-      <td>26657.458969</td>
-      <td>118.860036</td>
-      <td>130.560119</td>
-      <td>2.437564e+01</td>
-      <td>282961.643808</td>
-      <td>256030.389040</td>
-      <td>26657.458969</td>
-      <td>118.860036</td>
-      <td>130.560119</td>
-      <td>2.437564e+01</td>
-      <td>5.659233e+05</td>
-      <td>1.472412e+11</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>251858.925093</td>
-      <td>25985.937441</td>
-      <td>108.453226</td>
-      <td>129.158501</td>
-      <td>4.756387e+01</td>
-      <td>278130.038129</td>
-      <td>251858.925093</td>
-      <td>25985.937441</td>
-      <td>108.453226</td>
-      <td>129.158501</td>
-      <td>4.756387e+01</td>
-      <td>5.562601e+05</td>
-      <td>1.770916e+11</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>334786.612997</td>
-      <td>31874.954165</td>
-      <td>135.290536</td>
-      <td>173.196073</td>
-      <td>8.889422e+01</td>
-      <td>367058.947994</td>
-      <td>334786.612997</td>
-      <td>31874.954165</td>
-      <td>135.290536</td>
-      <td>173.196073</td>
-      <td>8.889422e+01</td>
-      <td>7.341179e+05</td>
-      <td>2.173628e+11</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>331419.539472</td>
-      <td>28517.495370</td>
-      <td>124.956107</td>
-      <td>173.007376</td>
-      <td>1.599653e+02</td>
-      <td>360394.963586</td>
-      <td>331419.539472</td>
-      <td>28517.495370</td>
-      <td>124.956107</td>
-      <td>173.007376</td>
-      <td>1.599653e+02</td>
-      <td>7.207899e+05</td>
-      <td>2.574262e+11</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>509983.268330</td>
-      <td>41891.286540</td>
-      <td>181.799905</td>
-      <td>258.042130</td>
-      <td>2.781347e+02</td>
-      <td>552592.531583</td>
-      <td>509983.268330</td>
-      <td>41891.286540</td>
-      <td>181.799905</td>
-      <td>258.042130</td>
-      <td>2.781347e+02</td>
-      <td>1.105185e+06</td>
-      <td>3.199980e+11</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>506944.641317</td>
-      <td>39930.745596</td>
-      <td>171.904117</td>
-      <td>248.637798</td>
-      <td>4.683517e+02</td>
-      <td>547764.280542</td>
-      <td>506944.641317</td>
-      <td>39930.745596</td>
-      <td>171.904117</td>
-      <td>248.637798</td>
-      <td>4.683517e+02</td>
-      <td>1.095529e+06</td>
-      <td>3.822394e+11</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>662920.565219</td>
-      <td>50372.466961</td>
-      <td>213.158637</td>
-      <td>314.766054</td>
-      <td>7.649938e+02</td>
-      <td>714585.950669</td>
-      <td>662920.565219</td>
-      <td>50372.466961</td>
-      <td>213.158637</td>
-      <td>314.766054</td>
-      <td>7.649938e+02</td>
-      <td>1.429172e+06</td>
-      <td>4.642583e+11</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>667335.384769</td>
-      <td>48638.144454</td>
-      <td>202.550788</td>
-      <td>304.014195</td>
-      <td>1.213381e+03</td>
-      <td>717693.475035</td>
-      <td>667335.384769</td>
-      <td>48638.144454</td>
-      <td>202.550788</td>
-      <td>304.014195</td>
-      <td>1.213381e+03</td>
-      <td>1.435387e+06</td>
-      <td>5.458083e+11</td>
+      <th>2014</th>
+      <td>16.3</td>
+      <td>28.0</td>
+      <td>33.0</td>
+      <td>0.3</td>
+      <td>26.0</td>
+      <td>98.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
     </tr>
   </tbody>
 </table>
@@ -15223,6 +15923,73 @@ Name: mat_Total_Landfilled, dtype: float64</pre>
 
 </div>
 
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="For-each-Scenario,-combine-with-baseline-and-save-as-input-file%C2%B6">For each Scenario, combine with baseline and save as input file&#182;<a class="anchor-link" href="#For-each-Scenario,-combine-with-baseline-and-save-as-input-file%C2%B6">&#182;</a></h3>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">))):</span>
+    <span class="n">SCEN</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
+    
+    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;USA&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
+    
+    <span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+
+    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
+    <span class="c1"># Add other columns</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+   
+    <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,&quot;</span>\
+    <span class="s2">&quot;mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,&quot;</span>\
+    <span class="s2">&quot;mod_Repair,mod_MerchantTail,mod_Reuse</span><span class="se">\n</span><span class="s2">&quot;</span>\
+    <span class="s2">&quot;year,MW,%,years,years,%,years,%,%,%,%,%,%</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
+    <span class="c1"># Write the header lines, including the index variable for</span>
+    <span class="c1"># the last one if you&#39;re letting Pandas produce that for you.</span>
+    <span class="c1"># (see above).</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+            <span class="n">ict</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="c1">#    savedata.to_csv(ict, index=False)</span>
+        <span class="n">A</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">ict</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">

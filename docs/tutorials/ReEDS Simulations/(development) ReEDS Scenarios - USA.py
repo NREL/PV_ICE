@@ -45,6 +45,12 @@ testfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
+# In[3]:
+
+
+PV_ICE.__version__
+
+
 # ### Reading REEDS original file to get list of SCENARIOs, PCAs, and STATEs 
 
 # In[3]:

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # PVSC Fig. 3
+# # PVSC 2021 Fig. 3
 
-# In[2]:
+# In[1]:
 
 
 import PV_ICE
@@ -15,7 +15,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[3]:
+# In[2]:
 
 
 import os
@@ -26,28 +26,16 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[18]:
+# In[3]:
 
 
 years = list(range(2009,2051))
 
 
-# In[9]:
+# In[ ]:
 
 
 USyearly = pd.read_csv(os.path.join(testfolder,'PVSC_USYearly_DataforPlot.csv'))
-
-
-# In[12]:
-
-
-USyearly.keys()
-
-
-# In[19]:
-
-
-USyearly
 
 
 # In[21]:

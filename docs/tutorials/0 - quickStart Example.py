@@ -3,9 +3,9 @@
 
 # # 0 - quickStart Example
 
-# #### 1. Create a folder for your simulation, and load PV_DEMICE
+# #### 1. Create a folder for your simulation, and load PV ICE
 # 
-# First let's set the folder where the simulation will be saved. By default, this is the TEMP folder in the PV_DEMICE distribution.
+# First let's set the folder where the simulation will be saved. By default, this is the TEMP folder in the PV_ICE distribution.
 # 
 # The lines below find the location of the folder relative to this Jupyter Journal. You can alternatively point to an empty directory (it will open a load GUI Visual Interface) or specify any other directory in your computer, for example:
 # 
