@@ -1,0 +1,280 @@
+﻿Year,Scenario,mass_fraction_PV_materials_repaired_milliontonnes,mass_fraction_PV_materials_reused_milliontonnes,mass_fraction_PV_materials_recycled_milliontonnes,mass_fraction_PV_materials_landfilled_milliontonnes,mass_fraction_PV_materials_stored_milliontonnes
+2020,i) Baseline,0,0,0,0,0
+2021,i) Baseline,0,0.01759103,1.04E-04,2.94E-01,0.688584222
+2022,i) Baseline,0,0.018713094,3.64E-05,4.08E-01,0.572950147
+2023,i) Baseline,0,0.030077775,1.96E-05,4.51E-01,0.519313918
+2024,i) Baseline,0,0.05777918,1.22E-05,5.14E-01,0.428461938
+2025,i) Baseline,0.000164612,0.09094862,3.10E-04,6.00E-01,0.308937011
+2026,i) Baseline,0.000560721,0.103083993,5.70E-04,6.38E-01,0.257497353
+2027,i) Baseline,0.000980399,0.107131204,6.48E-04,6.47E-01,0.244103236
+2028,i) Baseline,0.001333295,0.104294273,7.77E-04,6.37E-01,0.256434003
+2029,i) Baseline,0.001666917,0.10034908,9.26E-04,6.22E-01,0.275309997
+2030,i) Baseline,0.002121764,0.096615252,1.08E-03,6.11E-01,0.289622917
+2031,i) Baseline,0.002846705,0.092983983,1.37E-03,6.14E-01,0.288707586
+2032,i) Baseline,0.004008205,0.079631213,2.11E-03,6.14E-01,0.300493294
+2033,i) Baseline,0.004716822,0.068724134,2.84E-03,6.07E-01,0.317071555
+2034,i) Baseline,0.005042549,0.060599187,4.45E-03,6.26E-01,0.303653651
+2035,i) Baseline,0.005012302,0.05377828,6.44E-03,6.58E-01,0.277018963
+2036,i) Baseline,0.005483275,0.047577849,9.62E-03,6.84E-01,0.252852055
+2037,i) Baseline,0.005673236,0.042167279,1.43E-02,7.13E-01,0.224983326
+2038,i) Baseline,0.005588798,0.037642917,1.89E-02,7.35E-01,0.203049837
+2039,i) Baseline,0.00558094,0.033748899,2.33E-02,7.51E-01,0.186124504
+2040,i) Baseline,0.00530705,0.030203125,2.82E-02,7.70E-01,0.166421462
+2041,i) Baseline,0.004953437,0.027171446,3.29E-02,7.83E-01,0.151901218
+2042,i) Baseline,0.00461771,0.024406251,3.66E-02,7.89E-01,0.145390632
+2043,i) Baseline,0.004295356,0.022080414,4.27E-02,8.04E-01,0.126774255
+2044,i) Baseline,0.003868493,0.020078134,4.82E-02,8.18E-01,0.11002868
+2045,i) Baseline,0.003624433,0.018324132,5.39E-02,8.27E-01,0.09756736
+2046,i) Baseline,0.003312446,0.016695421,5.92E-02,8.33E-01,0.08771295
+2047,i) Baseline,0.003022855,0.015273456,6.42E-02,8.39E-01,0.078457062
+2048,i) Baseline,0.002759587,0.014079058,6.84E-02,8.43E-01,0.071319225
+2049,i) Baseline,0.002552264,0.012980287,7.28E-02,8.47E-01,0.064389622
+2050,i) Baseline,0.002360791,0.012079212,7.69E-02,8.50E-01,0.058371302
+2020,c) Lower recycling costs ($18/module),0,0,0.00E+00,0.00E+00,0
+2021,c) Lower recycling costs ($18/module),0,0.017591243,3.53E-04,2.94E-01,0.688202625
+2022,c) Lower recycling costs ($18/module),0,0.018684023,1.23E-04,4.09E-01,0.572684747
+2023,c) Lower recycling costs ($18/module),0,0.030260587,6.64E-05,4.51E-01,0.519001519
+2024,c) Lower recycling costs ($18/module),0,0.058639896,4.14E-05,5.14E-01,0.427727642
+2025,c) Lower recycling costs ($18/module),7.19E-05,0.091983411,1.09E-03,5.98E-01,0.308739017
+2026,c) Lower recycling costs ($18/module),0.000449269,0.103419588,3.20E-03,6.35E-01,0.257835331
+2027,c) Lower recycling costs ($18/module),0.000876316,0.107357645,5.01E-03,6.44E-01,0.24233956
+2028,c) Lower recycling costs ($18/module),0.000946414,0.104624841,6.55E-03,6.34E-01,0.253885753
+2029,c) Lower recycling costs ($18/module),0.001044122,0.100359438,7.57E-03,6.19E-01,0.271801461
+2030,c) Lower recycling costs ($18/module),0.001237817,0.097310245,8.96E-03,6.06E-01,0.286885206
+2031,c) Lower recycling costs ($18/module),0.001603826,0.093170747,1.08E-02,6.10E-01,0.284865442
+2032,c) Lower recycling costs ($18/module),0.002214388,0.079592187,1.82E-02,6.05E-01,0.295159842
+2033,c) Lower recycling costs ($18/module),0.002518008,0.069720123,2.69E-02,5.89E-01,0.312280839
+2034,c) Lower recycling costs ($18/module),0.002281324,0.06206603,4.18E-02,5.94E-01,0.299340522
+2035,c) Lower recycling costs ($18/module),0.002046784,0.055117501,6.59E-02,6.04E-01,0.272521775
+2036,c) Lower recycling costs ($18/module),0.001937742,0.049406374,9.84E-02,6.06E-01,0.24415907
+2037,c) Lower recycling costs ($18/module),0.001902693,0.044465839,1.39E-01,6.06E-01,0.208616023
+2038,c) Lower recycling costs ($18/module),0.00169359,0.040089588,1.82E-01,6.00E-01,0.175929594
+2039,c) Lower recycling costs ($18/module),0.001499522,0.03612061,2.22E-01,5.89E-01,0.150927013
+2040,c) Lower recycling costs ($18/module),0.001306481,0.032408445,2.59E-01,5.80E-01,0.126820906
+2041,c) Lower recycling costs ($18/module),0.001163073,0.029295244,2.91E-01,5.69E-01,0.109597981
+2042,c) Lower recycling costs ($18/module),0.001025877,0.026698322,3.16E-01,5.58E-01,0.098226554
+2043,c) Lower recycling costs ($18/module),0.000910234,0.02447557,3.40E-01,5.49E-01,0.085676983
+2044,c) Lower recycling costs ($18/module),0.000811998,0.022943055,3.61E-01,5.40E-01,0.074612216
+2045,c) Lower recycling costs ($18/module),0.000728153,0.021380554,3.79E-01,5.31E-01,0.067283304
+2046,c) Lower recycling costs ($18/module),0.00065659,0.020148634,3.96E-01,5.23E-01,0.060893092
+2047,c) Lower recycling costs ($18/module),0.000595498,0.019227602,4.10E-01,5.15E-01,0.055099425
+2048,c) Lower recycling costs ($18/module),0.000543386,0.018312506,4.23E-01,5.08E-01,0.050305334
+2049,c) Lower recycling costs ($18/module),0.000499014,0.017636842,4.34E-01,5.02E-01,0.046193374
+2050,c) Lower recycling costs ($18/module),0.000461312,0.016958765,4.44E-01,4.96E-01,0.042741173
+2020,g) Reuse warranties (equal new/used attitude),0,0,0.00E+00,0.00E+00,0
+2021,g) Reuse warranties (equal new/used attitude),0,0.01759103,1.04E-04,2.94E-01,0.688584222
+2022,g) Reuse warranties (equal new/used attitude),0,0.019970048,3.64E-05,4.13E-01,0.56666942
+2023,g) Reuse warranties (equal new/used attitude),0,0.033298357,1.96E-05,4.62E-01,0.504388053
+2024,g) Reuse warranties (equal new/used attitude),0,0.068836475,1.22E-05,5.43E-01,0.387960913
+2025,g) Reuse warranties (equal new/used attitude),0,0.108527103,2.91E-04,6.23E-01,0.268541531
+2026,g) Reuse warranties (equal new/used attitude),0,0.133758522,4.50E-04,6.79E-01,0.186338893
+2027,g) Reuse warranties (equal new/used attitude),0,0.151273721,5.13E-04,7.00E-01,0.148584076
+2028,g) Reuse warranties (equal new/used attitude),0,0.165103797,5.80E-04,7.14E-01,0.120505845
+2029,g) Reuse warranties (equal new/used attitude),0,0.172533861,5.36E-04,7.20E-01,0.107400859
+2030,g) Reuse warranties (equal new/used attitude),0,0.180065752,5.28E-04,7.31E-01,0.088648243
+2031,g) Reuse warranties (equal new/used attitude),0,0.18433478,4.90E-04,7.29E-01,0.08568464
+2032,g) Reuse warranties (equal new/used attitude),0,0.196139422,5.28E-04,7.41E-01,0.062633084
+2033,g) Reuse warranties (equal new/used attitude),0,0.202978452,4.89E-04,7.46E-01,0.050635843
+2034,g) Reuse warranties (equal new/used attitude),0,0.207554503,4.54E-04,7.46E-01,0.046146667
+2035,g) Reuse warranties (equal new/used attitude),0,0.21196493,4.14E-04,7.54E-01,0.034044533
+2036,g) Reuse warranties (equal new/used attitude),0,0.215047326,3.90E-04,7.61E-01,0.023990283
+2037,g) Reuse warranties (equal new/used attitude),0,0.216155057,3.64E-04,7.62E-01,0.021182259
+2038,g) Reuse warranties (equal new/used attitude),0,0.217224202,3.51E-04,7.65E-01,0.017795413
+2039,g) Reuse warranties (equal new/used attitude),0,0.218715426,3.34E-04,7.65E-01,0.016224882
+2040,g) Reuse warranties (equal new/used attitude),0,0.220870557,3.12E-04,7.66E-01,0.012992242
+2041,g) Reuse warranties (equal new/used attitude),0,0.223001702,2.96E-04,7.68E-01,0.008924561
+2042,g) Reuse warranties (equal new/used attitude),0,0.224053821,2.85E-04,7.68E-01,0.008129055
+2043,g) Reuse warranties (equal new/used attitude),0,0.224659194,2.68E-04,7.67E-01,0.008298925
+2044,g) Reuse warranties (equal new/used attitude),0,0.225591176,2.53E-04,7.68E-01,0.006373074
+2045,g) Reuse warranties (equal new/used attitude),0,0.226257596,2.41E-04,7.69E-01,0.004325986
+2046,g) Reuse warranties (equal new/used attitude),0,0.226565301,2.30E-04,7.69E-01,0.003800817
+2047,g) Reuse warranties (equal new/used attitude),0,0.22654939,2.27E-04,7.70E-01,0.00361547
+2048,g) Reuse warranties (equal new/used attitude),0,0.226719811,2.21E-04,7.70E-01,0.003056443
+2049,g) Reuse warranties (equal new/used attitude),0,0.226587834,2.14E-04,7.70E-01,0.002754974
+2050,g) Reuse warranties (equal new/used attitude),0,0.22654971,2.11E-04,7.71E-01,0.001981292
+2020,e) Improved lifetime (from 30 to 60 years in 2050),0,0,0.00E+00,0.00E+00,0
+2021,e) Improved lifetime (from 30 to 60 years in 2050),0,0.007449746,2.17E-04,2.24E-01,0.768764635
+2022,e) Improved lifetime (from 30 to 60 years in 2050),0,0.010727301,1.03E-04,2.98E-01,0.690870341
+2023,e) Improved lifetime (from 30 to 60 years in 2050),0,0.023131537,6.34E-05,3.62E-01,0.614904686
+2024,e) Improved lifetime (from 30 to 60 years in 2050),0,0.05288403,4.29E-05,4.56E-01,0.491002208
+2025,e) Improved lifetime (from 30 to 60 years in 2050),3.01E-05,0.086152723,1.29E-04,5.66E-01,0.347687218
+2026,e) Improved lifetime (from 30 to 60 years in 2050),0.000228982,0.096696658,4.49E-04,6.18E-01,0.284565667
+2027,e) Improved lifetime (from 30 to 60 years in 2050),0.000443803,0.100919399,6.44E-04,6.38E-01,0.25996011
+2028,e) Improved lifetime (from 30 to 60 years in 2050),0.000523762,0.097826477,6.26E-04,6.37E-01,0.264127761
+2029,e) Improved lifetime (from 30 to 60 years in 2050),0.000649347,0.094519833,7.09E-04,6.30E-01,0.27438891
+2030,e) Improved lifetime (from 30 to 60 years in 2050),0.00077991,0.092298356,7.76E-04,6.25E-01,0.281009964
+2031,e) Improved lifetime (from 30 to 60 years in 2050),0.000989974,0.090369122,8.84E-04,6.34E-01,0.273279866
+2032,e) Improved lifetime (from 30 to 60 years in 2050),0.00149249,0.079084753,1.06E-03,6.43E-01,0.275408825
+2033,e) Improved lifetime (from 30 to 60 years in 2050),0.002015342,0.070214829,1.37E-03,6.41E-01,0.285449004
+2034,e) Improved lifetime (from 30 to 60 years in 2050),0.002081712,0.063454224,1.99E-03,6.65E-01,0.267627885
+2035,e) Improved lifetime (from 30 to 60 years in 2050),0.002190742,0.058400458,2.64E-03,6.99E-01,0.237667219
+2036,e) Improved lifetime (from 30 to 60 years in 2050),0.0022871,0.053672529,3.50E-03,7.26E-01,0.214403453
+2037,e) Improved lifetime (from 30 to 60 years in 2050),0.002341097,0.049722819,4.77E-03,7.53E-01,0.18980153
+2038,e) Improved lifetime (from 30 to 60 years in 2050),0.002497262,0.045717444,5.81E-03,7.78E-01,0.168319753
+2039,e) Improved lifetime (from 30 to 60 years in 2050),0.002482933,0.042219445,6.81E-03,7.94E-01,0.154413387
+2040,e) Improved lifetime (from 30 to 60 years in 2050),0.002366925,0.038815798,7.66E-03,8.15E-01,0.136424488
+2041,e) Improved lifetime (from 30 to 60 years in 2050),0.00220281,0.035784998,8.36E-03,8.28E-01,0.125377759
+2042,e) Improved lifetime (from 30 to 60 years in 2050),0.002028912,0.033122716,8.45E-03,8.34E-01,0.122741089
+2043,e) Improved lifetime (from 30 to 60 years in 2050),0.001940181,0.030568767,8.76E-03,8.50E-01,0.108998878
+2044,e) Improved lifetime (from 30 to 60 years in 2050),0.001781518,0.028217605,8.78E-03,8.67E-01,0.094035275
+2045,e) Improved lifetime (from 30 to 60 years in 2050),0.001648758,0.026022592,8.57E-03,8.79E-01,0.08511545
+2046,e) Improved lifetime (from 30 to 60 years in 2050),0.001542628,0.024021237,8.43E-03,8.88E-01,0.077871491
+2047,e) Improved lifetime (from 30 to 60 years in 2050),0.001418067,0.022205149,8.19E-03,8.97E-01,0.071319031
+2048,e) Improved lifetime (from 30 to 60 years in 2050),0.001306852,0.020622776,7.94E-03,9.04E-01,0.065884041
+2049,e) Improved lifetime (from 30 to 60 years in 2050),0.001207747,0.019122901,7.70E-03,9.12E-01,0.060172661
+2050,e) Improved lifetime (from 30 to 60 years in 2050),0.00113076,0.017792168,7.43E-03,9.18E-01,0.055287364
+2020,d) Higher landfill costs ($2.75/module),0,0,0.00E+00,0.00E+00,0
+2021,d) Higher landfill costs ($2.75/module),0,0.018036466,1.99E-04,2.50E-01,0.7317494
+2022,d) Higher landfill costs ($2.75/module),0,0.019681015,6.92E-05,3.71E-01,0.608963657
+2023,d) Higher landfill costs ($2.75/module),0,0.032437823,3.73E-05,4.15E-01,0.552800254
+2024,d) Higher landfill costs ($2.75/module),0,0.064661649,2.33E-05,4.78E-01,0.457200914
+2025,d) Higher landfill costs ($2.75/module),0.000295474,0.098451703,3.62E-04,5.64E-01,0.336499829
+2026,d) Higher landfill costs ($2.75/module),0.000971039,0.110175691,6.25E-04,5.98E-01,0.290182405
+2027,d) Higher landfill costs ($2.75/module),0.001429283,0.11451503,8.14E-04,6.03E-01,0.279889606
+2028,d) Higher landfill costs ($2.75/module),0.001699505,0.111101228,8.78E-04,5.89E-01,0.297344486
+2029,d) Higher landfill costs ($2.75/module),0.002335887,0.105993493,1.00E-03,5.69E-01,0.321262055
+2030,d) Higher landfill costs ($2.75/module),0.00303437,0.102538898,1.27E-03,5.54E-01,0.33945029
+2031,d) Higher landfill costs ($2.75/module),0.004429437,0.099132457,1.59E-03,5.56E-01,0.338542748
+2032,d) Higher landfill costs ($2.75/module),0.007758066,0.084967951,2.38E-03,5.49E-01,0.355426771
+2033,d) Higher landfill costs ($2.75/module),0.010434786,0.074083133,3.92E-03,5.30E-01,0.381295008
+2034,d) Higher landfill costs ($2.75/module),0.012301086,0.065375521,6.66E-03,5.46E-01,0.369982124
+2035,d) Higher landfill costs ($2.75/module),0.013859797,0.058549044,1.31E-02,5.74E-01,0.340525289
+2036,d) Higher landfill costs ($2.75/module),0.0148788,0.052319837,2.26E-02,5.86E-01,0.324661632
+2037,d) Higher landfill costs ($2.75/module),0.016534412,0.047635026,3.80E-02,5.99E-01,0.298634172
+2038,d) Higher landfill costs ($2.75/module),0.017075918,0.04307472,5.87E-02,6.06E-01,0.274767484
+2039,d) Higher landfill costs ($2.75/module),0.01720764,0.039011566,8.06E-02,6.00E-01,0.262932536
+2040,d) Higher landfill costs ($2.75/module),0.016657249,0.035632925,1.08E-01,6.01E-01,0.238003701
+2041,d) Higher landfill costs ($2.75/module),0.01580179,0.032559108,1.37E-01,5.94E-01,0.220941318
+2042,d) Higher landfill costs ($2.75/module),0.014809503,0.029582677,1.62E-01,5.73E-01,0.220408951
+2043,d) Higher landfill costs ($2.75/module),0.014418572,0.027121681,2.00E-01,5.70E-01,0.187901941
+2044,d) Higher landfill costs ($2.75/module),0.013501042,0.025188798,2.39E-01,5.65E-01,0.157239604
+2045,d) Higher landfill costs ($2.75/module),0.012537176,0.023326846,2.72E-01,5.51E-01,0.140942943
+2046,d) Higher landfill costs ($2.75/module),0.011908559,0.021603445,3.03E-01,5.35E-01,0.127508013
+2047,d) Higher landfill costs ($2.75/module),0.011107262,0.020424151,3.33E-01,5.21E-01,0.113731939
+2048,d) Higher landfill costs ($2.75/module),0.010362423,0.019435808,3.60E-01,5.06E-01,0.104387077
+2049,d) Higher landfill costs ($2.75/module),0.009716613,0.018746291,3.84E-01,4.94E-01,0.093298057
+2050,d) Higher landfill costs ($2.75/module),0.009130732,0.017975648,4.06E-01,4.82E-01,0.085136007
+2020,a) Landfill ban,0,0,0.00E+00,0.00E+00,0
+2021,a) Landfill ban,0,0.027971116,7.64E-03,1.17E-01,0.847081274
+2022,a) Landfill ban,0,0.031961564,1.02E-02,2.53E-01,0.704790583
+2023,a) Landfill ban,0,0.068661841,2.70E-02,2.66E-01,0.638003042
+2024,a) Landfill ban,0,0.148134969,6.36E-02,2.62E-01,0.525900449
+2025,a) Landfill ban,0.006022462,0.223984115,1.21E-01,2.56E-01,0.392887452
+2026,a) Landfill ban,0.009662958,0.218138551,1.84E-01,2.50E-01,0.33818834
+2027,a) Landfill ban,0.010785673,0.200323322,2.22E-01,2.39E-01,0.327999269
+2028,a) Landfill ban,0.010074244,0.180696081,2.36E-01,2.24E-01,0.348466925
+2029,a) Landfill ban,0.009938491,0.166342577,2.37E-01,2.09E-01,0.377114784
+2030,a) Landfill ban,0.011287211,0.15682125,2.42E-01,1.97E-01,0.392766941
+2031,a) Landfill ban,0.013754094,0.14735825,2.61E-01,1.89E-01,0.388979123
+2032,a) Landfill ban,0.017846233,0.125519862,2.95E-01,1.70E-01,0.391225998
+2033,a) Landfill ban,0.015486546,0.108273627,3.15E-01,1.55E-01,0.406483281
+2034,a) Landfill ban,0.01321552,0.095967998,3.66E-01,1.50E-01,0.37440796
+2035,a) Landfill ban,0.011081169,0.08537187,4.38E-01,1.53E-01,0.313012743
+2036,a) Landfill ban,0.009355917,0.075178985,5.03E-01,1.56E-01,0.256955784
+2037,a) Landfill ban,0.007950011,0.066591409,5.60E-01,1.60E-01,0.206063535
+2038,a) Landfill ban,0.00681114,0.058952224,6.04E-01,1.62E-01,0.167709019
+2039,a) Landfill ban,0.005880348,0.052157325,6.36E-01,1.63E-01,0.142815585
+2040,a) Landfill ban,0.005116237,0.047182319,6.62E-01,1.64E-01,0.122205603
+2041,a) Landfill ban,0.004482112,0.043072788,6.82E-01,1.64E-01,0.106786377
+2042,a) Landfill ban,0.00395125,0.039776951,6.97E-01,1.64E-01,0.095041561
+2043,a) Landfill ban,0.003503985,0.036958542,7.11E-01,1.64E-01,0.084588571
+2044,a) Landfill ban,0.003124647,0.034967559,7.22E-01,1.64E-01,0.075442574
+2045,a) Landfill ban,0.002801546,0.033273763,7.32E-01,1.64E-01,0.067973805
+2046,a) Landfill ban,0.002525911,0.031897959,7.40E-01,1.64E-01,0.061551344
+2047,a) Landfill ban,0.002290705,0.030741636,7.47E-01,1.64E-01,0.056019157
+2048,a) Landfill ban,0.002090193,0.029422736,7.53E-01,1.64E-01,0.051283702
+2049,a) Landfill ban,0.001919499,0.028351448,7.59E-01,1.64E-01,0.047182033
+2050,a) Landfill ban,0.001774466,0.02725706,7.63E-01,1.64E-01,0.043708453
+2020,b) High material recovery (96%) & $18/module recycling costs,0,0,0.00E+00,0.00E+00,0
+2021,b) High material recovery (96%) & $18/module recycling costs,0,0.017590959,4.25E-04,2.94E-01,0.688191508
+2022,b) High material recovery (96%) & $18/module recycling costs,0,0.018683918,1.48E-04,4.08E-01,0.572681524
+2023,b) High material recovery (96%) & $18/module recycling costs,0,0.030260496,7.99E-05,4.51E-01,0.518999955
+2024,b) High material recovery (96%) & $18/module recycling costs,0,0.058639778,5.00E-05,5.14E-01,0.427726779
+2025,b) High material recovery (96%) & $18/module recycling costs,7.19E-05,0.091978726,1.31E-03,5.98E-01,0.308723293
+2026,b) High material recovery (96%) & $18/module recycling costs,0.000449201,0.103404101,3.86E-03,6.34E-01,0.257796722
+2027,b) High material recovery (96%) & $18/module recycling costs,0.000876111,0.1073325,6.04E-03,6.43E-01,0.242282799
+2028,b) High material recovery (96%) & $18/module recycling costs,0.000946124,0.10459278,7.90E-03,6.33E-01,0.253807952
+2029,b) High material recovery (96%) & $18/module recycling costs,0.001043752,0.100323916,9.12E-03,6.18E-01,0.271705256
+2030,b) High material recovery (96%) & $18/module recycling costs,0.001237298,0.097269494,1.08E-02,6.04E-01,0.286765065
+2031,b) High material recovery (96%) & $18/module recycling costs,0.001603016,0.09312369,1.30E-02,6.08E-01,0.284721566
+2032,b) High material recovery (96%) & $18/module recycling costs,0.002212506,0.079524552,2.19E-02,6.01E-01,0.294909027
+2033,b) High material recovery (96%) & $18/module recycling costs,0.002514844,0.069632519,3.24E-02,5.84E-01,0.311888455
+2034,b) High material recovery (96%) & $18/module recycling costs,0.002276868,0.061944798,5.03E-02,5.87E-01,0.298755829
+2035,b) High material recovery (96%) & $18/module recycling costs,0.002040493,0.054948084,7.92E-02,5.92E-01,0.271684114
+2036,b) High material recovery (96%) & $18/module recycling costs,0.00192887,0.049180154,1.18E-01,5.88E-01,0.243041127
+2037,b) High material recovery (96%) & $18/module recycling costs,0.001890365,0.044177754,1.67E-01,5.80E-01,0.207264446
+2038,b) High material recovery (96%) & $18/module recycling costs,0.001679262,0.039750415,2.18E-01,5.66E-01,0.174441159
+2039,b) High material recovery (96%) & $18/module recycling costs,0.001484116,0.035749518,2.65E-01,5.49E-01,0.149376434
+2040,b) High material recovery (96%) & $18/module recycling costs,0.001290817,0.032019881,3.09E-01,5.32E-01,0.125300376
+2041,b) High material recovery (96%) & $18/module recycling costs,0.001147475,0.028902361,3.46E-01,5.16E-01,0.108128145
+2042,b) High material recovery (96%) & $18/module recycling costs,0.001010936,0.026309484,3.75E-01,5.01E-01,0.096795971
+2043,b) High material recovery (96%) & $18/module recycling costs,0.000895993,0.024092642,4.03E-01,4.87E-01,0.084336537
+2044,b) High material recovery (96%) & $18/module recycling costs,0.000798511,0.02256198,4.28E-01,4.75E-01,0.073372938
+2045,b) High material recovery (96%) & $18/module recycling costs,0.000715458,0.021007797,4.49E-01,4.63E-01,0.06611026
+2046,b) High material recovery (96%) & $18/module recycling costs,0.000644665,0.01978269,4.68E-01,4.52E-01,0.059787138
+2047,b) High material recovery (96%) & $18/module recycling costs,0.000584298,0.018866,4.85E-01,4.42E-01,0.0540632
+2048,b) High material recovery (96%) & $18/module recycling costs,0.000532855,0.017957616,4.99E-01,4.33E-01,0.049330434
+2049,b) High material recovery (96%) & $18/module recycling costs,0.000489095,0.017286258,5.12E-01,4.25E-01,0.045275146
+2050,b) High material recovery (96%) & $18/module recycling costs,0.000451937,0.01661413,5.24E-01,4.17E-01,0.041872589
+2020,f) Improved learning effect (learning parameter = 0.6),0,0,0.00E+00,0.00E+00,0
+2021,f) Improved learning effect (learning parameter = 0.6),0,0.01759103,1.04E-04,2.94E-01,0.688584222
+2022,f) Improved learning effect (learning parameter = 0.6),0,0.018713094,3.64E-05,4.08E-01,0.572950147
+2023,f) Improved learning effect (learning parameter = 0.6),0,0.030077775,1.96E-05,4.51E-01,0.519313918
+2024,f) Improved learning effect (learning parameter = 0.6),0,0.05777918,1.22E-05,5.14E-01,0.428461938
+2025,f) Improved learning effect (learning parameter = 0.6),0.000164612,0.09094862,3.10E-04,6.00E-01,0.308937011
+2026,f) Improved learning effect (learning parameter = 0.6),0.000560722,0.102994164,6.23E-04,6.38E-01,0.257529537
+2027,f) Improved learning effect (learning parameter = 0.6),0.000980408,0.107063739,8.56E-04,6.47E-01,0.244136803
+2028,f) Improved learning effect (learning parameter = 0.6),0.001344759,0.104186433,1.12E-03,6.37E-01,0.256272505
+2029,f) Improved learning effect (learning parameter = 0.6),0.001628731,0.10030392,1.33E-03,6.22E-01,0.2749373
+2030,f) Improved learning effect (learning parameter = 0.6),0.002028731,0.096688992,1.77E-03,6.10E-01,0.28932992
+2031,f) Improved learning effect (learning parameter = 0.6),0.002699935,0.092959352,2.38E-03,6.14E-01,0.288267467
+2032,f) Improved learning effect (learning parameter = 0.6),0.003786004,0.07969862,4.27E-03,6.12E-01,0.299899271
+2033,f) Improved learning effect (learning parameter = 0.6),0.004681748,0.06886119,6.34E-03,6.05E-01,0.315576666
+2034,f) Improved learning effect (learning parameter = 0.6),0.004999402,0.060710205,9.68E-03,6.22E-01,0.302940125
+2035,f) Improved learning effect (learning parameter = 0.6),0.005091535,0.053416815,1.49E-02,6.50E-01,0.276283634
+2036,f) Improved learning effect (learning parameter = 0.6),0.005384645,0.047324549,2.16E-02,6.75E-01,0.250642595
+2037,f) Improved learning effect (learning parameter = 0.6),0.005782945,0.042386303,3.06E-02,6.98E-01,0.223599959
+2038,f) Improved learning effect (learning parameter = 0.6),0.00562792,0.037850673,4.06E-02,7.15E-01,0.200897556
+2039,f) Improved learning effect (learning parameter = 0.6),0.005475465,0.034044876,5.14E-02,7.27E-01,0.182176268
+2040,f) Improved learning effect (learning parameter = 0.6),0.005171496,0.030640561,6.53E-02,7.39E-01,0.160147372
+2041,f) Improved learning effect (learning parameter = 0.6),0.004807553,0.027720688,7.82E-02,7.47E-01,0.142806285
+2042,f) Improved learning effect (learning parameter = 0.6),0.004379757,0.025013835,9.09E-02,7.45E-01,0.134982909
+2043,f) Improved learning effect (learning parameter = 0.6),0.004078606,0.022745388,1.07E-01,7.50E-01,0.116095322
+2044,f) Improved learning effect (learning parameter = 0.6),0.003684602,0.020880626,1.23E-01,7.54E-01,0.098723385
+2045,f) Improved learning effect (learning parameter = 0.6),0.00339843,0.019250197,1.36E-01,7.53E-01,0.087445837
+2046,f) Improved learning effect (learning parameter = 0.6),0.003146507,0.017921691,1.49E-01,7.52E-01,0.07789893
+2047,f) Improved learning effect (learning parameter = 0.6),0.002871292,0.016841284,1.61E-01,7.50E-01,0.069742284
+2048,f) Improved learning effect (learning parameter = 0.6),0.002640378,0.016014251,1.72E-01,7.46E-01,0.063330183
+2049,f) Improved learning effect (learning parameter = 0.6),0.002484163,0.01512556,1.82E-01,7.43E-01,0.057556422
+2050,f) Improved learning effect (learning parameter = 0.6),0.00229852,0.014423734,1.92E-01,7.39E-01,0.052892626
+2020,h) Seeding reuse (5% of population per year),0,0,0.00E+00,0.00E+00,0
+2021,h) Seeding reuse (5% of population per year),0,0.01759103,1.04E-04,2.94E-01,0.688584222
+2022,h) Seeding reuse (5% of population per year),0,0.018713094,3.64E-05,4.08E-01,0.572950147
+2023,h) Seeding reuse (5% of population per year),0,0.030077775,1.96E-05,4.51E-01,0.519313918
+2024,h) Seeding reuse (5% of population per year),0,0.05777918,1.22E-05,5.14E-01,0.428461938
+2025,h) Seeding reuse (5% of population per year),0.000164612,0.09094862,3.10E-04,6.00E-01,0.308937011
+2026,h) Seeding reuse (5% of population per year),0.000693899,0.103184234,6.06E-04,6.39E-01,0.256726364
+2027,h) Seeding reuse (5% of population per year),0.000501171,0.119077198,6.57E-04,6.58E-01,0.221381636
+2028,h) Seeding reuse (5% of population per year),0.00037049,0.126319951,7.42E-04,6.62E-01,0.210625198
+2029,h) Seeding reuse (5% of population per year),0.000279366,0.131726384,9.37E-04,6.59E-01,0.20785424
+2030,h) Seeding reuse (5% of population per year),0.000214405,0.135934332,1.10E-03,6.57E-01,0.205888294
+2031,h) Seeding reuse (5% of population per year),0.000167248,0.138863568,1.30E-03,6.61E-01,0.199056092
+2032,h) Seeding reuse (5% of population per year),0.000612755,0.137380061,1.69E-03,6.54E-01,0.206554592
+2033,h) Seeding reuse (5% of population per year),0.001979481,0.130021418,2.05E-03,6.42E-01,0.224313444
+2034,h) Seeding reuse (5% of population per year),0.003212489,0.122275085,2.43E-03,6.36E-01,0.235962736
+2035,h) Seeding reuse (5% of population per year),0.004282553,0.115559167,3.14E-03,6.39E-01,0.238391802
+2036,h) Seeding reuse (5% of population per year),0.005482346,0.110151209,4.20E-03,6.45E-01,0.235608075
+2037,h) Seeding reuse (5% of population per year),0.006579871,0.105167939,6.07E-03,6.59E-01,0.22346224
+2038,h) Seeding reuse (5% of population per year),0.007572982,0.100671731,7.98E-03,6.74E-01,0.209641588
+2039,h) Seeding reuse (5% of population per year),0.00858661,0.09696693,9.80E-03,6.85E-01,0.19936846
+2040,h) Seeding reuse (5% of population per year),0.009023507,0.093125148,1.16E-02,7.00E-01,0.186308422
+2041,h) Seeding reuse (5% of population per year),0.009396904,0.089933792,1.37E-02,7.13E-01,0.173767965
+2042,h) Seeding reuse (5% of population per year),0.009468453,0.086307132,1.53E-02,7.15E-01,0.17395884
+2043,h) Seeding reuse (5% of population per year),0.009818213,0.083734504,1.83E-02,7.25E-01,0.16329635
+2044,h) Seeding reuse (5% of population per year),0.009951988,0.080609285,2.18E-02,7.37E-01,0.150375425
+2045,h) Seeding reuse (5% of population per year),0.010068162,0.078244428,2.56E-02,7.47E-01,0.138849716
+2046,h) Seeding reuse (5% of population per year),0.010150067,0.075590593,2.97E-02,7.54E-01,0.130466201
+2047,h) Seeding reuse (5% of population per year),0.009823649,0.073649536,3.42E-02,7.60E-01,0.121955966
+2048,h) Seeding reuse (5% of population per year),0.009560357,0.071783196,3.84E-02,7.65E-01,0.114987025
+2049,h) Seeding reuse (5% of population per year),0.009508863,0.07023126,4.27E-02,7.73E-01,0.104872787
+2050,h) Seeding reuse (5% of population per year),0.009301734,0.068947773,4.76E-02,7.79E-01,0.094907851
