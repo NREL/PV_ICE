@@ -51,6 +51,7 @@ import PV_ICE
 
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
@@ -157,7 +158,7 @@ r1.scenario['15_Year_Module_high'].data['mod_degradation'] = 1.4
 
 # ## Change Recyclability Values
 
-# In[8]:
+# In[12]:
 
 
 #list of material recycling variables
@@ -782,28 +783,28 @@ plt.legend(bbox_to_anchor=(1,0), loc="lower left")
 
 # To explore the full range of lifetime vs recycling, we decided to make a 2d plot varying lifetime on one axis, and recycling on the other. This section uses only the 95% RE scenario, and maintains capacity of the 30 year deployed module projeciton (i.e. compensates for shorter and longer lived modules). Everything will be normalized to the 30 year module at the end of the calculations.
 
-# In[32]:
+# In[5]:
 
 
 Life_Good = pd.Series(range(0,22,2)) #this is relative to 30 year module
 Life_Bad = pd.Series(range(0,15,2))*-1 #this is relative to 30 year module
 Lifetime_Range = pd.concat([pd.Series(range(15,30,3)),pd.Series(range(30,51,2))]) #this absolute lifetime values
-Degradation_Range = 
+Lifetime_Range.reset_index(inplace=True, drop=True)
+Lifetime_Diff30 = Lifetime_Range-30
+Degradation_Range = pd.Series([1.470, 1.220, 1.050, 0.920, 0.820, 0.740, 0.690, 0.650, 0.615, 0.582, 0.555, 0.525, 0.505, 0.480, 0.460, 0.445])
 Recycling_Range = pd.Series(range(0,100,5)) # this is absolute recycling values
-#print(Recycling_Range)
-#print(Lifetime_Range)
+print(Lifetime_Range)
+#print(Degradation_Range)
 
 
-# In[29]:
+# ### Create PV ICE defaults scenario with 95% RE
+
+# In[7]:
 
 
 r2 = PV_ICE.Simulation(name='VaryLifetimeRecycle', path=testfolder)
-
-
-# In[30]:
-
-
 #95% RE projections
+#PV ICE default values for module and materials
 r2.createScenario(name='base_high', file=moduleFile_high)
 for mat in range (0, len(MATERIALS)):
     MATERIALBASELINE = r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
@@ -813,27 +814,102 @@ for mat in range (0, len(MATERIALS)):
 # In[ ]:
 
 
+#list of material recycling variables
+RecyclingPaths = ['mat_MFG_scrap_recycled', 'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 'mat_EOL_collected_Recycled', 'mat_EOL_Recycled_into_HQ', 'mat_EoL_Recycled_HQ_into_MFG']
+RecyclingYields = ['mat_MFG_scrap_recycling_eff', 'mat_EOL_Recycling_eff']
+
+
+# ### Create t50 and t90 values to match the range of module lifetimes
+
+# In PV ICE we assume that 90% of the modules should be reliabile enough to meet the economic project lifetime. Therefore, the t50 and t90 values need to be modified for each lifetime in the range.
+
+# In[8]:
+
+
+#create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
+#to estimate t50 and t90 values to input for improved lifetime scenario
+reliability_baselines = pd.DataFrame()
+reliability_baselines['mod_lifetime'] = r2.scenario['base_high'].data['mod_lifetime']
+reliability_baselines['mod_reliability_t50'] = r2.scenario['base_high'].data['mod_reliability_t50']
+reliability_baselines['mod_reliability_t90'] = r2.scenario['base_high'].data['mod_reliability_t90']
+
+
+# In[9]:
+
+
+X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
+Y1_t50 = reliability_baselines.iloc[:, 1].values.reshape(-1, 1)  # -1 means that calculate the dimension of rows, but have 1 column
+Y2_t90 = reliability_baselines.iloc[:, 2].values.reshape(-1, 1)
+range_lifetimes = np.array(Lifetime_Range).reshape(-1,1)
+
+from sklearn.linear_model import LinearRegression
+from itertools import chain
+
+linear_regressor_Y1 = LinearRegression()
+linear_regressor_Y1.fit(X_lifetime, Y1_t50)  # perform linear regression
+t50_list = linear_regressor_Y1.predict(range_lifetimes).tolist()  # make predictions based on improved lifetime values
+t50_list = list(chain(*t50_list)) #unnest list
+t50_range_simple = pd.Series([ '%.2f' % elem for elem in t50_list ])
+
+linear_regressor_Y2 = LinearRegression() 
+linear_regressor_Y2.fit(X_lifetime, Y2_t90)
+t90_list = linear_regressor_Y2.predict(range_lifetimes).tolist()
+t90_list = list(chain(*t90_list)) #unnest list
+t90_range_simple = pd.Series([ '%.2f' % elem for elem in t90_list ])
+
+
+# In[10]:
+
+
+#create a tidy dataframe summarizing all the lifetime, degradation, reliability values
+lifetime_range_df = pd.concat([Lifetime_Range, Degradation_Range, t50_range_simple, t90_range_simple], axis=1)
+lifetime_range_df.columns = 'mod_lifetime', 'mod_degradation', 't50', 't90'
+print(lifetime_range_df)
+
+
+# ### Create the lifetime and recycling combinatorics simulations
+
+# In[13]:
+
+
+#95% RE projections
+#All combinations of recycling and lifetime
 for life in range(0,len(Lifetime_Range)):
     for recycle in range (0,len(Recycling_Range)):
         scenname = str(Lifetime_Range[life])+'years & '+ str(Recycling_Range[recycle])+'% Recycled'
         r2.createScenario(name=scenname,file=moduleFile_high)
         #MODIFY LIFETIME PARAMETERS HERE
         r2.scenario[scenname].data['mod_lifetime'] = Lifetime_Range[life]
-        r2.scenario[scenname].data['mod_reliability_t50'] = 
-        r2.scenario[scenname].data['mod_reliability_t90'] = 
-        r2.scenario[scenname].data['mod_degradation'] = 
+        r2.scenario[scenname].data['mod_reliability_t50'] = t50_range_simple[life]
+        r2.scenario[scenname].data['mod_reliability_t90'] = t90_range_simple[life]
+        r2.scenario[scenname].data['mod_degradation'] = Degradation_Range[life]
         #MODIFY Module RECYCLING PARAMATERS HERE
-        r2.scenario[scenname].data['mod_EOL_collected_recycled'] = 
-        r2.scenario[scenname].data['mod_EOL_collection_eff'] =
+        #the assumption is everything is collected and sent to recycling, only recycling yields vary
+        r2.scenario[scenname].data['mod_EOL_collected_recycled'] = 100.0
+        r2.scenario[scenname].data['mod_EOL_collection_eff'] =100.0
         #Add Materials to scenario
         for mat in range (0,len(MATERIALS)):
             MATERIALBASELINE = r'..\..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
             r2.scenario[scenname].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
             #Modify Material recycling parameters
             for var in range(0,len(RecyclingPaths)):
-                r2.scenario[scenname].material[MATERIALS[mat]].materialdata[RecyclingPaths[var]] =
+                r2.scenario[scenname].material[MATERIALS[mat]].materialdata[RecyclingPaths[var]] = 100.0
             for ylds in range(0,len(RecyclingYields)):
-                r2.scenario[scenname].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]] =
+                r2.scenario[scenname].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]] = Recycling_Range[recycle]
+
+
+# In[15]:
+
+
+##NOTE CURRENT DOWNSIDE TO ABOVE IS USES SAME VALUES FOR 1995 - 2050, no correct historical!!!
+#All materials are set to XX% recycling yields with 100% collection
+
+
+# In[25]:
+
+
+print(len(r2.scenario.keys()))
+#print(r2.scenario['50years & 50% Recycled'].material['silicon'].materialdata['mat_EOL_Recycling_eff'])
 
 
 # In[ ]:
@@ -851,11 +927,5 @@ for life in range(0,len(Lifetime_Range)):
 # In[ ]:
 
 
-
-
-
-# In[ ]:
-
-
-
+r2.calculateMassFlow()
 

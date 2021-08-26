@@ -13152,6 +13152,7 @@ Thus, if the intent is to avoid landfilled material, a 95% recyclable module is 
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
@@ -13386,7 +13387,7 @@ Thus, if the intent is to avoid landfilled material, a 95% recyclable module is 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#list of material recycling variables</span>
@@ -30882,29 +30883,78 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Life_Good</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="c1">#this is relative to 30 year module</span>
 <span class="n">Life_Bad</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="o">*-</span><span class="mi">1</span> <span class="c1">#this is relative to 30 year module</span>
 <span class="n">Lifetime_Range</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">3</span><span class="p">)),</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mi">2</span><span class="p">))])</span> <span class="c1">#this absolute lifetime values</span>
-<span class="n">Degradation_Range</span> <span class="o">=</span> 
+<span class="n">Lifetime_Range</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Lifetime_Diff30</span> <span class="o">=</span> <span class="n">Lifetime_Range</span><span class="o">-</span><span class="mi">30</span>
+<span class="n">Degradation_Range</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mf">1.470</span><span class="p">,</span> <span class="mf">1.220</span><span class="p">,</span> <span class="mf">1.050</span><span class="p">,</span> <span class="mf">0.920</span><span class="p">,</span> <span class="mf">0.820</span><span class="p">,</span> <span class="mf">0.740</span><span class="p">,</span> <span class="mf">0.690</span><span class="p">,</span> <span class="mf">0.650</span><span class="p">,</span> <span class="mf">0.615</span><span class="p">,</span> <span class="mf">0.582</span><span class="p">,</span> <span class="mf">0.555</span><span class="p">,</span> <span class="mf">0.525</span><span class="p">,</span> <span class="mf">0.505</span><span class="p">,</span> <span class="mf">0.480</span><span class="p">,</span> <span class="mf">0.460</span><span class="p">,</span> <span class="mf">0.445</span><span class="p">])</span>
 <span class="n">Recycling_Range</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span> <span class="c1"># this is absolute recycling values</span>
-<span class="c1">#print(Recycling_Range)</span>
-<span class="c1">#print(Lifetime_Range)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Lifetime_Range</span><span class="p">)</span>
+<span class="c1">#print(Degradation_Range)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0     15
+1     18
+2     21
+3     24
+4     27
+5     30
+6     32
+7     34
+8     36
+9     38
+10    40
+11    42
+12    44
+13    46
+14    48
+15    50
+dtype: int64
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Create-PV-ICE-defaults-scenario-with-95%-RE">Create PV ICE defaults scenario with 95% RE<a class="anchor-link" href="#Create-PV-ICE-defaults-scenario-with-95%-RE">&#182;</a></h3>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r2</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;VaryLifetimeRecycle&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="c1">#95% RE projections</span>
+<span class="c1">#PV ICE default values for module and materials</span>
+<span class="n">r2</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;base_high&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">moduleFile_high</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">)):</span>
+    <span class="n">MATERIALBASELINE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\baselines\baseline_material_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;base_high&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">],</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -30932,14 +30982,45 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#95% RE projections</span>
-<span class="n">r2</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;base_high&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">moduleFile_high</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">)):</span>
-    <span class="n">MATERIALBASELINE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\baselines\baseline_material_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
-    <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;base_high&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">],</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#list of material recycling variables</span>
+<span class="n">RecyclingPaths</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mat_MFG_scrap_recycled&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_MFG_scrap_Recycled_into_HQ&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_MFG_scrap_Recycled_into_HQ_Reused4MFG&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_EOL_collected_Recycled&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_EOL_Recycled_into_HQ&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_EoL_Recycled_HQ_into_MFG&#39;</span><span class="p">]</span>
+<span class="n">RecyclingYields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mat_MFG_scrap_recycling_eff&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_EOL_Recycling_eff&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Create-t50-and-t90-values-to-match-the-range-of-module-lifetimes">Create t50 and t90 values to match the range of module lifetimes<a class="anchor-link" href="#Create-t50-and-t90-values-to-match-the-range-of-module-lifetimes">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In PV ICE we assume that 90% of the modules should be reliabile enough to meet the economic project lifetime. Therefore, the t50 and t90 values need to be modified for each lifetime in the range.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create linear regression for mod_reliability_t50 &amp; mod_reliability_t90 vs. mod_lifetime </span>
+<span class="c1">#to estimate t50 and t90 values to input for improved lifetime scenario</span>
+<span class="n">reliability_baselines</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">reliability_baselines</span><span class="p">[</span><span class="s1">&#39;mod_lifetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;base_high&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_lifetime&#39;</span><span class="p">]</span>
+<span class="n">reliability_baselines</span><span class="p">[</span><span class="s1">&#39;mod_reliability_t50&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;base_high&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_reliability_t50&#39;</span><span class="p">]</span>
+<span class="n">reliability_baselines</span><span class="p">[</span><span class="s1">&#39;mod_reliability_t90&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;base_high&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_reliability_t90&#39;</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -30949,33 +31030,170 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">life</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Lifetime_Range</span><span class="p">)):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_lifetime</span> <span class="o">=</span> <span class="n">reliability_baselines</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># values converts it into a numpy array</span>
+<span class="n">Y1_t50</span> <span class="o">=</span> <span class="n">reliability_baselines</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># -1 means that calculate the dimension of rows, but have 1 column</span>
+<span class="n">Y2_t90</span> <span class="o">=</span> <span class="n">reliability_baselines</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">range_lifetimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Lifetime_Range</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
+
+<span class="n">linear_regressor_Y1</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">linear_regressor_Y1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_lifetime</span><span class="p">,</span> <span class="n">Y1_t50</span><span class="p">)</span>  <span class="c1"># perform linear regression</span>
+<span class="n">t50_list</span> <span class="o">=</span> <span class="n">linear_regressor_Y1</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">range_lifetimes</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>  <span class="c1"># make predictions based on improved lifetime values</span>
+<span class="n">t50_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">t50_list</span><span class="p">))</span> <span class="c1">#unnest list</span>
+<span class="n">t50_range_simple</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span> <span class="s1">&#39;</span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">t50_list</span> <span class="p">])</span>
+
+<span class="n">linear_regressor_Y2</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span> 
+<span class="n">linear_regressor_Y2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_lifetime</span><span class="p">,</span> <span class="n">Y2_t90</span><span class="p">)</span>
+<span class="n">t90_list</span> <span class="o">=</span> <span class="n">linear_regressor_Y2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">range_lifetimes</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">t90_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">t90_list</span><span class="p">))</span> <span class="c1">#unnest list</span>
+<span class="n">t90_range_simple</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span> <span class="s1">&#39;</span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">t90_list</span> <span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create a tidy dataframe summarizing all the lifetime, degradation, reliability values</span>
+<span class="n">lifetime_range_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">Lifetime_Range</span><span class="p">,</span> <span class="n">Degradation_Range</span><span class="p">,</span> <span class="n">t50_range_simple</span><span class="p">,</span> <span class="n">t90_range_simple</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">lifetime_range_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;mod_lifetime&#39;</span><span class="p">,</span> <span class="s1">&#39;mod_degradation&#39;</span><span class="p">,</span> <span class="s1">&#39;t50&#39;</span><span class="p">,</span> <span class="s1">&#39;t90&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lifetime_range_df</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>    mod_lifetime  mod_degradation    t50    t90
+0             15            1.470  16.36  21.02
+1             18            1.220  19.55  24.16
+2             21            1.050  22.74  27.30
+3             24            0.920  25.93  30.44
+4             27            0.820  29.12  33.58
+5             30            0.740  32.31  36.72
+6             32            0.690  34.43  38.81
+7             34            0.650  36.56  40.90
+8             36            0.615  38.69  43.00
+9             38            0.582  40.82  45.09
+10            40            0.555  42.94  47.18
+11            42            0.525  45.07  49.27
+12            44            0.505  47.20  51.37
+13            46            0.480  49.32  53.46
+14            48            0.460  51.45  55.55
+15            50            0.445  53.58  57.65
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Create-the-lifetime-and-recycling-combinatorics-simulations">Create the lifetime and recycling combinatorics simulations<a class="anchor-link" href="#Create-the-lifetime-and-recycling-combinatorics-simulations">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#95% RE projections</span>
+<span class="c1">#All combinations of recycling and lifetime</span>
+<span class="k">for</span> <span class="n">life</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Lifetime_Range</span><span class="p">)):</span>
     <span class="k">for</span> <span class="n">recycle</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Recycling_Range</span><span class="p">)):</span>
         <span class="n">scenname</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Lifetime_Range</span><span class="p">[</span><span class="n">life</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39;years &amp; &#39;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">Recycling_Range</span><span class="p">[</span><span class="n">recycle</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39;% Recycled&#39;</span>
         <span class="n">r2</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">scenname</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">moduleFile_high</span><span class="p">)</span>
         <span class="c1">#MODIFY LIFETIME PARAMETERS HERE</span>
         <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_lifetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Lifetime_Range</span><span class="p">[</span><span class="n">life</span><span class="p">]</span>
-        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_reliability_t50&#39;</span><span class="p">]</span> <span class="o">=</span> 
-        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_reliability_t90&#39;</span><span class="p">]</span> <span class="o">=</span> 
-        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_degradation&#39;</span><span class="p">]</span> <span class="o">=</span> 
+        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_reliability_t50&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t50_range_simple</span><span class="p">[</span><span class="n">life</span><span class="p">]</span>
+        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_reliability_t90&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t90_range_simple</span><span class="p">[</span><span class="n">life</span><span class="p">]</span>
+        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_degradation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Degradation_Range</span><span class="p">[</span><span class="n">life</span><span class="p">]</span>
         <span class="c1">#MODIFY Module RECYCLING PARAMATERS HERE</span>
-        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collected_recycled&#39;</span><span class="p">]</span> <span class="o">=</span> 
-        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collection_eff&#39;</span><span class="p">]</span> <span class="o">=</span>
+        <span class="c1">#the assumption is everything is collected and sent to recycling, only recycling yields vary</span>
+        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collected_recycled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">100.0</span>
+        <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collection_eff&#39;</span><span class="p">]</span> <span class="o">=</span><span class="mf">100.0</span>
         <span class="c1">#Add Materials to scenario</span>
         <span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">)):</span>
             <span class="n">MATERIALBASELINE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\..\baselines\baseline_material_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
             <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">],</span> <span class="n">file</span><span class="o">=</span><span class="n">MATERIALBASELINE</span><span class="p">)</span>
             <span class="c1">#Modify Material recycling parameters</span>
             <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">RecyclingPaths</span><span class="p">)):</span>
-                <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="n">RecyclingPaths</span><span class="p">[</span><span class="n">var</span><span class="p">]]</span> <span class="o">=</span>
+                <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="n">RecyclingPaths</span><span class="p">[</span><span class="n">var</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">100.0</span>
             <span class="k">for</span> <span class="n">ylds</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">RecyclingYields</span><span class="p">)):</span>
-                <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="n">RecyclingYields</span><span class="p">[</span><span class="n">ylds</span><span class="p">]]</span> <span class="o">=</span>
+                <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scenname</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]]</span><span class="o">.</span><span class="n">materialdata</span><span class="p">[</span><span class="n">RecyclingYields</span><span class="p">[</span><span class="n">ylds</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Recycling_Range</span><span class="p">[</span><span class="n">recycle</span><span class="p">]</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##NOTE CURRENT DOWNSIDE TO ABOVE IS USES SAME VALUES FOR 1995 - 2050, no correct historical!!!</span>
+<span class="c1">#All materials are set to XX% recycling yields with 100% collection</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+<span class="c1">#print(r2.scenario[&#39;50years &amp; 50% Recycled&#39;].material[&#39;silicon&#39;].materialdata[&#39;mat_EOL_Recycling_eff&#39;])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>321
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -31011,20 +31229,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r2</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
 </pre></div>
 
     </div>
