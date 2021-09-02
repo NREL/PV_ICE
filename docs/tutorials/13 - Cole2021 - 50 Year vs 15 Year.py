@@ -40,13 +40,13 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'Cole2021'
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[4]:
+# In[2]:
 
 
 import PV_ICE
 
 
-# In[5]:
+# In[3]:
 
 
 import matplotlib.pyplot as plt
@@ -57,7 +57,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[6]:
+# In[4]:
 
 
 print(os.getcwd())
@@ -783,7 +783,7 @@ plt.legend(bbox_to_anchor=(1,0), loc="lower left")
 
 # To explore the full range of lifetime vs recycling, we decided to make a 2d plot varying lifetime on one axis, and recycling on the other. This section uses only the 95% RE scenario, and maintains capacity of the 30 year deployed module projeciton (i.e. compensates for shorter and longer lived modules). Everything will be normalized to the 30 year module at the end of the calculations.
 
-# In[7]:
+# In[108]:
 
 
 Life_Good = pd.Series(range(0,22,2)) #this is relative to 30 year module
@@ -799,7 +799,7 @@ print(Lifetime_Range)
 
 # ### Create PV ICE defaults scenario with 95% RE
 
-# In[8]:
+# In[109]:
 
 
 r2 = PV_ICE.Simulation(name='VaryLifetimeRecycle', path=testfolder)
@@ -811,7 +811,7 @@ for mat in range (0, len(MATERIALS)):
     r2.scenario['base_high'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
-# In[9]:
+# In[110]:
 
 
 #list of material recycling variables
@@ -823,7 +823,7 @@ RecyclingYields = ['mat_MFG_scrap_recycling_eff', 'mat_EOL_Recycling_eff']
 
 # In PV ICE we assume that 90% of the modules should be reliabile enough to meet the economic project lifetime. Therefore, the t50 and t90 values need to be modified for each lifetime in the range.
 
-# In[10]:
+# In[111]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -834,7 +834,7 @@ reliability_baselines['mod_reliability_t50'] = r2.scenario['base_high'].data['mo
 reliability_baselines['mod_reliability_t90'] = r2.scenario['base_high'].data['mod_reliability_t90']
 
 
-# In[11]:
+# In[112]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -858,7 +858,7 @@ t90_list = list(chain(*t90_list)) #unnest list
 t90_range_simple = pd.Series([ '%.2f' % elem for elem in t90_list ])
 
 
-# In[12]:
+# In[113]:
 
 
 #create a tidy dataframe summarizing all the lifetime, degradation, reliability values
@@ -869,7 +869,7 @@ print(lifetime_range_df)
 
 # ### Create the lifetime and recycling combinatorics simulations
 
-# In[13]:
+# In[114]:
 
 
 #95% RE projections
@@ -905,7 +905,7 @@ for life in range(0,len(Lifetime_Range)):
 #All materials are set to XX% recycling yields with 100% collection
 
 
-# In[14]:
+# In[115]:
 
 
 print(len(r2.scenario.keys()))
@@ -913,16 +913,32 @@ print(len(r2.scenario.keys()))
 #print(r2.scenario['50years & 50% Recycled'].material['silicon'].materialdata['mat_EOL_Recycling_eff'])
 
 
-# In[14]:
+# In[116]:
 
 
 r2.calculateMassFlow()
 
 
-# In[ ]:
+# In[117]:
 
 
 r2.plotScenariosComparison(keyword='Installed_Capacity_[W]')
+
+
+# In[126]:
+
+
+#extract annual installed capacity data for plotting
+installedcap = []
+for ii in range (0, len(r2.scenario.keys())):
+    scen = list(r2.scenario.keys())[ii]
+    installedcap
+
+
+# In[ ]:
+
+
+
 
 
 # ### Cumulative Comparison
@@ -960,7 +976,7 @@ print(df)
 df.to_csv(os.path.join(testfolder,'Cum2050-RvL-HeatMapData.csv'))
 
 
-# In[17]:
+# In[8]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -969,146 +985,100 @@ RvL_cums = RvL_cums[RvL_cums.scenarios != 'base_high']
 RvL_cums.head(5)
 
 
-# In[149]:
+# In[44]:
 
 
 heatdata_Waste = RvL_cums[['cum_Waste']]
-heatdata_Waste_pivot = heatdata_Waste.unstack()
-heatdata_Waste_pivot.columns = Recycling_Range
+heatdata_Waste_pivot = heatdata_Waste.unstack(level=0)
+heatdata_Waste_pivot.columns = Lifetime_Range
 heatdata_Waste_pivot = heatdata_Waste_pivot[::-1]
 
 heatdata_Virgin = RvL_cums[['cum_VirginNeeds']]
-heatdata_Virgin_pivot = heatdata_Virgin.unstack()
-heatdata_Virgin_pivot.columns = Recycling_Range
+heatdata_Virgin_pivot = heatdata_Virgin.unstack(level=0)
+heatdata_Virgin_pivot.columns = Lifetime_Range
 heatdata_Virgin_pivot = heatdata_Virgin_pivot[::-1]
 
-heatdata_InstalledCap = RvL_cums[['cum_InstalledCapacity']]
-heatdata_InstalledCap_pivot = heatdata_InstalledCap.unstack()
-heatdata_InstalledCap_pivot.columns = Recycling_Range
-heatdata_InstalledCap_pivot = heatdata_InstalledCap_pivot[::-1]
+#heatdata_InstalledCap = RvL_cums[['cum_InstalledCapacity']]
+#heatdata_InstalledCap_pivot = heatdata_InstalledCap.unstack()
+#heatdata_InstalledCap_pivot.columns = Recycling_Range
+#heatdata_InstalledCap_pivot = heatdata_InstalledCap_pivot[::-1]
+
+heatdata_Waste_pivot
 
 
-# In[162]:
+# In[88]:
 
 
-np.min(heatdata_Waste_pivot).min()
-
-
-# In[163]:
-
-
-#Make 3 heat maps with cumulative data
+#Make heat maps with cumulative data
 import seaborn as sns
 plt.style.use("seaborn")
 
-plt.rcParams.update({'font.size': 12})
-plt.rcParams['figure.figsize'] = (12, 12)
-fig, ax = plt.subplots(3, 1)
-ax = sns.heatmap(heatdata_Waste_pivot, annot = False)
-#ax.invert_yaxis()
+#plt.rcParams.update({'font.size': 20})
+plt.rcParams['figure.figsize'] = (10, 18)
+fig,ax = plt.subplots(2, 1)
+sns.set(font_scale=1.5)
 
 #Wastes
-plt.subplot(3,1,1)
+plt.subplot(2,1,1)
 sns.heatmap(heatdata_Waste_pivot, annot = False, 
             cmap=sns.diverging_palette(220, 20, n=200), 
-            vmin=(-100), vmax=(500),
-           center=0.0, square=True)
+            vmin=(-100), vmax=(700), center=0.0,
+           cbar_kws={'format': '%.0f%%', 'label': '% Change relative to 30 year module by 2050'})
 plt.title('Lifecycle Wastes')
-plt.xlabel('Recycling Rate')
+plt.ylabel('Recycling Rate (%)')
+plt.xlabel('Lifetime (years)')
 plt.yticks(rotation=0)
-
+#plt.xticks(fontsize=14)
 
 #Virgin Demands
-plt.subplot(3,1,2)
+plt.subplot(2,1,2)
 sns.heatmap(heatdata_Virgin_pivot, annot = False,
            cmap=sns.diverging_palette(220, 20, n=200), 
-            vmin=(-6.0), vmax=(0),
-           center=0.0, square=True)
+            vmin=(-6.0), vmax=(0),center=0.0,
+           cbar_kws={'format': '%.0f%%', 'label': '% Change relative to 30 year module by 2050'})
 plt.title('Virgin Demands')
-plt.xlabel('Recycling Rate')
+plt.ylabel('Recycling Rate (%)')
+plt.xlabel('Lifetime (years)')
 plt.yticks(rotation=0)
-
-#Installed Capacity
-plt.subplot(3,1,3)
-sns.heatmap(heatdata_InstalledCap_pivot, annot = False,
-           cmap=sns.diverging_palette(20, 220, n=200), 
-            vmin=-70.0, vmax=10.0, center=0, square=True)
-plt.title('Installed Capacity')
-plt.xlabel('Recycling Rate')
-plt.yticks(rotation=0)
-
-
-fig.suptitle('2050 Cumulative Change (relative to 30 year Module):\n Identical Installs')
-plt.subplots_adjust(top=0.85)
-#fig.tight_layout(h_pad=1)
-# set the spacing between subplots
-plt.subplots_adjust(left=0.1,
-                    bottom=0.1, 
-                    right=0.9, 
-                    top=0.9, 
-                    wspace=0.4, 
-                    hspace=0.3)
-
-
-plt.show()
-
-
-# In[ ]:
-
-
-#Virgin Demands
-sns.heatmap(heatdata_Virgin_pivot, annot = False,
-           cmap=sns.diverging_palette(220, 20, n=200), 
-            vmin=(-6.0), vmax=(0),
-           center=0.0, square=True)
-plt.title('Virgin Demands')
-plt.xlabel('Recycling Rate')
-plt.yticks(rotation=0)
+#plt.xticks(fontsize=14)
 
 #Installed Capacity
 #plt.subplot(3,1,3)
 #sns.heatmap(heatdata_InstalledCap_pivot, annot = False,
-#           cmap='hot', vmin=np.min(heatdata_InstalledCap_pivot).min(), vmax=np.max(heatdata_InstalledCap_pivot).max())
+#           cmap=sns.diverging_palette(20, 220, n=200), 
+#            vmin=-70.0, vmax=10.0, center=0, square=True)
 #plt.title('Installed Capacity')
 #plt.xlabel('Recycling Rate')
+#plt.yticks(rotation=0)
 
-
-#fig.suptitle('2050 Cumulative Change relative to 30 year Module')
-#plt.subplots_adjust(top=0.85)
-#fig.tight_layout(h_pad=1)
+fig.suptitle('2050 Cumulative Change (relative to 30 year Module):\n Identical Installs', fontsize=22, x=0.45)
+plt.subplots_adjust(top=0.9)
+fig.tight_layout(h_pad=1)
 # set the spacing between subplots
-#plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9, wspace=0.4, hspace=0.3)
+#plt.subplots_adjust(left=0.1,bottom=0.1, right=0.9, top=0.9, wspace=0.4, hspace=0.3)
 
 
+plt.savefig('heatmap-identicalInstalls.png')
 plt.show()
 
 
-# In[87]:
+# In[102]:
 
 
-plt.rcParams.update({'font.size': 2})
-plt.rcParams['figure.figsize'] = (18, 12)
-
-#Wastes
-plt.subplot(2,2,1)
-plt.pcolormesh(heatdata_Waste_pivot, cmap='summer')
-plt.title('Waste')
-
-#Virgin Needs
-plt.subplot(2,2,2)
-plt.pcolormesh(heatdata_Virgin_pivot, cmap='summer')
-plt.title('Virgin Needs')
-
-#Installed Cap
-plt.subplot(2,2,3)
-plt.pcolormesh(heatdata_InstalledCap_pivot, cmap='summer')
-plt.title('Installed Capacity')
+#Installed capacity graphs
+capacity_compare_extra = RvL_cums[['cum_InstalledCapacity']]
+capacity_compare = capacity_compare_extra.droplevel('Recycling') #remove recycling
+capacity_compare
 
 
-# In[ ]:
+# In[107]:
 
 
-
+plt.rcParams['figure.figsize'] = (12, 12)
+plt.bar(capacity_compare.index, capacity_compare['cum_InstalledCapacity'])
+plt.title('Installed Capacity in 2050')
+plt.xlabel('Module Lifetime (years)')
+plt.ylabel('Relative Difference in Cumulative Installed Capacity in 2050 (%)')
 
 
 # ### Installation compensation
@@ -1170,28 +1140,6 @@ plt.title('Annual Virgin Material Input')
 plt.xlim([2000, 2050])
 
 
-# In[91]:
-
-
-r2.plotScenariosComparison(keyword='new_Installed_Capacity_[MW]')
-
-
-# In[125]:
-
-
-#'mod_EOL_collection_eff', 'mod_EOL_collected_recycled'
-#RecyclingPaths = ['mat_MFG_scrap_recycled', 'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 'mat_EOL_collected_Recycled', 'mat_EOL_Recycled_into_HQ', 'mat_EoL_Recycled_HQ_into_MFG']
-#RecyclingYields = ['mat_MFG_scrap_recycling_eff', 'mat_EOL_Recycling_eff']
-#r2.scenario['50years & 0% Recycled'].data['mod_EOL_collected_recycled']
-#r2.scenario['50years & 50% Recycled'].material['silicon'].materialdata['mat_MFG_scrap_recycling_eff']
-
-
-# In[ ]:
-
-
-
-
-
 # ### Cumulatives with Installation Compensation
 
 # In[136]:
@@ -1227,7 +1175,7 @@ print(RvL_installs_cums)
 plt.plot(RvL_installs_cums['cum_VirginNeeds'])
 
 
-# In[93]:
+# In[72]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -1236,26 +1184,21 @@ RvL_installs_cums = RvL_installs_cums[RvL_installs_cums.scenarios != 'base_high'
 RvL_installs_cums.head(5)
 
 
-# In[94]:
+# In[73]:
 
 
 heatdata_Waste_installs = RvL_installs_cums[['cum_Waste']]
-heatdata_Waste_pivot_installs = heatdata_Waste_installs.unstack()
-heatdata_Waste_pivot_installs.columns = Recycling_Range
+heatdata_Waste_pivot_installs = heatdata_Waste_installs.unstack(level=0)
+heatdata_Waste_pivot_installs.columns = Lifetime_Range
 heatdata_Waste_pivot_installs = heatdata_Waste_pivot_installs[::-1]
 
 heatdata_Virgin_installs = RvL_installs_cums[['cum_VirginNeeds']]
-heatdata_Virgin_pivot_installs = heatdata_Virgin_installs.unstack()
-heatdata_Virgin_pivot_installs.columns = Recycling_Range
+heatdata_Virgin_pivot_installs = heatdata_Virgin_installs.unstack(level=0)
+heatdata_Virgin_pivot_installs.columns = Lifetime_Range
 heatdata_Virgin_pivot_installs = heatdata_Virgin_pivot_installs[::-1]
 
-heatdata_NewCap_installs = RvL_installs_cums[['cum_NewInstalls']]
-heatdata_NewCap_pivot_installs = heatdata_NewCap_installs.unstack()
-heatdata_NewCap_pivot_installs.columns = Recycling_Range
-heatdata_NewCap_pivot_installs = heatdata_NewCap_pivot_installs[::-1]
 
-
-# In[144]:
+# In[89]:
 
 
 #Make 3 heat maps with cumulative data
@@ -1263,58 +1206,49 @@ import seaborn as sns
 plt.style.use("seaborn")
 
 plt.rcParams.update({'font.size': 12})
-plt.rcParams['figure.figsize'] = (12, 12)
-fig, ax = plt.subplots(3, 1)
+plt.rcParams['figure.figsize'] = (10, 18)
+fig, ax = plt.subplots(2, 1)
 ax = sns.heatmap(heatdata_Waste_pivot_installs, annot = False)
-ax.invert_yaxis()
+#ax.invert_yaxis()
+sns.set(font_scale=1.5)
 
 #Wastes
-plt.subplot(3,1,1)
+plt.subplot(2,1,1)
 sns.heatmap(heatdata_Waste_pivot_installs, annot = False, 
             cmap=sns.diverging_palette(220, 20, n=200), 
-            vmin=(-100), vmax=(700),
-           center=0.0, square=True)
+            vmin=(-100), vmax=(700),center=0.0,
+           cbar_kws={'format': '%.0f%%', 'label': '% Change relative to 30 year module by 2050'})
 plt.title('Lifecycle Wastes')
-plt.xlabel('Recycling Rate')
+plt.ylabel('Recycling Rate (%)')
+plt.xlabel('Lifetime (years)')
 plt.yticks(rotation=0)
 
 
 #Virgin Demands
-plt.subplot(3,1,2)
+plt.subplot(2,1,2)
 sns.heatmap(heatdata_Virgin_pivot_installs, annot = False,
            cmap=sns.diverging_palette(220, 20, n=200), 
-            vmin=(-10.0), vmax=(70),
-           center=0.0, square=True)
+            vmin=(-10.0), vmax=(70),center=0.0,
+           cbar_kws={'format': '%.0f%%', 'label': '% Change relative to 30 year module by 2050'})
 plt.title('Virgin Demands')
-plt.xlabel('Recycling Rate')
+plt.ylabel('Recycling Rate (%)')
+plt.xlabel('Lifetime (years)')
 plt.yticks(rotation=0)
 
 #Installed Capacity
-plt.subplot(3,1,3)
-sns.heatmap(heatdata_NewCap_pivot_installs, annot = False,
-           cmap=sns.diverging_palette(220, 20, n=200), 
-            vmin=-10.0, vmax=80.0, center=0, square=True)
-plt.title('Additional Installs')
-plt.xlabel('Recycling Rate')
-plt.yticks(rotation=0)
+#plt.subplot(3,1,3)
+#sns.heatmap(heatdata_NewCap_pivot_installs, annot = False,
+#           cmap=sns.diverging_palette(220, 20, n=200), 
+#            vmin=-10.0, vmax=80.0, center=0, square=True)
+#plt.title('Additional Installs')
+#plt.xlabel('Recycling Rate')
+#plt.yticks(rotation=0)
 
-fig.suptitle('2050 Cumulative Change (relative to 30 year Module):\nCapacity Compensation')
+fig.suptitle('2050 Cumulative Change (relative to 30 year Module):\nCapacity Compensation', fontsize=22, x=0.45)
 plt.subplots_adjust(top=0.85)
-#fig.tight_layout(h_pad=1)
+fig.tight_layout(h_pad=1)
 # set the spacing between subplots
-plt.subplots_adjust(left=0.1,
-                    bottom=0.1, 
-                    right=0.9, 
-                    top=0.9, 
-                    wspace=0.4, 
-                    hspace=0.3)
 
-
+plt.savefig('heatmap-CapacityCompensation.png')
 plt.show()
-
-
-# In[169]:
-
-
-np.max(heatdata_NewCap_pivot_installs).max()
 
