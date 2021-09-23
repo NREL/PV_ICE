@@ -420,6 +420,7 @@ class Simulation:
                 for age in range(len(cdf)):
                     disposed_projectlifetime=0
                     if x[age] == 0.0:
+                        active += 1
                         activeareacount.append(0)
                         areadisposed_failure.append(0)
                         areadisposed_projectlifetime.append(0)
@@ -450,15 +451,15 @@ class Simulation:
                     # and adding initial area
                     fixinitialareacount = next((i for i, e in enumerate(x) if e), None) - 1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
-                    areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
-                                         row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])
+                    areapowergen[fixinitialareacount] = (areapowergen[fixinitialareacount] +  
+                                         row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])   
                 except:
                     # Last value does not have a xclip value of nonzero so it goes
                     # to except. But it also means the loop finished for the calculations
                     # of Lifetime.
                     fixinitialareacount = len(cdf)-1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
-                    areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
+                    areapowergen[fixinitialareacount] = (areapowergen[fixinitialareacount] +  
                                          row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])                   
                     print("Finished Area+Power Generation Calculations")
                     
