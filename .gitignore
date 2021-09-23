@@ -100,4 +100,4 @@ ENV/
 tests/results/
 
 # PVDEMICE temp folder
-# PV_ICE/TEMP/
+PV_ICE/TEMP/
