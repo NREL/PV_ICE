@@ -66,7 +66,7 @@ for mat in range (0, len(MATERIALS)):
 # 
 # The effective this will be to neglect all inefficiencies in the extraction and manufacturing process, looking at just the PV module material coming out of the field, and assuming it all goes to the landfill.
 
-# In[12]:
+# In[5]:
 
 
 #list of material recycling variables
@@ -74,7 +74,7 @@ RecyclingPaths = ['mat_MFG_scrap_recycled', 'mat_MFG_scrap_Recycled_into_HQ', 'm
 RecyclingYields = ['mat_MFG_scrap_recycling_eff', 'mat_EOL_Recycling_eff']
 
 
-# In[13]:
+# In[6]:
 
 
 for mat in range (0, len(MATERIALS)):
@@ -88,7 +88,7 @@ for mat in range (0, len(MATERIALS)):
 
 # ### Run the Mass Flow Calculations on All Scenarios and Materials
 
-# In[14]:
+# In[7]:
 
 
 r1.calculateMassFlow()
@@ -108,17 +108,17 @@ r1.calculateMassFlow()
 
 
 #print(r1.scenario.keys())
-#print(r1.scenario['USHistory'].data.keys())
-print(r1.scenario['USHistory'].material['glass'].materialdata.keys())
+print(r1.scenario['USHistory'].data.keys())
+#print(r1.scenario['USHistory'].material['glass'].materialdata.keys())
 
 
-# In[15]:
+# In[9]:
 
 
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposed')
 
 
-# In[16]:
+# In[10]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
@@ -136,7 +136,7 @@ plt.ylabel('Installed Cap [W]')
 
 # ## Pretty Plots
 
-# In[29]:
+# In[23]:
 
 
 #create a yearly Module Waste Mass
@@ -147,48 +147,51 @@ for mat in range (0, len(MATERIALS)):
     foo = r1.scenario['USHistory'].material[material].materialdata[keyword].copy()
     foo = foo.to_frame(name=material)
     USyearly["Waste_"+material] = foo[material]
-    
+
+#sum the columns for module mass
 USyearly['Waste_Module'] = USyearly.sum(axis=1)
 
 USyearly.head(10)
 
 
-# In[30]:
+# In[13]:
 
 
 #add index
 USyearly.index = r1.scenario['USHistory'].data['year']
 
 
-# In[85]:
+# In[14]:
 
 
-#Convert to metric tonnes
+#Convert to million metric tonnes
 USyearly_mil_tonnes=USyearly/1000000000000
 
 
-# In[88]:
+# In[24]:
 
 
-USyearly_mil_tonnes.head()
+#Adding new installed capacity for decomissioning calc
+USyearly_mil_tonnes['new_Installed_Capacity_[MW]'] = r1.scenario['USHistory'].data['new_Installed_Capacity_[MW]'].values
 
 
-# In[89]:
+# In[25]:
 
 
 UScum = USyearly_mil_tonnes.copy()
 UScum = UScum.cumsum()
-UScum
+
+UScum.head()
 
 
-# In[90]:
+# In[17]:
 
 
 bottoms = pd.DataFrame(UScum.loc[2050])
 bottoms
 
 
-# In[94]:
+# In[18]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -234,8 +237,45 @@ a1.set_xticks(ind)
 a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0], p5[0] ), ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver', 'Encapsulant'))
 
 
-# In[ ]:
+# ### plot of decommissioned in MW
+# decommissioned yearly = cumulative new installs - yearly active capacity
+
+# In[26]:
 
 
+#Add Installed capacity to yearly
+USyearly_mil_tonnes['Active_Capacity_[W]'] = r1.scenario['USHistory'].data['Installed_Capacity_[W]'].values
+USyearly_mil_tonnes.head()
 
+
+# In[39]:
+
+
+USyearly_mil_tonnes['Decommissioned_yearly_[MW]'] = UScum['new_Installed_Capacity_[MW]'] - (USyearly_mil_tonnes['Active_Capacity_[W]']/1e6)
+plt.plot(USyearly_mil_tonnes['Decommissioned_yearly_[MW]'], label='decommissioned', color='r')
+plt.plot(UScum['new_Installed_Capacity_[MW]'], label='cum installs')
+plt.plot((USyearly_mil_tonnes['Active_Capacity_[W]']/1e6), label='active capacity')
+plt.plot(USyearly_mil_tonnes['new_Installed_Capacity_[MW]'], label='yearly new installs')
+plt.legend()
+plt.ylabel('MW')
+
+
+# In[44]:
+
+
+#Print out results to file for Taylor
+tidy_results = pd.DataFrame()
+tidy_results['Annual_Installations_[MW]'] = USyearly_mil_tonnes['new_Installed_Capacity_[MW]']
+tidy_results['Active_Generating_Capacity_[MW]'] = (USyearly_mil_tonnes['Active_Capacity_[W]']/1e6)
+tidy_results['Annually_Decommissioned_[MW]'] = USyearly_mil_tonnes['Decommissioned_yearly_[MW]']
+tidy_results['Cumulative_Decommissioned_[MW]'] = USyearly_mil_tonnes['Decommissioned_yearly_[MW]'].cumsum()
+tidy_results['Cumulative_Decommissioned_Module_Mass_[million metric tonnes]'] = UScum['Waste_Module']
+
+tidy_results
+
+
+# In[48]:
+
+
+tidy_results.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_Decomissioning.csv')
 
