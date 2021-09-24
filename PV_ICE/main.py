@@ -832,7 +832,7 @@ class Simulation:
 
         plt.figure()
     
-        for scen in self.scenario:
+        for scen in scenarios:
             plt.plot(self.scenario[scen].data['year'], self.scenario[scen].material[material].materialdata[keyword], label=scen)
             plt.legend()
     
