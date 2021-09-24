@@ -316,7 +316,7 @@ class Simulation:
         
 
 
-    def calculateMassFlow(self, weibullInputParams = None, 
+    def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None, 
                           bifacialityfactors = None, reducecapacity = True, debugflag=False):
         '''
         Function takes as input a baseline dataframe already imported, 
@@ -331,6 +331,13 @@ class Simulation:
             Irena 2016 values beta = 30. If weibullInputParams = None,
             alfa and beta are calcualted from the t50 and t90 columns on the
             module baseline.
+        scenarios : None
+            string with the scenario name or list of strings with
+            scenarios names to loop over. Must exist on the PV ICE object.
+        materials : None
+            string with the material name or list of strings with the
+            materials names to loop over. Must exists on the PV ICE object 
+            scenario(s) modeled.
         bifacialityfactors : str
             File with bifacialtiy factors for each year under consideration
         
@@ -342,8 +349,13 @@ class Simulation:
         
         '''
         
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
         
-        for scen in self.scenario:
+        for scen in scenarios:
             
             print("Working on Scenario: ", scen)
             print("********************")
@@ -540,7 +552,13 @@ class Simulation:
             # Material Loop#
             ################
 
-            for mat in self.scenario[scen].material:
+            if materials is None:
+                materials = list(self.scenario[scenarios[0]].material.keys())
+            else:
+                if isinstance(materials, str):
+                    materials = [materials]
+            
+            for mat in materials:
 
                 print("==> Working on Material : ", mat)
 
@@ -641,17 +659,20 @@ class Simulation:
                 self.scenario[scen].material[mat].materialdata = dm
 
     
-    def scenMod_IRENIFY(self, scens=None, ELorRL='RL'):
+    def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
         
         if ELorRL == 'RL':
             weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
         if ELorRL == 'EL':
             weibullInputParams = {'alpha': 2.49, 'beta': 30}  # Regular-loss scenario IRENA
         
-        if scens is None:
-            scens = list(self.scenario.keys())
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
 
-        for scen in scens:
+        for scen in scenarios:
             self.scenario[scen].data['weibull_alpha'] = weibullInputParams['alpha']
             self.scenario[scen].data['weibull_beta'] = weibullInputParams['beta']
             self.scenario[scen].data['mod_lifetime'] = 40
@@ -662,10 +683,106 @@ class Simulation:
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
               
         return
+
+    def scenMod_PerfectManufacturing(self, scenarios=None):
         
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        for scen in scenarios:
+            self.scenario[scen].data['mod_MFG_eff'] = 100.0
+            
+            for mat in self.scenario[scen].material:
+                self.scenario[scen].material[mat].materialdata['mat_virgin_eff'] = 100.0   
+                self.scenario[scen].material[mat].materialdata['mat_MFG_eff'] = 100.0   
+        return
+
+    def scenMod_noCircularity(self, scenarios=None):
         
-    def plotScenariosComparison(self, keyword=None):
-    
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        for scen in scenarios:
+            self.scenario[scen].data['mod_EOL_collection_eff '] = 0.0
+            self.scenario[scen].data['mod_EOL_collected_recycled'] = 0.0
+            self.scenario[scen].data['mod_Repair'] = 0.0
+            self.scenario[scen].data['mod_MerchantTail'] = 0.0
+            self.scenario[scen].data['mod_Reuse'] = 0.0
+
+            for mat in self.scenario[scen].material:
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EOL_collected_Recycled'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_recycling_eff'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EOL_Recycling_eff'] = 0.0 
+        return        
+
+    def aggregateResults(self, scenarios=None, materials=None):
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        if materials is None:
+            materials = list(self.scenario[scenarios[0]].material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+        keywds = ['mat_Virgin_Stock', 'mat_Total_Landfilled', 'mat_Total_EOL_Landfilled', 'mat_Total_MFG_Landfilled']
+        nice_keywds = ['Virgin_Stock', 'Waste', 'Waste_EOL', 'Waste_MFG']
+
+        USyearly=pd.DataFrame()
+
+        for scen in scenarios:
+            for ii in range(len(keywds)):
+                keywd = keywds[ii]
+                nicekey = nice_keywds[ii]
+
+                for mat in materials:
+                    USyearly[nicekey+'_'+mat+'_'+scen] = self.scenario[scen].material[mat].materialdata[keywd]
+        
+        USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
+        USyearly = USyearly.add_suffix('_[MillionTonnes]')
+        
+        # Different units, so no need to do the ratio to Metric tonnes :p
+        keywd='new_Installed_Capacity_[MW]'
+        for scen in scenarios:
+            USyearly[keywd+'_'+scen] = self.scenario[scen].data[keywd]
+ 
+        # Creating c umulative results
+        UScum = USyearly.copy()
+        UScum = UScum.cumsum()
+ 
+        # Adding Installed Capacity to US (This is already 'Cumulative') so not including it in UScum
+        keywd='Installed_Capacity_[W]'
+        for scen in scenarios:
+            USyearly['Capacity_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]/1e6
+
+        # Reindexing and Merging
+        USyearly.index = self.scenario[scen].data['year']
+        UScum.index = self.scenario[scen].data['year']
+        
+        return USyearly, UScum
+ 
+    def plotScenariosComparison(self, keyword=None, scenarios=None):
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+                
         if keyword is None:
             scens = list(self.scenario.keys())[0]
             print("Choose one of the keywords: ", list(self.scenario[scens].data.keys())) 
@@ -675,7 +792,7 @@ class Simulation:
        
         plt.figure()
     
-        for scen in self.scenario:
+        for scen in scenarios:
             plt.plot(self.scenario[scen].data['year'],self.scenario[scen].data[keyword], label=scen)
         plt.legend()
         plt.xlabel('Year')
@@ -685,7 +802,13 @@ class Simulation:
 
 
 
-    def plotMaterialComparisonAcrossScenarios(self, material = None, keyword=None):
+    def plotMaterialComparisonAcrossScenarios(self, keyword=None, scenarios=None, material = None):
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
     
         if keyword is None:
             scens = list(self.scenario.keys())[0]
@@ -693,12 +816,18 @@ class Simulation:
             print("Choose one of the keywords: ",  list(self.scenario[scens].material[mats].materialdata.keys())) 
             return
 
+
         if material is None:
             scens = list(self.scenario.keys())[0]
             mats = list(self.scenario[scens].material.keys())
             print("Choose one of the Materials: ", mats) 
             return
-        
+        else:
+            if isinstance(material, str) is False: 
+                mats = list(self.scenario[scens].material.keys())
+                print("Can only pass one material name (str). Choose one of the Materials: ", mats) 
+                return
+
         yunits = _unitReferences(keyword)
 
         plt.figure()
