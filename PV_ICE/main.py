@@ -415,12 +415,11 @@ class Simulation:
                 arearepaired = []
                 arearepaired_powergen = []
                 areapowergen = []
-                active=-1
+                active=0
                 disposed_projectlifetime=0
                 for age in range(len(cdf)):
                     disposed_projectlifetime=0
                     if x[age] == 0.0:
-                        active += 1
                         activeareacount.append(0)
                         areadisposed_failure.append(0)
                         areadisposed_projectlifetime.append(0)
