@@ -1,4 +1,4 @@
-﻿Year,BacksheetThickness_micron,Source
+﻿year,BacksheetThickness_micron,Source
 1995,125,"G. J. M. Phylipsen and E. A. Alsema, “Environmental life-cycle assessment of multicrystalline silicon solar cell modules,” Netherlands Agency for Energy and the Environment,NOVEM, Netherlands, Sep. 1995."
 1996,,
 1997,,
@@ -19,8 +19,8 @@
 2012,,
 2013,320,"ITRPV 2014, Fig. 11"
 2014,,
-2015,,
-2016,300,IEC 61730-1
+2015,300,IEC 61730-1 minimum
+2016,350,"K. J. Geretschläger, G. M. Wallner, and J. Fischer, “Structure and basic properties of photovoltaic module backsheet films,” Solar Energy Materials and Solar Cells, vol. 144, pp. 451–456, Jan. 2016, doi: 10.1016/j.solmat.2015.09.060."
 2017,,
 2018,,
 2019,,

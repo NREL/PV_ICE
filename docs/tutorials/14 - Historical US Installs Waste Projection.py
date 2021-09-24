@@ -16,7 +16,7 @@
 
 # This analysis conducted for Taylor Curtis
 
-# In[1]:
+# In[2]:
 
 
 import os
@@ -34,17 +34,23 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
+# In[3]:
+
+
+PV_ICE.__version__
+
+
 # ### Add Scenarios and Materials
 # 
 
-# In[2]:
+# In[4]:
 
 
 cwd=os.getcwd()
 print(os.getcwd())
 
 
-# In[3]:
+# In[5]:
 
 
 MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant']
@@ -52,7 +58,7 @@ MATERIAL = MATERIALS[0]
 moduleFile = r'..\baselines\baseline_modules_US_HistoryUtilCommOnly.csv'
 
 
-# In[4]:
+# In[6]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -66,15 +72,21 @@ for mat in range (0, len(MATERIALS)):
 # 
 # The effective this will be to neglect all inefficiencies in the extraction and manufacturing process, looking at just the PV module material coming out of the field, and assuming it all goes to the landfill.
 
-# In[5]:
+# In[9]:
+
+
+r1.scenario['USHistory'].material['glass'].materialdata.keys()
+
+
+# In[10]:
 
 
 #list of material recycling variables
-RecyclingPaths = ['mat_MFG_scrap_recycled', 'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 'mat_EOL_collected_Recycled', 'mat_EOL_Recycled_into_HQ', 'mat_EoL_Recycled_HQ_into_MFG']
-RecyclingYields = ['mat_MFG_scrap_recycling_eff', 'mat_EOL_Recycling_eff']
+RecyclingPaths = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 'mat_EOL_collected_Recycled', 'mat_EOL_Recycled_into_HQ', 'mat_EoL_Recycled_HQ_into_MFG']
+RecyclingYields = ['mat_MFG_scrap_Recycling_eff', 'mat_EOL_Recycling_eff']
 
 
-# In[6]:
+# In[11]:
 
 
 for mat in range (0, len(MATERIALS)):
@@ -88,7 +100,7 @@ for mat in range (0, len(MATERIALS)):
 
 # ### Run the Mass Flow Calculations on All Scenarios and Materials
 
-# In[7]:
+# In[12]:
 
 
 r1.calculateMassFlow()
@@ -104,27 +116,27 @@ r1.calculateMassFlow()
 #     
 #     print(r1.scenario['standard'].material['glass'].materialdata.keys())
 
-# In[8]:
+# In[24]:
 
 
 #print(r1.scenario.keys())
-print(r1.scenario['USHistory'].data.keys())
-#print(r1.scenario['USHistory'].material['glass'].materialdata.keys())
+#print(r1.scenario['USHistory'].data.keys())
+print(r1.scenario['USHistory'].material['glass'].materialdata.keys())
 
 
-# In[9]:
+# In[26]:
 
 
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposed')
 
 
-# In[10]:
+# In[27]:
 
 
-r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
+r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_MFG_Landfilled')
 
 
-# In[11]:
+# In[12]:
 
 
 plt.plot(r1.scenario['USHistory'].data['year'], 
@@ -136,7 +148,7 @@ plt.ylabel('Installed Cap [W]')
 
 # ## Pretty Plots
 
-# In[23]:
+# In[13]:
 
 
 #create a yearly Module Waste Mass
@@ -154,28 +166,28 @@ USyearly['Waste_Module'] = USyearly.sum(axis=1)
 USyearly.head(10)
 
 
-# In[13]:
+# In[14]:
 
 
 #add index
 USyearly.index = r1.scenario['USHistory'].data['year']
 
 
-# In[14]:
+# In[15]:
 
 
 #Convert to million metric tonnes
 USyearly_mil_tonnes=USyearly/1000000000000
 
 
-# In[24]:
+# In[16]:
 
 
 #Adding new installed capacity for decomissioning calc
 USyearly_mil_tonnes['new_Installed_Capacity_[MW]'] = r1.scenario['USHistory'].data['new_Installed_Capacity_[MW]'].values
 
 
-# In[25]:
+# In[17]:
 
 
 UScum = USyearly_mil_tonnes.copy()
@@ -184,14 +196,14 @@ UScum = UScum.cumsum()
 UScum.head()
 
 
-# In[17]:
+# In[18]:
 
 
 bottoms = pd.DataFrame(UScum.loc[2050])
 bottoms
 
 
-# In[18]:
+# In[19]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -240,7 +252,7 @@ a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0], p5[0] ), ('Glass', 'aluminium_fram
 # ### plot of decommissioned in MW
 # decommissioned yearly = cumulative new installs - yearly active capacity
 
-# In[26]:
+# In[20]:
 
 
 #Add Installed capacity to yearly
@@ -248,7 +260,7 @@ USyearly_mil_tonnes['Active_Capacity_[W]'] = r1.scenario['USHistory'].data['Inst
 USyearly_mil_tonnes.head()
 
 
-# In[39]:
+# In[21]:
 
 
 USyearly_mil_tonnes['Decommissioned_yearly_[MW]'] = UScum['new_Installed_Capacity_[MW]'] - (USyearly_mil_tonnes['Active_Capacity_[W]']/1e6)
@@ -260,7 +272,7 @@ plt.legend()
 plt.ylabel('MW')
 
 
-# In[44]:
+# In[22]:
 
 
 #Print out results to file for Taylor
@@ -274,8 +286,14 @@ tidy_results['Cumulative_Decommissioned_Module_Mass_[million metric tonnes]'] = 
 tidy_results
 
 
-# In[48]:
+# In[23]:
 
 
 tidy_results.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_Decomissioning.csv')
+
+
+# In[ ]:
+
+
+
 
