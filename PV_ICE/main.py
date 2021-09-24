@@ -450,7 +450,7 @@ class Simulation:
                     # and adding initial area
                     fixinitialareacount = next((i for i, e in enumerate(x) if e), None) - 1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
-                    areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
+                    areapowergen[fixinitialareacount] = (areapowergen[fixinitialareacount] +  
                                          row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])
                 except:
                     # Last value does not have a xclip value of nonzero so it goes
@@ -458,7 +458,7 @@ class Simulation:
                     # of Lifetime.
                     fixinitialareacount = len(cdf)-1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
-                    areapowergen[fixinitialareacount] = (activeareacount[fixinitialareacount] +  
+                    areapowergen[fixinitialareacount] = (areapowergen[fixinitialareacount] +  
                                          row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])                   
                     print("Finished Area+Power Generation Calculations")
                     
