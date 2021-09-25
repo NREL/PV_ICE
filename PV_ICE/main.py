@@ -740,7 +740,7 @@ class Simulation:
                 materials = [materials]
 
         keywds = ['mat_Virgin_Stock', 'mat_Total_Landfilled', 'mat_Total_EOL_Landfilled', 'mat_Total_MFG_Landfilled']
-        nice_keywds = ['Virgin_Stock', 'Waste', 'Waste_EOL', 'Waste_MFG']
+        nice_keywds = ['VirginStock', 'Waste', 'WasteEOL', 'WasteMFG']
 
         USyearly=pd.DataFrame()
 
@@ -751,7 +751,8 @@ class Simulation:
 
                 for mat in materials:
                     USyearly[nicekey+'_'+mat+'_'+scen] = self.scenario[scen].material[mat].materialdata[keywd]
-        
+                # TODO: Add module sum
+
         USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
         USyearly = USyearly.add_suffix('_[MillionTonnes]')
         
@@ -772,6 +773,9 @@ class Simulation:
         # Reindexing and Merging
         USyearly.index = self.scenario[scen].data['year']
         UScum.index = self.scenario[scen].data['year']
+        
+        self.USyearly = USyearly
+        self.UScum = UScum
         
         return USyearly, UScum
  
@@ -800,6 +804,43 @@ class Simulation:
         plt.ylabel(yunits)        
 
 
+    def plotYearlyResults(self, keyword, yearlyorcumulative='yearly'):
+        import plotly.express as px
+        import re
+        
+        if yearlyorcumulative == 'yearly':
+            data = self.USyearly
+        else:
+            data = self.UScum
+
+        if keyword is None:
+            keyword = 'VirginStock'
+            #TODO: add a split to first bracket and print unique values option and return.
+            
+        filter_col = [col for col in data if col.startswith(keyword)]
+        
+        # Getting Title, Y-Axis Labels, and Legend Readable
+        titlekeyword = re.sub( r"([A-Z])", r" \1", keyword)
+        units = filter_col[0].split('_')[-1]
+        
+        mylegend = [col.split('_')[1:] for col in filter_col]
+        mylegend = [col[:-1] for col in mylegend]
+        mylegend = [' '.join(col) for col in mylegend]
+        mylegend = [str.capitalize(col) for col in mylegend]
+
+        fig = px.line(data[filter_col])
+        
+        fig.update_layout(
+            title=titlekeyword,
+            xaxis_title="Year", 
+            yaxis_title=units
+        )
+        
+        for idx, name in enumerate(mylegend):
+            fig.data[idx].name = name
+            fig.data[idx].hovertemplate = name
+            
+        fig.show()
 
 
     def plotMaterialComparisonAcrossScenarios(self, keyword=None, scenarios=None, material = None):
