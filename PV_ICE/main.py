@@ -740,7 +740,7 @@ class Simulation:
                 materials = [materials]
 
         keywds = ['mat_Virgin_Stock', 'mat_Total_Landfilled', 'mat_Total_EOL_Landfilled', 'mat_Total_MFG_Landfilled']
-        nice_keywds = ['VirginStock', 'Waste', 'WasteEOL', 'WasteMFG']
+        nice_keywds = ['VirginStock', 'WasteAll', 'WasteEOL', 'WasteMFG']
 
         USyearly=pd.DataFrame()
 
@@ -759,7 +759,7 @@ class Simulation:
         # Different units, so no need to do the ratio to Metric tonnes :p
         keywd='new_Installed_Capacity_[MW]'
         for scen in scenarios:
-            USyearly[keywd+'_'+scen] = self.scenario[scen].data[keywd]
+            USyearly['newInstalledCapacity_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]
  
         # Creating c umulative results
         UScum = USyearly.copy()
@@ -804,7 +804,22 @@ class Simulation:
         plt.ylabel(yunits)        
 
 
-    def plotYearlyResults(self, keyword, yearlyorcumulative='yearly'):
+    def plotMetricResults(self):
+        from plotly.subplots import make_subplots
+       # import plotly.graph_objects as go
+
+        
+        y1 = self.plotMaterialResults(keyword='VirginStock', yearlyorcumulative='yearly') 
+        y2 = self.plotMaterialResults(keyword='WasteAll', yearlyorcumulative='yearly')
+        y3 = self.plotMaterialResults(keyword='WasteEOL', yearlyorcumulative='yearly')
+        y4 = self.plotMaterialResults(keyword='WasteMFG', yearlyorcumulative='yearly')
+        c1 = self.plotMaterialResults(keyword='VirginStock', yearlyorcumulative='cumulative')
+        c2 = self.plotMaterialResults(keyword='WasteAll', yearlyorcumulative='cumulative')
+        c3 = self.plotMaterialResults(keyword='WasteEOL', yearlyorcumulative='cumulative')
+        c4 = self.plotMaterialResults(keyword='WasteMFG', yearlyorcumulative='cumulative')
+        ic = self.plotInstalledCapacityResults()
+        
+    def plotMaterialResults(self, keyword, yearlyorcumulative='yearly', cumplot=False):
         import plotly.express as px
         import re
         
@@ -814,13 +829,14 @@ class Simulation:
             data = self.UScum
 
         if keyword is None:
-            keyword = 'VirginStock'
+            print("keyword options are :" 'VirginStock', 'WasteALL', 'WasteEOL', 'WasteMFG')
+            return
             #TODO: add a split to first bracket and print unique values option and return.
             
         filter_col = [col for col in data if col.startswith(keyword)]
         
         # Getting Title, Y-Axis Labels, and Legend Readable
-        titlekeyword = re.sub( r"([A-Z])", r" \1", keyword)
+        titlekeyword = str.capitalize(yearlyorcumulative) + re.sub( r"([A-Z])", r" \1", keyword)
         units = filter_col[0].split('_')[-1]
         
         mylegend = [col.split('_')[1:] for col in filter_col]
@@ -828,7 +844,61 @@ class Simulation:
         mylegend = [' '.join(col) for col in mylegend]
         mylegend = [str.capitalize(col) for col in mylegend]
 
-        fig = px.line(data[filter_col])
+        fig = px.line(data[filter_col], template="plotly_white")
+        
+        fig.update_layout(
+            title=titlekeyword,
+            xaxis_title="Year", 
+            yaxis_title=units
+        )
+        
+        for idx, name in enumerate(mylegend):
+            fig.data[idx].name = name
+            fig.data[idx].hovertemplate = name
+        
+        if cumplot:
+            return fig
+        else:
+            fig.show()    
+        return
+    
+    def plotInstalledCapacityResults(self, cumplot=False):
+        # TODO: Add scenarios input to subselect which ones to plot.
+
+        import plotly.express as px
+        
+        datay = self.USyearly
+        datac = self.UScum
+        
+        filter_colc = [col for col in datac if col.startswith('newInstalledCapacity')]
+        filter_coly = [col for col in datay if col.startswith('Capacity')]
+
+        datay = datay[filter_coly].copy()
+        mylegend = [col.split('_')[1:] for col in datay]
+        mylegend = [col[:-1] for col in mylegend]
+        mylegend = [str(col)[2:-2] for col in mylegend]
+        mylegendy = ['Cumulative New Installs, '+col for col in mylegend]
+
+        print(mylegend)
+        
+        datac = datac[filter_colc].copy()
+        mylegend = [col.split('_')[1:] for col in datac]
+        mylegend = [col[:-1] for col in mylegend]
+        mylegend = [str(col)[2:-2] for col in mylegend]
+        mylegendc = ['Capacity, '+col for col in mylegend]
+
+        data = datay.join(datac)
+        mylegend = mylegendy + mylegendc
+        
+        titlekeyword = 'Installed Capacity and Cumulative new Installs'
+
+            
+        # Getting Title, Y-Axis Labels, and Legend Readable
+        units = filter_colc[0].split('_')[-1]
+        
+
+        
+        fig = px.line(data, template="plotly_white")
         
         fig.update_layout(
             title=titlekeyword,
@@ -840,8 +910,12 @@ class Simulation:
             fig.data[idx].name = name
             fig.data[idx].hovertemplate = name
             
-        fig.show()
-
+        if cumplot:
+            return fig
+        else:
+            fig.show()    
+        return
+        
 
     def plotMaterialComparisonAcrossScenarios(self, keyword=None, scenarios=None, material = None):
 
