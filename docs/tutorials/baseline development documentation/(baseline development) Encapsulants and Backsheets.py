@@ -79,7 +79,7 @@ check = pd.DataFrame(encap_market_pct_full.agg("sum", axis="columns"))
 encap_market_pct_full.plot(kind='bar', stacked=True)
 
 
-# In[9]:
+# In[6]:
 
 
 #check if marketshare and thickness dataframes have same index
@@ -92,7 +92,7 @@ print(encap_market_pct_full.columns)
 print(encapsulants_thick_raw.columns)
 
 
-# In[20]:
+# In[7]:
 
 
 #fill in thickness dataframe
@@ -104,7 +104,7 @@ print(encaps_thick_m)
 
 # Now multiply by densities to get mass per meter sq., then weight by marketshare
 
-# In[38]:
+# In[8]:
 
 
 #multiply thickness times density to get mass per area (g/m^2)
@@ -119,7 +119,7 @@ plt.legend(encaps_bymat_gpm2.columns)
 
 # Now aggregate it down into a single "encapsulant" baseline
 
-# In[39]:
+# In[9]:
 
 
 #drop the EVA+PO column from the marketshare
@@ -133,7 +133,7 @@ encapsulant_gpm2.columns = ['Encapsulant_g_per_m2']
 print(encapsulant_gpm2)
 
 
-# In[41]:
+# In[10]:
 
 
 #print to csv
@@ -151,9 +151,50 @@ encapsulant_gpm2.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/outpu
 # 
 # The Kynar (PVDF) and Tedlar (PVF) multilayer films will use a ratio structure of film-PETcore-film, which will scale with the backsheet thickness over time. The other will be....?
 
+# ### Create Density Structures
+
+# In[11]:
+
+
+#Densities of Plastic components
+density_pet = 1.4 #g/cm^3, https://en.wikipedia.org/wiki/Polyethylene_terephthalate
+density_tedlar = 1.54 #g/cm^3, “DuPont Tedlar (PVF): General Properties.” DuPont, 2014. https://www.dupont.com/content/dam/dupont/amer/us/en/photovoltaic/public/documents/DEC_Tedlar_GeneralProperties.pdf
+density_kynar = 1.78 #g/cm^3, “Kynar 740 PVDF Material Data Sheet.” Professional Plastics.
+#density_polyolefin = 
+#density_polyester = 
+density_polyamid = 1.3 #g/cm^3, APPROX https://omnexus.specialchem.com/polymer-properties/properties/density
+density_aluminum = 2.7 #g/cm^3, https://en.wikipedia.org/wiki/Aluminium
+
+
+# In[12]:
+
+
+rep_thickness = 40+200+40 # see references above
+innerlayer = 40/rep_thickness 
+outerlayer = 40/rep_thickness
+core = 200/rep_thickness
+
+
+# In[13]:
+
+
+film_density_kynar = density_kynar*innerlayer + density_kynar*outerlayer + density_pet*core
+film_density_tedlar = density_tedlar*innerlayer + density_tedlar*outerlayer + density_pet*core
+film_density_other = density_pet #this is an approximate assumption
+
+
+# In[14]:
+
+
+print('The estimated density of a composite tedlar film is '+str(film_density_tedlar)+'g/cm^3')
+print('The estimated density of a composite kynar film is '+str(film_density_kynar)+'g/cm^3')
+
+
 # ### Thickness Data
 
-# In[6]:
+# Due to a lack of more precise data, we are going to assume that all backsheet materials are approximately the same thickness, and therefore one backsheet thickness will be used.
+
+# In[15]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -162,7 +203,7 @@ backsheet_thickness_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/Supporting
                                      index_col='year', usecols=lambda x: x not in skipcols)
 
 
-# In[8]:
+# In[16]:
 
 
 plt.plot(backsheet_thickness_raw,  marker='o')
@@ -176,12 +217,18 @@ plt.plot(backsheet_thickness_raw,  marker='o')
 # 
 # Therefore, we will use the 2016 data point as representative of the market during that time. 
 
-# In[16]:
+# In[17]:
 
 
 backsheet_thickness_cleaned = backsheet_thickness_raw
-backsheet_thickness_cleaned.loc[2015] = np.NaN #removing the "min" requirement from IEC std
-backsheet_thickness_cleaned.loc[2021] = backsheet_thickness_cleaned.loc[2016] #using literature data, since I don't think it's gotten much thinner on average
+#removing the "min" requirement from IEC std
+backsheet_thickness_cleaned.loc[2015] = np.NaN 
+#using literature data, since I don't think it's gotten much thinner on average
+backsheet_thickness_cleaned.loc[2021] = backsheet_thickness_cleaned.loc[2016] 
+#lacking a projection, we will assume constant thickness through 2050
+backsheet_thickness_cleaned.loc[2050]=backsheet_thickness_cleaned.loc[2021]
+#interpolate for missing years
+backsheet_thickness_cleaned.interpolate(method='linear',axis=0,inplace=True)
 
 
 # In[18]:
@@ -192,37 +239,128 @@ plt.plot(backsheet_thickness_cleaned, marker='o')
 
 # ### Marketshare Data
 
-# In[ ]:
+# In[19]:
 
 
+cwd = os.getcwd() #grabs current working directory
+skipcols = ['Source', 'Notes']
+backsheet_market_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/Marketshare-Backsheet.csv",
+                                     index_col='year', usecols=lambda x: x not in skipcols)
 
 
-
-# In[ ]:
-
+# In[20]:
 
 
+plt.plot(backsheet_market_raw, marker='o')
+plt.legend(backsheet_market_raw.columns)
 
 
-# ### Create Density Structures
-
-# In[ ]:
+# In[21]:
 
 
-#Densities of Plastic components
-density_pet = 1.4 #g/cm^3, https://en.wikipedia.org/wiki/Polyethylene_terephthalate
-density_tedlar = 1.54 #g/cm^3, “DuPont Tedlar (PVF): General Properties.” DuPont, 2014. https://www.dupont.com/content/dam/dupont/amer/us/en/photovoltaic/public/documents/DEC_Tedlar_GeneralProperties.pdf
-density_kynar = 1.78 #g/cm^3, “Kynar 740 PVDF Material Data Sheet.” Professional Plastics.
-density_polyolefin = 
-density_polyester = 
-density_polyamid = 1.3 #g/cm^3, APPROX https://omnexus.specialchem.com/polymer-properties/properties/density
-density_aluminum = 2.7 #g/cm^3, https://en.wikipedia.org/wiki/Aluminium
+backsheet_market_full = backsheet_market_raw.interpolate(method='linear',axis=0,limit_area='inside')
+
+plt.plot(backsheet_market_full, marker='o')
+plt.legend(backsheet_market_full.columns)
 
 
-# In[ ]:
+# In[22]:
 
 
-film_density_kynar = 
-film_density_tedlar = 
-film_density_other = 
+#check that the columns add up to 100%
+backsheet_market_full['total'] = backsheet_market_full.sum(axis=1)
+backsheet_market_full.head()
+
+
+# In[23]:
+
+
+#not all add up to 100%, some of these had glass accounted for
+backsheet_market_full['Scale'] = 100/backsheet_market_full['total']
+backsheet_market_full['Kynar-based_scaled']= backsheet_market_full['Scale']*backsheet_market_full['Kynar-based']
+backsheet_market_full['Tedlar-Based_scaled']= backsheet_market_full['Scale']*backsheet_market_full['Tedlar-Based']
+backsheet_market_full['Other_scaled']= backsheet_market_full['Scale']*backsheet_market_full['Other']
+
+
+# In[24]:
+
+
+backsheet_market_corrected = backsheet_market_full[['Kynar-based_scaled','Tedlar-Based_scaled','Other_scaled']]
+backsheet_market_corrected=backsheet_market_corrected.dropna()
+
+
+# In[25]:
+
+
+plt.plot(backsheet_market_corrected)
+plt.legend(backsheet_market_corrected.columns)
+
+
+# ## Combining data into average backsheet annually
+
+# First, we will combine the marketshare and densities to create an average annual density of backsheet films. Then this will be multiplied by thickness to get a mass per area annually.
+
+# In[26]:
+
+
+density_marketshared = pd.DataFrame()
+density_avg_annual = pd.DataFrame()
+
+
+# In[27]:
+
+
+density_marketshared['Kynar'] = (backsheet_market_corrected['Kynar-based_scaled']/100)*film_density_kynar
+density_marketshared['Tedlar'] = (backsheet_market_corrected['Tedlar-Based_scaled']/100)*film_density_tedlar
+density_marketshared['Other'] = (backsheet_market_corrected['Other_scaled']/100)*film_density_other
+
+
+# In[28]:
+
+
+density_avg_annual['Backsheet_Density_g/cm3'] = density_marketshared.sum(axis=1)
+
+
+# In[29]:
+
+
+plt.plot(density_avg_annual)
+
+
+# The annual density is in g/cm3, and the thickness data is in micron. We need to get to g/m2.
+
+# In[30]:
+
+
+density_avg_gpm3 = density_avg_annual*1E6 #convert to g/m3
+thickness_m = backsheet_thickness_cleaned*0.000001 #convert micron to m
+
+
+# In[44]:
+
+
+thickness_m_sub = thickness_m.loc[(thickness_m.index>=1995) & (thickness_m.index<=2031)]
+density_avg_gpm3_sub = density_avg_gpm3.loc[(density_avg_gpm3.index>=1995) & (density_avg_gpm3.index<=2031)]
+thickness_m_sub.columns = density_avg_gpm3_sub.columns
+
+
+# In[49]:
+
+
+backsheet_gpm2 = thickness_m_sub*density_avg_gpm3_sub
+backsheet_gpm2.columns = ['Backsheet_gpm2']
+
+
+# In[53]:
+
+
+plt.plot(backsheet_gpm2)
+plt.title('Annually Marketshare weighted Backsheet mass per area')
+plt.ylabel('Backsheet Mass [g/m^2]')
+
+
+# In[54]:
+
+
+backsheet_gpm2.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output-Backsheet-gpm2.csv")
 
