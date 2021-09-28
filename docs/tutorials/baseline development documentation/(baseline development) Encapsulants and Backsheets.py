@@ -359,8 +359,37 @@ plt.title('Annually Marketshare weighted Backsheet mass per area')
 plt.ylabel('Backsheet Mass [g/m^2]')
 
 
-# In[54]:
+# ### Weight by glass vs film backsheet market share
+
+# In[64]:
 
 
-backsheet_gpm2.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output-Backsheet-gpm2.csv")
+#pull in glass vs backsheet conformation market share fraction from glass journal output
+conform_market = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_marketshare_glassVbacksheet.csv",
+                                     index_col=0)
+
+
+# In[69]:
+
+
+conform_market.tail()
+
+
+# In[71]:
+
+
+#eqn = gpm2 * marketshare g-b
+backsheet_gpm2_final = backsheet_gpm2['Backsheet_gpm2']*conform_market['glass-backsheet']
+
+
+# In[72]:
+
+
+backsheet_gpm2_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output-Backsheet-gpm2.csv")
+
+
+# In[ ]:
+
+
+
 
