@@ -64,17 +64,17 @@ print(os.getcwd())
 moduleFile = r'..\..\baselines\baseline_modules_US_57RE2050.csv'
 moduleFile_high = r'..\..\baselines\baseline_modules_US_100RE2050.csv'
 
-MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant']
+MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
 MATERIAL = MATERIALS[0]
 
 
-# In[ ]:
+# In[5]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 
 
-# In[ ]:
+# In[6]:
 
 
 #57% RE proejctions
@@ -95,7 +95,7 @@ for mat in range (0, len(MATERIALS)):
     
 
 
-# In[ ]:
+# In[7]:
 
 
 #95% RE projections
@@ -115,7 +115,7 @@ for mat in range (0, len(MATERIALS)):
     r1.scenario['base_high'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
-# In[ ]:
+# In[8]:
 
 
 #r1.scenario['50_Year_Module'].data.keys()
@@ -126,7 +126,7 @@ r1.scenario['base_high'].material.keys()
 
 # Because of the way module lifetime is handled in PV ICE, we need to modify the T50 and T90 values for the Weibull distribution, the economic or project module lifetime, and the degradation rate of the module. This will most accurately and completely represent a module with a particular lifetime.
 
-# In[ ]:
+# In[9]:
 
 
 ########57% RE projection
@@ -141,7 +141,7 @@ r1.scenario['15_Year_Module'].data['mod_lifetime'] = 15
 r1.scenario['15_Year_Module'].data['mod_degradation'] = 1.4
 
 
-# In[ ]:
+# In[10]:
 
 
 ######95% RE projection
@@ -158,7 +158,7 @@ r1.scenario['15_Year_Module_high'].data['mod_degradation'] = 1.4
 
 # ## Change Recyclability Values
 
-# In[ ]:
+# In[11]:
 
 
 #list of material recycling variables
@@ -166,7 +166,7 @@ RecyclingPaths = ['mat_MFG_scrap_recycled', 'mat_MFG_scrap_Recycled_into_HQ', 'm
 RecyclingYields = ['mat_MFG_scrap_recycling_eff', 'mat_EOL_Recycling_eff']
 
 
-# In[ ]:
+# In[12]:
 
 
 ###############57% RE projection
@@ -193,7 +193,7 @@ for mat in range (0, len(MATERIALS)):
 #print(r1.scenario['50_Year_Module'].material['encapsulant'].materialdata['mat_EOL_Recycling_eff'])
 
 
-# In[ ]:
+# In[13]:
 
 
 ##############95% RE projection
@@ -228,7 +228,7 @@ for mat in range (0, len(MATERIALS)):
 
 # ## Turn IRENA lifetime values on or off & run PV ICE simulation
 
-# In[ ]:
+# In[14]:
 
 
 IRENA= False
@@ -245,31 +245,31 @@ else:
     title_Method = 'PVICE'
 
 
-# In[ ]:
+# In[15]:
 
 
 r1.scenario['base'].material['glass'].materialdata.keys()
 
 
-# In[ ]:
+# In[16]:
 
 
 r1.scenario['base'].data.keys()
 
 
-# In[ ]:
+# In[17]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 
 
-# In[ ]:
+# In[18]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 
 
-# In[ ]:
+# In[19]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
@@ -281,7 +281,7 @@ r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 # 
 # This is accomplished by first creating the scenario in our simulation, and calculating the mass flow as before. Then, the difference between the installed capacity of the 30 year module and the installed capacity of the 15 year module is taken for each year. This difference generates a new annual deployment projection where additional modules are deployed to compensate and capacity of the 15 year module = capacity of the 30 year module. Then calculate mass flow is run for the scenario with the new annual deployment projection, allowing us to track the extra material needed.
 
-# In[ ]:
+# In[20]:
 
 
 ##########57% RE projection
@@ -307,7 +307,7 @@ for mat in range (0, len(MATERIALS)):
         r1.scenario['15_Year_Module_IncreasedInstalls'].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]] = 90.0
 
 
-# In[ ]:
+# In[21]:
 
 
 ################95% RE projection
@@ -333,7 +333,7 @@ for mat in range (0, len(MATERIALS)):
         r1.scenario['15_Year_Module_high_IncreasedInstalls'].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]] = 90.0
 
 
-# In[ ]:
+# In[22]:
 
 
 r1.calculateMassFlow()
@@ -344,7 +344,7 @@ r1.calculateMassFlow()
 # Needs to run each year becuase it needs to calculate the acumulated installs and deads.
 # 
 
-# In[ ]:
+# In[23]:
 
 
 #compensate for short lifetime by adding more installs, currently set to meet 30 year installs
@@ -357,7 +357,7 @@ for i in range (0, len(r1.scenario['base'].data)):
     r1.calculateMassFlow()
 
 
-# In[ ]:
+# In[24]:
 
 
 #############95% RE projection
@@ -372,7 +372,7 @@ for i in range (0, len(r1.scenario['base_high'].data)):
 
 # ### And create a 50 year decreased installs by the same principle
 
-# In[ ]:
+# In[25]:
 
 
 ###############57% RE projection
@@ -399,7 +399,7 @@ for mat in range (0, len(MATERIALS)):
         r1.scenario['50_Year_Module_DecreasedInstalls'].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]] = 90.0
 
 
-# In[ ]:
+# In[26]:
 
 
 ################95% RE projection
@@ -425,13 +425,13 @@ for mat in range (0, len(MATERIALS)):
         r1.scenario['50_Year_Module_high_DecreasedInstalls'].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]] = 30.0
 
 
-# In[ ]:
+# In[27]:
 
 
 r1.calculateMassFlow()
 
 
-# In[ ]:
+# In[28]:
 
 
 ######################57% RE projection
@@ -443,7 +443,7 @@ for i in range (0, len(r1.scenario['base'].data)):
     r1.calculateMassFlow()
 
 
-# In[ ]:
+# In[29]:
 
 
 ######################95% RE projection
@@ -457,25 +457,25 @@ for i in range (0, len(r1.scenario['base_high'].data)):
 
 # # Plots
 
-# In[ ]:
+# In[30]:
 
 
 r1.plotScenariosComparison(keyword='new_Installed_Capacity_[MW]')
 
 
-# In[ ]:
+# In[31]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
-# In[ ]:
+# In[32]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Virgin_Stock')
 
 
-# In[ ]:
+# In[33]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='encapsulant', keyword='mat_Total_Landfilled')
@@ -483,7 +483,7 @@ r1.plotMaterialComparisonAcrossScenarios(material='encapsulant', keyword='mat_To
 
 # ## Same plots but not automatic from the software to control more the parameters
 
-# In[ ]:
+# In[34]:
 
 
 plt.plot(r1.scenario['base'].data['year'], r1.scenario['base'].data['Installed_Capacity_[W]']/1e12, 'g', label='base')
@@ -499,7 +499,7 @@ plt.xlim([2000, 2050])
 plt.legend()
 
 
-# In[ ]:
+# In[35]:
 
 
 plt.plot(r1.scenario['base'].data['year'], r1.scenario['base'].data['new_Installed_Capacity_[MW]']/1e3, 'g', label='base')
@@ -515,7 +515,7 @@ plt.xlim([2000, 2050])
 plt.legend()
 
 
-# In[ ]:
+# In[36]:
 
 
 plt.plot(r1.scenario['base'].data['year'], r1.scenario['base'].material['glass'].materialdata['mat_Virgin_Stock']/1e9, 'g', label='base')
@@ -530,7 +530,7 @@ plt.title('Annual Virgin Material Input')
 plt.xlim([2000, 2050])
 
 
-# In[ ]:
+# In[37]:
 
 
 plt.plot(r1.scenario['base'].data['year'], r1.scenario['base'].material['glass'].materialdata['mat_Total_Landfilled']/1e9, 'g', label='base')
@@ -547,7 +547,7 @@ plt.xlim([2000, 2050])
 
 # # Calculating Overall changes between the Scenarios
 
-# In[ ]:
+# In[38]:
 
 
 cum_Waste = []
@@ -575,7 +575,7 @@ df_high = df.filter(regex='_high', axis=0)
 
 # ###  Normalize by Base Scenario
 
-# In[ ]:
+# In[39]:
 
 
 df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']] = df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']]*100/df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']].iloc[2] -100
@@ -584,7 +584,7 @@ df.round(2)
 
 # Separate out the 95% RE projection from the 57% to normalize by the correct projection
 
-# In[ ]:
+# In[40]:
 
 
 df_high[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']] = df_high[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']]*100/df_high[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']].iloc[2] -100
@@ -593,7 +593,7 @@ df_high.round(2)
 
 # ### Cumulative results by material
 
-# In[ ]:
+# In[41]:
 
 
 USyearly=pd.DataFrame()
@@ -617,14 +617,14 @@ for jj in range (0, len(r1.scenario.keys())):
 USyearly.head(20)
 
 
-# In[ ]:
+# In[42]:
 
 
 scen = list(r1.scenario.keys())
 print(keyword)
 
 
-# In[ ]:
+# In[43]:
 
 
 keyword = 'mat_Total_EOL_Landfilled'
@@ -646,7 +646,7 @@ for jj in range (0, len(r1.scenario.keys())):
 USyearly.head(20)
 
 
-# In[ ]:
+# In[44]:
 
 
 keyword='mat_Virgin_Stock'
@@ -667,14 +667,14 @@ for jj in range (0, len(r1.scenario.keys())):
 USyearly.head(20)
 
 
-# In[ ]:
+# In[45]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 #907185 -- this is for US tons
 
 
-# In[ ]:
+# In[46]:
 
 
 UScum = USyearly.copy()
@@ -682,7 +682,7 @@ UScum = UScum.cumsum()
 UScum.head()
 
 
-# In[ ]:
+# In[47]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -695,7 +695,7 @@ for jj in range(0, len(r1.scenario.keys())):
     UScum["Capacity_"+'_'+case] = foo[keyword]
 
 
-# In[ ]:
+# In[48]:
 
 
 keyword='new_Installed_Capacity_[MW]'
@@ -708,21 +708,21 @@ for jj in range(0, len(r1.scenario.keys())):
     UScum["new_Installed_Capacity_"+'_'+case] = foo[keyword]
 
 
-# In[ ]:
+# In[49]:
 
 
 USyearly.index = r1.scenario['base'].data['year']
 UScum.index = r1.scenario['base'].data['year']
 
 
-# In[ ]:
+# In[50]:
 
 
 UScum.to_csv('Cole2021_Cumulative_Results.csv')
 USyearly.to_csv('Cole2021_Yearly_Results.csv')
 
 
-# In[ ]:
+# In[51]:
 
 
 UScum.head(10)
@@ -730,7 +730,7 @@ UScum.head(10)
 
 # ## Output Data for Charting
 
-# In[ ]:
+# In[52]:
 
 
 #selecting down for fancy plotting
@@ -739,7 +739,7 @@ filter_col = [col for col in UScum if (col.startswith('Waste_Total_Module')) ]
 UScum[filter_col].loc[[2050]].to_csv(os.path.join(testfolder,'Cum_Waste_2050only.csv'))
 
 
-# In[ ]:
+# In[53]:
 
 
 #selecting down for fancy plotting
@@ -750,7 +750,7 @@ filter_col = [col for col in UScum if (col.startswith('VirginStock_')) ]
 UScum[filter_col].loc[[2050]].to_csv(os.path.join(testfolder,'Cum2050-VirginStock-15v50.csv'))
 
 
-# In[ ]:
+# In[54]:
 
 
 #bring a modified version of that file back in to bar plot
@@ -759,13 +759,13 @@ CumVirg_plot_input = pd.read_csv(cwd+"/input-multiIndex-CumVirginDemand.csv", in
 CumVirg_plot_input.head(10)
 
 
-# In[ ]:
+# In[55]:
 
 
 CumVirg_plot_input.index
 
 
-# In[ ]:
+# In[56]:
 
 
 #remove module mass from the dataframe
@@ -783,7 +783,7 @@ plt.legend(bbox_to_anchor=(1,0), loc="lower left")
 
 # To explore the full range of lifetime vs recycling, we decided to make a 2d plot varying lifetime on one axis, and recycling on the other. This section uses only the 95% RE scenario, and maintains capacity of the 30 year deployed module projeciton (i.e. compensates for shorter and longer lived modules). Everything will be normalized to the 30 year module at the end of the calculations.
 
-# In[108]:
+# In[6]:
 
 
 Life_Good = pd.Series(range(0,22,2)) #this is relative to 30 year module
@@ -799,7 +799,7 @@ print(Lifetime_Range)
 
 # ### Create PV ICE defaults scenario with 95% RE
 
-# In[109]:
+# In[7]:
 
 
 r2 = PV_ICE.Simulation(name='VaryLifetimeRecycle', path=testfolder)
@@ -811,7 +811,7 @@ for mat in range (0, len(MATERIALS)):
     r2.scenario['base_high'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
-# In[110]:
+# In[8]:
 
 
 #list of material recycling variables
@@ -823,7 +823,7 @@ RecyclingYields = ['mat_MFG_scrap_recycling_eff', 'mat_EOL_Recycling_eff']
 
 # In PV ICE we assume that 90% of the modules should be reliabile enough to meet the economic project lifetime. Therefore, the t50 and t90 values need to be modified for each lifetime in the range.
 
-# In[111]:
+# In[9]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -834,7 +834,7 @@ reliability_baselines['mod_reliability_t50'] = r2.scenario['base_high'].data['mo
 reliability_baselines['mod_reliability_t90'] = r2.scenario['base_high'].data['mod_reliability_t90']
 
 
-# In[112]:
+# In[10]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -858,7 +858,7 @@ t90_list = list(chain(*t90_list)) #unnest list
 t90_range_simple = pd.Series([ '%.2f' % elem for elem in t90_list ])
 
 
-# In[113]:
+# In[11]:
 
 
 #create a tidy dataframe summarizing all the lifetime, degradation, reliability values
@@ -869,7 +869,7 @@ print(lifetime_range_df)
 
 # ### Create the lifetime and recycling combinatorics simulations
 
-# In[114]:
+# In[12]:
 
 
 #95% RE projections
@@ -898,14 +898,14 @@ for life in range(0,len(Lifetime_Range)):
                 r2.scenario[scenname].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]] = Recycling_Range[recycle]
 
 
-# In[ ]:
+# In[13]:
 
 
 ##NOTE CURRENT DOWNSIDE TO ABOVE IS USES SAME VALUES FOR 1995 - 2050, no correct historical!!!
 #All materials are set to XX% recycling yields with 100% collection
 
 
-# In[115]:
+# In[14]:
 
 
 print(len(r2.scenario.keys()))
@@ -913,19 +913,19 @@ print(len(r2.scenario.keys()))
 #print(r2.scenario['50years & 50% Recycled'].material['silicon'].materialdata['mat_EOL_Recycling_eff'])
 
 
-# In[116]:
+# In[15]:
 
 
 r2.calculateMassFlow()
 
 
-# In[117]:
+# In[16]:
 
 
 r2.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
-# In[126]:
+# In[17]:
 
 
 #extract annual installed capacity data for plotting
@@ -944,7 +944,20 @@ for ii in range (0, len(r2.scenario.keys())):
 # ### Cumulative Comparison
 # Calculate the comparison of cumulative differences in material demands, wastes, and installed capacity as a relative to the PV ICE default values.
 
-# In[15]:
+# In[18]:
+
+
+yearlyr2, cumr2 = r2.aggregateResults()
+
+
+# In[20]:
+
+
+yearlyr2.to_csv(os.path.join(testfolder,'yearly-RvL-func.csv'))
+cumr2.to_csv(os.path.join(testfolder,'Cum2050-RvL-func.csv'))
+
+
+# In[19]:
 
 
 RvL_cum_Waste = []
@@ -969,14 +982,43 @@ df.round(2)
 print(df)
 
 
-# In[16]:
+# In[21]:
 
 
 #print out to a csv for plotting
 df.to_csv(os.path.join(testfolder,'Cum2050-RvL-HeatMapData.csv'))
 
 
-# In[8]:
+# ### Make bar chart of cumulative capacity in 2050
+
+# In[44]:
+
+
+#filter to just one of the recycling, since installed capacity only depends on lifetime
+#using yearly because the capacity PV ICE spits out is inherently cumulative
+lifetimesr2 = yearlyr2.filter(like='95%') #picked a 2 digit recycle, because grabbing 0 grabbed all 10s
+capacity_lifetimes_r2 = lifetimesr2.filter(regex='^Capacity') #^ means at the beginning
+capacity_2050_lifetime_r2 = capacity_lifetimes_r2.filter(items=[2050], axis=0)
+
+capacity_2050_lifetime_r2
+
+
+# In[58]:
+
+
+plt.bar(x=Lifetime_Range, height=capacity_2050_lifetime_r2.loc[2050]/1E6)
+plt.xticks(Lifetime_Range)
+plt.ylabel('Active Capacity in 2050 \n [TW]')
+plt.xlabel('Module Lifetime [years]')
+
+
+# In[88]:
+
+
+capacity_lifetimes_r2.to_csv(os.path.join(testfolder,'yearlyActiveCapacityByLifetime-r2.csv'))
+
+
+# In[71]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -985,7 +1027,7 @@ RvL_cums = RvL_cums[RvL_cums.scenarios != 'base_high']
 RvL_cums.head(5)
 
 
-# In[44]:
+# In[72]:
 
 
 heatdata_Waste = RvL_cums[['cum_Waste']]
@@ -1006,7 +1048,7 @@ heatdata_Virgin_pivot = heatdata_Virgin_pivot[::-1]
 heatdata_Waste_pivot
 
 
-# In[88]:
+# In[73]:
 
 
 #Make heat maps with cumulative data
@@ -1062,7 +1104,7 @@ plt.savefig('heatmap-identicalInstalls.png')
 plt.show()
 
 
-# In[102]:
+# In[74]:
 
 
 #Installed capacity graphs
@@ -1071,7 +1113,7 @@ capacity_compare = capacity_compare_extra.droplevel('Recycling') #remove recycli
 capacity_compare
 
 
-# In[107]:
+# In[75]:
 
 
 plt.rcParams['figure.figsize'] = (12, 12)
@@ -1082,8 +1124,6 @@ plt.ylabel('Relative Difference in Cumulative Installed Capacity in 2050 (%)')
 
 
 # ### Installation compensation
-
-# creating a duplicate of r2 simulation so as not to overwrite data while creating the installation compensation set of scenarios.
 
 # In[ ]:
 
@@ -1101,13 +1141,13 @@ for ii in range (0, len(r2.scenario.keys())):
         r2.calculateMassFlow()
 
 
-# In[51]:
+# In[ ]:
 
 
 import time
 
 
-# In[74]:
+# In[ ]:
 
 
 ###############95% RE projection, faster version
@@ -1125,7 +1165,7 @@ for row in range (0,len(r2.scenario['base_high'].data)):
     print('\n\nNOTICE ME************',row,'rows/years', 'Time:',end-start,'\n\n')
 
 
-# In[116]:
+# In[ ]:
 
 
 plt.plot(r2.scenario['base_high'].data['year'], r2.scenario['base_high'].material['glass'].materialdata['mat_Virgin_Stock']/1e9, 'g', label='base')
@@ -1142,7 +1182,7 @@ plt.xlim([2000, 2050])
 
 # ### Cumulatives with Installation Compensation
 
-# In[136]:
+# In[ ]:
 
 
 RvL_installs_cum_Waste = []
@@ -1169,13 +1209,13 @@ RvL_installs_cums.to_csv(os.path.join(testfolder,'Cum2050-RvL-installscomp-HeatM
 print(RvL_installs_cums)
 
 
-# In[137]:
+# In[ ]:
 
 
 plt.plot(RvL_installs_cums['cum_VirginNeeds'])
 
 
-# In[72]:
+# In[ ]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -1184,7 +1224,7 @@ RvL_installs_cums = RvL_installs_cums[RvL_installs_cums.scenarios != 'base_high'
 RvL_installs_cums.head(5)
 
 
-# In[73]:
+# In[ ]:
 
 
 heatdata_Waste_installs = RvL_installs_cums[['cum_Waste']]
@@ -1198,7 +1238,7 @@ heatdata_Virgin_pivot_installs.columns = Lifetime_Range
 heatdata_Virgin_pivot_installs = heatdata_Virgin_pivot_installs[::-1]
 
 
-# In[89]:
+# In[ ]:
 
 
 #Make 3 heat maps with cumulative data
