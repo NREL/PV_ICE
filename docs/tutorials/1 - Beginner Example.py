@@ -68,6 +68,7 @@ r1.scenario['decadence'].material['silicon'].materialdata['mat_massperm2'] = 22
 
 
 r1.calculateMassFlow()
+r1.aggregateResults();
 
 
 # ### Step 5: Use internal plotting functions to plot results
@@ -100,10 +101,78 @@ r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 
 
-# In[ ]:
+# In[9]:
 
 
+r1.plotMaterialResults(keyword='VirginStock')
 
+
+# In[10]:
+
+
+r1.plotMetricResults()
+
+
+# In[11]:
+
+
+r1.plotInstalledCapacityResults()
+
+
+# In[12]:
+
+
+datay = r1.USyearly
+datac = r1.UScum
+
+
+# In[13]:
+
+
+filter_colc = [col for col in datac if col.startswith('newInstalledCapacity')]
+filter_coly = [col for col in datay if col.startswith('Capacity')]
+
+
+# In[14]:
+
+
+datac[filter_colc]
+
+
+# In[15]:
+
+
+data = datac[filter_colc].copy()
+data.join(datay[filter_coly].copy())
+
+
+# In[16]:
+
+
+data
+
+
+# In[17]:
+
+
+mylegend = [col.split('_')[1:] for col in data]
+mylegend = [col[:-1] for col in mylegend]
+mylegend
+
+
+# In[18]:
+
+
+test_list=['standard', 'decadence', '2standard', '2decadence']
+test_list2=['asdfadsf', 'dfdffd', 'dfsfs', 'ssssssss']
+#str(test_list)[1:-1]
+test_list + test_list2
+
+
+# In[19]:
+
+
+test_list
 
 
 # In[ ]:
