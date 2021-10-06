@@ -779,6 +779,8 @@ CumVirg_base_deploy.plot(kind='bar', stacked=True)
 plt.legend(bbox_to_anchor=(1,0), loc="lower left")
 
 
+# # ***___***___***___***___***___***___***___***___***___
+
 # # Full Variation of Lifetime and Recycling
 
 # To explore the full range of lifetime vs recycling, we decided to make a 2d plot varying lifetime on one axis, and recycling on the other. This section uses only the 95% RE scenario, and maintains capacity of the 30 year deployed module projeciton (i.e. compensates for shorter and longer lived modules). Everything will be normalized to the 30 year module at the end of the calculations.
@@ -793,7 +795,7 @@ Lifetime_Range.reset_index(inplace=True, drop=True)
 Lifetime_Diff30 = Lifetime_Range-30
 Degradation_Range = pd.Series([1.470, 1.220, 1.050, 0.920, 0.820, 0.740, 0.690, 0.650, 0.615, 0.582, 0.555, 0.525, 0.505, 0.480, 0.460, 0.445])
 Recycling_Range = pd.Series(range(0,100,5)) # this is absolute recycling values
-print(Lifetime_Range)
+#print(Lifetime_Range)
 #print(Degradation_Range)
 
 
@@ -925,7 +927,7 @@ r2.calculateMassFlow()
 r2.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
-# In[17]:
+# In[16]:
 
 
 #extract annual installed capacity data for plotting
@@ -944,49 +946,17 @@ for ii in range (0, len(r2.scenario.keys())):
 # ### Cumulative Comparison
 # Calculate the comparison of cumulative differences in material demands, wastes, and installed capacity as a relative to the PV ICE default values.
 
-# In[18]:
+# In[17]:
 
 
 yearlyr2, cumr2 = r2.aggregateResults()
 
 
-# In[20]:
+# In[21]:
 
 
 yearlyr2.to_csv(os.path.join(testfolder,'yearly-RvL-func.csv'))
 cumr2.to_csv(os.path.join(testfolder,'Cum2050-RvL-func.csv'))
-
-
-# In[19]:
-
-
-RvL_cum_Waste = []
-RvL_cum_VirginNeeds = []
-RvL_cum_InstalledCapacity = []
-RvL_cum_NewInstalls = []
-
-for ii in range (0, len(r2.scenario.keys())):
-    # Cumulative
-    scen = list(r2.scenario.keys())[ii]
-    RvL_cum_Waste.append(r2.scenario[scen].material['glass'].materialdata['mat_Total_Landfilled'].sum())
-    RvL_cum_VirginNeeds.append(r2.scenario[scen].material['glass'].materialdata['mat_Virgin_Stock'].sum())
-    RvL_cum_NewInstalls.append(r2.scenario[scen].data['new_Installed_Capacity_[MW]'].sum())
-    RvL_cum_InstalledCapacity.append(r2.scenario[scen].data['Installed_Capacity_[W]'].iloc[-1])
-
-df = pd.DataFrame(list(zip(list(r2.scenario.keys()), RvL_cum_Waste, RvL_cum_VirginNeeds, RvL_cum_NewInstalls, RvL_cum_InstalledCapacity)),
-               columns =['scenarios','cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity'])
-df = df.set_index('scenarios')
-#Normalize by PV ICE default
-df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']] = df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']]*100/df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']].iloc[0] -100
-df.round(2)
-print(df)
-
-
-# In[21]:
-
-
-#print out to a csv for plotting
-df.to_csv(os.path.join(testfolder,'Cum2050-RvL-HeatMapData.csv'))
 
 
 # ### Make bar chart of cumulative capacity in 2050
@@ -1125,29 +1095,13 @@ plt.ylabel('Relative Difference in Cumulative Installed Capacity in 2050 (%)')
 
 # ### Installation compensation
 
-# In[ ]:
-
-
-#############95% RE projection
-#compensate for short lifetime by adding more installs, currently set to meet 30 year installs
-Under_Installment = []
-for ii in range (0, len(r2.scenario.keys())):
-    # Cumulative
-    scen = list(r2.scenario.keys())[ii]
-    for i in range (0, len(r2.scenario['base_high'].data)):
-        Under_Installment = ( (r2.scenario['base_high'].data['Installed_Capacity_[W]'][i] - 
-                               r2.scenario[scen].data['Installed_Capacity_[W]'][i])/1000000 )  # MWATTS
-        r2.scenario[scen].data['new_Installed_Capacity_[MW]'][i] += Under_Installment
-        r2.calculateMassFlow()
-
-
-# In[ ]:
+# In[19]:
 
 
 import time
 
 
-# In[ ]:
+# In[20]:
 
 
 ###############95% RE projection, faster version
@@ -1163,6 +1117,19 @@ for row in range (0,len(r2.scenario['base_high'].data)):
     r2.calculateMassFlow()
     end = time.time()
     print('\n\nNOTICE ME************',row,'rows/years', 'Time:',end-start,'\n\n')
+
+
+# In[22]:
+
+
+yearlyRvL_installcomp_r2, cumRvL_installcomp_r2 = r2.aggregateResults()
+
+
+# In[23]:
+
+
+yearlyRvL_installcomp_r2.to_csv(os.path.join(testfolder,'yearlyRvL-installcomp-r2.csv'))
+cumRvL_installcomp_r2.to_csv(os.path.join(testfolder,'cumulativeRvL-installcomp-r2.csv'))
 
 
 # In[ ]:

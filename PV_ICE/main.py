@@ -753,8 +753,8 @@ class Simulation:
                     USyearly[nicekey+'_'+mat+'_'+scen] = self.scenario[scen].material[mat].materialdata[keywd]
                 # TODO: Add module sum
 
-        USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
-        USyearly = USyearly.add_suffix('_[MillionTonnes]')
+        USyearly = USyearly/1000000  # This is the ratio for grams to Metric tonnes
+        USyearly = USyearly.add_suffix('_[Tonnes]')
         
         # Different units, so no need to do the ratio to Metric tonnes :p
         keywd='new_Installed_Capacity_[MW]'
