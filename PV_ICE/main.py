@@ -750,9 +750,12 @@ class Simulation:
                 nicekey = nice_keywds[ii]
 
                 for mat in materials:
-                    USyearly[nicekey+'_'+mat+'_'+scen] = self.scenario[scen].material[mat].materialdata[keywd]
-                # TODO: Add module sum
+                    USyearly[nicekey+'_'+mat+'_'+self.name+'_'+scen] = self.scenario[scen].material[mat].materialdata[keywd]
+                filter_col = [col for col in USyearly if (col.startswith(nicekey) and col.endswith(self.name+'_'+scen)) ]
+                USyearly[nicekey+'_Module_'+self.name+'_'+scen] = USyearly[filter_col].sum(axis=1)
+                # 2DO: Add multiple objects option
 
+                
         USyearly = USyearly/1000000  # This is the ratio for grams to Metric tonnes
         USyearly = USyearly.add_suffix('_[Tonnes]')
         
@@ -985,6 +988,15 @@ class Scenario(Simulation):
     
     def addMaterial(self, materialname, file=None):
         self.material[materialname] = Material(materialname, file)
+
+    def addMaterials(self, materials, baselinefolder=None):
+        
+        if baselinefolder is None:
+            baselinefolder = r'..\..\baselines'    
+
+        for mat in materials:
+            filemat = baselinefolder + r'\baseline_material_'+mat+'.csv'
+            self.material[mat] = Material(mat, filemat)
     
     def __getitem__(self, key):
         return getattr(self, key)
