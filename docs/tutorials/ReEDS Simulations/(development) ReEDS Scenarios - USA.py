@@ -390,7 +390,7 @@ A - B - C
 
 # ## Yearly Virgin Material Needs by Scenario
 
-# In[34]:
+# In[31]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -520,7 +520,7 @@ f.savefig(title_Method+' Fig_2x1_Yearly Virgin Material Needs by Scenario and Cu
 plt.show()
 
 
-# In[35]:
+# In[32]:
 
 
 rr.scenario['Reference.Mod'].material['glass'].materialdata['mat_Virgin_Stock'].tail(5)
@@ -528,7 +528,7 @@ rr.scenario['Reference.Mod'].material['glass'].materialdata['mat_Virgin_Stock'].
 
 # # Save Data for Jarett Zuboy
 
-# In[41]:
+# In[33]:
 
 
 # SOLAR FUTURES FIGURE 3
@@ -665,7 +665,7 @@ f.savefig(title_Method+' SF Figure 3 - Yearly Virgin Material Needs by Scenario 
 plt.show()
 
 
-# In[45]:
+# In[34]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -800,7 +800,7 @@ f.savefig(title_Method+' Fig_2x1_Yearly MFG and EOL Material by Scenario and Cum
 plt.show()
 
 
-# In[86]:
+# In[35]:
 
 
 # SOLAR FUTURES FIGURE 17
@@ -939,7 +939,7 @@ f.savefig(title_Method+' SF Figure 17 - Yearly EoL Waste by Scenario and Cumulat
 plt.show()
 
 
-# In[88]:
+# In[36]:
 
 
 ### SOLAR FUTURES FIGURE 18
@@ -1076,7 +1076,7 @@ f.savefig(title_Method+' SF Figure 18 - Yearly MFG Waste by Scenario and Cumulat
 plt.show()
 
 
-# In[50]:
+# In[37]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1096,7 +1096,7 @@ plt.show()
 
 # # WASTE COMPARISON SIZE
 
-# In[53]:
+# In[38]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1113,7 +1113,7 @@ fig.savefig(title_Method+' Fig_New_Installs_vs_InstalledCapacity_vs_Waste', dpi=
 plt.show()
 
 
-# In[54]:
+# In[39]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1136,7 +1136,7 @@ axs.set_ylabel('Power [TW]')
 plt.show()
 
 
-# In[55]:
+# In[40]:
 
 
 foo0 = (UScum['new_Installed_Capacity_[MW]'+SFscenarios[0]]/1e6-USyearly['Capacity_'+SFscenarios[0]]/1e12).sum()
@@ -1145,7 +1145,7 @@ foo2 = (UScum['new_Installed_Capacity_[MW]'+SFscenarios[2]]/1e6-USyearly['Capaci
 print(foo0, foo1, foo2)
 
 
-# In[56]:
+# In[41]:
 
 
 E = (UScum['new_Installed_Capacity_[MW]Reference.Mod']/1e6).sum()
@@ -1155,13 +1155,13 @@ print("Cumulative Waste", F)
 print("Fraction of Decomisioned to Installed Cumulative by 2050", F/E)
 
 
-# In[57]:
+# In[42]:
 
 
 SFscenarios[1]
 
 
-# In[60]:
+# In[43]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1177,7 +1177,7 @@ fig.savefig(title_Method+' Fig_New_Installs_vs_Decomisions', dpi=600)
 plt.show()
 
 
-# In[90]:
+# In[44]:
 
 
 ### SOLAR FUTURES FIGURE 20
@@ -1209,7 +1209,7 @@ fig.savefig(title_Method+' SF Figure 20 - New Installs vs Decomisions', dpi=600)
 plt.show()
 
 
-# In[62]:
+# In[45]:
 
 
 print("CUMULATIVE WASTE by 2050")
@@ -1234,7 +1234,7 @@ print("\t High Electrification Scenario: ", UScum['Waste_MFG_Module_95-by-35_Ele
 plt.show()
 
 
-# In[63]:
+# In[46]:
 
 
 print(" VIRGIN STOCK Yearly Needs ")
@@ -1264,7 +1264,7 @@ for kk in range(0, 3):
 
 
 
-# In[64]:
+# In[47]:
 
 
 print(" WASTE EoL CUMULATIVE RESULTS [Tonnes] ")
@@ -1273,7 +1273,7 @@ filter_col = [col for col in UScum3sig if (col.startswith('Waste_EOL_Module')) ]
 display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[66]:
+# In[48]:
 
 
 print(" WASTE EoL + MfgScrap CUMULATIVE RESULTS [Tonnes] ")
@@ -1282,7 +1282,7 @@ filter_col = [col for col in UScum3sig if (col.startswith('Waste_Module')) ]
 display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[67]:
+# In[49]:
 
 
 print(" WASTE MfgScrap CUMULATIVE RESULTS [Tonnes] ")
@@ -1291,7 +1291,7 @@ filter_col = [col for col in UScum3sig if (col.startswith('Waste_MFG_Module')) ]
 display(UScum3sig[filter_col].loc[[2016,2020,2030, 2040, 2050]])
 
 
-# In[68]:
+# In[50]:
 
 
 materials = ['Module', 'glass', 'aluminum', 'copper', 'silicon', 'silver']
@@ -1319,7 +1319,7 @@ for kk in range (0, 3):
 
 # # Mining Capacity
 
-# In[69]:
+# In[51]:
 
 
 mining2020_aluminum = 65267000
@@ -1328,7 +1328,7 @@ mining2020_copper = 20000000
 mining2020_silicon = 8000000
 
 
-# In[70]:
+# In[52]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -1387,7 +1387,7 @@ fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production.png',  bbox
 plt.show()
 
 
-# In[71]:
+# In[53]:
 
 
 
@@ -1419,7 +1419,7 @@ newdf['Copper_High'] = USyearly[keyw+materials[3]+'_'+SFscenarios[2]]*100/mining
 newdf.to_csv(title_Method+' Demand as Percentage of Mining.csv')
 
 
-# In[74]:
+# In[90]:
 
 
 # FIGURE 4
@@ -1449,7 +1449,7 @@ for kk in range(0, 3):
 
     obj = SFscenarios[kk]
     axs[i].yaxis.grid()
-    axs[i].axvspan(2000, 2018, facecolor='c', alpha=0.5, label='Glass')
+    axs[i].axvspan(2000, 2018, facecolor='c', alpha=0.5)
 #    axs[i].axvspan(2018, 2050.5, facecolor='yellow', alpha=0.1)
  #   axs[i].plot([],[],color='c', label='glass', linewidth=5)
  #   axs[i].plot([],[],color='k', label='silicon', linewidth=5)
@@ -1458,15 +1458,15 @@ for kk in range(0, 3):
  #   axs[i].plot([],[],color='g', label='aluminum', linewidth=5)
 
     axs[i].stackplot(rr.scenario[obj].data['year'], USyearly[keyw+materials[0]+'_'+obj]/1e6, 
-                                                      USyearly[keyw+materials[1]+'_'+obj]/1e6, 
-                                                      USyearly[keyw+materials[2]+'_'+obj]/1e6, 
-                                                      USyearly[keyw+materials[3]+'_'+obj]/1e6, 
-                                                      USyearly[keyw+materials[4]+'_'+obj]/1e6, 
-                                                      colors=['c','k','gray','orange', 'g'])
+                                                      USyearly[keyw+materials[1]+'_'+obj]/1e6,
+                                                      USyearly[keyw+materials[4]+'_'+obj]/1e6,
+                                                      colors=['c','k','g'], labels=['Glass','Si','Al'])
+    #USyearly[keyw+materials[2]+'_'+obj]/1e6, 
+    #USyearly[keyw+materials[3]+'_'+obj]/1e6,
     #axs[i].ylabel('Mass [Tons]')
     axs[i].set_xlim([2020, 2050])
     axs[i].set_title(titlesscens[kk])
-    axs[i].legend(loc='center right')
+    axs[i].legend(loc='center right',bbox_to_anchor=(1,0.55))
 
     #axs[i].legend(materials)
 
@@ -1585,7 +1585,7 @@ fig.savefig(title_Method+' SF Figure 4 - MaterialNeeds Nation.png', dpi=600)
 plt.show()
 
 
-# In[75]:
+# In[55]:
 
 
 keyword='Cumulative_Area_disposed'
@@ -1604,14 +1604,14 @@ for kk in range(0, 3):
      #   USyearly_Areadisp["Areadisp_"+obj] += rr.scenario[obj].data[keyword]
 
 
-# In[76]:
+# In[56]:
 
 
 UScum_Areadisp = USyearly_Areadisp.copy()
 UScum_Areadisp = UScum_Areadisp.cumsum()
 
 
-# In[77]:
+# In[57]:
 
 
 A = UScum['Waste_Module_Reference.Mod'].iloc[-1]
@@ -1623,7 +1623,7 @@ A = A/1e6 # Convert to km 2
 print(A)
 
 
-# In[78]:
+# In[58]:
 
 
 B = UScum['Waste_Module_95-by-35_Elec.Adv_DR'].iloc[-1]
@@ -1635,21 +1635,21 @@ B =B/1e6 # Convert to km 2
 print(B)
 
 
-# In[79]:
+# In[59]:
 
 
 C = UScum_Areadisp['Areadisp_Reference.Mod'].iloc[-1]/1e6
 D = UScum_Areadisp['Areadisp_95-by-35_Elec.Adv_DR'].iloc[-1]/1e6
 
 
-# In[80]:
+# In[60]:
 
 
 # MANHATTAN SIZE:
 manhattans = 59.103529
 
 
-# In[81]:
+# In[61]:
 
 
 print("Reference Cumulative Area by 2050 of Waste PV Modules EoL", round(C), " km^2")
@@ -1683,19 +1683,19 @@ print("High Electrification Cumulative Area by 2050 of Waste PV Mfg + Modules Eo
 # Waste_EOL_silver_95-by-35_Elec.Adv_DR  
 # 
 
-# In[82]:
+# In[62]:
 
 
 USyearly['VirginStock_silver_Reference.Mod']
 
 
-# In[ ]:
+# In[63]:
 
 
 USyearly
 
 
-# In[ ]:
+# In[91]:
 
 
 plt.rcParams.update({'font.size': 14})
@@ -1708,15 +1708,15 @@ axs = axs.ravel()
 # PLOT 1
 i = 0
 axs[i].yaxis.grid()
-lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_silver_Reference.Mod']/1e6, color='gray', linewidth=4.0, label='Virgin Material Demands')
-lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_silver_Reference.Mod']/1e6, color='gray', linestyle='dashed', linewidth=3.0, label='EoL Material')
+lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_silver_95-by-35_Elec.Adv_DR']/1e6, color='gray', linewidth=4.0, label='Virgin Material Demands')
+lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_silver_95-by-35_Elec.Adv_DR']/1e6, color='gray', linestyle='dashed', linewidth=3.0, label='EoL Material')
 axs[i].set_ylabel('Mass [Tons]')
 axs[i].set_xlim([2020, 2050])
 axs[i].set_title('Silver')
 
 # 2nd axis plot
 ax2=axs[i].twinx()
-lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_silver_Reference.Mod']/USyearly['VirginStock_silver_Reference.Mod'], 
+lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_silver_95-by-35_Elec.Adv_DR']/USyearly['VirginStock_silver_95-by-35_Elec.Adv_DR'], 
              color = 'r', linewidth=1.0, label='Eol Material as fraction of Demand')
 ax2.set_ylabel('EoL Material as Fraction of Demand', color='r')
 ax2.tick_params(axis='y', labelcolor='r')
@@ -1730,15 +1730,15 @@ labs = [l.get_label() for l in lns]
 # PLOT 2
 i = 1
 axs[i].yaxis.grid()
-lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_aluminum_Reference.Mod']/1e6, color='g', linewidth=4.0, label='Virgin Material Demands')
-lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_aluminum_Reference.Mod']/1e6, color='g', linestyle='dashed', linewidth=3.0, label='EoL Material')
+lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_aluminum_95-by-35_Elec.Adv_DR']/1e6, color='g', linewidth=4.0, label='Virgin Material Demands')
+lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_aluminum_95-by-35_Elec.Adv_DR']/1e6, color='g', linestyle='dashed', linewidth=3.0, label='EoL Material')
 axs[i].set_ylabel('Mass [Tons]')
 axs[i].set_xlim([2020, 2050])
 axs[i].set_title('Aluminum')
 
 # 2nd axis plot
 ax2=axs[i].twinx()
-lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_aluminum_Reference.Mod']/USyearly['VirginStock_aluminum_Reference.Mod'], 
+lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_aluminum_95-by-35_Elec.Adv_DR']/USyearly['VirginStock_aluminum_95-by-35_Elec.Adv_DR'], 
              color = 'r', linewidth=1.0, label='Eol Material as fraction of Demand')
 
 ax2.set_ylabel('EoL Material as Fraction of Demand', color='r')
@@ -1755,15 +1755,15 @@ labs = [l.get_label() for l in lns]
 # PLOT 3
 i = 2
 axs[i].yaxis.grid()
-lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_silicon_Reference.Mod']/1e6, color='k', linewidth=4.0, label='Virgin Material Demands')
-lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_silicon_Reference.Mod']/1e6, color='k', linestyle='dashed', linewidth=3.0, label='EoL Material')
+lns1 = axs[i].plot(USyearly.index, USyearly['VirginStock_silicon_95-by-35_Elec.Adv_DR']/1e6, color='k', linewidth=4.0, label='Virgin Material Demands')
+lns2 = axs[i].plot(USyearly.index, USyearly['Waste_EOL_silicon_95-by-35_Elec.Adv_DR']/1e6, color='k', linestyle='dashed', linewidth=3.0, label='EoL Material')
 axs[i].set_ylabel('Mass [Tons]')
 axs[i].set_xlim([2020, 2050])
 axs[i].set_title('Silicon')
 
 # 2nd axis plot
 ax2=axs[i].twinx()
-lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_silicon_Reference.Mod']/USyearly['VirginStock_silicon_Reference.Mod'], 
+lns3 = ax2.plot(USyearly.index, USyearly['Waste_EOL_silicon_95-by-35_Elec.Adv_DR']/USyearly['VirginStock_silicon_95-by-35_Elec.Adv_DR'], 
              color = 'r', linewidth=1.0, label='Eol Material as fraction of Demand')
 
 #ax2.set_ylabel('EoL Material as Fraction of Demand', color='r')
@@ -1779,7 +1779,7 @@ axs[2].legend(lns, labs, loc='upper center', bbox_to_anchor=(-0.95, -0.25),
 fig.savefig(title_Method+' Fig_1x3_VirginvsWaste_Fraction_Nation.png', bbox_inches = "tight", dpi=600)
 
 
-# In[ ]:
+# In[65]:
 
 
 from matplotlib.legend_handler import HandlerBase
@@ -1891,7 +1891,7 @@ axs[2].legend([("gray","g","k","-","-","-"), ("gray","g","k","--","--","--"),("r
 fig.savefig(title_Method+' Fig_1x3_VirginvsWaste_Fraction_Nation.png', bbox_inches = "tight", dpi=600)
 
 
-# In[ ]:
+# In[66]:
 
 
 newdf = pd.DataFrame()
