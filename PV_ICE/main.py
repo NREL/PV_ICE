@@ -317,7 +317,8 @@ class Simulation:
 
 
     def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None, 
-                          bifacialityfactors = None, reducecapacity = True, debugflag=False):
+                          bifacialityfactors = None, reducecapacity = True, debugflag=False,
+                          m1=False,m2=False,m3=False):
         '''
         Function takes as input a baseline dataframe already imported, 
         with the right number of columns and content.
@@ -369,16 +370,26 @@ class Simulation:
                 df['irradiance_stc'] = 1000.0 # W/m^2
 
             # Renaming and re-scaling
-            df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
             df['t50'] = df['mod_reliability_t50']
             df['t90'] = df['mod_reliability_t90']
             
             # Calculating Area and Mass
-            if reducecapacity:
-                df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/df['irradiance_stc'] # m^2                
+            
+            if 'Mass_[MetricTonnes]' in df:
+                df['new_Installed_Capacity_[W]'] = 0
+                df['new_Installed_Capacity_[MW]'] = 0
+                df['Area'] = df['Mass_[MetricTonnes]']
+                print("Warning, this is for special debuging of Wambach Procedure."+
+                      "Make sure to use Wambach Module")
             else:
-                df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/1000.0 # m^2
-                
+                df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
+
+                if reducecapacity:
+                    df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/df['irradiance_stc'] # m^2                
+                else:
+                    df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/1000.0 # m^2
+            
+                    
             df['Area'] = df['Area'].fillna(0) # Chagne na's to 0s.
 
             # Calculating Wast by Generation by Year, and Cumulative Waste by Year.
@@ -415,7 +426,7 @@ class Simulation:
 
                 x = np.clip(df.index - generation, 0, np.inf)
                 cdf = list(map(f, x))
-#                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
+                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
 
                 activearea = row['Area']
                 if np.isnan(activearea):
@@ -441,7 +452,17 @@ class Simulation:
                     else:
                         active += 1
                         activeareaprev = activearea                            
-                        activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repair']*0.01))
+                        if m1:
+                            activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repair']*0.01))
+#                        Same as above but exploded
+#                        activearea = activearea-activearea*cdf[age]+activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
+#                       New one:
+                        if m2:
+                            activearea = activearea-row['Area']*cdf[age]+row['Area']*cdf[age]*df.iloc[age]['mod_Repair']*0.01
+                        
+                        if m3:
+                            activearea = activearea-row['Area']*pdf[age]+row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01
+                        
                         arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
                         arearepaired.append(arearepaired_failure)
                         arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
@@ -663,9 +684,11 @@ class Simulation:
         
         if ELorRL == 'RL':
             weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
+            print("Using Irena Regular Loss Assumptions")
         if ELorRL == 'EL':
-            weibullInputParams = {'alpha': 2.49, 'beta': 30}  # Regular-loss scenario IRENA
-        
+            weibullInputParams = {'alpha': 2.4928, 'beta': 30}  # Regular-loss scenario IRENA
+            print("Using Irena Early Loss Assumptions")
+            
         if scenarios is None:
             scenarios = list(self.scenario.keys())
         else:
@@ -675,7 +698,7 @@ class Simulation:
         for scen in scenarios:
             self.scenario[scen].data['weibull_alpha'] = weibullInputParams['alpha']
             self.scenario[scen].data['weibull_beta'] = weibullInputParams['beta']
-            self.scenario[scen].data['mod_lifetime'] = 40
+            self.scenario[scen].data['mod_lifetime'] = 40.0
             self.scenario[scen].data['mod_MFG_eff'] = 100.0
             
             for mat in self.scenario[scen].material:
@@ -1107,6 +1130,37 @@ def weibull_pdf(alpha, beta):
         return (alpha/np.array(x)) * ((np.array(x)/beta)**alpha) * (np.exp(-(np.array(x)/beta)**alpha))
     
     return pdf
+
+def weibull_pdf_vis(alpha, beta, xlim=56):
+    r''' Returns the CDF for a weibull distribution of 1 generation
+    so it can be plotted.
+    
+    Parameters
+    ----------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+    xlim : int
+        Number of years to calculate the distribution for. i.e. x-axis limit. 
+
+    Returns
+    -------
+    idf : list
+        List of weibull cumulative distribution values for year 0 until xlim.
+
+    '''
+
+    dfindex = pd.RangeIndex(0,xlim,1)
+    x = np.clip(dfindex - 0, 0, np.inf)
+
+    if alpha and beta:
+        i = weibull_pdf(alpha, beta)
+    
+    idf = list(map(i, x))
+    
+    return idf
 
 
 def weibull_cdf_vis(alpha, beta, xlim=56):
