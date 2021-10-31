@@ -318,7 +318,7 @@ class Simulation:
 
     def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None, 
                           bifacialityfactors = None, reducecapacity = True, debugflag=False,
-                          m1=False,m2=False,m3=False):
+                          m1=False,m2=False,m3=True):
         '''
         Function takes as input a baseline dataframe already imported, 
         with the right number of columns and content.
@@ -794,7 +794,7 @@ class Simulation:
         # Adding Installed Capacity to US (This is already 'Cumulative') so not including it in UScum
         keywd='Installed_Capacity_[W]'
         for scen in scenarios:
-            USyearly['Capacity_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]/1e6
+            USyearly['Capacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]/1e6
 
         # Reindexing and Merging
         USyearly.index = self.scenario[scen].data['year']

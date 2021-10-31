@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 import PV_ICE
@@ -19,13 +19,13 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'ElectricF
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[ ]:
+# In[2]:
 
 
 PV_ICE.__version__
 
 
-# In[ ]:
+# In[3]:
 
 
 MATERIALS = ['WAMBACH']
@@ -35,7 +35,7 @@ MODULEBASELINE = r'C:\Users\Silvana\Documents\GitHub\PRIVATE_Wambach_US_INSTALLS
 #MODULEBASELINE = r'\..\..\PRIVATE_Wambach_US_INSTALLS_2020.csv'
 
 
-# In[ ]:
+# In[4]:
 
 
 r1 = PV_ICE.Simulation(name='PV_ICE', path=testfolder)
@@ -53,7 +53,7 @@ r1c.scenario['base'].addMaterials(MATERIALS, r'..\..\baselines')
 r1c.scenMod_IRENIFY('base', ELorRL = 'EL' )
 
 
-# In[ ]:
+# In[5]:
 
 
 r1.calculateMassFlow(m1=True)
@@ -61,11 +61,8 @@ r1b.calculateMassFlow(m2=True)
 r1c.calculateMassFlow(m3=True)
 
 
-# In[ ]:
+# In[7]:
 
-
-objects = [r1, r2, r3]
-scenarios = ['base']
 
 pvice_Usyearly1, pvice_Uscum1 = r1.aggregateResults()
 pvice_Usyearly1b, pvice_Uscum1b = r1b.aggregateResults()
@@ -80,25 +77,25 @@ pvice_Uscum1c *= 1000000
 
 
 
-# In[ ]:
+# In[8]:
 
 
 pvice_Usyearly1.keys()
 
 
-# In[ ]:
+# In[9]:
 
 
 PV_ICE.main.weibull_pdf_vis(2.4928, 30, xlim=40)
 
 
-# In[ ]:
+# In[10]:
 
 
 PV_ICE.main.weibull_cdf_vis(2.4928, 30, xlim=40)
 
 
-# In[ ]:
+# In[11]:
 
 
 foo = r1.scenario['base'].data
@@ -106,7 +103,7 @@ plt.plot(foo.ix[0,'EOL_on_Year_0':'EOL_on_Year_39'])
 #plt.plot(r1.scenario['base'].data['EOL_on_Year_30']
 
 
-# In[ ]:
+# In[12]:
 
 
 foo = r1b.scenario['base'].data
@@ -114,7 +111,7 @@ plt.plot(foo.ix[0,'EOL_on_Year_0':'EOL_on_Year_39'])
 #plt.plot(r1.scenario['base'].data['EOL_on_Year_30']
 
 
-# In[ ]:
+# In[13]:
 
 
 foo = r1c.scenario['base'].data
@@ -123,19 +120,19 @@ plt.plot(foo.ix[0,'EOL_on_Year_0':'EOL_on_Year_39'])
 max(foo.ix[0,'EOL_on_Year_0':'EOL_on_Year_39'])
 
 
-# In[ ]:
+# In[14]:
 
 
 pvice_Uscum1['WasteAll_WAMBACH_PV_ICE_base_[Tonnes]'].head()
 
 
-# In[ ]:
+# In[15]:
 
 
 pvice_Uscum1c['WasteAll_WAMBACH_PV_ICE_base_[Tonnes]'].tail()
 
 
-# In[ ]:
+# In[16]:
 
 
 wambachResults = [2019 66,335
@@ -152,7 +149,7 @@ wambachResults = [2019 66,335
 2030	1,116,586
 
 
-# In[ ]:
+# In[17]:
 
 
 import matplotlib.pyplot as plt
@@ -162,7 +159,7 @@ import matplotlib.pyplot as plt
 # # R2: RL
 # # R3: PV ICE
 
-# In[ ]:
+# In[18]:
 
 
 r1 = PV_ICE.Simulation(name='PV_ICE', path=testfolder)
@@ -189,25 +186,25 @@ pvice_Uscum1.to_csv('pvice_USCum_WAMBACH.csv')
 pvice_Usyearly1.to_csv('pvice_USYearly_WAMBACH.csv')
 
 
-# In[ ]:
+# In[19]:
 
 
 r1.scenario['IrenaEL'].data['WeibullParams'].tail()
 
 
-# In[ ]:
+# In[20]:
 
 
 r1.scenario['IrenaRL'].data['WeibullParams'].tail()
 
 
-# In[ ]:
+# In[21]:
 
 
 r1.scenario['base'].data['WeibullParams'].tail()
 
 
-# In[ ]:
+# In[22]:
 
 
 '''
@@ -252,7 +249,7 @@ USYearly.to_csv('pvice_USYearly_WAMBACH.csv')
 ''';
 
 
-# In[ ]:
+# In[24]:
 
 
 r1.plotMetricResults()
