@@ -496,15 +496,22 @@ df = df.T
 df
 
 
+# In[121]:
+
+
+print("Table 7 Effective Capacity PV ICE, Reference", round(USyearly['Capacity_PV_ICE_base_[MW]'].loc[2030]/1000,1))
+print("Table 7 Effective Capacity PV ICE, Reference", round(USyearly['Capacity_PV_ICE_high_[MW]'].loc[2030]/1000,1))
+
+
 # # Figure 12 Cumulative EOL MAterial, 2016, 2020, 2030, 2040, 2050
 
-# In[18]:
+# In[128]:
 
 
 names = ['Irena_EL_base', 'Irena_RL_base', 'PV_ICE_base']
 
 
-# In[19]:
+# In[129]:
 
 
 print("Figure 12 - Cumulative EOL Material 2016, 2020, 2030, 240, 2050")
@@ -524,7 +531,7 @@ df
 
 # # FIX THIS NUMBER!
 
-# In[20]:
+# In[130]:
 
 
 df.insert(loc=0, column='Irena 2016 Early Loss', value=[9000, 11000,110000,1000000,8000000])
@@ -533,14 +540,14 @@ df.insert(loc=2, column='CSA 2020 Early Loss', value=[9000, 11000,110000,1000000
 df.insert(loc=3, column='CSA 2020 Regular Loss', value=[9000, 11000,110000,1000000,8000000])
 
 
-# In[21]:
+# In[131]:
 
 
 import matplotlib.ticker as ticker
 import numpy as np
 
 
-# In[22]:
+# In[132]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -577,7 +584,7 @@ ax.legend(['Irena 2016 Early Loss', 'Irena 2016 Regular Loss', 'CSA 2020 Early L
 plt.show()
 
 
-# In[23]:
+# In[133]:
 
 
 # Some options Silvana liked
@@ -587,7 +594,7 @@ plt.show()
 # Accent, Accent_r, Blues, Blues_r, BrBG, BrBG_r, BuGn, BuGn_r, BuPu, BuPu_r, CMRmap, CMRmap_r, Dark2, Dark2_r, GnBu, GnBu_r, Greens, Greens_r, Greys, Greys_r, OrRd, OrRd_r, Oranges, Oranges_r, PRGn, PRGn_r, Paired, Paired_r, Pastel1, Pastel1_r, Pastel2, Pastel2_r, PiYG, PiYG_r, PuBu, PuBuGn, PuBuGn_r, PuBu_r, PuOr, PuOr_r, PuRd, PuRd_r, Purples, Purples_r, RdBu, RdBu_r, RdGy, RdGy_r, RdPu, RdPu_r, RdYlBu, RdYlBu_r, RdYlGn, RdYlGn_r, Reds, Reds_r, Set1, Set1_r, Set2, Set2_r, Set3, Set3_r, Spectral, Spectral_r, Wistia, Wistia_r, YlGn, YlGnBu, YlGnBu_r, YlGn_r, YlOrBr, YlOrBr_r, YlOrRd, YlOrRd_r, afmhot, afmhot_r, autumn, autumn_r, binary, binary_r, bone, bone_r, brg, brg_r, bwr, bwr_r, cividis, cividis_r, cool, cool_r, coolwarm, coolwarm_r, copper, copper_r, cubehelix, cubehelix_r, flag, flag_r, gist_earth, gist_earth_r, gist_gray, gist_gray_r, gist_heat, gist_heat_r, gist_ncar, gist_ncar_r, gist_rainbow, gist_rainbow_r, gist_stern, gist_stern_r, gist_yarg, gist_yarg_r, gnuplot, gnuplot2, gnuplot2_r, gnuplot_r, gray, gray_r, hot, hot_r, hsv, hsv_r, icefire, icefire_r, inferno, inferno_r, jet, jet_r, magma, magma_r, mako, mako_r, nipy_spectral, nipy_spectral_r, ocean, ocean_r, pink, pink_r, plasma, plasma_r, prism, prism_r, rainbow, rainbow_r, rocket, rocket_r, seismic, seismic_r, spring, spring_r, summer, summer_r, tab10, tab10_r, tab20, tab20_r, tab20b, tab20b_r, tab20c, tab20c_r, terrain, terrain_r, twilight, twilight_r, twilight_shifted, twilight_shifted_r, viridis, viridis_r, vlag, vlag_r, winter, winter_r
 
 
-# In[24]:
+# In[134]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -626,13 +633,13 @@ plt.show()
 
 # # Figure 11 Installed Capacity for all Scenarios
 
-# In[25]:
+# In[136]:
 
 
 names = ['PV_ICE_base', 'PV_ICE_high', 'Irena_EL_base', 'Irena_EL_high', 'Irena_RL_base', 'Irena_RL_high']
 
 
-# In[26]:
+# In[137]:
 
 
 print("Figure 11 Installed CApacity for all Scenarios")
@@ -650,7 +657,7 @@ df = df.T
 df
 
 
-# In[27]:
+# In[138]:
 
 
 df['PV_ICE_increase_high'] = df['PV_ICE_high']-df['PV_ICE_base']
@@ -661,13 +668,13 @@ df['CSA 2000'] = [437000, 0]
 df['inc0'] = [0, 0]
 
 
-# In[28]:
+# In[139]:
 
 
 df
 
 
-# In[29]:
+# In[140]:
 
 
 import pandas as pd
@@ -743,6 +750,443 @@ plot_clustered_stacked([df1, df2, df3, df4, df5, df6],["PV ICE, Early Loss", "PV
     
 
 
+# # Sensitivity Analysis
+
+# In[32]:
+
+
+MATERIAL = 'glass'
+
+MODULEBASELINE = r'..\..\baselines\baseline_modules_US.csv' 
+MATERIALBASELINE = r'..\..\baselines\baseline_material_'+MATERIAL+'.csv'
+
+
+# In[33]:
+
+
+s1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
+s1.createScenario(name='baseline', file=MODULEBASELINE)
+s1.scenario['baseline'].addMaterial(MATERIAL, file=MATERIALBASELINE)
+
+
+# #### Load Scenarios and Parameters
+
+# In[34]:
+
+
+ss = pd.read_excel(r'..\..\..\tests\sensitivity_test.xlsx')
+
+
+# #### Create Scenarios
+
+# In[35]:
+
+
+for i in range (0, len(ss)):
+    stage = ss['stage'][i]
+    stage_highname = stage+'_high'
+    stage_lowname = stage+'_low'
+    
+    if ss['Database'][i] == 'material':
+
+        if ss['Modification'][i] == 'single':
+
+            # Create Scenarios
+            s1.createScenario(name=stage_highname, file=MODULEBASELINE)
+            s1.scenario[stage_highname].addMaterial(MATERIAL, file=MATERIALBASELINE)
+            s1.createScenario(name=stage_lowname, file=MODULEBASELINE)
+            s1.scenario[stage_lowname].addMaterial(MATERIAL, file=MATERIALBASELINE)
+
+            # Modify Values Absolute
+            if ss['AbsRel'][i] == 'abs':
+                # Modify Values High
+                s1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]] = s1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]] + ss['High'][i]
+                s1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]][s1.scenario[stage_highname].material[MATERIAL].materialdata[ss['variables'][i]]>100.0] =100.0
+                # Modify Values Low
+                s1.scenario[stage_lowname].material[MATERIAL].materialdata[ss['variables'][i]] = s1.scenario[stage_lowname].material[MATERIAL].materialdata[ss['variables'][i]] + ss['Low'][i]
+                s1.scenario[stage_lowname].material[MATERIAL].materialdata[ss['variables'][i]][s1.scenario[stage_lowname].material[MATERIAL].materialdata[ss['variables'][i]]<0.0] = 0.0
+
+            # Modify Values Relative
+            if ss['AbsRel'][i] == 'rel':
+                # Modify Values High
+                high_change = 1+ss['High'][i]/100.0
+                low_change = 1+ss['Low'][i]/100.0
+                s1.scenario[stage_highname].material[MATERIAL].materialdata = PV_ICE.sens_StageImprovement(s1.scenario[stage_highname].material[MATERIAL].materialdata, 
+                             stage=ss['variables'][i], improvement=high_change, start_year=0)
+                # Modify Values Low
+                s1.scenario[stage_lowname].material[MATERIAL].materialdata = PV_ICE.sens_StageImprovement(s1.scenario[stage_lowname].material[MATERIAL].materialdata, 
+                             stage=ss['variables'][i], improvement=low_change, start_year=0)
+          
+        # If multiple, assumed all modifications are ABSOLUTE
+        if ss['Modification'][i] == 'multiple':
+            varmods = [x.strip() for x in ss['variables'][i].split(',')]
+            
+            # Create Scenarios
+            s1.createScenario(name=stage_highname, file=MODULEBASELINE)
+            s1.scenario[stage_highname].addMaterial(MATERIAL, file=MATERIALBASELINE)
+            s1.createScenario(name=stage_lowname, file=MODULEBASELINE)
+            s1.scenario[stage_lowname].addMaterial(MATERIAL, file=MATERIALBASELINE)
+            
+            for j in range(0, len(varmods)):
+                # Modify Values High
+                s1.scenario[stage_highname].material[MATERIAL].materialdata[varmods[j]] = s1.scenario[stage_highname].material[MATERIAL].materialdata[varmods[j]] + ss['High'][i] 
+                s1.scenario[stage_highname].material[MATERIAL].materialdata[varmods[j]][s1.scenario[stage_highname].material[MATERIAL].materialdata[varmods[j]]>100.0] =100.0
+                # Modify Values Low
+                s1.scenario[stage_lowname].material[MATERIAL].materialdata[varmods[j]] = s1.scenario[stage_lowname].material[MATERIAL].materialdata[varmods[j]] + ss['Low'][i]
+                s1.scenario[stage_lowname].material[MATERIAL].materialdata[varmods[j]][s1.scenario[stage_lowname].material[MATERIAL].materialdata[varmods[j]]<0.0] = 0.0
+
+        
+    if ss['Database'][i] == 'module':
+        
+        
+        if ss['Modification'][i] == 'single':
+
+            # Create Scenarios
+            s1.createScenario(name=stage_highname, file=MODULEBASELINE)
+            s1.scenario[stage_highname].addMaterial(MATERIAL, file=MATERIALBASELINE)
+            s1.createScenario(name=stage_lowname, file=MODULEBASELINE)
+            s1.scenario[stage_lowname].addMaterial(MATERIAL, file=MATERIALBASELINE) 
+            # Modify Values Absolute
+            if ss['AbsRel'][i] == 'abs':
+
+
+                s1.scenario[stage_highname].data[ss['variables'][i]] = s1.scenario[stage_highname].data[ss['variables'][i]] + ss['High'][i]
+                s1.scenario[stage_highname].data[ss['variables'][i]][s1.scenario[stage_highname].data[ss['variables'][i]]>100.0] =100.0
+
+
+                s1.scenario[stage_lowname].data[ss['variables'][i]] = s1.scenario[stage_lowname].data[ss['variables'][i]] + ss['Low'][i]
+                s1.scenario[stage_lowname].data[ss['variables'][i]][s1.scenario[stage_lowname].data[ss['variables'][i]]<0.0] = 0.0
+
+            # Modify Values Relative
+            if ss['AbsRel'][i] == 'rel':
+                high_change = 1+ss['High'][i]/100.0
+                low_change = 1+ss['Low'][i]/100.0
+                s1.scenario[stage_highname].data = PV_ICE.sens_StageImprovement(s1.scenario[stage_highname].data, 
+                                                 stage=ss['variables'][i], improvement=high_change, start_year=0)
+                s1.scenario[stage_lowname].data = PV_ICE.sens_StageImprovement(s1.scenario[stage_lowname].data, 
+                                                 stage=ss['variables'][i], improvement=low_change, start_year=0)
+        
+        # If multiple, assumed all modifications are ABSOLUTE
+        if ss['Modification'][i] == 'multiple':
+            varmods = [x.strip() for x in ss['variables'][i].split(',')]
+
+            s1.createScenario(name=stage_highname, file=MODULEBASELINE)
+            s1.scenario[stage_highname].addMaterial(MATERIAL, file=MATERIALBASELINE)
+            s1.createScenario(name=stage_lowname, file=MODULEBASELINE)
+            s1.scenario[stage_lowname].addMaterial(MATERIAL, file=MATERIALBASELINE)
+            
+            for j in range(0, len(varmods)):
+                s1.scenario[stage_highname].data[varmods[j]] = s1.scenario[stage_highname].data[varmods[j]] + ss['High'][i] 
+                s1.scenario[stage_highname].data[varmods[j]][s1.scenario[stage_highname].data[varmods[j]]>100.0] =100.0
+
+                s1.scenario[stage_lowname].data[varmods[j]] = s1.scenario[stage_lowname].data[varmods[j]] + ss['Low'][i]
+                s1.scenario[stage_lowname].data[varmods[j]][s1.scenario[stage_lowname].data[varmods[j]]<0.0] = 0.0
+
+        
+
+
+# # MASS FLOWS
+
+# In[36]:
+
+
+s1.calculateMassFlow(m1=m1,m2=m2,m3=m3)
+
+
+# #### Compile Changes
+
+# In[40]:
+
+
+s1.scenario
+
+
+# In[46]:
+
+
+scenarios = list(s1.scenario.keys())
+
+
+# In[47]:
+
+
+virginStock_Changes = []
+waste_Changes = []
+installedCapacity_Changes = []
+virginStockRAW_Changes = []
+
+virgin_keyword = 'mat_Virgin_Stock'
+waste_keyword = 'mat_Total_Landfilled'
+installs_keyword = 'Installed_Capacity_[W]'
+viring_raw_keyword = 'mat_Virgin_Stock_Raw'
+
+virginStock_baseline_cum2050 = s1.scenario['baseline'].material[MATERIAL].materialdata[virgin_keyword].sum()
+virginStockRAW_baseline_cum2050 = s1.scenario['baseline'].material[MATERIAL].materialdata[viring_raw_keyword].sum()
+
+# Installed Capacity is already cumulative so no need to sum or cumsum.
+waste_baseline_cum2050 = s1.scenario['baseline'].material[MATERIAL].materialdata[waste_keyword].sum()
+installedCapacity_baselined_2050 = s1.scenario['baseline'].data[installs_keyword].iloc[-1]
+
+for i in range (1, len(scenarios)):
+    stage_name = scenarios[i]
+    virginStock_Changes.append(round(100*s1.scenario[stage_name].material[MATERIAL].materialdata[virgin_keyword].sum()/virginStock_baseline_cum2050,5)-100)
+    virginStockRAW_Changes.append(round(100*s1.scenario[stage_name].material[MATERIAL].materialdata[viring_raw_keyword].sum()/virginStockRAW_baseline_cum2050,5)-100)
+
+    waste_Changes.append(round(100*s1.scenario[stage_name].material[MATERIAL].materialdata[waste_keyword].sum()/waste_baseline_cum2050,5)-100)
+    installedCapacity_Changes.append(round(100*s1.scenario[stage_name].data[installs_keyword].iloc[-1]/installedCapacity_baselined_2050,5)-100)
+
+
+# In[48]:
+
+
+stages = scenarios[1::] # removing baseline as we want a dataframe with only changes
+
+
+# In[49]:
+
+
+df2 = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Changes, installedCapacity_Changes)), 
+               columns=['Virgin Needs Change', 'Virgin Stock Raw Change', 'Waste Change', 'InstalledCapacity Change'],index=stages) 
+
+
+# In[50]:
+
+
+variables_description = {'mat_virgin_eff': "Material Virgin Efficiency",
+    'mat_massperm2': "Mass per m2",
+    'mat_MFG_eff': "Efficiency of Material Use during Module Manufacturing",
+    'mat_MFG_scrap_Recycled': "% of Material Scrap from Manufacturing that undergoes Recycling",
+    'mat_MFG_scrap_Recycling_eff': "Recycling Efficiency of the Material Scrap",
+    'mat_MFG_scrap_Recycling_eff': "% of Recycled Material Scrap that is high quality",
+    'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': "% of high quality Recycled Material Scrap reused for manufacturing",
+    'new_Installed_Capacity_[MW]': "New Installed Capacity",
+    'mod_eff': "Module Efficiency",
+    'mod_EOL_collection_eff': "Collection Efficiency of EoL Modules",
+    'mod_EOL_collected_recycled': "% of collected modules that are recycled",
+    'mod_Repowering': "% of EOL modules that are repowered",
+    'mod_Repairing' : "% of failed modules that undergo repair",
+    'mat_EOL_collected_Recycled': "% of times material is chosen to be recycled",
+    'mat_EOL_Recycling_eff': "Efficiency of material recycling",
+    'mat_EOL_Recycled_into_HQ': "Fraction of recycled material that is high quality",
+    'mat_EOL_RecycledHQ_Reused4MFG': "Fraction of high quality recycled material that is reused for manufacturing",
+    'EOL_CE_Pathways': "Overall improvement on EoL Circularity Pathways",
+    'Reliability_and_CE_Pathways': "Overall improvement on Eol Circularity Pathways + Reliability and Lifetime",
+    'mat_EOL_Recycling_Overall_Improvement': "Overall Improvement on EoL Recycling Loop"}
+
+
+# In[51]:
+
+
+df2_Pos = df2[['high' in s for s in df2.index]].copy()
+df2_Pos.index = df2_Pos.index.str.replace("_high", "")
+
+col_verbose = []
+
+for i in range (0, len(df2_Pos)):
+    if df2_Pos.index[i] in variables_description:
+        col_verbose.append(variables_description[df2_Pos.index[i]])
+    else:
+        col_verbose.append("")
+        
+df2_Pos['Description'] = col_verbose     
+df2_Pos = df2_Pos.reset_index()
+df2_Pos = df2_Pos.rename(columns={'index':'variable'})
+df2_Pos
+
+
+# In[52]:
+
+
+df2_Neg = df2[['low' in s for s in df2.index]].copy()
+df2_Neg.index = df2_Neg.index.str.replace("_low", "")
+
+col_verbose = []
+
+for i in range (0, len(df2_Neg)):
+    if df2_Neg.index[i] in variables_description:
+        col_verbose.append(variables_description[df2_Neg.index[i]])
+    else:
+        col_verbose.append("")
+
+df2_Neg['Description'] = col_verbose
+df2_Neg = df2_Neg.reset_index()
+df2_Neg = df2_Neg.rename(columns={'index':'variable'})
+df2_Neg
+
+
+# # Modifing the installed capacity to stay fixed at BASELINE
+# Needs to run each year becuase it needs to calculate the acumulated installs and deads.
+
+# In[53]:
+
+
+Diff_Installment = []
+for i in range (0, len(s1.scenario['baseline'].data)):
+    for jj in range (1, len(list(s1.scenario.keys()))):
+        scen = list(s1.scenario.keys())[jj]
+        Diff_Installment = ( (s1.scenario['baseline'].data['Installed_Capacity_[W]'][i] - 
+                             s1.scenario[scen].data['Installed_Capacity_[W]'][i])/1000000 )  # MWATTS
+        s1.scenario[scen].data['new_Installed_Capacity_[MW]'][i] += Diff_Installment
+    s1.calculateMassFlow(m1=False, m2=False, m3=True)
+
+
+# #### Compile Changes
+
+# In[54]:
+
+
+virginStock_Changes = []
+waste_Changes = []
+installedCapacity_Changes = []
+virginStockRAW_Changes = []
+
+virgin_keyword = 'mat_Virgin_Stock'
+waste_keyword = 'mat_Total_Landfilled'
+installs_keyword = 'Installed_Capacity_[W]'
+viring_raw_keyword = 'mat_Virgin_Stock_Raw'
+
+virginStock_baseline_cum2050 = s1.scenario['baseline'].material[MATERIAL].materialdata[virgin_keyword].sum()
+virginStockRAW_baseline_cum2050 = s1.scenario['baseline'].material[MATERIAL].materialdata[viring_raw_keyword].sum()
+
+# Installed Capacity is already cumulative so no need to sum or cumsum.
+waste_baseline_cum2050 = s1.scenario['baseline'].material[MATERIAL].materialdata[waste_keyword].sum()
+installedCapacity_baselined_2050 = s1.scenario['baseline'].data[installs_keyword].iloc[-1]
+
+for i in range (1, len(scenarios)):
+    stage_name = scenarios[i]
+    virginStock_Changes.append(round(100*s1.scenario[stage_name].material[MATERIAL].materialdata[virgin_keyword].sum()/virginStock_baseline_cum2050,5)-100)
+    virginStockRAW_Changes.append(round(100*s1.scenario[stage_name].material[MATERIAL].materialdata[viring_raw_keyword].sum()/virginStockRAW_baseline_cum2050,5)-100)
+
+    waste_Changes.append(round(100*s1.scenario[stage_name].material[MATERIAL].materialdata[waste_keyword].sum()/waste_baseline_cum2050,5)-100)
+    installedCapacity_Changes.append(round(100*s1.scenario[stage_name].data[installs_keyword].iloc[-1]/installedCapacity_baselined_2050,5)-100)
+
+
+# In[55]:
+
+
+stages = scenarios[1::] # removing baseline as we want a dataframe with only changes
+
+
+# In[56]:
+
+
+df = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Changes, installedCapacity_Changes)), 
+               columns=['Virgin Needs Change', 'Virgin Stock Raw Change', 'Waste Change', 'InstalledCapacity Change'],index=stages) 
+
+
+# #### Present Results
+
+# In[57]:
+
+
+df_Pos = df[['high' in s for s in df.index]].copy()
+df_Pos.index = df_Pos.index.str.replace("_high", "")
+
+col_verbose = []
+
+for i in range (0, len(df_Pos)):
+    if df_Pos.index[i] in variables_description:
+        col_verbose.append(variables_description[df_Pos.index[i]])
+    else:
+        col_verbose.append("")
+        
+df_Pos['Description'] = col_verbose     
+df_Pos = df_Pos.reset_index()
+df_Pos = df_Pos.rename(columns={'index':'variable'})
+
+
+# In[58]:
+
+
+df_Neg = df[['low' in s for s in df.index]].copy()
+df_Neg.index = df_Neg.index.str.replace("_low", "")
+
+col_verbose = []
+
+for i in range (0, len(df_Neg)):
+    if df_Neg.index[i] in variables_description:
+        col_verbose.append(variables_description[df_Neg.index[i]])
+    else:
+        col_verbose.append("")
+
+df_Neg['Description'] = col_verbose
+df_Neg = df_Neg.reset_index()
+df_Neg = df_Neg.rename(columns={'index':'variable'})
+
+
+# In[66]:
+
+
+print("Keeping Installs, the modifications to Virgin Needs, Virgin STock and Waste")
+df_Pos
+
+
+# In[67]:
+
+
+print("Keeping Installs, the modifications to Virgin Needs, Virgin STock and Waste")
+df_Neg
+
+
+# In[108]:
+
+
+fooPosDemand=df_Pos[['Virgin Needs Change']]
+fooPosDemand.set_index(df_Pos['variable'], inplace=True)
+fooPosDemand=fooPosDemand.loc[['new_Installed_Capacity_[MW]', 'mat_massperm2', 'mod_eff', 
+                  'mod_MFG_eff', 'mat_MFG_Scrap_Overall_Improvement']]
+
+fooNegDemand=df_Neg[['Virgin Needs Change']]
+fooNegDemand.set_index(df_Neg['variable'], inplace=True)
+fooNegDemand=fooNegDemand.loc[['new_Installed_Capacity_[MW]', 'mat_massperm2', 'mod_eff', 
+                  'mod_MFG_eff', 'mat_MFG_Scrap_Overall_Improvement']]
+
+
+# In[ ]:
+
+
+
+
+
+# In[109]:
+
+
+pos = np.arange(len(fooPosDemand)) + 0
+
+fig, (ax_left, ax_right) = plt.subplots(ncols=2)
+ax_left.barh(pos, fooPosDemand['Virgin Needs Change'], align='center', facecolor='cornflowerblue')
+ax_left.set_yticks([])
+ax_left.invert_xaxis()
+ax_right.barh(pos, fooNegDemand['Virgin Needs Change'], align='center', facecolor='red')
+ax_right.set_yticks(pos)
+ax_right.set_yticklabels(fooPosDemand.index, ha='center', x=+1.5)
+plt.suptitle('Main Concerns about return to workplace?')
+plt.show()
+
+
+# In[105]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set(style='darkgrid')
+
+# creating a dataframe
+df = pd.DataFrame()
+df['input'] = ['x','y','z']
+df['+']=[100,-50,10]
+df['-']=[-80,60,-10]
+
+#now stacking it
+df2 = pd.melt(df, id_vars ='input', var_name='type of change', value_name='change in the output' )
+
+fig, ax = plt.subplots()
+for typ, df in zip(df2['type of change'].unique(),df2.groupby('type of change')):
+    ax.barh(df[1]['input'], df[1]['change in the output'], height=0.3, label=typ)
+ax.legend(title = 'type of change')  
+
+
 # In[ ]:
 
 
@@ -764,25 +1208,84 @@ plot_clustered_stacked([df1, df2, df3, df4, df5, df6],["PV ICE, Early Loss", "PV
 # In[ ]:
 
 
-
+# Attempting at plotting
 
 
 # In[ ]:
 
 
 
+
+
+# In[ ]:
+
+
+Concerns = df_Q3['Concerns']
+num_concerns = len(Concerns)
+Female = df_Q3['Female']
+Male = df_Q3['Male']
+pos = np.arange(num_concerns) + .5
+
+fig, (ax_left, ax_right) = plt.subplots(ncols=2)
+ax_left.barh(pos, Male, align='center', facecolor='cornflowerblue')
+ax_left.set_yticks([])
+ax_left.invert_xaxis()
+ax_right.barh(pos, Female, align='center', facecolor='red')
+ax_right.set_yticks(pos)
+ax_right.set_yticklabels(Concerns, ha='center', x=+1.5)
+plt.suptitle('Main Concerns about return to workplace?')
+plt.show()
+
+
+# In[ ]:
+
+
+import matplotlib.pyplot as plt
+
+plt.rcParams["figure.figsize"] = [7.50, 3.50]
+plt.rcParams["figure.autolayout"] = True
+
+fig = plt.figure(1)
+fig.clf()
+
+ax = fig.add_subplot(1, 1, 1)
+ay.annotate('', xy=(0, -0.1), xycoords='axes fraction', xytext=(1, -0.1),
+arrowprops=dict(arrowstyle="-", color='b'))
+plt.show()
+
+# ARROW PROP
+ax.set_facecolor((1.0, 0.47, 0.42))
+
+
+# In[ ]:
+
+
+import matplotlib
+matplotlib.use('Agg')
+import pylab
+from  matplotlib import rc
+rc('font', **{'family': 'sans-serif', 'sans-serif': ['Times-Roman']})
+rc('text', usetex = True)
+matplotlib.rcParams['text.latex.preamble'] = [r"\usepackage{amsmath}"]
+
+figure, axs = matplotlib.pyplot.subplots(5, sharex = True, squeeze = True)
+x_ticks = axs[4].xaxis.get_major_ticks()
+x_ticks[0].label1.set_visible(False) ## set first x tick label invisible
+x_ticks[-1].label1.set_visible(False) ## set last x tick label invisible
+pylab.tight_layout()
+pylab.savefig('./test.png', dpi = 200)
 
 
 # # OTHER PLOT CODE TESTED
 
-# In[30]:
+# In[ ]:
 
 
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-# In[31]:
+# In[ ]:
 
 
 '''
@@ -798,13 +1301,13 @@ sns.barplot(x = "year", y='value', hue='variable', data = foo, edgecolor='white'
 ''';
 
 
-# In[32]:
+# In[ ]:
 
 
 from matplotlib.patches import Polygon, Patch
 
 
-# In[33]:
+# In[ ]:
 
 
 import pandas as pd
