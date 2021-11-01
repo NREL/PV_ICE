@@ -317,8 +317,7 @@ class Simulation:
 
 
     def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None, 
-                          bifacialityfactors = None, reducecapacity = True, debugflag=False,
-                          m1=False,m2=False,m3=True):
+                          bifacialityfactors = None, reducecapacity = True, debugflag=False):
         '''
         Function takes as input a baseline dataframe already imported, 
         with the right number of columns and content.
@@ -452,17 +451,7 @@ class Simulation:
                     else:
                         active += 1
                         activeareaprev = activearea                            
-                        if m1:
-                            activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repair']*0.01))
-#                        Same as above but exploded
-#                        activearea = activearea-activearea*cdf[age]+activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
-#                       New one:
-                        if m2:
-                            activearea = activearea-row['Area']*cdf[age]+row['Area']*cdf[age]*df.iloc[age]['mod_Repair']*0.01
-                        
-                        if m3:
-                            activearea = activearea-row['Area']*pdf[age]+row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01
-                        
+                        activearea = activearea-row['Area']*pdf[age]+row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01                        
                         arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
                         arearepaired.append(arearepaired_failure)
                         arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
@@ -785,7 +774,7 @@ class Simulation:
         # Different units, so no need to do the ratio to Metric tonnes :p
         keywd='new_Installed_Capacity_[MW]'
         for scen in scenarios:
-            USyearly['newInstalledCapacity_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]
+            USyearly['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]
  
         # Creating c umulative results
         UScum = USyearly.copy()

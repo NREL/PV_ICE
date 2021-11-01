@@ -6,20 +6,16 @@
 # In[1]:
 
 
-m1 = False
-m2 = False
-m3 = True
-
-
-# In[2]:
-
-
 import PV_ICE
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import seaborn as sns
 import pandas as pd
 import numpy as np
 import os
 from pathlib import Path
+
+
 
 testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'ElectricFutures')
 
@@ -29,21 +25,20 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'ElectricF
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[3]:
+# In[2]:
 
 
 PV_ICE.__version__
 
 
-# In[4]:
+# In[3]:
 
 
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[5]:
-
+# In[4]:
 
 
 MATERIALS = ['glass','silver','silicon', 'copper','aluminium_frames', 'backsheet', 'encapsulant']
@@ -53,7 +48,7 @@ MODULEBASELINE = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_
 MODULEBASELINE_High = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_LowREHighElec.csv'
 
 
-# In[6]:
+# In[5]:
 
 
 r1 = PV_ICE.Simulation(name='PV_ICE', path=testfolder)
@@ -64,7 +59,7 @@ r1.scenario['base'].addMaterials(MATERIALS, r'..\..\baselines')
 r1.scenario['high'].addMaterials(MATERIALS, r'..\..\baselines')
 
 
-# In[7]:
+# In[6]:
 
 
 r2 = PV_ICE.Simulation(name='bifacialTrend', path=testfolder)
@@ -87,7 +82,7 @@ MATERIALBASELINE = r'..\..\baselines\PVSC_2021\baseline_material_aluminium_frame
 r2.scenario['high'].addMaterial('aluminium_frames', file=MATERIALBASELINE)
 
 
-# In[8]:
+# In[7]:
 
 
 r3 = PV_ICE.Simulation(name='Irena_EL', path=testfolder)
@@ -99,7 +94,7 @@ r3.scenario['high'].addMaterials(MATERIALS, r'..\..\baselines')
 r3.scenMod_IRENIFY(scenarios=['base', 'high'], ELorRL = 'EL' )
 
 
-# In[9]:
+# In[8]:
 
 
 r4 = PV_ICE.Simulation(name='Irena_RL', path=testfolder)
@@ -107,28 +102,29 @@ r4.createScenario(name='base', file=MODULEBASELINE)
 r4.createScenario(name='high', file=MODULEBASELINE_High)
 r4.scenario['base'].addMaterials(MATERIALS, r'..\..\baselines')
 r4.scenario['high'].addMaterials(MATERIALS, r'..\..\baselines')
+
 r4.scenMod_IRENIFY(scenarios=['base', 'high'], ELorRL = 'RL' )
 
 
-# In[10]:
+# In[9]:
 
 
-r1.calculateMassFlow(m1=m1, m2=m2, m3=m3)
-r2.calculateMassFlow(m1=m1, m2=m2, m3=m3)
-r3.calculateMassFlow(m1=m1, m2=m2, m3=m3)
-r4.calculateMassFlow(m1=m1, m2=m2, m3=m3)
+r1.calculateMassFlow()
+r2.calculateMassFlow()
+r3.calculateMassFlow()
+r4.calculateMassFlow()
 
 
 # # Compile Results
 
-# In[11]:
+# In[10]:
 
 
 objects = [r1, r2, r3, r4]
 scenarios = ['base', 'high']
 
 
-# In[12]:
+# In[11]:
 
 
 pvice_Usyearly1, pvice_Uscum1 = r1.aggregateResults()
@@ -144,7 +140,7 @@ USyearly.to_csv('pvice_USYearly.csv')
 
 # # Plotting Galore
 
-# In[13]:
+# In[12]:
 
 
 mining2020_aluminum = 65267000
@@ -153,7 +149,7 @@ mining2020_copper = 20000000
 mining2020_silicon = 8000000
 
 
-# In[14]:
+# In[13]:
 
 
 plt.rcParams.update({'font.size': 10})
@@ -214,17 +210,19 @@ fig.savefig(os.path.join(testfolder,'Fig_1x1_MaterialNeeds Ratio to Production_N
 
 # # THRI PLOT
 
-# In[15]:
+# In[14]:
 
 
 materials = ['glass', 'aluminium_frames', 'silicon', 'copper', 'silver', 'encapsulant', 'backsheet']
 modulemat = 'Module'
 
-plt.rcParams.update({'font.size': 14})
-plt.rcParams['figure.figsize'] = (15, 20.4)
+mytitlefont = 18
+mylegendfont = 14
+plt.rcParams.update({'font.size': 18})
+plt.rcParams['figure.figsize'] = (15, 20.2)
 
 
-f, a0 = plt.subplots(3, 2, gridspec_kw={'width_ratios': [3.5,1.5], 'wspace':0.15, 'hspace':0.25})
+f, a0 = plt.subplots(3, 2, gridspec_kw={'width_ratios': [3.5,1.5], 'wspace':0.15, 'hspace':0.3})
 
 ########################    
 # SUBPLOT 1
@@ -245,11 +243,13 @@ a0[0,0].plot(USyearly.index, USyearly[keyw+modulemat+'_'+name2]/1000000, 'c', li
 a0[0,0].plot(USyearly.index, USyearly[keyw+modulemat+'_'+name3]/1000000, 'g', linestyle='dashdot', linewidth=3, label='S3: IRENA, Early Loss, h.e.')
 a0[0,0].plot(USyearly.index, USyearly[keyw+modulemat+'_'+name4]/1000000, 'b--', linewidth=3, label='S4: IRENA, Regular Loss, h.e.')
 
-a0[0,0].legend()
-a0[0,0].set_title('Yearly Virgin Material Needs by Scenario')
+a0[0,0].legend(prop={'size': mylegendfont})
+a0[0,0].set_title('Yearly Virgin Material Needs by Scenario', fontsize=mytitlefont, weight='roman')
 a0[0,0].set_ylabel('Module Mass [Million Tonnes]')
 a0[0,0].set_xlim([2020, 2050])
 a0[0,0].set_xlabel('Years')
+a0[0,0].minorticks_on()
+a0[0,0].text(-0.1, 1.05, 'a', transform=a0[0,0].transAxes, size=20, weight='bold')
 
 ########################    
 # SUBPLOT 2
@@ -300,13 +300,19 @@ a0[0,1].yaxis.set_label_position("right")
 a0[0,1].yaxis.tick_right()
 a0[0,1].set_ylabel('Cumulative Virgin Material Needs\n2020-2050 [Million Tonnes]')
 a0[0,1].set_xlabel('Scenario')
-a0[0,1].set_xticks(ind, ('S1', 'S2', 'S3', 'S4'))
-#plt.yticks(np.arange(0, 81, 10))
-a0[0,1].legend((p0[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0]), 
-          ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver', 'Encapsulant', 'Backsheets' ))
 
 print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 print(dfcumulations2050[materials].sum(axis=1))
+
+plt.sca(a0[0,1])
+plt.xticks(range(4), ['S1', 'S2', 'S3', 'S4'], color='black', rotation=0)
+plt.tick_params(axis='y', which='minor', bottom=False)
+#plt.yticks(minor=True)
+a0[0,1].legend((p6[0], p5[0], p4[0], p3[0], p2[0], p1[0], p0[0] ), ('Backsheet',  'Encapsulant', 'Silver', 'Copper', 
+                                                                    'Silicon','Aluminum','Glass'), loc='lower right', prop={'size': mylegendfont})
+a0[0,1].minorticks_on()
+             
+
 
 
 #################################
@@ -320,11 +326,13 @@ a0[1,0].plot(USyearly.index, USyearly[keyw+modulemat+'_'+name2]/1000000, 'c', li
 a0[1,0].plot(USyearly.index, USyearly[keyw+modulemat+'_'+name3]/1000000, 'g', linestyle='dashdot', linewidth=3, label='S3: IRENA, Early Loss, h.e.')
 a0[1,0].plot(USyearly.index, USyearly[keyw+modulemat+'_'+name4]/1000000, 'b--', linewidth=3, label='S4: IRENA, Regular Loss, h.e.')
 
-a0[1,0].legend()
-a0[1,0].set_title('Yearly EoL Material by Scenario')
+a0[1,0].legend(prop={'size': mylegendfont})
+a0[1,0].set_title('Yearly EoL Material by Scenario', fontsize=mytitlefont, weight='roman')
 a0[1,0].set_ylabel('Module Mass [Million Tonnes]')
 a0[1,0].set_xlim([2020, 2050])
 a0[1,0].set_xlabel('Years')
+a0[1,0].minorticks_on()
+a0[0,0].text(-0.1, 1.05, 'b', transform=a0[1,0].transAxes, size=20, weight='bold')
 
 ########################    
 # SUBPLOT 2
@@ -375,16 +383,18 @@ a0[1,1].yaxis.set_label_position("right")
 a0[1,1].yaxis.tick_right()
 a0[1,1].set_ylabel('Cumulative EoL Material\n2020-2050 [Million Tonnes]')
 a0[1,1].set_xlabel('Scenario')
-a0[1,1].set_xticks(ind, ('S1', 'S2', 'S3', 'S4'))
-#plt.yticks(np.arange(0, 81, 10))
-a0[1,1].legend((p0[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0]), 
-          ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver', 'Encapsulant', 'Backsheets' ),
-              loc='upper right')
-
 
 print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 print(dfcumulations2050[materials].sum(axis=1))
 
+plt.sca(a0[1,1])
+plt.xticks(range(4), ['S1', 'S2', 'S3', 'S4'], color='black', rotation=0)
+plt.tick_params(axis='y', which='minor', bottom=False)
+#plt.yticks(minor=True)
+a0[1,1].legend((p6[0], p5[0], p4[0], p3[0], p2[0], p1[0], p0[0] ), ('Backsheet',  'Encapsulant', 'Silver', 'Copper', 
+                                                                    'Silicon','Aluminum','Glass'), loc='upper left', prop={'size': mylegendfont})
+a0[1,1].minorticks_on()
+             
 
 
 
@@ -400,11 +410,13 @@ a0[2,0].plot(USyearly.index, USyearly[keyw+modulemat+'_'+name2]/1000000, 'c', li
 a0[2,0].plot(USyearly.index, USyearly[keyw+modulemat+'_'+name3]/1000000, 'g', linestyle='dashdot', linewidth=3, label='S3: IRENA, Early Loss, h.e.')
 a0[2,0].plot(USyearly.index, USyearly[keyw+modulemat+'_'+name4]/1000000, 'b--', linewidth=3, label='S4: IRENA, Regular Loss, h.e.')
 
-a0[2,0].legend()
-a0[2,0].set_title('Yearly Manufacturing Scrap by Scenario')
+a0[2,0].legend(prop={'size': mylegendfont})
+a0[2,0].set_title('Yearly Manufacturing Scrap by Scenario', fontsize=mytitlefont, weight='roman')
 a0[2,0].set_ylabel('Module Mass [Million Tonnes]')
 a0[2,0].set_xlim([2020, 2050])
 a0[2,0].set_xlabel('Years')
+a0[2,0].minorticks_on()
+a0[0,0].text(-0.1, 1.05, 'c', transform=a0[2,0].transAxes, size=20, weight='bold')
 
 ########################    
 # SUBPLOT 2
@@ -455,18 +467,38 @@ a0[2,1].yaxis.set_label_position("right")
 a0[2,1].yaxis.tick_right()
 a0[2,1].set_ylabel('Cumulative Manufacturing Scrap\n2020-2050 [Million Tonnes]')
 a0[2,1].set_xlabel('Scenario')
-a0[2,1].set_xticks(ind, ('S1', 'S2', 'S3', 'S4'))
-#plt.yticks(np.arange(0, 81, 10))
-a0[2,1].legend((p0[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0]), 
-          ('Glass', 'aluminium_frames', 'Silicon','Copper','Silver', 'Encapsulant', 'Backsheets' ),
-              loc='lower right')
 
+plt.sca(a0[2,1])
+plt.xticks(range(4), ['S1', 'S2', 'S3', 'S4'], color='black', rotation=0)
+plt.tick_params(axis='y', which='minor', bottom=False)
+#plt.yticks(minor=True)
+a0[2,1].legend((p6[0], p5[0], p4[0], p3[0], p2[0], p1[0], p0[0] ), 
+               ('Backsheet',  'Encapsulant', 'Silver', 'Copper', 'Silicon','Aluminum','Glass'), loc='lower right',
+              prop={'size': mylegendfont})
+a0[2,1].minorticks_on()
+             
+    
+    
 f.tight_layout()
 
 f.savefig(os.path.join(testfolder,'THRI_PLOT.png'), dpi=600)
 
 print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 print(dfcumulations2050[materials].sum(axis=1))
+
+
+# # Abstract Values
+
+# In[15]:
+
+
+print("Percentage of Waste represented by Manufacturing") 
+print("Reference: ", UScum['WasteMFG_Module_PV_ICE_base_[Tonnes]'].loc[2050]*100/UScum['WasteAll_Module_PV_ICE_base_[Tonnes]'].loc[2050])
+print("H.E.: ", UScum['WasteMFG_Module_PV_ICE_high_[Tonnes]'].loc[2050]*100/UScum['WasteAll_Module_PV_ICE_high_[Tonnes]'].loc[2050])
+print("Waste in 2050 ref ",UScum['WasteAll_Module_PV_ICE_base_[Tonnes]'].loc[2050]/1e6, "h.e. : ",UScum['WasteAll_Module_PV_ICE_high_[Tonnes]'].loc[2050]/1e6 )
+
+print("")
+print("Installed Capacity 2050", round(USyearly['Capacity_PV_ICE_base_[MW]'].loc[2050]/1e6,1), 'h.e.', round(USyearly['Capacity_PV_ICE_high_[MW]'].loc[2050]/1e6,1))
 
 
 # # TABLE 7: METRIC TONNES IN FIELD IN 2030
@@ -487,8 +519,8 @@ tableapp=[]
 for name in names:
     colapp=[]
     for mat in materials:
-         colapp.append(UScum.filter(regex='VirginStock_'+mat+'_'+name).loc[2030][0]-
-                       UScum.filter(regex='WasteAll_'+mat+'_'+name).loc[2030][0])
+         colapp.append(round((UScum.filter(regex='VirginStock_'+mat+'_'+name).loc[2030][0]-
+                       UScum.filter(regex='WasteAll_'+mat+'_'+name).loc[2030][0])/1000,0)*1000)
     tableapp.append(colapp)
     
 df= pd.DataFrame(tableapp, columns = materials, index=names)
@@ -496,7 +528,7 @@ df = df.T
 df
 
 
-# In[121]:
+# In[18]:
 
 
 print("Table 7 Effective Capacity PV ICE, Reference", round(USyearly['Capacity_PV_ICE_base_[MW]'].loc[2030]/1000,1))
@@ -505,13 +537,19 @@ print("Table 7 Effective Capacity PV ICE, Reference", round(USyearly['Capacity_P
 
 # # Figure 12 Cumulative EOL MAterial, 2016, 2020, 2030, 2040, 2050
 
-# In[128]:
+# In[19]:
 
 
 names = ['Irena_EL_base', 'Irena_RL_base', 'PV_ICE_base']
 
 
-# In[129]:
+# In[20]:
+
+
+pd.options.display.float_format = '{:20,.2f}'.format
+
+
+# In[21]:
 
 
 print("Figure 12 - Cumulative EOL Material 2016, 2020, 2030, 240, 2050")
@@ -521,7 +559,7 @@ tableapp=[]
 for name in names:
     colapp=[]
     for year in years:
-         colapp.append(UScum.filter(regex='WasteEOL_Module_'+name).loc[year][0])
+         colapp.append(round(UScum.filter(regex='WasteEOL_Module_'+name).loc[year][0]/1000,0)*1000)
     tableapp.append(colapp)
     
 df= pd.DataFrame(tableapp, columns = years, index=names)
@@ -529,25 +567,22 @@ df = df.T
 df
 
 
-# # FIX THIS NUMBER!
-
-# In[130]:
+# In[22]:
 
 
-df.insert(loc=0, column='Irena 2016 Early Loss', value=[9000, 11000,110000,1000000,8000000])
-df.insert(loc=1, column='Irena 2016 Regular Loss', value=[9000, 11000,110000,1000000,8000000])
-df.insert(loc=2, column='CSA 2020 Early Loss', value=[9000, 11000,110000,1000000,8000000])
-df.insert(loc=3, column='CSA 2020 Regular Loss', value=[9000, 11000,110000,1000000,8000000])
+df.insert(loc=0, column='Irena 2016 Early Loss', value=[24000, 85000, 1000000, 4000000, 10000000])
+df.insert(loc=1, column='Irena 2016 Regular Loss', value=[6500, 13000, 170000, 1700000, 7500000])
+df.insert(loc=2, column='CSA 2020 Early Loss', value=[0, 0, 1200000, 0, 0])
+df.insert(loc=3, column='CSA 2020 Regular Loss', value=[0, 0, 214900, 0, 0])
 
 
-# In[131]:
+# In[ ]:
 
 
-import matplotlib.ticker as ticker
-import numpy as np
 
 
-# In[132]:
+
+# In[23]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -562,56 +597,18 @@ my_colors=[(0.74609375, 0.5625, 0),
 (0.35546875, 0.60546875, 0.83203125),
 (0.61328125, 0.76171875, 0.8984375)]
 
+my_colors=[(0.74609375, 0.5625, 0),
+(0.99609375, 0.75, 0),  
+(0.796875, 0.97265625, 0),
+(0, 0.7265625, 0),
+(0, 0.640625, 0.73046875),
+(0.02734375, 0.02734375, 0.73046875),
+(0, 0, 0)]
 
-#ax = df.plot(kind='bar', edgecolor='white', linewidth=1, width=0.65, colormap='Paired') #color=my_colors)# width=0.5)
 ax = df.plot(kind='bar', edgecolor='white', linewidth=1, width=0.65, color=my_colors)# width=0.5)
+# Some optiosn that Silvana liked: vlag_r, viridis, tab20b, tab10_r, rainbow_r, plasma, nipy_spectral_r
+#ax = df.plot(kind='bar', edgecolor='white', linewidth=1, width=0.65, colormap='nipy_spectral_r') #color=my_colors)# width=0.5)
 
-ax.set_yscale('log')
-ax.grid(axis='y')
-ax.set_axisbelow(b=True) # Set grid behind plots
-ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y,pos: ('{{:.{:1d}f}}'.format(int(np.maximum(-np.log10(y),0)))).format(y)))
-ax.set_xticklabels(df.index, rotation = 0)
-ax.set_ylabel('Cumulative EoL Materials [metric tons]')
-# Shrink current axis's height by 10% on the bottom
-box = ax.get_position()
-ax.set_position([box.x0, box.y0 + box.height * 0.1,
-                 box.width, box.height * 0.9])
-
-ax.legend(['Irena 2016 Early Loss', 'Irena 2016 Regular Loss', 'CSA 2020 Early Loss', 'CSA 2020 Regular Loss',
-          'PV ICE + EF (ref), Early loss', 'PV ICE + EF (ref), Regular loss', 'PV ICE + EF (ref), PV ICE loss'], 
-          loc='upper center', bbox_to_anchor=(0.5, 1.38), fancybox=True, shadow=True, ncol=2)
-
-plt.show()
-
-
-# In[133]:
-
-
-# Some options Silvana liked
-# vlag_r, viridis, tab20b, tab10_r, rainbow_r, plasma, nipy_spectral_r
-
-# ALL OPTIONS
-# Accent, Accent_r, Blues, Blues_r, BrBG, BrBG_r, BuGn, BuGn_r, BuPu, BuPu_r, CMRmap, CMRmap_r, Dark2, Dark2_r, GnBu, GnBu_r, Greens, Greens_r, Greys, Greys_r, OrRd, OrRd_r, Oranges, Oranges_r, PRGn, PRGn_r, Paired, Paired_r, Pastel1, Pastel1_r, Pastel2, Pastel2_r, PiYG, PiYG_r, PuBu, PuBuGn, PuBuGn_r, PuBu_r, PuOr, PuOr_r, PuRd, PuRd_r, Purples, Purples_r, RdBu, RdBu_r, RdGy, RdGy_r, RdPu, RdPu_r, RdYlBu, RdYlBu_r, RdYlGn, RdYlGn_r, Reds, Reds_r, Set1, Set1_r, Set2, Set2_r, Set3, Set3_r, Spectral, Spectral_r, Wistia, Wistia_r, YlGn, YlGnBu, YlGnBu_r, YlGn_r, YlOrBr, YlOrBr_r, YlOrRd, YlOrRd_r, afmhot, afmhot_r, autumn, autumn_r, binary, binary_r, bone, bone_r, brg, brg_r, bwr, bwr_r, cividis, cividis_r, cool, cool_r, coolwarm, coolwarm_r, copper, copper_r, cubehelix, cubehelix_r, flag, flag_r, gist_earth, gist_earth_r, gist_gray, gist_gray_r, gist_heat, gist_heat_r, gist_ncar, gist_ncar_r, gist_rainbow, gist_rainbow_r, gist_stern, gist_stern_r, gist_yarg, gist_yarg_r, gnuplot, gnuplot2, gnuplot2_r, gnuplot_r, gray, gray_r, hot, hot_r, hsv, hsv_r, icefire, icefire_r, inferno, inferno_r, jet, jet_r, magma, magma_r, mako, mako_r, nipy_spectral, nipy_spectral_r, ocean, ocean_r, pink, pink_r, plasma, plasma_r, prism, prism_r, rainbow, rainbow_r, rocket, rocket_r, seismic, seismic_r, spring, spring_r, summer, summer_r, tab10, tab10_r, tab20, tab20_r, tab20b, tab20b_r, tab20c, tab20c_r, terrain, terrain_r, twilight, twilight_r, twilight_shifted, twilight_shifted_r, viridis, viridis_r, vlag, vlag_r, winter, winter_r
-
-
-# In[134]:
-
-
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (10, 6)
-
-
-my_colors=[(0.74609375, 0.5625, 0),
-(0.99609375, 0.75, 0),
-(0.09375, 0.9375, 0.91796875),
-(0.71875, 0.9765625, 0.96875),
-(0.0390625, 0.6015625, 0.58984375),
-(0.35546875, 0.60546875, 0.83203125),
-(0.61328125, 0.76171875, 0.8984375)]
-
-
-
-ax = df.plot(kind='bar', edgecolor='white', linewidth=1, width=0.65, colormap='nipy_spectral_r') #color=my_colors)# width=0.5)
 
 ax.set_yscale('log')
 ax.grid(axis='y')
@@ -633,13 +630,13 @@ plt.show()
 
 # # Figure 11 Installed Capacity for all Scenarios
 
-# In[136]:
+# In[24]:
 
 
 names = ['PV_ICE_base', 'PV_ICE_high', 'Irena_EL_base', 'Irena_EL_high', 'Irena_RL_base', 'Irena_RL_high']
 
 
-# In[137]:
+# In[25]:
 
 
 print("Figure 11 Installed CApacity for all Scenarios")
@@ -649,7 +646,7 @@ tableapp=[]
 for name in names:
     colapp=[]
     for year in years:
-         colapp.append(USyearly.filter(regex='Capacity_'+name).loc[year][0])
+         colapp.append(USyearly['Capacity_'+name+'_[MW]'].loc[year])
     tableapp.append(colapp)
     
 df= pd.DataFrame(tableapp, columns = years, index=names)
@@ -657,7 +654,14 @@ df = df.T
 df
 
 
-# In[138]:
+# In[26]:
+
+
+print("Improvement for PV ICE over Irena RL, ", round(df['PV_ICE_high'].loc[2050]*100/df['Irena_RL_high'].loc[2050]-100,1))
+print("Improvement for PV ICE over Irena EL, ", round(df['PV_ICE_high'].loc[2050]*100/df['Irena_EL_high'].loc[2050]-100,1))
+
+
+# In[27]:
 
 
 df['PV_ICE_increase_high'] = df['PV_ICE_high']-df['PV_ICE_base']
@@ -668,22 +672,18 @@ df['CSA 2000'] = [437000, 0]
 df['inc0'] = [0, 0]
 
 
-# In[139]:
+# In[28]:
 
 
 df
 
 
-# In[140]:
+# In[29]:
 
 
-import pandas as pd
-import matplotlib.cm as cm
-import numpy as np
-import matplotlib.pyplot as plt
 
 plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (10, 10)
+plt.rcParams['figure.figsize'] = (8, 7)
 
 
 def plot_clustered_stacked(dfall, labels=None, title="multiple stacked bar plot",  H="/", **kwargs):
@@ -704,6 +704,7 @@ H is the hatch used for identification of the different dataframe"""
                       ax=axe,
                       legend=False,
                       grid=False,
+                      colormap='Pastel2_r',
                       **kwargs)  # make bar plots
 
     h,l = axe.get_legend_handles_labels() # get the handles we want to modify
@@ -752,7 +753,7 @@ plot_clustered_stacked([df1, df2, df3, df4, df5, df6],["PV ICE, Early Loss", "PV
 
 # # Sensitivity Analysis
 
-# In[32]:
+# In[30]:
 
 
 MATERIAL = 'glass'
@@ -761,7 +762,7 @@ MODULEBASELINE = r'..\..\baselines\baseline_modules_US.csv'
 MATERIALBASELINE = r'..\..\baselines\baseline_material_'+MATERIAL+'.csv'
 
 
-# In[33]:
+# In[31]:
 
 
 s1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -771,7 +772,7 @@ s1.scenario['baseline'].addMaterial(MATERIAL, file=MATERIALBASELINE)
 
 # #### Load Scenarios and Parameters
 
-# In[34]:
+# In[32]:
 
 
 ss = pd.read_excel(r'..\..\..\tests\sensitivity_test.xlsx')
@@ -779,7 +780,7 @@ ss = pd.read_excel(r'..\..\..\tests\sensitivity_test.xlsx')
 
 # #### Create Scenarios
 
-# In[35]:
+# In[33]:
 
 
 for i in range (0, len(ss)):
@@ -887,27 +888,27 @@ for i in range (0, len(ss)):
 
 # # MASS FLOWS
 
-# In[36]:
+# In[34]:
 
 
-s1.calculateMassFlow(m1=m1,m2=m2,m3=m3)
+s1.calculateMassFlow()
 
 
 # #### Compile Changes
 
-# In[40]:
+# In[35]:
 
 
 s1.scenario
 
 
-# In[46]:
+# In[36]:
 
 
 scenarios = list(s1.scenario.keys())
 
 
-# In[47]:
+# In[37]:
 
 
 virginStock_Changes = []
@@ -936,20 +937,20 @@ for i in range (1, len(scenarios)):
     installedCapacity_Changes.append(round(100*s1.scenario[stage_name].data[installs_keyword].iloc[-1]/installedCapacity_baselined_2050,5)-100)
 
 
-# In[48]:
+# In[38]:
 
 
 stages = scenarios[1::] # removing baseline as we want a dataframe with only changes
 
 
-# In[49]:
+# In[39]:
 
 
 df2 = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Changes, installedCapacity_Changes)), 
                columns=['Virgin Needs Change', 'Virgin Stock Raw Change', 'Waste Change', 'InstalledCapacity Change'],index=stages) 
 
 
-# In[50]:
+# In[40]:
 
 
 variables_description = {'mat_virgin_eff': "Material Virgin Efficiency",
@@ -974,7 +975,7 @@ variables_description = {'mat_virgin_eff': "Material Virgin Efficiency",
     'mat_EOL_Recycling_Overall_Improvement': "Overall Improvement on EoL Recycling Loop"}
 
 
-# In[51]:
+# In[41]:
 
 
 df2_Pos = df2[['high' in s for s in df2.index]].copy()
@@ -994,7 +995,7 @@ df2_Pos = df2_Pos.rename(columns={'index':'variable'})
 df2_Pos
 
 
-# In[52]:
+# In[42]:
 
 
 df2_Neg = df2[['low' in s for s in df2.index]].copy()
@@ -1014,10 +1015,84 @@ df2_Neg = df2_Neg.rename(columns={'index':'variable'})
 df2_Neg
 
 
+# #### Fancy Plot
+
+# In[43]:
+
+
+sns.set(rc={'figure.figsize':(13.5,8.6)})
+sns.set(font_scale=1.2)  # crazy big
+sns.set_style("ticks",{'axes.grid' : True})
+sns.set_style("white")
+
+## DATAFRAME DATA
+df = pd.DataFrame()
+df['input'] = ['I','II','III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'blank'] # Mock Placeholders for Ticks
+df['+']=[+100,+50,+10, 30, 20, 60, +100,+50,+10, 30, 20, 60, 0]
+df['-']=[-80,-60,-10, -10, -10, -5, -80,-60,-10, -10, -10, -5, 0]
+#now stacking it
+df2 = pd.melt(df, id_vars ='input', var_name='type of change', value_name='change in the output' )
+
+fig, (ax1, ax, ax3) = plt.subplots(1,3, gridspec_kw={'width_ratios':[0.001,3.4, 0.001], 'wspace':0.4})
+
+## Grid and Background Colors
+ax.axvspan(-100, 0, facecolor=(0.8203125, 0.984375, 0.98046875), alpha=0.5)
+ax.axvspan(0, 120, facecolor=(0.90234375, 0.89453125, 0.8984375), alpha=0.5)
+ax.grid(axis=1)
+
+for typ, df in zip(df2['type of change'].unique(),df2.groupby('type of change')):
+    ax.barh(df[1]['input'], df[1]['change in the output'], height=0.8, label=typ)
+ax.set_xlim([-40, 120])
+ax2 = ax.twinx()
+
+## REPLOT to Add 2nd axis plot
+for typ, df in zip(df2['type of change'].unique(),df2.groupby('type of change')):
+    ax2.barh(df[1]['input'], df[1]['change in the output'], height=0.8, label=typ)
+
+## REAL TICK VALUES
+ax.set_yticklabels( ['+10%','+10%','+10%', '+10%', '-10%', '-10% rel', '+10% rel', '+10%', '+10%', '+10%', '+10%', '+10%', ''])
+ax2.set_yticklabels( ['-10%','-10%','-10%', '-10%', '+10%', '+10% rel', '-10% rel', '-10%', '-10%', '-10%', '-10%', '-10%', '' ])
+
+## FAKE EMPTY PLOT, same ticks
+for typ, df in zip(df2['type of change'].unique(),df2.groupby('type of change')):
+    ax1.barh(df[1]['input'], df[1]['change in the output'], height=0.8, label=typ)
+#ax1.yaxis.set_label_position("right")
+#ax1.yaxis.tick_right()
+
+## Verbose Tick Labels
+ax1.set_yticklabels( ['Overall improvement in EoL Circularity Pathways\n+Reliability and Lifetime',
+'Module Lifetime and Reliability',
+'Module Manufacturing Efficiency',
+'Efficiency of Material Use\nduring Module Manufacturing',
+'New Installed Capacity [MW]',
+'Mass per m$^2$',
+'Module Efficiency',
+'Overall improvement\non manufacturing scrap recyling loop',
+'Yield of the Material\nManufacturing Scrap Recycling process',
+'Fraction of Material Scrap from\nManufacturing that undergoes Recycling',
+'Overall improvement on EoL Circularity Pathways',
+'Collection Efficiency of EoL Modules']);
+
+## REMOVE Ticks from 'Helper Plots'
+ax1.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+
+ax.tick_params(axis='y', which='both', left=False, right=False)      
+ax2.tick_params(axis='y', which='both', left=False, right=False)  
+
+
+ax3.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+ax3.tick_params(axis='y', which='both', left=False, right=False, labelleft=False)
+
+# ANNOTATE
+ax.annotate('Decrease Waste', xy =(-36, 12.0), weight='bold', fontsize=16);
+ax.annotate('Increase Waste', xy =(5, 12.0), weight='bold', fontsize=16);
+ax.xaxis.grid()
+
+
 # # Modifing the installed capacity to stay fixed at BASELINE
 # Needs to run each year becuase it needs to calculate the acumulated installs and deads.
 
-# In[53]:
+# In[ ]:
 
 
 Diff_Installment = []
@@ -1027,12 +1102,12 @@ for i in range (0, len(s1.scenario['baseline'].data)):
         Diff_Installment = ( (s1.scenario['baseline'].data['Installed_Capacity_[W]'][i] - 
                              s1.scenario[scen].data['Installed_Capacity_[W]'][i])/1000000 )  # MWATTS
         s1.scenario[scen].data['new_Installed_Capacity_[MW]'][i] += Diff_Installment
-    s1.calculateMassFlow(m1=False, m2=False, m3=True)
+    s1.calculateMassFlow()
 
 
 # #### Compile Changes
 
-# In[54]:
+# In[ ]:
 
 
 virginStock_Changes = []
@@ -1061,13 +1136,13 @@ for i in range (1, len(scenarios)):
     installedCapacity_Changes.append(round(100*s1.scenario[stage_name].data[installs_keyword].iloc[-1]/installedCapacity_baselined_2050,5)-100)
 
 
-# In[55]:
+# In[ ]:
 
 
 stages = scenarios[1::] # removing baseline as we want a dataframe with only changes
 
 
-# In[56]:
+# In[ ]:
 
 
 df = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Changes, installedCapacity_Changes)), 
@@ -1076,7 +1151,7 @@ df = pd.DataFrame(list(zip(virginStock_Changes, virginStockRAW_Changes, waste_Ch
 
 # #### Present Results
 
-# In[57]:
+# In[ ]:
 
 
 df_Pos = df[['high' in s for s in df.index]].copy()
@@ -1095,7 +1170,7 @@ df_Pos = df_Pos.reset_index()
 df_Pos = df_Pos.rename(columns={'index':'variable'})
 
 
-# In[58]:
+# In[ ]:
 
 
 df_Neg = df[['low' in s for s in df.index]].copy()
@@ -1114,21 +1189,21 @@ df_Neg = df_Neg.reset_index()
 df_Neg = df_Neg.rename(columns={'index':'variable'})
 
 
-# In[66]:
+# In[ ]:
 
 
 print("Keeping Installs, the modifications to Virgin Needs, Virgin STock and Waste")
 df_Pos
 
 
-# In[67]:
+# In[ ]:
 
 
 print("Keeping Installs, the modifications to Virgin Needs, Virgin STock and Waste")
 df_Neg
 
 
-# In[108]:
+# In[ ]:
 
 
 fooPosDemand=df_Pos[['Virgin Needs Change']]
@@ -1148,665 +1223,8 @@ fooNegDemand=fooNegDemand.loc[['new_Installed_Capacity_[MW]', 'mat_massperm2', '
 
 
 
-# In[109]:
-
-
-pos = np.arange(len(fooPosDemand)) + 0
-
-fig, (ax_left, ax_right) = plt.subplots(ncols=2)
-ax_left.barh(pos, fooPosDemand['Virgin Needs Change'], align='center', facecolor='cornflowerblue')
-ax_left.set_yticks([])
-ax_left.invert_xaxis()
-ax_right.barh(pos, fooNegDemand['Virgin Needs Change'], align='center', facecolor='red')
-ax_right.set_yticks(pos)
-ax_right.set_yticklabels(fooPosDemand.index, ha='center', x=+1.5)
-plt.suptitle('Main Concerns about return to workplace?')
-plt.show()
-
-
-# In[105]:
-
-
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-sns.set(style='darkgrid')
-
-# creating a dataframe
-df = pd.DataFrame()
-df['input'] = ['x','y','z']
-df['+']=[100,-50,10]
-df['-']=[-80,60,-10]
-
-#now stacking it
-df2 = pd.melt(df, id_vars ='input', var_name='type of change', value_name='change in the output' )
-
-fig, ax = plt.subplots()
-for typ, df in zip(df2['type of change'].unique(),df2.groupby('type of change')):
-    ax.barh(df[1]['input'], df[1]['change in the output'], height=0.3, label=typ)
-ax.legend(title = 'type of change')  
-
-
 # In[ ]:
 
 
 
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-# Attempting at plotting
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-Concerns = df_Q3['Concerns']
-num_concerns = len(Concerns)
-Female = df_Q3['Female']
-Male = df_Q3['Male']
-pos = np.arange(num_concerns) + .5
-
-fig, (ax_left, ax_right) = plt.subplots(ncols=2)
-ax_left.barh(pos, Male, align='center', facecolor='cornflowerblue')
-ax_left.set_yticks([])
-ax_left.invert_xaxis()
-ax_right.barh(pos, Female, align='center', facecolor='red')
-ax_right.set_yticks(pos)
-ax_right.set_yticklabels(Concerns, ha='center', x=+1.5)
-plt.suptitle('Main Concerns about return to workplace?')
-plt.show()
-
-
-# In[ ]:
-
-
-import matplotlib.pyplot as plt
-
-plt.rcParams["figure.figsize"] = [7.50, 3.50]
-plt.rcParams["figure.autolayout"] = True
-
-fig = plt.figure(1)
-fig.clf()
-
-ax = fig.add_subplot(1, 1, 1)
-ay.annotate('', xy=(0, -0.1), xycoords='axes fraction', xytext=(1, -0.1),
-arrowprops=dict(arrowstyle="-", color='b'))
-plt.show()
-
-# ARROW PROP
-ax.set_facecolor((1.0, 0.47, 0.42))
-
-
-# In[ ]:
-
-
-import matplotlib
-matplotlib.use('Agg')
-import pylab
-from  matplotlib import rc
-rc('font', **{'family': 'sans-serif', 'sans-serif': ['Times-Roman']})
-rc('text', usetex = True)
-matplotlib.rcParams['text.latex.preamble'] = [r"\usepackage{amsmath}"]
-
-figure, axs = matplotlib.pyplot.subplots(5, sharex = True, squeeze = True)
-x_ticks = axs[4].xaxis.get_major_ticks()
-x_ticks[0].label1.set_visible(False) ## set first x tick label invisible
-x_ticks[-1].label1.set_visible(False) ## set last x tick label invisible
-pylab.tight_layout()
-pylab.savefig('./test.png', dpi = 200)
-
-
-# # OTHER PLOT CODE TESTED
-
-# In[ ]:
-
-
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-
-# In[ ]:
-
-
-'''
-df = df.rename_axis('year')
-foo = pd.melt(df.reset_index(), id_vars=["year"])
-foo
-
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (14, 6)
-
-sns.set_context(rc = {'patch.linewidth': 1})
-sns.barplot(x = "year", y='value', hue='variable', data = foo, edgecolor='white')
-''';
-
-
-# In[ ]:
-
-
-from matplotlib.patches import Polygon, Patch
-
-
-# In[ ]:
-
-
-import pandas as pd
-import matplotlib.cm as cm
-import numpy as np
-import matplotlib.pyplot as plt
-
-def plot_clustered_stacked(dfall, labels=None, title="multiple stacked bar plot",  H="/", **kwargs):
-    """Given a list of dataframes, with identical columns and index, create a clustered stacked bar plot. 
-labels is a list of the names of the dataframe, used for the legend
-title is a string for the title of the plot
-H is the hatch used for identification of the different dataframe"""
-
-    n_df = len(dfall)
-    n_col = len(dfall[0].columns) 
-    n_ind = len(dfall[0].index)
-    axe = plt.subplot(111)
-
-    for df in dfall : # for each data frame
-        axe = df.plot(kind="bar",
-                      linewidth=0,
-                      stacked=True,
-                      ax=axe,
-                      legend=False,
-                      grid=False,
-                      **kwargs)  # make bar plots
-
-    colorlist = ['orange','orange','orange', 'orange', 
-                 'green','green','green', 'green', 
-                 'blue', 'blue', 'blue', 'blue',
-                 'cyan', 'cyan', 'cyan', 'cyan']
-    h,l = axe.get_legend_handles_labels() # get the handles we want to modify
-    jj=0
-    for i in range(0, n_df * n_col, n_col): # len(h) = n_col * n_df
-        zz = 0
-        
-        for j, pa in enumerate(h[i:i+n_col]):
-            for rect in pa.patches: # for each index
-                rect.set_x(rect.get_x() + 1 / float(n_df + 1) * i / float(n_col))
-                if zz >= 2:
-                    rect.set_hatch('/') #edited part   
-                    rect.set_facecolor('red')
-                zz += 1
-                jj+=1
-                rect 
-                rect.set_color(colorlist[jj])
-         #       rect.set_color('green')
-                rect.set_width(1 / float(n_df + 1))
-
-    axe.set_xticks((np.arange(0, 2 * n_ind, 2) + 1 / float(n_df + 1)) / 2.)
-    axe.set_xticklabels(df.index, rotation = 0)
-    axe.set_title(title)
-
-    # Add invisible data to add another legend
-    n=[]        
-    print(n_df)
-    for i in range(n_df):
-        n.append(axe.bar(0, 0, color="gray", hatch=H * i))
-
-    l1 = axe.legend(h[:n_col], l[:n_col], loc=[1.01, 0.5])
-    if labels is not None:
-        l2 = plt.legend(n, labels, loc=[1.01, 0.1]) 
-    axe.add_artist(l1)
-    return axe
-
-# create fake dataframes
-df1 = df[['PV_ICE_base', 'PV_ICE_increase_high']]
-df2 = df[['Irena_EL_base', 'Irena_EL_increase_high']]
-df3 = df[['Irena_RL_base', 'Irena_EL_increase_high']]
-df4 = df[['Irena 2016', 'inc0']]
-df5 = df[['CSA 2000', 'inc0']]
-
-# Then, just call :
-plot_clustered_stacked([df1, df2, df3, df4, df5],["df1", "df2", "df3", "df4", "df5"])
-    
-
-
-# In[ ]:
-
-
-df.keys()
-
-
-# In[ ]:
-
-
-ax=df['PV_ICE_high'].plot.bar(position=0, width=.1, color=['mediumspringgreen'], align='center', hatch='/')
-
-df['PV_ICE_base'].plot.bar(position=0, width=.1, color=['mediumspringgreen'], align='center')
-   
-df['Irena_EL_high'].plot.bar(ax=ax, position=-1, width=.1, color=['green'], hatch='/')
-
-df['Irena_EL_base'].plot.bar(ax=ax, position=-1, stacked=True, width=.1, color=['blue'])
-
-df['Irena_RL_high'].plot.bar(ax=ax, position=-2, width=.1, color=['red'], hatch='/')
-        
-df['Irena_RL_base'].plot.bar(ax=ax, position=-2, width=.1, color=['cyan'])
-
-df['Irena 2016'].plot.bar(ax=ax, position=-3, width=.1, color=['magenta'])
-df['CSA 2000'].plot.bar(ax=ax, position=-4, width=.1, color=['yellow'])
-
-ax.
-
-
-# In[ ]:
-
-
-ax=df[['PV_ICE_base', 'PV_ICE_increase_high']].plot.bar(stacked=True, position=0,
-                            width=.1, color=['yellowgreen', 'mediumspringgreen'], align='center')
-   
-df[['Irena_EL_base', 'Irena_EL_increase_high']].plot.bar(ax=ax, stacked=True, position=-1, width=.1, 
-                                                              color=['green', 'blue'], hatch=('+','/'))
-        
-cx = df[['Irena_RL_base', 'Irena_RL_increase_high']].plot.bar(ax=ax,  stacked=True, position=-2, width=.1, color=['green', 'red'])
-dx = df[['Irena 2016']].plot.bar(ax=ax, position=-3, width=.1, color=['magenta'])
-ex = df[['CSA 2000']].plot.bar(ax=ax, position=-4, width=.1, color=['yellow'])
-
-for container, hatch in zip(ax.containers, ("-", "*")):
-    for patch in container.patches:
-        patch.set_hatch(hatch)
-
-
-# In[ ]:
-
-
-ax=df['PV_ICE_high'].plot.bar(position=2, width=.1, color=['mediumspringgreen'], align='center', hatch='/')
-
-df['PV_ICE_base'].plot.bar(position=2, width=.1, color=['mediumspringgreen'], align='center')
-   
-df['Irena_EL_high'].plot.bar(ax=ax, position=1, width=.1, color=['green'], hatch='/')
-
-df['Irena_EL_base'].plot.bar(ax=ax, position=1, stacked=True, width=.1, color=['blue'])
-
-df['Irena_RL_high'].plot.bar(ax=ax, position=0, width=.1, color=['red'], hatch='/')
-        
-df['Irena_RL_base'].plot.bar(ax=ax, position=0, width=.1, color=['cyan'])
-
-df['Irena 2016'].plot.bar(ax=ax, position=-1, width=.1, color=['magenta'])
-df['CSA 2000'].plot.bar(ax=ax, position=-2, width=.1, color=['yellow'])
-
-ax.axhline(10, linewidth=5, color='r')
-
-
-# In[ ]:
-
-
-ax
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-c = ["blue", "purple"]
-for i, g in enumerate(dfall.groupby("variable")):
-    ax = sns.barplot(data=g[1],
-                     x="index",
-                     y="vcs",
-                     hue="Name",
-                     color=c[i],
-                     zorder=-i, # so first bars stay on top
-                     edgecolor="k")
-ax.legend_.remove() # remove the redundant legends 
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-pd.melt(df.reset_index(), id_vars=["index"])
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-import seaborn as sns
-
-
-# In[ ]:
-
-
-for i, g in enumerate(df):
-    print(i, g)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-for i, g in enumerate(df):
-    ax = sns.barplot(data=df[g],
-#                     x="index",
-#                     y="value",
-#                     hue="Name",
-#                     color=c[i],
-              #       zorder=-i, # so first bars stay on top
- #                    edgecolor="k"
-                    )
-ax.legend_.remove() # remove the redundant legends 
-
-
-# In[ ]:
-
-
-df1["Name"] = "df1"
-df2["Name"] = "df2"
-df3["Name"] = "df3"
-dfall = pd.concat([pd.melt(i.reset_index(),
-                           id_vars=["Name", "index"]) # transform in tidy format each df
-                   for i in [df1, df2, df3]],
-                   ignore_index=True)
-
-
-# In[ ]:
-
-
-print("Figure 11 Installed CApacity for all Scenarios")
-
-years = [2030, 2050]
-tableapp=[]
-for name in names:
-    colapp=[]
-    for year in years:
-         colapp.append(USyearly.filter(regex='Capacity_'+name).loc[year][0])
-    tableapp.append(colapp)
-    
-df= pd.DataFrame(tableapp, columns = years, index=names)
-df = df.T 
-df
-
-
-# In[ ]:
-
-
-print("TABLE 7 - METRIC TONNES IN FIELD IN 2030")
-
-tableapp=[]
-for name in names:
-    colapp=[]
-    for mat in materials:
-         colapp.append(UScum.filter(regex='VirginStock_'+mat+'_'+name).loc[2030][0]-
-                       UScum.filter(regex='WasteAll_'+mat+'_'+name).loc[2030][0])
-    tableapp.append(colapp)
-    
-df= pd.DataFrame(tableapp, columns = materials, index=names)
-df = df.T
-df.loc['Module'] = df.sum(axis=0)
-df
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-keyw='WasteEOL_'
-
-
-# Loop over CASES
-name0 = 'PV_ICE_base_[Tonnes]'
-name2 = 'PV_ICE_high_[Tonnes]'
-name3 = 'Irena_EL_high_[Tonnes]'
-name4 = 'Irena_RL_high_[Tonnes]'
-
-cumulations2050 = {}
-for ii in range(0, len(materials)):
-    matcum = []
-    matcum.append(UScum[keyw+materials[ii]+'_'+name0].loc[2020])
-    matcum.append(UScum[keyw+materials[ii]+'_'+name2].loc[2020])
-    matcum.append(UScum[keyw+materials[ii]+'_'+name3].loc[2020])
-    matcum.append(UScum[keyw+materials[ii]+'_'+name4].loc[2020])
-    cumulations2050[materials[ii]] = matcum
-
-dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
-dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
-dfcumulations2050['Module'] = dfcumulations2050.sum(axis=1)
-dfcumulations2050['Module']
-
-print("Cumulative Values on 2020")
-dfcumulations2050
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# ### Previous way of compiling results
-
-# In[ ]:
-
-
-r'''
-USyearly=pd.DataFrame()
-
-
-# In[10]:
-
-
-keyword='mat_Total_Landfilled'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
-
-# Loop over objects
-for kk in range(0, len(objects)):
-    obj = objects[kk]
-
-    # Loop over Scenarios
-    for jj in range(0, len(scenarios)):
-        case = scenarios[jj]
-        
-        for ii in range (0, len(materials)):    
-            material = materials[ii]
-            foo = obj.scenario[case].material[material].materialdata[keyword].copy()
-            foo = foo.to_frame(name=material)
-            USyearly["Waste_"+material+'_'+obj.name+'_'+case] = foo[material]
-
-        filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj.name+'_'+case)) ]
-        USyearly['Waste_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
-
-# Converting to grams to Tons. 
-USyearly.head(20)
-
-
-# In[12]:
-
-
-keyword='mat_Total_EOL_Landfilled'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
-
-# Loop over objects
-for kk in range(0, len(objects)):
-    obj = objects[kk]
-
-    # Loop over Scenarios
-    for jj in range(0, len(scenarios)):
-        case = scenarios[jj]
-        
-        for ii in range (0, len(materials)):    
-            material = materials[ii]
-            foo = obj.scenario[case].material[material].materialdata[keyword].copy()
-            foo = foo.to_frame(name=material)
-            USyearly["Waste_EOL_"+material+'_'+obj.name+'_'+case] = foo[material]
-
-        filter_col = [col for col in USyearly if (col.startswith('Waste_EOL_') and col.endswith(obj.name+'_'+case)) ]
-        USyearly['Waste_EOL_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
-
-# Converting to grams to Tons. 
-USyearly.head(20)
-
-
-# In[13]:
-
-
-keyword='mat_Total_MFG_Landfilled'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
-
-# Loop over objects
-for kk in range(0, len(objects)):
-    obj = objects[kk]
-
-    # Loop over Scenarios
-    for jj in range(0, len(scenarios)):
-        case = scenarios[jj]
-        
-        for ii in range (0, len(materials)):    
-            material = materials[ii]
-            foo = obj.scenario[case].material[material].materialdata[keyword].copy()
-            foo = foo.to_frame(name=material)
-            USyearly["Waste_MFG_"+material+'_'+obj.name+'_'+case] = foo[material]
-
-        filter_col = [col for col in USyearly if (col.startswith('Waste_MFG') and col.endswith(obj.name+'_'+case)) ]
-        USyearly['Waste_MFG_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
-
-# Converting to grams to Tons. 
-USyearly.head(20)
-
-
-# In[14]:
-
-
-keyword='mat_Virgin_Stock'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
-
-# Loop over objects
-for kk in range(0, len(objects)):
-    obj = objects[kk]
-
-    # Loop over Scenarios
-    for jj in range(0, len(scenarios)):
-        case = scenarios[jj]
-        
-        for ii in range (0, len(materials)):    
-            material = materials[ii]
-            foo = obj.scenario[case].material[material].materialdata[keyword].copy()
-            foo = foo.to_frame(name=material)
-            USyearly["VirginStock_"+material+'_'+obj.name+'_'+case] = foo[material]
-
-        filter_col = [col for col in USyearly if (col.startswith('VirginStock_') and col.endswith(obj.name+'_'+case)) ]
-        USyearly['VirginStock_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
-
-
-# ### Converting to grams to METRIC Tons. 
-# 
-
-# In[15]:
-
-
-USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
-#907185 -- this is for US tons
-
-
-# In[16]:
-
-
-UScum = USyearly.copy()
-UScum = UScum.cumsum()
-UScum.head()
-
-
-# ### Adding Installed Capacity to US
-
-# In[17]:
-
-
-keyword='Installed_Capacity_[W]'
-materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
-
-# Loop over SF Scenarios
-for kk in range(0, len(objects)):
-    obj = objects[kk]
-    
-    # Loop over Scenarios
-    for jj in range(0, len(scenarios)):
-        case = scenarios[jj]
-        
-        foo = obj.scenario[case].data[keyword]
-        foo = foo.to_frame(name=keyword)
-        UScum["Capacity_"+obj.name+'_'+case] = foo[keyword]
-
-
-# ## Mining Capacity
-
-# In[19]:
-
-
-USyearly.index = r1.scenario['base'].data['year']
-UScum.index = r1.scenario['base'].data['year']
-
-
-UScum.to_csv('USCum.csv')
-''';
 
