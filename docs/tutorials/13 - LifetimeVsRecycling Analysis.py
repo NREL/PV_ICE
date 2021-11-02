@@ -256,7 +256,7 @@ for ii in range (len(df.unstack(level=1))):
 
 # Collect all the scenario names and downselect to the scenario(s) of interest. In this case, we are only concerned with the highest capacity and deployment rate, Decarbonization + Electrification (Decarb+E)
 
-# In[3]:
+# In[16]:
 
 
 scenarios = ['Reference.Mod',
@@ -273,7 +273,7 @@ SFscenarios = ['95-by-35_Elec.Adv_DR'] #Decarb+E
 SFscenarios
 
 
-# In[4]:
+# In[17]:
 
 
 #add materials for simulation
@@ -282,7 +282,7 @@ MATERIALS = ['glass','aluminium_frames','silicon','silver', 'copper', 'encapsula
 
 # Set up the PV ICE simulation with scenario and materials
 
-# In[5]:
+# In[18]:
 
 
 r1 = PV_ICE.Simulation(name='SF-LvR', path=testfolder) #create simulation r1
@@ -311,13 +311,13 @@ for scen in range(len(SFscenarios)):
 
 # Run the simulation
 
-# In[7]:
+# In[19]:
 
 
 r1.calculateMassFlow()
 
 
-# In[9]:
+# In[20]:
 
 
 r1.plotScenariosComparison('Installed_Capacity_[W]')
@@ -331,7 +331,7 @@ r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 # ### Create lifetime and recycling ranges
 
-# In[30]:
+# In[21]:
 
 
 Lifetime_Range = pd.concat([pd.Series(range(15,30,3)),pd.Series(range(30,51,2))]) #this absolute lifetime values
@@ -344,7 +344,7 @@ Recycling_Range = pd.Series(range(0,105,5)) # this is absolute recycling values 
 #print(Recycling_Range)
 
 
-# In[47]:
+# In[22]:
 
 
 #list of material recycling variables
@@ -354,7 +354,7 @@ RecyclingYields = ['mat_MFG_scrap_Recycling_eff', 'mat_EOL_Recycling_eff']
 
 # Now some magic to automatically generate T50 and T90 values for each lifetime
 
-# In[32]:
+# In[23]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -365,7 +365,7 @@ reliability_baselines['mod_reliability_t50'] = r1.scenario['Decarb+E_PVICE_defau
 reliability_baselines['mod_reliability_t90'] = r1.scenario['Decarb+E_PVICE_defaults'].data['mod_reliability_t90']
 
 
-# In[33]:
+# In[24]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -389,7 +389,7 @@ t90_list = list(chain(*t90_list)) #unnest list
 t90_range_simple = pd.Series([ '%.2f' % elem for elem in t90_list ])
 
 
-# In[34]:
+# In[25]:
 
 
 #create a tidy dataframe summarizing all the lifetime, degradation, reliability values
@@ -398,7 +398,7 @@ lifetime_range_df.columns = 'mod_lifetime', 'mod_degradation', 't50', 't90'
 print(lifetime_range_df)
 
 
-# In[35]:
+# In[26]:
 
 
 #drop some of the higher lifetime values due to small value add and graphing
@@ -413,7 +413,7 @@ print(lifetime_range_df)
 # - recycling values are set to closed loop, with XX% material recycling yields assuming 100% collection of modules and materials
 # - 
 
-# In[53]:
+# In[56]:
 
 
 #these scenarios are being added onto the Decarb+E_PVICE_Default scenario
@@ -442,31 +442,94 @@ for life in range(0,len(Lifetime_Range)): #loop over lifetimes
             matdf = r1.scenario[scenname].material[MATERIALS[mat]].materialdata #pull out the df
             matdf.set_index('year', inplace=True) #assign the year index to the df
             matdf.drop(matdf.loc['1995':'2009'].index, inplace=True) #drop the early years
+            matdf.index = pd.PeriodIndex(matdf.index, freq='A')  # A -- Annual
+            matdf = pd.DataFrame(matdf)
             r1.scenario[scenname].material[MATERIALS[mat]].materialdata = matdf #reassign the material data to the simulation
             
             #Modify Material recycling parameters for 2021 and forward
             for var in range(0,len(RecyclingPaths)):
-                r1.scenario[scenname].material[MATERIALS[mat]].materialdata[RecyclingPaths[var]].loc[2021:] = 100.0
+                r1.scenario[scenname].material[MATERIALS[mat]].materialdata[RecyclingPaths[var]].loc['2021':] = 100.0
             for ylds in range(0,len(RecyclingYields)):
-                r1.scenario[scenname].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]].loc[2021:] = Recycling_Range[recycle]
+                r1.scenario[scenname].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]].loc['2021':] = Recycling_Range[recycle]
             
             
 
 
-# In[60]:
+# In[47]:
 
 
 print(len(r1.scenario.keys()))
 
 
-# In[ ]:
+# In[59]:
+
+
+r1.scenario['50years & 50% Recycled'].material['glass'].materialdata.head(5)
+
+
+# In[57]:
 
 
 r1.calculateMassFlow()
 
 
+# In[30]:
+
+
+r1.plotScenariosComparison('Installed_Capacity_[W]')
+
+
+# In[54]:
+
+
+r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
+
+
 # In[ ]:
 
 
 
+
+
+# In[ ]:
+
+
+
+
+
+# In[58]:
+
+
+yearlyRvL_identinstall, cumRvL_identinstall = r1.aggregateResults()
+yearlyRvL_identinstall.head(5)
+
+
+# In[ ]:
+
+
+yearlyRvL_identinstall.to_csv(os.path.join(testfolder,'yearlyRvL-identinstall.csv'))
+cumRvL_identinstall.to_csv(os.path.join(testfolder,'cumulativeRvL-identinstall.csv'))
+
+
+# ## Installation Compensation Calculation
+
+# In[71]:
+
+
+
+for row in range (0,len(r1.scenario['Decarb+E_PVICE_defaults'].data)):
+    for scenario in range (0, len(r1.scenario.keys())):
+        scen = list(r1.scenario.keys())[scenario]
+        Under_Installment = ( (r1.scenario['Decarb+E_PVICE_defaults'].data['Installed_Capacity_[W]'][row] - 
+                               r1.scenario[scen].data['Installed_Capacity_[W]'][row])/1000000 )  # MWATTS
+        r1.scenario[scen].data['new_Installed_Capacity_[MW]'][row] += Under_Installment
+    r1.calculateMassFlow()
+
+
+# In[72]:
+
+
+yearlyRvL_installcomp, cumRvL_installcomp = r1.aggregateResults()
+yearlyRvL_installcomp.to_csv(os.path.join(testfolder,'yearlyRvL-installcomp.csv'))
+cumRvL_installcomp.to_csv(os.path.join(testfolder,'cumulativeRvL-installcomp.csv'))
 

@@ -211,7 +211,7 @@ bottoms = pd.DataFrame(UScum.loc[2050])
 bottoms
 
 
-# In[38]:
+# In[21]:
 
 
 plt.rcParams.update({'font.size': 15})
