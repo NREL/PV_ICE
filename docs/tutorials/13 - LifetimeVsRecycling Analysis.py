@@ -256,7 +256,7 @@ for ii in range (len(df.unstack(level=1))):
 
 # Collect all the scenario names and downselect to the scenario(s) of interest. In this case, we are only concerned with the highest capacity and deployment rate, Decarbonization + Electrification (Decarb+E)
 
-# In[16]:
+# In[4]:
 
 
 scenarios = ['Reference.Mod',
@@ -273,7 +273,7 @@ SFscenarios = ['95-by-35_Elec.Adv_DR'] #Decarb+E
 SFscenarios
 
 
-# In[17]:
+# In[5]:
 
 
 #add materials for simulation
@@ -282,7 +282,7 @@ MATERIALS = ['glass','aluminium_frames','silicon','silver', 'copper', 'encapsula
 
 # Set up the PV ICE simulation with scenario and materials
 
-# In[18]:
+# In[6]:
 
 
 r1 = PV_ICE.Simulation(name='SF-LvR', path=testfolder) #create simulation r1
@@ -331,7 +331,7 @@ r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 # ### Create lifetime and recycling ranges
 
-# In[21]:
+# In[33]:
 
 
 Lifetime_Range = pd.concat([pd.Series(range(15,30,3)),pd.Series(range(30,51,2))]) #this absolute lifetime values
@@ -344,7 +344,7 @@ Recycling_Range = pd.Series(range(0,105,5)) # this is absolute recycling values 
 #print(Recycling_Range)
 
 
-# In[22]:
+# In[34]:
 
 
 #list of material recycling variables
@@ -354,7 +354,7 @@ RecyclingYields = ['mat_MFG_scrap_Recycling_eff', 'mat_EOL_Recycling_eff']
 
 # Now some magic to automatically generate T50 and T90 values for each lifetime
 
-# In[23]:
+# In[35]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -365,7 +365,7 @@ reliability_baselines['mod_reliability_t50'] = r1.scenario['Decarb+E_PVICE_defau
 reliability_baselines['mod_reliability_t90'] = r1.scenario['Decarb+E_PVICE_defaults'].data['mod_reliability_t90']
 
 
-# In[24]:
+# In[36]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -389,7 +389,7 @@ t90_list = list(chain(*t90_list)) #unnest list
 t90_range_simple = pd.Series([ '%.2f' % elem for elem in t90_list ])
 
 
-# In[25]:
+# In[37]:
 
 
 #create a tidy dataframe summarizing all the lifetime, degradation, reliability values
@@ -398,7 +398,7 @@ lifetime_range_df.columns = 'mod_lifetime', 'mod_degradation', 't50', 't90'
 print(lifetime_range_df)
 
 
-# In[26]:
+# In[38]:
 
 
 #drop some of the higher lifetime values due to small value add and graphing
@@ -407,13 +407,61 @@ lifetime_range_df = lifetime_range_df[lifetime_range_df.mod_lifetime.isin(unnece
 print(lifetime_range_df)
 
 
+# Create baseline material files that start in 2010 
+
+# In[25]:
+
+
+#pull in material baselines through PV ICE import
+r2 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
+r2.createScenario(name='prep', file=modulefile)
+
+#Add Materials to scenario
+for mat in range (0,len(MATERIALS)):
+    materialfile = 'baseline_material_'+ MATERIALS[mat] +'.csv' #name the material file
+    materialfile = os.path.join(materialsfolder,materialfile) #point at the material file in the baselines folder
+    r2.scenario['prep'].addMaterial(MATERIALS[mat], file=materialfile)
+
+
+# In[26]:
+
+
+#remove 1995-2009 from each material and write a new file into folder
+for mat in range (0,len(MATERIALS)):
+    matdf = r2.scenario['prep'].material[MATERIALS[mat]].materialdata #pull out the df
+    matdf.set_index('year', inplace=True) #assign the year index to the df
+    matdf.drop(matdf.loc['1995':'2009'].index, inplace=True) #drop the early years
+    matdf.index = pd.PeriodIndex(matdf.index, freq='A')  # A -- Annual
+    matdf = pd.DataFrame(matdf)
+    
+    #create file name and path
+    filetitle = 'baseline_material_'+ MATERIALS[mat] +'_2010.csv' #name the material file
+    subtestfolder = os.path.join(testfolder, 'MaterialBaselines_2010') #create a folder in temp to store these alt files
+    if not os.path.exists(subtestfolder): #make folder if not exist
+        os.makedirs(subtestfolder)
+    filetitle = os.path.join(subtestfolder, filetitle)
+    
+    header = "year,mat_virgin_eff,mat_massperm2,mat_MFG_eff,mat_MFG_scrap_Recycled,"    "mat_MFG_scrap_Recycling_eff,mat_MFG_scrap_Recycled_into_HQ,mat_MFG_scrap_Recycled_into_HQ_Reused4MFG,"    "mat_EOL_collected_Recycled,mat_EOL_Recycling_eff,mat_EOL_Recycled_into_HQ,mat_EOL_RecycledHQ_Reused4MFG\n"    "year,%,g,%,%,%,%,%,%,%,%,%\n"
+
+    with open(filetitle, 'w', newline='') as ict:
+    # Write the header lines, including the index variable for
+    # the last one if you're letting Pandas produce that for you.
+    # (see above).
+        for line in header:
+            ict.write(line)
+
+        #    savedata.to_csv(ict, index=False)
+        matdf.to_csv(ict, header=False)
+
+
+# ### Create all Scenarios
 # Now with the lifetime and recycling ranges defined, create a scenario for each combination
 # 
 # Notes:
 # - recycling values are set to closed loop, with XX% material recycling yields assuming 100% collection of modules and materials
 # - 
 
-# In[56]:
+# In[39]:
 
 
 #these scenarios are being added onto the Decarb+E_PVICE_Default scenario
@@ -434,17 +482,9 @@ for life in range(0,len(Lifetime_Range)): #loop over lifetimes
         
         #Add Materials to scenario
         for mat in range (0,len(MATERIALS)):
-            materialfile = 'baseline_material_'+ MATERIALS[mat] +'.csv' #name the material file
-            materialfile = os.path.join(materialsfolder,materialfile) #point at the material file in the baselines folder
-            r1.scenario[scenname].addMaterial(MATERIALS[mat], file=materialfile)
-            
-            #remove 1995-2009 from each material
-            matdf = r1.scenario[scenname].material[MATERIALS[mat]].materialdata #pull out the df
-            matdf.set_index('year', inplace=True) #assign the year index to the df
-            matdf.drop(matdf.loc['1995':'2009'].index, inplace=True) #drop the early years
-            matdf.index = pd.PeriodIndex(matdf.index, freq='A')  # A -- Annual
-            matdf = pd.DataFrame(matdf)
-            r1.scenario[scenname].material[MATERIALS[mat]].materialdata = matdf #reassign the material data to the simulation
+            materialfile2010 = 'baseline_material_'+ MATERIALS[mat] +'_2010.csv' #name the material file
+            materialfile2010 = os.path.join(testfolder,'MaterialBaselines_2010',materialfile2010) #point at the material file in the baselines folder
+            r1.scenario[scenname].addMaterial(MATERIALS[mat], file=materialfile2010)
             
             #Modify Material recycling parameters for 2021 and forward
             for var in range(0,len(RecyclingPaths)):
@@ -455,31 +495,31 @@ for life in range(0,len(Lifetime_Range)): #loop over lifetimes
             
 
 
-# In[47]:
+# In[40]:
 
 
 print(len(r1.scenario.keys()))
 
 
-# In[59]:
+# In[42]:
 
 
-r1.scenario['50years & 50% Recycled'].material['glass'].materialdata.head(5)
+r1.scenario['50years & 50% Recycled'].material['glass'].materialdata.tail(5)
 
 
-# In[57]:
+# In[43]:
 
 
 r1.calculateMassFlow()
 
 
-# In[30]:
+# In[44]:
 
 
 r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 
-# In[54]:
+# In[45]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
