@@ -696,6 +696,122 @@ class Simulation:
               
         return
 
+
+    def check_Years_dataandMaterials(self, scenarios=None, materials=None):
+        '''
+        '''
+        print ("Not Done")
+
+    def trim_Years( self, startYear=None, endYear=None, aggregateInstalls=False, 
+                   averageEfficiency=False, averageMaterialData = False, methodAddedYears='repeat', 
+                   scenarios=None, materials=None):
+        '''
+        
+        methodStart : str
+            'trim' or 'aggregate'. Trim cuts the values before the year specified.
+            Aggregate sums the values (if any) up to the year specified and sets it
+            in that year. No backfilling of data enabled at the moment.
+        methodEnd : str
+            'repeat' or 'zeroes' only options at the moment. 
+            'repeat' Increases to the endYear by repeating the last value. 
+            zeroes places zeroes.
+            
+        '''
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        scen0 = scenarios[0]
+        dataStartYear = int(self.scenario[scen0].data.iloc[0]['year'])
+        dataEndYear = int(self.scenario[scen0].data.iloc[-1]['year'])
+
+        if startYear is None:
+            startYear = dataStartYear
+            print("startYear not provided. Setting to start year of Module data", startYear)
+
+        if endYear is None:
+            endYear = dataEndYear
+            print("endYear not provided. Setting to end year of Module data", endYear)
+
+        startYear = startYear
+        endYear = endYear
+
+
+        for scen in scenarios:
+            baseline = self.scenario[scen].data
+            
+            if int(startYear) < int(dataStartYear):
+                print("ADD YEARS HERE. not done yet")
+
+            if int(endYear) > int(dataEndYear):
+                print("ADD YEARS HERE. not done yet")
+
+            # Add check if data does not need to be reduced to not do these.
+            reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
+
+            if aggregateInstalls:
+                prev = baseline.loc[(baseline['year']<startYear)].sum()
+                reduced.loc[reduced['year'] == startYear, 'new_Installed_Capacity_[MW]'] = prev['new_Installed_Capacity_[MW]']
+            
+            if averageEfficiency:
+                prev = baseline.loc[(baseline['year']<startYear)].mean()
+                reduced.loc[reduced['year'] == startYear, 'mod_eff	'] = prev['mod_eff	']
+                
+            reduced.reset_index(drop=True, inplace=True)
+            self.scenario[scen].data = reduced #reassign the material data to the simulation
+
+            for mat in self.scenario[scen].material:
+                if int(startYear) < int(dataStartYear):
+                    print("ADD YEARS HERE. not done yet")
+    
+                if int(endYear) > int(dataEndYear):
+                    print("ADD YEARS HERE. not done yet")
+    
+                matdf = self.scenario[scen].material[mat].materialdata #pull out the df
+                reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
+                
+                if averageMaterialData == 'average':
+                    prev = matdf.loc[(baseline['year']<startYear)].mean()
+                    matkeys = list(reduced.keys())[1:12]
+                    for matkey in matkeys: # skipping year (0). Skipping added columsn from mass flow
+                        reduced.loc[reduced['year'] == startYear, matkey] = prev[matkey]
+                
+                reduced.reset_index(drop=True, inplace=True)
+                self.scenario[scen].material[mat].materialdata = reduced #reassign the material data to the simulation
+            
+
+    def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
+        
+        if ELorRL == 'RL':
+            weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
+            print("Using Irena Regular Loss Assumptions")
+        if ELorRL == 'EL':
+            weibullInputParams = {'alpha': 2.4928, 'beta': 30}  # Regular-loss scenario IRENA
+            print("Using Irena Early Loss Assumptions")
+            
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        for scen in scenarios:
+            self.scenario[scen].data['weibull_alpha'] = weibullInputParams['alpha']
+            self.scenario[scen].data['weibull_beta'] = weibullInputParams['beta']
+            self.scenario[scen].data['mod_lifetime'] = 40.0
+            self.scenario[scen].data['mod_MFG_eff'] = 100.0
+            
+            for mat in self.scenario[scen].material:
+                self.scenario[scen].material[mat].materialdata['mat_MFG_eff'] = 100.0   
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+              
+        return
+
+
+
     def scenMod_PerfectManufacturing(self, scenarios=None):
         
         if scenarios is None:
@@ -1001,13 +1117,15 @@ class Scenario(Simulation):
     def addMaterial(self, materialname, file=None):
         self.material[materialname] = Material(materialname, file)
 
-    def addMaterials(self, materials, baselinefolder=None):
+    def addMaterials(self, materials, baselinefolder=None, nameformat=None):
         
         if baselinefolder is None:
             baselinefolder = r'..\..\baselines'    
 
+        if nameformat is None:
+            nameformat = r'\baseline_material_{}.csv'
         for mat in materials:
-            filemat = baselinefolder + r'\baseline_material_'+mat+'.csv'
+            filemat = baselinefolder + nameformat.format(mat)
             self.material[mat] = Material(mat, filemat)
     
     def __getitem__(self, key):
