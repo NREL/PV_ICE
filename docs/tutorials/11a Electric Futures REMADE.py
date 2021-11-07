@@ -559,7 +559,7 @@ tableapp=[]
 for name in names:
     colapp=[]
     for year in years:
-         colapp.append(round(UScum.filter(regex='WasteEOL_Module_'+name).loc[year][0]/1000,0)*1000)
+         colapp.append(round(UScum.filter(regex='WasteEOL_Module_'+name).loc[2030][0]/1000,0)*1000)
     tableapp.append(colapp)
     
 df= pd.DataFrame(tableapp, columns = years, index=names)
