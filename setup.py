@@ -89,7 +89,8 @@ setup(
     install_requires=['matplotlib',
                        'numpy',
                       'pandas',
-                      'tqdm >= 4.32.1'
+                      'tqdm >= 4.32.1',
+                      'sphinx >= 1.8.0'
                       ],
 
     # List additional groups of dependencies here (e.g. development
