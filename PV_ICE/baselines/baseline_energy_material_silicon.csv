@@ -1,5 +1,5 @@
 ﻿year,e_mat_extraction,e_mat_refinement,e_mat_MFG,e_mat_MFGScrap_Landfill,e_mat_MFGScrap_LQ,e_mat_MFGScrap_HQ,e_mat_MFGScrap_HQ4MFG,e_mat_EoL_Remanufacture,e_mat_RecycleScrap_Landfilled,e_mat_Recycled_LQ,e_mat_Recycled_HQ,e_mat_RecycledHQ_4MFG
-year,kWh_perkg,kWh,kWh,kWh,kWh,kWh,kWh,kWh,kWh,kWh,kWh,kWh
+year,kWh/kg,kWh/kg,kWh/kg,kWh/kg,kWh/kg,kWh/kg,kWh/kg,kWh/kg,kWh/kg,kWh/kg,kWh/kg,kWh/kg
 1995,,,,,,,,,,,,
 1996,,,,,,,,,,,,
 1997,,,,,,,,,,,,

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Duramat Webinar: US NREL Electric Futures 2021
+# # # Duramat Webinar: US NREL Electric Futures 2021
 # 
 # This journal simulates the Reference and High Electrification scenarios from Electrification Futures, and comparing to a glass baseline with High bifacial future projection. 
-# 
+#  
 # Installed Capacity considerations from bifacial installations are not considered here.
-# 
+#  
 # Results from this journal were presented during Duramat's webinar April 2021 – “The Impacts of Module Reliability and Lifetime on PV in the Circular Economy" presented by Teresa Barnes, Silvana Ayala, and Heather Mirletz, NREL. 
 # 
 
@@ -16,7 +16,7 @@
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'DURAMAT')
 
 # Another option using relative address; for some operative systems you might need '/' instead of '\'
 # testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
@@ -30,11 +30,11 @@ print ("Your simulation will be stored in %s" % testfolder)
 MATERIALS = ['glass','silver','silicon', 'copper','aluminium_frames']
 MATERIAL = MATERIALS[0]
 
-MODULEBASELINE = r'..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv'
-MODULEBASELINE_High = r'..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_LowREHighElec.csv'
+MODULEBASELINE = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_basecase.csv'
+MODULEBASELINE_High = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_LowREHighElec.csv'
 
 
-# In[3]:
+# In[4]:
 
 
 import PV_ICE
@@ -56,73 +56,73 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[6]:
+# In[7]:
+
+
+pwd
+
+
+# In[9]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='base', file=MODULEBASELINE)
-for mat in range (0, len(MATERIALS)):
-    MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r1.scenario['base'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-    
+r1.scenario['base'].addMaterials(MATERIALS, r'..\..\baselines')
 r1.createScenario(name='high', file=MODULEBASELINE_High)
-for mat in range (0, len(MATERIALS)):
-    MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r1.scenario['high'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+r1.scenario['high'].addMaterials(MATERIALS, r'..\..\baselines')
 
 r2 = PV_ICE.Simulation(name='bifacialTrend', path=testfolder)
 r2.createScenario(name='base', file=MODULEBASELINE)
-MATERIALBASELINE = r'..\baselines\PVSC_2021\baseline_material_glass_bifacialTrend.csv'
+r2.scenario['base'].addMaterials(MATERIALS, r'..\..\baselines')
+MATERIALBASELINE = r'..\..\baselines\PVSC_2021\baseline_material_glass_bifacialTrend.csv'
 r2.scenario['base'].addMaterial('glass', file=MATERIALBASELINE)
-for mat in range (1, len(MATERIALS)):
-    MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r2.scenario['base'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-    
+
 r2.createScenario(name='high', file=MODULEBASELINE_High)
-MATERIALBASELINE = r'..\baselines\PVSC_2021\baseline_material_glass_bifacialTrend.csv'
+r2.scenario['high'].addMaterials(MATERIALS, r'..\..\baselines')
+MATERIALBASELINE = r'..\..\baselines\PVSC_2021\baseline_material_glass_bifacialTrend.csv'
 r2.scenario['high'].addMaterial('glass', file=MATERIALBASELINE)
-for mat in range (1, len(MATERIALS)):
-    MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r2.scenario['high'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
-# In[7]:
+# In[10]:
 
 
 IRENA= False
 ELorRL = 'EL'
 if IRENA:
-    if ELorRL == 'RL':
-        weibullInputParams = {'alpha': 5.3759}  # Regular-loss scenario IRENA
-    if ELorRL == 'EL':
-        weibullInputParams = {'alpha': 2.49}  # Regular-loss scenario IRENA
-    r1.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
-    r2.calculateMassFlow(weibullInputParams=weibullInputParams, weibullAlphaOnly=True)
+    r1.scenMod_IRENIFY(scenarios=['base', 'high'], ELorRL = ELorRL )
+    r2.scenMod_IRENIFY(scenarios=['base', 'high'], ELorRL = ELorRL )
     title_Method = 'Irena_'+ELorRL
 else:
-    r1.calculateMassFlow()
-    r2.calculateMassFlow()
     title_Method = 'PVICE'
+r1.calculateMassFlow()
+r2.calculateMassFlow()
 
 
-# ## Creating Summary of results 
-# 
-
-# In[8]:
+# In[11]:
 
 
 objects = [r1, r2]
 scenarios = ['base', 'high']
 
 
-# In[9]:
+# In[23]:
 
 
+pvice_Usyearly1, pvice_Uscum1 = r1.aggregateResults()
+pvice_Usyearly2, pvice_Uscum2 = r2.aggregateResults()
+UScum = pd.concat([pvice_Uscum1, pvice_Uscum2], axis=1)
+USyearly = pd.concat([pvice_Usyearly1, pvice_Usyearly2], axis=1)
+
+UScum.to_csv('pvice_USCum.csv')
+USyearly.to_csv('pvice_USYearly.csv')
+
+
+# In[22]:
+
+
+# OLD METHOD
+'''
 USyearly=pd.DataFrame()
-
-
-# In[10]:
-
 
 keyword='mat_Total_Landfilled'
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
@@ -142,14 +142,11 @@ for kk in range(0, len(objects)):
             foo = foo.to_frame(name=material)
             USyearly["Waste_"+material+'_'+obj.name+'_'+case] = foo[material]
 
-        filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj.name+'_'+case)) ]
+        filter_col = [col for col in USyearly if (col.startswith('Waste_') and col.endswith(obj.name+'_'+case)) ]
         USyearly['Waste_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 # Converting to grams to Tons. 
 USyearly.head(20)
-
-
-# In[11]:
 
 
 keyword='mat_Total_EOL_Landfilled'
@@ -169,14 +166,11 @@ for kk in range(0, len(objects)):
             foo = foo.to_frame(name=material)
             USyearly["Waste_EOL_"+material+'_'+obj.name+'_'+case] = foo[material]
 
-        filter_col = [col for col in USyearly if (col.startswith('Waste') and col.endswith(obj.name+'_'+case)) ]
+        filter_col = [col for col in USyearly if (col.startswith('Waste_EOL_') and col.endswith(obj.name+'_'+case)) ]
         USyearly['Waste_EOL_Module_'+obj.name+'_'+case] = USyearly[filter_col].sum(axis=1)
 
 # Converting to grams to Tons. 
 USyearly.head(20)
-
-
-# In[12]:
 
 
 keyword='mat_Virgin_Stock'
@@ -201,26 +195,18 @@ for kk in range(0, len(objects)):
 
 
 # ### Converting to grams to METRIC Tons. 
-# 
 
-# In[13]:
 
 
 USyearly = USyearly/1000000  # This is the ratio for Metric tonnes
 #907185 -- this is for US tons
 
 
-# In[14]:
-
 
 UScum = USyearly.copy()
 UScum = UScum.cumsum()
-UScum.head()
 
 
-# ### Adding Installed Capacity to US
-
-# In[15]:
 
 
 keyword='Installed_Capacity_[W]'
@@ -239,26 +225,67 @@ for kk in range(0, len(objects)):
         UScum["Capacity_"+obj.name+'_'+case] = foo[keyword]
 
 
-        
-        
+USyearly.index = r1.scenario['base'].data['year']
+UScum.index = r1.scenario['base'].data['year']
+
+USyearly.to_csv('USyearly_Oldmethod.csv')
+UScum.to_csv('UScum_Oldmethod.csv')
+''';
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[15]:
+
+
+
 
 
 # In[16]:
 
 
-UScum.tail(20)
 
 
-# ## Mining Capacity
 
-# In[17]:
+# In[ ]:
 
 
-USyearly.index = r1.scenario['base'].data['year']
-UScum.index = r1.scenario['base'].data['year']
+
 
 
 # In[18]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[21]:
+
+
+
+
+
+# # ## Mining Capacity
+# 
+
+# In[24]:
+
 
 
 mining2020_aluminum = 65267000
@@ -267,16 +294,17 @@ mining2020_copper = 20000000
 mining2020_silicon = 8000000
 
 
-# In[19]:
+# In[25]:
+
 
 
 objects = [r1, r2]
 scenarios = ['base', 'high']
 
 
-# ## PLOTTING GALORE
+# In[27]:
 
-# In[22]:
+
 
 
 plt.rcParams.update({'font.size': 10})
@@ -290,8 +318,8 @@ fig.subplots_adjust(hspace = .3, wspace=.2)
 
 
 # Loop over CASES
-name2 = 'Simulation1_high'
-name0 = 'Simulation1_base'
+name2 = 'Simulation1_high_[Tonnes]'
+name0 = 'Simulation1_base_[Tonnes]'
 # ROW 2, Aluminum and Silicon:        g-  4 aluminum k - 1 silicon   orange - 3 copper  gray - 2 silver
 axs.plot(USyearly[keyw+materials[2]+'_'+name2]*100/mining2020_silver, 
          color = 'gray', linewidth=2.0, label='Silver')
@@ -335,7 +363,8 @@ axs.legend()
 fig.savefig(title_Method+' Fig_1x1_MaterialNeeds Ratio to Production_NREL2018.png', dpi=600)
 
 
-# In[23]:
+# In[28]:
+
 
 
 plt.rcParams.update({'font.size': 15})
@@ -352,8 +381,8 @@ f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
 #######################
    
 # loop plotting over scenarios
-name2 = 'Simulation1_high'
-name0 = 'Simulation1_base'
+name2 = 'Simulation1_high_[Tonnes]'
+name0 = 'Simulation1_base_[Tonnes]'
 
 
 # SCENARIO 1 ***************
@@ -439,13 +468,15 @@ print("Cumulative Virgin Needs by 2050 Million Tones by Scenario")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# ### Bonus: Bifacial Trend Cumulative Virgin Needs (not plotted, just values)
+# # ### Bonus: Bifacial Trend Cumulative Virgin Needs (not plotted, just values)
+# 
 
-# In[24]:
+# In[29]:
 
 
-name2 = 'bifacialTrend_high'
-name0 = 'bifacialTrend_base'
+
+name2 = 'bifacialTrend_high_[Tonnes]'
+name0 = 'bifacialTrend_base_[Tonnes]'
 
 cumulations2050 = {}
 for ii in range(0, len(materials)):
@@ -461,14 +492,15 @@ print("Cumulative Virgin Needs by 2050 Million Tones by Scenario for Bifacial Tr
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# ### Waste by year
+# # ### Waste by year
+# 
 
-# In[25]:
+# In[34]:
 
 
 plt.rcParams.update({'font.size': 15})
 plt.rcParams['figure.figsize'] = (15, 8)
-keyw='Waste_'
+keyw='WasteAll_'
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
 
 
@@ -480,8 +512,8 @@ f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
 #######################
    
 # loop plotting over scenarios
-name2 = 'Simulation1_high'
-name0 = 'Simulation1_base'
+name2 = 'Simulation1_high_[Tonnes]'
+name0 = 'Simulation1_base_[Tonnes]'
 
 
 # SCENARIO 1 ***************
@@ -566,12 +598,12 @@ print("Cumulative Waste by 2050 Million Tones by case")
 dfcumulations2050[['glass','silicon','silver','copper','aluminium_frames']].sum(axis=1)
 
 
-# In[26]:
+# In[36]:
 
 
 plt.rcParams.update({'font.size': 15})
 plt.rcParams['figure.figsize'] = (15, 8)
-keyw='Waste_EOL_'
+keyw='WasteEOL_'
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminium_frames']
 
 
@@ -583,8 +615,8 @@ f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
 #######################
    
 # loop plotting over scenarios
-name2 = 'Simulation1_high'
-name0 = 'Simulation1_base'
+name2 = 'Simulation1_high_[Tonnes]'
+name0 = 'Simulation1_base_[Tonnes]'
 
 
 # SCENARIO 1 ***************

@@ -316,7 +316,7 @@ class Simulation:
         
 
 
-    def calculateMassFlow(self, weibullInputParams = None, 
+    def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None, 
                           bifacialityfactors = None, reducecapacity = True, debugflag=False):
         '''
         Function takes as input a baseline dataframe already imported, 
@@ -331,6 +331,13 @@ class Simulation:
             Irena 2016 values beta = 30. If weibullInputParams = None,
             alfa and beta are calcualted from the t50 and t90 columns on the
             module baseline.
+        scenarios : None
+            string with the scenario name or list of strings with
+            scenarios names to loop over. Must exist on the PV ICE object.
+        materials : None
+            string with the material name or list of strings with the
+            materials names to loop over. Must exists on the PV ICE object 
+            scenario(s) modeled.
         bifacialityfactors : str
             File with bifacialtiy factors for each year under consideration
         
@@ -342,8 +349,13 @@ class Simulation:
         
         '''
         
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
         
-        for scen in self.scenario:
+        for scen in scenarios:
             
             print("Working on Scenario: ", scen)
             print("********************")
@@ -357,16 +369,26 @@ class Simulation:
                 df['irradiance_stc'] = 1000.0 # W/m^2
 
             # Renaming and re-scaling
-            df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
             df['t50'] = df['mod_reliability_t50']
             df['t90'] = df['mod_reliability_t90']
             
             # Calculating Area and Mass
-            if reducecapacity:
-                df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/df['irradiance_stc'] # m^2                
+            
+            if 'Mass_[MetricTonnes]' in df:
+                df['new_Installed_Capacity_[W]'] = 0
+                df['new_Installed_Capacity_[MW]'] = 0
+                df['Area'] = df['Mass_[MetricTonnes]']
+                print("Warning, this is for special debuging of Wambach Procedure."+
+                      "Make sure to use Wambach Module")
             else:
-                df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/1000.0 # m^2
-                
+                df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
+
+                if reducecapacity:
+                    df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/df['irradiance_stc'] # m^2                
+                else:
+                    df['Area'] = df['new_Installed_Capacity_[W]']/(df['mod_eff']*0.01)/1000.0 # m^2
+            
+                    
             df['Area'] = df['Area'].fillna(0) # Chagne na's to 0s.
 
             # Calculating Wast by Generation by Year, and Cumulative Waste by Year.
@@ -403,7 +425,7 @@ class Simulation:
 
                 x = np.clip(df.index - generation, 0, np.inf)
                 cdf = list(map(f, x))
-#                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
+                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
 
                 activearea = row['Area']
                 if np.isnan(activearea):
@@ -429,7 +451,7 @@ class Simulation:
                     else:
                         active += 1
                         activeareaprev = activearea                            
-                        activearea = activearea*(1-cdf[age]*(1-df.iloc[age]['mod_Repair']*0.01))
+                        activearea = activearea-row['Area']*pdf[age]+row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01                        
                         arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
                         arearepaired.append(arearepaired_failure)
                         arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
@@ -451,7 +473,7 @@ class Simulation:
                     fixinitialareacount = next((i for i, e in enumerate(x) if e), None) - 1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
                     areapowergen[fixinitialareacount] = (areapowergen[fixinitialareacount] +  
-                                         row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])
+                                         row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])   
                 except:
                     # Last value does not have a xclip value of nonzero so it goes
                     # to except. But it also means the loop finished for the calculations
@@ -540,7 +562,13 @@ class Simulation:
             # Material Loop#
             ################
 
-            for mat in self.scenario[scen].material:
+            if materials is None:
+                materials = list(self.scenario[scenarios[0]].material.keys())
+            else:
+                if isinstance(materials, str):
+                    materials = [materials]
+            
+            for mat in materials:
 
                 print("==> Working on Material : ", mat)
 
@@ -641,20 +669,25 @@ class Simulation:
                 self.scenario[scen].material[mat].materialdata = dm
 
     
-    def scenMod_IRENIFY(self, scens=None, ELorRL='RL'):
+    def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
         
         if ELorRL == 'RL':
             weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
+            print("Using Irena Regular Loss Assumptions")
         if ELorRL == 'EL':
-            weibullInputParams = {'alpha': 2.49, 'beta': 30}  # Regular-loss scenario IRENA
-        
-        if scens is None:
-            scens = list(self.scenario.keys())
+            weibullInputParams = {'alpha': 2.4928, 'beta': 30}  # Regular-loss scenario IRENA
+            print("Using Irena Early Loss Assumptions")
+            
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
 
-        for scen in scens:
+        for scen in scenarios:
             self.scenario[scen].data['weibull_alpha'] = weibullInputParams['alpha']
             self.scenario[scen].data['weibull_beta'] = weibullInputParams['beta']
-            self.scenario[scen].data['mod_lifetime'] = 40
+            self.scenario[scen].data['mod_lifetime'] = 40.0
             self.scenario[scen].data['mod_MFG_eff'] = 100.0
             
             for mat in self.scenario[scen].material:
@@ -662,10 +695,229 @@ class Simulation:
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
               
         return
+
+
+    def check_Years_dataandMaterials(self, scenarios=None, materials=None):
+        '''
+        '''
+        print ("Not Done")
+
+    def trim_Years( self, startYear=None, endYear=None, aggregateInstalls=False, 
+                   averageEfficiency=False, averageMaterialData = False, methodAddedYears='repeat', 
+                   scenarios=None, materials=None):
+        '''
         
-        
-    def plotScenariosComparison(self, keyword=None):
+        methodStart : str
+            'trim' or 'aggregate'. Trim cuts the values before the year specified.
+            Aggregate sums the values (if any) up to the year specified and sets it
+            in that year. No backfilling of data enabled at the moment.
+        methodEnd : str
+            'repeat' or 'zeroes' only options at the moment. 
+            'repeat' Increases to the endYear by repeating the last value. 
+            zeroes places zeroes.
+            
+        '''
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        scen0 = scenarios[0]
+        dataStartYear = int(self.scenario[scen0].data.iloc[0]['year'])
+        dataEndYear = int(self.scenario[scen0].data.iloc[-1]['year'])
+
+        if startYear is None:
+            startYear = dataStartYear
+            print("startYear not provided. Setting to start year of Module data", startYear)
+
+        if endYear is None:
+            endYear = dataEndYear
+            print("endYear not provided. Setting to end year of Module data", endYear)
+
+        startYear = startYear
+        endYear = endYear
+
+
+        for scen in scenarios:
+            baseline = self.scenario[scen].data
+            
+            if int(startYear) < int(dataStartYear):
+                print("ADD YEARS HERE. not done yet")
+
+            if int(endYear) > int(dataEndYear):
+                print("ADD YEARS HERE. not done yet")
+
+            # Add check if data does not need to be reduced to not do these.
+            reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
+
+            if aggregateInstalls:
+                prev = baseline.loc[(baseline['year']<startYear)].sum()
+                reduced.loc[reduced['year'] == startYear, 'new_Installed_Capacity_[MW]'] = prev['new_Installed_Capacity_[MW]']
+            
+            if averageEfficiency:
+                prev = baseline.loc[(baseline['year']<startYear)].mean()
+                reduced.loc[reduced['year'] == startYear, 'mod_eff	'] = prev['mod_eff	']
+                
+            reduced.reset_index(drop=True, inplace=True)
+            self.scenario[scen].data = reduced #reassign the material data to the simulation
+
+            for mat in self.scenario[scen].material:
+                if int(startYear) < int(dataStartYear):
+                    print("ADD YEARS HERE. not done yet")
     
+                if int(endYear) > int(dataEndYear):
+                    print("ADD YEARS HERE. not done yet")
+    
+                matdf = self.scenario[scen].material[mat].materialdata #pull out the df
+                reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
+                
+                if averageMaterialData == 'average':
+                    prev = matdf.loc[(baseline['year']<startYear)].mean()
+                    matkeys = list(reduced.keys())[1:12]
+                    for matkey in matkeys: # skipping year (0). Skipping added columsn from mass flow
+                        reduced.loc[reduced['year'] == startYear, matkey] = prev[matkey]
+                
+                reduced.reset_index(drop=True, inplace=True)
+                self.scenario[scen].material[mat].materialdata = reduced #reassign the material data to the simulation
+            
+
+    def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
+        
+        if ELorRL == 'RL':
+            weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
+            print("Using Irena Regular Loss Assumptions")
+        if ELorRL == 'EL':
+            weibullInputParams = {'alpha': 2.4928, 'beta': 30}  # Regular-loss scenario IRENA
+            print("Using Irena Early Loss Assumptions")
+            
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        for scen in scenarios:
+            self.scenario[scen].data['weibull_alpha'] = weibullInputParams['alpha']
+            self.scenario[scen].data['weibull_beta'] = weibullInputParams['beta']
+            self.scenario[scen].data['mod_lifetime'] = 40.0
+            self.scenario[scen].data['mod_MFG_eff'] = 100.0
+            
+            for mat in self.scenario[scen].material:
+                self.scenario[scen].material[mat].materialdata['mat_MFG_eff'] = 100.0   
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+              
+        return
+
+
+
+    def scenMod_PerfectManufacturing(self, scenarios=None):
+        
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        for scen in scenarios:
+            self.scenario[scen].data['mod_MFG_eff'] = 100.0
+            
+            for mat in self.scenario[scen].material:
+                self.scenario[scen].material[mat].materialdata['mat_virgin_eff'] = 100.0   
+                self.scenario[scen].material[mat].materialdata['mat_MFG_eff'] = 100.0   
+        return
+
+    def scenMod_noCircularity(self, scenarios=None):
+        
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        for scen in scenarios:
+            self.scenario[scen].data['mod_EOL_collection_eff '] = 0.0
+            self.scenario[scen].data['mod_EOL_collected_recycled'] = 0.0
+            self.scenario[scen].data['mod_Repair'] = 0.0
+            self.scenario[scen].data['mod_MerchantTail'] = 0.0
+            self.scenario[scen].data['mod_Reuse'] = 0.0
+
+            for mat in self.scenario[scen].material:
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EOL_collected_Recycled'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_recycling_eff'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EOL_Recycling_eff'] = 0.0 
+        return        
+
+    def aggregateResults(self, scenarios=None, materials=None):
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        if materials is None:
+            materials = list(self.scenario[scenarios[0]].material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+        keywds = ['mat_Virgin_Stock', 'mat_Total_Landfilled', 'mat_Total_EOL_Landfilled', 'mat_Total_MFG_Landfilled']
+        nice_keywds = ['VirginStock', 'WasteAll', 'WasteEOL', 'WasteMFG']
+
+        USyearly=pd.DataFrame()
+
+        for scen in scenarios:
+            for ii in range(len(keywds)):
+                keywd = keywds[ii]
+                nicekey = nice_keywds[ii]
+
+                for mat in materials:
+                    USyearly[nicekey+'_'+mat+'_'+self.name+'_'+scen] = self.scenario[scen].material[mat].materialdata[keywd]
+                filter_col = [col for col in USyearly if (col.startswith(nicekey) and col.endswith(self.name+'_'+scen)) ]
+                USyearly[nicekey+'_Module_'+self.name+'_'+scen] = USyearly[filter_col].sum(axis=1)
+                # 2DO: Add multiple objects option
+
+                
+        USyearly = USyearly/1000000  # This is the ratio for grams to Metric tonnes
+        USyearly = USyearly.add_suffix('_[Tonnes]')
+        
+        # Different units, so no need to do the ratio to Metric tonnes :p
+        keywd='new_Installed_Capacity_[MW]'
+        for scen in scenarios:
+            USyearly['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]
+ 
+        # Creating c umulative results
+        UScum = USyearly.copy()
+        UScum = UScum.cumsum()
+ 
+        # Adding Installed Capacity to US (This is already 'Cumulative') so not including it in UScum
+        keywd='Installed_Capacity_[W]'
+        for scen in scenarios:
+            USyearly['Capacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]/1e6
+
+        # Reindexing and Merging
+        USyearly.index = self.scenario[scen].data['year']
+        UScum.index = self.scenario[scen].data['year']
+        
+        self.USyearly = USyearly
+        self.UScum = UScum
+        
+        return USyearly, UScum
+ 
+    def plotScenariosComparison(self, keyword=None, scenarios=None):
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+                
         if keyword is None:
             scens = list(self.scenario.keys())[0]
             print("Choose one of the keywords: ", list(self.scenario[scens].data.keys())) 
@@ -675,7 +927,7 @@ class Simulation:
        
         plt.figure()
     
-        for scen in self.scenario:
+        for scen in scenarios:
             plt.plot(self.scenario[scen].data['year'],self.scenario[scen].data[keyword], label=scen)
         plt.legend()
         plt.xlabel('Year')
@@ -683,9 +935,126 @@ class Simulation:
         plt.ylabel(yunits)        
 
 
+    def plotMetricResults(self):
+        from plotly.subplots import make_subplots
+       # import plotly.graph_objects as go
 
+        
+        y1 = self.plotMaterialResults(keyword='VirginStock', yearlyorcumulative='yearly') 
+        y2 = self.plotMaterialResults(keyword='WasteAll', yearlyorcumulative='yearly')
+        y3 = self.plotMaterialResults(keyword='WasteEOL', yearlyorcumulative='yearly')
+        y4 = self.plotMaterialResults(keyword='WasteMFG', yearlyorcumulative='yearly')
+        c1 = self.plotMaterialResults(keyword='VirginStock', yearlyorcumulative='cumulative')
+        c2 = self.plotMaterialResults(keyword='WasteAll', yearlyorcumulative='cumulative')
+        c3 = self.plotMaterialResults(keyword='WasteEOL', yearlyorcumulative='cumulative')
+        c4 = self.plotMaterialResults(keyword='WasteMFG', yearlyorcumulative='cumulative')
+        ic = self.plotInstalledCapacityResults()
+        
+    def plotMaterialResults(self, keyword, yearlyorcumulative='yearly', cumplot=False):
+        import plotly.express as px
+        import re
+        
+        if yearlyorcumulative == 'yearly':
+            data = self.USyearly
+        else:
+            data = self.UScum
 
-    def plotMaterialComparisonAcrossScenarios(self, material = None, keyword=None):
+        if keyword is None:
+            print("keyword options are :" 'VirginStock', 'WasteALL', 'WasteEOL', 'WasteMFG')
+            return
+            #TODO: add a split to first bracket and print unique values option and return.
+            
+        filter_col = [col for col in data if col.startswith(keyword)]
+        
+        # Getting Title, Y-Axis Labels, and Legend Readable
+        titlekeyword = str.capitalize(yearlyorcumulative) + re.sub( r"([A-Z])", r" \1", keyword)
+        units = filter_col[0].split('_')[-1]
+        
+        mylegend = [col.split('_')[1:] for col in filter_col]
+        mylegend = [col[:-1] for col in mylegend]
+        mylegend = [' '.join(col) for col in mylegend]
+        mylegend = [str.capitalize(col) for col in mylegend]
+
+        fig = px.line(data[filter_col], template="plotly_white")
+        
+        fig.update_layout(
+            title=titlekeyword,
+            xaxis_title="Year", 
+            yaxis_title=units
+        )
+        
+        for idx, name in enumerate(mylegend):
+            fig.data[idx].name = name
+            fig.data[idx].hovertemplate = name
+        
+        if cumplot:
+            return fig
+        else:
+            fig.show()    
+        return
+    
+    def plotInstalledCapacityResults(self, cumplot=False):
+        # TODO: Add scenarios input to subselect which ones to plot.
+
+        import plotly.express as px
+        
+        datay = self.USyearly
+        datac = self.UScum
+        
+        filter_colc = [col for col in datac if col.startswith('newInstalledCapacity')]
+        filter_coly = [col for col in datay if col.startswith('Capacity')]
+
+        datay = datay[filter_coly].copy()
+        mylegend = [col.split('_')[1:] for col in datay]
+        mylegend = [col[:-1] for col in mylegend]
+        mylegend = [str(col)[2:-2] for col in mylegend]
+        mylegendy = ['Cumulative New Installs, '+col for col in mylegend]
+
+        print(mylegend)
+        
+        datac = datac[filter_colc].copy()
+        mylegend = [col.split('_')[1:] for col in datac]
+        mylegend = [col[:-1] for col in mylegend]
+        mylegend = [str(col)[2:-2] for col in mylegend]
+        mylegendc = ['Capacity, '+col for col in mylegend]
+
+        data = datay.join(datac)
+        mylegend = mylegendy + mylegendc
+        
+        titlekeyword = 'Installed Capacity and Cumulative new Installs'
+
+            
+        # Getting Title, Y-Axis Labels, and Legend Readable
+        units = filter_colc[0].split('_')[-1]
+        
+
+        
+        fig = px.line(data, template="plotly_white")
+        
+        fig.update_layout(
+            title=titlekeyword,
+            xaxis_title="Year", 
+            yaxis_title=units
+        )
+        
+        for idx, name in enumerate(mylegend):
+            fig.data[idx].name = name
+            fig.data[idx].hovertemplate = name
+            
+        if cumplot:
+            return fig
+        else:
+            fig.show()    
+        return
+        
+
+    def plotMaterialComparisonAcrossScenarios(self, keyword=None, scenarios=None, material = None):
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
     
         if keyword is None:
             scens = list(self.scenario.keys())[0]
@@ -693,17 +1062,23 @@ class Simulation:
             print("Choose one of the keywords: ",  list(self.scenario[scens].material[mats].materialdata.keys())) 
             return
 
+
         if material is None:
             scens = list(self.scenario.keys())[0]
             mats = list(self.scenario[scens].material.keys())
             print("Choose one of the Materials: ", mats) 
             return
-        
+        else:
+            if isinstance(material, str) is False: 
+                mats = list(self.scenario[scens].material.keys())
+                print("Can only pass one material name (str). Choose one of the Materials: ", mats) 
+                return
+
         yunits = _unitReferences(keyword)
 
         plt.figure()
     
-        for scen in self.scenario:
+        for scen in scenarios:
             plt.plot(self.scenario[scen].data['year'], self.scenario[scen].material[material].materialdata[keyword], label=scen)
             plt.legend()
     
@@ -741,6 +1116,17 @@ class Scenario(Simulation):
     
     def addMaterial(self, materialname, file=None):
         self.material[materialname] = Material(materialname, file)
+
+    def addMaterials(self, materials, baselinefolder=None, nameformat=None):
+        
+        if baselinefolder is None:
+            baselinefolder = r'..\..\baselines'    
+
+        if nameformat is None:
+            nameformat = r'\baseline_material_{}.csv'
+        for mat in materials:
+            filemat = baselinefolder + nameformat.format(mat)
+            self.material[mat] = Material(mat, filemat)
     
     def __getitem__(self, key):
         return getattr(self, key)
@@ -851,6 +1237,37 @@ def weibull_pdf(alpha, beta):
         return (alpha/np.array(x)) * ((np.array(x)/beta)**alpha) * (np.exp(-(np.array(x)/beta)**alpha))
     
     return pdf
+
+def weibull_pdf_vis(alpha, beta, xlim=56):
+    r''' Returns the CDF for a weibull distribution of 1 generation
+    so it can be plotted.
+    
+    Parameters
+    ----------
+    alpha : float
+        Shape parameter `alpha` for weibull distribution.
+    beta : float
+        Scale parameter `beta` for weibull distribution. Often exchanged with ``lifetime``
+        like in Irena 2016, beta = 30.
+    xlim : int
+        Number of years to calculate the distribution for. i.e. x-axis limit. 
+
+    Returns
+    -------
+    idf : list
+        List of weibull cumulative distribution values for year 0 until xlim.
+
+    '''
+
+    dfindex = pd.RangeIndex(0,xlim,1)
+    x = np.clip(dfindex - 0, 0, np.inf)
+
+    if alpha and beta:
+        i = weibull_pdf(alpha, beta)
+    
+    idf = list(map(i, x))
+    
+    return idf
 
 
 def weibull_cdf_vis(alpha, beta, xlim=56):

@@ -35,7 +35,7 @@ density_si = 2.3290 #g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/
 #first we input the market share data for mcSi and monoSi, read in from csv
 cwd = os.getcwd() #grabs current working directory
 skipcols=['Source']
-mrktshr_cellsize = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/MarketShare_CellSize.csv",
+mrktshr_cellsize = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/MarketShare_CellSize.csv",
                                index_col='Year', usecols=lambda x: x not in skipcols)
 mrktshr_cellsize /=100 #turn whole numbers into decimal percentages
 #print(mrktshr_cellsize)
@@ -148,7 +148,7 @@ print(df_avgcell)
 
 #read in a csv that was copied from CE Data google sheet
 cwd = os.getcwd() #grabs current working directory
-techmarketshare = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/ModuleType_MarketShare.csv",index_col='Year')
+techmarketshare = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/ModuleType_MarketShare.csv",index_col='Year')
 #this file path navigates from current working directory back up 2 folders, and over to the csv
 techmarketshare /=100 #turn whole numbers into decimal percentages
 print(techmarketshare)
@@ -173,7 +173,7 @@ labelnames_mcSi = [e[5:] for e in mcSikeys]
 #print(monoSikeys)
 
 
-# In[9]:
+# In[13]:
 
 
 #aggregate all the columns of mono or mcSi into one averaged market share
@@ -187,17 +187,19 @@ est_mrktshrs = pd.concat([est_mktshr_monoSi,est_mktshr_mcSi], axis=1) #concatina
 est_mrktshrs.columns = ['monoSi','mcSi'] #name the columns
 
 #plot individuals AND average aggregate
-plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[0]],lw=2,marker='o',label=labelnames[0])
-plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[1]],lw=2,marker='D',label=labelnames[1])
-plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[2]],lw=2,marker='P',label=labelnames[2])
-plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[3]],lw=2,marker='^',label=labelnames[3])
-plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[4]],lw=2,marker='o',label=labelnames[4])
-plt.plot(est_mrktshrs.index,est_mrktshrs['monoSi'],'--k', marker='s',label='avgd marketshare of mono')
-plt.legend()
-plt.xlim([1979,2031])
-plt.title('monoSi Market Share by Source')
+plt.rcParams.update({'font.size': 22})
+plt.rcParams['figure.figsize'] = (15, 6)
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[0]]*100,lw=3,marker='o', ms=10,label=labelnames[0])
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[1]]*100,lw=3,marker='D',ms=10,label=labelnames[1])
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[2]]*100,lw=3,marker='P',ms=12,label=labelnames[2])
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[3]]*100,lw=3,marker='^',ms=10,label=labelnames[3])
+plt.plot(monoSi_cols.index,monoSi_cols[monoSikeys[4]]*100,lw=3,marker='v',ms=10,label=labelnames[4])
+plt.plot(est_mrktshrs.index,est_mrktshrs['monoSi']*100,'--k',lw=2, marker='s',ms=5, label='Baseline')
+plt.legend(bbox_to_anchor=(0, -0.2, 1, 0), loc=2, mode="expand", ncol=2)
+plt.xlim([1979,2032])
+#plt.title('monoSi Market Share by Source')
 plt.xlabel('Year')
-plt.ylabel('Market Share (%)')
+plt.ylabel('Market Share of Mono-Si [%]')
 
 
 # In[10]:
@@ -247,7 +249,7 @@ est_mrktshrs['mcSi_scaled']= est_mrktshrs['Scale']*est_mrktshrs['mcSi']
 
 scaled_marketshares = est_mrktshrs[['monoSi_scaled','mcSi_scaled']]
 scaled_marketshares.columns = ['monoSi','mcSi']
-scaled_marketshares.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv', index=True)
+scaled_marketshares.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv', index=True)
 scaled_marketshares['Total'] = scaled_marketshares['monoSi']+scaled_marketshares['mcSi']
 #print(scaled_marketshares)
 plt.plot(scaled_marketshares['monoSi'],label='MonoSi')
@@ -314,7 +316,7 @@ df_cellarea_cm2 = df_cellarea_mm2*0.01 #mm^2 to cm^2
 # calculate # cells/m^2 at this point, rather than using the # cells per module factor
 df_cellperm2 = 1/df_cellarea_m2
 #print(df_cellperm2)
-df_cellperm2.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_cell_per_m2.csv', index=True)
+df_cellperm2.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_cell_per_m2.csv', index=True)
 
 
 # g of Si per cell
@@ -326,7 +328,7 @@ df_cellperm2.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_cell_
 
 #read in a csv that was copied from CE Data google sheet where the marketshare weighting was done
 cwd = os.getcwd() #grabs current working directory
-wafer_thickness = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/Wafer_thickness.csv",
+wafer_thickness = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/Wafer_thickness.csv",
                               index_col='Year', usecols=lambda x: x not in skipcols)
 #this file path navigates from current working directory back up 2 folders, and over to the csv
 #convert micron to cm
@@ -339,7 +341,7 @@ wafer_thick_cm = wafer_thickness/10000 # microns in a cm
 
 #There are missing data, so we will interpolate linearly for missing years
 wafer_thick_cm = wafer_thick_cm.interpolate(method='linear',axis=0)
-#print(wafer_thick_cm)
+print(wafer_thick_cm)
 plt.plot(wafer_thick_cm, label='Wafer Thickness (cm)')
 plt.title('Wafer Thickness (cm)')
 
@@ -380,7 +382,7 @@ plt.ylabel('Silicon (grams/cell)')
 
 # Now take the above mass of silicon per cell and multiply it by the factor of number of cells per m^2 of module
 
-# In[20]:
+# In[ ]:
 
 
 df_Simass_percell.columns = df_cellperm2.columns = ['Si_g'] #rename to a common name
@@ -399,7 +401,7 @@ plt.ylabel('Silicon (grams/m^2)')
 
 # For post-2030, the mass per m^2 of silicon was held constant through 2050 due to the uncertainty about future technology trends. For example, there are at least 3 different cell sizes which are vying for becoming the next mainstream technology, the move to all bifiacial might affect silicon use differently, and the half-cut and smaller cell technologies will also have an affect. Therefore, we have held it constant from 2030 onward, and this assumption can be modified by the user.
 
-# In[21]:
+# In[ ]:
 
 
 #understanding what influences the changes in Si mass/module m^2
@@ -412,4 +414,14 @@ plt.legend()
 plt.title('Mass of Si per module area by constituent parts')
 plt.xlim([1995,2030])
 plt.xlabel('Year')
+
+
+# # Bifacial Trend - 50% by 2030
+
+# Along with glass-glass packaging and reduced aluminum framing for bifacial modules, the silicon cell requirements for bifaciality differ from standard mono-Si monofacial cells. First, we'll calculate silicon mass per m^2 for bifacial modules, then we will market share weight this with other silicon cell technology, such that bifacial is 50% of the cell/module market by 2030, then hold constant through 2050.
+
+# In[ ]:
+
+
+
 

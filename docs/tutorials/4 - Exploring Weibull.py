@@ -11,25 +11,28 @@
 # Below we show a couple ways of passing the parameters, plot a comparison between different literature values, and highlight the significance of T50 and T90.
 # 
 
-# In[1]:
+# In[11]:
 
 
 import PV_ICE
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import os,sys
 
+cwd = os.getcwd() #grabs current working directory
+print(cwd)
 r1 = PV_ICE.Simulation(name='Simulation1')
 
-baselinefile = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\baselines\baseline_modules_US.csv'
-materialfile = r'C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\PV_ICE\baselines\baseline_material_glass.csv'
+baselinefile = cwd+'/../../PV_ICE/baselines/baseline_modules_US.csv'
+materialfile = cwd+'/../../PV_ICE/baselines/baseline_material_glass.csv'
 r1.createScenario(name='standard', file=baselinefile)
 r1.scenario['standard'].addMaterial('glass', file=materialfile)
 
 
 # ## A. Passing Alpha and Beta values
 
-# In[2]:
+# In[15]:
 
 
 weibullInputParams = {'alpha': 3.4,
@@ -40,13 +43,13 @@ print(r1.scenario['standard'].data.WeibullParams.head())
 
 # ## B. Internally calculated Weibull with t50 and t90
 
-# In[3]:
+# In[17]:
 
 
 r1.calculateMassFlow()  # Note we are not passing weibullInputParams, 
 #so it defaults to clculating alpha and beta from the T50 and t90 passed.
 
-print(r1.scenario['standard'].data.WeibullParams.head())
+print(r1.scenario['standard'].data.WeibullParams)
 
 
 # This is what T50, T90 look like for this dataset, and the alpha and beta values resulting for each year.
