@@ -505,8 +505,10 @@ newdf.to_csv('PV ICE Demand as Percentage of Mining.csv')
 
 # ## Figure 19. Annual and cumulative PV EOL material mass by Solar Futures scenario through 2050
 
-# In[83]:
+# In[19]:
 
+
+# 7 Materials
 
 plt.rcParams.update({'font.size': 15})
 plt.rcParams['figure.figsize'] = (15, 8)
@@ -624,11 +626,146 @@ print("\t Decarb: ", round(UScum['WasteEOL_Module_USA_95-by-35.Adv_[Tonnes]'].il
 print("\t Decarb+E: ", round(UScum['WasteEOL_Module_USA_95-by-35_Elec.Adv_DR_[Tonnes]'].iloc[-1]/1e6,2), ' Million Tonnes')
 
 
+# In[42]:
+
+
+USyearly.keys()
+
+
+# In[48]:
+
+
+# 5 Materials Only
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (15, 8)
+keyw='WasteEOL_'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
+
+########################    
+# SUBPLOT 1
+########################
+#######################
+
+foo = pd.DataFrame() 
+    
+# Loop over Keywords
+ii = 0 
+# Loop over SF Scenarios
+
+# SCENARIO 1 ***************
+kk = 0
+obj = SFscenarios[kk]
+matindex = np.array(rr.scenario[obj].data['year'].tolist())
+modulemat = np.array(USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']/1e6)
+modulemat = np.array((USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'backsheet_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'encapsulant_USA_'+obj+'_[Tonnes]'])
+                     /1e6)
+glassmat = np.array(USyearly[keyw+'glass_USA_'+obj+'_[Tonnes]']/1e6)
+a0.plot(matindex, modulemat, 'k.', linewidth=5, label='Reference: module')
+a0.plot(matindex, glassmat, 'k', linewidth=5, label='Reference: glass')
+a0.fill_between(matindex, glassmat, modulemat, color='k', alpha=0.3, interpolate=True)
+
+# SCENARIO 2 ***************
+kk = 1
+obj = SFscenarios[kk]
+modulemat = np.array(USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']/1e6)
+modulemat = np.array((USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'backsheet_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'encapsulant_USA_'+obj+'_[Tonnes]'])
+                     /1e6)
+glassmat = np.array(USyearly[keyw+'glass_USA_'+obj+'_[Tonnes]']/1e6)
+a0.plot(matindex, modulemat, 'g.', linewidth=5, label='Decarb.: module')
+a0.plot(matindex, glassmat, 'g', linewidth=5, label='Decarb.: glass')
+a0.fill_between(matindex, glassmat, modulemat, color='g', alpha=0.3, interpolate=True)
+
+# SCENARIO 3 ***************
+kk = 2
+obj = SFscenarios[kk]
+modulemat = np.array(USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']/1e6)
+modulemat = np.array((USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'backsheet_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'encapsulant_USA_'+obj+'_[Tonnes]'])
+                     /1e6)
+glassmat = np.array(USyearly[keyw+'glass_USA_'+obj+'_[Tonnes]']/1e6)
+a0.plot(matindex, modulemat, 'c.', linewidth=5, label='Decarb+E: module')
+a0.plot(matindex, glassmat, 'c', linewidth=5, label='Decarb+E: glass')
+a0.fill_between(matindex, glassmat, modulemat, color='c', alpha=0.3, interpolate=True)
+
+a0.legend(loc='upper left')
+a0.set_title('Yearly End of Life Material by Scenario')
+a0.set_ylabel('Mass [Million Tonnes]')
+a0.set_xlabel('Years')
+a0.minorticks_on()
+
+
+########################    
+# SUBPLOT 2
+########################
+#######################
+# Calculate    
+materials = ['glass', 'aluminium', 'silicon', 'copper', 'silver']
+
+cumulations2050 = {}
+for ii in range(0, len(materials)):
+    matcum = []
+    for kk in range (0, 3):
+        obj = SFscenarios[kk]
+        matcum.append(UScum[keyw+materials[ii]+'_USA_'+obj+'_[Tonnes]'].loc[2050])
+    cumulations2050[materials[ii]] = matcum
+
+dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
+dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
+
+dfcumulations2050['bottom1'] = dfcumulations2050['glass']
+dfcumulations2050['bottom2'] = dfcumulations2050['bottom1']+dfcumulations2050['aluminium']
+dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['silicon']
+dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
+
+
+
+## Plot BARS Stuff
+ind=np.arange(3)
+width=0.35 # width of the bars.
+p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
+p1 = a1.bar(ind, dfcumulations2050['aluminium'], width,
+             bottom=dfcumulations2050['bottom1'])
+p2 = a1.bar(ind, dfcumulations2050['silicon'], width,
+             bottom=dfcumulations2050['bottom2'])
+p3 = a1.bar(ind, dfcumulations2050['copper'], width,
+             bottom=dfcumulations2050['bottom3'])
+p4 = a1.bar(ind, dfcumulations2050['silver'], width,
+             bottom=dfcumulations2050['bottom4'])
+
+a1.yaxis.set_label_position("right")
+a1.yaxis.tick_right()
+a1.set_ylabel('Cumulative End of Life Material by 2050 [Million Tonnes]')
+
+plt.sca(a1)
+plt.xticks(range(3), ['Ref.', 'Decarb.', 'Decarb+E.'], color='black', rotation=0)
+plt.tick_params(axis='y', which='minor', bottom=False)
+a1.legend((p4[0], p3[0], p2[0], p1[0], p0[0] ), ('Silver', 'Copper', 'Silicon','Aluminum','Glass'))
+
+f.tight_layout()
+f.savefig('PV ICE SF Figure 19 - Yearly EoL Waste by Scenario and Cumulatives_Nation.png', dpi=600)
+plt.show()
+
+print("CUMULATIVE 2050 End of Life Material by Scenario")
+print("*************************")
+print("\t Reference: ", round(UScum['WasteEOL_Module_USA_Reference.Mod_[Tonnes]'].iloc[-1]/1e6,2), ' Million Tonnes')
+print("\t Decarb: ", round(UScum['WasteEOL_Module_USA_95-by-35.Adv_[Tonnes]'].iloc[-1]/1e6,2), ' Million Tonnes')
+print("\t Decarb+E: ", round(UScum['WasteEOL_Module_USA_95-by-35_Elec.Adv_DR_[Tonnes]'].iloc[-1]/1e6,2), ' Million Tonnes')
+
+
 # # Figure 20. Annual and cumulative mass of c-Si PV manufacturing scrap by Solar Futures scenario through 2050
 
-# In[84]:
+# In[ ]:
 
 
+# 7 Materials
 plt.rcParams.update({'font.size': 15})
 plt.rcParams['figure.figsize'] = (15, 8)
 keyw='WasteMFG_'
@@ -746,13 +883,135 @@ print("\t Decarb: ", round(UScum['WasteMFG_Module_USA_95-by-35.Adv_[Tonnes]'].il
 print("\t Decarb+E: ", round(UScum['WasteMFG_Module_USA_95-by-35_Elec.Adv_DR_[Tonnes]'].iloc[-1]/1e6,2), ' Million Tonnes')
 
 
+# In[49]:
+
+
+# 5 Materials Only
+
+plt.rcParams.update({'font.size': 15})
+plt.rcParams['figure.figsize'] = (15, 8)
+keyw='WasteMFG_'
+materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
+
+f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
+
+########################    
+# SUBPLOT 1
+########################
+#######################
+
+foo = pd.DataFrame() 
+    
+# Loop over Keywords
+ii = 0 
+# Loop over SF Scenarios
+
+# SCENARIO 1 ***************
+kk = 0
+obj = SFscenarios[kk]
+matindex = np.array(rr.scenario[obj].data['year'].tolist())
+modulemat = np.array(USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']/1e6)
+modulemat = np.array((USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'backsheet_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'encapsulant_USA_'+obj+'_[Tonnes]'])
+                     /1e6)
+glassmat = np.array(USyearly[keyw+'glass_USA_'+obj+'_[Tonnes]']/1e6)
+a0.plot(matindex, modulemat, 'k.', linewidth=5, label='Reference: module')
+a0.plot(matindex, glassmat, 'k', linewidth=5, label='Reference: glass')
+a0.fill_between(matindex, glassmat, modulemat, color='k', alpha=0.3, interpolate=True)
+
+# SCENARIO 2 ***************
+kk = 1
+obj = SFscenarios[kk]
+modulemat = np.array(USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']/1e6)
+modulemat = np.array((USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'backsheet_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'encapsulant_USA_'+obj+'_[Tonnes]'])
+                     /1e6)
+glassmat = np.array(USyearly[keyw+'glass_USA_'+obj+'_[Tonnes]']/1e6)
+a0.plot(matindex, modulemat, 'g.', linewidth=5, label='Decarb.: module')
+a0.plot(matindex, glassmat, 'g', linewidth=5, label='Decarb.: glass')
+a0.fill_between(matindex, glassmat, modulemat, color='g', alpha=0.3, interpolate=True)
+
+# SCENARIO 3 ***************
+kk = 2
+obj = SFscenarios[kk]
+modulemat = np.array(USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']/1e6)
+modulemat = np.array((USyearly[keyw+'Module_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'backsheet_USA_'+obj+'_[Tonnes]']-
+                      USyearly[keyw+'encapsulant_USA_'+obj+'_[Tonnes]'])
+                     /1e6)
+glassmat = np.array(USyearly[keyw+'glass_USA_'+obj+'_[Tonnes]']/1e6)
+a0.plot(matindex, modulemat, 'c.', linewidth=5, label='Decarb+E: module')
+a0.plot(matindex, glassmat, 'c', linewidth=5, label='Decarb+E: glass')
+a0.fill_between(matindex, glassmat, modulemat, color='c', alpha=0.3, interpolate=True)
+
+a0.legend(loc='upper left')
+a0.set_title('Yearly Manufacturing Scrap by Scenario')
+a0.set_ylabel('Mass [Million Tonnes]')
+a0.set_xlabel('Years')
+a0.minorticks_on()
+
+
+########################    
+# SUBPLOT 2
+########################
+#######################
+# Calculate    
+materials = ['glass', 'aluminium', 'silicon', 'copper', 'silver']
+
+cumulations2050 = {}
+for ii in range(0, len(materials)):
+    matcum = []
+    for kk in range (0, 3):
+        obj = SFscenarios[kk]
+        matcum.append(UScum[keyw+materials[ii]+'_USA_'+obj+'_[Tonnes]'].loc[2050])
+    cumulations2050[materials[ii]] = matcum
+
+dfcumulations2050 = pd.DataFrame.from_dict(cumulations2050) 
+dfcumulations2050 = dfcumulations2050/1000000   # in Million Tonnes
+
+dfcumulations2050['bottom1'] = dfcumulations2050['glass']
+dfcumulations2050['bottom2'] = dfcumulations2050['bottom1']+dfcumulations2050['aluminium']
+dfcumulations2050['bottom3'] = dfcumulations2050['bottom2']+dfcumulations2050['silicon']
+dfcumulations2050['bottom4'] = dfcumulations2050['bottom3']+dfcumulations2050['copper']
+
+
+## Plot BARS Stuff
+ind=np.arange(3)
+width=0.35 # width of the bars.
+p0 = a1.bar(ind, dfcumulations2050['glass'], width, color='c')
+p1 = a1.bar(ind, dfcumulations2050['aluminium'], width,
+             bottom=dfcumulations2050['bottom1'])
+p2 = a1.bar(ind, dfcumulations2050['silicon'], width,
+             bottom=dfcumulations2050['bottom2'])
+p3 = a1.bar(ind, dfcumulations2050['copper'], width,
+             bottom=dfcumulations2050['bottom3'])
+p4 = a1.bar(ind, dfcumulations2050['silver'], width,
+             bottom=dfcumulations2050['bottom4'])
+
+a1.yaxis.set_label_position("right")
+a1.yaxis.tick_right()
+a1.set_ylabel('Cumulative Manufacturing Scrap by 2050 [Million Tonnes]')
+
+plt.sca(a1)
+plt.xticks(range(3), ['Ref.', 'Decarb.', 'Decarb+E.'], color='black', rotation=0)
+plt.tick_params(axis='y', which='minor', bottom=False)
+a1.legend((p4[0], p3[0], p2[0], p1[0], p0[0] ), ('Silver', 'Copper', 'Silicon','Aluminum','Glass'))
+
+f.tight_layout()
+f.savefig('PV ICE SF Figure 20 - Yearly MFG Waste by Scenario and Cumulatives_Nation.png', dpi=600)
+
+plt.show()
+
+print("CUMULATIVE 2050 Manufacturing Scrap Material by Scenario")
+print("*************************")
+print("\t Reference: ", round(UScum['WasteMFG_Module_USA_Reference.Mod_[Tonnes]'].iloc[-1]/1e6,2), ' Million Tonnes')
+print("\t Decarb: ", round(UScum['WasteMFG_Module_USA_95-by-35.Adv_[Tonnes]'].iloc[-1]/1e6,2), ' Million Tonnes')
+print("\t Decarb+E: ", round(UScum['WasteMFG_Module_USA_95-by-35_Elec.Adv_DR_[Tonnes]'].iloc[-1]/1e6,2), ' Million Tonnes')
+
+
 # # Figure 22. Annual installations and decommissions for 2020 through 2050
-
-# In[ ]:
-
-
-
-
 
 # In[21]:
 
@@ -1135,13 +1394,13 @@ print("Table 7 Effective Capacity PV ICE, Decarb+E: ", round(USyearly['Capacity_
 
 # ## Table B - 4. Comparison of Cumulative U.S. EOL Material for Various Years
 
-# In[35]:
+# In[34]:
 
 
 UScum.filter(regex='WasteEOL_Module').loc[2050]
 
 
-# In[36]:
+# In[35]:
 
 
 #names2 = ['IrenaEL_Reference.Mod', 'IrenaEL_95-by-35.Adv', 'IrenaEL_95-by-35_Elec.Adv_DR']
@@ -1153,13 +1412,13 @@ names3 = ['IrenaEL_95-by-35.Adv', 'IrenaRL_95-by-35.Adv', 'USA_95-by-35.Adv']
 names = ['IrenaEL_95-by-35_Elec.Adv_', 'IrenaRL_95-by-35_Elec.Adv_DR', 'USA_95-by-35_Elec.Adv_DR']
 
 
-# In[37]:
+# In[36]:
 
 
 pd.options.display.float_format = '{:20,.2f}'.format
 
 
-# In[38]:
+# In[37]:
 
 
 yearlosslist=['2016_Early Loss', '2016_Regular Loss', '2016_PV_ICE',
@@ -1169,7 +1428,7 @@ yearlosslist=['2016_Early Loss', '2016_Regular Loss', '2016_PV_ICE',
  '2050_Early Loss', '2050_Regular Loss', '2050_PV_ICE']
 
 
-# In[40]:
+# In[38]:
 
 
 print("Figure 12 - Cumulative EOL Material 2016, 2020, 2030, 240, 2050")
@@ -1197,9 +1456,23 @@ asdf['CSA 2020 Lit'] = [0, 0, 0, 0,0,0, 1200000, 214900,0, 0, 0,0, 0,0,0]
 asdf
 
 
+# In[56]:
+
+
+print("Installed Capacity by 2050 comparison with IRENA")
+Irena2050InstalledCapacity = 0.512 # TW
+print('Ref: ', USyearly['Capacity_USA_'+SFscenarios[0]+'_[MW]'].loc[2050]/1e6*100/Irena2050InstalledCapacity-100, '%')
+print('Decarb: ', USyearly['Capacity_USA_'+SFscenarios[1]+'_[MW]'].loc[2050]/1e6*100/Irena2050InstalledCapacity-100, '%')
+print('Decarb+E: ',USyearly['Capacity_USA_'+SFscenarios[2]+'_[MW]'].loc[2050]/1e6*100/Irena2050InstalledCapacity-100, '%')
+
+print('Ref: ', USyearly['Capacity_USA_'+SFscenarios[0]+'_[MW]'].loc[2050]/1e6, '%')
+print('Decarb: ', USyearly['Capacity_USA_'+SFscenarios[1]+'_[MW]'].loc[2050]/1e6, '%')
+print('Decarb+E: ',USyearly['Capacity_USA_'+SFscenarios[2]+'_[MW]'].loc[2050]/1e6, '%')
+
+
 # # U.S. Annual Demand by Material for Select Years (metric tons)
 
-# In[41]:
+# In[39]:
 
 
 names = ['USA_Reference.Mod', 'USA_95-by-35.Adv', 'USA_95-by-35_Elec.Adv_DR']
@@ -1208,7 +1481,7 @@ mat = materials[0]
 scen=names[0]
 
 
-# In[68]:
+# In[40]:
 
 
 L1 = [2030,2040,2050]
@@ -1234,7 +1507,7 @@ df = pd.concat(frames, keys=materials)
 df
 
 
-# In[69]:
+# In[ ]:
 
 
 L1 = [2030,2040,2050]
@@ -1435,7 +1708,7 @@ plt.show()
 
 # # WASTE COMPARISON SIZE
 
-# In[75]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1453,7 +1726,7 @@ fig.savefig('PV ICE Fig_New_Installs_vs_InstalledCapacity_vs_Waste', dpi=600)
 plt.show()
 
 
-# In[76]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -1476,7 +1749,7 @@ axs.set_ylabel('Power [TW]')
 plt.show()
 
 
-# In[77]:
+# In[ ]:
 
 
 foo0 = (UScum['newInstalledCapacity_USA_'+SFscenarios[0]+'_[MW]']/1e6-USyearly['Capacity_USA_'+SFscenarios[0]+'_[MW]']/1e6).sum()
@@ -1485,7 +1758,7 @@ foo2 = (UScum['newInstalledCapacity_USA_'+SFscenarios[2]+'_[MW]']/1e6-USyearly['
 print(foo0, foo1, foo2)
 
 
-# In[78]:
+# In[ ]:
 
 
 E = (UScum['newInstalledCapacity_USA_Reference.Mod_[MW]']/1e6).sum()
@@ -1495,7 +1768,7 @@ print("Cumulative Waste", F)
 print("Fraction of Decomisioned to Installed Cumulative by 2050", F/E)
 
 
-# In[51]:
+# In[ ]:
 
 
 materials = ['Module', 'glass', 'aluminium', 'copper', 'silicon', 'silver', 'encapsulant', 'backsheet']
@@ -1622,7 +1895,7 @@ labs = [l.get_label() for l in lns]
 axs[2].legend(lns, labs, loc='upper center', bbox_to_anchor=(-0.95, -0.25),
           fancybox=True, shadow=True, ncol=5)
 
-fig.savefig(title_Method+' Fig_1x3_VirginvsWaste_Fraction_Nation.png', bbox_inches = "tight", dpi=600)
+fig.savefig('PV ICE Fig_1x3_VirginvsWaste_Fraction_Nation.png', bbox_inches = "tight", dpi=600)
 
 
 # In[ ]:
