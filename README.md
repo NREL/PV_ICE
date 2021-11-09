@@ -120,8 +120,8 @@ If you use PV_ICE in a published work, please cite:
 
 and also please also cite the DOI corresponding to the specific version of
 PV_ICE that you used. PV_ICE DOIs are listed at
-[Zenodo.org](https://zenodo.org/). For example for version 0.2.0:
+[Zenodo.org](https://zenodo.org/). For example for version 0.2.1:
 
-	Silvana Ayala, Heather Mirletz, & Acadia Hegedus. (2021). 
-	NREL/PV_ICE: Release version 2 (v0.2.0). Zenodo. 
-	https://doi.org/10.5281/zenodo.5196342
+	Silvana Ovaitt, Heather Mirletz. (2021). 
+	NREL/PV_ICE: Release version 2.1 (v0.2.1). Zenodo. 
+	https://doi.org/10.5281/zenodo.5659151
