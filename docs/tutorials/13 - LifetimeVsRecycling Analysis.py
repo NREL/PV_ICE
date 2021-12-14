@@ -383,7 +383,7 @@ r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 # ### Create lifetime and recycling ranges
 
-# In[12]:
+# In[6]:
 
 
 Lifetime_Range = pd.concat([pd.Series(range(15,30,3)),pd.Series(range(30,51,2))]) #this absolute lifetime values
@@ -396,7 +396,7 @@ Recycling_Range = pd.Series(range(0,105,5)) # this is absolute recycling values 
 #print(Recycling_Range)
 
 
-# In[13]:
+# In[7]:
 
 
 #list of material recycling variables
@@ -406,7 +406,7 @@ RecyclingYields = ['mat_MFG_scrap_Recycling_eff', 'mat_EOL_Recycling_eff']
 
 # Now some magic to automatically generate T50 and T90 values for each lifetime
 
-# In[14]:
+# In[8]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -417,7 +417,7 @@ reliability_baselines['mod_reliability_t50'] = r1.scenario['Decarb+E_PVICE_defau
 reliability_baselines['mod_reliability_t90'] = r1.scenario['Decarb+E_PVICE_defaults'].data['mod_reliability_t90']
 
 
-# In[15]:
+# In[9]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -551,7 +551,7 @@ yearlyRvL_identinstall = pd.read_csv(os.path.join(testfolder,'yearlyRvL-identins
 cumRvL_identinstall = pd.read_csv(os.path.join(testfolder,'cumulativeRvL-identinstall.csv'), index_col='year')
 
 
-# In[26]:
+# In[11]:
 
 
 #make a dataframe to become the multiIndex for heat map creation
@@ -615,7 +615,7 @@ print('Minimum virgin is '+str(round(np.min(heatdata_Virgin_pivot_ii).min(),0))+
 print('Maximum virgin is '+str(round(np.max(heatdata_Virgin_pivot_ii).max(),0))+' million metric tonnes')
 
 
-# In[135]:
+# In[69]:
 
 
 #Make heat maps with cumulative data
@@ -716,7 +716,7 @@ cumRvL_installcomp.to_csv(os.path.join(testfolder,'cumulativeRvL-installcomp.csv
 
 # Read the csvs back in for plotting (installation compensation calc runs a LONG time).
 
-# In[30]:
+# In[3]:
 
 
 yearlyRvL_installcomp = pd.read_csv(os.path.join(testfolder,'yearlyRvL-installcomp.csv'), index_col='year')
@@ -751,7 +751,7 @@ LifeRange_installsComped_TW_relative.plot(kind='bar')
 
 # #### Heat Map - Compensated Installs
 
-# In[91]:
+# In[12]:
 
 
 #cc = compensated capacity
@@ -785,7 +785,7 @@ heatdata_virgin_pivot_orig_cc = virgin_mat_demand_cc.unstack(level=0)
 heatdata_Virgin_pivot_cc = heatdata_virgin_pivot_orig_cc[::-1] #reverse order of recycling rate
 
 
-# In[89]:
+# In[13]:
 
 
 print('Minimum waste is '+str(round(np.min(heatdata_Waste_pivot_cc).min(),0))+' million metric tonnes')
@@ -794,7 +794,7 @@ print('Minimum virgin is '+str(round(np.min(heatdata_Virgin_pivot_cc).min(),0))+
 print('Maximum virgin is '+str(round(np.max(heatdata_Virgin_pivot_cc).max(),0))+' million metric tonnes')
 
 
-# In[132]:
+# In[78]:
 
 
 #Make heat maps with cumulative data
@@ -805,38 +805,41 @@ plt.style.use("seaborn")
 plt.rcParams['figure.figsize'] = (10, 18)
 fig,ax = plt.subplots(2, 1)
 sns.set(font_scale=1.5)
-color = plt.get_cmap('coolwarm')
-color.set_bad('white')
+
+#colors
+#color_w = plt.get_cmap()
+#color_w.set_bad('white')
 
 #Wastes
 plt.subplot(2,1,1)
 sns.heatmap(heatdata_Waste_pivot_cc, annot = False, 
-            cmap=color, #sns.diverging_palette(220, 20, n=200), 
+            cmap= sns.diverging_palette(220, 20, s=100,sep=1, n=50), 
             vmin= 0.0, #(round(np.min(heatdata_Waste_pivot_cc).min(),0)), 
             vmax= (round(np.max(heatdata_Waste_pivot_cc).max(),0)), 
             center = 9.959196 , #fix to be dynamic finding pvice value
-            cbar_kws={'label': 'Lifecycle Wastes by 2050 [Million Metric Tonnes]'})
-plt.title('Lifecycle Wastes')
-plt.ylabel('Recycling Rate (%)')
-plt.xlabel('Lifetime (years)')
+            cbar_kws={'label': 'Cumulative by 2050 [Million Metric Tonnes]'})
+plt.title('Lifecycle Wastes', fontsize=20)
+plt.ylabel('Recycling Rate (%)', fontsize=20)
+plt.xlabel('Lifetime (years)', fontsize=20)
 plt.yticks(rotation=0)
 #sns.heatmap(set_bad("white") 
-#plt.xticks(fontsize=14)
+plt.yticks(fontsize=20)
 #
+
 
 #Virgin Demands
 plt.subplot(2,1,2)
 sns.heatmap(heatdata_Virgin_pivot_cc, annot = False,
-           cmap='coolwarm', #sns.diverging_palette(220, 20, n=200), 
-            vmin= 20.0, #(round(np.min(heatdata_Virgin_pivot_cc).min(),0)), #using ii above
-            vmax=(round(np.max(heatdata_Virgin_pivot_cc).max(),0)),
+           cmap= sns.diverging_palette(255,0, s=100, sep=1, n=40), #color, #sns.color_palette("vlag", as_cmap=True)
+            vmin= 80.0 ,#(round(np.min(heatdata_Virgin_pivot_cc).min(),0)), #using ii above
+            vmax= (round(np.max(heatdata_Virgin_pivot_cc).max(),0)),
             center=96.685293, #fix to be dynamic
-           cbar_kws={'label': 'Virgin Material Demands by 2050 [Million Metric Tonnes]'})
-plt.title('Virgin Demands')
-plt.ylabel('Recycling Rate (%)')
-plt.xlabel('Lifetime (years)')
+           cbar_kws={'label': 'Cumulative by 2050 [Million Metric Tonnes]'})
+plt.title('Virgin Demands', fontsize=20)
+plt.ylabel('Recycling Rate (%)', fontsize=20)
+plt.xlabel('Lifetime (years)', fontsize=20)
 plt.yticks(rotation=0)
-#plt.xticks(fontsize=14)
+plt.yticks(fontsize=20)
 
 #Installed Capacity
 #plt.subplot(3,1,3)
@@ -847,7 +850,7 @@ plt.yticks(rotation=0)
 #plt.xlabel('Recycling Rate')
 #plt.yticks(rotation=0)
 
-fig.suptitle('2050 Cumulative Wastes and Material Demands:\n Compensated Installs', fontsize=22, x=0.45)
+fig.suptitle('2050 Cumulative Wastes and Material Demands:\n With Replacements', fontsize=22, x=0.45)
 plt.subplots_adjust(top=0.9)
 fig.tight_layout(h_pad=1)
 # set the spacing between subplots
