@@ -845,12 +845,16 @@ class Simulation:
 
             for mat in self.scenario[scen].material:
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycling_eff'] = 0.0 
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 0.0 
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 0.0 
+
                 self.scenario[scen].material[mat].materialdata['mat_EOL_collected_Recycled'] = 0.0 
-                self.scenario[scen].material[mat].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 0.0 
-                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_recycling_eff'] = 0.0 
                 self.scenario[scen].material[mat].materialdata['mat_EOL_Recycling_eff'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EOL_Recycled_into_HQ'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = 0.0 
+
+
         return        
 
     def aggregateResults(self, scenarios=None, materials=None):
@@ -888,18 +892,26 @@ class Simulation:
         USyearly = USyearly.add_suffix('_[Tonnes]')
         
         # Different units, so no need to do the ratio to Metric tonnes :p
-        keywd='new_Installed_Capacity_[MW]'
+        keywd1='new_Installed_Capacity_[MW]'
+        
         for scen in scenarios:
-            USyearly['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]
+            USyearly['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd1]
  
         # Creating c umulative results
         UScum = USyearly.copy()
         UScum = UScum.cumsum()
  
         # Adding Installed Capacity to US (This is already 'Cumulative') so not including it in UScum
-        keywd='Installed_Capacity_[W]'
+        # We are also renaming it to 'ActiveCapacity' and calculating Decommisioned Capacity. 
+        # TODO: Rename Installed_CApacity to ActiveCapacity throughout.
+        keywd='Installed_Capacity_[W]'  
         for scen in scenarios:
-            USyearly['Capacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]/1e6
+            USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]/1e6
+            USyearly['DecommisionedCapacity_'+self.name+'_'+scen+'_[MW]'] = (
+                UScum['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]']-
+                USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'])
+
+        # Adding Decommissioned Capacity
 
         # Reindexing and Merging
         USyearly.index = self.scenario[scen].data['year']
