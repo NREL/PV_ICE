@@ -316,6 +316,22 @@ class Simulation:
         
 
 
+    def modifyScenario(self, scenarios, stage, value, start_year=None):
+    
+        if start_year is None:
+            start_year = int(datetime.datetime.now().year)
+    
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+        
+        selectyears = self.scenario[scenarios[0]].data['year']>start_year
+        
+        for scen in scenarios:
+            self.scenario[scen].data.loc[selectyears, stage] = value
+          
     def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None, 
                           bifacialityfactors = None, reducecapacity = True, debugflag=False):
         '''
@@ -1140,6 +1156,24 @@ class Scenario(Simulation):
             filemat = baselinefolder + nameformat.format(mat)
             self.material[mat] = Material(mat, filemat)
     
+    
+    def modifyMaterials(self, materials, stage, value, start_year=None):
+    
+        if start_year is None:
+            start_year = int(datetime.datetime.now().year)
+    
+        if materials is None:
+            materials = list(self.material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+        selectyears = self.data['year']>start_year
+        
+        for mat in materials:
+            self.material[mat].materialdata.loc[selectyears, stage] = value
+
+
     def __getitem__(self, key):
         return getattr(self, key)
 
