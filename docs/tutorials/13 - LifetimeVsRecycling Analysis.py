@@ -572,7 +572,7 @@ yearlyRvL_identinstall = pd.read_csv(os.path.join(testfolder,'yearlyRvL-identins
 cumRvL_identinstall = pd.read_csv(os.path.join(testfolder,'cumulativeRvL-identinstall.csv'), index_col='year')
 
 
-# In[ ]:
+# In[57]:
 
 
 #make a dataframe to become the multiIndex for heat map creation
@@ -714,7 +714,7 @@ pvice_2050_cumwastes.to_csv(os.path.join(testfolder,'PVICE_cumulativeWastes2050_
 # 
 # NOTE: this mass flow calculation takes a LONG time to run, recommend leaving it overnight. A csv of the yearly and cumulative aggregated results is saved as csv and read back in to speed analysis and graphing.
 
-# In[ ]:
+# In[51]:
 
 
 
@@ -727,7 +727,7 @@ for row in range (0,len(r1.scenario['Decarb+E_PVICE_defaults'].data)):
     r1.calculateMassFlow()
 
 
-# In[ ]:
+# In[52]:
 
 
 yearlyRvL_installcomp, cumRvL_installcomp = r1.aggregateResults()
@@ -737,7 +737,7 @@ cumRvL_installcomp.to_csv(os.path.join(testfolder,'cumulativeRvL-installcomp.csv
 
 # Read the csvs back in for plotting (installation compensation calc runs a LONG time).
 
-# In[ ]:
+# In[53]:
 
 
 yearlyRvL_installcomp = pd.read_csv(os.path.join(testfolder,'yearlyRvL-installcomp.csv'), index_col='year')
@@ -746,7 +746,7 @@ cumRvL_installcomp = pd.read_csv(os.path.join(testfolder,'cumulativeRvL-installc
 
 # #### Bar chart of additional installations
 
-# In[ ]:
+# In[54]:
 
 
 singleLifeRange = cumRvL_installcomp.filter(like='95%') #select a single lifetime of each
@@ -764,7 +764,7 @@ LifeRange_installsComped_TW_relative = LifeRange_installsComped_TW-pvice_newinst
 LifeRange_installsComped_TW_relative.to_csv(os.path.join(testfolder,'AddedReqInstalls-BarChartData.csv'))
 
 
-# In[ ]:
+# In[55]:
 
 
 LifeRange_installsComped_TW_relative.plot(kind='bar')
@@ -772,7 +772,7 @@ LifeRange_installsComped_TW_relative.plot(kind='bar')
 
 # #### Heat Map - Compensated Installs
 
-# In[ ]:
+# In[114]:
 
 
 #cc = compensated capacity
@@ -793,7 +793,9 @@ module_waste_heatmapdata_cc.set_index(['Life','Recycling'], inplace=True) #creat
 modulewaste_heatmap_tonnes_cc = pd.DataFrame(module_waste_heatmapdata_cc[2050]) #select only 2050 cumulative values
 modulewaste_heatmap_cc = modulewaste_heatmap_tonnes_cc/1e6 #convert to million metric tonnes
 heatdata_Waste_pivot_orig_cc = modulewaste_heatmap_cc.unstack(level=0) #compare recycling vs lifetime
-heatdata_Waste_pivot_cc = heatdata_Waste_pivot_orig_cc[::-1] #reverse the order of recycling rate
+heatdata_Waste_pivot_cc_dropcol = heatdata_Waste_pivot_orig_cc[::-1] #reverse the order of recycling rate
+heatdata_Waste_pivot_cc = heatdata_Waste_pivot_cc_dropcol.iloc[1:,:-1] #remove pvice col
+heatdata_Waste_pivot_cc.columns = heatdata_Waste_pivot_cc.columns.droplevel(0) #remove 2050 from label
 
 #create subset data of just 2050 cumulative virgin demands
 lifeRecycIndex_complete.index= heatmap_cums_virgindemand_twist_cc.index #make index match for join
@@ -801,21 +803,30 @@ virgin_material_heatmapdata_cc = lifeRecycIndex_complete.join(heatmap_cums_virgi
 virgin_material_heatmapdata_cc.set_index(['Life','Recycling'], inplace=True) #create multi index for unstacking
 virgin_mat_demand_tonnes_cc = pd.DataFrame(virgin_material_heatmapdata_cc.loc[:,2050]) #select only 2050 - need to improve to remove label
 virgin_mat_demand_cc = virgin_mat_demand_tonnes_cc/1e6 #convert to million metric tonnes
-#virgin_mat_demand_cc.rename(columns={2050:''}, inplace=True)
 heatdata_virgin_pivot_orig_cc = virgin_mat_demand_cc.unstack(level=0)
-heatdata_Virgin_pivot_cc = heatdata_virgin_pivot_orig_cc[::-1] #reverse order of recycling rate
+heatdata_Virgin_pivot_cc_dropcol = heatdata_virgin_pivot_orig_cc[::-1] #reverse order of recycling rate
+heatdata_Virgin_pivot_cc = heatdata_Virgin_pivot_cc_dropcol.iloc[1:,:-1] #removes pvice column from recycling rate
+heatdata_Virgin_pivot_cc.columns=heatdata_Virgin_pivot_cc.columns.droplevel(0) #remove 2050 from label
 
 
-# In[ ]:
+# In[115]:
 
 
-print('Minimum waste is '+str(round(np.min(heatdata_Waste_pivot_cc).min(),0))+' million metric tonnes')
+print('Minimum waste is '+str(round(np.min(heatdata_Waste_pivot_cc).min(),2))+' million metric tonnes')
 print('Maximum waste is '+str(round(np.max(heatdata_Waste_pivot_cc).max(),0))+' million metric tonnes')
 print('Minimum virgin is '+str(round(np.min(heatdata_Virgin_pivot_cc).min(),0))+' million metric tonnes')
 print('Maximum virgin is '+str(round(np.max(heatdata_Virgin_pivot_cc).max(),0))+' million metric tonnes')
 
 
-# In[ ]:
+# In[122]:
+
+
+print('Minimum Virgin demand for compensated capacity is '
+      +str(round(np.min(virgin_mat_demand_cc).min(),2))+' million metric tonnes'+
+     ' for scneario Life,Recycling '+ str(virgin_mat_demand_cc.idxmin()))
+
+
+# In[131]:
 
 
 #Make heat maps with cumulative data
@@ -831,34 +842,42 @@ sns.set(font_scale=1.5)
 #color_w = plt.get_cmap()
 #color_w.set_bad('white')
 
+mask_virgin = (heatdata_Virgin_pivot_cc > 95) & (heatdata_Virgin_pivot_cc < 99) # 96.685293
+mask_waste = (heatdata_Waste_pivot_cc > 8) & (heatdata_Waste_pivot_cc < 12) #9.95919
+
 #Virgin Demands
 plt.subplot(2,1,1)
-sns.heatmap(heatdata_Virgin_pivot_cc, annot = False,
-           cmap= sns.diverging_palette(255,0, s=100, sep=1, n=40), #color, #sns.color_palette("vlag", as_cmap=True)
+axx = sns.heatmap(heatdata_Virgin_pivot_cc, annot = False,
+           cmap= sns.diverging_palette(255,0, s=100, sep=1, n=60), #color, #sns.color_palette("vlag", as_cmap=True)
             vmin= 80.0 ,#(round(np.min(heatdata_Virgin_pivot_cc).min(),0)), #using ii above
-            vmax= (round(np.max(heatdata_Virgin_pivot_cc).max(),0)),
+            vmax= (round(np.max(heatdata_Virgin_pivot_cc).max(),-1)),
             center=96.685293, #fix to be dynamic
-           cbar_kws={'label': 'Cumulative by 2050 [Million Metric Tonnes]'})
+           cbar_kws={'label': 'Cumulative by 2050 [Million Metric Tonnes]'},
+           mask = mask_virgin)
 plt.title('Virgin Demands', fontsize=20)
 plt.ylabel('Recycling Rate [%]', fontsize=20)
 plt.xlabel('Lifetime (years)', fontsize=20)
 plt.yticks(rotation=0)
 plt.yticks(fontsize=20)
-
+axx.set_facecolor("white")
+axx.patch.set(hatch='x', edgecolor='aliceblue')
 #Wastes
 plt.subplot(2,1,2)
-sns.heatmap(heatdata_Waste_pivot_cc, annot = False, 
-            cmap= sns.diverging_palette(220, 20, s=100,sep=1, n=50), 
+axy = sns.heatmap(heatdata_Waste_pivot_cc, annot = False, 
+            cmap= sns.diverging_palette(220, 20, s=100,sep=1, n=60), 
             vmin= 0.0, #(round(np.min(heatdata_Waste_pivot_cc).min(),0)), 
-            vmax= (round(np.max(heatdata_Waste_pivot_cc).max(),0)), 
+            vmax= (round(np.max(heatdata_Waste_pivot_cc).max(),-1)), 
             center = 9.959196 , #fix to be dynamic finding pvice value
-            cbar_kws={'label': 'Cumulative by 2050 [Million Metric Tonnes]'})
+            cbar_kws={'label': 'Cumulative by 2050 [Million Metric Tonnes]'},
+            mask = mask_waste)
 plt.title('Lifecycle Wastes', fontsize=20)
 plt.ylabel('Recycling Rate [%]', fontsize=20)
 plt.xlabel('Lifetime (years)', fontsize=20)
 plt.yticks(rotation=0)
 #sns.heatmap(set_bad("white") 
 plt.yticks(fontsize=20)
+axy.set_facecolor("white")
+axy.patch.set(hatch='x', edgecolor='ghostwhite')
 #
 
 #Installed Capacity
@@ -881,29 +900,22 @@ plt.savefig('heatmap-compintalls.png')
 plt.show()
 
 
-# In[ ]:
+# Print out table of selected results
+
+# In[123]:
 
 
-print('Minimum Virgin demand for compensated capacity is '
-      +str(round(np.min(virgin_mat_demand_cc).min(),2))+' million metric tonnes'+
-     ' for scneario Life,Recycling '+ str(virgin_mat_demand_cc.idxmin()))
+modulewaste_heatmap_cc
+virgin_mat_demand_cc
 
 
-# In[ ]:
+# In[142]:
 
 
-virgin_mat_demand_cc.loc['pvice'] # = virgin_mat_demand.loc['pvice'] THEY ARE THE SAME
+heatdata_Virgin_pivot_cc
 
 
-# In[ ]:
-
-
-print('Minimum Virgin demand for identical installs is '
-      +str(round(np.min(virgin_mat_demand).min(),2))+' million metric tonnes'+
-     ' for scneario Life,Recycling '+ str(virgin_mat_demand.idxmin()))
-
-
-# In[ ]:
+# In[179]:
 
 
 heatdata_Waste_pivot_cc
