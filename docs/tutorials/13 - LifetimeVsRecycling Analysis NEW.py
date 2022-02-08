@@ -673,7 +673,7 @@ cumRvL_installcomp.to_csv(os.path.join(testfolder,'cumulativeRvL-installcomp.csv
 
 # Read the csvs back in for plotting (installation compensation calc runs a LONG time).
 
-# In[18]:
+# In[206]:
 
 
 yearlyRvL_installcomp = pd.read_csv(os.path.join(testfolder,'yearlyRvL-installcomp.csv'), index_col='year')
@@ -890,7 +890,7 @@ fig5data.to_csv(os.path.join(testfolder,'fig5-5yrdata.csv'))
 
 # Approximating a "thin film" BOM as just glass, backsheet, an Aluminum Frame. This is similar to te CdTe modules.
 
-# In[19]:
+# In[154]:
 
 
 thinfilmMaterials = ['glass','backsheet','aluminium_frames']
@@ -898,7 +898,7 @@ thinfilmMaterials = ['glass','backsheet','aluminium_frames']
 life15 = lifetime_range_df.iloc[0,:]
 
 
-# In[20]:
+# In[155]:
 
 
 r3 = PV_ICE.Simulation(name='SanityCheck', path=testfolder) #create simulation r1
@@ -912,7 +912,7 @@ for scen in range(len(SFscenarios)):
     r3.trim_Years(startYear=2010)
 
 
-# In[21]:
+# In[156]:
 
 
 for recycle in range (0,len(Recycling_Range)): #loop over recycling rates
@@ -935,7 +935,7 @@ for recycle in range (0,len(Recycling_Range)): #loop over recycling rates
                                                   value=Recycling_Range[recycle], start_year=2020)
 
 
-# In[22]:
+# In[157]:
 
 
 r3.calculateMassFlow()
@@ -963,7 +963,7 @@ cumthinfilmresults.to_csv(os.path.join(testfolder,'cumthinfilmresults.csv'))
 
 # Now calculate installation compensation for the 15 year module.
 
-# In[25]:
+# In[158]:
 
 
 for row in range (0,len(r3.scenario['Decarb+E_PVICE_defaults'].data)):
@@ -975,7 +975,7 @@ for row in range (0,len(r3.scenario['Decarb+E_PVICE_defaults'].data)):
     r3.calculateMassFlow()
 
 
-# In[26]:
+# In[159]:
 
 
 yearlythinfilmresults_cc, cumthinfilmresults_cc = r3.aggregateResults()
@@ -991,7 +991,7 @@ r3.plotScenariosComparison('Installed_Capacity_[W]')
 
 # Search for the cumulative value that is less/more than the PV ICE baseline with all materials.
 
-# In[53]:
+# In[160]:
 
 
 #PV ICE all materials values
@@ -1003,7 +1003,7 @@ print('PV ICE Baseline Values: \nVirgin Material Demand '
      'Lifecycle Waste '+ str(round(PVICE_waste,2)) + ' million metric tonnes')
 
 
-# In[31]:
+# In[161]:
 
 
 thinfilm_virginmod = pd.DataFrame(cumthinfilmresults_cc.loc[2050].filter(like='VirginStock_Module'))
@@ -1012,7 +1012,7 @@ thinfilm_virginmod[::-1]>=PVICE_virgin*1e6
 
 # Here, we compare the PV ICE c-Si virgin material demand to a thin film of 15 year life. These results indicate that lowering the BOM will lower the required closed-loop recycling rate to reduce virgin material demands from 95% to 75%.
 
-# In[32]:
+# In[162]:
 
 
 thinfilm_waste = pd.DataFrame(cumthinfilmresults_cc.loc[2050].filter(like='WasteAll_Module'))
@@ -1025,14 +1025,14 @@ thinfilm_waste[::-1]>=PVICE_waste*1e6
 # 
 # Now that we have confirmed that decreasing the mass per module area will lower the required closed-loop recycling rate, lets check that increasing module efficiency will have the same effect. Currently, PV ICE baseline is 20% efficiency in 2020 and 25% efficient in 2050. Oberbeck et al 2020 expect 30% efficient tandem devices (perovskite + silicon). Therefore, we will use this as an approximation of an efficiency increase, and will apply it to the 15 year module.
 
-# In[22]:
+# In[139]:
 
 
 #create a subset of 15 year module with all recycling values
 life15 = lifetime_range_df.iloc[0,:]
 
 
-# In[23]:
+# In[140]:
 
 
 reff = PV_ICE.Simulation(name='SanityCheck', path=testfolder) #create simulation r1
@@ -1046,7 +1046,7 @@ for scen in range(len(SFscenarios)):
     reff.trim_Years(startYear=2010)
 
 
-# In[24]:
+# In[141]:
 
 
 for recycle in range (0,len(Recycling_Range)): #loop over recycling rates
@@ -1070,7 +1070,7 @@ for recycle in range (0,len(Recycling_Range)): #loop over recycling rates
                                                   value=Recycling_Range[recycle], start_year=2020)
 
 
-# In[44]:
+# In[142]:
 
 
 baselineeff = reff.scenario['Decarb+E_PVICE_defaults'].data['mod_eff']
@@ -1086,13 +1086,13 @@ plt.legend(mod_eff_compare.columns)
 plt.ylabel('Module Efficiency [%]')
 
 
-# In[45]:
+# In[143]:
 
 
 reff.calculateMassFlow()
 
 
-# In[50]:
+# In[144]:
 
 
 for row in range (0,len(reff.scenario['Decarb+E_PVICE_defaults'].data)):
@@ -1104,7 +1104,7 @@ for row in range (0,len(reff.scenario['Decarb+E_PVICE_defaults'].data)):
     reff.calculateMassFlow()
 
 
-# In[51]:
+# In[145]:
 
 
 yearly_higheff_cc, cum_higheff_cc = reff.aggregateResults()
@@ -1114,7 +1114,7 @@ cum_higheff_cc.to_csv(os.path.join(testfolder,'cum_higheff_cc.csv'))
 
 # First we check the change in deployed capacity, since modifying module efficiency will primarily effect the deployment (and as a result effect virgin mateiral demand). Installs are only dependent on life, not recycling, therefore we can select any of the recycling rates.
 
-# In[92]:
+# In[146]:
 
 
 reff.plotScenariosComparison('Area')
@@ -1122,7 +1122,7 @@ reff.plotScenariosComparison('Area')
 
 # Because we deploy using MW, the difference from efficiency improvement will not appear in MW deployed but in the area of those MW deployed. Therefore, we will compare the area deployed as a proxy for # of modules and compare the tandem 30% efficiency against the c-Si 25% efficiency 15 year modules, and PV ICE.
 
-# In[126]:
+# In[173]:
 
 
 #'Area' is what gets installed annually, so cumcum = sum area installed
@@ -1140,23 +1140,50 @@ cSi15yr_cumareainstalled = cSi15yr_annualareainstalled.cumsum()
 areacompare = pd.DataFrame([tandem_cumareainstalled, PVICE_cumareainstalled, cSi15yr_cumareainstalled], 
              index=['15 yr Tandem','PV ICE','c-Si 15yr'])
 areacompare_df = areacompare.T
-areacompare_df.index=range(2009,2050)
+areacompare_df.index=range(2010,2051)
 
 plt.plot(areacompare_df)
 plt.legend(areacompare_df.columns)
 plt.title('Cumulative Area Deployed')
+plt.ylabel('Area Deployed [m^2]')
+
+
+# If we approximate a module as 1.6 m^2 (current average, though CdTe series 6 modules are 2.47 m^2), then we can use the area deployed to calculate an approximate number of modules.
+
+# In[183]:
+
+
+modulesdeployed_millions = (areacompare_df/1.6)/1e6
+modulesdeployed_millions.tail(1)
+
+
+# In[186]:
+
+
+reducedmodules = modulesdeployed_millions.loc[2050,'c-Si 15yr']-modulesdeployed_millions.loc[2050,'15 yr Tandem']
+modulesvspvice = modulesdeployed_millions.loc[2050,'15 yr Tandem']-modulesdeployed_millions.loc[2050,'PV ICE']
+print('If module eff is 30%, then '+str(round(reducedmodules,2))+' million fewer modules can be deployed.')
+print('However, the 15 year 30% effcient module still requires '+str(round(modulesvspvice,2))+
+      ' million more modules than the 35 year 25% efficient module.')
 
 
 # This graph shows the cumulative deployed area over time for the PV ICE baseline, the "15-year Tandem" device, which is the same BOM but higher module efficiency (30%), and the c-Si 15 year module with the same efficiency as PV ICE (25%). We see that the higher efficiency lowers the required deployment area. Interestingly, around 2038, PV ICE and the 15-year Tandem device cross, because the replacement requirement for the 15-year Tandem is higher than PV ICE 35 year module. Cumulatively, the Tandem device still requires more area deployment. Next let's look at what level of closed-loop recycling will drop the virgin material requirements.
 
-# In[56]:
+# In[188]:
 
 
 tandem_virginmod = pd.DataFrame(cum_higheff_cc.loc[2050].filter(like='VirginStock_Module'))
 tandem_virginmod[::-1]>=PVICE_virgin*1e6
 
 
-# These results indicate that due to reduced area deployed, the necessary closed-loop recycling is lowered to 60%. This indicates that virgin material demand is more sensitive to module efficiency than BOM (which lowered the closed-loop recycling need to 75%).
+# These results indicate that due to reduced area deployed, the necessary closed-loop recycling is lowered to 65%. This indicates that virgin material demand is more sensitive to module efficiency than BOM (which lowered the closed-loop recycling need to 75%).
+
+# In[204]:
+
+
+tandem_virginmod_millionmetrictonnes = tandem_virginmod/1e6
+tandem_virginmod_millionmetrictonnes.loc['VirginStock_Module_SanityCheck_Tandem 15 years & 60% Recycled_[Tonnes]',2050]
+
 
 # In[57]:
 
@@ -1365,8 +1392,58 @@ yearly_thinfilmbom_cc.to_csv(os.path.join(testfolder,'yearly_thinfilmbom_cc.csv'
 cum_thinfilmbom_cc.to_csv(os.path.join(testfolder,'cum_thinfilmbom_cc.csv'))
 
 
-# In[ ]:
+# Now we analyze the results
+
+# In[138]:
 
 
+thinfilmBOM_virginmod = pd.DataFrame(cum_thinfilmbom_cc.loc[2050].filter(like='VirginStock_Module'))
+thinfilmBOM_virginmod[::-1]>=PVICE_virgin*1e6
 
+
+# In[205]:
+
+
+thinfilmBOM_virginmod_millionmetrictonnes = thinfilmBOM_virginmod/1e6
+thinfilmBOM_virginmod_millionmetrictonnes.loc['VirginStock_Module_SanityCheck_ThinFilmBOM 15 years & 80% Recycled_[Tonnes]',2050]
+
+
+# In[224]:
+
+
+#comparison, c-si full BOM, 15-yr 80% recycled
+cumRvL_installcomp.filter(regex='VirginStock_Module_').filter(like='15years').filter(like='80%').loc[2050]/1e6
+
+
+# These results indicate that 80% closed-loop recycling is required for this thin film BOM to extract fewer materials. This is an overall lowering of the BOM by:
+
+# In[241]:
+
+
+matdf = pd.DataFrame()
+for mat in thinfilmBOM:
+    matdf[mat]=r5.scenario['ThinFilmBOM 15 years & 80% Recycled'].material[mat].materialdata['mat_massperm2']
+
+matdf.index=range(2010,2051)
+matdf['module'] = matdf.sum(axis=1)
+matdf.tail(1)
+
+
+# In[242]:
+
+
+pvicematdf = pd.DataFrame()
+for mat in MATERIALS:
+    pvicematdf[mat]=r1.scenario['Decarb+E_PVICE_defaults'].material[mat].materialdata['mat_massperm2']
+
+pvicematdf.index=range(2010,2051)
+pvicematdf['module'] = matdf.sum(axis=1)
+pvicematdf.tail(1)
+
+
+# In[244]:
+
+
+thinfilmfractionBOM = matdf.loc[2050,'module']/pvicematdf.loc[2050,'module']
+print('The thin film BOM is '+str(thinfilmfractionBOM*100)+'% of the PV ICE BOM')
 
