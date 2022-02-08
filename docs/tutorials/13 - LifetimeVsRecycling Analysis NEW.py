@@ -282,7 +282,7 @@ MATERIALS = ['glass','aluminium_frames','silicon','silver', 'copper', 'encapsula
 
 # Set up the PV ICE simulation with scenario and materials
 
-# In[6]:
+# In[90]:
 
 
 r1 = PV_ICE.Simulation(name='SF-LvR', path=testfolder) #create simulation r1
@@ -298,7 +298,7 @@ for scen in range(len(SFscenarios)):
 
 # Run the simulation
 
-# In[7]:
+# In[8]:
 
 
 r1.calculateMassFlow()
@@ -324,7 +324,7 @@ r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 # ### Create lifetime and recycling ranges
 
-# In[10]:
+# In[9]:
 
 
 Lifetime_Range = pd.concat([pd.Series(range(15,30,3)),pd.Series(range(30,51,2))]) #this absolute lifetime values
@@ -337,7 +337,7 @@ Recycling_Range = pd.Series(range(0,105,5)) # this is absolute recycling values 
 #print(Recycling_Range)
 
 
-# In[11]:
+# In[10]:
 
 
 #list of material recycling variables
@@ -348,7 +348,7 @@ RecyclingYields = ['mat_MFG_scrap_Recycling_eff', 'mat_EOL_Recycling_eff']
 
 # Now some magic to automatically generate T50 and T90 values for each lifetime
 
-# In[12]:
+# In[11]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -359,7 +359,7 @@ reliability_baselines['mod_reliability_t50'] = r1.scenario['Decarb+E_PVICE_defau
 reliability_baselines['mod_reliability_t90'] = r1.scenario['Decarb+E_PVICE_defaults'].data['mod_reliability_t90']
 
 
-# In[13]:
+# In[12]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -383,7 +383,7 @@ t90_list = list(chain(*t90_list)) #unnest list
 t90_range_simple = pd.Series([ '%.2f' % elem for elem in t90_list ])
 
 
-# In[14]:
+# In[13]:
 
 
 #create a tidy dataframe summarizing all the lifetime, degradation, reliability values
@@ -392,7 +392,7 @@ lifetime_range_df.columns = 'mod_lifetime', 'mod_degradation', 't50', 't90'
 print(lifetime_range_df)
 
 
-# In[15]:
+# In[14]:
 
 
 #drop some of the higher lifetime values due to small value add and graphing
@@ -408,7 +408,7 @@ print(lifetime_range_df)
 # - recycling values are set to closed loop, with XX% material recycling yields assuming 100% collection of modules and materials
 # 
 
-# In[ ]:
+# In[89]:
 
 
 #these scenarios are being added onto the Decarb+E_PVICE_Default scenario
@@ -501,14 +501,14 @@ cumRvL_identinstall.to_csv(os.path.join(testfolder,'cumulativeRvL-identinstall.c
 
 # Read the aggregated results back into the journal from csvs (run time on simulations can be long)
 
-# In[29]:
+# In[16]:
 
 
 yearlyRvL_identinstall = pd.read_csv(os.path.join(testfolder,'yearlyRvL-identinstall.csv'), index_col='year')
 cumRvL_identinstall = pd.read_csv(os.path.join(testfolder,'cumulativeRvL-identinstall.csv'), index_col='year')
 
 
-# In[ ]:
+# In[17]:
 
 
 #make a dataframe to become the multiIndex for heat map creation
@@ -673,7 +673,7 @@ cumRvL_installcomp.to_csv(os.path.join(testfolder,'cumulativeRvL-installcomp.csv
 
 # Read the csvs back in for plotting (installation compensation calc runs a LONG time).
 
-# In[66]:
+# In[18]:
 
 
 yearlyRvL_installcomp = pd.read_csv(os.path.join(testfolder,'yearlyRvL-installcomp.csv'), index_col='year')
@@ -1025,14 +1025,14 @@ thinfilm_waste[::-1]>=PVICE_waste*1e6
 # 
 # Now that we have confirmed that decreasing the mass per module area will lower the required closed-loop recycling rate, lets check that increasing module efficiency will have the same effect. Currently, PV ICE baseline is 20% efficiency in 2020 and 25% efficient in 2050. Oberbeck et al 2020 expect 30% efficient tandem devices (perovskite + silicon). Therefore, we will use this as an approximation of an efficiency increase, and will apply it to the 15 year module.
 
-# In[ ]:
+# In[22]:
 
 
 #create a subset of 15 year module with all recycling values
 life15 = lifetime_range_df.iloc[0,:]
 
 
-# In[40]:
+# In[23]:
 
 
 reff = PV_ICE.Simulation(name='SanityCheck', path=testfolder) #create simulation r1
@@ -1046,7 +1046,7 @@ for scen in range(len(SFscenarios)):
     reff.trim_Years(startYear=2010)
 
 
-# In[41]:
+# In[24]:
 
 
 for recycle in range (0,len(Recycling_Range)): #loop over recycling rates
@@ -1068,6 +1068,22 @@ for recycle in range (0,len(Recycling_Range)): #loop over recycling rates
     for ylds in range(0,len(RecyclingYields)):
         reff.scenario[scenname].modifyMaterials(MATERIALS, stage=RecyclingYields[ylds], 
                                                   value=Recycling_Range[recycle], start_year=2020)
+
+
+# In[44]:
+
+
+baselineeff = reff.scenario['Decarb+E_PVICE_defaults'].data['mod_eff']
+tandemeff = reff.scenario['Tandem 15 years & 0% Recycled'].data['mod_eff']
+
+mod_eff_compare_t = pd.DataFrame([baselineeff,tandemeff])
+mod_eff_compare = mod_eff_compare_t.T
+mod_eff_compare.index=range(2010,2051)
+mod_eff_compare.columns = ('PV ICE','High Efficiency')
+plt.plot(mod_eff_compare)
+plt.title('Module Efficiency Comparison')
+plt.legend(mod_eff_compare.columns)
+plt.ylabel('Module Efficiency [%]')
 
 
 # In[45]:
@@ -1236,4 +1252,121 @@ bkthru_virginmod = pd.DataFrame(cum_bkthru_cc.loc[2050].filter(like='VirginStock
 bkthru_virginmod[::-1]>=PVICE_virgin*1e6
 
 
+# The combined lower BOM and higher Efficiency reduce the required circularity to 50% closed-loop.
 # 
+# ## ALTERNATE BOM MODIFICATION
+# 
+# In this BOM modification, we will try to more accurately represent a thin film technology. Parameters will be identical glass baseline, Aluminum Frame, Backsheet, 10% of the c-Si, 50% of the encapsulant, and neglect Ag and Cu. The glass and backsheet baselines account for increasing shares of glass-glass packaging. Silicon absorber will be reduced to a thin film thickness as a proxy, and the encapsulant will be cut in half, since typically, thin film uses 1 sheet of encapsulant instead of the 2 sheets c-Si uses. This will include manufacturing inefficiencies of these materials. Current wafer thickness is ~165 micron, and CdTe thin films are 10s of microns; therefore we will use 10% of c-Si mass per area.
+
+# In[107]:
+
+
+thinfilmBOM = ['glass','backsheet','aluminium_frames','silicon','encapsulant']
+#create a subset of 15 year module with all recycling values
+life15 = lifetime_range_df.iloc[0,:]
+
+
+# In[108]:
+
+
+r5 = PV_ICE.Simulation(name='SanityCheck', path=testfolder) #create simulation r1
+#baselinefolder = r'..\baselines'    
+
+for scen in range(len(SFscenarios)):
+    modulefile = SFscenarios[scen]+'.csv' #pick the scenario csv
+    modulefile = os.path.join(testfolder, 'USA', modulefile) #point at the file path for the whole US
+    r5.createScenario(name='Decarb+E_PVICE_defaults', file=modulefile) #change name=SFscenarios[scen] if multiple scenarios
+    r5.scenario['Decarb+E_PVICE_defaults'].addMaterials(thinfilmBOM)  # baselinefolder=baselinefolder)
+    r5.trim_Years(startYear=2010)
+
+
+# In[109]:
+
+
+for recycle in range (0,len(Recycling_Range)): #loop over recycling rates
+    scenname = 'ThinFilmBOM 15 years & '+ str(Recycling_Range[recycle])+'% Recycled' #name the scenario
+    r5.createScenario(name=scenname,file=modulefile) #create the scenario with name
+    r5.scenario[scenname].addMaterials(thinfilmBOM)  # baselinefolder=baselinefolder)
+    r5.trim_Years(startYear=2010, endYear=2050)
+    r5.modifyScenario(scenname, 'mod_lifetime', 15, 2020)
+    r5.modifyScenario(scenname, 'mod_reliability_t50', float(life15['t50']), 2020)
+    r5.modifyScenario(scenname, 'mod_reliability_t90', float(life15['t90']), 2020)
+    r5.modifyScenario(scenname, 'mod_degradation', life15['mod_degradation'], 2020)
+    r5.modifyScenario(scenname, 'mod_EOL_collected_recycled', 100.0, 2020)
+    r5.modifyScenario(scenname, 'mod_EOL_collection_eff', 100.0, 2020)
+        
+    for var in range(0,len(RecyclingPaths)):
+        r5.scenario[scenname].modifyMaterials(thinfilmBOM, stage=RecyclingPaths[var], value=100.0, start_year=2020)
+        
+    for ylds in range(0,len(RecyclingYields)):
+        r5.scenario[scenname].modifyMaterials(thinfilmBOM, stage=RecyclingYields[ylds], 
+                                                  value=Recycling_Range[recycle], start_year=2020)
+
+
+# In[110]:
+
+
+#Modify the silicon and encapsulant
+scennames = pd.Series(r5.scenario.keys())
+
+#create new mass series
+selectyears = r1.scenario['Decarb+E_PVICE_defaults'].material['encapsulant'].materialdata['year']>2020
+newmass_encap = r1.scenario['Decarb+E_PVICE_defaults'].material['encapsulant'].materialdata.loc[selectyears,'mat_massperm2']*0.5
+newmass_si = r1.scenario['Decarb+E_PVICE_defaults'].material['silicon'].materialdata.loc[selectyears,'mat_massperm2']*0.1
+
+#this will change the Decarb+PVICE baseline, but we compare to original data from above
+for scen in scennames:
+    r5.scenario[scen].modifyMaterials('encapsulant', stage='mat_massperm2', value = newmass_encap, start_year=2020)
+    r5.scenario[scen].modifyMaterials('silicon', stage='mat_massperm2', value = newmass_si, start_year=2020)
+
+
+# In[136]:
+
+
+newsi = pd.Series(r5.scenario['Decarb+E_PVICE_defaults'].material['silicon'].materialdata['mat_massperm2'])
+newencap = pd.Series(r5.scenario['Decarb+E_PVICE_defaults'].material['encapsulant'].materialdata['mat_massperm2'])
+basesi = pd.Series(r1.scenario['Decarb+E_PVICE_defaults'].material['silicon'].materialdata['mat_massperm2'])
+baseencap = pd.Series(r1.scenario['Decarb+E_PVICE_defaults'].material['encapsulant'].materialdata['mat_massperm2'])
+
+compareBOM_t = pd.DataFrame([baseencap,newencap,basesi,newsi], 
+                            index=('Encapsulant Baseline','50% Encapsulant','Silicon Baseline','10% Si'))
+compareBOM = compareBOM_t.T
+compareBOM.index=range(2010,2051)
+plt.plot(compareBOM)
+plt.legend(compareBOM.columns, loc='right', bbox_to_anchor=(0.5, 0.35, 0.5, 0.5))
+plt.title('Comparing Mass per Area for Encapsulant and Silicon')
+plt.ylabel('grams per m2')
+
+
+# In[112]:
+
+
+r5.calculateMassFlow()
+
+
+# In[113]:
+
+
+#Installation Compensation
+for row in range (0,len(r5.scenario['Decarb+E_PVICE_defaults'].data)):
+    for scenario in range (0, len(r5.scenario.keys())):
+        scen = list(r5.scenario.keys())[scenario]
+        Under_Installment = ( (r5.scenario['Decarb+E_PVICE_defaults'].data['Installed_Capacity_[W]'][row] - 
+                               r5.scenario[scen].data['Installed_Capacity_[W]'][row])/1000000 )  # MWATTS
+        r5.scenario[scen].data['new_Installed_Capacity_[MW]'][row] += Under_Installment
+    r5.calculateMassFlow()
+
+
+# In[114]:
+
+
+yearly_thinfilmbom_cc, cum_thinfilmbom_cc = r5.aggregateResults()
+yearly_thinfilmbom_cc.to_csv(os.path.join(testfolder,'yearly_thinfilmbom_cc.csv'))
+cum_thinfilmbom_cc.to_csv(os.path.join(testfolder,'cum_thinfilmbom_cc.csv'))
+
+
+# In[ ]:
+
+
+
+
