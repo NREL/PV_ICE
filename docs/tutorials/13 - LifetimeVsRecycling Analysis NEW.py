@@ -1122,7 +1122,7 @@ reff.plotScenariosComparison('Area')
 
 # Because we deploy using MW, the difference from efficiency improvement will not appear in MW deployed but in the area of those MW deployed. Therefore, we will compare the area deployed as a proxy for # of modules and compare the tandem 30% efficiency against the c-Si 25% efficiency 15 year modules, and PV ICE.
 
-# In[173]:
+# In[300]:
 
 
 #'Area' is what gets installed annually, so cumcum = sum area installed
@@ -1138,7 +1138,7 @@ cSi15yr_annualareainstalled = pd.Series(r3.scenario['ThinFilm 15 years & 0% Recy
 cSi15yr_cumareainstalled = cSi15yr_annualareainstalled.cumsum()
 
 areacompare = pd.DataFrame([tandem_cumareainstalled, PVICE_cumareainstalled, cSi15yr_cumareainstalled], 
-             index=['15 yr Tandem','PV ICE','c-Si 15yr'])
+             index=['15-yr High Efficiency','PV ICE','15-yr c-Si'])
 areacompare_df = areacompare.T
 areacompare_df.index=range(2010,2051)
 
@@ -1148,23 +1148,88 @@ plt.title('Cumulative Area Deployed')
 plt.ylabel('Area Deployed [m^2]')
 
 
-# If we approximate a module as 1.6 m^2 (current average, though CdTe series 6 modules are 2.47 m^2), then we can use the area deployed to calculate an approximate number of modules.
+# Area comparison
 
-# In[183]:
-
-
-modulesdeployed_millions = (areacompare_df/1.6)/1e6
-modulesdeployed_millions.tail(1)
+# In[343]:
 
 
-# In[186]:
+#Make a pretty chart to compare areas vs landmarks
+areacompare_km = areacompare_df/1e6
+areacompare_km_graphing = pd.DataFrame(areacompare_km.loc[2050])
+areacompare_km_graphing.columns=['Area km^2']
+otherland = pd.DataFrame({'Area km^2':[8991,14357,6446]}, 
+                         index=['Yellowstone','Connecticut','Delaware'])
+areacompare_km_graph = areacompare_km_graphing.append(otherland)
+areacompare_km_graph_rnd = round(areacompare_km_graph,0)
+areacompare_km_graph_sorted = areacompare_km_graph_rnd.sort_values('Area km^2', ascending=False)
+areacompare_km_graph_sorted
 
 
-reducedmodules = modulesdeployed_millions.loc[2050,'c-Si 15yr']-modulesdeployed_millions.loc[2050,'15 yr Tandem']
-modulesvspvice = modulesdeployed_millions.loc[2050,'15 yr Tandem']-modulesdeployed_millions.loc[2050,'PV ICE']
-print('If module eff is 30%, then '+str(round(reducedmodules,2))+' million fewer modules can be deployed.')
+# In[344]:
+
+
+# import the circlify library
+import circlify
+
+# compute circle positions:
+circles = circlify.circlify(
+    areacompare_km_graph_sorted['Area km^2'].tolist(), 
+    show_enclosure=False, 
+    target_enclosure=circlify.Circle(x=0, y=0, r=1)
+)
+
+# Create just a figure and only one subplot
+fig, ax = plt.subplots(figsize=(11,11))
+
+# Remove axes
+ax.axis('off')
+
+# Find axis boundaries
+lim = max(
+    max(
+        abs(circle.x) + circle.r,
+        abs(circle.y) + circle.r,
+    )
+    for circle in circles
+)
+plt.xlim(-lim, lim)
+plt.ylim(-lim, lim)
+
+# print circles
+for circle in circles:
+    x, y, r = circle
+    ax.add_patch(plt.Circle((x, y), r, alpha=0.2, linewidth=2, edgecolor='black', fill=False))
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# If we approximate a module as 2 m^2 (current average, though CdTe series 6 modules are 2.47 m^2), then we can use the area deployed to calculate an approximate number of modules.
+
+# In[286]:
+
+
+modulesdeployed_billions = (areacompare_df/2)/1e9
+modulesdeployed_billions.tail(1)
+
+
+# In[287]:
+
+
+reducedmodules = modulesdeployed_billions.loc[2050,'c-Si 15yr']-modulesdeployed_billions.loc[2050,'15 yr Tandem']
+modulesvspvice = modulesdeployed_billions.loc[2050,'15 yr Tandem']-modulesdeployed_billions.loc[2050,'PV ICE']
+print('If module eff is 30%, then '+str(round(reducedmodules,2))+' billion fewer modules can be deployed.')
 print('However, the 15 year 30% effcient module still requires '+str(round(modulesvspvice,2))+
-      ' million more modules than the 35 year 25% efficient module.')
+      ' billion more modules than the 35 year 25% efficient module.')
 
 
 # This graph shows the cumulative deployed area over time for the PV ICE baseline, the "15-year Tandem" device, which is the same BOM but higher module efficiency (30%), and the c-Si 15 year module with the same efficiency as PV ICE (25%). We see that the higher efficiency lowers the required deployment area. Interestingly, around 2038, PV ICE and the 15-year Tandem device cross, because the replacement requirement for the 15-year Tandem is higher than PV ICE 35 year module. Cumulatively, the Tandem device still requires more area deployment. Next let's look at what level of closed-loop recycling will drop the virgin material requirements.
@@ -1408,6 +1473,18 @@ thinfilmBOM_virginmod_millionmetrictonnes = thinfilmBOM_virginmod/1e6
 thinfilmBOM_virginmod_millionmetrictonnes.loc['VirginStock_Module_SanityCheck_ThinFilmBOM 15 years & 80% Recycled_[Tonnes]',2050]
 
 
+# In[284]:
+
+
+#Make a pretty bar plot
+thinfilmBOM_virginmod_millionmetrictonnes.iloc[0]=(PVICE_virgin) #change the PV ICE to correct baseline
+rr_str = [str(i)+'%' for i in Recycling_Range]
+rr_str.insert(0,'Baseline')
+thinfilmBOM_virginmod_millionmetrictonnes.index=rr_str
+thinfilmBOM_virginmod_millionmetrictonnes.to_csv(os.path.join(testfolder,'thinfilmBOM_barplot.csv'))
+thinfilmBOM_virginmod_millionmetrictonnes.plot(kind='bar')
+
+
 # In[224]:
 
 
@@ -1428,6 +1505,8 @@ matdf.index=range(2010,2051)
 matdf['module'] = matdf.sum(axis=1)
 matdf.tail(1)
 
+
+# This is ~12kg/m2. For reference, a CdTe series 6 module is ~14kg/m2
 
 # In[242]:
 
