@@ -468,7 +468,9 @@ class Simulation:
                         active += 1
                         activeareaprev = activearea                            
                         activearea = activearea-row['Area']*pdf[age]+row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01                        
-                        arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
+#                        arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
+                        arearepaired_failure = row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01
+
                         arearepaired.append(arearepaired_failure)
                         arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
                                         
@@ -477,8 +479,13 @@ class Simulation:
                             activearea_temp = activearea
                             activearea = 0+activearea*(df.iloc[age]['mod_MerchantTail']*0.01)
                             disposed_projectlifetime = activearea_temp-activearea
-                            activearea = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01)
-                            disposed_projectlifetime = activearea_temp-activearea
+
+                            activearea2 = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01) # 12   
+                            activearea = activearea + activearea2  # 92
+                            disposed_projectlifetime = disposed_projectlifetime - activearea2        # 8
+
+#                            activearea = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01)
+#                            disposed_projectlifetime = activearea_temp-activearea
                         areadisposed_projectlifetime.append(disposed_projectlifetime)
                         activeareacount.append(activearea)
                         areapowergen.append(activearea*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
