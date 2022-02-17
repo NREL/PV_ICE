@@ -1,4 +1,4 @@
-﻿Year,Ingot Energy mc-si,Ingot Energy cast mono,Ingot Energy mono-Si,Source,Ingot mass mc-Si,Ingot mass cast mono,Ingot mass mono-Si,Source
+﻿year,Ingot Energy mc-si kWhpkg,Ingot Energy cast mono kWhpkg,Ingot Energy mono-Si kWhpkg,Source,Ingot mass mc-Si kg,Ingot mass cast mono kg,Ingot mass mono-Si kg,Source
 1995,,,,,,,,
 1996,,,,,,,,
 1997,,,,,,,,
@@ -24,17 +24,17 @@
 2017,,,,,820,,200,ITRPV 2018 Fig. 19
 2018,6.5,,35,"ITRPV 2019, Fig 19",850,,210,"ITRPV 2019, Fig. 18"
 2019,6.5,10,32,"ITRPV 2020, Fig. 6",850,700,350,"ITRPV 2020, Fig. 5"
-2020,,,,,,,,
+2020,,,38.4,"A. Müller, L. Friedrich, C. Reichel, S. Herceg, M. Mittag, and D. H. Neuhaus, “A comparative life cycle assessment of silicon PV modules: Impact of module design, manufacturing location and inventory,” Solar Energy Materials and Solar Cells, vol. 230, p. 111277, Sep. 2021, doi: 10.1016/j.solmat.2021.111277.",,1110,400,"ITRPV 2021, Fig. 5"
 2021,,,,,,,,
-2022,,,,,,,,
+2022,,,,,,1120,420,"ITRPV 2021, Fig. 5"
 2023,,,,,,,,
-2024,,,,,,,,
+2024,,,,,,1150,420,"ITRPV 2021, Fig. 5"
 2025,,,,,,,,
 2026,,,,,,,,
-2027,,,,,,,,
+2027,,,,,,1150,450,"ITRPV 2021, Fig. 5"
 2028,,,,,,,,
 2029,,,,,,,,
-2030,,,,,,,,
+2030,,,,,,1250,475,"ITRPV 2021, Fig. 5"
 2031,,,,,,,,
 2032,,,,,,,,
 2033,,,,,,,,
