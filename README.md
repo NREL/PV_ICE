@@ -97,7 +97,7 @@ The long-term success of CircularEconomy-MassFlowCalculator requires substantial
 License
 =======
 
-BSD 3-clause
+PV_ICE open-source code is copyrighted by the Alliance for Sustainable Energy and licensed with BSD-3-Clause terms, found [here](https://github.com/NREL/PV_ICE/blob/main/LICENSE.md).
 
 
 Getting support
