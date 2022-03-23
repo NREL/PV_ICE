@@ -256,7 +256,7 @@ for ii in range (len(df.unstack(level=1))):
 
 # Collect all the scenario names and downselect to the scenario(s) of interest. In this case, we are only concerned with the highest capacity and deployment rate, Decarbonization + Electrification (Decarb+E)
 
-# In[4]:
+# In[3]:
 
 
 scenarios = ['Reference.Mod',
@@ -273,7 +273,7 @@ SFscenarios = ['95-by-35_Elec.Adv_DR'] #Decarb+E
 SFscenarios
 
 
-# In[5]:
+# In[4]:
 
 
 #add materials for simulation
@@ -282,7 +282,7 @@ MATERIALS = ['glass','aluminium_frames','silicon','silver', 'copper', 'encapsula
 
 # Set up the PV ICE simulation with scenario and materials
 
-# In[90]:
+# In[5]:
 
 
 r1 = PV_ICE.Simulation(name='SF-LvR', path=testfolder) #create simulation r1
@@ -324,7 +324,7 @@ r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 # ### Create lifetime and recycling ranges
 
-# In[9]:
+# In[6]:
 
 
 Lifetime_Range = pd.concat([pd.Series(range(15,30,3)),pd.Series(range(30,51,2))]) #this absolute lifetime values
@@ -337,7 +337,7 @@ Recycling_Range = pd.Series(range(0,105,5)) # this is absolute recycling values 
 #print(Recycling_Range)
 
 
-# In[10]:
+# In[7]:
 
 
 #list of material recycling variables
@@ -348,7 +348,7 @@ RecyclingYields = ['mat_MFG_scrap_Recycling_eff', 'mat_EOL_Recycling_eff']
 
 # Now some magic to automatically generate T50 and T90 values for each lifetime
 
-# In[11]:
+# In[8]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -359,7 +359,7 @@ reliability_baselines['mod_reliability_t50'] = r1.scenario['Decarb+E_PVICE_defau
 reliability_baselines['mod_reliability_t90'] = r1.scenario['Decarb+E_PVICE_defaults'].data['mod_reliability_t90']
 
 
-# In[12]:
+# In[9]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -383,13 +383,14 @@ t90_list = list(chain(*t90_list)) #unnest list
 t90_range_simple = pd.Series([ '%.2f' % elem for elem in t90_list ])
 
 
-# In[13]:
+# In[11]:
 
 
 #create a tidy dataframe summarizing all the lifetime, degradation, reliability values
 lifetime_range_df = pd.concat([Lifetime_Range, Degradation_Range, t50_range_simple, t90_range_simple], axis=1)
 lifetime_range_df.columns = 'mod_lifetime', 'mod_degradation', 't50', 't90'
 print(lifetime_range_df)
+lifetime_range_df.to_csv(os.path.join(testfolder,'Table2-lifeDegT50T90.csv'))
 
 
 # In[14]:
