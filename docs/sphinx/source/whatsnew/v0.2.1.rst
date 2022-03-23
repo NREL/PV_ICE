@@ -1,0 +1,25 @@
+.. _whatsnew_0201:
+
+
+v0.2.1 (11 / 09 / 2021)
+=======================
+
+* Added function to trim input baselines to specific years.
+* Added function for aggregating results automatically
+* Added function to plot metrics with pyplot
+* Added function to modify parameters automatically for Irena Lifetime assumptions, perfect manufacturing, and no circularity.
+* Added journal for PV ICE publication (Journal 11)
+* Added journals for Solar Futures publication
+* Bug fix on weibull function.
+
+
+Baseline Updates
+-----------------
+
+* Added encapsulant and backsheet baselines! 
+
+
+Contributors
+~~~~~~~~~~~~
+* Silvana Ayala (:ghuser:`shirubana`)
+* Heather Mirletz (:ghuser:`heathermirletz`)

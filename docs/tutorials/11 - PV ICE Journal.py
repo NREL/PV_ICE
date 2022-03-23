@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Journal for Results included in PV ICE Paper 1
+# # 11 - PV ICE Journal: PV in the Circular Economy, A Dynamic Framework Analyzing Technology Evolution and Reliability Impacts
 
 # In[1]:
 
