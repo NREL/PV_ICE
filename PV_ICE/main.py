@@ -316,6 +316,22 @@ class Simulation:
         
 
 
+    def modifyScenario(self, scenarios, stage, value, start_year=None):
+    
+        if start_year is None:
+            start_year = int(datetime.datetime.now().year)
+    
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+        
+        selectyears = self.scenario[scenarios[0]].data['year']>start_year
+        
+        for scen in scenarios:
+            self.scenario[scen].data.loc[selectyears, stage] = value
+          
     def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None, 
                           bifacialityfactors = None, reducecapacity = True, debugflag=False):
         '''
@@ -452,7 +468,9 @@ class Simulation:
                         active += 1
                         activeareaprev = activearea                            
                         activearea = activearea-row['Area']*pdf[age]+row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01                        
-                        arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
+#                        arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
+                        arearepaired_failure = row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01
+
                         arearepaired.append(arearepaired_failure)
                         arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
                                         
@@ -461,8 +479,13 @@ class Simulation:
                             activearea_temp = activearea
                             activearea = 0+activearea*(df.iloc[age]['mod_MerchantTail']*0.01)
                             disposed_projectlifetime = activearea_temp-activearea
-                            activearea = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01)
-                            disposed_projectlifetime = activearea_temp-activearea
+
+                            activearea2 = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01) # 12   
+                            activearea = activearea + activearea2  # 92
+                            disposed_projectlifetime = disposed_projectlifetime - activearea2        # 8
+
+#                            activearea = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01)
+#                            disposed_projectlifetime = activearea_temp-activearea
                         areadisposed_projectlifetime.append(disposed_projectlifetime)
                         activeareacount.append(activearea)
                         areapowergen.append(activearea*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
@@ -845,12 +868,16 @@ class Simulation:
 
             for mat in self.scenario[scen].material:
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycling_eff'] = 0.0 
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 0.0 
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 0.0 
+
                 self.scenario[scen].material[mat].materialdata['mat_EOL_collected_Recycled'] = 0.0 
-                self.scenario[scen].material[mat].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 0.0 
-                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_recycling_eff'] = 0.0 
                 self.scenario[scen].material[mat].materialdata['mat_EOL_Recycling_eff'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EOL_Recycled_into_HQ'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = 0.0 
+
+
         return        
 
     def aggregateResults(self, scenarios=None, materials=None):
@@ -888,18 +915,26 @@ class Simulation:
         USyearly = USyearly.add_suffix('_[Tonnes]')
         
         # Different units, so no need to do the ratio to Metric tonnes :p
-        keywd='new_Installed_Capacity_[MW]'
+        keywd1='new_Installed_Capacity_[MW]'
+        
         for scen in scenarios:
-            USyearly['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]
+            USyearly['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd1]
  
         # Creating c umulative results
         UScum = USyearly.copy()
         UScum = UScum.cumsum()
  
         # Adding Installed Capacity to US (This is already 'Cumulative') so not including it in UScum
-        keywd='Installed_Capacity_[W]'
+        # We are also renaming it to 'ActiveCapacity' and calculating Decommisioned Capacity. 
+        # TODO: Rename Installed_CApacity to ActiveCapacity throughout.
+        keywd='Installed_Capacity_[W]'  
         for scen in scenarios:
-            USyearly['Capacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]/1e6
+            USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].data[keywd]/1e6
+            USyearly['DecommisionedCapacity_'+self.name+'_'+scen+'_[MW]'] = (
+                UScum['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]']-
+                USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'])
+
+        # Adding Decommissioned Capacity
 
         # Reindexing and Merging
         USyearly.index = self.scenario[scen].data['year']
@@ -1128,6 +1163,24 @@ class Scenario(Simulation):
             filemat = baselinefolder + nameformat.format(mat)
             self.material[mat] = Material(mat, filemat)
     
+    
+    def modifyMaterials(self, materials, stage, value, start_year=None):
+    
+        if start_year is None:
+            start_year = int(datetime.datetime.now().year)
+    
+        if materials is None:
+            materials = list(self.material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+        selectyears = self.data['year']>start_year
+        
+        for mat in materials:
+            self.material[mat].materialdata.loc[selectyears, stage] = value
+
+
     def __getitem__(self, key):
         return getattr(self, key)
 
