@@ -9,7 +9,7 @@
 # 
 # 
 
-# In[37]:
+# In[2]:
 
 
 import numpy as np
@@ -60,13 +60,149 @@ print('The average batching energy for glass making is '+str(round(avg_batch_e,3
 
 # ## Melting
 # 
-# The next step in glass manufacturing is the melting of the glass. This is seperated out in the literature from the forming, although the process is usually continuous. This step also involves a significant quantity of methane gas heating. 
+# The next step in glass manufacturing is the melting of the glass. This is seperated out in the literature from the forming, although the process is usually continuous. This step also involves a significant quantity of methane gas heating. We will note this important aspect in our accounting as a fraciton of the total energy neede for each step.
 
-# In[ ]:
+# In[3]:
 
 
-#there are two ways to account for fossil energy: 
-#1) seperate column/file
-#2) total energy and a column designating the fraction of total energy due to methane/fossil fuels
-#
+cwd = os.getcwd()
+#skipcols = ['Source', 'Notes','Country']
+e_meltrefine_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-glass-meltrefine.csv",
+                                     index_col='year')#, usecols=lambda x: x not in skipcols)
+
+
+# In[10]:
+
+
+e_meltrefine_raw.dropna(how='all')
+
+
+# In[43]:
+
+
+e_meltrefine_raw.loc[2019,'Notes']
+
+
+# One of the fractions of methane is lower than the others. This is M. Zier, P. Stenzel, L. Kotzur, and D. Stolten, “A review of decarbonization options for the glass industry,” Energy Conversion and Management: X, vol. 10, p. 100083, Jun. 2021, doi: 10.1016/j.ecmx.2021.100083. and the energy was adjusted by the overall energy carrier for glass manufacturing in Germany. This may not be representative of the whole world, and it may also include more than just the melting step. Given that the other years are all in agreement, and the 77% is an average since the 1990s, we will remove this value and use the previous datapoint (95% from Worrell).
+
+# In[44]:
+
+
+e_meltrefine = e_meltrefine_raw.copy()
+e_meltrefine.loc[2019,'Prct_Fuel'] = np.nan
+
+#previous version used the average of all values, but this cause the fraction to rise again.
+#e_meltrefine.loc[2019,'Prct_Fuel'] = round(e_meltrefine.loc[:,'Prct_Fuel'].mean(),0) 
+#e_meltrefine.loc[2019,'Prct_Fuel']
+
+
+# Now we'll examine the energy totals.
+
+# In[45]:
+
+
+plt.plot(e_meltrefine.index,e_meltrefine.iloc[:,0], marker='o')
+plt.title('Energy: Melt and Refine Glass')
+plt.ylabel('[kWh/kg]')
+
+
+# The 1980 value is much lower than the 1997 value. This data point is from H. L. Brown, Energy Analysis of 108 Industrial Processes. The Fairmont Press, Inc., 1996. (note the publication date and the data date are not the same). and the noted batch size is a few pounds, meaning this is potentially a different scale of glass manufacturing than we are considering. Additionally, we only need to go back to 1995, therefore, we will drop this datapoint, and back propogate the 1997 data.
+
+# In[46]:
+
+
+e_meltrefine_subrange = e_meltrefine.loc[1995:,['E_melt_refine_total_kWhpkg','Prct_Fuel']]
+
+
+# Now we will interpolate to create a complete data set for history. It will hold the edge values constant forward and backward.
+
+# In[47]:
+
+
+e_meltrefine_filled = e_meltrefine_subrange.interpolate(limit_direction='both')
+
+
+# In[49]:
+
+
+fig, ax1 = plt.subplots() 
+#left axis
+ax1.set_ylabel('Melting and Refining Energy [kWh/kg]', color='blue') 
+ax1.plot(e_meltrefine_filled.index,e_meltrefine_filled.iloc[:,0], color='blue') 
+ax1.set_ylim(0,4)
+
+#right axis
+ax2 = ax1.twinx()
+plt.ylabel('Fraction of Energy provided by Methane [%]', color='red')
+ax2.plot(e_meltrefine_filled.index,e_meltrefine_filled.iloc[:,1], color='red')  
+ax2.set_ylim(80,100)
+
+plt.show()
+
+
+# In[51]:
+
+
+e_meltrefine_filled.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_meltrefine.csv")
+
+
+# ## Forming
+# The next step in flat glass formation is forming the flat plate from the melt. There are many ways to do this; float glass entails the molten glass to drop into and float on a bath of molten tin; Rolled glass is drawn through cooled rollers. We will use these two processes interchangably here due to a lack of data.
+
+# In[53]:
+
+
+cwd = os.getcwd()
+#skipcols = ['Source', 'Notes','Country']
+e_glassform_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-glassforming.csv",
+                                     index_col='year')#, usecols=lambda x: x not in skipcols)
+
+
+# In[54]:
+
+
+e_glassform_raw.dropna(how='all')
+
+
+# In[58]:
+
+
+plt.plot(e_glassform_raw.index,e_glassform_raw['E_Glassforming_kWhpkg'], marker='o')
+plt.title('Energy of Forming Flat glass')
+plt.xlabel('[kWh/kg]')
+
+
+# Like the previous set of data, the 1980 datapoint seems unreasonably low, and we know this might potentially be a smaller scale than the other data. Therefore, we will exclude it and perform the same interpolation for the needed time range.
+
+# In[59]:
+
+
+e_glassform = e_glassform_raw.loc[1995:,['E_Glassforming_kWhpkg','Prct_Fuel']]
+e_glassform_filled = e_glassform.interpolate(limit_direction='both')
+
+
+# In[64]:
+
+
+fig, ax1 = plt.subplots() 
+#left axis
+ax1.set_ylabel('[kWh/kg]', color='blue') 
+ax1.plot(e_glassform_filled.index,e_glassform_filled.iloc[:,0], color='blue') 
+ax1.set_ylim(0,1)
+
+#right axis
+#ax2 = ax1.twinx()
+#plt.ylabel('Fraction of Energy provided by Methane [%]', color='red')
+#ax2.plot(e_glassform_filled.index,e_glassform_filled.iloc[:,1], color='red')  
+#ax2.set_ylim(0,2)
+
+plt.title('Energy for Forming Flat Glass')
+
+plt.show()
+
+
+# In[65]:
+
+
+e_glassform_filled.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_formflat.csv")
 
