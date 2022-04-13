@@ -58,11 +58,25 @@ avg_batch_e = e_batchglass_raw.iloc[:,0].mean()
 print('The average batching energy for glass making is '+str(round(avg_batch_e,3)) + ' kWh/kg.')
 
 
+# In[6]:
+
+
+e_batchglass_trim = e_batchglass_raw.loc[1995:,['E_batchingGlass_kWhpkg','Prct_Fuel_batch']]
+
+
+# In[7]:
+
+
+e_batchglass_trim['E_batchingGlass_kWhpkg']=avg_batch_e
+e_batchglass_trim['Prct_Fuel_batch']=0.0
+e_batchglass_trim
+
+
 # ## Melting
 # 
 # The next step in glass manufacturing is the melting of the glass. This is seperated out in the literature from the forming, although the process is usually continuous. This step also involves a significant quantity of methane gas heating. We will note this important aspect in our accounting as a fraciton of the total energy neede for each step.
 
-# In[6]:
+# In[8]:
 
 
 cwd = os.getcwd()
@@ -71,13 +85,13 @@ e_meltrefine_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateria
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[7]:
+# In[9]:
 
 
 e_meltrefine_raw.dropna(how='all')
 
 
-# In[8]:
+# In[10]:
 
 
 e_meltrefine_raw.loc[2019,'Notes']
@@ -85,11 +99,11 @@ e_meltrefine_raw.loc[2019,'Notes']
 
 # One of the fractions of methane is lower than the others. This is M. Zier, P. Stenzel, L. Kotzur, and D. Stolten, “A review of decarbonization options for the glass industry,” Energy Conversion and Management: X, vol. 10, p. 100083, Jun. 2021, doi: 10.1016/j.ecmx.2021.100083. and the energy was adjusted by the overall energy carrier for glass manufacturing in Germany. This may not be representative of the whole world, and it may also include more than just the melting step. Given that the other years are all in agreement, and the 77% is an average since the 1990s, we will remove this value and use the previous datapoint (95% from Worrell).
 
-# In[9]:
+# In[45]:
 
 
 e_meltrefine = e_meltrefine_raw.copy()
-e_meltrefine.loc[2019,'Prct_Fuel'] = np.nan
+e_meltrefine.loc[2019,'Prct_Fuel_melt'] = np.nan
 
 #previous version used the average of all values, but this cause the fraction to rise again.
 #e_meltrefine.loc[2019,'Prct_Fuel'] = round(e_meltrefine.loc[:,'Prct_Fuel'].mean(),0) 
@@ -98,7 +112,7 @@ e_meltrefine.loc[2019,'Prct_Fuel'] = np.nan
 
 # Now we'll examine the energy totals.
 
-# In[10]:
+# In[46]:
 
 
 plt.plot(e_meltrefine.index,e_meltrefine.iloc[:,0], marker='o')
@@ -108,21 +122,21 @@ plt.ylabel('[kWh/kg]')
 
 # The 1980 value is much lower than the 1997 value. This data point is from H. L. Brown, Energy Analysis of 108 Industrial Processes. The Fairmont Press, Inc., 1996. (note the publication date and the data date are not the same). and the noted batch size is a few pounds, meaning this is potentially a different scale of glass manufacturing than we are considering. Additionally, we only need to go back to 1995, therefore, we will drop this datapoint, and back propogate the 1997 data.
 
-# In[11]:
+# In[47]:
 
 
-e_meltrefine_subrange = e_meltrefine.loc[1995:,['E_melt_refine_total_kWhpkg','Prct_Fuel']]
+e_meltrefine_subrange = e_meltrefine.loc[1995:,['E_melt_refine_total_kWhpkg','Prct_Fuel_melt']]
 
 
 # Now we will interpolate to create a complete data set for history. It will hold the edge values constant forward and backward.
 
-# In[12]:
+# In[48]:
 
 
 e_meltrefine_filled = e_meltrefine_subrange.interpolate(limit_direction='both')
 
 
-# In[13]:
+# In[49]:
 
 
 fig, ax1 = plt.subplots() 
@@ -140,7 +154,7 @@ ax2.set_ylim(80,100)
 plt.show()
 
 
-# In[14]:
+# In[50]:
 
 
 e_meltrefine_filled.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_meltrefine.csv")
@@ -149,7 +163,7 @@ e_meltrefine_filled.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/ou
 # ## Forming
 # The next step in flat glass formation is forming the flat plate from the melt. There are many ways to do this; float glass entails the molten glass to drop into and float on a bath of molten tin; Rolled glass is drawn through cooled rollers. We will use these two processes interchangably here due to a lack of data.
 
-# In[15]:
+# In[17]:
 
 
 cwd = os.getcwd()
@@ -158,13 +172,13 @@ e_glassform_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[16]:
+# In[18]:
 
 
 e_glassform_raw.dropna(how='all')
 
 
-# In[17]:
+# In[19]:
 
 
 plt.plot(e_glassform_raw.index,e_glassform_raw['E_Glassforming_kWhpkg'], marker='o')
@@ -174,14 +188,14 @@ plt.xlabel('[kWh/kg]')
 
 # Like the previous set of data, the 1980 datapoint seems unreasonably low, and we know this might potentially be a smaller scale than the other data. Therefore, we will exclude it and perform the same interpolation for the needed time range.
 
-# In[19]:
+# In[21]:
 
 
-e_glassform = e_glassform_raw.loc[1995:,['E_Glassforming_kWhpkg','Prct_Fuel']]
+e_glassform = e_glassform_raw.loc[1995:,['E_Glassforming_kWhpkg','Prct_Fuel_form']]
 e_glassform_filled = e_glassform.interpolate(limit_direction='both')
 
 
-# In[20]:
+# In[22]:
 
 
 fig, ax1 = plt.subplots() 
@@ -201,10 +215,63 @@ plt.title('Energy for Forming Flat Glass')
 plt.show()
 
 
-# In[21]:
+# In[23]:
 
 
 e_glassform_filled.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_formflat.csv")
+
+
+# ## Post Forming: Anneal and Temper
+# 
+# All PV flat glass is tempered for safety reasons, and all tempered glass has already been annealed. Therefore, we will account for both the energy to anneal and temper the flat glass.
+
+# In[55]:
+
+
+cwd = os.getcwd()
+#skipcols = ['Source', 'Notes','Country']
+e_glass_annealtemper_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-glass-postforming.csv",
+                                     index_col='year')#, usecols=lambda x: x not in skipcols)
+
+
+# In[56]:
+
+
+e_glass_annealtemper_raw.dropna(how='all')
+
+
+# In[57]:
+
+
+e_glass_annealtemper_raw.loc[1997,'Notes']
+
+
+# In[58]:
+
+
+plt.plot(e_glass_annealtemper_raw.index,e_glass_annealtemper_raw['E_GlassTempering_kWhpkg'], marker='o')
+plt.title('Energy of Annealing and Tempering Flat glass')
+plt.xlabel('[kWh/kg]')
+
+
+# Once again, the 1980 datapoint seems excessively low and will therefore be excluded.
+# 
+# The jump between 1997 and 2001 data seems unlikely to be a trend and more attributable to differing methods of calculating the energy requirements. The modern datapoint falls between these two points. Therefore, like for the batching energy, we wil take an average of these 3 points and use that for all time. 
+
+# In[61]:
+
+
+e_glass_annealtemper_trim = e_glass_annealtemper_raw.loc[1995:,['E_GlassTempering_kWhpkg','Prct_fuel_annealtemper']]
+
+
+# In[62]:
+
+
+avg_annealtemper_e = e_glass_annealtemper_trim.iloc[:,0].mean()
+avg_prctfuel_annealtemper = e_glass_annealtemper_trim.iloc[:,1].mean()
+e_glass_annealtemper_trim['E_GlassTempering_kWhpkg']= avg_annealtemper_e
+e_glass_annealtemper_trim['Prct_fuel_annealtemper']= avg_prctfuel_annealtemper
+e_glass_annealtemper_trim
 
 
 # ## Combine All MFG energy
@@ -213,18 +280,16 @@ e_glassform_filled.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/out
 # 
 # To track the use of methane/natural gas in the processing, we will do a weighted average percent fuel column to accompany the total energy value.
 
-# In[38]:
+# In[65]:
 
 
-dfs = [e_meltrefine_filled, e_glassform_filled]
-energies_mfg_glass = pd.concat(dfs, axis=1, keys=['melt','form'])
-energies_mfg_glass['batch','E_batch_kwhpkg']=avg_batch_e #adds column with multi-index
-energies_mfg_glass['batch','Prct_Fuel']=0.0
+dfs = [e_batchglass_trim, e_meltrefine_filled, e_glassform_filled, e_glass_annealtemper_trim]
+energies_mfg_glass = pd.concat(dfs, axis=1)
 energies_mfg_glass
 
 
 # In[ ]:
 
 
-#now weighted marketshare combination
+
 

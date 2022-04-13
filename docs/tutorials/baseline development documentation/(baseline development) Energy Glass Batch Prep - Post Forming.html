@@ -14068,6 +14068,7 @@ a.anchor-link {
     <tr style="text-align: right;">
       <th></th>
       <th>E_batchingGlass_kWhpkg</th>
+      <th>Prct_Fuel_batch</th>
       <th>Source</th>
       <th>Notes</th>
       <th>Country</th>
@@ -14078,12 +14079,14 @@ a.anchor-link {
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>1980</th>
       <td>0.012433</td>
+      <td>0.0</td>
       <td>H. L. Brown, Energy Analysis of 108 Industrial...</td>
       <td>1.32 lbs of mixed batch</td>
       <td>USA</td>
@@ -14091,6 +14094,7 @@ a.anchor-link {
     <tr>
       <th>2001</th>
       <td>0.088185</td>
+      <td>0.0</td>
       <td>C. Galitsky, E. Worrell, C. Galitsky, E. Masan...</td>
       <td>From US DOE 2002a, batch prep = conveyors, cru...</td>
       <td>USA</td>
@@ -14098,6 +14102,7 @@ a.anchor-link {
     <tr>
       <th>2002</th>
       <td>0.220000</td>
+      <td>0.0</td>
       <td>J. L. Pellegrino, “Energy and Environmental Pr...</td>
       <td>pg 27, "avg specific energy use"</td>
       <td>USA</td>
@@ -14105,6 +14110,7 @@ a.anchor-link {
     <tr>
       <th>2009</th>
       <td>0.003000</td>
+      <td>0.0</td>
       <td>P. W. Griffin, G. P. Hammond, and R. C. McKenn...</td>
       <td>"batch input", assumes 50% cullet, majority co...</td>
       <td>UK</td>
@@ -14112,6 +14118,7 @@ a.anchor-link {
     <tr>
       <th>2019</th>
       <td>0.010000</td>
+      <td>0.0</td>
       <td>M. Zier, P. Stenzel, L. Kotzur, and D. Stolten...</td>
       <td>2019 German data, elec</td>
       <td>Germany</td>
@@ -14225,22 +14232,13 @@ a.anchor-link {
 
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Melting">Melting<a class="anchor-link" href="#Melting">&#182;</a></h2><p>The next step in glass manufacturing is the melting of the glass. This is seperated out in the literature from the forming, although the process is usually continuous. This step also involves a significant quantity of methane gas heating. We will note this important aspect in our accounting as a fraciton of the total energy neede for each step.</p>
-
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-<span class="c1">#skipcols = [&#39;Source&#39;, &#39;Notes&#39;,&#39;Country&#39;]</span>
-<span class="n">e_meltrefine_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/energy-input-glass-meltrefine.csv&quot;</span><span class="p">,</span>
-                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span><span class="c1">#, usecols=lambda x: x not in skipcols)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_batchglass_trim</span> <span class="o">=</span> <span class="n">e_batchglass_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">&#39;E_batchingGlass_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;Prct_Fuel_batch&#39;</span><span class="p">]]</span>
 </pre></div>
 
      </div>
@@ -14254,7 +14252,9 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_meltrefine_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_batchglass_trim</span><span class="p">[</span><span class="s1">&#39;E_batchingGlass_kWhpkg&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">avg_batch_e</span>
+<span class="n">e_batchglass_trim</span><span class="p">[</span><span class="s1">&#39;Prct_Fuel_batch&#39;</span><span class="p">]</span><span class="o">=</span><span class="mf">0.0</span>
+<span class="n">e_batchglass_trim</span>
 </pre></div>
 
      </div>
@@ -14293,8 +14293,377 @@ a.anchor-link {
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>E_batchingGlass_kWhpkg</th>
+      <th>Prct_Fuel_batch</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1995</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1996</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1997</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1998</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1999</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2000</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2001</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2002</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2003</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2004</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2005</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2006</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2007</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2008</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2031</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2032</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2033</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2034</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2035</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2036</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2037</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2038</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2039</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2040</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2041</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2042</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2043</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2044</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2045</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2046</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2047</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2048</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2049</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2050</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Melting">Melting<a class="anchor-link" href="#Melting">&#182;</a></h2><p>The next step in glass manufacturing is the melting of the glass. This is seperated out in the literature from the forming, although the process is usually continuous. This step also involves a significant quantity of methane gas heating. We will note this important aspect in our accounting as a fraciton of the total energy neede for each step.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="c1">#skipcols = [&#39;Source&#39;, &#39;Notes&#39;,&#39;Country&#39;]</span>
+<span class="n">e_meltrefine_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/energy-input-glass-meltrefine.csv&quot;</span><span class="p">,</span>
+                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span><span class="c1">#, usecols=lambda x: x not in skipcols)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_meltrefine_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
       <th>E_melt_refine_total_kWhpkg</th>
-      <th>Prct_Fuel</th>
+      <th>Prct_Fuel_melt</th>
       <th>Source</th>
       <th>Notes</th>
     </tr>
@@ -14349,7 +14718,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_meltrefine_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="s1">&#39;Notes&#39;</span><span class="p">]</span>
@@ -14368,7 +14737,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
 
 
 
@@ -14392,11 +14761,11 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_meltrefine</span> <span class="o">=</span> <span class="n">e_meltrefine_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">e_meltrefine</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="s1">&#39;Prct_Fuel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">e_meltrefine</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2019</span><span class="p">,</span><span class="s1">&#39;Prct_Fuel_melt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
 <span class="c1">#previous version used the average of all values, but this cause the fraction to rise again.</span>
 <span class="c1">#e_meltrefine.loc[2019,&#39;Prct_Fuel&#39;] = round(e_meltrefine.loc[:,&#39;Prct_Fuel&#39;].mean(),0) </span>
@@ -14417,7 +14786,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_meltrefine</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_meltrefine</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
@@ -14438,7 +14807,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[46]:</div>
 
 
 
@@ -14478,10 +14847,10 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_meltrefine_subrange</span> <span class="o">=</span> <span class="n">e_meltrefine</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">&#39;E_melt_refine_total_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;Prct_Fuel&#39;</span><span class="p">]]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_meltrefine_subrange</span> <span class="o">=</span> <span class="n">e_meltrefine</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">&#39;E_melt_refine_total_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;Prct_Fuel_melt&#39;</span><span class="p">]]</span>
 </pre></div>
 
      </div>
@@ -14498,7 +14867,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_meltrefine_filled</span> <span class="o">=</span> <span class="n">e_meltrefine_subrange</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">limit_direction</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">)</span>
@@ -14512,7 +14881,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span> 
@@ -14563,7 +14932,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_meltrefine_filled</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_meltrefine.csv&quot;</span><span class="p">)</span>
@@ -14583,7 +14952,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
@@ -14600,7 +14969,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_glassform_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
@@ -14619,7 +14988,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
 
 
 
@@ -14643,7 +15012,7 @@ a.anchor-link {
     <tr style="text-align: right;">
       <th></th>
       <th>E_Glassforming_kWhpkg</th>
-      <th>Prct_Fuel</th>
+      <th>Prct_Fuel_form</th>
       <th>Source</th>
       <th>Notes</th>
     </tr>
@@ -14698,7 +15067,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_glassform_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_glassform_raw</span><span class="p">[</span><span class="s1">&#39;E_Glassforming_kWhpkg&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
@@ -14719,7 +15088,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
 
 
 
@@ -14759,10 +15128,10 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_glassform</span> <span class="o">=</span> <span class="n">e_glassform_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">&#39;E_Glassforming_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;Prct_Fuel&#39;</span><span class="p">]]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_glassform</span> <span class="o">=</span> <span class="n">e_glassform_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">&#39;E_Glassforming_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;Prct_Fuel_form&#39;</span><span class="p">]]</span>
 <span class="n">e_glassform_filled</span> <span class="o">=</span> <span class="n">e_glassform</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">limit_direction</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -14774,7 +15143,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span> 
@@ -14827,7 +15196,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_glassform_filled</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_formflat.csv&quot;</span><span class="p">)</span>
@@ -14841,6 +15210,590 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Post-Forming:-Anneal-and-Temper">Post Forming: Anneal and Temper<a class="anchor-link" href="#Post-Forming:-Anneal-and-Temper">&#182;</a></h2><p>All PV flat glass is tempered for safety reasons, and all tempered glass has already been annealed. Therefore, we will account for both the energy to anneal and temper the flat glass.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="c1">#skipcols = [&#39;Source&#39;, &#39;Notes&#39;,&#39;Country&#39;]</span>
+<span class="n">e_glass_annealtemper_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/energy-input-glass-postforming.csv&quot;</span><span class="p">,</span>
+                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span><span class="c1">#, usecols=lambda x: x not in skipcols)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_glass_annealtemper_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[56]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>E_GlassTempering_kWhpkg</th>
+      <th>Prct_fuel_annealtemper</th>
+      <th>Source</th>
+      <th>Notes</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1980</th>
+      <td>0.48</td>
+      <td>95.0</td>
+      <td>H. L. Brown, Energy Analysis of 108 Industrial...</td>
+      <td>1.2 lbs glass, annealing+cooling+tempering+pac...</td>
+    </tr>
+    <tr>
+      <th>1997</th>
+      <td>0.81</td>
+      <td>95.0</td>
+      <td>J. L. Pellegrino, “Energy and Environmental Pr...</td>
+      <td>includes annealing and tempering with marketsh...</td>
+    </tr>
+    <tr>
+      <th>2001</th>
+      <td>1.90</td>
+      <td>68.0</td>
+      <td>E. Worrell, C. Galitsky, C. Galitsky, E. Masan...</td>
+      <td>US DOE 2002a, annealing = 0.03 MMBTU/ton, temp...</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>1.10</td>
+      <td>77.0</td>
+      <td>M. Zier, P. Stenzel, L. Kotzur, and D. Stolten...</td>
+      <td>2019 German data, elec+fuel, unsure how much i...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_glass_annealtemper_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1997</span><span class="p">,</span><span class="s1">&#39;Notes&#39;</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[57]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&#39;includes annealing and tempering with marketshares of elec vs fuel gas tempering&#39;</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_glass_annealtemper_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_glass_annealtemper_raw</span><span class="p">[</span><span class="s1">&#39;E_GlassTempering_kWhpkg&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Energy of Annealing and Tempering Flat glass&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg]&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[58]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Text(0.5, 0, &#39;[kWh/kg]&#39;)</pre>
+</div>
+
+</div>
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedImage jp-OutputArea-output ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Once again, the 1980 datapoint seems excessively low and will therefore be excluded.</p>
+<p>The jump between 1997 and 2001 data seems unlikely to be a trend and more attributable to differing methods of calculating the energy requirements. The modern datapoint falls between these two points. Therefore, like for the batching energy, we wil take an average of these 3 points and use that for all time.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[61]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_glass_annealtemper_trim</span> <span class="o">=</span> <span class="n">e_glass_annealtemper_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">&#39;E_GlassTempering_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;Prct_fuel_annealtemper&#39;</span><span class="p">]]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[62]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">avg_annealtemper_e</span> <span class="o">=</span> <span class="n">e_glass_annealtemper_trim</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">avg_prctfuel_annealtemper</span> <span class="o">=</span> <span class="n">e_glass_annealtemper_trim</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">e_glass_annealtemper_trim</span><span class="p">[</span><span class="s1">&#39;E_GlassTempering_kWhpkg&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">avg_annealtemper_e</span>
+<span class="n">e_glass_annealtemper_trim</span><span class="p">[</span><span class="s1">&#39;Prct_fuel_annealtemper&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">avg_prctfuel_annealtemper</span>
+<span class="n">e_glass_annealtemper_trim</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[62]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>E_GlassTempering_kWhpkg</th>
+      <th>Prct_fuel_annealtemper</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1995</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>1996</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>1997</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>1998</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>1999</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2000</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2001</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2002</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2003</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2004</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2005</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2006</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2007</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2008</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2031</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2032</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2033</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2034</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2035</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2036</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2037</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2038</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2039</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2040</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2041</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2042</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2043</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2044</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2045</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2046</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2047</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2048</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2049</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <th>2050</th>
+      <td>1.27</td>
+      <td>80.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Combine-All-MFG-energy">Combine All MFG energy<a class="anchor-link" href="#Combine-All-MFG-energy">&#182;</a></h2><p>For the energy baseline to match up with the mass baseline, we are separating the energy demands into virgin material, transport, and manufacturing energy. This journal covers the Manufacturing energy, batch processing through forming and cutting. The following calculation sum all the energies associate with manufacturing at the flat glass facility.</p>
 <p>To track the use of methane/natural gas in the processing, we will do a weighted average percent fuel column to accompany the total energy value.</p>
 
@@ -14848,13 +15801,11 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[65]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">e_meltrefine_filled</span><span class="p">,</span> <span class="n">e_glassform_filled</span><span class="p">]</span>
-<span class="n">energies_mfg_glass</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;melt&#39;</span><span class="p">,</span><span class="s1">&#39;form&#39;</span><span class="p">])</span>
-<span class="n">energies_mfg_glass</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span><span class="s1">&#39;E_batch_kwhpkg&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">avg_batch_e</span> <span class="c1">#adds column with multi-index</span>
-<span class="n">energies_mfg_glass</span><span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span><span class="s1">&#39;Prct_Fuel&#39;</span><span class="p">]</span><span class="o">=</span><span class="mf">0.0</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">e_batchglass_trim</span><span class="p">,</span> <span class="n">e_meltrefine_filled</span><span class="p">,</span> <span class="n">e_glassform_filled</span><span class="p">,</span> <span class="n">e_glass_annealtemper_trim</span><span class="p">]</span>
+<span class="n">energies_mfg_glass</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">energies_mfg_glass</span>
 </pre></div>
 
@@ -14871,7 +15822,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[38]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[65]:</div>
 
 
 
@@ -14886,33 +15837,27 @@ a.anchor-link {
         vertical-align: top;
     }
 
-    .dataframe thead tr th {
-        text-align: left;
-    }
-
-    .dataframe thead tr:last-of-type th {
+    .dataframe thead th {
         text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
   <thead>
-    <tr>
+    <tr style="text-align: right;">
       <th></th>
-      <th colspan="2" halign="left">melt</th>
-      <th colspan="2" halign="left">form</th>
-      <th colspan="2" halign="left">batch</th>
-    </tr>
-    <tr>
-      <th></th>
+      <th>E_batchingGlass_kWhpkg</th>
+      <th>Prct_Fuel_batch</th>
       <th>E_melt_refine_total_kWhpkg</th>
-      <th>Prct_Fuel</th>
+      <th>Prct_Fuel_melt</th>
       <th>E_Glassforming_kWhpkg</th>
-      <th>Prct_Fuel</th>
-      <th>E_batch_kwhpkg</th>
-      <th>Prct_Fuel</th>
+      <th>Prct_Fuel_form</th>
+      <th>E_GlassTempering_kWhpkg</th>
+      <th>Prct_fuel_annealtemper</th>
     </tr>
     <tr>
       <th>year</th>
+      <th></th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -14924,507 +15869,619 @@ a.anchor-link {
   <tbody>
     <tr>
       <th>1995</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.770000</td>
       <td>96.000000</td>
       <td>0.485000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>1996</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.770000</td>
       <td>96.000000</td>
       <td>0.485000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>1997</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.770000</td>
       <td>96.000000</td>
       <td>0.485000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>1998</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.728889</td>
       <td>95.888889</td>
       <td>0.473750</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>1999</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.687778</td>
       <td>95.777778</td>
       <td>0.462500</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2000</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.646667</td>
       <td>95.666667</td>
       <td>0.451250</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2001</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.605556</td>
       <td>95.555556</td>
       <td>0.440000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2002</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.564444</td>
       <td>95.444444</td>
       <td>0.417556</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2003</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.523333</td>
       <td>95.333333</td>
       <td>0.395111</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2004</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.482222</td>
       <td>95.222222</td>
       <td>0.372667</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2005</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.441111</td>
       <td>95.111111</td>
       <td>0.350222</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2006</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.400000</td>
       <td>95.000000</td>
       <td>0.327778</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2007</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.380000</td>
       <td>95.000000</td>
       <td>0.305333</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2008</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.360000</td>
       <td>95.000000</td>
       <td>0.282889</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2009</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.340000</td>
       <td>95.000000</td>
       <td>0.260444</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2010</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.320000</td>
       <td>95.000000</td>
       <td>0.238000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2011</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.300000</td>
       <td>95.000000</td>
       <td>0.215556</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2012</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.280000</td>
       <td>95.000000</td>
       <td>0.193111</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2013</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.260000</td>
       <td>95.000000</td>
       <td>0.170667</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2014</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.240000</td>
       <td>95.000000</td>
       <td>0.148222</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2015</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.220000</td>
       <td>95.000000</td>
       <td>0.125778</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2016</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.200000</td>
       <td>95.000000</td>
       <td>0.103333</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2017</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.180000</td>
       <td>95.000000</td>
       <td>0.080889</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2018</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.160000</td>
       <td>95.000000</td>
       <td>0.058444</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2019</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2020</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2021</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2022</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2023</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2024</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2025</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2026</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2027</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2028</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2029</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2030</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2031</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2032</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2033</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2034</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2035</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2036</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2037</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2038</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2039</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2040</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2041</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2042</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2043</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2044</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2045</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2046</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2047</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2048</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2049</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>2050</th>
+      <td>0.066724</td>
+      <td>0.0</td>
       <td>2.140000</td>
       <td>95.000000</td>
       <td>0.036000</td>
       <td>0.0</td>
-      <td>0.066724</td>
-      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
     </tr>
   </tbody>
 </table>
@@ -15443,7 +16500,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#now weighted marketshare combination</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
      </div>
