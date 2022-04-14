@@ -64,12 +64,12 @@ print('The average batching energy for glass making is '+str(round(avg_batch_e,3
 e_batchglass_trim = e_batchglass_raw.loc[1995:,['E_batchingGlass_kWhpkg','Prct_Fuel_batch']]
 
 
-# In[7]:
+# In[167]:
 
 
 e_batchglass_trim['E_batchingGlass_kWhpkg']=avg_batch_e
 e_batchglass_trim['Prct_Fuel_batch']=0.0
-e_batchglass_trim
+e_batchglass_trim.head(5)
 
 
 # ## Melting
@@ -266,14 +266,14 @@ plt.xlabel('[kWh/kg]')
 e_glass_annealtemper_trim = e_glass_annealtemper_raw.loc[1995:,['E_GlassTempering_kWhpkg','Prct_fuel_annealtemper']]
 
 
-# In[28]:
+# In[166]:
 
 
 avg_annealtemper_e = e_glass_annealtemper_trim.iloc[:,0].mean()
 avg_prctfuel_annealtemper = e_glass_annealtemper_trim.iloc[:,1].mean()
 e_glass_annealtemper_trim['E_GlassTempering_kWhpkg']= avg_annealtemper_e
 e_glass_annealtemper_trim['Prct_fuel_annealtemper']= avg_prctfuel_annealtemper
-e_glass_annealtemper_trim
+e_glass_annealtemper_trim.head(5)
 
 
 # ## Combine All MFG energy
@@ -282,30 +282,30 @@ e_glass_annealtemper_trim
 # 
 # To track the use of methane/natural gas in the processing, we will do a weighted average percent fuel column to accompany the total energy value.
 
-# In[78]:
+# In[165]:
 
 
 dfs = [e_batchglass_trim, e_meltrefine_filled, e_glassform_filled, e_glass_annealtemper_trim]
 energies_mfg_glass = pd.concat(dfs, axis=1, keys = ['batch','melt','form','anneal'])
-energies_mfg_glass
+energies_mfg_glass.head(5)
 
 
-# In[89]:
+# In[164]:
 
 
 #Sum the manufacturing energies
 energies_mfg_glass['sum','E_mfg_glass_kWhpkg'] = energies_mfg_glass.filter(like='E_').sum(axis=1)
-energies_mfg_glass
+energies_mfg_glass.head(5)
 
 
-# In[140]:
+# In[163]:
 
 
 #Take weighted average of PRCT Fuel by energy step
 wting_factors = energies_mfg_glass.filter(like='E_')
 wting_factors = wting_factors.div(energies_mfg_glass['sum','E_mfg_glass_kWhpkg'], axis=0)
 #wting_factors.drop('E_mfg_glass_kWhpkg', axis=1, inplace=True)
-wting_factors
+wting_factors.head(5)
 
 
 # In[141]:
@@ -330,12 +330,32 @@ wtd_fuel_fraction = wting_factors.mul(fuel_fraction, axis = 1) #multiply fractio
 wtd_fuel_fraction['sum'] = wtd_fuel_fraction.sum(axis=1) #sum the fuel fraction
 
 
-# In[160]:
+# In[162]:
 
 
 e_mfg_glass_output = pd.concat([energies_mfg_glass['sum','E_mfg_glass_kWhpkg'], wtd_fuel_fraction['sum']], axis=1)
 e_mfg_glass_output.columns=['E_mfg_glass_kWhpkg','Prct_fuel']
-e_mfg_glass_output
+e_mfg_glass_output.head(5)
+
+
+# In[172]:
+
+
+fig, ax1 = plt.subplots() 
+#left axis
+ax1.set_ylabel('Manufacturing Energy [kWh/kg]', color='blue') 
+ax1.plot(e_mfg_glass_output.index,e_mfg_glass_output.iloc[:,0], color='blue') 
+ax1.set_ylim(0,5)
+
+#right axis
+ax2 = ax1.twinx()
+plt.ylabel('Fraction of Energy provided by Methane [%]', color='red')
+ax2.plot(e_mfg_glass_output.index,e_mfg_glass_output.iloc[:,1], color='red')  
+ax2.set_ylim(75,100)
+
+plt.title('Energy and Fuel to Manufacture Flat Glass')
+
+plt.show()
 
 
 # In[161]:
