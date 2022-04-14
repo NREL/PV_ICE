@@ -282,23 +282,64 @@ e_glass_annealtemper_trim
 # 
 # To track the use of methane/natural gas in the processing, we will do a weighted average percent fuel column to accompany the total energy value.
 
-# In[29]:
+# In[78]:
 
 
 dfs = [e_batchglass_trim, e_meltrefine_filled, e_glassform_filled, e_glass_annealtemper_trim]
-energies_mfg_glass = pd.concat(dfs, axis=1)
+energies_mfg_glass = pd.concat(dfs, axis=1, keys = ['batch','melt','form','anneal'])
 energies_mfg_glass
 
 
-# In[30]:
+# In[89]:
 
 
 #Sum the manufacturing energies
-energies_mfg_glass['E_mfg_glass_kWhpkg'] = energies_mfg_glass.filter(regex='^E_').sum(axis=1)
+energies_mfg_glass['sum','E_mfg_glass_kWhpkg'] = energies_mfg_glass.filter(like='E_').sum(axis=1)
+energies_mfg_glass
 
 
-# In[31]:
+# In[140]:
 
 
 #Take weighted average of PRCT Fuel by energy step
+wting_factors = energies_mfg_glass.filter(like='E_')
+wting_factors = wting_factors.div(energies_mfg_glass['sum','E_mfg_glass_kWhpkg'], axis=0)
+#wting_factors.drop('E_mfg_glass_kWhpkg', axis=1, inplace=True)
+wting_factors
+
+
+# In[141]:
+
+
+fuel_fraction = energies_mfg_glass.filter(like='Prct_')
+fuel_fraction.columns.levels[0]
+
+
+# In[142]:
+
+
+#drop the column name levels to leave the process steps, allowing multiplication
+wting_factors.columns = wting_factors.columns.droplevel(1)
+fuel_fraction.columns = fuel_fraction.columns.droplevel(1)
+
+
+# In[144]:
+
+
+wtd_fuel_fraction = wting_factors.mul(fuel_fraction, axis = 1) #multiply fraction of energy/step * PRCT Fuel fraction
+wtd_fuel_fraction['sum'] = wtd_fuel_fraction.sum(axis=1) #sum the fuel fraction
+
+
+# In[160]:
+
+
+e_mfg_glass_output = pd.concat([energies_mfg_glass['sum','E_mfg_glass_kWhpkg'], wtd_fuel_fraction['sum']], axis=1)
+e_mfg_glass_output.columns=['E_mfg_glass_kWhpkg','Prct_fuel']
+e_mfg_glass_output
+
+
+# In[161]:
+
+
+e_mfg_glass_output.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_MFG_FUEL.csv")
 

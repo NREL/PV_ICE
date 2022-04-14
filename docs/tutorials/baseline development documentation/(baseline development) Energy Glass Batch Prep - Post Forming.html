@@ -15802,11 +15802,11 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[78]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">e_batchglass_trim</span><span class="p">,</span> <span class="n">e_meltrefine_filled</span><span class="p">,</span> <span class="n">e_glassform_filled</span><span class="p">,</span> <span class="n">e_glass_annealtemper_trim</span><span class="p">]</span>
-<span class="n">energies_mfg_glass</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">energies_mfg_glass</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;batch&#39;</span><span class="p">,</span><span class="s1">&#39;melt&#39;</span><span class="p">,</span><span class="s1">&#39;form&#39;</span><span class="p">,</span><span class="s1">&#39;anneal&#39;</span><span class="p">])</span>
 <span class="n">energies_mfg_glass</span>
 </pre></div>
 
@@ -15823,7 +15823,7 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[78]:</div>
 
 
 
@@ -15838,13 +15838,24 @@ a.anchor-link {
         vertical-align: top;
     }
 
-    .dataframe thead th {
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
         text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
+      <th></th>
+      <th colspan="2" halign="left">batch</th>
+      <th colspan="2" halign="left">melt</th>
+      <th colspan="2" halign="left">form</th>
+      <th colspan="2" halign="left">anneal</th>
+    </tr>
+    <tr>
       <th></th>
       <th>E_batchingGlass_kWhpkg</th>
       <th>Prct_Fuel_batch</th>
@@ -16495,14 +16506,1355 @@ a.anchor-link {
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[89]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Sum the manufacturing energies</span>
-<span class="n">energies_mfg_glass</span><span class="p">[</span><span class="s1">&#39;E_mfg_glass_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">energies_mfg_glass</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s1">&#39;^E_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">energies_mfg_glass</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span><span class="s1">&#39;E_mfg_glass_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">energies_mfg_glass</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;E_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">energies_mfg_glass</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[89]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="2" halign="left">batch</th>
+      <th colspan="2" halign="left">melt</th>
+      <th colspan="2" halign="left">form</th>
+      <th colspan="2" halign="left">anneal</th>
+      <th>sum</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>E_batchingGlass_kWhpkg</th>
+      <th>Prct_Fuel_batch</th>
+      <th>E_melt_refine_total_kWhpkg</th>
+      <th>Prct_Fuel_melt</th>
+      <th>E_Glassforming_kWhpkg</th>
+      <th>Prct_Fuel_form</th>
+      <th>E_GlassTempering_kWhpkg</th>
+      <th>Prct_fuel_annealtemper</th>
+      <th>E_mfg_glass_kWhpkg</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1995</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.770000</td>
+      <td>96.000000</td>
+      <td>0.485000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.591724</td>
+    </tr>
+    <tr>
+      <th>1996</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.770000</td>
+      <td>96.000000</td>
+      <td>0.485000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.591724</td>
+    </tr>
+    <tr>
+      <th>1997</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.770000</td>
+      <td>96.000000</td>
+      <td>0.485000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.591724</td>
+    </tr>
+    <tr>
+      <th>1998</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.728889</td>
+      <td>95.888889</td>
+      <td>0.473750</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.539363</td>
+    </tr>
+    <tr>
+      <th>1999</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.687778</td>
+      <td>95.777778</td>
+      <td>0.462500</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.487001</td>
+    </tr>
+    <tr>
+      <th>2000</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.646667</td>
+      <td>95.666667</td>
+      <td>0.451250</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.434640</td>
+    </tr>
+    <tr>
+      <th>2001</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.605556</td>
+      <td>95.555556</td>
+      <td>0.440000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.382279</td>
+    </tr>
+    <tr>
+      <th>2002</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.564444</td>
+      <td>95.444444</td>
+      <td>0.417556</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.318724</td>
+    </tr>
+    <tr>
+      <th>2003</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.523333</td>
+      <td>95.333333</td>
+      <td>0.395111</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.255168</td>
+    </tr>
+    <tr>
+      <th>2004</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.482222</td>
+      <td>95.222222</td>
+      <td>0.372667</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.191613</td>
+    </tr>
+    <tr>
+      <th>2005</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.441111</td>
+      <td>95.111111</td>
+      <td>0.350222</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.128057</td>
+    </tr>
+    <tr>
+      <th>2006</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.400000</td>
+      <td>95.000000</td>
+      <td>0.327778</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.064501</td>
+    </tr>
+    <tr>
+      <th>2007</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.380000</td>
+      <td>95.000000</td>
+      <td>0.305333</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>4.022057</td>
+    </tr>
+    <tr>
+      <th>2008</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.360000</td>
+      <td>95.000000</td>
+      <td>0.282889</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.979613</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.340000</td>
+      <td>95.000000</td>
+      <td>0.260444</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.937168</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.320000</td>
+      <td>95.000000</td>
+      <td>0.238000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.894724</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.300000</td>
+      <td>95.000000</td>
+      <td>0.215556</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.852279</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.280000</td>
+      <td>95.000000</td>
+      <td>0.193111</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.809835</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.260000</td>
+      <td>95.000000</td>
+      <td>0.170667</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.767390</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.240000</td>
+      <td>95.000000</td>
+      <td>0.148222</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.724946</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.220000</td>
+      <td>95.000000</td>
+      <td>0.125778</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.682501</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.200000</td>
+      <td>95.000000</td>
+      <td>0.103333</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.640057</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.180000</td>
+      <td>95.000000</td>
+      <td>0.080889</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.597613</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.160000</td>
+      <td>95.000000</td>
+      <td>0.058444</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.555168</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2031</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2032</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2033</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2034</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2035</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2036</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2037</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2038</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2039</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2040</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2041</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2042</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2043</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2044</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2045</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2046</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2047</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2048</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2049</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+    <tr>
+      <th>2050</th>
+      <td>0.066724</td>
+      <td>0.0</td>
+      <td>2.140000</td>
+      <td>95.000000</td>
+      <td>0.036000</td>
+      <td>0.0</td>
+      <td>1.27</td>
+      <td>80.0</td>
+      <td>3.512724</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[140]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Take weighted average of PRCT Fuel by energy step</span>
+<span class="n">wting_factors</span> <span class="o">=</span> <span class="n">energies_mfg_glass</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;E_&#39;</span><span class="p">)</span>
+<span class="n">wting_factors</span> <span class="o">=</span> <span class="n">wting_factors</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">energies_mfg_glass</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span><span class="s1">&#39;E_mfg_glass_kWhpkg&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1">#wting_factors.drop(&#39;E_mfg_glass_kWhpkg&#39;, axis=1, inplace=True)</span>
+<span class="n">wting_factors</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[140]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th>batch</th>
+      <th>melt</th>
+      <th>form</th>
+      <th>anneal</th>
+      <th>sum</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>E_batchingGlass_kWhpkg</th>
+      <th>E_melt_refine_total_kWhpkg</th>
+      <th>E_Glassforming_kWhpkg</th>
+      <th>E_GlassTempering_kWhpkg</th>
+      <th>E_mfg_glass_kWhpkg</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1995</th>
+      <td>0.014531</td>
+      <td>0.603259</td>
+      <td>0.105625</td>
+      <td>0.276585</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1996</th>
+      <td>0.014531</td>
+      <td>0.603259</td>
+      <td>0.105625</td>
+      <td>0.276585</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1997</th>
+      <td>0.014531</td>
+      <td>0.603259</td>
+      <td>0.105625</td>
+      <td>0.276585</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1998</th>
+      <td>0.014699</td>
+      <td>0.601161</td>
+      <td>0.104365</td>
+      <td>0.279775</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1999</th>
+      <td>0.014870</td>
+      <td>0.599014</td>
+      <td>0.103076</td>
+      <td>0.283040</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2000</th>
+      <td>0.015046</td>
+      <td>0.596817</td>
+      <td>0.101756</td>
+      <td>0.286382</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2001</th>
+      <td>0.015226</td>
+      <td>0.594566</td>
+      <td>0.100404</td>
+      <td>0.289804</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2002</th>
+      <td>0.015450</td>
+      <td>0.593797</td>
+      <td>0.096685</td>
+      <td>0.294068</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2003</th>
+      <td>0.015681</td>
+      <td>0.593004</td>
+      <td>0.092854</td>
+      <td>0.298461</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2004</th>
+      <td>0.015918</td>
+      <td>0.592188</td>
+      <td>0.088908</td>
+      <td>0.302986</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2005</th>
+      <td>0.016163</td>
+      <td>0.591346</td>
+      <td>0.084839</td>
+      <td>0.307651</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2006</th>
+      <td>0.016416</td>
+      <td>0.590478</td>
+      <td>0.080644</td>
+      <td>0.312461</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2007</th>
+      <td>0.016589</td>
+      <td>0.591737</td>
+      <td>0.075915</td>
+      <td>0.315759</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2008</th>
+      <td>0.016766</td>
+      <td>0.593023</td>
+      <td>0.071085</td>
+      <td>0.319127</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>0.016947</td>
+      <td>0.594336</td>
+      <td>0.066150</td>
+      <td>0.322567</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>0.017132</td>
+      <td>0.595678</td>
+      <td>0.061108</td>
+      <td>0.326082</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>0.017321</td>
+      <td>0.597049</td>
+      <td>0.055955</td>
+      <td>0.329675</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>0.017514</td>
+      <td>0.598451</td>
+      <td>0.050688</td>
+      <td>0.333348</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>0.017711</td>
+      <td>0.599885</td>
+      <td>0.045301</td>
+      <td>0.337103</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>0.017913</td>
+      <td>0.601351</td>
+      <td>0.039792</td>
+      <td>0.340945</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>0.018119</td>
+      <td>0.602851</td>
+      <td>0.034156</td>
+      <td>0.344874</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>0.018330</td>
+      <td>0.604386</td>
+      <td>0.028388</td>
+      <td>0.348896</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>0.018547</td>
+      <td>0.605957</td>
+      <td>0.022484</td>
+      <td>0.353012</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>0.018768</td>
+      <td>0.607566</td>
+      <td>0.016439</td>
+      <td>0.357226</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2031</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2032</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2033</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2034</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2035</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2036</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2037</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2038</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2039</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2040</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2041</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2042</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2043</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2044</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2045</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2046</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2047</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2048</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2049</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2050</th>
+      <td>0.018995</td>
+      <td>0.609214</td>
+      <td>0.010248</td>
+      <td>0.361543</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[141]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fuel_fraction</span> <span class="o">=</span> <span class="n">energies_mfg_glass</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;Prct_&#39;</span><span class="p">)</span>
+<span class="n">fuel_fraction</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[141]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Index([&#39;batch&#39;, &#39;melt&#39;, &#39;form&#39;, &#39;anneal&#39;, &#39;sum&#39;], dtype=&#39;object&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[142]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#drop the column name levels to leave the process steps, allowing multiplication</span>
+<span class="n">wting_factors</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">wting_factors</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fuel_fraction</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">fuel_fraction</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16513,10 +17865,373 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[144]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Take weighted average of PRCT Fuel by energy step</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wtd_fuel_fraction</span> <span class="o">=</span> <span class="n">wting_factors</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">fuel_fraction</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#multiply fraction of energy/step * PRCT Fuel fraction</span>
+<span class="n">wtd_fuel_fraction</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wtd_fuel_fraction</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#sum the fuel fraction</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[160]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_mfg_glass_output</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">energies_mfg_glass</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span><span class="s1">&#39;E_mfg_glass_kWhpkg&#39;</span><span class="p">],</span> <span class="n">wtd_fuel_fraction</span><span class="p">[</span><span class="s1">&#39;sum&#39;</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">e_mfg_glass_output</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_mfg_glass_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;Prct_fuel&#39;</span><span class="p">]</span>
+<span class="n">e_mfg_glass_output</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[160]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>E_mfg_glass_kWhpkg</th>
+      <th>Prct_fuel</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1995</th>
+      <td>4.591724</td>
+      <td>80.039660</td>
+    </tr>
+    <tr>
+      <th>1996</th>
+      <td>4.591724</td>
+      <td>80.039660</td>
+    </tr>
+    <tr>
+      <th>1997</th>
+      <td>4.591724</td>
+      <td>80.039660</td>
+    </tr>
+    <tr>
+      <th>1998</th>
+      <td>4.539363</td>
+      <td>80.026683</td>
+    </tr>
+    <tr>
+      <th>1999</th>
+      <td>4.487001</td>
+      <td>80.015438</td>
+    </tr>
+    <tr>
+      <th>2000</th>
+      <td>4.434640</td>
+      <td>80.005988</td>
+    </tr>
+    <tr>
+      <th>2001</th>
+      <td>4.382279</td>
+      <td>79.998397</td>
+    </tr>
+    <tr>
+      <th>2002</th>
+      <td>4.318724</td>
+      <td>80.200079</td>
+    </tr>
+    <tr>
+      <th>2003</th>
+      <td>4.255168</td>
+      <td>80.409933</td>
+    </tr>
+    <tr>
+      <th>2004</th>
+      <td>4.191613</td>
+      <td>80.628330</td>
+    </tr>
+    <tr>
+      <th>2005</th>
+      <td>4.128057</td>
+      <td>80.855665</td>
+    </tr>
+    <tr>
+      <th>2006</th>
+      <td>4.064501</td>
+      <td>81.092357</td>
+    </tr>
+    <tr>
+      <th>2007</th>
+      <td>4.022057</td>
+      <td>81.475723</td>
+    </tr>
+    <tr>
+      <th>2008</th>
+      <td>3.979613</td>
+      <td>81.867267</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>3.937168</td>
+      <td>82.267253</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>3.894724</td>
+      <td>82.675956</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>3.852279</td>
+      <td>83.093666</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>3.809835</td>
+      <td>83.520683</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>3.767390</td>
+      <td>83.957322</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>3.724946</td>
+      <td>84.403912</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>3.682501</td>
+      <td>84.860796</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>3.640057</td>
+      <td>85.328335</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>3.597613</td>
+      <td>85.806906</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>3.555168</td>
+      <td>86.296905</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2031</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2032</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2033</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2034</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2035</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2036</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2037</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2038</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2039</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2040</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2041</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2042</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2043</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2044</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2045</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2046</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2047</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2048</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2049</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+    <tr>
+      <th>2050</th>
+      <td>3.512724</td>
+      <td>86.798744</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[161]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_mfg_glass_output</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_MFG_FUEL.csv&quot;</span><span class="p">)</span>
 </pre></div>
 
      </div>
