@@ -5,7 +5,7 @@
 
 # This journal creates a baseline for the energy required to mine and refine quartz or industrial silica deposits into silica sand usable for either the glass or mg-si industry. 
 
-# In[2]:
+# In[1]:
 
 
 import numpy as np
@@ -16,7 +16,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[3]:
+# In[2]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -25,7 +25,7 @@ e_minesilica_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateria
                                      index_col='year', usecols=lambda x: x not in skipcols)
 
 
-# In[4]:
+# In[3]:
 
 
 plt.plot(e_minesilica_raw, marker='o')
@@ -38,7 +38,7 @@ plt.title(e_minesilica_raw.columns[0])
 # 
 # Energy values associated with the creation of silica sand were used, and other side-related processes were excluded. This can be thought of as scope 1 energy requirements.
 
-# In[5]:
+# In[4]:
 
 
 e_minesilica_tidy = e_minesilica_raw.copy()
@@ -48,7 +48,7 @@ plt.plot(e_minesilica_tidy, marker='o')
 
 # These data points are all good, and generally represent different locations and proceses. We will use these as optional values, rather than a time series, depending on location and quality of silica supply.
 
-# In[6]:
+# In[5]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -57,13 +57,19 @@ e_minesilica_meta = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
                                      index_col='year')
 
 
-# In[25]:
+# In[6]:
 
 
 e_minesilica = e_minesilica_meta.dropna()
 e_minesilica.drop([1992], inplace=True)
 e_minesilica.loc[:,'Location'] = ['China', 'Croatia', 'Poland', 'USA', 'China']
 e_minesilica.loc[:,'Quality'] = ['Low', 'Industrial', 'Industrial','High','Low']
+
+
+# In[7]:
+
+
+e_minesilica
 
 
 # For now, we will select the Heidari and Anctil 2022 Low Quality China data point, since a majority of MG-Si and glass are coming from China.

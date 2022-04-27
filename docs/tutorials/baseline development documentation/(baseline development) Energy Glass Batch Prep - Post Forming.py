@@ -136,7 +136,7 @@ e_meltrefine_subrange = e_meltrefine.loc[1995:,['E_melt_refine_total_kWhpkg','Pr
 e_meltrefine_filled = e_meltrefine_subrange.interpolate(limit_direction='both')
 
 
-# In[15]:
+# In[180]:
 
 
 fig, ax1 = plt.subplots() 
@@ -144,12 +144,15 @@ fig, ax1 = plt.subplots()
 ax1.set_ylabel('Melting and Refining Energy [kWh/kg]', color='blue') 
 ax1.plot(e_meltrefine_filled.index,e_meltrefine_filled.iloc[:,0], color='blue') 
 ax1.set_ylim(0,4)
+ax1.set_xlim(1995,2025)
 
 #right axis
 ax2 = ax1.twinx()
 plt.ylabel('Fraction of Energy provided by Methane [%]', color='red')
 ax2.plot(e_meltrefine_filled.index,e_meltrefine_filled.iloc[:,1], color='red')  
 ax2.set_ylim(80,100)
+
+plt.title('Energy: Melt & Refine Glass')
 
 plt.show()
 
@@ -195,7 +198,7 @@ e_glassform = e_glassform_raw.loc[1995:,['E_Glassforming_kWhpkg','Prct_Fuel_form
 e_glassform_filled = e_glassform.interpolate(limit_direction='both')
 
 
-# In[21]:
+# In[181]:
 
 
 fig, ax1 = plt.subplots() 
@@ -203,6 +206,7 @@ fig, ax1 = plt.subplots()
 ax1.set_ylabel('[kWh/kg]', color='blue') 
 ax1.plot(e_glassform_filled.index,e_glassform_filled.iloc[:,0], color='blue') 
 ax1.set_ylim(0,1)
+ax1.set_xlim(1995,2025)
 
 #right axis
 #ax2 = ax1.twinx()
@@ -338,7 +342,7 @@ e_mfg_glass_output.columns=['E_mfg_glass_kWhpkg','Prct_fuel']
 e_mfg_glass_output.head(5)
 
 
-# In[172]:
+# In[177]:
 
 
 fig, ax1 = plt.subplots() 
@@ -349,7 +353,28 @@ ax1.set_ylim(0,5)
 
 #right axis
 ax2 = ax1.twinx()
-plt.ylabel('Fraction of Energy provided by Methane [%]', color='red')
+plt.ylabel('Fraction of Energy provided by \n Natural Gas (Methane) [%]', color='red')
+ax2.plot(e_mfg_glass_output.index,e_mfg_glass_output.iloc[:,1], color='red')  
+ax2.set_ylim(75,100)
+
+plt.title('Energy and Fuel to Manufacture Flat Glass')
+
+plt.show()
+
+
+# In[179]:
+
+
+fig, ax1 = plt.subplots() 
+#left axis
+ax1.set_ylabel('Manufacturing Energy [kWh/kg]', color='blue') 
+ax1.plot(e_mfg_glass_output.index,e_mfg_glass_output.iloc[:,0], color='blue') 
+ax1.set_ylim(0,5)
+ax1.set_xlim(1995,2025)
+
+#right axis
+ax2 = ax1.twinx()
+plt.ylabel('Fraction of Energy provided by \n Natural Gas (Methane) [%]', color='red')
 ax2.plot(e_mfg_glass_output.index,e_mfg_glass_output.iloc[:,1], color='red')  
 ax2.set_ylim(75,100)
 
