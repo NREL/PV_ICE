@@ -1,4 +1,4 @@
-﻿year,e_mat_extraction,e_mat_MFGGlass,e_mat_MFGGlass_fuelfraction,e_mat_MFGScrap_LQ,e_mat_MFGScrap_HQ,e_mat_EoL_Remanufacture,e_mat_Recycled_LQ,e_mat_Recycled_HQ
+﻿year,e_mat_extraction,e_mat_MFGGlass,e_mat_MFGGlass_fuelfraction,e_mat_MFGScrap_LQ,e_mat_MFGScrap_HQ,e_mat_EoL_ReMFG_clean,e_mat_Recycled_LQ,e_mat_Recycled_HQ
 year,kWh/kg,kWh/kg,%,kWh/kg,kWh/kg,kWh/kg,kWh/kg,kWh/kg
 1995,0.0062,4.591723628,80.03966043,,,,,
 1996,0.0062,4.591723628,80.03966043,,,,,
