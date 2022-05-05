@@ -124,10 +124,10 @@ def _unitReferences(keyword):
                         'EOL_on_Year_53': {'unit': 'm$^2$', 'source': 'generated'},
                         'EOL_on_Year_54': {'unit': 'm$^2$', 'source': 'generated'},
                         'EOL_on_Year_55': {'unit': 'm$^2$', 'source': 'generated'},
-                        'EoL_Collected': {'unit': 'm$^2$', 'source': 'generated'},
-                        'EoL_NotCollected': {'unit': 'm$^2$', 'source': 'generated'},
-                        'EoL_Recycled': {'unit': 'm$^2$', 'source': 'generated'},
-                        'EoL_NotRecycled_Landfilled': {'unit': 'm$^2$', 'source': 'generated'}
+                        'EOL_Collected': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_NotCollected': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_Recycled': {'unit': 'm$^2$', 'source': 'generated'},
+                        'EOL_NotRecycled_Landfilled': {'unit': 'm$^2$', 'source': 'generated'}
                         }
 
     materialDictionary={'year': {'unit': 'Years', 'source': 'input'},
@@ -138,8 +138,8 @@ def _unitReferences(keyword):
                         'mat_MFG_scrap_Recycled': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
                         'mat_MFG_scrap_Recycled_into_HQ': {'unit': 'Percentage [%]', 'source': 'input'},
                         'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG': {'unit': 'Percentage [%]', 'source': 'input'},
-                        'mat_EOL_collected_Recycled': {'unit': 'Percentage [%]', 'source': 'input'},
-                        'mat_EOL_Recycling_eff': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
+                        'mod_EOL_p5_recycled': {'unit': 'Percentage [%]', 'source': 'input'},
+                        'mat_EOL_Recycling_yield': {'unit': 'Efficiency $\eta$ [%]', 'source': 'input'},
                         'mat_EOL_Recycled_into_HQ': {'unit': 'Percentage [%]', 'source': 'input'},
                         'mat_EOL_RecycledHQ_Reused4MFG': {'unit': 'Percentage [%]', 'source': 'input'},
                         'mat_modules_NotRecycled': {'unit': 'Mass [g]', 'source': 'generated'},
@@ -150,7 +150,7 @@ def _unitReferences(keyword):
                         'mat_EOL_Recycled_Losses_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
                         'mat_EOL_Recycled_2_HQ': {'unit': 'Mass [g]', 'source': 'generated'},
                         'mat_EOL_Recycled_2_OQ': {'unit': 'Mass [g]', 'source': 'generated'},
-                        'mat_EoL_Recycled_HQ_into_MFG': {'unit': 'Mass [g]', 'source': 'generated'},
+                        'mat_EOL_Recycled_HQ_into_MFG': {'unit': 'Mass [g]', 'source': 'generated'},
                         'mat_EOL_Recycled_HQ_into_OU': {'unit': 'Mass [g]', 'source': 'generated'},
                         'mat_UsedinManufacturing': {'unit': 'Mass [g]', 'source': 'generated'},
                         'mat_Manufacturing_Input': {'unit': 'Mass [g]', 'source': 'generated'},
@@ -408,18 +408,29 @@ class Simulation:
             df['Area'] = df['Area'].fillna(0) # Chagne na's to 0s.
 
             # Calculating Wast by Generation by Year, and Cumulative Waste by Year.
+            Generation_EOL_pathsG = []
             Generation_Disposed_byYear = []
             Generation_Active_byYear= []
             Generation_Power_byYear = []
             weibullParamList = []
 
             df['Cumulative_Area_disposedby_Failure'] = 0
+            df['Cumulative_Power_disposedby_Failure'] = 0
             df['Cumulative_Area_disposedby_ProjectLifetime'] = 0
-            df['Cumulative_Area_disposed'] = 0
+            df['Cumulative_Power_disposedby_ProjectLifetime'] = 0
+            df['Cumulative_Area_disposed'] = 0  # Failure + ProjectLifetime
+            df['Cumulative_Power_disposed'] = 0
+
             df['Repaired_[W]'] = 0
             df['Repaired_Area'] = 0
+            
+            df['Resold_Area'] = 0
+            df['Resold_[W]'] = 0
+
             df['Cumulative_Active_Area'] = 0
             df['Installed_Capacity_[W]'] = 0
+
+            
             for generation, row in df.iterrows(): 
                 #generation is an int 0,1,2,.... etc.
                 #generation=4
@@ -448,11 +459,26 @@ class Simulation:
                     activearea=0
                 
                 activeareacount = []
+
                 areadisposed_failure = []
+                powerdisposed_failure = []
+                
                 areadisposed_projectlifetime = []
-                arearepaired = []
-                arearepaired_powergen = []
-                areapowergen = []
+                powerdisposed_projectlifetime = []
+
+                area_repaired = []
+                power_repaired = []
+
+                power_resold = []
+                area_resold = []
+
+                area_powergen = []  # Active area production.
+
+                area_bad_status = []
+                power_bad_status = []
+                area_otherpaths = []
+                power_otherpaths = []
+                
                 active=0
                 disposed_projectlifetime=0
                 for age in range(len(cdf)):
@@ -460,42 +486,93 @@ class Simulation:
                     if x[age] == 0.0:
                         activeareacount.append(0)
                         areadisposed_failure.append(0)
+                        powerdisposed_failure.append(0)
                         areadisposed_projectlifetime.append(0)
-                        areapowergen.append(0)
-                        arearepaired.append(0)
-                        arearepaired_powergen.append(0)
+                        powerdisposed_projectlifetime.append(0)
+                        area_resold.append(0)
+                        area_bad_status.append(0)
+                        power_bad_status.append(0)
+                        area_powergen.append(0)
+                        area_repaired.append(0)
+                        power_repaired.append(0)
+                        area_otherpaths.append(0)
+                        power_otherpaths.append(0)
+
                     else:
                         active += 1
-                        activeareaprev = activearea                            
-                        activearea = activearea-row['Area']*pdf[age]+row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01                        
-#                        arearepaired_failure = activearea*cdf[age]*df.iloc[age]['mod_Repair']*0.01
-                        arearepaired_failure = row['Area']*pdf[age]*df.iloc[age]['mod_Repair']*0.01
+                        deg_nameplate = (1-row['mod_degradation']*0.01)**active  
+                        poweragegen = row['mod_eff']*0.01*row['irradiance_stc']*deg_nameplate
+                        
+                        activeareaprev = activearea
 
-                        arearepaired.append(arearepaired_failure)
-                        arearepaired_powergen.append(arearepaired_failure*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
+                        failures = row['Area']*pdf[age]
+                        area_repaired0 = failures*df.iloc[age]['mod_Repair']*0.01      
+                        power_repaired0 = area_repaired0*poweragegen
+
+                        area_notrepaired0 = failures-area_repaired0
+                        power_notrepaired0 = area_notrepaired0*poweragegen
+                        
+                        activearea = activeareaprev-area_notrepaired0
+                        
+
                                         
-                        areadisposed_failure.append(activeareaprev-activearea)
                         if age == int(row['mod_lifetime']+generation):
                             activearea_temp = activearea
                             activearea = 0+activearea*(df.iloc[age]['mod_MerchantTail']*0.01)
                             disposed_projectlifetime = activearea_temp-activearea
 
-                            activearea2 = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01) # 12   
-                            activearea = activearea + activearea2  # 92
-                            disposed_projectlifetime = disposed_projectlifetime - activearea2        # 8
-
+                            if deg_nameplate > 0.8:
+                                # TO DO: check math here
+                                area_collected = disposed_projectlifetime*(df.iloc[age]['mod_EOL_collection_eff']*0.01)
+                                landfilled_noncollected = disposed_projectlifetime-area_collected
+                                
+                                area_resold0 = area_collected*(df.iloc[age]['mod_EOL_p2_resell']*0.01)
+                                power_resold0 = area_resold0*poweragegen
+                                
+                                area_otherpaths0 = area_collected - area_resold0
+                                power_otherpaths0 = area_otherpaths0*poweragegen
+                                
+                                activearea = activearea + area_resold0  
+                                
+                                # disposed_projectlifetime does not include Merchant Tail & Resold as they went back to ACtive
+                                disposed_projectlifetime = disposed_projectlifetime - area_resold0  
+                                powerdisposed_projectlifetime0 = disposed_projectlifetime*poweragegen
+                            else:
+                                area_bad_status0 = disposed_projectlifetime
+                                power_bad_status0 = area_bad_status0*poweragegen
+                                # TO DO: Add Set2 of Paths Here at some point. At 
+                                # the moment just quantifying it.
+                                
 #                            activearea = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01)
 #                            disposed_projectlifetime = activearea_temp-activearea
+                        
+                        areadisposed_failure.append(area_notrepaired0)
+                        powerdisposed_failure.append(power_notrepaired0)
+
                         areadisposed_projectlifetime.append(disposed_projectlifetime)
+                        powerdisposed_projectlifetime.append(powerdisposed_projectlifetime0)                     
+
+                        area_repaired.append(area_repaired0)
+                        power_repaired.append(power_repaired0)
+                        
+                        area_resold.append(area_resold0)
+                        power_resold.append(power_resold0)
+                        
+                        area_bad_status.append(area_bad_status0)
+                        power_bad_status.append(power_bad_status0)
+
+                        area_otherpaths.append(area_otherpaths0)
+                        power_otherpaths.append(power_otherpaths0)
+
                         activeareacount.append(activearea)
-                        areapowergen.append(activearea*row['mod_eff']*0.01*row['irradiance_stc']*(1-row['mod_degradation']*0.01)**active)                            
+                        area_powergen.append(activearea*poweragegen)                        
                 
                 try:
                     # becuase the clip starts with 0 for the installation year, identifying installation year
                     # and adding initial area
                     fixinitialareacount = next((i for i, e in enumerate(x) if e), None) - 1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
-                    areapowergen[fixinitialareacount] = (areapowergen[fixinitialareacount] +  
+                    area_powergen[fixinitialareacount] = (area_powergen[fixinitialareacount] +  
                                          row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])   
                 except:
                     # Last value does not have a xclip value of nonzero so it goes
@@ -503,31 +580,52 @@ class Simulation:
                     # of Lifetime.
                     fixinitialareacount = len(cdf)-1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']    
-                    areapowergen[fixinitialareacount] = (areapowergen[fixinitialareacount] +  
+                    area_powergen[fixinitialareacount] = (area_powergen[fixinitialareacount] +  
                                          row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])                   
                     print("Finished Area+Power Generation Calculations")
                     
             
             #   area_disposed_of_generation_by_year = [element*row['Area'] for element in pdf]
                 df['Cumulative_Area_disposedby_Failure'] += areadisposed_failure
-                df['Cumulative_Area_disposedby_ProjectLifetime'] += areadisposed_projectlifetime
+                df['Cumulative_Power_disposedby_Failure'] += powerdisposed_failure
+                
+                df['Cumulative_Area_disposedby_ProjectLifetime'] += areadisposed_projectlifetime 
+                df['Cumulative_Power_disposedby_ProjectLifetime'] += powerdisposed_projectlifetime 
+
                 df['Cumulative_Area_disposed'] += areadisposed_failure
                 df['Cumulative_Area_disposed'] += areadisposed_projectlifetime
-                
-                
-                df['Repaired_[W]'] += arearepaired_powergen
-                df['Repaired_Area'] += arearepaired
+
+                df['Cumulative_Power_disposed'] += powerdisposed_failure
+                df['Cumulative_Power_disposed'] += areadisposed_projectlifetime
+                              
+                df['Repaired_Area'] += area_repaired
+                df['Repaired_[W]'] += power_repaired
+                df['Resold_Area'] += area_resold
+                df['Resold_[W]'] += power_resold
+
+                df['Status_BAD_Area'] += area_bad_status
+                df['Status_BAD_[W]'] += power_bad_status
+
+                df['Area_for_EOL_pathsG'] += area_otherpaths0
+                df['Power_for_EOL_pathsG'] += power_otherpaths
+
+                df['Installed_Capacity_[W]'] += area_powergen
                 df['Cumulative_Active_Area'] += activeareacount
-                df['Installed_Capacity_[W]'] += areapowergen
+                
+                Generation_EOL_pathsG.append(area_otherpaths0)
+                
                 Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_projectlifetime)])
                 Generation_Active_byYear.append(activeareacount)
-                Generation_Power_byYear.append(areapowergen)
+                Generation_Power_byYear.append(area_powergen)
             
             
             df['WeibullParams'] = weibullParamList
             MatrixDisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
             MatrixDisposalbyYear = MatrixDisposalbyYear.add_prefix("EOL_on_Year_")
             
+            MatrixEOL_PathsG = pd.DataFrame(Generation_EOL_pathsG, columns = df.index, index = df.index)
+            MatrixEOL_PathsG = MatrixEOL_PathsG.add_prefix("EOL_PG_Year_")
+
             try:
                 df = df[df.columns.drop(list(df.filter(regex='EOL_on_Year_')))]
             except:
@@ -536,12 +634,23 @@ class Simulation:
             
             df = df.join(MatrixDisposalbyYear)
 
+
+            # WHY WAS I DOING A TRY EXCEPT AND JOIN??????? 
+            # Don't know but let's do it again.
+            try:
+                df = df[df.columns.drop(list(df.filter(regex='EOL_PG_Year_')))]
+            except:
+                print("Warning: Issue dropping EOL_PG columns generated by " \
+                      "calculateMFC routine to overwrite")
             
-            ## Start to do EOL Processes
-            ############################
+            df = df.join(MatrixEOL_PathsG)
             
-            filter_col = [col for col in df if col.startswith('EOL_on_Year_')]
-            EOL = df[filter_col]
+            
+            ## Start to do EOL Processes PATHS GOOD
+            #######################################
+            
+            filter_col = [col for col in df if col.startswith('EOL_PG_Year_')]
+            PG = df[filter_col]
             
             # This Multiplication pattern goes through Module and then material.
             # It is for processes that depend on each year as they improve, i.e. 
@@ -559,27 +668,74 @@ class Simulation:
             # [    0        0         G3_1 *N3   G3_2 *N4 ...]        
             #
             
-            EOL_Collected = EOL.mul(df['mod_EOL_collection_eff'].values*0.01)
-            df['EoL_Collected'] = list(EOL_Collected.sum())
-            landfill_Collection = EOL.mul(1-(df['mod_EOL_collection_eff'].values*0.01)) 
-            df['EoL_NotCollected'] = list(landfill_Collection.sum())
+                       
+            # Re-scaling Path Good Matrix, becuase Resold modules already got 
+            # resold in the cohort loop above.
+            # 'originalMatrix' = reducedMatrix x 100 / (100-p2)
+            PG = PG.mul(100/(100-df['mod_EOL_p2_resell']))
             
-            EOL_Recycled = EOL_Collected.mul(df['mod_EOL_collected_recycled'].values*0.01)
-            df['EoL_Recycled'] = list(EOL_Recycled.sum())
-            EOL_NotRecycled_Landfilled = EOL_Collected.mul((1-df['mod_EOL_collected_recycled'].values*0.01))
-            df['EoL_NotRecycled_Landfilled'] = list(EOL_NotRecycled_Landfilled.sum())
-    
+            # Paths GOOD Check for 100% sum. 
+            # If P1-P5 over 100% will reduce landfill.
+            # If P2-P5 over 100% it will shut down with Warning and Exit.
+            SUMS1 = (df['mod_EOL_p1_landfill'] + df['mod_EOL_p2_resell']+
+                     df['mod_EOL_p3_stored'] + df['mod_EOL_p4_reMFG']+
+                     df['mod_EOL_p5_recycled'])
+            SUMS2 = (df['mod_EOL_p2_resell']+
+                     df['mod_EOL_p3_stored'] + df['mod_EOL_p4_reMFG']+
+                     df['mod_EOL_p5_recycled'])
+            
+            if (SUMS2 > 100).any():
+                print("WARNING: Paths 1 through 5 should add to a 100%." +
+                      " and there is no way to correct by updating " +
+                      " path1_landfill. " +
+                      " STOPPING SIMULATION NOW GO AND FIX YOUR INPUT. Tx <3")
+                return
+            
+            if (SUMS2 > 100).any():
+                print("WARNING: Paths 1 through 5 should add to a 100%." +
+                      " and there is no way to correct by updating " +
+                      " path1_landfill. " +
+                      " STOPPING SIMULATION NOW GO AND FIX YOUR INPUT. Tx <3")
+          
+            if (SUMS1 > 100).any():
+                print("Warning: Paths 1 through 5 add to above 100%;"+
+                      "Fixing by Updating Landfill value to the remainder of"+
+                      "100-(P2+P3+P4+P5).")
+                df['mod_EOL_p1_landfill'] = 100-SUMS2
+                
+            # PATH3
+            PG1_landfill = PG.mul(df['mod_EOL_p1_landfill'].values*0.01)
+            df['PG1_landfill'] = list(PG1_landfill.sum())
+
+            # PATH3
+            PG3_stored = PG.mul(df['mod_EOL_p3_stored'].values*0.01)
+            df['PG3_stored'] = list(PG3_stored.sum())
+            # TODO: Future development of Stored path here.
+            
+            # PATH4
+            PG4_reMFG = PG.mul(df['mod_EOL_p4_reMFG'].values*0.01)
+            df['PG4_reMFG'] = list(PG4_reMFG.sum())  # Need as output?
+            
+            PG4_reMFG_yield = PG4_reMFG.mul(df['mod_EOL_pg4_reMFG_yield'].values*0.01)
+            df['PG4_reMFG_yield'] = list(PG4_reMFG_yield.sum())  # Need as output? 
+            
+            PG4_reMFG_unyield = PG4_reMFG-PG4_reMFG_yield
+            df['PG4_reMFG_unyield'] = list(PG4_reMFG_unyield.sum()) # Need as output?
+            
+            # PATH 5
+            PG5_recycled = PG.mul(df['mod_EOL_p5_recycled'].values*0.01)
+            df['PG5_recycled'] = list(PG5_recycled.sum())
+              
             # Cleanup of internal renaming and internal use columns
             df.drop(['new_Installed_Capacity_[W]', 't50', 't90'], axis = 1, inplace=True) 
             
+            # Printout reference of how much more module area is being manufactured.
+            # The manufactured efficiency is calculated on more detail on the
+            # material loop below for hte mass. 
             df['ModuleTotal_MFG']=df['Area']*100/df['mod_MFG_eff']
             
             self.scenario[scen].data = df
-            
-            # collection losses here
-            
-            # Recyle % here
-            
+
             
             ################
             # Material Loop#
@@ -611,6 +767,12 @@ class Simulation:
                 #     [    0           0      G3_1*M3   G3_2*M3 ...]
                 #
                 
+                PG1_landfill  <-- sim to EOL_NotRecycled_Landfilled
+                PG5_recycled <-- similar to EOL_Recycled
+                PG4_reMFG_yield
+                PG4_reMFG_unyield
+                
+                
                 mat_modules_EOL_sentoRecycling = EOL_Recycled.multiply(dm['mat_massperm2'], axis=0)
                 dm['mat_modules_Collected'] = list(EOL_Collected.multiply(dm['mat_massperm2'], axis=0).sum())
                 dm['mat_modules_NotCollected'] = list(landfill_Collection.multiply(dm['mat_massperm2'], axis=0).sum())
@@ -618,16 +780,15 @@ class Simulation:
                 dm['mat_modules_NotRecycled'] = list(EOL_NotRecycled_Landfilled.multiply(dm['mat_massperm2'], axis=0).sum())
                                    
                                                                             
-                # mat_EOL_collected_Recycled CHANGE NAME
-                # chnge also landfill_material_EOL_NotRecycled_Landfilled 
-                mat_EOL_sento_Recycling = mat_modules_EOL_sentoRecycling.mul(dm['mat_EOL_collected_Recycled'].values*0.01)
+                # TODO: chnge also landfill_material_EOL_NotRecycled_Landfilled 
+                mat_EOL_sento_Recycling = mat_modules_EOL_sentoRecycling.mul(dm['mod_EOL_p5_recycled'].values*0.01)
                 dm['mat_EOL_sento_Recycling'] = list(mat_EOL_sento_Recycling.sum())
-                landfill_material_EOL_NotRecycled_Landfilled = mat_modules_EOL_sentoRecycling.mul(1-(dm['mat_EOL_collected_Recycled'].values*0.01))
+                landfill_material_EOL_NotRecycled_Landfilled = mat_modules_EOL_sentoRecycling.mul(1-(dm['mod_EOL_p5_recycled'].values*0.01))
                 dm['mat_EOL_NotRecycled_Landfilled'] = list(landfill_material_EOL_NotRecycled_Landfilled.sum())
                 
-                mat_EOL_Recycled_Succesfully = mat_EOL_sento_Recycling.mul(dm['mat_EOL_Recycling_eff'].values*0.01)
+                mat_EOL_Recycled_Succesfully = mat_EOL_sento_Recycling.mul(dm['mat_EOL_Recycling_yield'].values*0.01)
                 dm['mat_EOL_Recycled'] = list(mat_EOL_Recycled_Succesfully.sum())
-                landfill_material_EOL_Recyled_Losses_Landfilled = mat_EOL_sento_Recycling.mul(1-(dm['mat_EOL_Recycling_eff'].values*0.01))
+                landfill_material_EOL_Recyled_Losses_Landfilled = mat_EOL_sento_Recycling.mul(1-(dm['mat_EOL_Recycling_yield'].values*0.01))
                 dm['mat_EOL_Recycled_Losses_Landfilled'] = list(landfill_material_EOL_Recyled_Losses_Landfilled.sum())
                 
                 
@@ -637,7 +798,7 @@ class Simulation:
                 dm['mat_EOL_Recycled_2_OQ'] = list(mat_EOL_Recycled_OQ.sum())
                 
                 mat_EOL_Recycled_HQ_into_MFG = mat_EOL_Recycled_HQ.mul(dm['mat_EOL_RecycledHQ_Reused4MFG'].values*0.01)
-                dm['mat_EoL_Recycled_HQ_into_MFG'] = list(mat_EOL_Recycled_HQ_into_MFG.sum())
+                dm['mat_EOL_Recycled_HQ_into_MFG'] = list(mat_EOL_Recycled_HQ_into_MFG.sum())
                 mat_EOL_Recycled_HQ_into_OU = mat_EOL_Recycled_HQ.mul(1-(dm['mat_EOL_RecycledHQ_Reused4MFG'].values*0.01))
                 dm['mat_EOL_Recycled_HQ_into_OU'] = list(mat_EOL_Recycled_HQ_into_OU.sum())
                 
@@ -666,7 +827,7 @@ class Simulation:
                 dm['mat_MFG_Recycled_HQ_into_MFG'] = (dm['mat_MFG_Recycled_into_HQ'] * 
                                           dm['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
                 dm['mat_MFG_Recycled_HQ_into_OU'] = dm['mat_MFG_Recycled_into_HQ'] - dm['mat_MFG_Recycled_HQ_into_MFG']
-                dm['mat_Virgin_Stock'] = dm['mat_Manufacturing_Input'] - dm['mat_EoL_Recycled_HQ_into_MFG'] - dm['mat_MFG_Recycled_HQ_into_MFG']
+                dm['mat_Virgin_Stock'] = dm['mat_Manufacturing_Input'] - dm['mat_EOL_Recycled_HQ_into_MFG'] - dm['mat_MFG_Recycled_HQ_into_MFG']
                 
                 # Calculate raw virgin needs before mining and refining efficiency losses
                 dm['mat_Virgin_Stock_Raw'] = (dm['mat_Virgin_Stock'] * 100 /  dm['mat_virgin_eff'])
@@ -872,8 +1033,8 @@ class Simulation:
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 0.0 
                 self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 0.0 
 
-                self.scenario[scen].material[mat].materialdata['mat_EOL_collected_Recycled'] = 0.0 
-                self.scenario[scen].material[mat].materialdata['mat_EOL_Recycling_eff'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mod_EOL_p5_recycled'] = 0.0 
+                self.scenario[scen].material[mat].materialdata['mat_EOL_Recycling_yield'] = 0.0 
                 self.scenario[scen].material[mat].materialdata['mat_EOL_Recycled_into_HQ'] = 0.0 
                 self.scenario[scen].material[mat].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = 0.0 
 
@@ -1371,7 +1532,7 @@ def sens_StageImprovement(df, stage, improvement=1.3, start_year=None):
         'mat_MFG_scrap_recycled', 'mat_MFG_scrap_Recycled', 
         'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
         'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
-        'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
+        'mat_EOL_Recycling_yield', 'mat_EOL_Recycled_into_HQ', 
         'mat_EOL_RecycledHQ_Reused4MFG', 'mod_Repair',
         'mod_MerchantTail', 'mod_Reuse', 'mod_eff', etc.
     improvement : decimal
@@ -1414,7 +1575,7 @@ def sens_StageEfficiency(df, stage, target_eff = 95.0, start_year = None,
         'mat_MFG_scrap_recycled', 'mat_MFG_scrap_Recycled', 
         'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'
         'mod_EOL_collection_losses', 'mod_EOL_collected_recycled',
-        'mat_EOL_Recycling_eff', 'mat_EOL_Recycled_into_HQ', 
+        'mat_EOL_Recycling_yield', 'mat_EOL_Recycled_into_HQ', 
         'mat_EOL_RecycledHQ_Reused4MFG', 'mod_Repair',
         'mod_MerchantTail', 'mod_Reuse', 'mod_eff', etc.
     start_year: int
