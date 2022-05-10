@@ -1,4 +1,4 @@
-﻿year,mat_virgin_eff,mat_massperm2,mat_MFG_eff,mat_MFG_scrap_Recycled,mat_MFG_scrap_Recycling_eff,mat_MFG_scrap_Recycled_into_HQ,mat_MFG_scrap_Recycled_into_HQ_Reused4MFG,mat_EOL_ReMFG_target,mat_EOL_ReMFG_yield,mat_EOL_Recycling_target,mat_EOL_Recycling_yield,mat_EOL_Recycled_into_HQ,mat_EOL_RecycledHQ_Reused4MFG
+﻿year,mat_virgin_eff,mat_massperm2,mat_MFG_eff,mat_MFG_scrap_Recycled,mat_MFG_scrap_Recycling_eff,mat_MFG_scrap_Recycled_into_HQ,mat_MFG_scrap_Recycled_into_HQ_Reused4MFG,mat_PG4_ReMFG_target,mat_PG4_ReMFG_yield,mat_PG5_Recycling_target,mat_PG5_Recycling_yield,mat_EOL_Recycled_into_HQ,mat_EOL_RecycledHQ_Reused4MFG
 year,%,g,%,%,%,%,%,%,%,%,%,%,%
 1995,60,8000,95,80,50,20,10,,,90,40,15,8
 1996,60,8000,95,80,50,20,10,,,90,40,15,8

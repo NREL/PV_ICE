@@ -1,4 +1,4 @@
-﻿year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,mod_degradation,mod_lifetime,mod_MFG_eff,mod_Repair,mod_MerchantTail,mod_EOL_collection_eff,mod_EOL_pg1_landfill,mod_EOL_pg2_resell,mod_EOL_pg3_stored,mod_EOL_pg4_reMFG,mod_EOL_pg5_recycled,mod_EOL_pg4_reMFG_yield,mod_EOL_spg4to5_reMFGscrapToRecycle
+﻿year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,mod_degradation,mod_lifetime,mod_MFG_eff,mod_Repair,mod_MerchantTail,mod_EOL_collection_eff,mod_EOL_pg1_landfill,mod_EOL_pg2_resell,mod_EOL_pg3_stored,mod_EOL_pg4_reMFG,mod_EOL_pg5_recycled,mod_EOL_pg4_reMFG_yield,mod_EOL_sp_reMFG_recycle
 year,MW,%,years,years,%,years,%,%,%,%,%,%,%,%,%,%,%
 1995,12.5,12.5,16,21,0.55,10,98,0,0,15,60,2,98,0,0,50,100
 1996,9.667666667,12.7,16,21,0.55,10,98,0,0,15,60,2,98,0,0,50,100
