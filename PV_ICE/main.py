@@ -410,8 +410,9 @@ class Simulation:
             # Calculating Wast by Generation by Year, and Cumulative Waste by Year.
             Generation_EOL_pathsG = []
             Generation_Disposed_byYear = []
-            Generation_Active_byYear= []
-            Generation_Power_byYear = []
+            Matrix_Landfilled_noncollected = []
+            # Generation_Active_byYear= [] Not being used at the moment, commenting out.
+            # Generation_Power_byYear = [] Not being used at the moment, commenting out.
             weibullParamList = []
 
             df['Cumulative_Area_disposedby_Failure'] = 0
@@ -421,6 +422,8 @@ class Simulation:
             df['Cumulative_Area_disposed'] = 0  # Failure + ProjectLifetime
             df['Cumulative_Power_disposed'] = 0
 
+            df['landfilled_noncollected'] = 0
+            
             df['Repaired_[W]'] = 0
             df['Repaired_Area'] = 0
             
@@ -459,6 +462,7 @@ class Simulation:
                     activearea=0
                 
                 activeareacount = []
+                area_landfill_noncollected = []
 
                 areadisposed_failure = []
                 powerdisposed_failure = []
@@ -518,8 +522,8 @@ class Simulation:
                                         
                         if age == int(row['mod_lifetime']+generation):
                             activearea_temp = activearea
-                            activearea = 0+activearea*(df.iloc[age]['mod_MerchantTail']*0.01)
-                            disposed_projectlifetime = activearea_temp-activearea
+                            merchantTail_area = 0+activearea*(df.iloc[age]['mod_MerchantTail']*0.01)
+                            disposed_projectlifetime = activearea_temp-merchantTail_area
 
                             if deg_nameplate > 0.8:
                                 # TO DO: check math here
@@ -552,6 +556,8 @@ class Simulation:
                         areadisposed_projectlifetime.append(disposed_projectlifetime)
                         powerdisposed_projectlifetime.append(powerdisposed_projectlifetime0)                     
 
+                        area_landfill_noncollected.append(landfilled_noncollected)
+    
                         area_repaired.append(area_repaired0)
                         power_repaired.append(power_repaired0)
                         
@@ -612,19 +618,32 @@ class Simulation:
                 df['Installed_Capacity_[W]'] += area_powergen
                 df['Cumulative_Active_Area'] += activeareacount
                 
-                Generation_EOL_pathsG.append(area_otherpaths0)
+                df['Landfill_1'] += area_landfill_noncollected
                 
-                Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_projectlifetime)])
-                Generation_Active_byYear.append(activeareacount)
-                Generation_Power_byYear.append(area_powergen)
+                Generation_EOL_pathsG.append(area_otherpaths0)
+                Matrix_Landfilled_noncollected.append(area_landfill_noncollected)
+
+                
+                # Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_projectlifetime)])
+                
+                # Not using at the moment:
+                # Generation_Active_byYear.append(activeareacount)
+                # Generation_Power_byYear.append(area_powergen)
             
             
             df['WeibullParams'] = weibullParamList
-            MatrixDisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
-            MatrixDisposalbyYear = MatrixDisposalbyYear.add_prefix("EOL_on_Year_")
+
+            # We don't need this Disposed by year  because we already collected, merchaint tailed and resold.
+            # Just need Landfil matrix, and Paths Good Matrix (and Paths Bad Eventually)
+            # MatrixDisposalbyYear = pd.DataFrame(Generation_Disposed_byYear, columns = df.index, index = df.index)
+            # MatrixDisposalbyYear = MatrixDisposalbyYear.add_prefix("EOL_on_Year_")
             
             MatrixEOL_PathsG = pd.DataFrame(Generation_EOL_pathsG, columns = df.index, index = df.index)
             MatrixEOL_PathsG = MatrixEOL_PathsG.add_prefix("EOL_PG_Year_")
+            
+            Matrix_Landfilled_noncollected = pd.DataFrame(Matrix_Landfilled_noncollected, columns = df.index, index=df.index)
+            Matrix_Landfilled_noncollected = MatrixEOL_PathsG.add_prefix("EOL_L1_Year_")
+            
 
             try:
                 df = df[df.columns.drop(list(df.filter(regex='EOL_on_Year_')))]
@@ -651,7 +670,9 @@ class Simulation:
             
             filter_col = [col for col in df if col.startswith('EOL_PG_Year_')]
             PG = df[filter_col]
-            
+
+            filter_col = [col for col in df if col.startswith('EOL_L1_Year_')]
+            LF1 = df[filter_col]
             # This Multiplication pattern goes through Module and then material.
             # It is for processes that depend on each year as they improve, i.e. 
             # Collection Efficiency,
@@ -767,53 +788,73 @@ class Simulation:
                 #     [    0           0      G3_1*M3   G3_2*M3 ...]
                 #
                 
-                PG1_landfill  <-- sim to EOL_NotRecycled_Landfilled
-                PG5_recycled <-- similar to EOL_Recycled
-                PG4_reMFG_yield
-                PG4_reMFG_unyield
+               
+                dm['mat_L0'] = list(LF1.multiply(dm['mat_massperm2'], axis=0).sum())
+                
+                dm['mat_PG3_stored'] = list(PG3_stored.multiply(dm['mat_massperm2'],axis=0).sum())
+                
+                dm['mat_L1'] = list(PG1_landfill.multiply(dm['mat_massperm2'], axis=0).sum())
+       
+                # PATH 4 
+                mat_reMFG = PG4_reMFG_yield.multiply(dm['mat_massperm2'],axis=0)
+                mat_reMFG_mod_unyield = PG4_reMFG_unyield.multiply(dm['mat_massperm2'],axis=0)
+                dm['mat_reMFG'] = list(mat_reMFG.sum())
+                dm['mat_reMFG_mod_unyield'] = list(mat_reMFG_mod_unyield.sum())
+      
+                dm['mat_reMFG_target'] = dm['mat_reMFG'] * dm['mat_PG4_ReMFG_target'] * 0.01
+                dm['mat_reMFG_untarget'] = dm['mat_reMFG']-dm['mat_reMFG_target']
+
+                dm['mat_reMFG_yield'] = dm['mat_reMFG_target'] * dm['mat_PG4_ReMFG_yield'] * 0.01
+                dm['mat_reMFG_unyield'] = dm['mat_reMFG_target'] - dm['mat_reMFG_yield']
+                              
+                
+                # SUBPATH 1: ReMFG to Recycling
+                dm['mat_reMFG_all_unyields'] = dm['mat_reMFG_mod_unyield'] + dm['mat_reMFG_untarget'] + dm['mat_reMFG_unyield']
+                dm['mat_reMFG_2_recycle'] = dm['mat_reMFG_all_unyields'] * df['mod_spg4to5_reMFG_recycle']               
+                dm['mat_L2'] = dm['mat_reMFG_all_unyields']-dm['mat_reMFG_2_recycle']
                 
                 
-                mat_modules_EOL_sentoRecycling = EOL_Recycled.multiply(dm['mat_massperm2'], axis=0)
-                dm['mat_modules_Collected'] = list(EOL_Collected.multiply(dm['mat_massperm2'], axis=0).sum())
-                dm['mat_modules_NotCollected'] = list(landfill_Collection.multiply(dm['mat_massperm2'], axis=0).sum())
-                dm['mat_modules_Recycled'] = list(EOL_Recycled.multiply(dm['mat_massperm2'], axis=0).sum())
-                dm['mat_modules_NotRecycled'] = list(EOL_NotRecycled_Landfilled.multiply(dm['mat_massperm2'], axis=0).sum())
-                                   
-                                                                            
-                # TODO: chnge also landfill_material_EOL_NotRecycled_Landfilled 
-                mat_EOL_sento_Recycling = mat_modules_EOL_sentoRecycling.mul(dm['mod_EOL_p5_recycled'].values*0.01)
-                dm['mat_EOL_sento_Recycling'] = list(mat_EOL_sento_Recycling.sum())
-                landfill_material_EOL_NotRecycled_Landfilled = mat_modules_EOL_sentoRecycling.mul(1-(dm['mod_EOL_p5_recycled'].values*0.01))
-                dm['mat_EOL_NotRecycled_Landfilled'] = list(landfill_material_EOL_NotRecycled_Landfilled.sum())
+                # PATH 5
+                mat_recycled = PG5_recycled.multiply(dm['mat_massperm2'],axis=0)
+                dm['mat_recycled_PG5'] = list(mat_recycled.sum())
+                dm['mat_recycled_all'] = dm['mat_recycled_PG5'] + dm['mat_reMFG_2_recycle'] 
                 
-                mat_EOL_Recycled_Succesfully = mat_EOL_sento_Recycling.mul(dm['mat_EOL_Recycling_yield'].values*0.01)
-                dm['mat_EOL_Recycled'] = list(mat_EOL_Recycled_Succesfully.sum())
-                landfill_material_EOL_Recyled_Losses_Landfilled = mat_EOL_sento_Recycling.mul(1-(dm['mat_EOL_Recycling_yield'].values*0.01))
-                dm['mat_EOL_Recycled_Losses_Landfilled'] = list(landfill_material_EOL_Recyled_Losses_Landfilled.sum())
+                dm['mat_recycled_target'] = dm['mat_recycled_all'] * dm['mat_PG5_Recycling_target'] * 0.01                 
+                dm['mat_L3'] = dm['mat_recycled_all'] - dm['mat_recycled_target']  # material un-target
+
+                dm['mat_recycled_yield'] = dm['mat_recycled_target'] * dm['mat_PG5_Recycling_yield'] * 0.01
+                dm['mat_L4'] = dm['mat_recycled_target'] - dm['mat_recycled_yield']  # material un-target
+
+                # HQ and OQ reycling paths:
+                dm['mat_EOL_Recycled_2_HQ'] = dm['mat_recycled_yield'] * dm['mat_EOL_Recycled_into_HQ'] * 0.01
+                dm['mat_EOL_Recycled_2_OQ'] = dm['mat_recycled_yield'] - dm['mat_EOL_Recycled_2_HQ']
+
+                dm['mat_EOL_Recycled_HQ_into_MFG'] = dm['mat_EOL_Recycled_2_HQ'] * dm['mat_EOL_RecycledHQ_Reused4MFG'] * 0.01
+                dm['mat_EOL_Recycled_HQ_into_OU'] = dm['mat_EOL_Recycled_2_HQ'] - dm['mat_EOL_Recycled_HQ_into_MFG']               
+                   
                 
+                ## Beginning of Life Calculations Now
+                ######################################
+                # TODO: Close loop later to reduce MFG step... something. mat_reMFG_yield closing to mat_
                 
-                mat_EOL_Recycled_HQ = mat_EOL_Recycled_Succesfully.mul(dm['mat_EOL_Recycled_into_HQ'].values*0.01)
-                dm['mat_EOL_Recycled_2_HQ'] = list(mat_EOL_Recycled_HQ.sum())
-                mat_EOL_Recycled_OQ = mat_EOL_Recycled_Succesfully.mul(1-(dm['mat_EOL_Recycled_into_HQ'].values*0.01))
-                dm['mat_EOL_Recycled_2_OQ'] = list(mat_EOL_Recycled_OQ.sum())
-                
-                mat_EOL_Recycled_HQ_into_MFG = mat_EOL_Recycled_HQ.mul(dm['mat_EOL_RecycledHQ_Reused4MFG'].values*0.01)
-                dm['mat_EOL_Recycled_HQ_into_MFG'] = list(mat_EOL_Recycled_HQ_into_MFG.sum())
-                mat_EOL_Recycled_HQ_into_OU = mat_EOL_Recycled_HQ.mul(1-(dm['mat_EOL_RecycledHQ_Reused4MFG'].values*0.01))
-                dm['mat_EOL_Recycled_HQ_into_OU'] = list(mat_EOL_Recycled_HQ_into_OU.sum())
-                
-                # BULK Calculations Now
+                # CHECK 
+                dm['mat_EnteringModuleManufacturing_total'] = (df['Area'] * dm['mat_massperm2']*100/df['mod_MFG_eff'])
                 dm['mat_UsedSuccessfullyinModuleManufacturing'] = (df['Area'] * dm['mat_massperm2'])
-                dm['mat_EnteringModuleManufacturing'] = (df['Area'] * dm['mat_massperm2']*100/df['mod_MFG_eff'])
-                dm['mat_LostinModuleManufacturing'] = dm['mat_EnteringModuleManufacturing'] - dm['mat_UsedSuccessfullyinModuleManufacturing']
+                dm['mat_LostinModuleManufacturing'] = dm['mat_EnteringModuleManufacturing_total'] - dm['mat_UsedSuccessfullyinModuleManufacturing']
+
+                dm['mat_EnteringModuleManufacturing_total'] = (df['Area'] * dm['mat_massperm2']*100/df['mod_MFG_eff'])
                 
-                dm['mat_Manufacturing_Input'] = dm['mat_EnteringModuleManufacturing'] / (dm['mat_MFG_eff'] * 0.01)
+                # Input from Successful ReMFG to offset Module Manufacturing Material Needs.
+                dm['mat_EnteringModuleManufacturing_virgin'] = dm['mat_EnteringModuleManufacturing_total'] - dm['mat_reMFG_yield']    
+
+                
+                # Material Manufacturing Stage                
+                dm['mat_Manufacturing_Input'] = dm['mat_EnteringModuleManufacturing_virgin'] / (dm['mat_MFG_eff'] * 0.01)
                 
                 # Scrap = Lost to Material manufacturing losses + Module manufacturing losses
-                dm['mat_MFG_Scrap'] = (dm['mat_Manufacturing_Input'] - dm['mat_EnteringModuleManufacturing'] + 
+                dm['mat_MFG_Scrap'] = (dm['mat_Manufacturing_Input'] - dm['mat_EnteringModuleManufacturing_virgin'] + 
                                       dm['mat_LostinModuleManufacturing'])
                 dm['mat_MFG_Scrap_Sentto_Recycling'] = dm['mat_MFG_Scrap'] * dm['mat_MFG_scrap_Recycled'] * 0.01
-                
                 
                 
                 dm['mat_MFG_Scrap_Landfilled'] = dm['mat_MFG_Scrap'] - dm['mat_MFG_Scrap_Sentto_Recycling'] 
@@ -827,16 +868,20 @@ class Simulation:
                 dm['mat_MFG_Recycled_HQ_into_MFG'] = (dm['mat_MFG_Recycled_into_HQ'] * 
                                           dm['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
                 dm['mat_MFG_Recycled_HQ_into_OU'] = dm['mat_MFG_Recycled_into_HQ'] - dm['mat_MFG_Recycled_HQ_into_MFG']
+                
+                # Input from Successful Recycling to offset Mateirla Manufacturing Virgin Needs:
                 dm['mat_Virgin_Stock'] = dm['mat_Manufacturing_Input'] - dm['mat_EOL_Recycled_HQ_into_MFG'] - dm['mat_MFG_Recycled_HQ_into_MFG']
                 
                 # Calculate raw virgin needs before mining and refining efficiency losses
                 dm['mat_Virgin_Stock_Raw'] = (dm['mat_Virgin_Stock'] * 100 /  dm['mat_virgin_eff'])
 
                 # Add Wastes
-                dm['mat_Total_EOL_Landfilled'] = (dm['mat_modules_NotCollected'] + 
-                                                  dm['mat_modules_NotRecycled'] +
-                                                  dm['mat_EOL_NotRecycled_Landfilled'] +
-                                                  dm['mat_EOL_Recycled_Losses_Landfilled'])      
+
+                dm['mat_Total_EOL_Landfilled'] = (dm['mat_L0']+  #'mat_modules_NotCollected'] + 
+                                                  dm['mat_L1']+ # 'mat Path Good Chosen to be Landfilled + 
+                                                  dm['mat_L2']+ # mat not reMFG (yields module, target, or yieldds matr) NOT sent to recycling 
+                                                  dm['mat_L3']+ # mat in recycling not TARGET so landfilled +
+                                                  dm['mat_L4']) # mat in EOL_Recycled_Losses_Landfilled      
                 
                 dm['mat_Total_MFG_Landfilled'] = (dm['mat_MFG_Scrap_Landfilled'] + 
                                                  dm['mat_MFG_Scrap_Recycled_Losses_Landfilled'])
