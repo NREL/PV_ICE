@@ -19,6 +19,8 @@ print ("Your simulation will be stored in %s" % testfolder)
 
 import PV_ICE
 
+PV_ICE.__version__
+
 
 # ### 2. Create your Simulation Object
 # 
@@ -33,66 +35,88 @@ r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 # In[4]:
 
 
-r1.createScenario(name='standard', file=r'..\baselines\baseline_modules_US_dev.csv')
+mainbranch = False
+if mainbranch:
+    r1.createScenario(name='standard', file=r'..\baselines\baseline_modules_US.csv')
+    r1.scenario['standard'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')    
+else:
+    r1.createScenario(name='standard', file=r'..\baselines\baseline_modules_US_dev.csv')
+    r1.scenario['standard'].addMaterial('glass', file=r'..\baselines\baseline_material_glass_dev.csv')
 
 
 # In[5]:
 
 
-r1.scenario['standard'].addMaterial('glass', file=r'..\baselines\baseline_material_glass_dev.csv')
+r1.calculateMassFlow()
 
 
 # In[6]:
 
 
-r1.calculateMassFlow()
+r1.scenario['standard'].data.head()
 
 
 # In[7]:
 
 
-import pandas as pd
-import numpy as np
+r1.scenario['standard'].data.tail()
 
 
 # In[8]:
 
 
-PG = pd.DataFrame(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]),
-                   columns=['a', 'b', 'c'])
-PG
+r1.scenario['standard'].material['glass'].materialdata.head()
 
 
 # In[9]:
 
 
-df = PG.copy()
-df
+r1.scenario['standard'].material['glass'].materialdata.tail()
 
 
 # In[10]:
 
 
-100/(100-df['a'])
-
-
-# In[11]:
-
-
-PG.mul(100/(100-df['a']), axis=0)
-
-
-# In[12]:
-
-
-r1.scenario['standard'].data.head()
+if mainbranch:
+    r1.scenario['standard'].data.to_csv('test_MAIN.csv')
+    r1.scenario['standard'].material['glass'].materialdata.to_csv('test_MAIN_Mat.csv')
+else:
+    r1.scenario['standard'].data.to_csv('test_Dev.csv')
+    r1.scenario['standard'].data.to_csv('test_Dev_Mat.csv')
+    
 
 
 # ###  6. Plot Mass Flow Results
 
-# In[13]:
+# In[11]:
 
 
 r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_EOL_Recycled_2_HQ')
+
+
+# In[17]:
+
+
+r1.scenario['standard'].data.keys()
+
+
+# In[19]:
+
+
+for key in r1.scenario['standard'].data.keys():
+    try:
+        r1.plotScenariosComparison(keyword=key)
+    except:
+        print("FAILED ON KEY : ", key)
+
+
+# In[20]:
+
+
+for key in r1.scenario['standard'].material['glass'].materialdata.keys():
+    try:
+        r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword=key)
+    except:
+        print("FAILED ON KEY : ", key)
 

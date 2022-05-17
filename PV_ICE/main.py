@@ -661,12 +661,12 @@ class Simulation:
             
             PG = pd.DataFrame(Generation_EOL_pathsG, columns = df.index, index = df.index)
                      
-            LF1 = pd.DataFrame(Matrix_Landfilled_noncollected, columns = df.index, index=df.index)
+            L0 = pd.DataFrame(Matrix_Landfilled_noncollected, columns = df.index, index=df.index)
             
             PB = pd.DataFrame(Matrix_area_bad_status, columns = df.index, index=df.index)
     
             df = df.join(PG.add_prefix("EOL_PG_Year_"))
-            df = df.join(LF1.add_prefix("EOL_L1_Year_"))
+            df = df.join(L0.add_prefix("EOL_L0_Year_"))
             df = df.join(PB.add_prefix("EOL_BS_Year"))
             
             ## Start to do EOL Processes PATHS GOOD
@@ -789,13 +789,15 @@ class Simulation:
             # PATH 4
             PB4_recycled = PB.mul(df['mod_EOL_pb4_recycled'].values*0.01)
             df['PB4_recycled'] = list(PB4_recycled.sum())
-#            P1_landfill = PG1_landfill+
 
-            # ADD Matrices now, ecuase we don't care to distinguish on the material stream the source.
-            print("COLUMNS: ", PB4_recycled.columns)
-#            PB1_landfill0 = PB1_recycled.copy()
-#            PB1_recycled0.columns = [col.strip('EOL_BS_') for col in db.columns]
+            # ADD Matrices now for path goods and bads, becuase we don't need 
+            # to distinguish on the source of the material stream.
+            P1_landfill = PG1_landfill + PB1_landfill 
+            P2_stored = PG2_stored + PB2_stored 
+            P3_reMFG_yield = PG3_reMFG_yield + PB3_reMFG_yield
+            P3_reMFG_unyield = PG3_reMFG_unyield + PB3_reMFG_unyield
             
+            P4_recycled = PG4_recycled + PB4_recycled            
             
             # Cleanup of internal renaming and internal use columns
             df.drop(['new_Installed_Capacity_[W]', 't50', 't90'], axis = 1, inplace=True) 
@@ -836,15 +838,15 @@ class Simulation:
                 #
                 
                
-                dm['mat_L0'] = list(LF1.multiply(dm['mat_massperm2'], axis=0).sum())
+                dm['mat_L0'] = list(L0.multiply(dm['mat_massperm2'], axis=0).sum())
                 
-                dm['mat_PG2_stored'] = list(PG2_stored.multiply(dm['mat_massperm2'],axis=0).sum())
+                dm['mat_PG2_stored'] = list(P2_stored.multiply(dm['mat_massperm2'],axis=0).sum())
                 
-                dm['mat_L1'] = list(PG1_landfill.multiply(dm['mat_massperm2'], axis=0).sum())
+                dm['mat_L1'] = list(P1_landfill.multiply(dm['mat_massperm2'], axis=0).sum())
        
                 # PATH 4 
-                mat_reMFG = PG3_reMFG_yield.multiply(dm['mat_massperm2'],axis=0)
-                mat_reMFG_mod_unyield = PG3_reMFG_unyield.multiply(dm['mat_massperm2'],axis=0)
+                mat_reMFG = P3_reMFG_yield.multiply(dm['mat_massperm2'],axis=0)
+                mat_reMFG_mod_unyield = P3_reMFG_unyield.multiply(dm['mat_massperm2'],axis=0)
                 dm['mat_reMFG'] = list(mat_reMFG.sum())
                 dm['mat_reMFG_mod_unyield'] = list(mat_reMFG_mod_unyield.sum())
       
@@ -862,7 +864,7 @@ class Simulation:
                 
                 
                 # PATH 5
-                mat_recycled = PG4_recycled.multiply(dm['mat_massperm2'],axis=0)
+                mat_recycled = P4_recycled.multiply(dm['mat_massperm2'],axis=0)
                 dm['mat_recycled_PG4'] = list(mat_recycled.sum())
                 dm['mat_recycled_all'] = dm['mat_recycled_PG4'] + dm['mat_reMFG_2_recycle'] 
                 
