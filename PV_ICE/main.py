@@ -412,16 +412,17 @@ class Simulation:
             Generation_Disposed_byYear = []
             Matrix_Landfilled_noncollected = []
             Matrix_area_bad_status = []
+            Matrix_Failures = []
             # Generation_Active_byYear= [] Not being used at the moment, commenting out.
             # Generation_Power_byYear = [] Not being used at the moment, commenting out.
             weibullParamList = []
 
-            df['Cumulative_Area_disposedby_Failure'] = 0
-            df['Cumulative_Power_disposedby_Failure'] = 0
-            df['Cumulative_Area_disposedby_ProjectLifetime'] = 0
-            df['Cumulative_Power_disposedby_ProjectLifetime'] = 0
-            df['Cumulative_Area_disposed'] = 0  # Failure + ProjectLifetime
-            df['Cumulative_Power_disposed'] = 0
+            df['Yearly_Sum_Area_disposedby_Failure'] = 0
+            df['Yearly_Sum_Power_disposedby_Failure'] = 0
+            df['Yearly_Sum_Area_disposedby_ProjectLifetime'] = 0
+            df['Yearly_Sum_Power_disposedby_ProjectLifetime'] = 0
+            df['Yearly_Sum_Area_disposed'] = 0  # Failure + ProjectLifetime
+            df['Yearly_Sum_Power_disposed'] = 0
 
             df['landfilled_noncollected'] = 0
             
@@ -440,7 +441,7 @@ class Simulation:
             df['Area_for_EOL_pathsG'] = 0
             df['Power_for_EOL_pathsG'] = 0
             
-            df['Landfill_1'] = 0
+            df['Landfill_0'] = 0
             
             for generation, row in df.iterrows(): 
                 #generation is an int 0,1,2,.... etc.
@@ -528,23 +529,33 @@ class Simulation:
                         deg_nameplate = (1-row['mod_degradation']*0.01)**active  
                         poweragegen = row['mod_eff']*0.01*row['irradiance_stc']*deg_nameplate
                         
+                        # FAILURES HERE! 
                         activeareaprev = activearea
 
                         failures = row['Area']*pdf[age]
+                        
+                        if failures > activearea:
+                            #print("More failures than active area, reducing failures to possibilities now.")
+                            failures = activearea
+                        
                         area_repaired0 = failures*df.iloc[age]['mod_Repair']*0.01      
                         power_repaired0 = area_repaired0*poweragegen
 
                         area_notrepaired0 = failures-area_repaired0
                         power_notrepaired0 = area_notrepaired0*poweragegen
-                        
+
                         activearea = activeareaprev-area_notrepaired0
-                        
 
                         if age == int(row['mod_lifetime']+generation):
-                            activearea_temp = activearea
+                            #activearea_temp = activearea
                             merchantTail_area = 0+activearea*(df.iloc[age]['mod_MerchantTail']*0.01)
-                            disposed_projectlifetime = activearea_temp-merchantTail_area
+                            disposed_projectlifetime = activearea-merchantTail_area
+                            activearea = merchantTail_area
 
+                            # I don't think these should be here.
+                            #area_notrepaired0 = 0
+                            #power_notrepaired0 = 0
+                            
                             if deg_nameplate > 0.8:
                                 # TO DO: check math here
                                 area_collected = disposed_projectlifetime*(df.iloc[age]['mod_EOL_collection_eff']*0.01)
@@ -565,15 +576,17 @@ class Simulation:
                                 area_bad_status0 = disposed_projectlifetime
                                 power_bad_status0 = area_bad_status0*poweragegen
                                 #powerdisposed_projectlifetime0 = 0 # CHECK? 
-                                area_bad_status0 = area_notrepaired0+area_bad_status0
-                                power_bad_status0 = power_notrepaired0+power_bad_status0
                                 
 #                            activearea = 0+disposed_projectlifetime*(df.iloc[age]['mod_Reuse']*0.01)
 #                            disposed_projectlifetime = activearea_temp-activearea
                         
+
                         areadisposed_failure.append(area_notrepaired0)
                         powerdisposed_failure.append(power_notrepaired0)
 
+                        # TODO IMPORTANT: Add Failures matrices to EoL Matrix.
+                        
+#                        areadisposed_failure_collected.append(area_notrepaired0*df.iloc[age]['mod_EOL_collection_eff']*0.01)
                         areadisposed_projectlifetime.append(disposed_projectlifetime)
                         powerdisposed_projectlifetime.append(powerdisposed_projectlifetime0)                     
 
@@ -613,17 +626,19 @@ class Simulation:
                     
             
             #   area_disposed_of_generation_by_year = [element*row['Area'] for element in pdf]
-                df['Cumulative_Area_disposedby_Failure'] += areadisposed_failure
-                df['Cumulative_Power_disposedby_Failure'] += powerdisposed_failure
+                # This used to be labeled as cumulative; but in the sense that they cumulate
+                # yearly deaths for all cohorts that die.
+                df['Yearly_Sum_Area_disposedby_Failure'] += areadisposed_failure
+                df['Yearly_Sum_Power_disposedby_Failure'] += powerdisposed_failure
                 
-                df['Cumulative_Area_disposedby_ProjectLifetime'] += areadisposed_projectlifetime 
-                df['Cumulative_Power_disposedby_ProjectLifetime'] += powerdisposed_projectlifetime 
+                df['Yearly_Sum_Area_disposedby_ProjectLifetime'] += areadisposed_projectlifetime 
+                df['Yearly_Sum_Power_disposedby_ProjectLifetime'] += powerdisposed_projectlifetime 
 
-                df['Cumulative_Area_disposed'] += areadisposed_failure
-                df['Cumulative_Area_disposed'] += areadisposed_projectlifetime
+                df['Yearly_Sum_Area_disposed'] += areadisposed_failure
+                df['Yearly_Sum_Area_disposed'] += areadisposed_projectlifetime
 
-                df['Cumulative_Power_disposed'] += powerdisposed_failure
-                df['Cumulative_Power_disposed'] += areadisposed_projectlifetime
+                df['Yearly_Sum_Area_disposed'] += powerdisposed_failure
+                df['Yearly_Sum_Power_disposed'] += areadisposed_projectlifetime
                               
                 df['Repaired_Area'] += area_repaired
                 df['Repaired_[W]'] += power_repaired
@@ -639,11 +654,13 @@ class Simulation:
                 df['Installed_Capacity_[W]'] += area_powergen
                 df['Cumulative_Active_Area'] += activeareacount
                 
-                df['Landfill_1'] += area_landfill_noncollected
+                df['Landfill_0'] += area_landfill_noncollected
+                
                 
                 Generation_EOL_pathsG.append(area_otherpaths)
                 Matrix_Landfilled_noncollected.append(area_landfill_noncollected)
                 Matrix_area_bad_status.append(area_bad_status)
+                Matrix_Failures.append(areadisposed_failure)
                 
                 # Generation_Disposed_byYear.append([x + y for x, y in zip(areadisposed_failure, areadisposed_projectlifetime)])
                 
@@ -665,9 +682,30 @@ class Simulation:
             
             PB = pd.DataFrame(Matrix_area_bad_status, columns = df.index, index=df.index)
     
+            PF = pd.DataFrame(Matrix_Failures, columns = df.index, index=df.index)
+
+            # Path Bad includes Path Bad from Project Lifetime and adding now 
+            #  the path bads from Failures disposed (not repaired)            
+            PB = PB + PF
+            
+            # Updating Path Bad for collection efficiency.
+            PBC = PB.mul(df['mod_EOL_collection_eff'].values*0.01)
+            PBNC = PB - PBC
+            
+            # What doesn't get collected of Path Bad, goes to Landfill 0. 
+            L0 = L0 + PBNC
+
+            # What goes on forward to Path Bads EoL Pathways is PBC. 
+            
+
             df = df.join(PG.add_prefix("EOL_PG_Year_"))
             df = df.join(L0.add_prefix("EOL_L0_Year_"))
-            df = df.join(PB.add_prefix("EOL_BS_Year"))
+            df = df.join(PBC.add_prefix("EOL_BS_Year"))
+            
+            df['EOL_Landfill0'] = L0.sum(axis=0)
+            df['EOL_BadStatus'] = PBC.sum(axis=0)
+            df['EOL_PG'] = PG.sum(axis=0)
+            df['EOL_PATHS'] = (PBC+PG).sum(axis=0)            
             
             ## Start to do EOL Processes PATHS GOOD
             #######################################
@@ -768,16 +806,16 @@ class Simulation:
                 df['mod_EOL_pb1_landfill'] = 100-SUMS2
             
             # PATH1
-            PB1_landfill = PB.mul(df['mod_EOL_pb1_landfill'].values*0.01)
+            PB1_landfill = PBC.mul(df['mod_EOL_pb1_landfill'].values*0.01)
             df['PB1_landfill'] = list(PB1_landfill.sum())
 
             # PATH2
-            PB2_stored = PB.mul(df['mod_EOL_pg2_stored'].values*0.01)
+            PB2_stored = PBC.mul(df['mod_EOL_pg2_stored'].values*0.01)
             df['PB2_stored'] = list(PB2_stored.sum())
             # TODO: Future development of Stored path here.
             
             # PATH3
-            PB3_reMFG = PB.mul(df['mod_EOL_pb3_reMFG'].values*0.01)
+            PB3_reMFG = PBC.mul(df['mod_EOL_pb3_reMFG'].values*0.01)
             df['PB3_reMFG'] = list(PB3_reMFG.sum())  # Need as output?
             
             PB3_reMFG_yield = PB3_reMFG.mul(df['mod_EOL_reMFG_yield'].values*0.01)
@@ -787,7 +825,7 @@ class Simulation:
             df['PB3_reMFG_unyield'] = list(PB3_reMFG_unyield.sum()) # Need as output?
             
             # PATH 4
-            PB4_recycled = PB.mul(df['mod_EOL_pb4_recycled'].values*0.01)
+            PB4_recycled = PBC.mul(df['mod_EOL_pb4_recycled'].values*0.01)
             df['PB4_recycled'] = list(PB4_recycled.sum())
 
             # ADD Matrices now for path goods and bads, becuase we don't need 
