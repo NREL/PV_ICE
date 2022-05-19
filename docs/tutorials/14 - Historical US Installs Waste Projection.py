@@ -53,9 +53,9 @@ print(os.getcwd())
 # In[4]:
 
 
-MATERIALS = ['glass']#,'aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
+MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
 MATERIAL = MATERIALS[0]
-moduleFile = r'..\baselines\baseline_modules_US_HistoryUtilCommOnly_dev.csv'
+moduleFile = r'..\baselines\baseline_modules_US_HistoryUtilCommOnly.csv'
 
 
 # In[5]:
@@ -64,7 +64,7 @@ moduleFile = r'..\baselines\baseline_modules_US_HistoryUtilCommOnly_dev.csv'
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='USHistory', file=moduleFile)
 for mat in range (0, len(MATERIALS)):
-    MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'_dev.csv'
+    MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
     r1.scenario['USHistory'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
 
@@ -75,32 +75,15 @@ for mat in range (0, len(MATERIALS)):
 # In[6]:
 
 
-r1.scenario['USHistory'].material['glass'].materialdata.keys()
-
-
-# In[7]:
-
-
-#list of material recycling variables
-RecyclingPaths = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycled_into_HQ', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 'mat_EOL_collected_Recycled', 'mat_EOL_Recycled_into_HQ', 'mat_EoL_Recycled_HQ_into_MFG']
-RecyclingYields = ['mat_MFG_scrap_Recycling_eff', 'mat_EOL_Recycling_eff']
-
-
-# In[8]:
-
-
-for mat in range (0, len(MATERIALS)):
-    r1.scenario['USHistory'].material[MATERIALS[mat]].materialdata['mat_virgin_eff'] = 100.0
-    r1.scenario['USHistory'].material[MATERIALS[mat]].materialdata['mat_MFG_eff'] = 100.0
-    for var in range (0,len(RecyclingPaths)):
-        r1.scenario['USHistory'].material[MATERIALS[mat]].materialdata[RecyclingPaths[var]] = 0.0
-    for ylds in range(0,len(RecyclingYields)):
-        r1.scenario['USHistory'].material[MATERIALS[mat]].materialdata[RecyclingYields[ylds]] = 0.0
+r1.scenMod_noCircularity() # sets all module and material circular variables to 0, creating fully linear
+r1.scenMod_PerfectManufacturing() #sets all manufacturing values to 100% efficiency/yield
+#check:
+#r1.scenario['USHistory'].material['glass'].materialdata['mat_MFG_eff']
 
 
 # ### Run the Mass Flow Calculations on All Scenarios and Materials
 
-# In[9]:
+# In[7]:
 
 
 r1.calculateMassFlow()
@@ -116,27 +99,27 @@ r1.calculateMassFlow()
 #     
 #     print(r1.scenario['standard'].material['glass'].materialdata.keys())
 
-# In[10]:
+# In[8]:
 
 
 #print(r1.scenario.keys())
-#print(r1.scenario['USHistory'].data.keys())
-print(r1.scenario['USHistory'].material['glass'].materialdata.keys())
+print(r1.scenario['USHistory'].data.keys())
+#print(r1.scenario['USHistory'].material['glass'].materialdata.keys())
 
 
-# In[12]:
+# In[9]:
 
 
 r1.plotScenariosComparison(keyword='Yearly_Sum_Area_disposed')
 
 
-# In[16]:
+# In[10]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_MFG_Landfilled')
 
 
-# In[14]:
+# In[11]:
 
 
 plt.plot(r1.scenario['USHistory'].data['year'], 
@@ -146,17 +129,17 @@ plt.title('Installed Capacity Annually')
 plt.ylabel('Installed Cap [W]')
 
 
-# In[17]:
+# In[12]:
 
 
 usyearlyr1, uscumr1 = r1.aggregateResults()
-usyearlyr1.to_csv('r1-usyearly-func.csv')
-uscumr1.to_csv('r1-uscum-func.csv')
+usyearlyr1.to_csv('historicalUS-yearly.csv')
+uscumr1.to_csv('historicalUS-cumulative.csv')
 
 
 # ## Pretty Plots
 
-# In[18]:
+# In[13]:
 
 
 #create a yearly Module Waste Mass
@@ -174,28 +157,28 @@ USyearly['Waste_Module'] = USyearly.sum(axis=1)
 USyearly.head(10)
 
 
-# In[19]:
+# In[14]:
 
 
 #add index
 USyearly.index = r1.scenario['USHistory'].data['year']
 
 
-# In[20]:
+# In[15]:
 
 
 #Convert to million metric tonnes
 USyearly_mil_tonnes=USyearly/1000000000000
 
 
-# In[21]:
+# In[16]:
 
 
 #Adding new installed capacity for decomissioning calc
 USyearly_mil_tonnes['new_Installed_Capacity_[MW]'] = r1.scenario['USHistory'].data['new_Installed_Capacity_[MW]'].values
 
 
-# In[22]:
+# In[17]:
 
 
 UScum = USyearly_mil_tonnes.copy()
@@ -204,14 +187,14 @@ UScum = UScum.cumsum()
 UScum.head()
 
 
-# In[23]:
+# In[18]:
 
 
 bottoms = pd.DataFrame(UScum.loc[2050])
 bottoms
 
 
-# In[24]:
+# In[19]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -258,153 +241,37 @@ a1.set_xticks(ind)
 a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0] ), ('Glass', 'Aluminium frames', 'Silicon','Copper','Silver', 'Encapsulant', 'Backsheet'))
 
 
-# ### plot of decommissioned in MW
+# # Plot and Table of decommissioned in MW
 # decommissioned yearly = cumulative new installs - yearly active capacity
+# 
+# the decommissioned yearly column is actually cumulative, so do reverse cum on it.
+# 
+# Create a table output of installs, active generating capacity annually decommissioned, cumulatively decomissioned, and cumulative decomissioned module mass.
 
-# In[26]:
-
-
-#Add Installed capacity to yearly
-USyearly_mil_tonnes['Active_Capacity_[W]'] = r1.scenario['USHistory'].data['Installed_Capacity_[W]'].values
-USyearly_mil_tonnes.head()
-
-
-# In[27]:
+# In[40]:
 
 
-USyearly_mil_tonnes.to_csv('r1-usyearly.csv')
-UScum.to_csv('r1-uscum.csv')
-
-
-# In[33]:
-
-
-USyearly_mil_tonnes['Decommissioned_yearly_[MW]'] = UScum['new_Installed_Capacity_[MW]'] - (USyearly_mil_tonnes['Active_Capacity_[W]']/1e6)
-plt.plot(USyearly_mil_tonnes['Decommissioned_yearly_[MW]'], label='decommissioned', color='r')
-plt.plot(UScum['new_Installed_Capacity_[MW]'], label='cum installs')
-plt.plot((USyearly_mil_tonnes['Active_Capacity_[W]']/1e6), label='active capacity')
-plt.plot(USyearly_mil_tonnes['new_Installed_Capacity_[MW]'], label='yearly new installs')
-plt.legend()
-plt.ylim(-1000,70000)
-plt.ylabel('MW')
-
-
-# In[29]:
-
-
-#Print out results to file for Taylor
-tidy_results = pd.DataFrame()
-tidy_results['Annual_Installations_[MW]'] = USyearly_mil_tonnes['new_Installed_Capacity_[MW]']
-tidy_results['Active_Generating_Capacity_[MW]'] = (USyearly_mil_tonnes['Active_Capacity_[W]']/1e6)
-tidy_results['Annually_Decommissioned_[MW]'] = USyearly_mil_tonnes['Decommissioned_yearly_[MW]']
-tidy_results['Cumulative_Decommissioned_[MW]'] = USyearly_mil_tonnes['Decommissioned_yearly_[MW]'].cumsum()
-tidy_results['Cumulative_Decommissioned_Module_Mass_[million metric tonnes]'] = UScum['Waste_Module']
-
-tidy_results
+usyearlyr1.head()
 
 
 # In[30]:
 
 
+tidy_results = usyearlyr1.iloc[:,32:]
+tidy_results.columns = ('new_Installed_Capacity_[MW]', 'Active_Capacity_[MW]','Cumulative_Decomissioned_Capacity_[MW]')
+
+
+# In[44]:
+
+
+#tidy_results['Annual_Decommissioned_Capacity_[MW]'] = 
+tidy_results['Annual_Decomissioned_Capacity_[MW]'] = tidy_results['Cumulative_Decomissioned_Capacity_[MW]']-tidy_results['Cumulative_Decomissioned_Capacity_[MW]'].shift(1).fillna(0)
+tidy_results['Cumulative_Module_Mass_Decommissioned_[million tonnes]'] = usyearlyr1.filter(like='WasteAll_Module')/1e6
+tidy_results
+
+
+# In[ ]:
+
+
 tidy_results.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_Decomissioning.csv')
-
-
-# # Test with New PV ICE functions
-
-# In[ ]:
-
-
-import os
-from pathlib import Path
-import PV_ICE
-import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
-
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
-
-# Another option using relative address; for some operative systems you might need '/' instead of '\'
-# testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
-
-print ("Your simulation will be stored in %s" % testfolder)
-
-
-# In[ ]:
-
-
-PV_ICE.__version__
-
-
-# In[ ]:
-
-
-cwd=os.getcwd()
-print(os.getcwd())
-
-
-# In[ ]:
-
-
-MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant']
-MATERIAL = MATERIALS[0]
-moduleFile = r'..\baselines\baseline_modules_US_HistoryUtilCommOnly.csv'
-
-
-# In[ ]:
-
-
-r2 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r2.createScenario(name='USHistory', file=moduleFile)
-for mat in range (0, len(MATERIALS)):
-    MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r2.scenario['USHistory'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
-
-
-# ### Set circular paths to 0 using new PV ICE function
-
-# In[ ]:
-
-
-#format r2.scenMod_Description(scenarios='scenariolist')
-r2.scenMod_noCircularity() # sets all module and material circular variables to 0, creating fully linear
-r2.scenMod_PerfectManufacturing() #sets all manufacturing values to 100% efficiency/yield
-#check:
-r2.scenario['USHistory'].material['glass'].materialdata['mat_MFG_eff']
-
-
-# In[ ]:
-
-
-r2.calculateMassFlow()
-
-
-# In[ ]:
-
-
-Usyearlyr2, UScumr2 = r2.aggregateResults()
-
-
-# In[ ]:
-
-
-Usyearlyr2.head()
-
-
-# In[ ]:
-
-
-UScumr2.head()
-
-
-# In[ ]:
-
-
-Usyearlyr2.to_csv('r2-usyearly.csv')
-UScumr2.to_csv('r2-uscum.csv')
-
-
-# In[ ]:
-
-
-
 

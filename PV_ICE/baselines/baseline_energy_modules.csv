@@ -1,4 +1,4 @@
-﻿year,e_mod_MFG,e_mod_Install,e_mod_OandM,e_mod_Repair,e_mod_Demount,e_mod_Demount_fuelfraction,e_mod_Store,e_mod_Resell_Certify,e_mod_ReMFG_Disassembly,e_mod_Recycle_Crush
+﻿year,e_mod_MFG,e_mod_Install,e_mod_OandM,e_mod_Repair,e_mod_Demount,e_mod_Demount_fuelfraction,e_mod_Resell_Certify,e_mod_Store,e_mod_ReMFG_Disassembly,e_mod_Recycle_Crush
 year,kWh/m2,kWh/m2,kWh/m2,kWh/m2,kWh/m2,%,kWh/m2,kWh/m2,kWh/m2,kWh/m2
 1995,8.6,0.0095,0,0,2.36,100,,,,
 1996,8.7,0.0095,0,0,2.36,100,,,,
