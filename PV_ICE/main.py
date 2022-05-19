@@ -637,8 +637,8 @@ class Simulation:
                 df['Yearly_Sum_Area_disposed'] += areadisposed_failure
                 df['Yearly_Sum_Area_disposed'] += areadisposed_projectlifetime
 
-                df['Yearly_Sum_Area_disposed'] += powerdisposed_failure
-                df['Yearly_Sum_Power_disposed'] += areadisposed_projectlifetime
+                df['Yearly_Sum_Power_disposed'] += powerdisposed_failure
+                df['Yearly_Sum_Power_disposed'] += powerdisposed_projectlifetime
                               
                 df['Repaired_Area'] += area_repaired
                 df['Repaired_[W]'] += power_repaired
