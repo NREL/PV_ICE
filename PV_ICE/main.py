@@ -836,6 +836,7 @@ class Simulation:
             P3_reMFG_unyield = PG3_reMFG_unyield + PB3_reMFG_unyield
             
             P4_recycled = PG4_recycled + PB4_recycled            
+            df['P4_recycled'] = list(P4_recycled.sum())
             
             # Cleanup of internal renaming and internal use columns
             df.drop(['new_Installed_Capacity_[W]', 't50', 't90'], axis = 1, inplace=True) 
@@ -882,7 +883,7 @@ class Simulation:
                 
                 dm['mat_L1'] = list(P1_landfill.multiply(dm['mat_massperm2'], axis=0).sum())
        
-                # PATH 4 
+                # PATH 3
                 mat_reMFG = P3_reMFG_yield.multiply(dm['mat_massperm2'],axis=0)
                 mat_reMFG_mod_unyield = P3_reMFG_unyield.multiply(dm['mat_massperm2'],axis=0)
                 dm['mat_reMFG'] = list(mat_reMFG.sum())
@@ -901,7 +902,7 @@ class Simulation:
                 dm['mat_L2'] = dm['mat_reMFG_all_unyields']-dm['mat_reMFG_2_recycle']
                 
                 
-                # PATH 5
+                # PATH 4
                 mat_recycled = P4_recycled.multiply(dm['mat_massperm2'],axis=0)
                 dm['mat_recycled_PG4'] = list(mat_recycled.sum())
                 dm['mat_recycled_all'] = dm['mat_recycled_PG4'] + dm['mat_reMFG_2_recycle'] 
@@ -993,7 +994,43 @@ class Simulation:
             #          "calculateMFC routine to overwrite")
 
             self.scenario[scen].data = df
+            
+            
+    #method to calculate energy flows as a function of mass flows and circular pathways
+    def calculateEnergyFlows(self, scenarios=None, materials=None, modEnergy=None, matEnergy=None):
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
 
+        for scen in scenarios:
+            df = self.scenario[scen].data
+            
+            #modEnergy and matEnergy are input files
+            de = []
+            #module
+            de['mod_MFG'] = df['ModuleTotal_MFG']*modEnergy['e_mod_MFG']
+            de['mod_Install'] = df['Area']*modEnergy['e_mod_Install']
+            de['mod_OandM'] = df['Cumulative_Active_Area']*modEnergy['e_mod_OandM']
+            de['mod_Repair'] = df['Repaired_Area']*modEnergy['e_mod_Repair']
+            de['mod_Demount'] = (df['Resold_Area']+df['Status_BAD_Area']+df['Landfill_0']
+                                   +df['Area_for_EOL_pathsG'])*modEnergy['e_mod_Demount']
+            de['mod_Store'] = df['P2_stored']*modEnergy['e_mod_Store']
+            de['mod_Resell_Certify'] = df['Resold_Area']*modEnergy['e_mod_Resell_Certify']
+            de['mod_ReMFG_Disassembly'] = df['P3_reMFG']*modEnergy['e_mod_ReMFG_Disassembly']
+            de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
+            
+            #material
+            de['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*modEnergy['e_mat_extraction']
+            de['mat_MFG'] = dm['mat_Manufacturing_Input']*modEnergy['e_mat_MFG']
+            de['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*modEnergy['e_mat_MFGScrap_LQ']
+            de['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*modEnergy['e_mat_MFGScrap_HQ']
+            de['mat_Landfill'] = dm['mat_Total_Landfilled']*modEnergy['e_mat_Landfill']
+            de['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*modEnergy['e_mat_EoL_ReMFG_clean']
+            de['mat_Recycled_LQ'] = dm['mat_recycled_target']*modEnergy['e_mat_Recycled_LQ']
+            de['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*modEnergy['e_mat_Recycled_HQ']
+            
     
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
         
