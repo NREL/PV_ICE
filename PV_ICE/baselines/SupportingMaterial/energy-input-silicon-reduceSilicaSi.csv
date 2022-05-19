@@ -29,9 +29,9 @@
 2017,13.109,0,"Chen Z, Ma W, Wei K, Wu J, Li S, Xie K, Lv G. Artificial neural network modeling for evaluating the power consumption of silicon production in submerged arc furnaces. Applied Thermal Engineering [Internet]. 2017 Feb 5 [cited 2022 May 6];112:226–36. Available from: https://www.sciencedirect.com/science/article/pii/S1359431116323869","data from chinese arc furnace, 4 mo, median of 30 datapoints"
 2018,,,,
 2019,,,,
-2020,,,,
+2020,11,0,"A. Müller, L. Friedrich, C. Reichel, S. Herceg, M. Mittag, and D. H. Neuhaus, “A comparative life cycle assessment of silicon PV modules: Impact of module design, manufacturing location and inventory,” Solar Energy Materials and Solar Cells, vol. 230, p. 111277, Sep. 2021, doi: 10.1016/j.solmat.2021.111277.","SoSi, modified Seimens, from Ecoinvent3.7, Fthenakis and Leccisi 2021 use same value, as does Heidari&Anctil22, from PVPS"
 2021,,,,
-2022,,,,
+2022,17.4,37,"S. M. Heidari and A. Anctil, “Country-specific carbon footprint and cumulative energy demand of metallurgical grade silicon production for silicon photovoltaics,” Resources, Conservation and Recycling, vol. 180, p. 106171, May 2022, doi: 10.1016/j.resconrec.2022.106171.","uses Muller electricity as above from PVPS, includes a MJ from carbon materials"
 2023,,,,
 2024,,,,
 2025,,,,
