@@ -63,29 +63,30 @@ def power_law(x, a, b):
     return a*np.power(x, b)
 
 
-# In[13]:
+# In[19]:
 
 
 #generae a dataset for the area in between
 mod_eff_late = mod_eff_raw.loc[(mod_eff_raw.index>=2020)]
-y_dummy = power_law(mod_eff_late.index-2019, mod_eff_late['mod_eff'][2020], 0.065) 
+y_dummy = power_law(mod_eff_late.index-2019, mod_eff_late['mod_eff'][2020], 0.065) #17.9
 #played around with the exponential until y_dummy[31] closely matched projected 25.06% value. CITE
 print(y_dummy[30])
 plt.plot(y_dummy)
 
 
-# In[14]:
+# In[18]:
 
 
 #create a dataframe of the projection
 mod_eff_late['mod_eff'] = y_dummy
 #print(mod_eff_late)
 plt.plot(mod_eff_late)
+#mod_eff_late.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_module_eff_perovskite.csv', index=True)
 
 
 # Now smash the two dataframes back together for our average module efficiency baseline.
 
-# In[15]:
+# In[9]:
 
 
 mod_eff = pd.concat([mod_eff_history, mod_eff_late])
@@ -95,7 +96,7 @@ plt.title('Average Module Efficiency (%)')
 plt.ylabel('Efficiency (%)')
 
 
-# In[16]:
+# In[10]:
 
 
 #graph for paper
