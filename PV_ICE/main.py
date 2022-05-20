@@ -997,7 +997,7 @@ class Simulation:
             
             
     #method to calculate energy flows as a function of mass flows and circular pathways
-    def calculateEnergyFlows(self, scenarios=None, materials=None, modEnergy=None, matEnergy=None):
+    def calculateEnergyFlow(self, scenarios=None, materials=None, modEnergy=None, matEnergy=None):
         if scenarios is None:
             scenarios = list(self.scenario.keys())
         else:
@@ -1006,6 +1006,11 @@ class Simulation:
 
         for scen in scenarios:
             df = self.scenario[scen].data
+            dm = self.scenario[scen].material[mat].materialdata
+            #self.modEnergy
+            #modEnergy = 
+            #matEnergy = 
+
             
             #modEnergy and matEnergy are input files
             de = []

@@ -5,7 +5,7 @@
 
 # This journal documents and demonstrates the new Energy flows calculation capacity of PV ICE
 
-# In[2]:
+# In[13]:
 
 
 import os
@@ -23,7 +23,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[3]:
+# In[14]:
 
 
 PV_ICE.__version__
@@ -32,14 +32,14 @@ PV_ICE.__version__
 # ### Add Scenarios and Materials
 # 
 
-# In[3]:
+# In[15]:
 
 
 cwd=os.getcwd()
 print(os.getcwd())
 
 
-# In[4]:
+# In[16]:
 
 
 MATERIALS = ['glass']#,'aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
@@ -48,7 +48,7 @@ moduleFile_recycle = r'..\baselines\perovskite_modules_US_recycle.csv'
 moduleFile_reMFG = r'..\baselines\perovskite_modules_US_reMFG.csv'
 
 
-# In[5]:
+# In[17]:
 
 
 r1 = PV_ICE.Simulation(name='perovskite_energies', path=testfolder)
@@ -68,21 +68,43 @@ for mat in range (0, len(MATERIALS)):
 # 
 # Do we want to do this?
 
-# In[6]:
+# In[18]:
 
 
-r1.scenMod_noCircularity() # sets all module and material circular variables to 0, creating fully linear
-r1.scenMod_PerfectManufacturing() #sets all manufacturing values to 100% efficiency/yield
+#r1.scenMod_noCircularity() # sets all module and material circular variables to 0, creating fully linear
+#r1.scenMod_PerfectManufacturing() #sets all manufacturing values to 100% efficiency/yield
 #check:
 #r1.scenario['USHistory'].material['glass'].materialdata['mat_MFG_eff']
 
 
 # ### Run the Mass Flow Calculations on All Scenarios and Materials
 
+# In[19]:
+
+
+matEfile_glass = r'..\baselines\perovskite_energy_material_glass.csv'
+
+modEfile = r'..\baselines\perovskite_energy_module.csv'
+
+
+# In[20]:
+
+
+r1.calculateMassFlow(modEnergy=modEfile, matEnergy=matEfile_glass)
+
+
+# ## Testing Energy Flows
+
 # In[7]:
 
 
-r1.calculateMassFlow()
+r1.calculateEnergyFlow(modEnergy=)
+
+
+# In[ ]:
+
+
+
 
 
 # ###  Use internal plotting functions to plot results
@@ -95,7 +117,7 @@ r1.calculateMassFlow()
 #     
 #     print(r1.scenario['standard'].material['glass'].materialdata.keys())
 
-# In[8]:
+# In[ ]:
 
 
 #print(r1.scenario.keys())
@@ -126,7 +148,7 @@ print(r1.scenario['USHistory'].data.keys())
 # The assumption is that a perovskite module will be a glass-glass package. Modern c-Si glass-glass (35% marketshare) bifacial modules (27% marketshare) are most likely 2.5mm front glass (28% marketshare) and 2.5 mm back glass (95% marketshare) [ITRPV 2022]. Therefore, we will assume a perovskite glass glass module will use 2 sheets of glass that are 2.5 mm thick.
 # 
 
-# In[5]:
+# In[ ]:
 
 
 density_glass = 2500*1000 # g/m^3    
@@ -143,7 +165,7 @@ print('The mass of glass per module area for a perovskite glass-glass package is
 # 
 # The hot knife procedure with EVA heats the blade to 300 C (https://www.npcgroup.net/eng/solarpower/reuse-recycle/dismantling#comp) and is currently only used on glass-backsheet modules. The NPC website indicates that cycle time is 60 seconds for one 6x10 cell module. Small commercially availble hot knives can achieve greater than 300C drawing less than 150W. We will assume worst case scenario; hot knife for 60 seconds at 150 W
 
-# In[18]:
+# In[ ]:
 
 
 e_hotknife_tot = 150*60*(1/3600)*(1/1000) # 150 W * 60 s = W*s *(hr/s)*(kW/W)
@@ -158,7 +180,7 @@ print('Energy for hot knife separation is '+ str(round(e_hotknife, 4))+' kWh/m2.
 # Using Rodriguez-Garcia G, Aydin E, De Wolf S, Carlson B, Kellar J, Celik I. Life Cycle Assessment of Coated-Glass Recovery from Perovskite Solar Cells. ACS Sustainable Chem Eng [Internet]. 2021 Nov 3 [cited 2021 Nov 8]; Available from: https://doi.org/10.1021/acssuschemeng.1c05029, we will assume a room temperature water bath with sonication, a heating/drying/baking step, and a UV+Ozone step.
 # 
 
-# In[11]:
+# In[ ]:
 
 
 e_sonicate = 4  #kWh/m2 ultrasonication

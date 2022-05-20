@@ -13982,7 +13982,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -14029,7 +14029,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">PV_ICE</span><span class="o">.</span><span class="n">__version__</span>
@@ -14048,13 +14048,13 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
 
 
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;v0.2.0+140.gde4b846.dirty&#39;</pre>
+<pre>&#39;v0.2.0+141.gb75319d.dirty&#39;</pre>
 </div>
 
 </div>
@@ -14071,7 +14071,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cwd</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
@@ -14095,7 +14095,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>C:\Users\hmirletz\Documents\GitHub\PV_ICE\docs\tutorials
+<pre>C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </pre>
 </div>
 </div>
@@ -14107,7 +14107,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">MATERIALS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="c1">#,&#39;aluminium_frames&#39;,&#39;silver&#39;,&#39;silicon&#39;, &#39;copper&#39;, &#39;encapsulant&#39;, &#39;backsheet&#39;]</span>
@@ -14124,7 +14124,7 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;perovskite_energies&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
@@ -14175,11 +14175,11 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenMod_noCircularity</span><span class="p">()</span> <span class="c1"># sets all module and material circular variables to 0, creating fully linear</span>
-<span class="n">r1</span><span class="o">.</span><span class="n">scenMod_PerfectManufacturing</span><span class="p">()</span> <span class="c1">#sets all manufacturing values to 100% efficiency/yield</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#r1.scenMod_noCircularity() # sets all module and material circular variables to 0, creating fully linear</span>
+<span class="c1">#r1.scenMod_PerfectManufacturing() #sets all manufacturing values to 100% efficiency/yield</span>
 <span class="c1">#check:</span>
 <span class="c1">#r1.scenario[&#39;USHistory&#39;].material[&#39;glass&#39;].materialdata[&#39;mat_MFG_eff&#39;]</span>
 </pre></div>
@@ -14194,13 +14194,29 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="Run-the-Mass-Flow-Calculations-on-All-Scenarios-and-Materials">Run the Mass Flow Calculations on All Scenarios and Materials<a class="anchor-link" href="#Run-the-Mass-Flow-Calculations-on-All-Scenarios-and-Materials">&#182;</a></h3>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">matEfile_glass</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\baselines\perovskite_energy_material_glass.csv&#39;</span>
+
+<span class="n">modEfile</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\baselines\perovskite_energy_module.csv&#39;</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">(</span><span class="n">modEnergy</span><span class="o">=</span><span class="n">modEfile</span><span class="p">,</span> <span class="n">matEnergy</span><span class="o">=</span><span class="n">matEfile_glass</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14219,23 +14235,85 @@ a.anchor-link {
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Working on Scenario:  USHistory
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  aluminium_frames
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  copper
-==&gt; Working on Material :  encapsulant
-==&gt; Working on Material :  backsheet
-</pre>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">TypeError</span>                                 Traceback (most recent call last)
+Input <span class="ansi-green-intense-fg ansi-bold">In [20]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 1&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span> <span class="ansi-yellow-bg">r1</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">calculateMassFlow</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">modEnergy</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">modEfile</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">matEnergy</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">matEfile_glass</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-red-intense-fg ansi-bold">TypeError</span>: calculateMassFlow() got an unexpected keyword argument &#39;modEnergy&#39;</pre>
 </div>
 </div>
 
 </div>
 
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Testing-Energy-Flows">Testing Energy Flows<a class="anchor-link" href="#Testing-Energy-Flows">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateEnergyFlow</span><span class="p">(</span><span class="n">modEnergy</span><span class="o">=</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">TypeError</span>                                 Traceback (most recent call last)
+Input <span class="ansi-green-intense-fg ansi-bold">In [7]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 1&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span> <span class="ansi-yellow-bg">r1</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">calculateEnergyFlow</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-intense-fg ansi-bold">c:\users\hmirletz\documents\github\pv_ice\PV_ICE\main.py:1013</span>, in <span class="ansi-cyan-fg">Simulation.calculateEnergyFlow</span><span class="ansi-blue-intense-fg ansi-bold">(self, scenarios, materials, modEnergy, matEnergy)</span>
+<span class="ansi-green-fg">   1011</span> de <span style="color: rgb(98,98,98)">=</span> []
+<span class="ansi-green-fg">   1012</span> <span style="color: rgb(95,135,135)">#module</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1013</span> de[<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">mod_MFG</span><span style="color: rgb(175,0,0)">&#39;</span>] <span style="color: rgb(98,98,98)">=</span> df[<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">ModuleTotal_MFG</span><span style="color: rgb(175,0,0)">&#39;</span>]<span style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">modEnergy</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">e_mod_MFG</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">]</span>
+<span class="ansi-green-fg">   1014</span> de[<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">mod_Install</span><span style="color: rgb(175,0,0)">&#39;</span>] <span style="color: rgb(98,98,98)">=</span> df[<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">Area</span><span style="color: rgb(175,0,0)">&#39;</span>]<span style="color: rgb(98,98,98)">*</span>modEnergy[<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">e_mod_Install</span><span style="color: rgb(175,0,0)">&#39;</span>]
+<span class="ansi-green-fg">   1015</span> de[<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">mod_OandM</span><span style="color: rgb(175,0,0)">&#39;</span>] <span style="color: rgb(98,98,98)">=</span> df[<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">Cumulative_Active_Area</span><span style="color: rgb(175,0,0)">&#39;</span>]<span style="color: rgb(98,98,98)">*</span>modEnergy[<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">e_mod_OandM</span><span style="color: rgb(175,0,0)">&#39;</span>]
+
+<span class="ansi-red-intense-fg ansi-bold">TypeError</span>: &#39;NoneType&#39; object is not subscriptable</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div>
@@ -14255,10 +14333,10 @@ print(r1.scenario['standard'].data.keys())
 print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#print(r1.scenario.keys())</span>
@@ -14269,34 +14347,6 @@ print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Index([&#39;year&#39;, &#39;new_Installed_Capacity_[MW]&#39;, &#39;mod_eff&#39;, &#39;mod_reliability_t50&#39;,
-       &#39;mod_reliability_t90&#39;, &#39;mod_degradation&#39;, &#39;mod_lifetime&#39;, &#39;mod_MFG_eff&#39;,
-       &#39;mod_Repair&#39;, &#39;mod_MerchantTail&#39;,
-       ...
-       &#39;PG3_reMFG_yield&#39;, &#39;PG3_reMFG_unyield&#39;, &#39;PG4_recycled&#39;, &#39;PB1_landfill&#39;,
-       &#39;PB2_stored&#39;, &#39;PB3_reMFG&#39;, &#39;PB3_reMFG_yield&#39;, &#39;PB3_reMFG_unyield&#39;,
-       &#39;PB4_recycled&#39;, &#39;ModuleTotal_MFG&#39;],
-      dtype=&#39;object&#39;, length=231)
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -14339,10 +14389,10 @@ print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre
 <h3 id="Glass">Glass<a class="anchor-link" href="#Glass">&#182;</a></h3><p>The assumption is that a perovskite module will be a glass-glass package. Modern c-Si glass-glass (35% marketshare) bifacial modules (27% marketshare) are most likely 2.5mm front glass (28% marketshare) and 2.5 mm back glass (95% marketshare) [ITRPV 2022]. Therefore, we will assume a perovskite glass glass module will use 2 sheets of glass that are 2.5 mm thick.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">density_glass</span> <span class="o">=</span> <span class="mi">2500</span><span class="o">*</span><span class="mi">1000</span> <span class="c1"># g/m^3    </span>
@@ -14357,27 +14407,6 @@ print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>The mass of glass per module area for a perovskite glass-glass package is assumed to be 12500.0 g/m^2.
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
@@ -14385,10 +14414,10 @@ print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre
 <p>The hot knife procedure with EVA heats the blade to 300 C (<a href="https://www.npcgroup.net/eng/solarpower/reuse-recycle/dismantling#comp">https://www.npcgroup.net/eng/solarpower/reuse-recycle/dismantling#comp</a>) and is currently only used on glass-backsheet modules. The NPC website indicates that cycle time is 60 seconds for one 6x10 cell module. Small commercially availble hot knives can achieve greater than 300C drawing less than 150W. We will assume worst case scenario; hot knife for 60 seconds at 150 W</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_hotknife_tot</span> <span class="o">=</span> <span class="mi">150</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3600</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span> <span class="c1"># 150 W * 60 s = W*s *(hr/s)*(kW/W)</span>
@@ -14402,27 +14431,6 @@ print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Energy for hot knife separation is 0.0011 kWh/m2. This will be used as energy of module reMFG Disassembly
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
@@ -14430,10 +14438,10 @@ print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre
 <p>Using Rodriguez-Garcia G, Aydin E, De Wolf S, Carlson B, Kellar J, Celik I. Life Cycle Assessment of Coated-Glass Recovery from Perovskite Solar Cells. ACS Sustainable Chem Eng [Internet]. 2021 Nov 3 [cited 2021 Nov 8]; Available from: <a href="https://doi.org/10.1021/acssuschemeng.1c05029">https://doi.org/10.1021/acssuschemeng.1c05029</a>, we will assume a room temperature water bath with sonication, a heating/drying/baking step, and a UV+Ozone step.</p>
 
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_sonicate</span> <span class="o">=</span> <span class="mi">4</span>  <span class="c1">#kWh/m2 ultrasonication</span>
@@ -14448,27 +14456,6 @@ print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Energy to remanufacture the glass (material energy only) is 0.61kWh/kg
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
