@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # PVSC 2022 Perovskite ReMFG vs Recycling: a mass and energy analysis
+# # Energy Flows for PV ICE
 
-# This journal documents the analysis conducted for PVSC 2022 Mirletz et al conference presentation. It constitutes an initial demonstration of the energy flows of the PV ICE tool.
-# 
-# The comparison will be between a 100% remanfactured module and a 100% recycled module.
+# This journal documents and demonstrates the new Energy flows calculation capacity of PV ICE
 
-# In[1]:
+# In[2]:
 
 
 import os
@@ -17,7 +15,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP'/'PVSC2022-Eflows')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 
 # Another option using relative address; for some operative systems you might need '/' instead of '\'
 # testfolder = os.path.abspath(r'..\..\PV_ICE\TEMP')  
@@ -25,7 +23,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP'/'PVSC2022-Ef
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[2]:
+# In[3]:
 
 
 PV_ICE.__version__
