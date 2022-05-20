@@ -5,7 +5,7 @@
 
 # This journal documents and demonstrates the new Energy flows calculation capacity of PV ICE
 
-# In[13]:
+# In[1]:
 
 
 import os
@@ -23,7 +23,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[14]:
+# In[2]:
 
 
 PV_ICE.__version__
@@ -32,14 +32,14 @@ PV_ICE.__version__
 # ### Add Scenarios and Materials
 # 
 
-# In[15]:
+# In[3]:
 
 
 cwd=os.getcwd()
 print(os.getcwd())
 
 
-# In[16]:
+# In[4]:
 
 
 MATERIALS = ['glass']#,'aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
@@ -48,7 +48,7 @@ moduleFile_recycle = r'..\baselines\perovskite_modules_US_recycle.csv'
 moduleFile_reMFG = r'..\baselines\perovskite_modules_US_reMFG.csv'
 
 
-# In[17]:
+# In[5]:
 
 
 r1 = PV_ICE.Simulation(name='perovskite_energies', path=testfolder)
@@ -68,7 +68,7 @@ for mat in range (0, len(MATERIALS)):
 # 
 # Do we want to do this?
 
-# In[18]:
+# In[6]:
 
 
 #r1.scenMod_noCircularity() # sets all module and material circular variables to 0, creating fully linear
@@ -79,32 +79,33 @@ for mat in range (0, len(MATERIALS)):
 
 # ### Run the Mass Flow Calculations on All Scenarios and Materials
 
-# In[19]:
+# In[7]:
 
 
-matEfile_glass = r'..\baselines\perovskite_energy_material_glass.csv'
-
-modEfile = r'..\baselines\perovskite_energy_module.csv'
-
-
-# In[20]:
-
-
-r1.calculateMassFlow(modEnergy=modEfile, matEnergy=matEfile_glass)
+r1.calculateMassFlow()
 
 
 # ## Testing Energy Flows
 
-# In[7]:
+# In[8]:
 
 
-r1.calculateEnergyFlow(modEnergy=)
+matEfile_glass = pd.read_csv(str(Path().resolve().parent.parent /'PV_ICE' / 'baselines'/'perovskite_energy_material_glass.csv'))
+
+modEfile = pd.read_csv(str(Path().resolve().parent.parent /'PV_ICE' / 'baselines'/'perovskite_energy_modules.csv'))
 
 
-# In[ ]:
+# In[9]:
 
 
+matEfile_glass_simple = matEfile_glass.drop(0)
+modEfile_simple = modEfile.drop(0)
 
+
+# In[10]:
+
+
+r1.calculateEnergyFlow(modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 
 
 # ###  Use internal plotting functions to plot results
@@ -190,4 +191,10 @@ e_glassreMFG_area = e_sonicate+e_uvozone+e_bake
 e_glass_reMFG_mass = e_glassreMFG_area/(mass_glass/1000) #kWh/m2 *m2/g
 
 print('Energy to remanufacture the glass (material energy only) is ' + str(round(e_glass_reMFG_mass, 2)) + 'kWh/kg')
+
+
+# In[ ]:
+
+
+
 
