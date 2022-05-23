@@ -76,7 +76,7 @@ moduleFile= r'..\..\baselines\perovskite_modules_US_linear.csv'
 
 r1 = PV_ICE.Simulation(name='perovskite_energies', path=testfolder)
 
-scenarios = ['perovskite_linear', 'perovskite_reMFG', 'perovskite_recycle']
+scenarios = ['perovskite_linear', 'perovskite_reMFG', 'perovskite_recycle', 'perovskite_recycle_perfect']
 
 for scen in scenarios: 
 
@@ -168,45 +168,84 @@ r1.scenario['perovskite_recycle'].modifyMaterials('glass', 'mat_EOL_Recycled_int
 r1.scenario['perovskite_recycle'].modifyMaterials('glass', 'mat_Recycling_yield', 40.0) #yield??
 
 
-# ## Run the Mass Flow Calculations on All Scenarios and Materials
-
 # In[11]:
 
 
-r1.calculateMassFlow()
+#recycle_perfect
+#module
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_collection_eff', 100.0) #this collects everything
+    #path good
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg0_resell', 0.0) #
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg1_landfill', 0.0) #
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg2_stored', 0.0) #
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg3_reMFG', 0.0) #
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_reMFG_yield', 0.0) #
+
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg4_recycled', 100.0) #send all to recycle
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_sp_reMFG_recycle', 0.0) #
+    #path bad
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pb1_landfill', 0.0) #
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pb2_stored', 0.0) #
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pb3_reMFG', 0.0) #
+r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pb4_recycled', 100.0) #send all to recycle
+
+#material
+r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_MFG_scrap_Recycling_eff', 99.0) #send all mfg scrap to recycle
+r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ', 100.0) #send all mfg scrap to recycle
+r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 100.0) #send all mfg scrap to recycle
+
+r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 0.0) #send none to remfg
+r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100.0) #send all to recycle
+r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_Recycling_yield', 99.0) #yield
+r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', 100.0) #HQ
+r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0) #closed-loop
 
 
 # In[12]:
 
 
-r1.plotScenariosComparison('landfilled_noncollected')
+r1.scenario['perovskite_recycle'].material['glass'].materialdata.keys()
 
+
+# ## Run the Mass Flow Calculations on All Scenarios and Materials
 
 # In[13]:
 
 
-r1.plotScenariosComparison('EOL_Landfill0')
+r1.calculateMassFlow()
 
 
 # In[14]:
 
 
-r1.plotScenariosComparison('Landfill_0')
+r1.plotScenariosComparison('landfilled_noncollected')
 
 
 # In[15]:
 
 
-r1.plotScenariosComparison('Resold_Area')
+r1.plotScenariosComparison('EOL_Landfill0')
 
 
 # In[16]:
 
 
-r1.plotScenariosComparison('Status_BAD_Area')
+r1.plotScenariosComparison('Landfill_0')
 
 
 # In[17]:
+
+
+r1.plotScenariosComparison('Resold_Area')
+
+
+# In[18]:
+
+
+r1.plotScenariosComparison('Status_BAD_Area')
+
+
+# In[19]:
 
 
 r1.plotScenariosComparison('Area_for_EOL_pathsG')
@@ -222,7 +261,7 @@ r1.plotScenariosComparison('Area_for_EOL_pathsG')
 # 
 # First read in the energy files. Point at a path, then use the PV ICE colde to handle the meta data. Energy values for modules are in kWh/m2 and for materials are in kWh/kg. To ensure unit matching, we will divide the input by 1000 to convert kg to g.
 
-# In[18]:
+# In[20]:
 
 
 matEfile_glass = str(Path().resolve().parent.parent / 'baselines'/'perovskite_energy_material_glass.csv')
@@ -230,7 +269,7 @@ matEfile_glass = str(Path().resolve().parent.parent / 'baselines'/'perovskite_en
 modEfile = str(Path().resolve().parent.parent / 'baselines'/'perovskite_energy_modules.csv')
 
 
-# In[19]:
+# In[21]:
 
 
 # Material energy file
@@ -254,7 +293,7 @@ data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype
 matEfile_glass_simple = data.copy()
 
 
-# In[20]:
+# In[22]:
 
 
 #module energy file
@@ -278,59 +317,53 @@ modEfile_simple = data.copy()
 
 # Now run the energy calculation. Currently this is not a class, just a function that will return a dataframe. Each scenario will need to be run seperately, and read in the perovskite energy files.
 
-# In[21]:
+# In[23]:
 
 
 r1_e_linear = r1.calculateEnergyFlow(scenarios='perovskite_linear', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 r1_e_reMFG = r1.calculateEnergyFlow(scenarios='perovskite_reMFG', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 r1_e_reCYCLE = r1.calculateEnergyFlow(scenarios='perovskite_recycle', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_reCYCLE_perfs = r1.calculateEnergyFlow(scenarios='perovskite_recycle_perfect', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 
 
 # # Energy Analysis
 
-# In[22]:
+# In[24]:
 
 
 r1_e_linear.index = modEfile_simple['year']
 r1_e_reMFG.index = modEfile_simple['year']
 r1_e_reCYCLE.index = modEfile_simple['year']
+r1_e_reCYCLE_perfs.index = modEfile_simple['year']
 
 
-# In[23]:
+# In[25]:
 
 
 r1_e_linear.keys()
 
 
-# In[24]:
+# In[26]:
 
 
 for key in r1_e_linear.keys():
     plt.plot(r1_e_linear.index, r1_e_linear[key], marker='s', ms=12, label='linear')
     plt.plot(r1_e_reMFG.index, r1_e_reMFG[key], marker='^', ms=12, label='reMFG')
-    plt.plot(r1_e_reCYCLE.index, r1_e_reCYCLE[key], marker='o', label='reCYCLE')
+    plt.plot(r1_e_reCYCLE.index, r1_e_reCYCLE[key], marker='o',ms=10, label='reCYCLE')
+    plt.plot(r1_e_reCYCLE_perfs.index, r1_e_reCYCLE_perfs[key], marker='X', color='purple', label='reCYCLE_perfect')
     plt.legend()
     plt.title(str(key))
     plt.show()
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
+# To Do:
+#    - create a recycled material MFG energy column
+#    - multiply only recycled material flows by this new values and bypass mat_MFG_e
+# 
+# Calculations to add:
+#    - sum all the energy in
+#    - sum all the energy out?
+#    - explore negative values
 
 # In[ ]:
 
@@ -347,7 +380,7 @@ for key in r1_e_linear.keys():
 # The assumption is that a perovskite module will be a glass-glass package. Modern c-Si glass-glass (35% marketshare) bifacial modules (27% marketshare) are most likely 2.5mm front glass (28% marketshare) and 2.5 mm back glass (95% marketshare) [ITRPV 2022]. Therefore, we will assume a perovskite glass glass module will use 2 sheets of glass that are 2.5 mm thick.
 # 
 
-# In[25]:
+# In[27]:
 
 
 density_glass = 2500*1000 # g/m^3    
@@ -364,7 +397,7 @@ print('The mass of glass per module area for a perovskite glass-glass package is
 # 
 # The hot knife procedure with EVA heats the blade to 300 C (https://www.npcgroup.net/eng/solarpower/reuse-recycle/dismantling#comp) and is currently only used on glass-backsheet modules. The NPC website indicates that cycle time is 60 seconds for one 6x10 cell module. Small commercially availble hot knives can achieve greater than 300C drawing less than 150W. We will assume worst case scenario; hot knife for 60 seconds at 150 W
 
-# In[26]:
+# In[28]:
 
 
 e_hotknife_tot = 150*60*(1/3600)*(1/1000) # 150 W * 60 s = W*s *(hr/s)*(kW/W)
@@ -379,7 +412,7 @@ print('Energy for hot knife separation is '+ str(round(e_hotknife, 4))+' kWh/m2.
 # Using Rodriguez-Garcia G, Aydin E, De Wolf S, Carlson B, Kellar J, Celik I. Life Cycle Assessment of Coated-Glass Recovery from Perovskite Solar Cells. ACS Sustainable Chem Eng [Internet]. 2021 Nov 3 [cited 2021 Nov 8]; Available from: https://doi.org/10.1021/acssuschemeng.1c05029, we will assume a room temperature water bath with sonication, a heating/drying/baking step, and a UV+Ozone step.
 # 
 
-# In[27]:
+# In[29]:
 
 
 e_sonicate = 4  #kWh/m2 ultrasonication
