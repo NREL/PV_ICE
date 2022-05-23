@@ -648,7 +648,7 @@ class Simulation:
                 df['Status_BAD_Area'] += area_bad_status
                 df['Status_BAD_[W]'] += power_bad_status
 
-                df['Area_for_EOL_pathsG'] += area_otherpaths0
+                df['Area_for_EOL_pathsG'] += area_otherpaths
                 df['Power_for_EOL_pathsG'] += power_otherpaths
 
                 df['Installed_Capacity_[W]'] += area_powergen
