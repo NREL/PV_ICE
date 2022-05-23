@@ -835,6 +835,10 @@ class Simulation:
             P3_reMFG_yield = PG3_reMFG_yield + PB3_reMFG_yield
             P3_reMFG_unyield = PG3_reMFG_unyield + PB3_reMFG_unyield
             
+            df['P2_stored'] = list(P2_stored.sum())
+
+            df['P3_reMFG'] = list((P3_reMFG_yield+P3_reMFG_unyield).sum())
+            
             P4_recycled = PG4_recycled + PB4_recycled            
             df['P4_recycled'] = list(P4_recycled.sum())
             
@@ -1004,6 +1008,13 @@ class Simulation:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
 
+        if materials is None:
+            materials = list(self.scenario[scenarios[0]].material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+            
         for scen in scenarios:
             for mat in materials:
                 df = self.scenario[scen].data
@@ -1011,11 +1022,13 @@ class Simulation:
             #self.modEnergy
             #modEnergy = 
             #matEnergy = 
-
             
             #modEnergy and matEnergy are input files
-                de = []
+                de = pd.DataFrame()
             #module
+                print(type(df['ModuleTotal_MFG']))
+                print(type(modEnergy['e_mod_MFG']))
+                                      
                 de['mod_MFG'] = df['ModuleTotal_MFG']*modEnergy['e_mod_MFG']
                 de['mod_Install'] = df['Area']*modEnergy['e_mod_Install']
                 de['mod_OandM'] = df['Cumulative_Active_Area']*modEnergy['e_mod_OandM']
@@ -1028,16 +1041,17 @@ class Simulation:
                 de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
             
             #material
-                de['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*modEnergy['e_mat_extraction']
-                de['mat_MFG'] = dm['mat_Manufacturing_Input']*modEnergy['e_mat_MFG']
-                de['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*modEnergy['e_mat_MFGScrap_LQ']
-                de['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*modEnergy['e_mat_MFGScrap_HQ']
-                de['mat_Landfill'] = dm['mat_Total_Landfilled']*modEnergy['e_mat_Landfill']
-                de['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*modEnergy['e_mat_EoL_ReMFG_clean']
-                de['mat_Recycled_LQ'] = dm['mat_recycled_target']*modEnergy['e_mat_Recycled_LQ']
-                de['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*modEnergy['e_mat_Recycled_HQ']
+                de['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
+                de['mat_MFG'] = dm['mat_Manufacturing_Input']*matEnergy['e_mat_MFG']
+                de['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ']
+                de['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*matEnergy['e_mat_MFGScrap_HQ']
+                de['mat_Landfill'] = dm['mat_Total_Landfilled']*matEnergy['e_mat_Landfill']
+                de['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*matEnergy['e_mat_EoL_ReMFG_clean']
+                de['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
+                de['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
             
-    
+            return de
+        
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
         
         if ELorRL == 'RL':
