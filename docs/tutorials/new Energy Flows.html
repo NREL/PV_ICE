@@ -14017,7 +14017,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Your simulation will be stored in C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP
+<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </pre>
 </div>
 </div>
@@ -14054,7 +14054,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;v0.2.0+142.gaebaec0.dirty&#39;</pre>
+<pre>&#39;v0.2.0+146.g1c34842&#39;</pre>
 </div>
 
 </div>
@@ -14095,7 +14095,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>C:\Users\hmirletz\Documents\GitHub\PV_ICE\docs\tutorials
+<pre>C:\Users\sayala\Documents\GitHub\PV_ICE\docs\tutorials
 </pre>
 </div>
 </div>
@@ -14157,7 +14157,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>path = C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP
+<pre>path = C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP
 </pre>
 </div>
 </div>
@@ -14244,12 +14244,12 @@ Finished Area+Power Generation Calculations
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">matEfile_glass</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span><span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="o">/</span><span class="s1">&#39;perovskite_energy_material_glass.csv&#39;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">matEfile_glass</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span><span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="o">/</span><span class="s1">&#39;perovskite_energy_material_glass.csv&#39;</span><span class="p">)</span>
 
-<span class="n">modEfile</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span><span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="o">/</span><span class="s1">&#39;perovskite_energy_modules.csv&#39;</span><span class="p">))</span>
+<span class="n">modEfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span><span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="o">/</span><span class="s1">&#39;perovskite_energy_modules.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14260,11 +14260,54 @@ Finished Area+Power Generation Calculations
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">matEfile_glass_simple</span> <span class="o">=</span> <span class="n">matEfile_glass</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">modEfile_simple</span> <span class="o">=</span> <span class="n">modEfile</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">file</span> <span class="o">=</span> <span class="n">matEfile_glass</span>
+<span class="n">csvdata</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+<span class="n">csvdata</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8-sig&quot;</span><span class="p">)</span>
+<span class="n">firstline</span> <span class="o">=</span> <span class="n">csvdata</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+<span class="n">secondline</span> <span class="o">=</span> <span class="n">csvdata</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+
+
+<span class="n">head</span> <span class="o">=</span> <span class="n">firstline</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">secondline</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)))</span>
+
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csvdata</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">head</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">!=</span> <span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">!=</span> <span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">matEfile_glass_simple</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">file</span> <span class="o">=</span> <span class="n">modEfile</span>
+<span class="n">csvdata</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+<span class="n">csvdata</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8-sig&quot;</span><span class="p">)</span>
+<span class="n">firstline</span> <span class="o">=</span> <span class="n">csvdata</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+<span class="n">secondline</span> <span class="o">=</span> <span class="n">csvdata</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+
+
+<span class="n">head</span> <span class="o">=</span> <span class="n">firstline</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">meta</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">secondline</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)))</span>
+
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csvdata</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">head</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">!=</span> <span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">!=</span> <span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">modEfile_simple</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14275,10 +14318,10 @@ Finished Area+Power Generation Calculations
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateEnergyFlow</span><span class="p">(</span><span class="n">modEnergy</span><span class="o">=</span><span class="n">modEfile_simple</span><span class="p">,</span> <span class="n">matEnergy</span><span class="o">=</span><span class="n">matEfile_glass_simple</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1reMFG</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">calculateEnergyFlow</span><span class="p">(</span><span class="n">scenarios</span><span class="o">=</span><span class="s1">&#39;perovskite_reMFG&#39;</span><span class="p">,</span> <span class="n">materials</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">modEnergy</span><span class="o">=</span><span class="n">modEfile_simple</span><span class="p">,</span> <span class="n">matEnergy</span><span class="o">=</span><span class="n">matEfile_glass_simple</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14297,21 +14340,10 @@ Finished Area+Power Generation Calculations
     <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">TypeError</span>                                 Traceback (most recent call last)
-Input <span class="ansi-green-intense-fg ansi-bold">In [10]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 1&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span> <span class="ansi-yellow-bg">r1</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">calculateEnergyFlow</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">modEnergy</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">modEfile_simple</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">matEnergy</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">matEfile_glass_simple</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-intense-fg ansi-bold">c:\users\hmirletz\documents\github\pv_ice\PV_ICE\main.py:1008</span>, in <span class="ansi-cyan-fg">Simulation.calculateEnergyFlow</span><span class="ansi-blue-intense-fg ansi-bold">(self, scenarios, materials, modEnergy, matEnergy)</span>
-<span class="ansi-green-fg">   1005</span>         scenarios <span style="color: rgb(98,98,98)">=</span> [scenarios]
-<span class="ansi-green-fg">   1007</span> <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> scen <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> scenarios:
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 1008</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> mat <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> materials:
-<span class="ansi-green-fg">   1009</span>         df <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>scenario[scen]<span style="color: rgb(98,98,98)">.</span>data
-<span class="ansi-green-fg">   1010</span>         dm <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>scenario[scen]<span style="color: rgb(98,98,98)">.</span>material[materials]<span style="color: rgb(98,98,98)">.</span>materialdata
-
-<span class="ansi-red-intense-fg ansi-bold">TypeError</span>: &#39;NoneType&#39; object is not iterable</pre>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>&lt;class &#39;pandas.core.series.Series&#39;&gt;
+&lt;class &#39;pandas.core.series.Series&#39;&gt;
+</pre>
 </div>
 </div>
 
@@ -14319,32 +14351,13 @@ File <span class="ansi-green-intense-fg ansi-bold">c:\users\hmirletz\documents\g
 
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Use-internal-plotting-functions-to-plot-results">Use internal plotting functions to plot results<a class="anchor-link" href="#Use-internal-plotting-functions-to-plot-results">&#182;</a></h3>
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Pull out the keywords by printing the keys to the module data or the material data:</p>
-
-<pre><code>print(r1.scenario.keys())
-
-print(r1.scenario['standard'].data.keys())
-
-print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre>
-
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#print(r1.scenario.keys())</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;USHistory&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="c1">#print(r1.scenario[&#39;USHistory&#39;].material[&#39;glass&#39;].materialdata.keys())</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1reMFG</span>
 </pre></div>
 
      </div>
@@ -14352,18 +14365,635 @@ print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mod_MFG</th>
+      <th>mod_Install</th>
+      <th>mod_OandM</th>
+      <th>mod_Repair</th>
+      <th>mod_Demount</th>
+      <th>mod_Store</th>
+      <th>mod_Resell_Certify</th>
+      <th>mod_ReMFG_Disassembly</th>
+      <th>mod_Recycle_Crush</th>
+      <th>mat_extraction</th>
+      <th>mat_MFG</th>
+      <th>mat_MFGScrap_LQ</th>
+      <th>mat_MFGScrap_HQ</th>
+      <th>mat_Landfill</th>
+      <th>mat_EoL_ReMFG_clean</th>
+      <th>mat_Recycled_LQ</th>
+      <th>mat_Recycled_HQ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>4.495246e+08</td>
+      <td>1.286290e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>1.795215e+10</td>
+      <td>6.103942e+12</td>
+      <td>5.060085e+10</td>
+      <td>6.505823e+07</td>
+      <td>2.439684e+08</td>
+      <td>0.000000e+00</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.194213e+08</td>
+      <td>1.200151e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000952</td>
+      <td>0.0</td>
+      <td>1.671589e+10</td>
+      <td>5.683509e+12</td>
+      <td>4.349124e+10</td>
+      <td>5.591731e+07</td>
+      <td>2.096899e+08</td>
+      <td>6.596282e+03</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.232143e+09</td>
+      <td>3.525711e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.074076</td>
+      <td>0.0</td>
+      <td>4.900701e+10</td>
+      <td>1.666242e+13</td>
+      <td>1.168786e+11</td>
+      <td>1.502724e+08</td>
+      <td>5.635217e+08</td>
+      <td>5.134830e+05</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.197202e+09</td>
+      <td>3.425728e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.944228</td>
+      <td>0.0</td>
+      <td>4.747267e+10</td>
+      <td>1.614036e+13</td>
+      <td>9.777793e+10</td>
+      <td>1.257145e+08</td>
+      <td>4.714303e+08</td>
+      <td>6.545214e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>9.063789e+08</td>
+      <td>2.593554e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.846748</td>
+      <td>0.0</td>
+      <td>3.586751e+10</td>
+      <td>1.219449e+13</td>
+      <td>6.609777e+10</td>
+      <td>8.498284e+07</td>
+      <td>3.186916e+08</td>
+      <td>4.052860e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>8.900034e+08</td>
+      <td>2.546696e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>24.793302</td>
+      <td>0.0</td>
+      <td>3.514629e+10</td>
+      <td>1.194910e+13</td>
+      <td>5.714793e+10</td>
+      <td>7.347591e+07</td>
+      <td>2.755600e+08</td>
+      <td>1.718627e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1.239711e+09</td>
+      <td>3.547366e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>82.550303</td>
+      <td>0.0</td>
+      <td>4.880315e+10</td>
+      <td>1.659178e+13</td>
+      <td>6.348167e+10</td>
+      <td>8.161929e+07</td>
+      <td>3.061568e+08</td>
+      <td>5.722237e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1.223267e+09</td>
+      <td>3.500313e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>230.773043</td>
+      <td>0.0</td>
+      <td>4.804176e+10</td>
+      <td>1.633267e+13</td>
+      <td>5.207523e+10</td>
+      <td>6.695387e+07</td>
+      <td>2.513130e+08</td>
+      <td>1.599677e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9.828429e+08</td>
+      <td>2.812352e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>564.238855</td>
+      <td>0.0</td>
+      <td>3.855502e+10</td>
+      <td>1.310748e+13</td>
+      <td>4.179201e+10</td>
+      <td>5.373258e+07</td>
+      <td>2.020742e+08</td>
+      <td>3.911201e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>9.725420e+08</td>
+      <td>2.782876e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1241.258663</td>
+      <td>0.0</td>
+      <td>3.807075e+10</td>
+      <td>1.294284e+13</td>
+      <td>4.126708e+10</td>
+      <td>5.305767e+07</td>
+      <td>2.002357e+08</td>
+      <td>8.604179e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>8.746464e+08</td>
+      <td>2.502753e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2507.977933</td>
+      <td>0.0</td>
+      <td>3.407516e+10</td>
+      <td>1.158447e+13</td>
+      <td>3.693603e+10</td>
+      <td>4.748918e+07</td>
+      <td>1.806494e+08</td>
+      <td>1.738485e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>8.670690e+08</td>
+      <td>2.481071e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4724.726303</td>
+      <td>0.0</td>
+      <td>3.351712e+10</td>
+      <td>1.139476e+13</td>
+      <td>3.633114e+10</td>
+      <td>4.671147e+07</td>
+      <td>1.800001e+08</td>
+      <td>3.275094e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>9.621007e+08</td>
+      <td>2.752999e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8390.304905</td>
+      <td>0.0</td>
+      <td>3.682105e+10</td>
+      <td>1.251798e+13</td>
+      <td>3.991246e+10</td>
+      <td>5.131602e+07</td>
+      <td>2.010161e+08</td>
+      <td>5.816007e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>9.549971e+08</td>
+      <td>2.732672e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>14156.917486</td>
+      <td>0.0</td>
+      <td>3.586482e+10</td>
+      <td>1.219290e+13</td>
+      <td>3.887595e+10</td>
+      <td>4.998336e+07</td>
+      <td>2.019163e+08</td>
+      <td>9.813318e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1.111323e+09</td>
+      <td>3.179990e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>22824.003505</td>
+      <td>0.0</td>
+      <td>4.099008e+10</td>
+      <td>1.393532e+13</td>
+      <td>4.443151e+10</td>
+      <td>5.712622e+07</td>
+      <td>2.375661e+08</td>
+      <td>1.582118e+11</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1.104174e+09</td>
+      <td>3.159533e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>162601.247593</td>
+      <td>0.0</td>
+      <td>2.429722e+10</td>
+      <td>8.260282e+12</td>
+      <td>2.633716e+10</td>
+      <td>3.386206e+07</td>
+      <td>2.932795e+08</td>
+      <td>1.127122e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1.221477e+09</td>
+      <td>3.495190e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>161644.076318</td>
+      <td>0.0</td>
+      <td>2.901908e+10</td>
+      <td>9.865565e+12</td>
+      <td>3.145546e+10</td>
+      <td>4.044273e+07</td>
+      <td>3.169780e+08</td>
+      <td>1.120487e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1.214515e+09</td>
+      <td>3.475269e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>402897.284367</td>
+      <td>0.0</td>
+      <td>4.188047e+08</td>
+      <td>1.423803e+11</td>
+      <td>4.539665e+08</td>
+      <td>5.836713e+05</td>
+      <td>4.142428e+08</td>
+      <td>2.792811e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>3.628076e+08</td>
+      <td>1.038154e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>390198.366149</td>
+      <td>0.0</td>
+      <td>-3.155839e+10</td>
+      <td>-1.072885e+13</td>
+      <td>-3.420796e+10</td>
+      <td>-4.398166e+07</td>
+      <td>2.341353e+08</td>
+      <td>2.704784e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>3.609514e+08</td>
+      <td>1.032843e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>304776.023876</td>
+      <td>0.0</td>
+      <td>-2.160148e+10</td>
+      <td>-7.343816e+12</td>
+      <td>-2.341509e+10</td>
+      <td>-3.010512e+07</td>
+      <td>1.988086e+08</td>
+      <td>2.112652e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>3.227862e+08</td>
+      <td>9.236351e+05</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>302364.761784</td>
+      <td>0.0</td>
+      <td>-2.281808e+10</td>
+      <td>-7.757421e+12</td>
+      <td>-2.473383e+10</td>
+      <td>-3.180064e+07</td>
+      <td>1.899843e+08</td>
+      <td>2.095938e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>3.212881e+08</td>
+      <td>9.193484e+05</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>404678.553849</td>
+      <td>0.0</td>
+      <td>-3.489011e+10</td>
+      <td>-1.186153e+13</td>
+      <td>-3.781940e+10</td>
+      <td>-4.862494e+07</td>
+      <td>2.315323e+08</td>
+      <td>2.805158e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>4.014295e+08</td>
+      <td>1.148669e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>396629.741639</td>
+      <td>0.0</td>
+      <td>-3.079586e+10</td>
+      <td>-1.046961e+13</td>
+      <td>-3.338141e+10</td>
+      <td>-4.291896e+07</td>
+      <td>2.446980e+08</td>
+      <td>2.749365e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>3.997246e+08</td>
+      <td>1.143790e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>324201.184107</td>
+      <td>0.0</td>
+      <td>-2.235867e+10</td>
+      <td>-7.601236e+12</td>
+      <td>-2.423585e+10</td>
+      <td>-3.116038e+07</td>
+      <td>2.147180e+08</td>
+      <td>2.247304e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>4.732368e+08</td>
+      <td>1.354141e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>320666.884840</td>
+      <td>0.0</td>
+      <td>-1.905500e+10</td>
+      <td>-6.478092e+12</td>
+      <td>-2.065481e+10</td>
+      <td>-2.655618e+07</td>
+      <td>2.283691e+08</td>
+      <td>2.222805e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>4.713843e+08</td>
+      <td>1.348841e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>292392.217822</td>
+      <td>0.0</td>
+      <td>-1.580792e+10</td>
+      <td>-5.374191e+12</td>
+      <td>-1.713512e+10</td>
+      <td>-2.203087e+07</td>
+      <td>2.164217e+08</td>
+      <td>2.026810e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>6.807791e+08</td>
+      <td>1.948012e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>291693.665955</td>
+      <td>0.0</td>
+      <td>-7.497637e+09</td>
+      <td>-2.548958e+12</td>
+      <td>-8.127121e+09</td>
+      <td>-1.044916e+07</td>
+      <td>2.591387e+08</td>
+      <td>2.021967e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>6.777283e+08</td>
+      <td>1.939283e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>320689.790547</td>
+      <td>0.0</td>
+      <td>-1.102210e+10</td>
+      <td>-3.747162e+12</td>
+      <td>-1.194749e+10</td>
+      <td>-1.536105e+07</td>
+      <td>2.703742e+08</td>
+      <td>2.222963e+12</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
 </div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Run-the-Energy-flow-calculations-for-all-scenarios-and-materials">Run the Energy flow calculations for all scenarios and materials<a class="anchor-link" href="#Run-the-Energy-flow-calculations-for-all-scenarios-and-materials">&#182;</a></h3>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1reCYCLE</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">calculateEnergyFlow</span><span class="p">(</span><span class="n">scenarios</span><span class="o">=</span><span class="s1">&#39;perovskite_recycle&#39;</span><span class="p">,</span> <span class="n">materials</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">modEnergy</span><span class="o">=</span><span class="n">modEfile_simple</span><span class="p">,</span> <span class="n">matEnergy</span><span class="o">=</span><span class="n">matEfile_glass_simple</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14371,18 +15001,662 @@ print(r1.scenario['standard'].material['glass'].materialdata.keys())</code></pre
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>&lt;class &#39;pandas.core.series.Series&#39;&gt;
+&lt;class &#39;pandas.core.series.Series&#39;&gt;
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1reCYCLE</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mod_MFG</th>
+      <th>mod_Install</th>
+      <th>mod_OandM</th>
+      <th>mod_Repair</th>
+      <th>mod_Demount</th>
+      <th>mod_Store</th>
+      <th>mod_Resell_Certify</th>
+      <th>mod_ReMFG_Disassembly</th>
+      <th>mod_Recycle_Crush</th>
+      <th>mat_extraction</th>
+      <th>mat_MFG</th>
+      <th>mat_MFGScrap_LQ</th>
+      <th>mat_MFGScrap_HQ</th>
+      <th>mat_Landfill</th>
+      <th>mat_EoL_ReMFG_clean</th>
+      <th>mat_Recycled_LQ</th>
+      <th>mat_Recycled_HQ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>4.495246e+08</td>
+      <td>1.286290e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000e+00</td>
+      <td>1.795215e+10</td>
+      <td>6.103942e+12</td>
+      <td>5.060085e+10</td>
+      <td>6.505823e+07</td>
+      <td>2.439684e+08</td>
+      <td>0.0</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.194213e+08</td>
+      <td>1.200151e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.796077e-01</td>
+      <td>1.671589e+10</td>
+      <td>5.683509e+12</td>
+      <td>4.349124e+10</td>
+      <td>5.591731e+07</td>
+      <td>2.096900e+08</td>
+      <td>0.0</td>
+      <td>1.362511e+04</td>
+      <td>1.051080e+01</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.232143e+09</td>
+      <td>3.525711e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.511916e+01</td>
+      <td>4.900701e+10</td>
+      <td>1.666243e+13</td>
+      <td>1.168786e+11</td>
+      <td>1.502725e+08</td>
+      <td>5.635266e+08</td>
+      <td>0.0</td>
+      <td>1.060637e+06</td>
+      <td>8.182057e+02</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.197202e+09</td>
+      <td>3.425728e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.751204e+02</td>
+      <td>4.747278e+10</td>
+      <td>1.614040e+13</td>
+      <td>9.777816e+10</td>
+      <td>1.257148e+08</td>
+      <td>4.714922e+08</td>
+      <td>0.0</td>
+      <td>1.351962e+07</td>
+      <td>1.042942e+04</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>9.063789e+08</td>
+      <td>2.593554e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.561201e+03</td>
+      <td>3.586820e+10</td>
+      <td>1.219473e+13</td>
+      <td>6.609904e+10</td>
+      <td>8.498448e+07</td>
+      <td>3.190745e+08</td>
+      <td>0.0</td>
+      <td>8.371481e+07</td>
+      <td>6.457999e+04</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>8.900034e+08</td>
+      <td>2.546696e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.510137e+04</td>
+      <td>3.514921e+10</td>
+      <td>1.195009e+13</td>
+      <td>5.715269e+10</td>
+      <td>7.348203e+07</td>
+      <td>2.771804e+08</td>
+      <td>0.0</td>
+      <td>3.549950e+08</td>
+      <td>2.738533e+05</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1.239711e+09</td>
+      <td>3.547366e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.028064e+04</td>
+      <td>4.881282e+10</td>
+      <td>1.659508e+13</td>
+      <td>6.349430e+10</td>
+      <td>8.163553e+07</td>
+      <td>3.115365e+08</td>
+      <td>0.0</td>
+      <td>1.181970e+09</td>
+      <td>9.118056e+05</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1.223267e+09</td>
+      <td>3.500313e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.405618e+05</td>
+      <td>4.806873e+10</td>
+      <td>1.634188e+13</td>
+      <td>5.210460e+10</td>
+      <td>6.699163e+07</td>
+      <td>2.663238e+08</td>
+      <td>0.0</td>
+      <td>3.304250e+09</td>
+      <td>2.548993e+06</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9.828429e+08</td>
+      <td>2.812352e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.436728e+05</td>
+      <td>3.862098e+10</td>
+      <td>1.313000e+13</td>
+      <td>4.186382e+10</td>
+      <td>5.382491e+07</td>
+      <td>2.387754e+08</td>
+      <td>0.0</td>
+      <td>8.078875e+09</td>
+      <td>6.232275e+06</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>9.725420e+08</td>
+      <td>2.782876e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>7.560394e+05</td>
+      <td>3.821586e+10</td>
+      <td>1.299239e+13</td>
+      <td>4.142506e+10</td>
+      <td>5.326079e+07</td>
+      <td>2.809740e+08</td>
+      <td>0.0</td>
+      <td>1.777257e+10</td>
+      <td>1.371027e+07</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>8.746464e+08</td>
+      <td>2.502753e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.527587e+06</td>
+      <td>3.436836e+10</td>
+      <td>1.168458e+13</td>
+      <td>3.725523e+10</td>
+      <td>4.789958e+07</td>
+      <td>3.437820e+08</td>
+      <td>0.0</td>
+      <td>3.590968e+10</td>
+      <td>2.770176e+07</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>8.670690e+08</td>
+      <td>2.481071e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.877788e+06</td>
+      <td>3.406948e+10</td>
+      <td>1.158335e+13</td>
+      <td>3.693247e+10</td>
+      <td>4.748461e+07</td>
+      <td>4.873221e+08</td>
+      <td>0.0</td>
+      <td>6.764949e+10</td>
+      <td>5.218675e+07</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>9.621007e+08</td>
+      <td>2.752999e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.110458e+06</td>
+      <td>3.780194e+10</td>
+      <td>1.285290e+13</td>
+      <td>4.098031e+10</td>
+      <td>5.268897e+07</td>
+      <td>7.467672e+08</td>
+      <td>0.0</td>
+      <td>1.201339e+11</td>
+      <td>9.267473e+07</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>9.549971e+08</td>
+      <td>2.732672e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.622850e+06</td>
+      <td>3.751987e+10</td>
+      <td>1.275801e+13</td>
+      <td>4.067774e+10</td>
+      <td>5.229995e+07</td>
+      <td>1.122759e+09</td>
+      <td>0.0</td>
+      <td>2.027013e+11</td>
+      <td>1.563696e+08</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1.111323e+09</td>
+      <td>3.179990e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.390189e+07</td>
+      <td>4.365837e+10</td>
+      <td>1.484639e+13</td>
+      <td>4.733638e+10</td>
+      <td>6.086106e+07</td>
+      <td>1.722164e+09</td>
+      <td>0.0</td>
+      <td>3.267982e+11</td>
+      <td>2.521015e+08</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1.104174e+09</td>
+      <td>3.159533e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>9.903894e+07</td>
+      <td>4.330654e+10</td>
+      <td>1.475089e+13</td>
+      <td>4.703186e+10</td>
+      <td>6.046954e+07</td>
+      <td>1.086975e+10</td>
+      <td>0.0</td>
+      <td>2.328154e+12</td>
+      <td>1.796005e+09</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1.221477e+09</td>
+      <td>3.495190e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>9.845594e+07</td>
+      <td>4.791650e+10</td>
+      <td>1.631796e+13</td>
+      <td>5.202834e+10</td>
+      <td>6.689358e+07</td>
+      <td>1.083119e+10</td>
+      <td>0.0</td>
+      <td>2.314449e+12</td>
+      <td>1.785432e+09</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1.214515e+09</td>
+      <td>3.475269e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.454011e+08</td>
+      <td>4.752055e+10</td>
+      <td>1.622496e+13</td>
+      <td>5.173180e+10</td>
+      <td>6.651232e+07</td>
+      <td>2.662088e+10</td>
+      <td>0.0</td>
+      <td>5.768757e+12</td>
+      <td>4.450184e+09</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>3.628076e+08</td>
+      <td>1.038154e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.376663e+08</td>
+      <td>1.405875e+10</td>
+      <td>4.846822e+12</td>
+      <td>1.545365e+10</td>
+      <td>1.986898e+07</td>
+      <td>2.561477e+10</td>
+      <td>0.0</td>
+      <td>5.586931e+12</td>
+      <td>4.309918e+09</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>3.609514e+08</td>
+      <td>1.032843e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.856363e+08</td>
+      <td>1.402915e+10</td>
+      <td>4.822024e+12</td>
+      <td>1.537459e+10</td>
+      <td>1.976733e+07</td>
+      <td>2.002310e+10</td>
+      <td>0.0</td>
+      <td>4.363839e+12</td>
+      <td>3.366390e+09</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>3.227862e+08</td>
+      <td>9.236351e+05</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.841676e+08</td>
+      <td>1.253065e+10</td>
+      <td>4.312168e+12</td>
+      <td>1.374895e+10</td>
+      <td>1.767723e+07</td>
+      <td>1.985744e+10</td>
+      <td>0.0</td>
+      <td>4.329314e+12</td>
+      <td>3.339756e+09</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>3.212881e+08</td>
+      <td>9.193484e+05</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.464860e+08</td>
+      <td>1.241988e+10</td>
+      <td>4.292154e+12</td>
+      <td>1.368514e+10</td>
+      <td>1.759518e+07</td>
+      <td>2.655403e+10</td>
+      <td>0.0</td>
+      <td>5.794261e+12</td>
+      <td>4.469859e+09</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>4.014295e+08</td>
+      <td>1.148669e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.415836e+08</td>
+      <td>1.557316e+10</td>
+      <td>5.362780e+12</td>
+      <td>1.709874e+10</td>
+      <td>2.198409e+07</td>
+      <td>2.604366e+10</td>
+      <td>0.0</td>
+      <td>5.679017e+12</td>
+      <td>4.380956e+09</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>3.997246e+08</td>
+      <td>1.143790e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.974680e+08</td>
+      <td>1.554291e+10</td>
+      <td>5.340004e+12</td>
+      <td>1.702612e+10</td>
+      <td>2.189072e+07</td>
+      <td>2.130253e+10</td>
+      <td>0.0</td>
+      <td>4.641971e+12</td>
+      <td>3.580949e+09</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>4.732368e+08</td>
+      <td>1.354141e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.953153e+08</td>
+      <td>1.843339e+10</td>
+      <td>6.322068e+12</td>
+      <td>2.015734e+10</td>
+      <td>2.591658e+07</td>
+      <td>2.108629e+10</td>
+      <td>0.0</td>
+      <td>4.591367e+12</td>
+      <td>3.541912e+09</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>4.713843e+08</td>
+      <td>1.348841e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.780934e+08</td>
+      <td>1.837494e+10</td>
+      <td>6.297321e+12</td>
+      <td>2.007844e+10</td>
+      <td>2.581513e+07</td>
+      <td>1.923521e+10</td>
+      <td>0.0</td>
+      <td>4.186525e+12</td>
+      <td>3.229605e+09</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>6.807791e+08</td>
+      <td>1.948012e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.776680e+08</td>
+      <td>2.660356e+10</td>
+      <td>9.094670e+12</td>
+      <td>2.899753e+10</td>
+      <td>3.728254e+07</td>
+      <td>1.923249e+10</td>
+      <td>0.0</td>
+      <td>4.176523e+12</td>
+      <td>3.221889e+09</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>6.777283e+08</td>
+      <td>1.939283e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.845726e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.953292e+08</td>
+      <td>2.646897e+10</td>
+      <td>9.053913e+12</td>
+      <td>2.886758e+10</td>
+      <td>3.711546e+07</td>
+      <td>2.112979e+10</td>
+      <td>0.0</td>
+      <td>4.591695e+12</td>
+      <td>3.542165e+09</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>

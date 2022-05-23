@@ -87,57 +87,78 @@ r1.calculateMassFlow()
 
 # ## Testing Energy Flows
 
-# In[8]:
-
-
-matEfile_glass = pd.read_csv(str(Path().resolve().parent.parent /'PV_ICE' / 'baselines'/'perovskite_energy_material_glass.csv'))
-
-modEfile = pd.read_csv(str(Path().resolve().parent.parent /'PV_ICE' / 'baselines'/'perovskite_energy_modules.csv'))
-
-
-# In[9]:
-
-
-matEfile_glass_simple = matEfile_glass.drop(0)
-modEfile_simple = modEfile.drop(0)
-
-
 # In[10]:
 
 
-r1.calculateEnergyFlow(modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+matEfile_glass = str(Path().resolve().parent.parent /'PV_ICE' / 'baselines'/'perovskite_energy_material_glass.csv')
+
+modEfile = str(Path().resolve().parent.parent /'PV_ICE' / 'baselines'/'perovskite_energy_modules.csv')
 
 
-# ###  Use internal plotting functions to plot results
-
-# Pull out the keywords by printing the keys to the module data or the material data:
-# 
-#     print(r1.scenario.keys())
-#     
-#     print(r1.scenario['standard'].data.keys())
-#     
-#     print(r1.scenario['standard'].material['glass'].materialdata.keys())
-
-# In[ ]:
+# In[11]:
 
 
-#print(r1.scenario.keys())
-print(r1.scenario['USHistory'].data.keys())
-#print(r1.scenario['USHistory'].material['glass'].materialdata.keys())
-
-
-# ### Run the Energy flow calculations for all scenarios and materials
-
-# In[ ]:
+file = matEfile_glass
+csvdata = open(str(file), 'r', encoding="UTF-8")
+csvdata = open(str(file), 'r', encoding="UTF-8-sig")
+firstline = csvdata.readline()
+secondline = csvdata.readline()
 
 
 
+head = firstline.rstrip('\n').split(",")
+meta = dict(zip(head, secondline.rstrip('\n').split(",")))
 
 
-# In[ ]:
+
+data = pd.read_csv(csvdata, names=head)
+data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype(float)
+matEfile_glass_simple = data.copy()
+
+
+# In[13]:
+
+
+file = modEfile
+csvdata = open(str(file), 'r', encoding="UTF-8")
+csvdata = open(str(file), 'r', encoding="UTF-8-sig")
+firstline = csvdata.readline()
+secondline = csvdata.readline()
 
 
 
+head = firstline.rstrip('\n').split(",")
+meta = dict(zip(head, secondline.rstrip('\n').split(",")))
+
+
+
+data = pd.read_csv(csvdata, names=head)
+data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype(float)
+modEfile_simple = data.copy()
+
+
+# In[17]:
+
+
+r1reMFG = r1.calculateEnergyFlow(scenarios='perovskite_reMFG', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+
+
+# In[18]:
+
+
+r1reMFG
+
+
+# In[21]:
+
+
+r1reCYCLE = r1.calculateEnergyFlow(scenarios='perovskite_recycle', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+
+
+# In[22]:
+
+
+r1reCYCLE
 
 
 # # Calculations for file prep (module and glass)
