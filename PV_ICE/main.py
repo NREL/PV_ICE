@@ -1026,8 +1026,8 @@ class Simulation:
             #modEnergy and matEnergy are input files
                 de = pd.DataFrame()
             #module
-                print(type(df['ModuleTotal_MFG']))
-                print(type(modEnergy['e_mod_MFG']))
+                #print(type(df['ModuleTotal_MFG']))
+                #print(type(modEnergy['e_mod_MFG']))
                                       
                 de['mod_MFG'] = df['ModuleTotal_MFG']*modEnergy['e_mod_MFG']
                 de['mod_Install'] = df['Area']*modEnergy['e_mod_Install']
@@ -1042,15 +1042,20 @@ class Simulation:
             
             #material
                 de['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
-                de['mat_MFG'] = dm['mat_Manufacturing_Input']*matEnergy['e_mat_MFG']
-                de['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ']
-                de['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*matEnergy['e_mat_MFGScrap_HQ']
+                de['mat_MFG'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
+                de['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
+                de['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
+                
                 de['mat_Landfill'] = dm['mat_Total_Landfilled']*matEnergy['e_mat_Landfill']
                 de['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*matEnergy['e_mat_EoL_ReMFG_clean']
                 de['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
                 de['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
             
-            return de
+            de_cum = pd.DataFrame(de.sum(), columns=[str(scen)])
+            
+            
+            
+            return de, de_cum #returns two dataframes of the energy columns by year and a cumulative energies
         
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
         

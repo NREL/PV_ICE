@@ -215,46 +215,22 @@ r1.scenario['perovskite_recycle'].material['glass'].materialdata.keys()
 r1.calculateMassFlow()
 
 
-# In[14]:
+# In[70]:
 
 
-r1.plotScenariosComparison('landfilled_noncollected')
+r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 
-# In[15]:
+# In[72]:
 
 
-r1.plotScenariosComparison('EOL_Landfill0')
+r1.plotScenariosComparison('Yearly_Sum_Power_disposed')
 
 
-# In[16]:
+# In[60]:
 
 
-r1.plotScenariosComparison('Landfill_0')
-
-
-# In[17]:
-
-
-r1.plotScenariosComparison('Resold_Area')
-
-
-# In[18]:
-
-
-r1.plotScenariosComparison('Status_BAD_Area')
-
-
-# In[19]:
-
-
-r1.plotScenariosComparison('Area_for_EOL_pathsG')
-
-
-# In[ ]:
-
-
-
+mass_agg_yearly, mass_agg_sums = r1.aggregateResults()
 
 
 # # Energy Flows
@@ -279,12 +255,8 @@ csvdata = open(str(file), 'r', encoding="UTF-8-sig")
 firstline = csvdata.readline()
 secondline = csvdata.readline()
 
-
-
 head = firstline.rstrip('\n').split(",")
 meta = dict(zip(head, secondline.rstrip('\n').split(",")))
-
-
 
 data = pd.read_csv(csvdata, names=head)
 data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype(float)/1000 
@@ -303,12 +275,8 @@ csvdata = open(str(file), 'r', encoding="UTF-8-sig")
 firstline = csvdata.readline()
 secondline = csvdata.readline()
 
-
-
 head = firstline.rstrip('\n').split(",")
 meta = dict(zip(head, secondline.rstrip('\n').split(",")))
-
-
 
 data = pd.read_csv(csvdata, names=head)
 data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype(float)
@@ -320,10 +288,10 @@ modEfile_simple = data.copy()
 # In[23]:
 
 
-r1_e_linear = r1.calculateEnergyFlow(scenarios='perovskite_linear', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
-r1_e_reMFG = r1.calculateEnergyFlow(scenarios='perovskite_reMFG', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
-r1_e_reCYCLE = r1.calculateEnergyFlow(scenarios='perovskite_recycle', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
-r1_e_reCYCLE_perfs = r1.calculateEnergyFlow(scenarios='perovskite_recycle_perfect', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_linear, r1_e_linear_cum = r1.calculateEnergyFlow(scenarios='perovskite_linear', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_reMFG, r1_e_reMFG_cum = r1.calculateEnergyFlow(scenarios='perovskite_reMFG', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_reCYCLE, r1_e_reCYCLE_cum = r1.calculateEnergyFlow(scenarios='perovskite_recycle', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_reCYCLE_perfs, r1_e_reCYCLE_perfs_cum = r1.calculateEnergyFlow(scenarios='perovskite_recycle_perfect', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 
 
 # # Energy Analysis
@@ -356,14 +324,77 @@ for key in r1_e_linear.keys():
     plt.show()
 
 
-# To Do:
-#    - create a recycled material MFG energy column
-#    - multiply only recycled material flows by this new values and bypass mat_MFG_e
-# 
-# Calculations to add:
+# The negative values are a product of the 15 year lifetime, and suddenly providing more material than necessary in a mfging year. Ideally, we would address this through storage for next year offsetting - to be developed. These negative values can be exacerbated by deployment curves.
+
+# ENERGY Calculations to add:
 #    - sum all the energy in
 #    - sum all the energy out?
-#    - explore negative values
+
+# In[90]:
+
+
+energy_annual = pd.concat([r1_e_linear, r1_e_reMFG, r1_e_reCYCLE, r1_e_reCYCLE_perfs], axis=1, 
+                          keys=['perovskite_linear', 'perovskite_reMFG', 'perovskite_recycle', 'perovskite_recycle_perfect'])
+#this is a multiindex column, and filter doesn't work with it
+energy_annual.to_csv('energyyearly_flatdeploy.csv')
+
+energy_sums = pd.concat([r1_e_linear_cum, r1_e_reMFG_cum, r1_e_reCYCLE_cum, r1_e_reCYCLE_perfs_cum], axis=1)
+energy_sums.to_csv('energysums_flatdeploy.csv')
+
+
+# In[83]:
+
+
+mfg_energies = ['mod_MFG','mat_extraction','mat_MFG']
+mfg_recycle_energies = ['mat_MFGScrap_LQ','mat_MFGScrap_HQ']
+use_energies = ['mod_install','mod_OandM','mod_Repair']
+eol_energies = ['mat_landfill','mod_Demount','mod_Store','mod_Resell_Certify']
+eol_remfg_energies = ['mod_ReMFG_Disassmbly','mat_EoL_ReMFG_clean']
+eol_recycle_energies = ['mod_Recycle_Crush','mat_Recycled_LQ','mat_Recycled_HQ']
+
+
+# In[107]:
+
+
+energy_sums.filter(items=mfg_energies, axis=0).filter(like='linear')
+
+
+# In[ ]:
+
+
+e_in_linear = energy_sums.filter(items=mfg_energies, axis=0).filter(like='linear')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# Create an approximation of energy generated each year using hours of sunlight per year
+
+# In[79]:
+
+
+active_capacity = mass_agg_yearly.filter(like='ActiveCapacity').filter(like='linear')
+active_Wh = active_capacity*2800 #standardized sunshine hours
+#OR do this using a kWh/Kw factor from somewhere like ATB
+active_Wh.sum() #lifecycle cumulative energy generated by all cohorts
+
+
+# In[106]:
+
+
+plt.plot(active_Wh, label = 'Energy generated [Wh]')
+plt.plot(energy_annual['perovskite_linear']['mod_MFG'], label='perovskite_linear mod mfg [kWh]')
+plt.legend()
+
 
 # In[ ]:
 
@@ -380,7 +411,7 @@ for key in r1_e_linear.keys():
 # The assumption is that a perovskite module will be a glass-glass package. Modern c-Si glass-glass (35% marketshare) bifacial modules (27% marketshare) are most likely 2.5mm front glass (28% marketshare) and 2.5 mm back glass (95% marketshare) [ITRPV 2022]. Therefore, we will assume a perovskite glass glass module will use 2 sheets of glass that are 2.5 mm thick.
 # 
 
-# In[27]:
+# In[29]:
 
 
 density_glass = 2500*1000 # g/m^3    
@@ -397,7 +428,7 @@ print('The mass of glass per module area for a perovskite glass-glass package is
 # 
 # The hot knife procedure with EVA heats the blade to 300 C (https://www.npcgroup.net/eng/solarpower/reuse-recycle/dismantling#comp) and is currently only used on glass-backsheet modules. The NPC website indicates that cycle time is 60 seconds for one 6x10 cell module. Small commercially availble hot knives can achieve greater than 300C drawing less than 150W. We will assume worst case scenario; hot knife for 60 seconds at 150 W
 
-# In[28]:
+# In[30]:
 
 
 e_hotknife_tot = 150*60*(1/3600)*(1/1000) # 150 W * 60 s = W*s *(hr/s)*(kW/W)
@@ -412,7 +443,7 @@ print('Energy for hot knife separation is '+ str(round(e_hotknife, 4))+' kWh/m2.
 # Using Rodriguez-Garcia G, Aydin E, De Wolf S, Carlson B, Kellar J, Celik I. Life Cycle Assessment of Coated-Glass Recovery from Perovskite Solar Cells. ACS Sustainable Chem Eng [Internet]. 2021 Nov 3 [cited 2021 Nov 8]; Available from: https://doi.org/10.1021/acssuschemeng.1c05029, we will assume a room temperature water bath with sonication, a heating/drying/baking step, and a UV+Ozone step.
 # 
 
-# In[29]:
+# In[31]:
 
 
 e_sonicate = 4  #kWh/m2 ultrasonication
