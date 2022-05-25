@@ -1042,7 +1042,7 @@ class Simulation:
             
             #material
                 de['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
-                de['mat_MFG'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
+                de['mat_MFG_virgin'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
                 de['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
                 de['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
                 
