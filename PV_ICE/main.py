@@ -1051,9 +1051,12 @@ class Simulation:
                 de['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
                 de['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
             
+            #Energy Generation, Energy_out = Insolation * ActivePower/Irradience * time
+            # for now, insolation is a fixed value, can convert later to input
+            insolation = 5000 # Wh/m2-day
+            de['e_out_annual_[Wh]'] = insolation * (df['Installed_Capacity_[W]']/df['irradiance_stc']) * 365
+            
             de_cum = pd.DataFrame(de.sum(), columns=[str(scen)])
-            
-            
             
             return de, de_cum #returns two dataframes of the energy columns by year and a cumulative energies
         
