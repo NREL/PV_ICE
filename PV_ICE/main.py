@@ -1023,7 +1023,7 @@ class Simulation:
             #modEnergy = 
             #matEnergy = 
             
-            #modEnergy and matEnergy are input files
+            #modEnergy and matEnergy are input files and need to be in Wh/m2 and Wh/g respectively
                 de = pd.DataFrame()
             #module
                 #print(type(df['ModuleTotal_MFG']))
@@ -1053,7 +1053,7 @@ class Simulation:
             
             #Energy Generation, Energy_out = Insolation * ActivePower/Irradience * time
             # for now, insolation is a fixed value, can convert later to input
-            insolation = 5000 # Wh/m2-day
+            insolation = 4800 # Wh/m2-day
             de['e_out_annual_[Wh]'] = insolation * (df['Installed_Capacity_[W]']/df['irradiance_stc']) * 365
             
             de_cum = pd.DataFrame(de.sum(), columns=[str(scen)])

@@ -1,5 +1,5 @@
 ﻿year,e_mat_extraction,e_mat_MFG,e_mat_MFG_fuelfraction,e_mat_MFGScrap_LQ,e_mat_MFGScrap_HQ,e_mat_Landfill,e_mat_Landfill_fuelfraction,e_mat_EoL_ReMFG_clean,e_mat_Recycled_LQ,e_mat_Recycled_HQ
-year,kWh/kg,kWh/kg,%,kWh/kg,kWh/kg,kWh/kg,%,kWh/kg,kWh/kg,kWh/kg
+year,Wh/g,Wh/g,%,Wh/g,Wh/g,Wh/g,%,Wh/g,Wh/g,Wh/g
 2023,0.0062,3.5,86.79874429,1.4,1.6,0.009,78,0.61,1.4,1.6
 2024,0.0062,3.5,86.79874429,1.4,1.6,0.009,78,0.61,1.4,1.6
 2025,0.0062,3.5,86.79874429,1.4,1.6,0.009,78,0.61,1.4,1.6
