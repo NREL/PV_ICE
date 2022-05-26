@@ -111,6 +111,8 @@ r1.modifyScenario('perovskite_linear', 'mod_Repair', 0.0) #this removes all weib
 r1.modifyScenario('perovskite_linear', 'mod_MerchantTail', 0.0) # this prevents extended use
 r1.modifyScenario('perovskite_linear', 'mod_EOL_collection_eff', 0.0) #this sends everytyhing to landfill
 
+r1.scenario['perovskite_linear'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 0.0) #send all mfg scrap to landfill
+
 
 # In[9]:
 
@@ -135,6 +137,7 @@ r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pb3_reMFG', 100.0) #sends all "ba
 r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pb4_recycled', 0.0) #
 
 #material
+r1.scenario['perovskite_reMFG'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 0.0) #send mfg scrap to landfill
 r1.scenario['perovskite_reMFG'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 100.0) #send all to remfg
 r1.scenario['perovskite_reMFG'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 0.0) #send none to recycle
 r1.scenario['perovskite_reMFG'].modifyMaterials('glass', 'mat_ReMFG_yield', 99.0) #already set to 99, in case change
@@ -294,6 +297,7 @@ r1_e_linear, r1_e_linear_cum = r1.calculateEnergyFlow(scenarios='perovskite_line
 r1_e_reMFG, r1_e_reMFG_cum = r1.calculateEnergyFlow(scenarios='perovskite_reMFG', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 r1_e_reCYCLE, r1_e_reCYCLE_cum = r1.calculateEnergyFlow(scenarios='perovskite_recycle', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 r1_e_reCYCLE_perfs, r1_e_reCYCLE_perfs_cum = r1.calculateEnergyFlow(scenarios='perovskite_recycle_perfect', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+#note that the cumulative ones sum the two types of recycling together which may not be applicable.
 
 
 # # Energy Analysis
@@ -336,10 +340,10 @@ for key in r1_e_linear.keys():
 energy_annual = pd.concat([r1_e_linear, r1_e_reMFG, r1_e_reCYCLE, r1_e_reCYCLE_perfs], axis=1, 
                           keys=['perovskite_linear', 'perovskite_reMFG', 'perovskite_recycle', 'perovskite_recycle_perfect'])
 #this is a multiindex column, and filter doesn't work with it
-energy_annual.to_csv('energyyearly_flatdeploy.csv')
+energy_annual.to_csv('energyyearly.csv')
 
 energy_sums = pd.concat([r1_e_linear_cum, r1_e_reMFG_cum, r1_e_reCYCLE_cum, r1_e_reCYCLE_perfs_cum], axis=1)
-energy_sums.to_csv('energysums_flatdeploy.csv')
+energy_sums.to_csv('energysums.csv') 
 
 
 # In[25]:
@@ -447,7 +451,7 @@ e_in/e_in.iloc[0]
 # ### E_out
 # Create an approximation of energy generated each year using hours of sunlight per year
 
-# In[52]:
+# In[33]:
 
 
 #Generation = Insolation * Power/Irradience * time
@@ -461,7 +465,7 @@ print('Cumulative lifetime energy from all cohorts (accounting for degradation) 
      str(round(e_out[0],2)/1e6) + ' MWh.')
 
 
-# In[53]:
+# In[34]:
 
 
 #Compare to new e_out calc
@@ -477,7 +481,7 @@ plt.plot(e_out_annu_recycle_p, label='recycle_p')
 #sanity check they are all the same
 
 
-# In[54]:
+# In[35]:
 
 
 print(r1_e_linear_cum['perovskite_linear']['e_out_annual_[Wh]'])
@@ -486,35 +490,19 @@ e_out[0]
 
 # ## EROI
 
-# In[55]:
+# In[36]:
 
 
 e_out_func = r1_e_linear_cum['perovskite_linear']['e_out_annual_[Wh]']
 
 
-# In[56]:
+# In[37]:
 
 
 #EROI = Eout/Ein (note this is not a true eroi because it is missing embedded energy of process materials)
 eroi = e_out_func/e_in
 eroi.columns = ['EROI']
 eroi
-
-
-# In[ ]:
-
-
-
-
-
-# In[38]:
-
-
-plt.plot(active_Wh/1000, label = 'Energy generated [kWh]')
-plt.plot(energy_annual['perovskite_linear']['mod_MFG'], label='perovskite_linear mod mfg [kWh]')
-plt.plot(energy_annual['perovskite_reMFG']['mod_MFG'], label='perovskite_reMFG mod mfg [kWh]')
-plt.plot(energy_annual['perovskite_recycle_perfect']['mod_MFG'], label='perovskite_recycle mod mfg [kWh]')
-plt.legend()
 
 
 # In[39]:
@@ -528,6 +516,12 @@ plt.plot(energy_annual['perovskite_recycle_perfect']['mat_MFG_virgin'], label='p
 plt.legend()
 
 
+# In[ ]:
+
+
+
+
+
 # # Calculations for file prep (module and glass)
 # 
 # ### Module
@@ -537,7 +531,7 @@ plt.legend()
 # The assumption is that a perovskite module will be a glass-glass package. Modern c-Si glass-glass (35% marketshare) bifacial modules (27% marketshare) are most likely 2.5mm front glass (28% marketshare) and 2.5 mm back glass (95% marketshare) [ITRPV 2022]. Therefore, we will assume a perovskite glass glass module will use 2 sheets of glass that are 2.5 mm thick.
 # 
 
-# In[40]:
+# In[ ]:
 
 
 density_glass = 2500*1000 # g/m^3    
@@ -554,10 +548,10 @@ print('The mass of glass per module area for a perovskite glass-glass package is
 # 
 # The hot knife procedure with EVA heats the blade to 300 C (https://www.npcgroup.net/eng/solarpower/reuse-recycle/dismantling#comp) and is currently only used on glass-backsheet modules. The NPC website indicates that cycle time is 60 seconds for one 6x10 cell module. Small commercially availble hot knives can achieve greater than 300C drawing less than 150W. We will assume worst case scenario; hot knife for 60 seconds at 150 W
 
-# In[41]:
+# In[ ]:
 
 
-e_hotknife_tot = 150*60*(1/3600)*(1/1000) # 150 W * 60 s = W*s *(hr/s)*(kW/W)
+e_hotknife_tot = 150*60*(1/3600)#*(1/1000) # 150 W * 60 s = W*s *(hr/s)*(kW/W)
 area_mod = 1.090*2.100 #m
 e_hotknife = e_hotknife_tot/area_mod # E/module to E/m2
 print('Energy for hot knife separation is '+ str(round(e_hotknife, 4))+' kWh/m2. This will be used as energy of module reMFG Disassembly')
@@ -569,7 +563,7 @@ print('Energy for hot knife separation is '+ str(round(e_hotknife, 4))+' kWh/m2.
 # Using Rodriguez-Garcia G, Aydin E, De Wolf S, Carlson B, Kellar J, Celik I. Life Cycle Assessment of Coated-Glass Recovery from Perovskite Solar Cells. ACS Sustainable Chem Eng [Internet]. 2021 Nov 3 [cited 2021 Nov 8]; Available from: https://doi.org/10.1021/acssuschemeng.1c05029, we will assume a room temperature water bath with sonication, a heating/drying/baking step, and a UV+Ozone step.
 # 
 
-# In[42]:
+# In[ ]:
 
 
 e_sonicate = 4  #kWh/m2 ultrasonication
@@ -591,7 +585,7 @@ print('Energy to remanufacture the glass (material energy only) is ' + str(round
 
 
 
-# In[43]:
+# In[ ]:
 
 
 # Import curve fitting package from scipy
@@ -601,7 +595,7 @@ def power_law(x, a, b):
     return a*np.power(x, b)
 
 
-# In[44]:
+# In[ ]:
 
 
 #generate a dataset for deployment between 2023 and 2050
@@ -617,7 +611,7 @@ print(str(y_dummy[29]/1e6) + ' TW in 2050')
 plt.plot(y_dummy)
 
 
-# In[45]:
+# In[ ]:
 
 
 #dataframe the cumulative deployements
@@ -626,7 +620,7 @@ deployments['CumulativeDeploy[MW]'] = y_dummy
 deployments.index = x_vals
 
 
-# In[46]:
+# In[ ]:
 
 
 #take the annual difference to de-cumulate
@@ -635,7 +629,7 @@ plt.plot(deployments)
 plt.legend(deployments.columns)
 
 
-# In[47]:
+# In[ ]:
 
 
 plt.plot(deployments['AnnualDeploy[MW]'])
@@ -643,7 +637,7 @@ plt.title('Annual Deployments Meeting 1.7 TW in 2050')
 plt.ylabel('Annual Deploy [MW]')
 
 
-# In[48]:
+# In[ ]:
 
 
 reversedeploy = deployments['AnnualDeploy[MW]'].iloc[::-1] #save off reverse deploy as series
@@ -652,14 +646,14 @@ deployments['AnnualDeploy_rev[MW]'] = reversedeploy #add to df
 deployments['CumulativeReverse[MW]'] = deployments['AnnualDeploy_rev[MW]'].cumsum()
 
 
-# In[49]:
+# In[ ]:
 
 
 print(str(deployments['CumulativeReverse[MW]'][2035]/1e6) + ' TW in 2035')
 print(str(deployments['CumulativeReverse[MW]'][2050]/1e6) + ' TW in 2055')
 
 
-# In[50]:
+# In[ ]:
 
 
 plt.plot(deployments['AnnualDeploy_rev[MW]'])
@@ -667,7 +661,7 @@ plt.title('Annual Deployments Meeting 1.7 TW in 2050')
 plt.ylabel('Annual Deploy [MW]')
 
 
-# In[51]:
+# In[ ]:
 
 
 deployments.to_csv('alternatedeployment.csv')
