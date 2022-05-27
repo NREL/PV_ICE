@@ -1051,10 +1051,11 @@ class Simulation:
                 de['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
                 de['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
             
-            #Energy Generation, Energy_out = Insolation * ActivePower/Irradience * time
+            #Energy Generation, Energy_out = Insolation * ActivePower/Irradience * time * PR
             # for now, insolation is a fixed value, can convert later to input
             insolation = 4800 # Wh/m2-day
-            de['e_out_annual_[Wh]'] = insolation * (df['Installed_Capacity_[W]']/df['irradiance_stc']) * 365
+            PR = 0.85 #performance ratio, converts from DC to AC accounting for interver loading, necessary for EROI
+            de['e_out_annual_[Wh]'] = insolation * (df['Installed_Capacity_[W]']/df['irradiance_stc']) * 365 * PR
             
             de_cum = pd.DataFrame(de.sum(), columns=[str(scen)])
             
