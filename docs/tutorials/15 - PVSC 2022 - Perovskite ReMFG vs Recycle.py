@@ -47,15 +47,15 @@ PV_ICE.__version__
 #     - no circularity in MFG scrap
 # 1. Linear economy
 #     - no reMFG or recycling
-# 2. 100% ReMFG
+# 2. ReMFG
 #     - all EoL goes to reMFG, no recycling
-#     - yields are: 99%
+#     - yields are: 50% and 99%
 # 3. 100% Recycle LQ
 #    - all EoL goes to recycling, mix open and closed-loop
 #    - yields are: 40%*15%
 # 4. 100% Recycle HQ
 #    - all EOL goes to recycling closed-loop
-#    - yields are 99%
+#    - yields are 50% and 99%
 
 # In[3]:
 
@@ -79,7 +79,7 @@ moduleFile= r'..\..\baselines\perovskite_modules_US_linear.csv'
 
 r1 = PV_ICE.Simulation(name='perovskite_energies', path=testfolder)
 
-scenarios = ['perovskite_linear', 'perovskite_reMFG', 'perovskite_recycle', 'perovskite_recycle_perfect']
+scenarios = ['linear', 'reMFG_low','reMFG_high', 'recycle_LQ', 'recycle_HQ_low','recycle_HQ_high']
 
 for scen in scenarios: 
 
@@ -94,140 +94,200 @@ for scen in scenarios:
 # In[6]:
 
 
-r1.scenario['perovskite_linear'].data.keys()
+r1.scenario['linear'].data.keys()
 
 
 # In[7]:
 
 
-r1.scenario['perovskite_linear'].material['glass'].materialdata.keys()
+r1.scenario['linear'].material['glass'].materialdata.keys()
 
 
 # In[8]:
 
 
 #linear
-r1.modifyScenario('perovskite_linear', 'mod_Repair', 0.0) #this removes all weibull failures from field immediately
-r1.modifyScenario('perovskite_linear', 'mod_MerchantTail', 0.0) # this prevents extended use
-r1.modifyScenario('perovskite_linear', 'mod_EOL_collection_eff', 0.0) #this sends everytyhing to landfill
+r1.modifyScenario('linear', 'mod_Repair', 0.0) #this removes all weibull failures from field immediately
+r1.modifyScenario('linear', 'mod_MerchantTail', 0.0) # this prevents extended use
+r1.modifyScenario('linear', 'mod_EOL_collection_eff', 0.0) #this sends everytyhing to landfill
 
-r1.scenario['perovskite_linear'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 0.0) #send all mfg scrap to landfill
+r1.scenario['linear'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 0.0) #send all mfg scrap to landfill
 
 
 # In[9]:
 
 
-#reMFG
+#reMFG_low
 #Module
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_collection_eff', 100.0) #this collects everything
+r1.modifyScenario('reMFG_low', 'mod_EOL_collection_eff', 100.0) #this collects everything
     #path good
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pg0_resell', 0.0) #
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pg1_landfill', 0.0) #
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pg2_stored', 0.0) #
+r1.modifyScenario('reMFG_low', 'mod_EOL_pg0_resell', 0.0) #
+r1.modifyScenario('reMFG_low', 'mod_EOL_pg1_landfill', 0.0) #
+r1.modifyScenario('reMFG_low', 'mod_EOL_pg2_stored', 0.0) #
 
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pg3_reMFG', 100.0) #send all to remfg
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_reMFG_yield', 100.0) #100% yield of remfg
+r1.modifyScenario('reMFG_low', 'mod_EOL_pg3_reMFG', 100.0) #send all to remfg
+r1.modifyScenario('reMFG_low', 'mod_EOL_reMFG_yield', 100.0) #100% yield of remfg
 
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pg4_recycled', 0.0) #
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_sp_reMFG_recycle', 0.0) #
+r1.modifyScenario('reMFG_low', 'mod_EOL_pg4_recycled', 0.0) #
+r1.modifyScenario('reMFG_low', 'mod_EOL_sp_reMFG_recycle', 0.0) #
     #path bad
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pb1_landfill', 0.0) #
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pb2_stored', 0.0) #
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pb3_reMFG', 100.0) #sends all "bad" modules to remfg, uses same yield above
-r1.modifyScenario('perovskite_reMFG', 'mod_EOL_pb4_recycled', 0.0) #
+r1.modifyScenario('reMFG_low', 'mod_EOL_pb1_landfill', 0.0) #
+r1.modifyScenario('reMFG_low', 'mod_EOL_pb2_stored', 0.0) #
+r1.modifyScenario('reMFG_low', 'mod_EOL_pb3_reMFG', 100.0) #sends all "bad" modules to remfg, uses same yield above
+r1.modifyScenario('reMFG_low', 'mod_EOL_pb4_recycled', 0.0) #
 
 #material
-r1.scenario['perovskite_reMFG'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 0.0) #send mfg scrap to landfill
-r1.scenario['perovskite_reMFG'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 100.0) #send all to remfg
-r1.scenario['perovskite_reMFG'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 0.0) #send none to recycle
-r1.scenario['perovskite_reMFG'].modifyMaterials('glass', 'mat_ReMFG_yield', 99.0) #already set to 99, in case change
+r1.scenario['reMFG_low'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 0.0) #send mfg scrap to landfill
+r1.scenario['reMFG_low'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 100.0) #send all to remfg
+r1.scenario['reMFG_low'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 0.0) #send none to recycle
+r1.scenario['reMFG_low'].modifyMaterials('glass', 'mat_ReMFG_yield', 50.0) #
 
 
 # In[10]:
 
 
-#recycle
-#module
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_collection_eff', 100.0) #this collects everything
+#reMFG_high
+#Module
+r1.modifyScenario('reMFG_high', 'mod_EOL_collection_eff', 100.0) #this collects everything
     #path good
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_pg0_resell', 0.0) #
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_pg1_landfill', 0.0) #
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_pg2_stored', 0.0) #
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_pg3_reMFG', 0.0) #
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_reMFG_yield', 0.0) #
+r1.modifyScenario('reMFG_high', 'mod_EOL_pg0_resell', 0.0) #
+r1.modifyScenario('reMFG_high', 'mod_EOL_pg1_landfill', 0.0) #
+r1.modifyScenario('reMFG_high', 'mod_EOL_pg2_stored', 0.0) #
 
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_pg4_recycled', 100.0) #send all to recycle
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_sp_reMFG_recycle', 0.0) #
+r1.modifyScenario('reMFG_high', 'mod_EOL_pg3_reMFG', 100.0) #send all to remfg
+r1.modifyScenario('reMFG_high', 'mod_EOL_reMFG_yield', 100.0) #100% yield of remfg
+
+r1.modifyScenario('reMFG_high', 'mod_EOL_pg4_recycled', 0.0) #
+r1.modifyScenario('reMFG_high', 'mod_EOL_sp_reMFG_recycle', 0.0) #
     #path bad
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_pb1_landfill', 0.0) #
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_pb2_stored', 0.0) #
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_pb3_reMFG', 0.0) #
-r1.modifyScenario('perovskite_recycle', 'mod_EOL_pb4_recycled', 100.0) #send all to recycle
+r1.modifyScenario('reMFG_high', 'mod_EOL_pb1_landfill', 0.0) #
+r1.modifyScenario('reMFG_high', 'mod_EOL_pb2_stored', 0.0) #
+r1.modifyScenario('reMFG_high', 'mod_EOL_pb3_reMFG', 100.0) #sends all "bad" modules to remfg, uses same yield above
+r1.modifyScenario('reMFG_high', 'mod_EOL_pb4_recycled', 0.0) #
 
 #material
-r1.scenario['perovskite_recycle'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 100.0) #send all mfg scrap to recycle
-r1.scenario['perovskite_recycle'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 100.0) #all hq closed-loop
-r1.scenario['perovskite_recycle'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 0.0) #send none to remfg
-r1.scenario['perovskite_recycle'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100.0) #send all to recycle
-r1.scenario['perovskite_recycle'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0) #closed-loop
-r1.scenario['perovskite_recycle'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', 15.0) #HQ??
-r1.scenario['perovskite_recycle'].modifyMaterials('glass', 'mat_Recycling_yield', 40.0) #yield??
+r1.scenario['reMFG_high'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 0.0) #send mfg scrap to landfill
+r1.scenario['reMFG_high'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 100.0) #send all to remfg
+r1.scenario['reMFG_high'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 0.0) #send none to recycle
+r1.scenario['reMFG_high'].modifyMaterials('glass', 'mat_ReMFG_yield', 99.0) #
 
 
 # In[11]:
 
 
-#recycle_perfect
+#recycle_LQ
 #module
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_collection_eff', 100.0) #this collects everything
+r1.modifyScenario('recycle_LQ', 'mod_EOL_collection_eff', 100.0) #this collects everything
     #path good
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg0_resell', 0.0) #
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg1_landfill', 0.0) #
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg2_stored', 0.0) #
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg3_reMFG', 0.0) #
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_reMFG_yield', 0.0) #
+r1.modifyScenario('recycle_LQ', 'mod_EOL_pg0_resell', 0.0) #
+r1.modifyScenario('recycle_LQ', 'mod_EOL_pg1_landfill', 0.0) #
+r1.modifyScenario('recycle_LQ', 'mod_EOL_pg2_stored', 0.0) #
+r1.modifyScenario('recycle_LQ', 'mod_EOL_pg3_reMFG', 0.0) #
+r1.modifyScenario('recycle_LQ', 'mod_EOL_reMFG_yield', 0.0) #
 
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pg4_recycled', 100.0) #send all to recycle
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_sp_reMFG_recycle', 0.0) #
+r1.modifyScenario('recycle_LQ', 'mod_EOL_pg4_recycled', 100.0) #send all to recycle
+r1.modifyScenario('recycle_LQ', 'mod_EOL_sp_reMFG_recycle', 0.0) #
     #path bad
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pb1_landfill', 0.0) #
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pb2_stored', 0.0) #
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pb3_reMFG', 0.0) #
-r1.modifyScenario('perovskite_recycle_perfect', 'mod_EOL_pb4_recycled', 100.0) #send all to recycle
+r1.modifyScenario('recycle_LQ', 'mod_EOL_pb1_landfill', 0.0) #
+r1.modifyScenario('recycle_LQ', 'mod_EOL_pb2_stored', 0.0) #
+r1.modifyScenario('recycle_LQ', 'mod_EOL_pb3_reMFG', 0.0) #
+r1.modifyScenario('recycle_LQ', 'mod_EOL_pb4_recycled', 100.0) #send all to recycle
 
 #material
-r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_MFG_scrap_Recycling_eff', 99.0) #send all mfg scrap to recycle
-r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ', 100.0) #send all mfg scrap to recycle
-r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 100.0) #send all mfg scrap to recycle
-
-r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 0.0) #send none to remfg
-r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100.0) #send all to recycle
-r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_Recycling_yield', 99.0) #yield
-r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', 100.0) #HQ
-r1.scenario['perovskite_recycle_perfect'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0) #closed-loop
+r1.scenario['recycle_LQ'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 100.0) #send all mfg scrap to recycle
+r1.scenario['recycle_LQ'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 0.0) #
+r1.scenario['recycle_LQ'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 0.0) #send none to remfg
+r1.scenario['recycle_LQ'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100.0) #send all to recycle
+r1.scenario['recycle_LQ'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', 0.0) #closed-loop
+r1.scenario['recycle_LQ'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', 0.0) #HQ??
+r1.scenario['recycle_LQ'].modifyMaterials('glass', 'mat_Recycling_yield', 50.0) #yield??
 
 
 # In[12]:
 
 
-r1.scenario['perovskite_recycle'].material['glass'].materialdata.keys()
+#recycle_HQ_low
+#module
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_collection_eff', 100.0) #this collects everything
+    #path good
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_pg0_resell', 0.0) #
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_pg1_landfill', 0.0) #
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_pg2_stored', 0.0) #
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_pg3_reMFG', 0.0) #
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_reMFG_yield', 0.0) #
 
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_pg4_recycled', 100.0) #send all to recycle
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_sp_reMFG_recycle', 0.0) #
+    #path bad
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_pb1_landfill', 0.0) #
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_pb2_stored', 0.0) #
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_pb3_reMFG', 0.0) #
+r1.modifyScenario('recycle_HQ_low', 'mod_EOL_pb4_recycled', 100.0) #send all to recycle
 
-# ## Run the Mass Flow Calculations on All Scenarios and Materials
+#material
+r1.scenario['recycle_HQ_low'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 100.0) #send all mfg scrap to recycle
+r1.scenario['recycle_HQ_low'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 100.0) #
+r1.scenario['recycle_HQ_low'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 0.0) #send none to remfg
+r1.scenario['recycle_HQ_low'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100.0) #send all to recycle
+r1.scenario['recycle_HQ_low'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0) #closed-loop
+r1.scenario['recycle_HQ_low'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', 100.0) #HQ??
+r1.scenario['recycle_HQ_low'].modifyMaterials('glass', 'mat_Recycling_yield', 50.0) #yield??
+
 
 # In[13]:
 
 
-r1.calculateMassFlow()
+#recycle_HQ_high
+#module
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_collection_eff', 100.0) #this collects everything
+    #path good
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_pg0_resell', 0.0) #
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_pg1_landfill', 0.0) #
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_pg2_stored', 0.0) #
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_pg3_reMFG', 0.0) #
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_reMFG_yield', 0.0) #
+
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_pg4_recycled', 100.0) #send all to recycle
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_sp_reMFG_recycle', 0.0) #
+    #path bad
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_pb1_landfill', 0.0) #
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_pb2_stored', 0.0) #
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_pb3_reMFG', 0.0) #
+r1.modifyScenario('recycle_HQ_high', 'mod_EOL_pb4_recycled', 100.0) #send all to recycle
+
+#material
+r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_MFG_scrap_Recycling_eff', 99.0) #send all mfg scrap to recycle
+r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ', 100.0) #send all mfg scrap to recycle
+r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 100.0) #send all mfg scrap to recycle
+
+r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 0.0) #send none to remfg
+r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100.0) #send all to recycle
+r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_Recycling_yield', 99.0) #yield
+r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', 100.0) #HQ
+r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0) #closed-loop
 
 
 # In[14]:
 
 
+r1.scenario['recycle_HQ_high'].material['glass'].materialdata.keys()
+
+
+# ## Run the Mass Flow Calculations on All Scenarios and Materials
+
+# In[15]:
+
+
+r1.calculateMassFlow()
+
+
+# In[16]:
+
+
 r1.plotScenariosComparison('Landfill_0')
 
 
-# In[15]:
+# In[17]:
 
 
 mass_agg_yearly, mass_agg_sums = r1.aggregateResults()
@@ -235,14 +295,14 @@ mass_agg_yearly.to_csv('perovskite_mass_yearly.csv')
 mass_agg_sums.to_csv('perovskite_mass_cumulatives.csv')
 
 
-# In[16]:
+# In[18]:
 
 
-plt.plot(mass_agg_yearly['ActiveCapacity_perovskite_energies_perovskite_linear_[MW]']/1e6,
+plt.plot(mass_agg_yearly['ActiveCapacity_perovskite_energies_linear_[MW]']/1e6,
         label='Effective Capacity [TW]', color='black')
-plt.plot(mass_agg_yearly['newInstalledCapacity_perovskite_energies_perovskite_linear_[MW]']/1e6,
+plt.plot(mass_agg_yearly['newInstalledCapacity_perovskite_energies_linear_[MW]']/1e6,
         label='Annually Added Capacity [TW]', color='blue')
-plt.plot(mass_agg_yearly['DecommisionedCapacity_perovskite_energies_perovskite_recycle_[MW]']/1e6,
+plt.plot(mass_agg_yearly['DecommisionedCapacity_perovskite_energies_linear_[MW]']/1e6,
         label='Demcommissioned Capacity [TW]', color='red')
 plt.title('Capacity over time of 15 year module')
 plt.ylabel('Capacity [TW]')
@@ -250,14 +310,14 @@ plt.ylim(0.0,1.0)
 plt.legend()
 
 
-# In[17]:
+# In[21]:
 
 
-plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_perovskite_linear_[Tonnes]']/1e6,
+plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_linear_[Tonnes]']/1e6,
         label='Linear', color='black')
-plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_perovskite_reMFG_[Tonnes]']/1e6,
-        label='ReMFG', color='blue', linestyle='dotted', lw=3)
-plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_perovskite_recycle_perfect_[Tonnes]']/1e6,
+plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_reMFG_high_[Tonnes]']/1e6,
+        label='ReMFG_Perfect', color='blue', linestyle='dotted', lw=3)
+plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_recycle_HQ_high_[Tonnes]']/1e6,
         label='Recycle_Perfect', color='green', linestyle='dashed', lw=2)
 plt.title('Virgin Glass in Million Tonnes')
 plt.ylabel('Virgin Glass Extracted [Mt]')
@@ -265,17 +325,21 @@ plt.ylabel('Virgin Glass Extracted [Mt]')
 plt.legend()
 
 
-# In[18]:
+# In[24]:
 
 
-plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_perovskite_linear_[Tonnes]']/1e6,
+plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_linear_[Tonnes]']/1e6,
         label='Linear', color='black')
-plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_perovskite_reMFG_[Tonnes]']/1e6,
-        label='ReMFG', color='blue', linestyle='dotted', lw=3)
-plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_perovskite_recycle_[Tonnes]']/1e6,
-        label='Recycle', color='purple', linestyle='-.')
-plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_perovskite_recycle_perfect_[Tonnes]']/1e6,
+plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_reMFG_high_[Tonnes]']/1e6,
+        label='ReMFG_Perfect', color='blue', linestyle='dotted', lw=3)
+plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_reMFG_low_[Tonnes]']/1e6,
+        label='ReMFG_low', color='blue', linestyle='dotted', lw=3)
+plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_recycle_LQ_[Tonnes]']/1e6,
+        label='Recycle_LQ', color='purple', linestyle='-.')
+plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_recycle_HQ_high_[Tonnes]']/1e6,
         label='Recycle_Perfect', color='green', linestyle='dashed', lw=2)
+plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_recycle_HQ_low_[Tonnes]']/1e6,
+        label='Recycle_HQ_low', color='yellow', linestyle='dashed', lw=2)
 plt.title('Waste Glass in Million Tonnes')
 plt.ylabel('Waste Glass Disposed [Mt]')
 #plt.ylim(0.0,1.0)
@@ -292,7 +356,7 @@ plt.legend()
 # 
 # First read in the energy files. Point at a path, then use the PV ICE colde to handle the meta data. Energy values for modules are in kWh/m2 and for materials are in kWh/kg. To ensure unit matching, we will divide the input by 1000 to convert kg to g.
 
-# In[19]:
+# In[25]:
 
 
 matEfile_glass = str(Path().resolve().parent.parent / 'baselines'/'perovskite_energy_material_glass.csv')
@@ -300,7 +364,7 @@ matEfile_glass = str(Path().resolve().parent.parent / 'baselines'/'perovskite_en
 modEfile = str(Path().resolve().parent.parent / 'baselines'/'perovskite_energy_modules.csv')
 
 
-# In[20]:
+# In[26]:
 
 
 # Material energy file in Wh/g
@@ -319,7 +383,7 @@ data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype
 matEfile_glass_simple = data.copy()
 
 
-# In[21]:
+# In[27]:
 
 
 #module energy file in Wh/m2
@@ -339,41 +403,47 @@ modEfile_simple = data.copy()
 
 # Now run the energy calculation. Currently this is not a class, just a function that will return a dataframe. Each scenario will need to be run seperately, and read in the perovskite energy files. The results are like the aggregate mass results function in that an annual and a cumulative dataframe are returned.
 
-# In[22]:
+# In[36]:
 
 
-r1_e_linear, r1_e_linear_cum = r1.calculateEnergyFlow(scenarios='perovskite_linear', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
-r1_e_reMFG, r1_e_reMFG_cum = r1.calculateEnergyFlow(scenarios='perovskite_reMFG', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
-r1_e_reCYCLE, r1_e_reCYCLE_cum = r1.calculateEnergyFlow(scenarios='perovskite_recycle', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
-r1_e_reCYCLE_perfs, r1_e_reCYCLE_perfs_cum = r1.calculateEnergyFlow(scenarios='perovskite_recycle_perfect', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_linear, r1_e_linear_cum = r1.calculateEnergyFlow(scenarios='linear', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_reMFG_low, r1_e_reMFG_low_cum = r1.calculateEnergyFlow(scenarios='reMFG_low', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_reMFG_high, r1_e_reMFG_high_cum = r1.calculateEnergyFlow(scenarios='reMFG_high', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_reCYCLE_LQ, r1_e_reCYCLE_LQ_cum = r1.calculateEnergyFlow(scenarios='recycle_LQ', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_reCYCLE_HQ_low, r1_e_reCYCLE_HQ_low_cum = r1.calculateEnergyFlow(scenarios='recycle_HQ_low', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_reCYCLE_HQ_high, r1_e_reCYCLE_HQ_high_cum = r1.calculateEnergyFlow(scenarios='recycle_HQ_high', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 #note that the cumulative ones sum the two types of recycling together which may not be applicable.
 
 
 # # Energy Analysis
 
-# In[23]:
+# In[37]:
 
 
 r1_e_linear.index = modEfile_simple['year']
-r1_e_reMFG.index = modEfile_simple['year']
-r1_e_reCYCLE.index = modEfile_simple['year']
-r1_e_reCYCLE_perfs.index = modEfile_simple['year']
+r1_e_reMFG_low.index = modEfile_simple['year']
+r1_e_reMFG_high.index = modEfile_simple['year']
+r1_e_reCYCLE_LQ.index = modEfile_simple['year']
+r1_e_reCYCLE_HQ_low.index = modEfile_simple['year']
+r1_e_reCYCLE_HQ_high.index = modEfile_simple['year']
 
 
-# In[24]:
+# In[38]:
 
 
 r1_e_linear.keys()
 
 
-# In[25]:
+# In[39]:
 
 
 for key in r1_e_linear.keys():
     plt.plot(r1_e_linear.index, r1_e_linear[key], marker='s', ms=12, label='linear')
-    plt.plot(r1_e_reMFG.index, r1_e_reMFG[key], marker='^', ms=12, label='reMFG')
-    plt.plot(r1_e_reCYCLE.index, r1_e_reCYCLE[key], marker='o',ms=10, label='reCYCLE')
-    plt.plot(r1_e_reCYCLE_perfs.index, r1_e_reCYCLE_perfs[key], marker='X', color='purple', label='reCYCLE_perfect')
+    plt.plot(r1_e_reMFG_low.index, r1_e_reMFG_low[key], marker='^', ms=12, label='reMFG_low')
+    plt.plot(r1_e_reMFG_high.index, r1_e_reMFG_high[key], marker='^', ms=8, label='reMFG_high')
+    plt.plot(r1_e_reCYCLE_LQ.index, r1_e_reCYCLE_LQ[key], marker='o',ms=10, label='reCYCLE_LQ')
+    plt.plot(r1_e_reCYCLE_HQ_low.index, r1_e_reCYCLE_HQ_low[key], marker='X', color='purple', label='reCYCLE_HQ_low')
+    plt.plot(r1_e_reCYCLE_HQ_high.index, r1_e_reCYCLE_HQ_high[key], marker='X', color='purple', label='reCYCLE_HQ_high')
     plt.legend()
     plt.title(str(key))
     plt.show()
@@ -383,40 +453,44 @@ for key in r1_e_linear.keys():
 
 # ### E_in
 
-# In[26]:
+# In[40]:
 
 
-energy_annual = pd.concat([r1_e_linear, r1_e_reMFG, r1_e_reCYCLE, r1_e_reCYCLE_perfs], axis=1, 
-                          keys=['perovskite_linear', 'perovskite_reMFG', 'perovskite_recycle', 'perovskite_recycle_perfect'])
+energy_annual = pd.concat([r1_e_linear, r1_e_reMFG_low, r1_e_reMFG_high, r1_e_reCYCLE_LQ,
+                           r1_e_reCYCLE_HQ_low, r1_e_reCYCLE_HQ_high], axis=1, 
+                          keys=['linear', 'reMFG_low','reMFG_high', 'recycle_LQ', 'recycle_HQ_low','recycle_HQ_high'])
 #this is a multiindex column, and filter doesn't work with it
 energy_annual.to_csv('energyyearly.csv')
 
-energy_sums = pd.concat([r1_e_linear_cum, r1_e_reMFG_cum, r1_e_reCYCLE_cum, r1_e_reCYCLE_perfs_cum], axis=1)
+energy_sums = pd.concat([r1_e_linear_cum, r1_e_reMFG_low_cum, r1_e_reMFG_high_cum, 
+                         r1_e_reCYCLE_LQ_cum, r1_e_reCYCLE_HQ_low_cum, r1_e_reCYCLE_HQ_high_cum], axis=1)
 energy_sums.to_csv('energysums.csv') 
 
 
-# In[27]:
+# In[41]:
 
 
 #categorize the energy in values into lifecycle stages
 mfg_energies = ['mod_MFG','mat_extraction','mat_MFG_virgin']
 mfg_recycle_energies_LQ = ['mat_MFGScrap_LQ'] #LQ and HQ are separate becuase LQ is only LQ
 mfg_recycle_energies_HQ = ['mat_MFGScrap_HQ'] #and HQ material is E_LQ + E_HQ
-use_energies = ['mod_install','mod_OandM','mod_Repair']
-eol_energies = ['mat_landfill','mod_Demount','mod_Store','mod_Resell_Certify']
+use_energies = ['mod_Install','mod_OandM','mod_Repair']
+eol_energies = ['mat_Landfill','mod_Demount','mod_Store','mod_Resell_Certify']
 eol_remfg_energies = ['mod_ReMFG_Disassmbly','mat_EoL_ReMFG_clean']
 eol_recycle_energies_LQ = ['mod_Recycle_Crush','mat_Recycled_LQ']
 eol_recycle_energies_HQ = ['mod_Recycle_Crush','mat_Recycled_HQ']
 
 
-# In[28]:
+# ### Now through 2050 Energy Demand sums
+
+# In[42]:
 
 
 #example filtering
 energy_sums.filter(items=mfg_energies, axis=0).filter(regex='recycle$')
 
 
-# In[29]:
+# In[43]:
 
 
 #energy in for the linear system (includes LQ and HQ recycling, which might not be right)
@@ -431,99 +505,246 @@ e_in_linear = e_in_mfg_linear + e_in_use_linear + e_in_eol_linear
 print('Energy_in for the linear perovskite is ' + str(round(e_in_linear[0],2)) + ' kWh.')
 
 
-# In[30]:
+# In[46]:
 
 
-#energy in for reMFG
-e_in_mfg_remfg = energy_sums.filter(items=mfg_energies, axis=0).filter(like='reMFG').sum()
-e_in_use_remfg = energy_sums.filter(items=use_energies, axis=0).filter(like='reMFG').sum()
-e_in_eol_remfg = energy_sums.filter(items=eol_energies, axis=0).filter(like='reMFG').sum()
-e_in_remfg_remfg = energy_sums.filter(items=eol_remfg_energies, axis=0).filter(like='reMFG').sum()
+#energy in for reMFG_low
+e_in_mfg_remfg_low = energy_sums.filter(items=mfg_energies, axis=0).filter(like='reMFG_low').sum()
+e_in_use_remfg_low = energy_sums.filter(items=use_energies, axis=0).filter(like='reMFG_low').sum()
+e_in_eol_remfg_low = energy_sums.filter(items=eol_energies, axis=0).filter(like='reMFG_low').sum()
+e_in_remfg_remfg_low = energy_sums.filter(items=eol_remfg_energies, axis=0).filter(like='reMFG_low').sum()
 
-e_in_remfg_tab = pd.concat([e_in_mfg_remfg, e_in_use_remfg, e_in_eol_remfg, e_in_remfg_remfg], axis=1)
-e_in_remfg_tab.columns = ['mfg','use','eol','remfg']
+e_in_remfg_low_tab = pd.concat([e_in_mfg_remfg_low, e_in_use_remfg_low, e_in_eol_remfg_low, e_in_remfg_remfg_low], axis=1)
+e_in_remfg_low_tab.columns = ['mfg','use','eol','remfg']
 
-e_in_remfg = e_in_mfg_remfg + e_in_use_remfg + e_in_eol_remfg + e_in_remfg_remfg
-print('Energy_in for the remanufactured perovskite is ' + str(round(e_in_remfg[0],2)) +' kWh.')
-
-
-# In[31]:
+e_in_remfg_low = e_in_mfg_remfg_low + e_in_use_remfg_low + e_in_eol_remfg_low + e_in_remfg_remfg_low
+print('Energy_in for reMFG_low is ' + str(round(e_in_remfg_low[0],2)) +' kWh.')
 
 
-#energy in for recycle
-e_in_mfg_recycle = energy_sums.filter(items=mfg_energies, axis=0).filter(regex='recycle$').sum()
-e_in_mfgscrap_recycle = energy_sums.filter(items=mfg_recycle_energies_LQ, axis=0).filter(regex='recycle$').sum()
-e_in_use_recycle = energy_sums.filter(items=use_energies, axis=0).filter(regex='recycle$').sum()
-e_in_eol_recycle = energy_sums.filter(items=eol_energies, axis=0).filter(regex='recycle$').sum()
-e_in_recycle_recycle = energy_sums.filter(items=eol_recycle_energies_LQ, axis=0).filter(regex='recycle$').sum()
-
-e_in_recycle_tab = pd.concat([e_in_mfg_recycle, e_in_mfgscrap_recycle, e_in_use_recycle,
-                              e_in_eol_recycle, e_in_recycle_recycle], axis=1)
-e_in_recycle_tab.columns = ['mfg','mfgscrap','use','eol','eolrecycle']
-
-e_in_recycle = e_in_mfg_recycle + e_in_mfgscrap_recycle + e_in_use_recycle + e_in_eol_recycle + e_in_recycle_recycle
-print('Energy_in for recycled perovkiste is ' + str(round(e_in_recycle[0],2)) +' kWh.')
+# In[47]:
 
 
-# In[32]:
+#energy in for reMFG_high
+e_in_mfg_remfg_high = energy_sums.filter(items=mfg_energies, axis=0).filter(like='reMFG_high').sum()
+e_in_use_remfg_high = energy_sums.filter(items=use_energies, axis=0).filter(like='reMFG_high').sum()
+e_in_eol_remfg_high = energy_sums.filter(items=eol_energies, axis=0).filter(like='reMFG_high').sum()
+e_in_remfg_remfg_high = energy_sums.filter(items=eol_remfg_energies, axis=0).filter(like='reMFG_high').sum()
+
+e_in_remfg_tab_high = pd.concat([e_in_mfg_remfg_high, e_in_use_remfg_high, e_in_eol_remfg_high, e_in_remfg_remfg_high], axis=1)
+e_in_remfg_tab_high.columns = ['mfg','use','eol','remfg']
+
+e_in_remfg_high = e_in_mfg_remfg_high + e_in_use_remfg_high + e_in_eol_remfg_high + e_in_remfg_remfg_high
+print('Energy_in for reMFG_high is ' + str(round(e_in_remfg_high[0],2)) +' kWh.')
 
 
-#energy in for recycle_perfect
-e_in_mfg_recycle_p = energy_sums.filter(items=mfg_energies, axis=0).filter(like='recycle_perfect').sum()
-e_in_mfgscrap_recycle_p = energy_sums.filter(items=mfg_recycle_energies_HQ, axis=0).filter(like='recycle_perfect').sum()
-e_in_use_recycle_p = energy_sums.filter(items=use_energies, axis=0).filter(like='recycle_perfect').sum()
-e_in_eol_recycle_p = energy_sums.filter(items=eol_energies, axis=0).filter(like='recycle_perfect').sum()
-e_in_recycle_recycle_p = energy_sums.filter(items=eol_recycle_energies_HQ, axis=0).filter(like='recycle_perfect').sum()
-
-e_in_recycle_p_tab = pd.concat([e_in_mfg_recycle_p, e_in_mfgscrap_recycle_p, e_in_use_recycle_p,
-                                e_in_eol_recycle_p, e_in_recycle_recycle_p], axis=1)
-e_in_recycle_p_tab.columns = ['mfg','mfgscrap','use','eol','eolrecycle']
-
-e_in_recycle_p = e_in_mfg_recycle_p + e_in_mfgscrap_recycle_p + e_in_use_recycle_p + e_in_eol_recycle_p + e_in_recycle_recycle_p
-print('Energy_in for the perfect recycled perovkiste is ' + str(round(e_in_recycle_p[0],2)) +' kWh.')
+# In[49]:
 
 
-# In[33]:
+#energy in for recycle_LQ
+e_in_mfg_recycle_LQ = energy_sums.filter(items=mfg_energies, axis=0).filter(regex='recycle_LQ').sum()
+e_in_mfgscrap_recycle_LQ = energy_sums.filter(items=mfg_recycle_energies_LQ, axis=0).filter(regex='recycle_LQ').sum()
+e_in_use_recycle_LQ = energy_sums.filter(items=use_energies, axis=0).filter(regex='recycle_LQ').sum()
+e_in_eol_recycle_LQ = energy_sums.filter(items=eol_energies, axis=0).filter(regex='recycle_LQ').sum()
+e_in_recycle_recycle_LQ = energy_sums.filter(items=eol_recycle_energies_LQ, axis=0).filter(regex='recycle_LQ').sum()
+
+e_in_recycle_tab_LQ = pd.concat([e_in_mfg_recycle_LQ, e_in_mfgscrap_recycle_LQ, e_in_use_recycle_LQ,
+                              e_in_eol_recycle_LQ, e_in_recycle_recycle_LQ], axis=1)
+e_in_recycle_tab_LQ.columns = ['mfg','mfgscrap','use','eol','eolrecycle']
+
+e_in_recycle_LQ = e_in_mfg_recycle_LQ + e_in_mfgscrap_recycle_LQ + e_in_use_recycle_LQ + e_in_eol_recycle_LQ + e_in_recycle_recycle_LQ
+print('Energy_in for recycled perovkiste is ' + str(round(e_in_recycle_LQ[0],2)) +' kWh.')
 
 
-e_in_cat_tab = pd.concat([e_in_linear_tab, e_in_remfg_tab, e_in_recycle_tab, e_in_recycle_p_tab] )
+# In[53]:
+
+
+#energy in for recycle_HQ_low
+e_in_mfg_recycle_HQ_low = energy_sums.filter(items=mfg_energies, axis=0).filter(like='recycle_HQ_low').sum()
+e_in_mfgscrap_recycle_HQ_low = energy_sums.filter(items=mfg_recycle_energies_HQ, axis=0).filter(like='recycle_HQ_low').sum()
+e_in_use_recycle_HQ_low = energy_sums.filter(items=use_energies, axis=0).filter(like='recycle_HQ_low').sum()
+e_in_eol_recycle_HQ_low = energy_sums.filter(items=eol_energies, axis=0).filter(like='recycle_HQ_low').sum()
+e_in_recycle_recycle_HQ_low = energy_sums.filter(items=eol_recycle_energies_HQ, axis=0).filter(like='recycle_HQ_low').sum()
+
+e_in_recycle_HQ_low_tab = pd.concat([e_in_mfg_recycle_HQ_low, e_in_mfgscrap_recycle_HQ_low, e_in_use_recycle_HQ_low,
+                                e_in_eol_recycle_HQ_low, e_in_recycle_recycle_HQ_low], axis=1)
+e_in_recycle_HQ_low_tab.columns = ['mfg','mfgscrap','use','eol','eolrecycle']
+
+e_in_recycle_HQ_low = e_in_mfg_recycle_HQ_low + e_in_mfgscrap_recycle_HQ_low + e_in_use_recycle_HQ_low + e_in_eol_recycle_HQ_low + e_in_recycle_recycle_HQ_low
+print('Energy_in for the perfect recycled perovkiste is ' + str(round(e_in_recycle_HQ_low[0],2)) +' kWh.')
+
+
+# In[54]:
+
+
+#energy in for recycle_HQ_high
+e_in_mfg_recycle_HQ_high = energy_sums.filter(items=mfg_energies, axis=0).filter(like='recycle_HQ_high').sum()
+e_in_mfgscrap_recycle_HQ_high = energy_sums.filter(items=mfg_recycle_energies_HQ, axis=0).filter(like='recycle_HQ_high').sum()
+e_in_use_recycle_HQ_high = energy_sums.filter(items=use_energies, axis=0).filter(like='recycle_HQ_high').sum()
+e_in_eol_recycle_HQ_high = energy_sums.filter(items=eol_energies, axis=0).filter(like='recycle_HQ_high').sum()
+e_in_recycle_recycle_HQ_high = energy_sums.filter(items=eol_recycle_energies_HQ, axis=0).filter(like='recycle_HQ_high').sum()
+
+e_in_recycle_HQ_high_tab = pd.concat([e_in_mfg_recycle_HQ_high, e_in_mfgscrap_recycle_HQ_high, e_in_use_recycle_HQ_high,
+                                e_in_eol_recycle_HQ_high, e_in_recycle_recycle_HQ_high], axis=1)
+e_in_recycle_HQ_high_tab.columns = ['mfg','mfgscrap','use','eol','eolrecycle']
+
+e_in_recycle_HQ_high = e_in_mfg_recycle_HQ_high + e_in_mfgscrap_recycle_HQ_high + e_in_use_recycle_HQ_high + e_in_eol_recycle_HQ_high + e_in_recycle_recycle_HQ_high
+print('Energy_in for the perfect recycled perovkiste is ' + str(round(e_in_recycle_HQ_high[0],2)) +' kWh.')
+
+
+# In[55]:
+
+
+e_in_cat_tab = pd.concat([e_in_linear_tab, e_in_remfg_low_tab, e_in_mfg_remfg_high, 
+                          e_in_recycle_tab_LQ, e_in_recycle_HQ_low_tab, e_in_recycle_HQ_high_tab] )
 e_in_cat_tab.to_csv('energy_in_by_category.csv') 
 
 
-# In[34]:
+# In[56]:
 
 
-e_in = pd.DataFrame(pd.concat([e_in_linear, e_in_remfg, e_in_recycle, e_in_recycle_p]), columns=['E_in_MWh'])
+e_in = pd.DataFrame(pd.concat([e_in_linear, e_in_remfg_low, e_in_remfg_high,
+                               e_in_recycle_LQ, e_in_recycle_HQ_low, e_in_recycle_HQ_high]), columns=['E_in_MWh'])
 e_in_norm = e_in/e_in.iloc[0]
 e_in_norm
 
 
-# In[35]:
+# In[58]:
 
 
-scennames = ['linear','reMFG','recycle','recycle_perfect']
-plt.bar(scennames, e_in_norm['E_in_MWh'], width=0.3)
+scennames = ['linear', 'reMFG_low','reMFG_high', 'recycle_LQ', 'recycle_HQ_low','recycle_HQ_high']
+plt.bar(scennames, e_in_norm['E_in_MWh'], width=0.5)
 
 #Can I sort these to make it pretty?
+
+
+# ### Annual Energy Demand
+# sum by category and ensure no recycling energy duplication
+
+# In[59]:
+
+
+#linear
+#selction by multilevel index, then energy category, then sum columns annually
+e_linear_annual_mfgs = energy_annual['linear'].filter(items=mfg_energies).sum(axis=1)
+e_linear_annual_use = energy_annual['linear'].filter(items=use_energies).sum(axis=1)
+e_linear_annual_eol = energy_annual['linear'].filter(items=eol_energies).sum(axis=1)
+
+e_in_linear_annual = e_linear_annual_mfgs+e_linear_annual_use+e_linear_annual_eol
+
+
+# In[61]:
+
+
+# ReMFG_low
+e_reMFG_l_annual_mfgs = energy_annual['reMFG_low'].filter(items=mfg_energies).sum(axis=1)
+e_reMFG_l_annual_use = energy_annual['reMFG_low'].filter(items=use_energies).sum(axis=1)
+e_reMFG_l_annual_eol = energy_annual['reMFG_low'].filter(items=eol_energies).sum(axis=1)
+e_reMFG_l_annual_remfg = energy_annual['reMFG_low'].filter(items=eol_remfg_energies).sum(axis=1)
+
+e_in_reMFG_l_annual = e_reMFG_l_annual_mfgs+e_reMFG_l_annual_use+e_reMFG_l_annual_eol+e_reMFG_l_annual_remfg
+
+
+# In[62]:
+
+
+# ReMFG_high
+e_reMFg_h_annual_mfgs = energy_annual['reMFG_high'].filter(items=mfg_energies).sum(axis=1)
+e_reMFG_h_annual_use = energy_annual['reMFG_high'].filter(items=use_energies).sum(axis=1)
+e_reMFG_h_annual_eol = energy_annual['reMFG_high'].filter(items=eol_energies).sum(axis=1)
+e_reMFG_h_annual_remfg = energy_annual['reMFG_high'].filter(items=eol_remfg_energies).sum(axis=1)
+
+e_in_reMFG_h_annual = e_reMFg_h_annual_mfgs+e_reMFG_h_annual_use+e_reMFG_h_annual_eol+e_reMFG_h_annual_remfg
+
+
+# In[63]:
+
+
+#recycle LQ
+e_recycle_LQ_annual_mfgs = energy_annual['recycle_LQ'].filter(items=mfg_energies).sum(axis=1)
+e_recycle_LQ_annual_mfgcrap = energy_annual['recycle_LQ'].filter(items=mfg_recycle_energies_LQ).sum(axis=1)
+e_recycle_LQ_annual_use = energy_annual['recycle_LQ'].filter(items=use_energies).sum(axis=1)
+e_recycle_LQ_annual_eol = energy_annual['recycle_LQ'].filter(items=eol_energies).sum(axis=1)
+e_recycle_LQ_annual_recycle = energy_annual['recycle_LQ'].filter(items=eol_recycle_energies_LQ).sum(axis=1)
+
+e_in_recycle_LQ_annual = e_recycle_LQ_annual_mfgs+e_recycle_LQ_annual_mfgcrap+e_recycle_LQ_annual_use+e_recycle_LQ_annual_eol+e_recycle_LQ_annual_recycle
+
+
+# In[64]:
+
+
+#recycle HQ_low
+e_recycle_HQ_low_annual_mfgs = energy_annual['recycle_HQ_low'].filter(items=mfg_energies).sum(axis=1)
+e_recycle_HQ_low_annual_mfgscrap = energy_annual['recycle_HQ_low'].filter(items=mfg_recycle_energies_HQ).sum(axis=1)
+e_recycle_HQ_low_annual_use = energy_annual['recycle_HQ_low'].filter(items=use_energies).sum(axis=1)
+e_recycle_HQ_low_annual_eol = energy_annual['recycle_HQ_low'].filter(items=eol_energies).sum(axis=1)
+e_recycle_HQ_low_annual_recycle = energy_annual['recycle_HQ_low'].filter(items=eol_recycle_energies_HQ).sum(axis=1)
+
+e_in_recycle_HQ_low_annual = e_recycle_HQ_low_annual_mfgs+e_recycle_HQ_low_annual_mfgscrap+e_recycle_HQ_low_annual_use+e_recycle_HQ_low_annual_eol+e_recycle_HQ_low_annual_recycle
+
+
+# In[65]:
+
+
+#recycle HQ_high
+e_recycle_HQ_high_annual_mfgs = energy_annual['recycle_HQ_high'].filter(items=mfg_energies).sum(axis=1)
+e_recycle_HQ_high_annual_mfgscrap = energy_annual['recycle_HQ_high'].filter(items=mfg_recycle_energies_HQ).sum(axis=1)
+e_recycle_HQ_high_annual_use = energy_annual['recycle_HQ_high'].filter(items=use_energies).sum(axis=1)
+e_recycle_HQ_high_annual_eol = energy_annual['recycle_HQ_high'].filter(items=eol_energies).sum(axis=1)
+e_recycle_HQ_high_annual_recycle = energy_annual['recycle_HQ_high'].filter(items=eol_recycle_energies_HQ).sum(axis=1)
+
+e_in_recycle_HQ_high_annual = e_recycle_HQ_high_annual_mfgs+e_recycle_HQ_high_annual_mfgscrap+e_recycle_HQ_high_annual_use+e_recycle_HQ_high_annual_eol+e_recycle_HQ_high_annual_recycle
+
+
+# In[66]:
+
+
+e_annual_in_tab = pd.concat([e_in_linear_annual, e_in_reMFG_l_annual, e_in_reMFG_h_annual,
+                             e_in_recycle_LQ_annual, e_in_recycle_HQ_low_annual, e_in_recycle_HQ_high_annual],
+                                axis=1, keys=scennames)
+e_annual_in_tab.to_csv('energy_in_annual.csv') 
 
 
 # ### E_out
 # A calculation of E out is included in the calculateEnergyFlows function.
 
-# In[36]:
+# In[67]:
 
 
-e_out_func = r1_e_linear_cum['perovskite_linear']['e_out_annual_[Wh]']
+e_out_sum = r1_e_linear_cum['linear']['e_out_annual_[Wh]']
 #Note that because deployment and lifetimes are identical, the energy generated is identical
+
+
+# In[68]:
+
+
+e_out_annual_TWh = r1_e_linear['e_out_annual_[Wh]']/1e12 # TWh
+
+
+# In[69]:
+
+
+4.8*365*0.85 # ~2000 kWh/kw
+
+
+# In[71]:
+
+
+plt.plot(e_out_annual_TWh, label='Energy Generated [TWh]')
+#PUT ON SECOND AXIS
+plt.plot(mass_agg_yearly['ActiveCapacity_perovskite_energies_linear_[MW]']/1e3,
+        label='Effective Capacity [GW]', color='black')
+plt.title('Energy Generated Annually')
+plt.ylabel('Energy Generated [TWh/year]')
+plt.legend()
 
 
 # ## EROI
 
-# In[37]:
+# In[72]:
 
 
 #EROI = Eout/Ein (note this is not a true eroi because it is missing embedded energy of process materials)
-eroi = e_out_func/e_in
+eroi = e_out_sum/e_in
 eroi.columns = ['EROI']
 eroi
 
@@ -532,38 +753,76 @@ eroi
 # 
 # Can I normalize to linear, and then do a relative improvement, since the absolute number doesn't yet account for all the other stuff, but the other layers/materials should be proportional between pathways??
 
-# In[38]:
+# In[73]:
 
 
 #normalize "EROI"
 eroi/eroi.iloc[0]
 
 
-# In[39]:
+# In[74]:
 
 
 #Weight eroi by mass
-(e_out_func*0.76)/e_in # mass of glass in c-si
+(e_out_sum*0.76)/e_in # mass of glass in c-si
 #same as eroi*0.76
 
 
-# In[40]:
+# In[75]:
 
 
 #weight eroi by ped/ced/embedded in pv
-eroi*
+#eroi*
 
 
-# In[ ]:
+# ## Annual Energy Balance
+# 
+# Divide the annual energy demands by the annual energy generation
+
+# In[76]:
 
 
-plt.plot(active_Wh/1000, label = 'Energy generated [kWh]')
-plt.plot(energy_annual['perovskite_linear']['mat_MFG_virgin'], label='perovskite_linear mod mfg [kWh]')
-plt.plot(energy_annual['perovskite_reMFG']['mat_MFG_virgin'], label='perovskite_reMFG mod mfg [kWh]')
-plt.plot(energy_annual['perovskite_recycle']['mat_MFG_virgin'], label='perovskite_recycle mod mfg [kWh]')
-plt.plot(energy_annual['perovskite_recycle_perfect']['mat_MFG_virgin'], label='perovskite_recycle mod mfg [kWh]')
-plt.legend()
+e_out_annual = pd.DataFrame(r1_e_linear['e_out_annual_[Wh]'])# Wh
 
+
+# In[77]:
+
+
+ebalance = pd.DataFrame(index =e_annual_in_tab.index )
+for col in e_annual_in_tab.columns:
+    ebalance[col] = e_out_annual.div(e_annual_in_tab[col],axis=0)
+
+#ebalance
+
+
+# In[78]:
+
+
+plt.plot(ebalance)
+plt.legend(labels=ebalance.columns)
+plt.title('Annual Energy Balance')
+
+
+# In[79]:
+
+
+ebalance_norm = ebalance.div(ebalance['linear'], axis=0)
+#ebalance_norm
+
+
+# In[80]:
+
+
+plt.plot(ebalance_norm)
+plt.legend(labels=ebalance_norm.columns)
+plt.title('Annual Energy Balance Normalized')
+
+
+# While deployment is happening and no EOL circularity, the scenarios are essentially equivalent. The perfect recycling scenario gets a small benefit from MFG Scrap recycling offsetting a small amount of virgin. 
+# 
+# Once the 15 year mark is hit and large quantities are removed from the field and while deployment is still increasing, there is a huge energy savings that year, which decreases with time as deloyment continues to increase.
+# 
+# Same message, closed-loop is offsetting virgin is best, and recycling vs reMFG depends on recovery rates.
 
 # In[ ]:
 
