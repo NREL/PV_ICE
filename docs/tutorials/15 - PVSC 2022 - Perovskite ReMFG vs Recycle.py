@@ -317,9 +317,10 @@ mass_agg_yearly.to_csv('perovskite_mass_yearly.csv')
 mass_agg_sums.to_csv('perovskite_mass_cumulatives.csv')
 
 
-# In[19]:
+# In[96]:
 
 
+plt.rcParams.update({'font.size': 12})
 plt.plot(mass_agg_yearly['ActiveCapacity_perovskite_energies_linear_[MW]']/1e6,
         label='Effective Capacity [TW]', color='black')
 #plt.plot(mass_agg_yearly['newInstalledCapacity_perovskite_energies_linear_[MW]']/1e6,
@@ -332,10 +333,11 @@ plt.ylim(0.0,1.0)
 plt.legend()
 
 
-# In[20]:
+# In[98]:
 
 
-plt.figure(figsize=(7,5))
+plt.figure(figsize=(8,5))
+plt.rcParams.update({'font.size': 12})
 plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_linear_[Tonnes]']/1e6,
         label='Linear', color='black', lw=3)
 #plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_recycle_LQ_[Tonnes]']/1e6,
@@ -357,10 +359,11 @@ plt.ylabel('Virgin Glass Extracted [Mt]')
 plt.legend()
 
 
-# In[21]:
+# In[100]:
 
 
-plt.figure(figsize=(7,5))
+plt.figure(figsize=(8,5))
+plt.rcParams.update({'font.size': 12})
 plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_linear_[Tonnes]']/1e6,
         label='Linear', color='black')
 #plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_recycle_LQ_[Tonnes]']/1e6,
@@ -872,7 +875,7 @@ eroi/eroi.iloc[0]
 
 # ## Annual Energy Balance
 # 
-# Divide the annual energy demands by the annual energy generation, like its annual EROI
+# Divide the annual energy generation by the annual energy demands, like its annual EROI
 
 # In[59]:
 
@@ -880,7 +883,7 @@ eroi/eroi.iloc[0]
 e_out_annual = pd.DataFrame(r1_e_linear['e_out_annual_[Wh]'])# Wh
 
 
-# In[79]:
+# In[60]:
 
 
 ebalance = pd.DataFrame(index =e_annual_in_tab.index )
@@ -913,13 +916,65 @@ plt.legend(labels=ebalance_norm.columns)
 plt.title('Annual Energy Balance Normalized')
 
 
+# In[95]:
+
+
+plt.figure(figsize=(8,4))
+plt.rcParams.update({'font.size': 12})
+plt.plot(ebalance_norm.index, ebalance_norm['linear'], color='black', label='Linear')
+
+plt.plot(ebalance_norm.index, ebalance_norm['reMFG_high'], color='forestgreen', label='ReMFG Perfect',
+         linestyle='dashed', lw=3)
+plt.plot(ebalance_norm.index, ebalance_norm['reMFG_low'], color='limegreen', label='ReMFG low yield',
+         linestyle='dashed', lw=3)
+
+plt.plot(ebalance_norm.index, ebalance_norm['recycle_HQ_high'], color='royalblue', label='Recycle Perfect',
+         linestyle='dotted', lw=3)
+plt.plot(ebalance_norm.index, ebalance_norm['recycle_HQ_low'], color='deepskyblue', 
+         label='Recycle, closed-loop, low yield', linestyle='dotted', lw=3)
+
+plt.ylabel('Normalized Annual Energy Balance')
+plt.legend()
+
+
 # While deployment is happening and no EOL circularity, the scenarios are essentially equivalent. The perfect recycling scenario gets a small benefit from MFG Scrap recycling offsetting a small amount of virgin. 
 # 
 # Once the 15 year mark is hit and large quantities are removed from the field and while deployment is still increasing, there is a huge energy savings that year, which decreases with time as deloyment continues to increase.
 # 
 # Same message, closed-loop is offsetting virgin is best, and recycling vs reMFG depends on recovery rates.
 
-# ### Energy Positive or Negative in Given year?
+# ### Energy PayBack Time (EPBT) = Ein/Eout(eff and lifetime)
+
+# In[92]:
+
+
+#e_annual_in_tab/e_out_annual
+epbt = 15/ebalance
+plt.plot(epbt)
+plt.legend(epbt.columns)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# ### Energy Positive or Negative in Given year? Net energy Annually
+# need to code in
+# did this in excel, currently the energy in is too small to register much, and looks like scenarios above.
 
 # In[64]:
 
