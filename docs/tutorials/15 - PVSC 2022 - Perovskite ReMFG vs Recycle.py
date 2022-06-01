@@ -88,6 +88,12 @@ for scen in scenarios:
         MATERIALBASELINE = r'..\..\baselines\perovskite_material_'+MATERIALS[mat]+'.csv'
         r1.scenario[scen].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
 
+#add c-Si 32-year module lifetime comparison
+r1.createScenario(name='linear_longlife', file=moduleFile)
+for mat in range (0, len(MATERIALS)):
+    MATERIALBASELINE = r'..\..\baselines\perovskite_material_'+MATERIALS[mat]+'.csv'
+    r1.scenario['linear_longlife'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+
 
 # ### Modify the scenarios to match assumptions
 
@@ -100,7 +106,7 @@ r1.scenario['linear'].data.keys()
 # In[7]:
 
 
-r1.scenario['linear'].material['glass'].materialdata.keys()
+r1.scenario['linear_longlife'].material['glass'].materialdata.keys()
 
 
 # In[8]:
@@ -115,6 +121,22 @@ r1.scenario['linear'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 0.0) #s
 
 
 # In[9]:
+
+
+#linear
+r1.modifyScenario('linear_longlife', 'mod_Repair', 0.0) #this removes all weibull failures from field immediately
+r1.modifyScenario('linear_longlife', 'mod_MerchantTail', 0.0) # this prevents extended use
+r1.modifyScenario('linear_longlife', 'mod_EOL_collection_eff', 0.0) #this sends everytyhing to landfill
+#lifetime properties
+r1.modifyScenario('linear_longlife', 'mod_reliability_t50', 34.41) #this sends everytyhing to landfill
+r1.modifyScenario('linear_longlife', 'mod_reliability_t90', 38.9) #weibull for 32 year
+r1.modifyScenario('linear_longlife', 'mod_degradation', 0.7) # curred c-Si average
+r1.modifyScenario('linear_longlife', 'mod_lifetime', 32.0) #32 year lifetime is current c-Si average
+
+r1.scenario['linear_longlife'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled', 0.0) #send all mfg scrap to landfill
+
+
+# In[10]:
 
 
 #reMFG_low
@@ -143,7 +165,7 @@ r1.scenario['reMFG_low'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 0.
 r1.scenario['reMFG_low'].modifyMaterials('glass', 'mat_ReMFG_yield', 50.0) #
 
 
-# In[10]:
+# In[11]:
 
 
 #reMFG_high
@@ -172,7 +194,7 @@ r1.scenario['reMFG_high'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 0
 r1.scenario['reMFG_high'].modifyMaterials('glass', 'mat_ReMFG_yield', 99.0) #
 
 
-# In[11]:
+# In[12]:
 
 
 #recycle_LQ
@@ -203,7 +225,7 @@ r1.scenario['recycle_LQ'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', 0
 r1.scenario['recycle_LQ'].modifyMaterials('glass', 'mat_Recycling_yield', 50.0) #yield??
 
 
-# In[12]:
+# In[13]:
 
 
 #recycle_HQ_low
@@ -234,7 +256,7 @@ r1.scenario['recycle_HQ_low'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ
 r1.scenario['recycle_HQ_low'].modifyMaterials('glass', 'mat_Recycling_yield', 50.0) #yield??
 
 
-# In[13]:
+# In[14]:
 
 
 #recycle_HQ_high
@@ -267,7 +289,7 @@ r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_EOL_Recycled_into_H
 r1.scenario['recycle_HQ_high'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0) #closed-loop
 
 
-# In[14]:
+# In[15]:
 
 
 r1.scenario['recycle_HQ_high'].material['glass'].materialdata.keys()
@@ -275,19 +297,19 @@ r1.scenario['recycle_HQ_high'].material['glass'].materialdata.keys()
 
 # ## Run the Mass Flow Calculations on All Scenarios and Materials
 
-# In[15]:
+# In[16]:
 
 
 r1.calculateMassFlow()
 
 
-# In[16]:
+# In[17]:
 
 
 r1.plotScenariosComparison('Landfill_0')
 
 
-# In[17]:
+# In[18]:
 
 
 mass_agg_yearly, mass_agg_sums = r1.aggregateResults()
@@ -295,52 +317,66 @@ mass_agg_yearly.to_csv('perovskite_mass_yearly.csv')
 mass_agg_sums.to_csv('perovskite_mass_cumulatives.csv')
 
 
-# In[18]:
+# In[19]:
 
 
 plt.plot(mass_agg_yearly['ActiveCapacity_perovskite_energies_linear_[MW]']/1e6,
         label='Effective Capacity [TW]', color='black')
-plt.plot(mass_agg_yearly['newInstalledCapacity_perovskite_energies_linear_[MW]']/1e6,
-        label='Annually Added Capacity [TW]', color='blue')
+#plt.plot(mass_agg_yearly['newInstalledCapacity_perovskite_energies_linear_[MW]']/1e6,
+#        label='Annually Added Capacity [TW]', color='blue')
 plt.plot(mass_agg_yearly['DecommisionedCapacity_perovskite_energies_linear_[MW]']/1e6,
-        label='Demcommissioned Capacity [TW]', color='red')
-plt.title('Capacity over time of 15 year module')
+        label='Decommissioned Capacity [TW]', color='red')
+#plt.title('Capacity over time of 15-year module')
 plt.ylabel('Capacity [TW]')
 plt.ylim(0.0,1.0)
+plt.legend()
+
+
+# In[20]:
+
+
+plt.figure(figsize=(7,5))
+plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_linear_[Tonnes]']/1e6,
+        label='Linear', color='black', lw=3)
+#plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_recycle_LQ_[Tonnes]']/1e6,
+#        label='Recycle open-loop', color='blueviolet', linestyle='dotted', lw=3)
+
+plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_reMFG_low_[Tonnes]']/1e6,
+        label='ReMFG low yield', color='limegreen', linestyle='dashed', lw=2)
+plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_reMFG_high_[Tonnes]']/1e6,
+        label='ReMFG Perfect', color='forestgreen', linestyle='dashed', lw=3)
+
+plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_recycle_HQ_low_[Tonnes]']/1e6,
+        label='Recycle closed-loop, low yield', color='deepskyblue', linestyle='dotted', lw=3)
+plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_recycle_HQ_high_[Tonnes]']/1e6,
+        label='Recycle Perfect', color='royalblue', linestyle='dotted', lw=2)
+
+#plt.title('Virgin Glass in Million Tonnes')
+plt.ylabel('Virgin Glass Extracted [Mt]')
+#plt.ylim(0.0,1.0)
 plt.legend()
 
 
 # In[21]:
 
 
-plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_linear_[Tonnes]']/1e6,
-        label='Linear', color='black')
-plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_reMFG_high_[Tonnes]']/1e6,
-        label='ReMFG_Perfect', color='blue', linestyle='dotted', lw=3)
-plt.plot(mass_agg_yearly['VirginStock_glass_perovskite_energies_recycle_HQ_high_[Tonnes]']/1e6,
-        label='Recycle_Perfect', color='green', linestyle='dashed', lw=2)
-plt.title('Virgin Glass in Million Tonnes')
-plt.ylabel('Virgin Glass Extracted [Mt]')
-#plt.ylim(0.0,1.0)
-plt.legend()
-
-
-# In[24]:
-
-
+plt.figure(figsize=(7,5))
 plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_linear_[Tonnes]']/1e6,
         label='Linear', color='black')
-plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_reMFG_high_[Tonnes]']/1e6,
-        label='ReMFG_Perfect', color='blue', linestyle='dotted', lw=3)
+#plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_recycle_LQ_[Tonnes]']/1e6,
+#        label='Recycle open-loop', color='blueviolet', linestyle='dotted', lw=3)
+
 plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_reMFG_low_[Tonnes]']/1e6,
-        label='ReMFG_low', color='blue', linestyle='dotted', lw=3)
-plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_recycle_LQ_[Tonnes]']/1e6,
-        label='Recycle_LQ', color='purple', linestyle='-.')
-plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_recycle_HQ_high_[Tonnes]']/1e6,
-        label='Recycle_Perfect', color='green', linestyle='dashed', lw=2)
+        label='ReMFG low yield', color='limegreen', linestyle='dashed', lw=2)
+plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_reMFG_high_[Tonnes]']/1e6,
+        label='ReMFG Perfect', color='forestgreen', linestyle='dashed', lw=3)
+
 plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_recycle_HQ_low_[Tonnes]']/1e6,
-        label='Recycle_HQ_low', color='yellow', linestyle='dashed', lw=2)
-plt.title('Waste Glass in Million Tonnes')
+        label='Recycle closed-loop, low yield', color='deepskyblue', linestyle='dotted', lw=4)
+plt.plot(mass_agg_yearly['WasteAll_glass_perovskite_energies_recycle_HQ_high_[Tonnes]']/1e6,
+        label='Recycle Perfect', color='royalblue', linestyle='dotted', lw=3)
+
+#plt.title('Waste Glass in Million Tonnes')
 plt.ylabel('Waste Glass Disposed [Mt]')
 #plt.ylim(0.0,1.0)
 plt.legend()
@@ -356,7 +392,7 @@ plt.legend()
 # 
 # First read in the energy files. Point at a path, then use the PV ICE colde to handle the meta data. Energy values for modules are in kWh/m2 and for materials are in kWh/kg. To ensure unit matching, we will divide the input by 1000 to convert kg to g.
 
-# In[25]:
+# In[22]:
 
 
 matEfile_glass = str(Path().resolve().parent.parent / 'baselines'/'perovskite_energy_material_glass.csv')
@@ -364,7 +400,7 @@ matEfile_glass = str(Path().resolve().parent.parent / 'baselines'/'perovskite_en
 modEfile = str(Path().resolve().parent.parent / 'baselines'/'perovskite_energy_modules.csv')
 
 
-# In[26]:
+# In[23]:
 
 
 # Material energy file in Wh/g
@@ -383,7 +419,7 @@ data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype
 matEfile_glass_simple = data.copy()
 
 
-# In[27]:
+# In[24]:
 
 
 #module energy file in Wh/m2
@@ -403,10 +439,11 @@ modEfile_simple = data.copy()
 
 # Now run the energy calculation. Currently this is not a class, just a function that will return a dataframe. Each scenario will need to be run seperately, and read in the perovskite energy files. The results are like the aggregate mass results function in that an annual and a cumulative dataframe are returned.
 
-# In[36]:
+# In[25]:
 
 
 r1_e_linear, r1_e_linear_cum = r1.calculateEnergyFlow(scenarios='linear', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
+r1_e_linear_longlife, r1_e_linear_longlife_cum = r1.calculateEnergyFlow(scenarios='linear_longlife', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 r1_e_reMFG_low, r1_e_reMFG_low_cum = r1.calculateEnergyFlow(scenarios='reMFG_low', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 r1_e_reMFG_high, r1_e_reMFG_high_cum = r1.calculateEnergyFlow(scenarios='reMFG_high', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
 r1_e_reCYCLE_LQ, r1_e_reCYCLE_LQ_cum = r1.calculateEnergyFlow(scenarios='recycle_LQ', materials='glass', modEnergy=modEfile_simple, matEnergy=matEfile_glass_simple)
@@ -417,10 +454,11 @@ r1_e_reCYCLE_HQ_high, r1_e_reCYCLE_HQ_high_cum = r1.calculateEnergyFlow(scenario
 
 # # Energy Analysis
 
-# In[37]:
+# In[26]:
 
 
 r1_e_linear.index = modEfile_simple['year']
+r1_e_linear_longlife.index = modEfile_simple['year']
 r1_e_reMFG_low.index = modEfile_simple['year']
 r1_e_reMFG_high.index = modEfile_simple['year']
 r1_e_reCYCLE_LQ.index = modEfile_simple['year']
@@ -428,13 +466,13 @@ r1_e_reCYCLE_HQ_low.index = modEfile_simple['year']
 r1_e_reCYCLE_HQ_high.index = modEfile_simple['year']
 
 
-# In[38]:
+# In[27]:
 
 
 r1_e_linear.keys()
 
 
-# In[39]:
+# In[28]:
 
 
 for key in r1_e_linear.keys():
@@ -453,21 +491,21 @@ for key in r1_e_linear.keys():
 
 # ### E_in
 
-# In[40]:
+# In[29]:
 
 
-energy_annual = pd.concat([r1_e_linear, r1_e_reMFG_low, r1_e_reMFG_high, r1_e_reCYCLE_LQ,
+energy_annual = pd.concat([r1_e_linear, r1_e_linear_longlife, r1_e_reMFG_low, r1_e_reMFG_high, r1_e_reCYCLE_LQ,
                            r1_e_reCYCLE_HQ_low, r1_e_reCYCLE_HQ_high], axis=1, 
-                          keys=['linear', 'reMFG_low','reMFG_high', 'recycle_LQ', 'recycle_HQ_low','recycle_HQ_high'])
+                          keys=['linear', 'linear_longlife', 'reMFG_low','reMFG_high', 'recycle_LQ', 'recycle_HQ_low','recycle_HQ_high'])
 #this is a multiindex column, and filter doesn't work with it
 energy_annual.to_csv('energyyearly.csv')
 
-energy_sums = pd.concat([r1_e_linear_cum, r1_e_reMFG_low_cum, r1_e_reMFG_high_cum, 
+energy_sums = pd.concat([r1_e_linear_cum, r1_e_linear_longlife_cum, r1_e_reMFG_low_cum, r1_e_reMFG_high_cum, 
                          r1_e_reCYCLE_LQ_cum, r1_e_reCYCLE_HQ_low_cum, r1_e_reCYCLE_HQ_high_cum], axis=1)
 energy_sums.to_csv('energysums.csv') 
 
 
-# In[41]:
+# In[30]:
 
 
 #categorize the energy in values into lifecycle stages
@@ -483,20 +521,20 @@ eol_recycle_energies_HQ = ['mod_Recycle_Crush','mat_Recycled_HQ']
 
 # ### Now through 2050 Energy Demand sums
 
-# In[42]:
+# In[31]:
 
 
 #example filtering
-energy_sums.filter(items=mfg_energies, axis=0).filter(regex='recycle$')
+energy_sums.filter(items=mfg_energies, axis=0).filter(regex='linear$')
 
 
-# In[43]:
+# In[32]:
 
 
 #energy in for the linear system (includes LQ and HQ recycling, which might not be right)
-e_in_mfg_linear = energy_sums.filter(items=mfg_energies, axis=0).filter(like='linear').sum()
-e_in_use_linear = energy_sums.filter(items=use_energies, axis=0).filter(like='linear').sum()
-e_in_eol_linear = energy_sums.filter(items=eol_energies, axis=0).filter(like='linear').sum()
+e_in_mfg_linear = energy_sums.filter(items=mfg_energies, axis=0).filter(regex='linear$').sum()
+e_in_use_linear = energy_sums.filter(items=use_energies, axis=0).filter(regex='linear$').sum()
+e_in_eol_linear = energy_sums.filter(items=eol_energies, axis=0).filter(regex='linear$').sum()
 
 e_in_linear_tab = pd.concat([e_in_mfg_linear,e_in_use_linear,e_in_eol_linear], axis=1)
 e_in_linear_tab.columns = ['mfg','use','eol']
@@ -505,7 +543,7 @@ e_in_linear = e_in_mfg_linear + e_in_use_linear + e_in_eol_linear
 print('Energy_in for the linear perovskite is ' + str(round(e_in_linear[0],2)) + ' kWh.')
 
 
-# In[46]:
+# In[33]:
 
 
 #energy in for reMFG_low
@@ -521,7 +559,7 @@ e_in_remfg_low = e_in_mfg_remfg_low + e_in_use_remfg_low + e_in_eol_remfg_low + 
 print('Energy_in for reMFG_low is ' + str(round(e_in_remfg_low[0],2)) +' kWh.')
 
 
-# In[47]:
+# In[34]:
 
 
 #energy in for reMFG_high
@@ -537,7 +575,7 @@ e_in_remfg_high = e_in_mfg_remfg_high + e_in_use_remfg_high + e_in_eol_remfg_hig
 print('Energy_in for reMFG_high is ' + str(round(e_in_remfg_high[0],2)) +' kWh.')
 
 
-# In[49]:
+# In[35]:
 
 
 #energy in for recycle_LQ
@@ -555,7 +593,7 @@ e_in_recycle_LQ = e_in_mfg_recycle_LQ + e_in_mfgscrap_recycle_LQ + e_in_use_recy
 print('Energy_in for recycled perovkiste is ' + str(round(e_in_recycle_LQ[0],2)) +' kWh.')
 
 
-# In[53]:
+# In[36]:
 
 
 #energy in for recycle_HQ_low
@@ -573,7 +611,7 @@ e_in_recycle_HQ_low = e_in_mfg_recycle_HQ_low + e_in_mfgscrap_recycle_HQ_low + e
 print('Energy_in for the perfect recycled perovkiste is ' + str(round(e_in_recycle_HQ_low[0],2)) +' kWh.')
 
 
-# In[54]:
+# In[37]:
 
 
 #energy in for recycle_HQ_high
@@ -591,15 +629,15 @@ e_in_recycle_HQ_high = e_in_mfg_recycle_HQ_high + e_in_mfgscrap_recycle_HQ_high 
 print('Energy_in for the perfect recycled perovkiste is ' + str(round(e_in_recycle_HQ_high[0],2)) +' kWh.')
 
 
-# In[55]:
+# In[38]:
 
 
-e_in_cat_tab = pd.concat([e_in_linear_tab, e_in_remfg_low_tab, e_in_mfg_remfg_high, 
+e_in_cat_tab = pd.concat([e_in_linear_tab, e_in_remfg_low_tab, e_in_remfg_tab_high, 
                           e_in_recycle_tab_LQ, e_in_recycle_HQ_low_tab, e_in_recycle_HQ_high_tab] )
 e_in_cat_tab.to_csv('energy_in_by_category.csv') 
 
 
-# In[56]:
+# In[39]:
 
 
 e_in = pd.DataFrame(pd.concat([e_in_linear, e_in_remfg_low, e_in_remfg_high,
@@ -608,10 +646,10 @@ e_in_norm = e_in/e_in.iloc[0]
 e_in_norm
 
 
-# In[58]:
+# In[40]:
 
 
-scennames = ['linear', 'reMFG_low','reMFG_high', 'recycle_LQ', 'recycle_HQ_low','recycle_HQ_high']
+scennames = ['linear','reMFG_low','reMFG_high', 'recycle_LQ', 'recycle_HQ_low','recycle_HQ_high']
 plt.bar(scennames, e_in_norm['E_in_MWh'], width=0.5)
 
 #Can I sort these to make it pretty?
@@ -620,7 +658,13 @@ plt.bar(scennames, e_in_norm['E_in_MWh'], width=0.5)
 # ### Annual Energy Demand
 # sum by category and ensure no recycling energy duplication
 
-# In[59]:
+# In[41]:
+
+
+energy_annual['linear']
+
+
+# In[42]:
 
 
 #linear
@@ -632,7 +676,19 @@ e_linear_annual_eol = energy_annual['linear'].filter(items=eol_energies).sum(axi
 e_in_linear_annual = e_linear_annual_mfgs+e_linear_annual_use+e_linear_annual_eol
 
 
-# In[61]:
+# In[43]:
+
+
+#linear_longlife
+#selction by multilevel index, then energy category, then sum columns annually
+e_linear_longlife_annual_mfgs = energy_annual['linear_longlife'].filter(items=mfg_energies).sum(axis=1)
+e_linear_longlife_annual_use = energy_annual['linear_longlife'].filter(items=use_energies).sum(axis=1)
+e_linear_longlife_annual_eol = energy_annual['linear_longlife'].filter(items=eol_energies).sum(axis=1)
+
+e_in_linear_longlife_annual = e_linear_longlife_annual_mfgs+e_linear_longlife_annual_use+e_linear_longlife_annual_eol
+
+
+# In[44]:
 
 
 # ReMFG_low
@@ -644,7 +700,7 @@ e_reMFG_l_annual_remfg = energy_annual['reMFG_low'].filter(items=eol_remfg_energ
 e_in_reMFG_l_annual = e_reMFG_l_annual_mfgs+e_reMFG_l_annual_use+e_reMFG_l_annual_eol+e_reMFG_l_annual_remfg
 
 
-# In[62]:
+# In[45]:
 
 
 # ReMFG_high
@@ -656,7 +712,7 @@ e_reMFG_h_annual_remfg = energy_annual['reMFG_high'].filter(items=eol_remfg_ener
 e_in_reMFG_h_annual = e_reMFg_h_annual_mfgs+e_reMFG_h_annual_use+e_reMFG_h_annual_eol+e_reMFG_h_annual_remfg
 
 
-# In[63]:
+# In[46]:
 
 
 #recycle LQ
@@ -669,7 +725,7 @@ e_recycle_LQ_annual_recycle = energy_annual['recycle_LQ'].filter(items=eol_recyc
 e_in_recycle_LQ_annual = e_recycle_LQ_annual_mfgs+e_recycle_LQ_annual_mfgcrap+e_recycle_LQ_annual_use+e_recycle_LQ_annual_eol+e_recycle_LQ_annual_recycle
 
 
-# In[64]:
+# In[47]:
 
 
 #recycle HQ_low
@@ -682,7 +738,7 @@ e_recycle_HQ_low_annual_recycle = energy_annual['recycle_HQ_low'].filter(items=e
 e_in_recycle_HQ_low_annual = e_recycle_HQ_low_annual_mfgs+e_recycle_HQ_low_annual_mfgscrap+e_recycle_HQ_low_annual_use+e_recycle_HQ_low_annual_eol+e_recycle_HQ_low_annual_recycle
 
 
-# In[65]:
+# In[48]:
 
 
 #recycle HQ_high
@@ -695,38 +751,57 @@ e_recycle_HQ_high_annual_recycle = energy_annual['recycle_HQ_high'].filter(items
 e_in_recycle_HQ_high_annual = e_recycle_HQ_high_annual_mfgs+e_recycle_HQ_high_annual_mfgscrap+e_recycle_HQ_high_annual_use+e_recycle_HQ_high_annual_eol+e_recycle_HQ_high_annual_recycle
 
 
-# In[66]:
+# In[49]:
 
 
-e_annual_in_tab = pd.concat([e_in_linear_annual, e_in_reMFG_l_annual, e_in_reMFG_h_annual,
+e_annual_in_tab = pd.concat([e_in_linear_annual, e_in_linear_longlife_annual, e_in_reMFG_l_annual, e_in_reMFG_h_annual,
                              e_in_recycle_LQ_annual, e_in_recycle_HQ_low_annual, e_in_recycle_HQ_high_annual],
-                                axis=1, keys=scennames)
+                                axis=1, keys=['linear', 'linear_longlife','reMFG_low','reMFG_high', 'recycle_LQ', 'recycle_HQ_low','recycle_HQ_high'])
 e_annual_in_tab.to_csv('energy_in_annual.csv') 
+
+
+# ### Cumulative Annual Energy Demands
+
+# In[50]:
+
+
+e_annual_in_tab_cumsum = e_annual_in_tab.cumsum()
+e_in_annualANDcumsum = pd.concat([e_annual_in_tab,e_annual_in_tab_cumsum],axis=1, keys=['annual','cumsum'])
+e_in_annualANDcumsum.to_csv('energy_in_annualANDcumsum.csv')
+
+
+# In[51]:
+
+
+plt.plot(e_annual_in_tab_cumsum)
+plt.legend(e_annual_in_tab_cumsum.columns)
 
 
 # ### E_out
 # A calculation of E out is included in the calculateEnergyFlows function.
 
-# In[67]:
+# In[52]:
 
 
 e_out_sum = r1_e_linear_cum['linear']['e_out_annual_[Wh]']
 #Note that because deployment and lifetimes are identical, the energy generated is identical
+#for all perovskite scenarios
+print('Total 15-year module Energy Generated 2023-2050 is '+str(round((e_out_sum/1e12),2))+ ' TWh.')
 
 
-# In[68]:
+# In[53]:
 
 
 e_out_annual_TWh = r1_e_linear['e_out_annual_[Wh]']/1e12 # TWh
 
 
-# In[69]:
+# In[54]:
 
 
 4.8*365*0.85 # ~2000 kWh/kw
 
 
-# In[71]:
+# In[55]:
 
 
 plt.plot(e_out_annual_TWh, label='Energy Generated [TWh]')
@@ -738,9 +813,44 @@ plt.ylabel('Energy Generated [TWh/year]')
 plt.legend()
 
 
+# In[56]:
+
+
+#perovskite energy out
+e_out_annual = r1_e_linear['e_out_annual_[Wh]'] #
+#Cumulative annual energy generation
+e_out_annual_cumsum = r1_e_linear['e_out_annual_[Wh]'].cumsum()
+
+#long life energy out
+e_out_annual_longlife = r1_e_linear_longlife['e_out_annual_[Wh]']
+e_out_annual_longlife_cumsum = e_out_annual_longlife.cumsum()
+
+e_outs = pd.concat([e_out_annual,e_out_annual.cumsum(),e_out_annual_longlife,e_out_annual_longlife_cumsum],
+                   axis=1, keys=['e_out_annual_[Wh]','e_out_annual_cumsum[Wh]','e_out_annual_longlife_[Wh]','e_out_annual_long_life_cumsum[Wh]'])
+e_outs.to_csv('energy_out_annualANDcumsum.csv')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
 # ## EROI
 
-# In[72]:
+# In[57]:
 
 
 #EROI = Eout/Ein (note this is not a true eroi because it is missing embedded energy of process materials)
@@ -753,39 +863,24 @@ eroi
 # 
 # Can I normalize to linear, and then do a relative improvement, since the absolute number doesn't yet account for all the other stuff, but the other layers/materials should be proportional between pathways??
 
-# In[73]:
+# In[58]:
 
 
 #normalize "EROI"
 eroi/eroi.iloc[0]
 
 
-# In[74]:
-
-
-#Weight eroi by mass
-(e_out_sum*0.76)/e_in # mass of glass in c-si
-#same as eroi*0.76
-
-
-# In[75]:
-
-
-#weight eroi by ped/ced/embedded in pv
-#eroi*
-
-
 # ## Annual Energy Balance
 # 
-# Divide the annual energy demands by the annual energy generation
+# Divide the annual energy demands by the annual energy generation, like its annual EROI
 
-# In[76]:
+# In[59]:
 
 
 e_out_annual = pd.DataFrame(r1_e_linear['e_out_annual_[Wh]'])# Wh
 
 
-# In[77]:
+# In[79]:
 
 
 ebalance = pd.DataFrame(index =e_annual_in_tab.index )
@@ -795,7 +890,7 @@ for col in e_annual_in_tab.columns:
 #ebalance
 
 
-# In[78]:
+# In[61]:
 
 
 plt.plot(ebalance)
@@ -803,14 +898,14 @@ plt.legend(labels=ebalance.columns)
 plt.title('Annual Energy Balance')
 
 
-# In[79]:
+# In[62]:
 
 
 ebalance_norm = ebalance.div(ebalance['linear'], axis=0)
 #ebalance_norm
 
 
-# In[80]:
+# In[63]:
 
 
 plt.plot(ebalance_norm)
@@ -823,6 +918,27 @@ plt.title('Annual Energy Balance Normalized')
 # Once the 15 year mark is hit and large quantities are removed from the field and while deployment is still increasing, there is a huge energy savings that year, which decreases with time as deloyment continues to increase.
 # 
 # Same message, closed-loop is offsetting virgin is best, and recycling vs reMFG depends on recovery rates.
+
+# ### Energy Positive or Negative in Given year?
+
+# In[64]:
+
+
+#Eout - Ein = ? annually
+e_out_annual.subtract(e_annual_in_tab, axis='columns')
+
+
+# In[65]:
+
+
+type(e_out_annual)
+
+
+# In[ ]:
+
+
+
+
 
 # In[ ]:
 
@@ -839,7 +955,7 @@ plt.title('Annual Energy Balance Normalized')
 # The assumption is that a perovskite module will be a glass-glass package. Modern c-Si glass-glass (35% marketshare) bifacial modules (27% marketshare) are most likely 2.5mm front glass (28% marketshare) and 2.5 mm back glass (95% marketshare) [ITRPV 2022]. Therefore, we will assume a perovskite glass glass module will use 2 sheets of glass that are 2.5 mm thick.
 # 
 
-# In[ ]:
+# In[66]:
 
 
 density_glass = 2500*1000 # g/m^3    
@@ -856,7 +972,7 @@ print('The mass of glass per module area for a perovskite glass-glass package is
 # 
 # The hot knife procedure with EVA heats the blade to 300 C (https://www.npcgroup.net/eng/solarpower/reuse-recycle/dismantling#comp) and is currently only used on glass-backsheet modules. The NPC website indicates that cycle time is 60 seconds for one 6x10 cell module. Small commercially availble hot knives can achieve greater than 300C drawing less than 150W. We will assume worst case scenario; hot knife for 60 seconds at 150 W
 
-# In[ ]:
+# In[67]:
 
 
 e_hotknife_tot = 150*60*(1/3600)#*(1/1000) # 150 W * 60 s = W*s *(hr/s)*(kW/W)
@@ -871,7 +987,7 @@ print('Energy for hot knife separation is '+ str(round(e_hotknife, 4))+' kWh/m2.
 # Using Rodriguez-Garcia G, Aydin E, De Wolf S, Carlson B, Kellar J, Celik I. Life Cycle Assessment of Coated-Glass Recovery from Perovskite Solar Cells. ACS Sustainable Chem Eng [Internet]. 2021 Nov 3 [cited 2021 Nov 8]; Available from: https://doi.org/10.1021/acssuschemeng.1c05029, we will assume a room temperature water bath with sonication, a heating/drying/baking step, and a UV+Ozone step.
 # 
 
-# In[ ]:
+# In[68]:
 
 
 e_sonicate = 4  #kWh/m2 ultrasonication
@@ -893,7 +1009,7 @@ print('Energy to remanufacture the glass (material energy only) is ' + str(round
 
 
 
-# In[ ]:
+# In[69]:
 
 
 # Import curve fitting package from scipy
@@ -903,7 +1019,7 @@ def power_law(x, a, b):
     return a*np.power(x, b)
 
 
-# In[ ]:
+# In[70]:
 
 
 #generate a dataset for deployment between 2023 and 2050
@@ -919,7 +1035,7 @@ print(str(y_dummy[29]/1e6) + ' TW in 2050')
 plt.plot(y_dummy)
 
 
-# In[ ]:
+# In[71]:
 
 
 #dataframe the cumulative deployements
@@ -928,7 +1044,7 @@ deployments['CumulativeDeploy[MW]'] = y_dummy
 deployments.index = x_vals
 
 
-# In[ ]:
+# In[72]:
 
 
 #take the annual difference to de-cumulate
@@ -937,7 +1053,7 @@ plt.plot(deployments)
 plt.legend(deployments.columns)
 
 
-# In[ ]:
+# In[73]:
 
 
 plt.plot(deployments['AnnualDeploy[MW]'])
@@ -945,7 +1061,7 @@ plt.title('Annual Deployments Meeting 1.7 TW in 2050')
 plt.ylabel('Annual Deploy [MW]')
 
 
-# In[ ]:
+# In[74]:
 
 
 reversedeploy = deployments['AnnualDeploy[MW]'].iloc[::-1] #save off reverse deploy as series
@@ -954,14 +1070,14 @@ deployments['AnnualDeploy_rev[MW]'] = reversedeploy #add to df
 deployments['CumulativeReverse[MW]'] = deployments['AnnualDeploy_rev[MW]'].cumsum()
 
 
-# In[ ]:
+# In[75]:
 
 
 print(str(deployments['CumulativeReverse[MW]'][2035]/1e6) + ' TW in 2035')
-print(str(deployments['CumulativeReverse[MW]'][2050]/1e6) + ' TW in 2055')
+print(str(deployments['CumulativeReverse[MW]'][2050]/1e6) + ' TW in 2050')
 
 
-# In[ ]:
+# In[76]:
 
 
 plt.plot(deployments['AnnualDeploy_rev[MW]'])
@@ -969,10 +1085,16 @@ plt.title('Annual Deployments Meeting 1.7 TW in 2050')
 plt.ylabel('Annual Deploy [MW]')
 
 
-# In[ ]:
+# In[77]:
 
 
 deployments.to_csv('alternatedeployment.csv')
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
