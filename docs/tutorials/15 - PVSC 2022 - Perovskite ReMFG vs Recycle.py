@@ -317,7 +317,7 @@ mass_agg_yearly.to_csv('perovskite_mass_yearly.csv')
 mass_agg_sums.to_csv('perovskite_mass_cumulatives.csv')
 
 
-# In[96]:
+# In[19]:
 
 
 plt.rcParams.update({'font.size': 12})
@@ -333,7 +333,7 @@ plt.ylim(0.0,1.0)
 plt.legend()
 
 
-# In[98]:
+# In[20]:
 
 
 plt.figure(figsize=(8,5))
@@ -359,7 +359,7 @@ plt.ylabel('Virgin Glass Extracted [Mt]')
 plt.legend()
 
 
-# In[100]:
+# In[21]:
 
 
 plt.figure(figsize=(8,5))
@@ -916,7 +916,7 @@ plt.legend(labels=ebalance_norm.columns)
 plt.title('Annual Energy Balance Normalized')
 
 
-# In[95]:
+# In[64]:
 
 
 plt.figure(figsize=(8,4))
@@ -945,7 +945,7 @@ plt.legend()
 
 # ### Energy PayBack Time (EPBT) = Ein/Eout(eff and lifetime)
 
-# In[92]:
+# In[65]:
 
 
 #e_annual_in_tab/e_out_annual
@@ -954,36 +954,18 @@ plt.plot(epbt)
 plt.legend(epbt.columns)
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # ### Energy Positive or Negative in Given year? Net energy Annually
 # need to code in
 # did this in excel, currently the energy in is too small to register much, and looks like scenarios above.
 
-# In[64]:
+# In[66]:
 
 
 #Eout - Ein = ? annually
 e_out_annual.subtract(e_annual_in_tab, axis='columns')
 
 
-# In[65]:
+# In[67]:
 
 
 type(e_out_annual)
@@ -1010,7 +992,7 @@ type(e_out_annual)
 # The assumption is that a perovskite module will be a glass-glass package. Modern c-Si glass-glass (35% marketshare) bifacial modules (27% marketshare) are most likely 2.5mm front glass (28% marketshare) and 2.5 mm back glass (95% marketshare) [ITRPV 2022]. Therefore, we will assume a perovskite glass glass module will use 2 sheets of glass that are 2.5 mm thick.
 # 
 
-# In[66]:
+# In[68]:
 
 
 density_glass = 2500*1000 # g/m^3    
@@ -1027,7 +1009,7 @@ print('The mass of glass per module area for a perovskite glass-glass package is
 # 
 # The hot knife procedure with EVA heats the blade to 300 C (https://www.npcgroup.net/eng/solarpower/reuse-recycle/dismantling#comp) and is currently only used on glass-backsheet modules. The NPC website indicates that cycle time is 60 seconds for one 6x10 cell module. Small commercially availble hot knives can achieve greater than 300C drawing less than 150W. We will assume worst case scenario; hot knife for 60 seconds at 150 W
 
-# In[67]:
+# In[69]:
 
 
 e_hotknife_tot = 150*60*(1/3600)#*(1/1000) # 150 W * 60 s = W*s *(hr/s)*(kW/W)
@@ -1042,7 +1024,7 @@ print('Energy for hot knife separation is '+ str(round(e_hotknife, 4))+' kWh/m2.
 # Using Rodriguez-Garcia G, Aydin E, De Wolf S, Carlson B, Kellar J, Celik I. Life Cycle Assessment of Coated-Glass Recovery from Perovskite Solar Cells. ACS Sustainable Chem Eng [Internet]. 2021 Nov 3 [cited 2021 Nov 8]; Available from: https://doi.org/10.1021/acssuschemeng.1c05029, we will assume a room temperature water bath with sonication, a heating/drying/baking step, and a UV+Ozone step.
 # 
 
-# In[68]:
+# In[70]:
 
 
 e_sonicate = 4  #kWh/m2 ultrasonication
@@ -1064,7 +1046,7 @@ print('Energy to remanufacture the glass (material energy only) is ' + str(round
 
 
 
-# In[69]:
+# In[71]:
 
 
 # Import curve fitting package from scipy
@@ -1074,7 +1056,7 @@ def power_law(x, a, b):
     return a*np.power(x, b)
 
 
-# In[70]:
+# In[72]:
 
 
 #generate a dataset for deployment between 2023 and 2050
@@ -1090,7 +1072,7 @@ print(str(y_dummy[29]/1e6) + ' TW in 2050')
 plt.plot(y_dummy)
 
 
-# In[71]:
+# In[73]:
 
 
 #dataframe the cumulative deployements
@@ -1099,7 +1081,7 @@ deployments['CumulativeDeploy[MW]'] = y_dummy
 deployments.index = x_vals
 
 
-# In[72]:
+# In[74]:
 
 
 #take the annual difference to de-cumulate
@@ -1108,7 +1090,7 @@ plt.plot(deployments)
 plt.legend(deployments.columns)
 
 
-# In[73]:
+# In[75]:
 
 
 plt.plot(deployments['AnnualDeploy[MW]'])
@@ -1116,7 +1098,7 @@ plt.title('Annual Deployments Meeting 1.7 TW in 2050')
 plt.ylabel('Annual Deploy [MW]')
 
 
-# In[74]:
+# In[76]:
 
 
 reversedeploy = deployments['AnnualDeploy[MW]'].iloc[::-1] #save off reverse deploy as series
@@ -1125,14 +1107,14 @@ deployments['AnnualDeploy_rev[MW]'] = reversedeploy #add to df
 deployments['CumulativeReverse[MW]'] = deployments['AnnualDeploy_rev[MW]'].cumsum()
 
 
-# In[75]:
+# In[77]:
 
 
 print(str(deployments['CumulativeReverse[MW]'][2035]/1e6) + ' TW in 2035')
 print(str(deployments['CumulativeReverse[MW]'][2050]/1e6) + ' TW in 2050')
 
 
-# In[76]:
+# In[78]:
 
 
 plt.plot(deployments['AnnualDeploy_rev[MW]'])
@@ -1140,7 +1122,7 @@ plt.title('Annual Deployments Meeting 1.7 TW in 2050')
 plt.ylabel('Annual Deploy [MW]')
 
 
-# In[77]:
+# In[79]:
 
 
 deployments.to_csv('alternatedeployment.csv')
