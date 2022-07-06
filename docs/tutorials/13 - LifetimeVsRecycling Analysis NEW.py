@@ -43,7 +43,7 @@ print("Your simulation input data will be written/read from %s" % inputfolder)
 print("Material files will be from %s" % materialsfolder)
 
 
-# In[3]:
+# In[ ]:
 
 
 if not os.path.exists(testfolder):
@@ -256,7 +256,7 @@ for ii in range (len(df.unstack(level=1))):
 
 # Collect all the scenario names and downselect to the scenario(s) of interest. In this case, we are only concerned with the highest capacity and deployment rate, Decarbonization + Electrification (Decarb+E)
 
-# In[4]:
+# In[3]:
 
 
 scenarios = ['Reference.Mod',
@@ -273,7 +273,7 @@ SFscenarios = ['95-by-35_Elec.Adv_DR'] #Decarb+E
 SFscenarios
 
 
-# In[5]:
+# In[4]:
 
 
 #add materials for simulation
@@ -282,7 +282,7 @@ MATERIALS = ['glass','aluminium_frames','silicon','silver', 'copper', 'encapsula
 
 # Set up the PV ICE simulation with scenario and materials
 
-# In[6]:
+# In[5]:
 
 
 r1 = PV_ICE.Simulation(name='SF-LvR', path=testfolder) #create simulation r1
@@ -298,7 +298,7 @@ for scen in range(len(SFscenarios)):
 
 # Run the simulation
 
-# In[ ]:
+# In[8]:
 
 
 r1.calculateMassFlow()
@@ -324,7 +324,7 @@ r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 # ### Create lifetime and recycling ranges
 
-# In[7]:
+# In[9]:
 
 
 Lifetime_Range = pd.concat([pd.Series(range(15,30,3)),pd.Series(range(30,51,2))]) #this absolute lifetime values
@@ -337,7 +337,7 @@ Recycling_Range = pd.Series(range(0,105,5)) # this is absolute recycling values 
 #print(Recycling_Range)
 
 
-# In[16]:
+# In[10]:
 
 
 #list of material recycling variables
@@ -348,7 +348,7 @@ RecyclingYields = ['mat_MFG_scrap_Recycling_eff', 'mat_Recycling_yield']
 
 # Now some magic to automatically generate T50 and T90 values for each lifetime
 
-# In[17]:
+# In[11]:
 
 
 #create linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime 
@@ -359,7 +359,7 @@ reliability_baselines['mod_reliability_t50'] = r1.scenario['Decarb+E_PVICE_defau
 reliability_baselines['mod_reliability_t90'] = r1.scenario['Decarb+E_PVICE_defaults'].data['mod_reliability_t90']
 
 
-# In[18]:
+# In[12]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -383,7 +383,7 @@ t90_list = list(chain(*t90_list)) #unnest list
 t90_range_simple = pd.Series([ '%.2f' % elem for elem in t90_list ])
 
 
-# In[19]:
+# In[13]:
 
 
 #create a tidy dataframe summarizing all the lifetime, degradation, reliability values
@@ -393,7 +393,7 @@ print(lifetime_range_df)
 lifetime_range_df.to_csv(os.path.join(testfolder,'Table2-lifeDegT50T90.csv'))
 
 
-# In[20]:
+# In[14]:
 
 
 #drop some of the higher lifetime values due to small value add and graphing
@@ -409,7 +409,7 @@ print(lifetime_range_df)
 # - recycling values are set to closed loop, with XX% material recycling yields assuming 100% collection of modules and materials
 # 
 
-# In[21]:
+# In[15]:
 
 
 #these scenarios are being added onto the Decarb+E_PVICE_Default scenario
@@ -444,49 +444,49 @@ for life in range(0,len(Lifetime_Range)): #loop over lifetimes
             r1.scenario[scenname].modifyMaterials(MATERIALS, stage=RecyclingYields[ylds], value=Recycling_Range[recycle], start_year=2020)
 
 
-# In[22]:
+# In[16]:
 
 
 r1.scenario['Decarb+E_PVICE_defaults'].data.head(15)
 
 
-# In[23]:
+# In[ ]:
 
 
 r1.scenario['15years & 0% Recycled'].data.head(15)
 
 
-# In[24]:
+# In[ ]:
 
 
 r1.scenario['50years & 0% Recycled'].data.head(15)
 
 
-# In[25]:
+# In[ ]:
 
 
 r1.scenario['50years & 0% Recycled'].material['glass'].materialdata.head(15)
 
 
-# In[26]:
+# In[17]:
 
 
 print(len(r1.scenario.keys()))
 
 
-# In[27]:
+# In[18]:
 
 
 r1.calculateMassFlow()
 
 
-# In[28]:
+# In[ ]:
 
 
 r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 
-# In[29]:
+# In[ ]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
@@ -494,14 +494,14 @@ r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_La
 
 # Use the PV ICE "aggregate results" function to print out a table of Virgin Material Demands, Lifecycle Wastes (MFG, EoL, both), new installed capacity and effective cumulative capacity, both annually and cumulatively.
 
-# In[30]:
+# In[19]:
 
 
 yearlyRvL_identinstall, cumRvL_identinstall = r1.aggregateResults()
 yearlyRvL_identinstall.tail(5)
 
 
-# In[31]:
+# In[20]:
 
 
 yearlyRvL_identinstall.to_csv(os.path.join(testfolder,'yearlyRvL-identinstall.csv'))
@@ -512,14 +512,14 @@ cumRvL_identinstall.to_csv(os.path.join(testfolder,'cumulativeRvL-identinstall.c
 
 # Read the aggregated results back into the journal from csvs (run time on simulations can be long)
 
-# In[32]:
+# In[29]:
 
 
 yearlyRvL_identinstall = pd.read_csv(os.path.join(testfolder,'yearlyRvL-identinstall.csv'), index_col='year')
 cumRvL_identinstall = pd.read_csv(os.path.join(testfolder,'cumulativeRvL-identinstall.csv'), index_col='year')
 
 
-# In[33]:
+# In[30]:
 
 
 #make a dataframe to become the multiIndex for heat map creation
@@ -538,7 +538,7 @@ lifeRecycIndex_complete = pd.concat([pvice_index,lifeRecycIndex])
 
 
 
-# In[34]:
+# In[31]:
 
 
 #ii = indentical installs
@@ -574,7 +574,7 @@ heatdata_virgin_pivot_orig = virgin_mat_demand.unstack(level=0) #pivot
 heatdata_Virgin_pivot_ii = heatdata_virgin_pivot_orig[::-1] #reverse order of recycling rate
 
 
-# In[35]:
+# In[32]:
 
 
 print('Minimum waste is '+str(round(np.min(heatdata_Waste_pivot_ii).min(),0))+' million metric tonnes')
@@ -583,7 +583,7 @@ print('Minimum virgin is '+str(round(np.min(heatdata_Virgin_pivot_ii).min(),0))+
 print('Maximum virgin is '+str(round(np.max(heatdata_Virgin_pivot_ii).max(),0))+' million metric tonnes')
 
 
-# In[36]:
+# In[33]:
 
 
 #Make heat maps with cumulative data
@@ -648,7 +648,7 @@ plt.show()
 
 # #### Pie chart of Lifecycle Wastes in 2050, PV ICE scenario
 
-# In[37]:
+# In[ ]:
 
 
 pvice_cums = cumRvL_identinstall.filter(like='Decarb+E_PVICE_defaults')
@@ -661,7 +661,7 @@ pvice_2050_cumwastes.to_csv(os.path.join(testfolder,'PVICE_cumulativeWastes2050_
 # 
 # NOTE: this mass flow calculation takes a LONG time to run, recommend leaving it overnight. A csv of the yearly and cumulative aggregated results is saved as csv and read back in to speed analysis and graphing.
 
-# In[38]:
+# In[21]:
 
 
 
@@ -674,7 +674,7 @@ for row in range (0,len(r1.scenario['Decarb+E_PVICE_defaults'].data)):
     r1.calculateMassFlow()
 
 
-# In[ ]:
+# In[22]:
 
 
 yearlyRvL_installcomp, cumRvL_installcomp = r1.aggregateResults()
@@ -684,7 +684,7 @@ cumRvL_installcomp.to_csv(os.path.join(testfolder,'cumulativeRvL-installcomp.csv
 
 # Read the csvs back in for plotting (installation compensation calc runs a LONG time).
 
-# In[ ]:
+# In[23]:
 
 
 yearlyRvL_installcomp = pd.read_csv(os.path.join(testfolder,'yearlyRvL-installcomp.csv'), index_col='year')
@@ -693,7 +693,7 @@ cumRvL_installcomp = pd.read_csv(os.path.join(testfolder,'cumulativeRvL-installc
 
 # #### Bar chart of additional installations
 
-# In[ ]:
+# In[34]:
 
 
 singleLifeRange = cumRvL_installcomp.filter(like='95%') #select a single lifetime of each
@@ -711,7 +711,7 @@ LifeRange_installsComped_TW_relative = LifeRange_installsComped_TW-pvice_newinst
 LifeRange_installsComped_TW_relative.to_csv(os.path.join(testfolder,'AddedReqInstalls-BarChartData.csv'))
 
 
-# In[ ]:
+# In[35]:
 
 
 LifeRange_installsComped_TW_relative.plot(kind='bar')
@@ -719,7 +719,7 @@ LifeRange_installsComped_TW_relative.plot(kind='bar')
 
 # #### Heat Map - Compensated Installs
 
-# In[ ]:
+# In[36]:
 
 
 #cc = compensated capacity
@@ -756,7 +756,7 @@ heatdata_Virgin_pivot_cc = heatdata_Virgin_pivot_cc_dropcol.iloc[1:,:-1] #remove
 heatdata_Virgin_pivot_cc.columns=heatdata_Virgin_pivot_cc.columns.droplevel(0) #remove 2050 from label
 
 
-# In[ ]:
+# In[37]:
 
 
 print('Minimum waste is '+str(round(np.min(heatdata_Waste_pivot_cc).min(),0))+' million metric tonnes')
@@ -765,7 +765,7 @@ print('Minimum virgin is '+str(round(np.min(heatdata_Virgin_pivot_cc).min(),0))+
 print('Maximum virgin is '+str(round(np.max(heatdata_Virgin_pivot_cc).max(),0))+' million metric tonnes')
 
 
-# In[ ]:
+# In[38]:
 
 
 print('Minimum Virgin demand for compensated capacity is '
@@ -773,7 +773,7 @@ print('Minimum Virgin demand for compensated capacity is '
      ' for scneario Life,Recycling '+ str(virgin_mat_demand_cc.idxmin()))
 
 
-# In[ ]:
+# In[39]:
 
 
 #Make heat maps with cumulative data
@@ -847,7 +847,7 @@ plt.savefig('fig4.tif', dpi=300)
 plt.show()
 
 
-# In[ ]:
+# In[40]:
 
 
 print('Minimum Virgin demand for compensated capacity is '
@@ -855,13 +855,13 @@ print('Minimum Virgin demand for compensated capacity is '
      ' for scneario Life,Recycling '+ str(virgin_mat_demand_cc.idxmin()))
 
 
-# In[ ]:
+# In[41]:
 
 
 virgin_mat_demand_cc.loc['pvice'] # = virgin_mat_demand.loc['pvice'] THEY ARE THE SAME
 
 
-# In[ ]:
+# In[42]:
 
 
 print('Minimum Virgin demand for identical installs is '
@@ -869,7 +869,7 @@ print('Minimum Virgin demand for identical installs is '
      ' for scneario Life,Recycling '+ str(virgin_mat_demand.idxmin()))
 
 
-# In[ ]:
+# In[43]:
 
 
 heatdata_Waste_pivot_cc
@@ -877,7 +877,7 @@ heatdata_Waste_pivot_cc
 
 # Print out data for time shift bar charts, Fig 5
 
-# In[ ]:
+# In[44]:
 
 
 #select out the 15 year, 0% recycling data and pv ice data
