@@ -1007,7 +1007,51 @@ class Simulation:
             
             
     #method to calculate energy flows as a function of mass flows and circular pathways
-    def calculateEnergyFlow(self, scenarios=None, materials=None, modEnergy=None, matEnergy=None):
+    def calculateEnergyFlow(self, scenarios=None, materials=None, modEnergy=None, matEnergy=None,
+                            insolation = 4800, PR = 0.85):
+        '''
+        Function takes as input PV ICE resulting mass flow dataframes for scenarios
+        and materials and performs the energy flow calculations.
+        
+        Parameters
+        ------------
+        scenarios : None
+            string with the scenario name or list of strings with
+            scenarios names to loop over. Must exist on the PV ICE object and
+            already have undergone the mass flow calculations.
+        materials : None
+            string with the material name or list of strings with the
+            materials names to loop over. Must exists on the PV ICE object 
+            scenario(s) modeled and already have undergone the mass flow 
+            calculations.
+        modEnergy : str
+            File with the module energy baseline. This process will be updated
+            so that it's added to the PV_ICE object.
+        matEnergy : str
+            File with the material energy baseline. This process will be updated
+            so that it's added to the PV_ICE object.  
+        insolation : float
+            Insolation received in the location modeled during the time period 
+            modeled. i.e. for 1 year, the average insolation in the US is 
+            4800 Wh/m2-year. Used to calculate energy-out of the system
+            from the installed capacity calculated in the mass flows which already
+            considers degradation and decommissions from the fleet.
+        PR : float
+            Performance ratio, converts from DC to AC accounting for interver 
+            loading, necessary for EROI. Default is 0.85
+            
+        Returns
+        --------
+        de: dataframe 
+            Dataframe with columns for each process's energy by year (row).
+            Among other columns, ''e_out_annual_[Wh]' reflects the 
+            energy generation or 'out' of the scenario, such that
+            e_out_annual_[Wh] = Insolation * ActivePower/Irradience * time * PR
+            time being 365 days for 1 year simulations.
+        de_cum: dataframe 
+            Dataframe with columns for each process's cumulative energy by year (row)            
+        '''
+        
         if scenarios is None:
             scenarios = list(self.scenario.keys())
         else:
@@ -1058,14 +1102,11 @@ class Simulation:
                 de['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
             
             #Energy Generation, Energy_out = Insolation * ActivePower/Irradience * time * PR
-            # for now, insolation is a fixed value, can convert later to input
-            insolation = 4800 # Wh/m2-day
-            PR = 0.85 #performance ratio, converts from DC to AC accounting for interver loading, necessary for EROI
             de['e_out_annual_[Wh]'] = insolation * (df['Installed_Capacity_[W]']/df['irradiance_stc']) * 365 * PR
             
             de_cum = pd.DataFrame(de.sum(), columns=[str(scen)])
             
-            return de, de_cum #returns two dataframes of the energy columns by year and a cumulative energies
+            return de, de_cum
         
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
         
