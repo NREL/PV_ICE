@@ -336,7 +336,7 @@ density_avg_gpm3 = density_avg_annual*1E6 #convert to g/m3
 thickness_m = backsheet_thickness_cleaned*0.000001 #convert micron to m
 
 
-# In[44]:
+# In[31]:
 
 
 thickness_m_sub = thickness_m.loc[(thickness_m.index>=1995) & (thickness_m.index<=2031)]
@@ -344,14 +344,14 @@ density_avg_gpm3_sub = density_avg_gpm3.loc[(density_avg_gpm3.index>=1995) & (de
 thickness_m_sub.columns = density_avg_gpm3_sub.columns
 
 
-# In[49]:
+# In[32]:
 
 
 backsheet_gpm2 = thickness_m_sub*density_avg_gpm3_sub
 backsheet_gpm2.columns = ['Backsheet_gpm2']
 
 
-# In[53]:
+# In[33]:
 
 
 plt.plot(backsheet_gpm2)
@@ -361,7 +361,7 @@ plt.ylabel('Backsheet Mass [g/m^2]')
 
 # ### Weight by glass vs film backsheet market share
 
-# In[64]:
+# In[34]:
 
 
 #pull in glass vs backsheet conformation market share fraction from glass journal output
@@ -369,20 +369,20 @@ conform_market = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/
                                      index_col=0)
 
 
-# In[69]:
+# In[35]:
 
 
 conform_market.tail()
 
 
-# In[71]:
+# In[36]:
 
 
 #eqn = gpm2 * marketshare g-b
 backsheet_gpm2_final = backsheet_gpm2['Backsheet_gpm2']*conform_market['glass-backsheet']
 
 
-# In[72]:
+# In[37]:
 
 
 backsheet_gpm2_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output-Backsheet-gpm2.csv")
