@@ -4,96 +4,151 @@ Data: Mass
 ===========
 
 Input Data for Mass Flows
-----------------
-At least two files of baselines are needed for the simulation: 1) one file with module parameters throughout the years, for example *baseline_US*, and 2) one or more files with process parameters for each material being analyzed in the module, for example *baseline_glass*. See **baseline_module** and **baseline_material** for more details on input columns needed and their definition. 
+--------------------------
+At least two input files, such as the PV ICE baselines for crystalline silicon, are needed for the simulation: 
+1. one file with module parameters throughout the years, for example *baseline_US*, and 
+2. one or more files with process parameters for *each* material being analyzed in the module, for example *baseline_glass*. 
 
-The baselines folder in the PV_ICE tool provides baseline scenarios for modules in the US and World level, as well as baseline_materials for glass, Silver and Aluminum. For more details on the source of these values, see the documentation on baselines. 
+See **baseline_module** and **baseline_material** for more details on input columns needed and their definition. 
+
+The baselines folder in the PV_ICE tool provides baseline scenarios for modules in the US and World level, as well as baseline_materials for 7 component materials of crystalline silicon PV modules. For more details on the source of these values, see the [Jupyter Journal documentation of baselines](https://github.com/NREL/PV_ICE/tree/development/docs/tutorials/baseline%20development%20documentation). These input files represent an average crystalline silicon module and its changing component materials over time. These files can be modified by the user to explore a particular technology(s). The necessary parameters (columns) for the module input file and the material input file are described below.
 
 
-baseline_module
-~~~~~~~~~~~~~~~~
+Module Input File (ex:[baseline_module_US.csv](https://github.com/NREL/PV_ICE/blob/development/PV_ICE/baselines/baseline_modules_US.csv))
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+year [years]: int
+Year. Each row will be a year that is studied in the simulation.
+
+new_Installed_Capacity [MW]: float
+New installed PV capacity in MW. Additions of PV modules in nameplate MW peak in the specified year. Note this is NOT cumulative.
+
+mod_eff [%]: float 
+Module efficiency in percentage. Nameplate efficiency of the module. i.e.: 20.9 %.
+
+mod_reliability_t50 [years]: float
+(optional) Module reliability parameter T50 in years. The number of years after the installation year at which 50% of the cohort of modules have failed
+
+mod_reliability_t90 [years]: float
+(optional) Module reliability parameter T90 in years. The number of years after the installation year at which 90% of the cohort of modules have failed
+
+mod_degradation [%]: float
+Module degradation rate in percentage. Percentage annual reduction of the module's performance, relative to it’s nameplate. i.e. 0.5 %. 
+
+mod_lifetime [years]: float
+Module lifetime in years. The lifetime of a module as defined by it's economic lifetime or warranty. i.e. 25 years.
+
+mod_MFG_eff [%]: float
+Module Manufacturing Efficiency in percentage. Efficiency or yield of manufacturing modules. i.e. losses of modules and all associated products during production. 
+
+mod_Repair [%]: float
+Module Repair rate in percentage. Percentage of modules which are repaired after premature failure from the field. This parameter is applied only to modules failed through the Weibull function (i.e. T50 and T90). Repaired modules are returned to the field and continue generating energy at their cohort specified degradation rate.
+
+mod_MerchantTail [%]: float
+Module Merchant Tail rate in percentage. Percentage of modules at EOL that are reused on-site. Merchant tail is an industry term referring to the time period after the PV system loan has been paid off. These modules remain in the field until all fail through Weibull probability functions.
+
+mod_EOL_collection_eff [%]: float
+Module end of life collection efficiency in percentage. Percentage of modules collected from the field at end of life for sorting and disposition. i.e. 30%. Any modules not collected are automatically landfilled.
+
+**Path/Status Good**
+Path or status good refers to modules which have reached end of life through non-failure modes (i.e. not Weibull) and are still at >80% of nameplate power. The following parameters dictate the path of "good" status modules, and should ideally add to 100%; the landfill parameter will be adjusted if they do not add to 100%.
+
+mod_EOL_pg0_resell [%]: float
+Module end of life path good 0 - Resell in percentage. Percentage of collected end of life good modules which are resold on the secondary market. Only applicable to modules which are above 80% of nameplate power at first EOL.
+
+mod_EOL_pg1_landfill [%]: float
+(optional) Module end of life path good 1 - Landfill in percentage. Percentage of collected end of life good modules which are landfilled. This value is automatically adjusted in the code if the other path good parameters are more or less than 100%.
+
+mod_EOL_pg2_stored [%]: float (BETA)
+Module end of life path good 2 - Stored in percentage. Percentage of collected end of life good modules which are stored or warehoused for future disposition. Currently, these modules remain stored; future code updates will allow for removal from storage.
+
+mod_EOL_pg3_reMFG [%]: float
+Module end of life path good 3 - Remanufacture in percentage. Percentage of collected end of life good modules which are disassembled for component remanufacturing (ex: recovering the front glass intact for use in a new module).
+
+mod_EOL_pg4_recycled [%]: float
+Module end of life path good 4 - Recycled in percentage. Percentage of collected end of life good modules which are sent to recycling for material recapture.
+
+**Path/Status Bad**
+Path or status bad refers to modules which have reached end of life through failure (i.e. Weibull) and/or are <80% of nameplate power. The following parameters dictate the path of "bad" status modules, and should ideally add to 100%; the landfill parameter will be adjusted if they do not add to 100%.
+
+mod_EOL_pb1_landfill [%]: float
+(optional) Module end of life path bad 1 - Landfill in percentage. Percentage of collected end of life bad modules which are sent to the landfill.
+
+mod_EOL_pb2_stored [%]: float (BETA)
+Module end of life path bad 2 - Stored in percentage. Percentage of collected end of life bad modules which are stored or warehoused for future disposition. Currently these modules remain in storage; future code updates will allow for removal from storage.
+
+mod_EOL_pb3_reMFG [%]: float
+Module end of life path bad 3 - Remanufacture in percentage. Percentage of collected end of life bad modules which are disassembled for component remanufacturing (ex: recovering the front glass intact for use in a new module). This parameter is separated out from path good because the remanufacturing potential of a failed module might be lower than that of a good intact module.
+
+mod_EOL_pb4_recycled [%]: float
+Module end of life path bad 4 - Recycled in percentage. Percentage of collected end of life bad modules which are sent to recycling for material recapture.
+
+mod_EOL_reMFG_yield [%]: float
+Module end of life Remanufacture yield in percentage. Efficiency or yield of *modules* going through the disassembly process. i.e. in the attempt to disassmble the module something goes wrong and remanufacture of the components will not be possible. This parameter dictates BOTH good and bad path Remanufacture yield.
+
+mod_EOL_sp_reMFG_recycle [%]: float
+Module end of life sub-path Remanufacture to Recycle in percentage. Percentage of modules which are unsuccessful in remanufacture and are subsequently sent to recycling instead (ex: during recovery of the front glass, it shatters, is recycled instead of remanufactured). This parameter dictates BOTH good and bad path Remanufacture to Recycling subpath.
+
+
+Material Input File (ex:[baseline_material_glass.csv](https://github.com/NREL/PV_ICE/blob/development/PV_ICE/baselines/baseline_material_glass.csv))
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 year : int
-Year. 
+Year. Each row will be a year that is studied in the simulation.
 
-new_Installed_Capacity_[MW]: float
-New installed PV capacity in MW. Additions of PV modules in nameplate MW peak in the specified year.
+mat_virgin_eff [%]: float
+Material virgin efficiency. Efficiency or yield of all mining, extracting, and purifying processes for the material up to the point of entry into the module manufacturing line. 
 
-module_efficiency_[%]: float 
-Nameplate efficiency of the module. i.e.: 22.3 %.
+mat_massperm2 [g/m^2]: float
+Material mass per module meter squared in grams per meter squared. Mass of component material in grams per square meter of PV module.
 
-module_reliability_t50_[years]: float
-(optional) The number of years after the installation year at which 50% of the cohort of  modules will be removed from the field
+mat_MFG_eff [%]: float
+Material Manufacturing Efficiency in percentage. Efficiency or yield of the manufacturing production line for the material - i.e. how much of the input material is incorporated into the module. (ex: silver in module versus silver paste used).
 
-module_reliability_t90_[years]: float
-(optional) The number of years after the installation year at which 90% of the cohort of  modules will be removed from the field
+mat_MFG_scrap_Recycled [%]: float
+Material Manufacturing scrap Recycling rate in percentage. The percentage of the scrap generated at the PV manufacturing facility that is sent to recycling (internal or external).
 
-module_degradation_[%]: float
-Percentage annual reduction of the module's performance, relative to it’s nameplate. i.e. 0.5 %. 
+mat_MFG_scrap_Recycling_eff [%]: float
+Material Manufacturing scrap Recycling Efficiency in percentage. Efficiency or yield of the material scrap recycling process.
 
-module_manufacturing_efficiency_[%]: float
-Efficiency of manufacturing modules (if there are losses of modules and all associated   products during production). 
+mat_MFG_scrap_Recycled_into_HQ [%]: float
+Material Manufacturing Scrap Recycled into High Quality in percentage. Percentage of manufacturing scrap which is recycled into high quality/high purity material and used for non-PV applications (open-loop).
 
-module_EOL_collection_losses_[%]: float
-Percentage of modules collected from the field at end of life for sorting and disposition. i.e. 30%
+mat_MFG_scrap_Recycled_into_HQ_Reused4MFG [%]: float
+Material Manufacturing Scrap Recycled into High Quality and Reused for PV Manufacturing. Percentage of manufacturing scrap material which is recycled and used in the manufacturing of a new PV module (closed-loop).
 
-module_EOL_collected_recycled_[%] : float
-Percentage of collected end of life modules that are sent to recycling
+mat_PG3_ReMFG_target [%]: float
+Material Path Good 3 - Remanufacturing Target in percentage. For the end of life modules which went through the remanufacture disassembly process, the fraction of this material which is a target of remanufacturing (ex: 100% of the glass is targeted for remanufacturing). The rate of remanufacturing for a particular material. Note: this variable applies to BOTH path good and path bad.
 
-module_merchantTail_[%]: float
-Percentage of modules at EOL that are reused on-site.
+mat_ReMFG_yield [%]: float
+Material Remanufacturing Yield in percentage. Efficiency or Yield of the remanufacturing process for the material (i.e. what percent of glass is successfully cleaned for use in a new PV module).
 
-module_reuse_[%]: float
-Percentage of modules at EOL that are reused at EoL at a different location.
+mat_PG4_Recycling_target [%]: float
+Material path good 4 - Recycling Target in percentage. Percentage of the end of life material that is targeted/collected for recycling (i.e. 100% of aluminum is sent to recycling).
 
-module_repair_[%]: float
-Percentage of modules at EOL from failure that are repaired and go back to functioning  in the field.
+mat_Recycling_yield [%]: float
+Material Recycling Yield in percentage. Efficiency or Yield of the end of life recycling process, i.e. percentage of the material that is put  through the process that is successfully recycled.
 
+mat_EOL_Recycled_into_HQ [%]: float
+Material at End of Life Recycled into High Quality in percentage. Percentage of collected end of life material recycled into high quality/high purity material and used for non-PV module applications (open-loop).
 
-baseline_material
-~~~~~~~~~~~~~~~~~~~~
-material_virgin_efficiency_[%]: float
-Efficiency of mining, extracting, and purifying the material up to the point of entry into the module manufacturing line. 
-
-material_masspermodule_[g/m^2]: float
-Mass of specified material in kilograms per PV module
-
-material_manufacturing_efficiency_[%]: float
-Efficiency of the manufacturing production line for the material - i.e. how much of the input material is incorporated into the module
-
-material_manufacturing_scrap_recycled_[%]: float
-The percentage of the scrap generated at the manufacturing facility that is sent to recycling (internal or external).
-
-material_manufacturing_scrap_recycling_efficiency_[%]: float
-Efficiency of the scrap recycling process
-
-material_manufacturing_scrap_recycled_into_HighQuality_[%]: float
-Percentage of manufacturing scrap which is recycled into high quality material and used for non-PV module applications externally (open loop)
-
-material_manufacturing_scrap_recycled_into_HighQuality_reused_for_module_manufacturing_[%]: float
-Percentage of manufacturing scrap material which is recycled and used in the manufacturing of a new module
-
-material_EOL_collected_Recycled_[%]: float
-Percentage of collected end of life material which is sent to recycling
-
-material_EOL_Recycling_efficiency_[%]: float
-Efficiency of the end of life recycling process, i.e. percentage of the material that is put  through the process that is successfully recycled
-
-EOL_Recycled_Material_into_HighQuality_[%]: float
-Percentage of collected end of life material recycled into high quality material and used  for non-PV modules applications externally (open loop)
-
-EOL_Recycled_HighQuality_Reused_for_Manufacturing_[%]: float
-Percentage of end of life recycled material that is recycled into high quality material and used in the manufacture of a new module (closed loop)
+mat_EOL_RecycledHQ_Reused4MFG [%]: float
+Material at End of Life Recycled into High Quality and Reused for PV Manufacturing in percentage. Percentage of end of life recycled material that is recycled into high quality/high purity material and used in the manufacture of a new PV module (closed-loop)
 
 
 
-Output Data for Mass flows
-------------------
-PV ICE calculates virgin material, landfilled and recycled materials, and the many other steps in the Mass Flow Diagram for each year dynamically. It appends these annual results to the dataframe loaded from baseline_module and baseline_materials. A description of the output columns is below.
+Outputs of Mass Flow Calculations
+----------------------------------
+PV ICE calculates effective capacity, virgin material demand, lifecycle wastes, and quantity of circular materials among other processes for each year dynamically. When the "calculateMassFlow" function is called, these annual results are appended to the dataframe loaded from Module and Material inputs. A description of the output columns is below.
 
 PV ICE Outputs
 ~~~~~~~~~~~~~~~~
+
+**Module Outputs**
+
 module_installedCapacity_[MW]
 Summation of all cohorts of installed PV actively in the field in the specified year
+
+
+**Material Outputs**
 
 material_installedMass_[kg]: float
 Summation of material associated with the total installed capacity in the field in a specified year
@@ -173,11 +228,18 @@ EoL + Manufacturing. Annual total quantity of material from all processes, manuf
 Total_EoL_Recycled_OtherUses: float
 Annual total quantity of material from all processes, manufacturing, recycling, end of life, which are recycled into external applications, open loop.  
 
-Mass Data References
----------------------
 
-Installed Capacity - Past
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+PV ICE Mass Baselines References
+----------------------------------
+
+This section documents data sources for PV ICE baselines. For the maths performed on the data from these sources, please see the [baseline development documentation](https://github.com/NREL/PV_ICE/tree/development/docs/tutorials/baseline%20development%20documentation).
+
+Module Baselines
+~~~~~~~~~~~~~~~~~~
+Installed Capacity 
+^^^^^^^^^^^^^^^^^^^
+**Past**
 Installation data for solar pv installed in the US and globally from several IEA-PVPS T1 reports, Wood MacKenzie Power and Renewables Reports, and LBNL Utility-Scale Solar Reports. Note that installed capacity includes on and off grid, residential, commercial, and utility scale PV. Note that IEA PVPS data (US and global) pre-2009 data is assumed to be all silicon technology.
 
 US Installations
@@ -193,55 +255,36 @@ Other resources consulted include:
 ("Trends in Photovoltaic Applications 2019," IEA-PVPS, IEA PVPS T1-36:2019, Aug. 2019. Accessed: Aug. 12, 2020. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/02/5319-iea-pvps-report-2019-08-lr.pdf.)
 IRENA Solar Energy Data (https://www.irena.org/solar, and https://irena.org/Statistics/Download-Data)
 
-
-Installed Capacity - Projections
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<<<<<<< HEAD
+**Projections**
 Projection installation data for 2019 through 2050 options include:
 
-* Increasing deployment of 8.9% compound annual growth rate (CAGR) through 2050 (IRENA, "Future of Solar PV 2019," IRENA, 2019. Accessed: Apr. 02, 2020. [Online]. Available: https://irena.org/-/media/Files/IRENA/Agency/Publication/2019/Nov/IRENA_Future_of_Solar_PV_2019.pdf.)
-* C. Murphy et al., “Electrification Futures Study: Scenarios of Power System Evolution and Infrastructure Development for the United States,” NREL, NREL/TP-6A20-72330, 1762438, MainId:6548, Jan. 2021. Accessed: Apr. 15, 2021. [Online]. Available: https://www.osti.gov/servlets/purl/1762438/
-* W. J. Cole et al., “Quantifying the challenge of reaching a 100% renewable energy power system for the United States,” Joule, p. S2542435121002464, Jun. 2021, doi: 10.1016/j.joule.2021.05.011.
-* Any other MW/year projection (annual not cumulative)
+*. Increasing deployment of 8.9% compound annual growth rate (CAGR) through 2050 (IRENA, "Future of Solar PV 2019," IRENA, 2019. Accessed: Apr. 02, 2020. [Online]. Available: https://irena.org/-/media/Files/IRENA/Agency/Publication/2019/Nov/IRENA_Future_of_Solar_PV_2019.pdf.)
+*. C. Murphy et al., “Electrification Futures Study: Scenarios of Power System Evolution and Infrastructure Development for the United States,” NREL, NREL/TP-6A20-72330, 1762438, MainId:6548, Jan. 2021. Accessed: Apr. 15, 2021. [Online]. Available: https://www.osti.gov/servlets/purl/1762438/
+*. W. J. Cole et al., “Quantifying the challenge of reaching a 100% renewable energy power system for the United States,” Joule, p. S2542435121002464, Jun. 2021, doi: 10.1016/j.joule.2021.05.011.
+*. Ardani, Kristen, Paul Denholm, Trieu Mai, Robert Margolis, Eric O’Shaughnessy, Timothy Silverman, and Jarett Zuboy. 2021. “Solar Futures Study.” EERE DOE. https://www.energy.gov/eere/solar/solar-futures-study.
+*. Any other MW/year projection (annual not cumulative)
 
-Module Baselines
-~~~~~~~~~~~~~~~~~~
+Module Properties
+^^^^^^^^^^^^^^^^^^
 Average annual efficiency in % from:
 1. G. F. Nemet, “Beyond the learning curve: factors influencing cost reductions in photovoltaics,” Energy Policy, vol. 34, no. 17, pp. 3218–3232, Nov. 2006, doi: 10.1016/j.enpol.2005.06.020.
-2. M. Fischer, M. Woodhouse, S. Herritsch, and J. Trube, “International Technology Roadmap for Photovoltaic (ITRPV) 2019 Results,” ITRPV, Apr. 2020. Accessed: Aug. 25, 2020. [Online]. Available: https://itrpv.vdma.org/
+2. “International Technology Roadmap for Photovoltaic (ITRPV) 2021 Results,” ITRPV, Apr. 2022 [Online]. Available: https://itrpv.vdma.org/
 3. “International Technology Roadmap for Photovoltiac (ITRPV): 2020 Results,” VDMA, ITRPV, Apr. 2021. Accessed: Apr. 30, 2021. [Online]. Available: https://itrpv.vdma.org/documents/27094228/29066965/2021%30ITRPV/08ccda3a-585e-6a58-6afa-6c20e436cf41
 
-Degradation rate (in percentage power loss per year) from: 
-(D. C. Jordan, S. R. Kurtz, K. VanSant, and J. Newmiller, "Compendium of photovoltaic degradation rates," Progress in Photovoltaics: Research and Applications, vol. 24, no. 7, pp. 978–989, 2016, doi: 10.1002/pip.2744.)
-
-Failure probability data, i.e. T50 and T90, in years from:
-(D. C. Jordan, B. Marion, C. Deline, T. Barnes, and M. Bolinger, "PV field reliability status - Analysis of 100 000 solar systems," Progress in Photovoltaics: Research and Applications, vol. n/a, no. n/a, Feb. 2020, doi: 10.1002/pip.3262.)
-=======
-Projection installation options through 2050 include:
-1. An 8.9% compound annual growth rate through 2050 (IRENA, "Future of Solar PV 2019," IRENA, 2019. Accessed: Apr. 02, 2020. [Online]. Available: https://irena.org/-/media/Files/IRENA/Agency/Publication/2019/Nov/IRENA_Future_of_Solar_PV_2019.pdf.)
-2. Electrification Futures 2021 US projection data for reference case and High electrification case.
-
-More installation projection options will be available in future.
-
-Module Baselines
-~~~~~~~~~~~~~~~~~~
 Degradation rate (in percentage power loss per year): 
-*D. C. Jordan, S. R. Kurtz, K. VanSant, and J. Newmiller, "Compendium of photovoltaic degradation rates," Progress in Photovoltaics: Research and Applications, vol. 24, no. 7, pp. 978–989, 2016, doi: 10.1002/pip.2744.*
+*. D. C. Jordan, S. R. Kurtz, K. VanSant, and J. Newmiller, "Compendium of photovoltaic degradation rates," Progress in Photovoltaics: Research and Applications, vol. 24, no. 7, pp. 978–989, 2016, doi: 10.1002/pip.2744.*
 
 Failure probability data, i.e. T50 and T90, in years: 
-*D. C. Jordan, B. Marion, C. Deline, T. Barnes, and M. Bolinger, "PV field reliability status - Analysis of 100 000 solar systems," Progress in Photovoltaics: Research and Applications, vol. n/a, no. n/a, Feb. 2020, doi: 10.1002/pip.3262.*
+*. D. C. Jordan, B. Marion, C. Deline, T. Barnes, and M. Bolinger, "PV field reliability status - Analysis of 100 000 solar systems," Progress in Photovoltaics: Research and Applications, vol. n/a, no. n/a, Feb. 2020, doi: 10.1002/pip.3262.*
 
 Project lifetimes: 
-*M. Bolinger, J. Seel, and D. Robson, “Utility-Scale Solar 2019,” LBNL, Dec. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/lbnl_utility_scale_solar_2019_edition_final.pdf*
-
->>>>>>> main
+*. M. Bolinger, J. Seel, and D. Robson, “Utility-Scale Solar 2019,” LBNL, Dec. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/lbnl_utility_scale_solar_2019_edition_final.pdf*
 
 Module lifetime, representing the economic project life in years from:
-(R. Wiser, M. Bolinger, and J. Seel, “Benchmarking Utility-Scale PV Operational Expenses and Project Lifetimes: Results from a Survey of U.S. Solar Industry Professionals,” None, 1631678, ark:/13030/qt2pd8608q, Jun. 2020. doi: 10.2172/1631678.)
+*. (R. Wiser, M. Bolinger, and J. Seel, “Benchmarking Utility-Scale PV Operational Expenses and Project Lifetimes: Results from a Survey of U.S. Solar Industry Professionals,” None, 1631678, ark:/13030/qt2pd8608q, Jun. 2020. doi: 10.2172/1631678.)
 
 Material Baselines
 ~~~~~~~~~~~~~~~~~~~~
-<<<<<<< HEAD
 
 Glass
 ^^^^^^^
@@ -294,10 +337,18 @@ Backsheets
 See Jupyter Journal "(baseline development) Encapsulants and Backsheets" for calculations
 1. All ITRPV 2010 and forward
 
+
+
+
+
+
 Data: Energy
 =============
 
 The energy flows are based on the tracked mass flows with units of energy per mass basis. As with the mass flows and to the best of our ability, the energy flows are sourced from real world values and literature, are dynamic to the annual level, and granular to specific processes. Below the variables are defined and their mass counterparts identified. For modules and each material, references used for creating the energy flow are listed as well.
+
+Input Data for Energy Baselines
+----------------------------------
 
 baseline_energy_module
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -374,6 +425,10 @@ e_mat_Recycled_HQ [kWh/kg]:float
 
 e_mat_Recycled_HQ4MFG [kWh/kg]: float
 	The energy associated with making the refined material into the PV specific material for PV Manufacturing. This energy is additive to e_mat_Recycled_LQ and e_mat_Recycled_HQ. ***SHOULD THIS BE DIFFERENT THAN HQ?***
+
+
+Outputs of Energy Calculations
+--------------------------------
 
 
 Energy Data References
