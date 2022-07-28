@@ -50,7 +50,7 @@ This section provides a brief description of how the PV ICE tool works. Full doc
 
 
 Mass
-~~~~~
+-----
 
 PV ICE is a dynamic mass flow based tool. It takes in any deployment forecast of any evolving module design along with it's component materials and uses sophisticated lifetime and reliability parameters to calculate effective capacity, virgin material demand, and life cycle wastes. The calculator captures all the mass flows shown in the simplified diagram below for all years studied in a simulation (ex: 2020-2050). 
 
@@ -62,7 +62,7 @@ Module and material properties are known to be variable with time, and PV ICE ca
 
 
 Energy
-~~~~~~~
+-------
 
 The energy balance of renewable energy technologies is as important and the mass balance when evaluating sustainability. Additionally, few studies of Circular Economy (CE) pathways consider the energy return on investment of a particular pathway. PV ICE energy flows fill this analysis gap, and provide useful insights into the potential tradeoffs between mass and energy of CE pathways.
 
