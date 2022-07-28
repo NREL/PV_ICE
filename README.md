@@ -93,24 +93,30 @@ For developer installation, download the repository, navigate to the folder loca
 How to Get Started
 ===================
 
-After you have installed PV ICE, we recommend heading over to our tutorials jupyter journals (PV ICE \ docs \ tutorials). There you will find journals "0 - quick start Example" and "1 - Beginner Example" which can help guide you through your first simulation using the PV ICE provided crystalline silicon PV baselines. In journals 2-4 we walk you through modifications to the basic simulation, including modifying parameters with PV ICE functions to suit your analysis needs.
+After you have installed PV ICE, we recommend heading over to our tutorials jupyter journals (PV ICE \ docs \ tutorials). There you will find journals ["0 - quick start Example"](https://github.com/NREL/PV_ICE/blob/development/docs/tutorials/0%20-%20quickStart%20Example.ipynb) and ["1 - Beginner Example"](https://github.com/NREL/PV_ICE/blob/development/docs/tutorials/1%20-%20Beginner%20Example.ipynb) which can help guide you through your first simulation using the PV ICE provided crystalline silicon PV baselines. In journals 2-4 we walk you through modifications to the basic simulation, including modifying parameters with PV ICE functions to suit your analysis needs.
 
 
 Some Analyses Featuring/Leveraging PV ICE
 ==========================================
 
 PV ICE has been used in a variety of published analyses, including:
-The Solar Futures Report and Circular Economy Technical report
+
+The Solar Futures Report and Circular Economy Technical Report
+
 Ardani, Kristen, Paul Denholm, Trieu Mai, Robert Margolis, Eric O’Shaughnessy, Timothy Silverman, and Jarett Zuboy. 2021. “Solar Futures Study.” EERE DOE. https://www.energy.gov/eere/solar/solar-futures-study.
+
 Heath, Garvin, Dwarakanath Ravikumar, Silvana Ovaitt, Leroy Walston, Taylor Curtis, Dev Millstein, Heather Mirletz, Heidi Hartman, and James McCall. 2022. “Environmental and Circular Economy Implications of Solar Energy in a Decarbonized U.S. Grid.” NREL/TP-6A20-80818. NREL.
 
 ISCIENCE
+
 Ovaitt & Mirletz, Silvana & Heather, Sridhar Seetharaman, and Teresa Barnes. 2022. “PV in the Circular Economy, A Dynamic Framework Analyzing Technology Evolution and Reliability Impacts.” ISCIENCE, January. https://doi.org/10.1016/j.isci.2021.103488.
 
 PVSC
+
 Mirletz, Heather M, Silvana Ovaitt, Ashley Gaulding, Seetharaman Sridhar, and Teresa Barnes. 2022. “Quantifying Energy Flows in PV Circularity Processes.” In , 3. Philidelphia PA.
 
 PVRW
+
 Mirletz, Heather, Silvana Ovaitt, and Teresa M. Barnes. 2022. “Short-Lived Modules Need to Be Efficient, Lightweight, and Circular for the Energy Transition.” In PVRW 2022. online: NREL.
 
 
