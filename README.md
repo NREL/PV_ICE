@@ -36,46 +36,50 @@
 </table>
 
 
-# PV_ICE: PV in the Circular Economy, Dynamic Energy and Materials TOOL
+# PV ICE: PV in the Circular Economy, a Dynamic Energy and Materials TOOL
 
-This open-source tool implements Circular Economy metrics for photovoltaic (PV) materials. It can be used to quantify and assign a value framework to efforts on re-design, reduction, replacement, reuse, recycling, and lifetime and reliability increases in the PV value chain.
+This open-source tool explores the effects of Circular Economy (CE) pathways for photovoltaic (PV) materials. It can be used to quantify and assign a value framework to CE efforts including re-design, reduction, replacement, reuse, recycling, and lifetime and reliability improvements across the PV value chain. PV ICE enables tradeoff analysis through scenario comparisons, and is highly customizable through user inputs such as deployment schedules, module properties and component materials, and CE pathways.
 
-The PV_ICE is leveraging published data from different sources on PV manufacturing and predicted technological changes. Input data is being compiled [here](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing)
-
-This tool will help implement circularity metrics, quantify and assign a value framework to efforts on re-design, reduction, replacement, reusage, recycling, and lifetime and reliability increases on PV.
+The provided PV ICE module and material baselines leverage published data from many sources on PV manufacturing and predicted technological changes. Input data are being compiled [here](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing) and the baselines are available here for use in other projects as well as for the PV ICE tool.
 
 
-Documentation
+How it Works
 =============
 
-The calculator follows the following diagram for calculating Mass Flow. Baseline inputs are available in the PV_ICE \ baselines folder for US and World past and projected values. Full documentation can be found at [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/latest/).
+This section provides a brief description of how the PV ICE tool works. Full documentation can be found at [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/latest/).
 
-<img src="docs/images_wiki/PV_ICE_Diagram-AltLegend.png" width="550">
 
-[Input data](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing) references include:
+Mass
+-----
 
-Real world installation data from IEA-PVPS reports for 1995 - 2010 (K. Bolcar and K. Ardani, “National Survey Report of PV Power Applications in the United States 2010,” IEA-PVPS, National Survey T1-19:2010, 2010. [Online]. Available: https://iea-pvps.org/national-survey-reports/.) Installation data 2010-2020 from U.S. Solar Market Insight 2020-yir from SEIA & Wood Mackenzie (M. Davis et al., “U.S. Solar Market Insight: 2020 Year in review,” Wood Mackenzie Power & Renewables, Mar. 2021.) All installation data is weighted by the marketshare of silicon PV, as derived from a combination of:
-[1]G. Barbose and N. Darghouth, “Tracking the Sun 2019,” LBNL, Oct. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/tracking_the_sun_2019_report.pdf
-[2]M. Bolinger, J. Seel, and D. Robson, “Utility-Scale Solar 2019,” LBNL, Dec. 2019. Accessed: Aug. 13, 2020. [Online]. Available: https://emp.lbl.gov/sites/default/files/lbnl_utility_scale_solar_2019_edition_final.pdf 
+PV ICE is a dynamic mass flow based tool. It takes in any deployment forecast of any evolving module design along with it's component materials and uses sophisticated lifetime and reliability parameters to calculate effective capacity, virgin material demand, and life cycle wastes. The calculator captures all the mass flows shown in the simplified diagram below for all years studied in a simulation (ex: 2020-2050). 
 
-Installation projections either increase by 8.9% compound annual growth rate through 2050 (IRENA, “Future of Solar PV 2019,” IRENA, 2019. Accessed: Apr. 02, 2020. [Online]. Available: https://irena.org/-/media/Files/IRENA/Agency/Publication/2019/Nov/IRENA_Future_of_Solar_PV_2019.pdf.) or are drawn from NREL's Electrification Futures Studies (https://cambium.nrel.gov/?project=fc00a185-f280-47d5-a610-2f892c296e51).
+<img src="docs/images_wiki/PV_ICE_diagram-simpleAltUpdate.png" width="550">
 
-Degradation rates (in percentage power loss per year) (D. C. Jordan, S. R. Kurtz, K. VanSant, and J. Newmiller, “Compendium of photovoltaic degradation rates,” Progress in Photovoltaics: Research and Applications, vol. 24, no. 7, pp. 978–989, 2016, doi: 10.1002/pip.2744.)
+Annually deployed cohorts of modules are tracked through the simulation, subjected to lifetime, degradation, and reliability parameters, and guided along user defined CE pathways (ex: resell, recycling). The PV ICE framework is designed for scenario comparisons (ex: different deployment schedules, module designs, or circular pathways) and is capable of both geospatial and temporal analysis (i.e. when and where materials will be demanded or are available).
 
-Reliability data, i.e. T50 and T90 lifetime in years (D. C. Jordan, B. Marion, C. Deline, T. Barnes, and M. Bolinger, “PV field reliability status—Analysis of 100 000 solar systems,” Progress in Photovoltaics: Research and Applications, vol. n/a, no. n/a, Feb. 2020, doi: 10.1002/pip.3262.)
+Module and material properties are known to be variable with time, and PV ICE can capture this dynamic evolution of PV technology. Dynamic baseline inputs for crystalline silicon PV modules and component materials are provided in the PV_ICE \ baselines folder. These baselines are dervied from [literature and report data](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing). Module baselines capture the annual average crystalline silicon module (i.e. a market share weighted average of the silicon PV technologies deployed). Each material similarly is a market share weighted average of silicon PV technologies, compiled from multiple sources, most notably consistent with ITRPV data. Please see the Jupyter Journals (tutorials \ baseline development documentation) for the derivations and sources (baselines \ SupportingMaterials) of the provided c-Si baselines. Alternate module and material files can be created by the user, and an expanded set of PV technology baselines is planned for the future, including CdTe and perovskites.
 
-Project Lifetime data in years from (R. Wiser, M. Bolinger, and J. Seel, “Benchmarking Utility-Scale PV Operational Expenses and Project Lifetimes: Results from a Survey of U.S. Solar Industry Professionals,” None, 1631678, ark:/13030/qt2pd8608q, Jun. 2020. doi: 10.2172/1631678.)
 
-Each material is a compilation of multiple sources, most notably consistent with ITRPV data. Please see the Jupyter Journals for the derivations and sources of material baseline inputs.
+Energy
+-------
+
+The energy balance of renewable energy technologies is as important and the mass balance when evaluating sustainability. Additionally, few studies of Circular Economy (CE) pathways consider the energy return on investment of a particular pathway. PV ICE energy flows fill this analysis gap, and provide useful insights into the potential tradeoffs between mass and energy of CE pathways.
+
+The energy flows of PV ICE are based on the mass flows. These energy flows, like the mass flows, are dynamic with time and are seperated into module and material energies. For each supply chain process step captured in the mass flows, an energy per module area or energy per material mass is captured as an input (ex: module manufacturing energy, energy to manufacture rolled glass from silica sand, energy to crush a module for recycling ). The energy demanded for each step is the sum of all electrical energy demands and all fuel/heating energy demands. 
+
+We provide an energy baseline for crystalline silicon modules and component materials. Data for these baselines is being compiled from [literature and report data](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing). For the complete derivation of the energy demands for crystalline silicon modules and materials, please see the Jupyter Journals (tutorials \ baseline development documentation) and (baselines \ SupportingMaterials). Alternate module and material files can be created by the user, and an expanded set of PV technology baselines is planned for the future, including CdTe and perovskites.
+
+After running a mass flow simulation, an energy flow calculation can be run which will multiply the energy demands by the mass flows and calculate annual generation from the deployed modules. Results of this calculation provide annual, cumulative, and lifetime energy demands and energy generated. These values can be used to calculate energy balance metrics such as energy return on investment (EROI), net energy, and energy payback time (EPBT). These features are actively under development, so check back for updates soon!
 
 
 Installation for PV ICE
 =======================
 
-CircularEconomy-MassFlowCalculator releases may be installed using the ``pip`` and ``conda`` tools.
+PV ICE releases may be installed using the ``pip`` and ``conda`` tools.
 Please see the [Installation page](http://PV_ICE.readthedocs.io/en/latest/installation.html) of the documentation for complete instructions.
 
-CircularEconomy-MassFlowCalculator is compatible with Python 3.5 and above.
+PV ICE is compatible with Python 3.5 and above.
 
 Install with:
 
@@ -86,12 +90,42 @@ For developer installation, download the repository, navigate to the folder loca
     pip install -e .
 
 
+How to Get Started
+===================
+
+After you have installed PV ICE, we recommend heading over to our tutorials jupyter journals (PV ICE \ docs \ tutorials). There you will find journals ["0 - quick start Example"](https://github.com/NREL/PV_ICE/blob/development/docs/tutorials/0%20-%20quickStart%20Example.ipynb) and ["1 - Beginner Example"](https://github.com/NREL/PV_ICE/blob/development/docs/tutorials/1%20-%20Beginner%20Example.ipynb) which can help guide you through your first simulation using the PV ICE provided crystalline silicon PV baselines. In journals 2-4 we walk you through modifications to the basic simulation, including modifying parameters with PV ICE functions to suit your analysis needs.
+
+
+Some Analyses Featuring/Leveraging PV ICE
+==========================================
+
+PV ICE has been used in a variety of published analyses, including:
+
+**The Solar Futures Report and Circular Economy Technical Report**
+
+Ardani, Kristen, Paul Denholm, Trieu Mai, Robert Margolis, Eric O’Shaughnessy, Timothy Silverman, and Jarett Zuboy. 2021. “Solar Futures Study.” EERE DOE. https://www.energy.gov/eere/solar/solar-futures-study.
+
+Heath, Garvin, Dwarakanath Ravikumar, Silvana Ovaitt, Leroy Walston, Taylor Curtis, Dev Millstein, Heather Mirletz, Heidi Hartman, and James McCall. 2022. “Environmental and Circular Economy Implications of Solar Energy in a Decarbonized U.S. Grid.” NREL/TP-6A20-80818. NREL.
+
+**ISCIENCE**
+
+Ovaitt & Mirletz, Silvana & Heather, Sridhar Seetharaman, and Teresa Barnes. 2022. “PV in the Circular Economy, A Dynamic Framework Analyzing Technology Evolution and Reliability Impacts.” ISCIENCE, January. https://doi.org/10.1016/j.isci.2021.103488.
+
+**PVSC**
+
+Mirletz, Heather M, Silvana Ovaitt, Ashley Gaulding, Seetharaman Sridhar, and Teresa Barnes. 2022. “Quantifying Energy Flows in PV Circularity Processes.” In , 3. Philidelphia PA.
+
+**PVRW**
+
+Mirletz, Heather, Silvana Ovaitt, and Teresa M. Barnes. 2022. “Short-Lived Modules Need to Be Efficient, Lightweight, and Circular for the Energy Transition.” In PVRW 2022. online: NREL.
+
+
 Contributing
 ============
 
-We need your help to make PV_ICE a great tool!
+We need your help to make PV ICE a great tool!
 Please see the [Contributing page](http://PV_ICE.readthedocs.io/en/stable/contributing.html) for more on how you can contribute.
-The long-term success of CircularEconomy-MassFlowCalculator requires substantial community support.
+The long-term success of PV ICE requires substantial community support.
 
 
 License
@@ -119,7 +153,7 @@ If you use PV_ICE in a published work, please cite:
 	2020 PV Reliability Workshop, Denver CO.
 
 and also please also cite the DOI corresponding to the specific version of
-PV_ICE that you used. PV_ICE DOIs are listed at
+PV ICE that you used. PV ICE DOIs are listed at
 [Zenodo.org](https://zenodo.org/). For example for version 0.2.0:
 
 	Silvana Ayala, Heather Mirletz, & Acadia Hegedus. (2021). 
