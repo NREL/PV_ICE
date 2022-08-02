@@ -12,8 +12,7 @@ This tool will help implement circularity metrics, quantify and assign a value f
 
 The intended audience ranges from PV performance and analyst researchers, Engineering Procurement Construction (EPC) companies, installers, investors, consumers and analysts of the PV industry interested in predicting and evaluating the impact of PV growth in our environment and how the improvements towards Circularity affect waste.
 
-The source code for PV_ICE is hosted on `github
-<https://github.com/NREL/PV_ICE>`_.
+The source code for PV_ICE is hosted on `github <:ghuser:NREL/PV_ICE>`_.
 
 Please see the :ref:`installation` page for installation help.
 
