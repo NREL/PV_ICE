@@ -103,21 +103,26 @@ PV ICE has been used in a variety of published analyses, including:
 
 **The Solar Futures Report and Circular Economy Technical Report**
 
-Ardani, Kristen, Paul Denholm, Trieu Mai, Robert Margolis, Eric O’Shaughnessy, Timothy Silverman, and Jarett Zuboy. 2021. “Solar Futures Study.” EERE DOE. https://www.energy.gov/eere/solar/solar-futures-study.
+    Ardani, Kristen, Paul Denholm, Trieu Mai, Robert Margolis, Eric O’Shaughnessy, Timothy Silverman, and Jarett Zuboy. 2021. “Solar Futures Study.” EERE DOE. https://www.energy.gov/eere/solar/solar-futures-study.
 
-Heath, Garvin, Dwarakanath Ravikumar, Silvana Ovaitt, Leroy Walston, Taylor Curtis, Dev Millstein, Heather Mirletz, Heidi Hartman, and James McCall. 2022. “Environmental and Circular Economy Implications of Solar Energy in a Decarbonized U.S. Grid.” NREL/TP-6A20-80818. NREL.
+    Heath, Garvin, Dwarakanath Ravikumar, Silvana Ovaitt, Leroy Walston, Taylor Curtis, Dev Millstein, Heather Mirletz, Heidi Hartman, and James McCall. 2022. “Environmental and Circular Economy Implications of Solar Energy in a Decarbonized U.S. Grid.” NREL/TP-6A20-80818. NREL.
 
 **ISCIENCE**
 
-Ovaitt & Mirletz, Silvana & Heather, Sridhar Seetharaman, and Teresa Barnes. 2022. “PV in the Circular Economy, A Dynamic Framework Analyzing Technology Evolution and Reliability Impacts.” ISCIENCE, January. https://doi.org/10.1016/j.isci.2021.103488.
+    Ovaitt & Mirletz, Silvana & Heather, Sridhar Seetharaman, and Teresa Barnes. 2022. 
+    “PV in the Circular Economy, A Dynamic Framework Analyzing Technology Evolution and Reliability Impacts.” 
+    ISCIENCE, January. https://doi.org/10.1016/j.isci.2021.103488.
 
 **PVSC**
 
-Mirletz, Heather M, Silvana Ovaitt, Ashley Gaulding, Seetharaman Sridhar, and Teresa Barnes. 2022. “Quantifying Energy Flows in PV Circularity Processes.” In , 3. Philidelphia PA.
+    Mirletz, Heather M, Silvana Ovaitt, Ashley Gaulding, Seetharaman Sridhar, and Teresa Barnes. 2022. 
+    “Quantifying Energy Flows in PV Circularity Processes.” In , 3. Philidelphia PA.
 
 **PVRW**
 
-Mirletz, Heather, Silvana Ovaitt, and Teresa M. Barnes. 2022. “Short-Lived Modules Need to Be Efficient, Lightweight, and Circular for the Energy Transition.” In PVRW 2022. online: NREL.
+    Mirletz, Heather, Silvana Ovaitt, and Teresa M. Barnes. 2022. 
+    “Short-Lived Modules Need to Be Efficient, Lightweight, and Circular for the Energy Transition.” 
+    In PVRW 2022. online: NREL.
 
 
 Contributing
@@ -147,10 +152,10 @@ Citing
 
 If you use PV_ICE in a published work, please cite:
 
-	Ayala Pelaez, Silvana; Mirletz, Heather; Silverman, Timothy; 
-	Carpenter, Alberta; Barnes, Teresa. “De-fluffing Circular 
-	Economy Metrics with Open-Source Calculator for PV” 
-	2020 PV Reliability Workshop, Denver CO.
+    S. Ovaitt & H. Mirletz, S. Seetharaman, and T. Barnes, 
+    “PV in the Circular Economy, A Dynamic Framework Analyzing Technology Evolution and Reliability Impacts,” 
+    ISCIENCE, Jan. 2022, doi: https://doi.org/10.1016/j.isci.2021.103488.
+
 
 and also please also cite the DOI corresponding to the specific version of
 PV ICE that you used. PV ICE DOIs are listed at
