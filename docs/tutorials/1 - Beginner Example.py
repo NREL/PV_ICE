@@ -38,8 +38,7 @@ import PV_ICE
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='standard', file=r'..\baselines\baseline_modules_US.csv')
-r1.scenario['standard'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['standard'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv' )
+rr1.scenario['standard'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv' )
 
 r1.createScenario('decadence', file=r'..\baselines\baseline_modules_US.csv')
 r1.scenario['decadence'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
@@ -89,70 +88,70 @@ r1.aggregateResults();
 print(r1.scenario['standard'].material['glass'].materialdata.keys())
 
 
-# In[7]:
-
-
-r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
-
-
 # In[8]:
+
+
+r1.plotScenariosComparison()
+
+
+# In[ ]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 
 
-# In[9]:
+# In[ ]:
 
 
 r1.plotMaterialResults(keyword='VirginStock')
 
 
-# In[10]:
+# In[ ]:
 
 
 r1.plotMetricResults()
 
 
-# In[11]:
+# In[ ]:
 
 
 r1.plotInstalledCapacityResults()
 
 
-# In[12]:
+# In[ ]:
 
 
 datay = r1.USyearly
 datac = r1.UScum
 
 
-# In[13]:
+# In[ ]:
 
 
 filter_colc = [col for col in datac if col.startswith('newInstalledCapacity')]
 filter_coly = [col for col in datay if col.startswith('Capacity')]
 
 
-# In[14]:
+# In[ ]:
 
 
 datac[filter_colc]
 
 
-# In[15]:
+# In[ ]:
 
 
 data = datac[filter_colc].copy()
 data.join(datay[filter_coly].copy())
 
 
-# In[16]:
+# In[ ]:
 
 
 data
 
 
-# In[17]:
+# In[ ]:
 
 
 mylegend = [col.split('_')[1:] for col in data]
@@ -160,7 +159,7 @@ mylegend = [col[:-1] for col in mylegend]
 mylegend
 
 
-# In[18]:
+# In[ ]:
 
 
 test_list=['standard', 'decadence', '2standard', '2decadence']
@@ -169,7 +168,7 @@ test_list2=['asdfadsf', 'dfdffd', 'dfsfs', 'ssssssss']
 test_list + test_list2
 
 
-# In[19]:
+# In[ ]:
 
 
 test_list

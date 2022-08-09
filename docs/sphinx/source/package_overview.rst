@@ -3,6 +3,12 @@
 Package Overview
 ================
 
+In addition to the documentation here, please check out our paper documenting the development and use of the PV ICE tool!
+        S. Ovaitt & H. Mirletz, S. Seetharaman, and T. Barnes, 
+        “PV in the Circular Economy, A Dynamic Framework Analyzing 
+        Technology Evolution and Reliability Impacts,” ISCIENCE, Jan. 2022,
+        doi: https://doi.org/10.1016/j.isci.2021.103488.
+
 The PV ICE tool explores the effects of Circular Economy (CE) pathways for photovoltaic (PV) materials. It can be used to quantify and assign a value framework to CE efforts including re-design, lightweighting, replacement, reuse, recycling, and lifetime and reliability improvements across the PV value chain. PV ICE enables tradeoff analysis through scenario comparisons, and is highly customizable through user inputs such as deployment schedules, module properties and component materials, and CE pathways. The PV ICE tool considers the following material flows and their associated energies:
 
 .. image:: ../../images_wiki/PV_ICE_diagram-simpleAltUpdate.PNG
@@ -102,6 +108,8 @@ The module is demounted and sent through a dissassembly process with the goal of
 4. Recycle
 ^^^^^^^^^^^^
 The module is demounted and sent through a dissassembly and/or crushing process with the goal of recovering constituent materials. These materials undergo individual recycling processes (with associated yields). The recycled materials are recovered at low purity and used in other industries ( down-cycled, open-loop), at high purity and used in other industries (HQ open-loop), or at high purity and used in the manufacture of new PV modules offsetting virgin material demand (HQ closed-loop). 
+
+There is an analogous recycling loop for manufacturing material scrap. 
 
 
 
