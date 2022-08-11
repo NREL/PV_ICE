@@ -34,6 +34,21 @@ def _interactive_load(title=None):
     root.attributes("-topmost", True) #Bring window into foreground
     return filedialog.askopenfilename(parent=root, title=title) #initialdir = data_dir
 
+def _readPVICEFile(file):
+    
+    csvdata = open(str(file), 'r', encoding="UTF-8")
+    csvdata = open(str(file), 'r', encoding="UTF-8-sig")
+    firstline = csvdata.readline()
+    secondline = csvdata.readline()
+
+    head = firstline.rstrip('\n').split(",")
+    meta = dict(zip(head, secondline.rstrip('\n').split(",")))
+
+    data = pd.read_csv(csvdata, names=head)
+    data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype(float)
+    
+    return data, meta
+
 def _unitReferences(keyword):
     '''
     Specify units for variable in scenario or materials
@@ -333,6 +348,16 @@ class Simulation:
         for scen in scenarios:
             self.scenario[scen].data.loc[selectyears, stage] = value
 
+    def calculateFlows(self, scenarios = None, materials=None, weibullInputParams = None,
+                          bifacialityfactors = None, reducecapacity = True, debugflag=False):
+        
+        self.calculateMassFlow(scenarios = None, materials=None, weibullInputParams = None,
+                              bifacialityfactors = None, reducecapacity = True, debugflag=False)
+
+        self.calculateEnergyFlow(scenarios = None, materials=None)
+
+            
+        
     def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None,
                           bifacialityfactors = None, reducecapacity = True, debugflag=False):
         '''
@@ -871,7 +896,7 @@ class Simulation:
 
                 print("==> Working on Material : ", mat)
 
-                dm = self.scenario[scen].material[mat].materialdata
+                dm = self.scenario[scen].material[mat].massdata
 
                 # SWITCH TO MASS UNITS FOR THE MATERILA NOW:
                 # THIS IS DIFFERENT MULTIPLICATION THAN THE REST
@@ -994,7 +1019,7 @@ class Simulation:
                                                dm['mat_MFG_Recycled_HQ_into_OU'])
 
 
-                self.scenario[scen].material[mat].materialdata = dm
+                self.scenario[scen].material[mat].massdata = dm
 
 
             # CLEANUP MATRICES HERE:
@@ -1027,10 +1052,10 @@ class Simulation:
             calculations.
         modEnergy : str
             File with the module energy baseline. This process will be updated
-            so that it's added to the PV_ICE object.
+            so that it's added to the PV_ICE object. Units are typically in Wh/m2 or Wh/g
         matEnergy : str
             File with the material energy baseline. This process will be updated
-            so that it's added to the PV_ICE object.
+            so that it's added to the PV_ICE object. Units are typically in Wh/m2 or Wh/g
         insolation : float
             Insolation received in the location modeled during the time period
             modeled. i.e. for 1 year, the average insolation in the US is
@@ -1065,21 +1090,16 @@ class Simulation:
             if isinstance(materials, str):
                 materials = [materials]
 
-
         for scen in scenarios:
             for mat in materials:
                 df = self.scenario[scen].data
-                dm = self.scenario[scen].material[mat].materialdata
-            #self.modEnergy
-            #modEnergy =
-            #matEnergy =
-
-            #modEnergy and matEnergy are input files and need to be in Wh/m2 and Wh/g respectively
+                dm = self.scenario[scen].material[mat].massdata
+                
+                modEnergy=self.scenario[scen].energydata
+                matEnergy=self.scenario[scen].material[mat].energymatdata
+                                
                 de = pd.DataFrame()
-            #module
-                #print(type(df['ModuleTotal_MFG']))
-                #print(type(modEnergy['e_mod_MFG']))
-
+            
                 de['mod_MFG'] = df['ModuleTotal_MFG']*modEnergy['e_mod_MFG']
                 de['mod_Install'] = df['Area']*modEnergy['e_mod_Install']
                 de['mod_OandM'] = df['Cumulative_Active_Area']*modEnergy['e_mod_OandM']
@@ -1131,8 +1151,8 @@ class Simulation:
             self.scenario[scen].data['mod_MFG_eff'] = 100.0
 
             for mat in self.scenario[scen].material:
-                self.scenario[scen].material[mat].materialdata['mat_MFG_eff'] = 100.0
-                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0
+                self.scenario[scen].material[mat].massdata['mat_MFG_eff'] = 100.0
+                self.scenario[scen].material[mat].massdata['mat_MFG_scrap_Recycled'] = 0.0
 
         return
 
@@ -1143,7 +1163,7 @@ class Simulation:
         print ("Not Done")
 
     def trim_Years( self, startYear=None, endYear=None, aggregateInstalls=False,
-                   averageEfficiency=False, averageMaterialData = False, methodAddedYears='repeat',
+                   averageEfficiency=False, averagemassdata = False, methodAddedYears='repeat',
                    scenarios=None, materials=None):
         '''
 
@@ -1210,17 +1230,17 @@ class Simulation:
                 if int(endYear) > int(dataEndYear):
                     print("ADD YEARS HERE. not done yet")
 
-                matdf = self.scenario[scen].material[mat].materialdata #pull out the df
+                matdf = self.scenario[scen].material[mat].massdata #pull out the df
                 reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
 
-                if averageMaterialData == 'average':
+                if averagemassdata == 'average':
                     prev = matdf.loc[(baseline['year']<startYear)].mean()
                     matkeys = list(reduced.keys())[1:12]
                     for matkey in matkeys: # skipping year (0). Skipping added columsn from mass flow
                         reduced.loc[reduced['year'] == startYear, matkey] = prev[matkey]
 
                 reduced.reset_index(drop=True, inplace=True)
-                self.scenario[scen].material[mat].materialdata = reduced #reassign the material data to the simulation
+                self.scenario[scen].material[mat].massdata = reduced #reassign the material data to the simulation
 
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
@@ -1245,8 +1265,8 @@ class Simulation:
             self.scenario[scen].data['mod_MFG_eff'] = 100.0
 
             for mat in self.scenario[scen].material:
-                self.scenario[scen].material[mat].materialdata['mat_MFG_eff'] = 100.0
-                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0
+                self.scenario[scen].material[mat].massdata['mat_MFG_eff'] = 100.0
+                self.scenario[scen].material[mat].massdata['mat_MFG_scrap_Recycled'] = 0.0
 
         return
 
@@ -1264,8 +1284,8 @@ class Simulation:
             self.scenario[scen].data['mod_MFG_eff'] = 100.0
 
             for mat in self.scenario[scen].material:
-                self.scenario[scen].material[mat].materialdata['mat_virgin_eff'] = 100.0
-                self.scenario[scen].material[mat].materialdata['mat_MFG_eff'] = 100.0
+                self.scenario[scen].material[mat].massdata['mat_virgin_eff'] = 100.0
+                self.scenario[scen].material[mat].massdata['mat_MFG_eff'] = 100.0
         return
 
     def scenMod_noCircularity(self, scenarios=None):
@@ -1284,15 +1304,15 @@ class Simulation:
             self.scenario[scen].data['mod_Reuse'] = 0.0
 
             for mat in self.scenario[scen].material:
-                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled'] = 0.0
-                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycling_eff'] = 0.0
-                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ'] = 0.0
-                self.scenario[scen].material[mat].materialdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 0.0
+                self.scenario[scen].material[mat].massdata['mat_MFG_scrap_Recycled'] = 0.0
+                self.scenario[scen].material[mat].massdata['mat_MFG_scrap_Recycling_eff'] = 0.0
+                self.scenario[scen].material[mat].massdata['mat_MFG_scrap_Recycled_into_HQ'] = 0.0
+                self.scenario[scen].material[mat].massdata['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 0.0
 
-                self.scenario[scen].material[mat].materialdata['mod_EOL_p5_recycled'] = 0.0
-                self.scenario[scen].material[mat].materialdata['mat_EOL_Recycling_yield'] = 0.0
-                self.scenario[scen].material[mat].materialdata['mat_EOL_Recycled_into_HQ'] = 0.0
-                self.scenario[scen].material[mat].materialdata['mat_EOL_RecycledHQ_Reused4MFG'] = 0.0
+                self.scenario[scen].material[mat].massdata['mod_EOL_p5_recycled'] = 0.0
+                self.scenario[scen].material[mat].massdata['mat_EOL_Recycling_yield'] = 0.0
+                self.scenario[scen].material[mat].massdata['mat_EOL_Recycled_into_HQ'] = 0.0
+                self.scenario[scen].material[mat].massdata['mat_EOL_RecycledHQ_Reused4MFG'] = 0.0
 
 
         return
@@ -1322,7 +1342,7 @@ class Simulation:
                 nicekey = nice_keywds[ii]
 
                 for mat in materials:
-                    USyearly[nicekey+'_'+mat+'_'+self.name+'_'+scen] = self.scenario[scen].material[mat].materialdata[keywd]
+                    USyearly[nicekey+'_'+mat+'_'+self.name+'_'+scen] = self.scenario[scen].material[mat].massdata[keywd]
                 filter_col = [col for col in USyearly if (col.startswith(nicekey) and col.endswith(self.name+'_'+scen)) ]
                 USyearly[nicekey+'_Module_'+self.name+'_'+scen] = USyearly[filter_col].sum(axis=1)
                 # 2DO: Add multiple objects option
@@ -1511,7 +1531,7 @@ class Simulation:
         if keyword is None:
             scens = list(self.scenario.keys())[0]
             mats = list(self.scenario[scens].material.keys())[0]
-            print("Choose one of the keywords: ",  list(self.scenario[scens].material[mats].materialdata.keys()))
+            print("Choose one of the keywords: ",  list(self.scenario[scens].material[mats].massdata.keys()))
             return
 
 
@@ -1531,7 +1551,7 @@ class Simulation:
         plt.figure()
 
         for scen in scenarios:
-            plt.plot(self.scenario[scen].data['year'], self.scenario[scen].material[material].materialdata[keyword], label=scen)
+            plt.plot(self.scenario[scen].data['year'], self.scenario[scen].material[material].massdata[keyword], label=scen)
             plt.legend()
 
         plt.xlabel('Year')
@@ -1541,44 +1561,69 @@ class Simulation:
 
 class Scenario(Simulation):
 
-    def __init__(self, name, file=None):
+    def __init__(self, name, massmodulefile=None, energymodfile = None, file=None):
+
+        if massmodulefile is None and file is not None:
+            print("Deprecation warning: file has been deprecated as of v 0.3 as",
+                  "an input to class Scenario and will be fully removed for v 0.4;",
+                  "Use 'massmodulefile' instead. \n Internally renaming as massmodulefile to continue")
+            massmodulefile = file
+
         self.name = name
         self.material = {}
 
-        if file is None:
+        if massmodulefile is None:
             try:
-                file = _interactive_load('Select module baseline file')
+                massmodulefile = _interactive_load('Select module baseline (mass) file')
             except:
                 raise Exception('Interactive load failed. Tkinter not supported'+
                                 'on this system. Try installing X-Quartz and reloading')
 
-        csvdata = open(str(file), 'r', encoding="UTF-8")
-        csvdata = open(str(file), 'r', encoding="UTF-8-sig")
-        firstline = csvdata.readline()
-        secondline = csvdata.readline()
+        data, meta = _readPVICEFile(massmodulefile)
 
-        head = firstline.rstrip('\n').split(",")
-        meta = dict(zip(head, secondline.rstrip('\n').split(",")))
-
-        data = pd.read_csv(csvdata, names=head)
-        data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype(float)
         self.baselinefile = file
-        self.metdata = meta,
+        self.metdata = meta
         self.data = data
+        
+        if energymodfile is not None:
+            self.addEnergytoModule(energymodfile)
 
-    def addMaterial(self, materialname, file=None):
-        self.material[materialname] = Material(materialname, file)
+    def addEnergytoModule(self, energymodfile):
+        data, meta = _readPVICEFile(energymodfile)
 
+        self.energyfile = energymodfile
+        self.energymetdata = meta
+        self.energydata = data
+        
+        
+    def addMaterial(self, materialname, massmatfile=None, file=None, energymatfile=None):
+        
+        if massmatfile is None and file is not None:
+            print("Deprecation warning: file has been deprecated as of v 0.3 as",
+                  "an input to class Material and will be fully removed for v 0.4;",
+                  "Use 'massmatfile' instead. \n Internally renaming as massmatfile to continue")
+            massmatfile = file
+
+        self.material[materialname] = Material(materialname, massmatfile, energymatfile)
+            
     def addMaterials(self, materials, baselinefolder=None, nameformat=None):
 
         if baselinefolder is None:
             baselinefolder = r'..\..\baselines'
 
         if nameformat is None:
-            nameformat = r'\baseline_material_{}.csv'
+            nameformatMass = r'\baseline_material_mass_{}.csv'
+            nameformatEnergy = r'\baseline_material_energy_{}.csv'
         for mat in materials:
-            filemat = baselinefolder + nameformat.format(mat)
-            self.material[mat] = Material(mat, filemat)
+            filematmass = baselinefolder + nameformatMass.format(mat)
+            filematenergy = baselinefolder + nameformatEnergy.format(mat)
+            if os.path.is_file(filematenergy):
+                print("Adding Mass AND Energy files for: ", mat )
+            else:
+                filematenergy = None
+                
+            self.material[mat] = Material(mat, massmatfile = filematmass, 
+                                          energymatfile = filematenergy)
 
 
     def modifyMaterials(self, materials, stage, value, start_year=None):
@@ -1595,7 +1640,7 @@ class Scenario(Simulation):
         selectyears = self.data['year']>start_year
 
         for mat in materials:
-            self.material[mat].materialdata.loc[selectyears, stage] = value
+            self.material[mat].massdata.loc[selectyears, stage] = value
 
 
     def __getitem__(self, key):
@@ -1604,30 +1649,36 @@ class Scenario(Simulation):
     def __setitem__(self, key):
         return setattr(self, key)
 
-class Material:
-    def __init__(self, materialname, file):
-        self.materialname = materialname
 
-        if file is None:
+class Material:
+
+    def __init__(self, materialname, massmatfile, energymatfile=None):
+        self.materialname = materialname
+            
+        if massmatfile is None:
             try:
-                file = _interactive_load('Select material baseline file')
+                massmatfile = _interactive_load('Select material baseline file')
             except:
                 raise Exception('Interactive load failed. Tkinter not supported'+
                                 'on this system. Try installing X-Quartz and reloading')
 
-        csvdata = open(str(file), 'r', encoding="UTF-8")
-        csvdata = open(str(file), 'r', encoding="UTF-8-sig")
-        firstline = csvdata.readline()
-        secondline = csvdata.readline()
+        data, meta = _readPVICEFile(massmatfile)
+        
+        self.massmatfile = massmatfile
+        self.massmatmetdata = meta
+        self.massdata = data
 
-        head = firstline.rstrip('\n').split(",")
-        meta = dict(zip(head, secondline.rstrip('\n').split(",")))
+        if energymatfile is not None:
+            self.addEnergytoMaterial(energymatfile)
+    
+    
+    def addEnergytoMaterial(self, energymatfile):
 
-        data = pd.read_csv(csvdata, names=head)
-        data.loc[:, data.columns != 'year'] = data.loc[:, data.columns != 'year'].astype(float)
-        self.materialfile = file
-        self.materialmetdata = meta
-        self.materialdata = data
+        data, meta = _readPVICEFile(energymatfile)
+        
+        self.energymatfile = energymatfile
+        self.energymatmetdata = meta
+        self.energymatdata = data 
 
 
 def weibull_params(keypoints):
