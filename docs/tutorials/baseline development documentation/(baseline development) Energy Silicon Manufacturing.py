@@ -75,17 +75,18 @@ plt.ylabel('[kWh/kg]')
 # 
 # 2018 through 2030, we will do a linear interpolation down to 11 kWh/kg, assuming continued improvement.
 
-# In[9]:
+# In[7]:
 
 
 #Pre-2005
 #take average of pre 2005 value
-e_reducesilica = pd.DataFrame(index=range(1990,2031))
-e_reducesilica.loc[1990,['E_reduceSilicatoMGSi']] #= e_reducesilica_raw.loc[:1995,['E_reduce_SilicatoMGSi']].dropna(how='all').mean()
-#e_reducesilica.head(2)
+e_reducesilica = pd.DataFrame(columns=['E_reduceSilicatoMGSi'], index=range(1990,2005))
+e_reducesilica.index.name='year'
+e_reducesilica.loc[1990,['E_reduceSilicatoMGSi']] = e_reducesilica_raw.loc[:1995,['E_reduce_SilicatoMGSi']].dropna(how='all').mean().iloc[0]
+#e_reducesilica
 
 
-# In[ ]:
+# In[8]:
 
 
 #2005-2018
@@ -93,236 +94,117 @@ mrktshr_mgsi_region = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMate
 mrktshr_mgsi_region['MarketShare_RoW_MGSi'] = 1.0-mrktshr_mgsi_region['MarketShare_Chinese_MGSi']
 mrktshr_mgsi_region['MarketShare_Chinese_MGSi']*=13 #multiply by kWh/kg China
 mrktshr_mgsi_region['MarketShare_RoW_MGSi']*=11 #multiply by kWh/kg RoW
-mrktshr_mgsi_region.sum(axis=1) #sum weighted kWh/kg
+wtd_mrktshr_mgsi_region = pd.DataFrame(mrktshr_mgsi_region.sum(axis=1)) #sum weighted kWh/kg, is a series
+wtd_mrktshr_mgsi_region.columns=['E_reduceSilicatoMGSi'] #rename for merge/join
+#wtd_mrktshr_mgsi_region
 
 
-# In[ ]:
+# In[9]:
 
 
-#2018-2030
+#2018-2030, linear decrease to 11 kWh/kg in 2030
+e_reducesilica_end = pd.DataFrame(columns=['E_reduceSilicatoMGSi'], index=range(2019,2031))
+e_reducesilica_end.index.name='year'
+e_reducesilica_end.loc[2030,['E_reduceSilicatoMGSi']] = 11
+#e_reducesilica_end
 
 
-# In[ ]:
+# In[13]:
 
 
-e_batchglass_trim = e_batchglass_raw.loc[1995:,['E_batchingGlass_kWhpkg','Prct_Fuel_batch']]
+#join all together
+e_reducesilica_gappy = pd.concat([e_reducesilica,wtd_mrktshr_mgsi_region,e_reducesilica_end])
 
 
-# In[ ]:
+# In[30]:
 
 
-e_batchglass_trim['E_batchingGlass_kWhpkg']=avg_batch_e
-e_batchglass_trim['Prct_Fuel_batch']=0.0
-e_batchglass_trim.head(5)
+e_reducesilica_gaps = e_reducesilica_gappy.astype(float) #for some reason this was objects?!
+e_reducesilica_full = e_reducesilica_gaps.interpolate() #linearly interpolate between points
+e_reducesilica_trim = e_reducesilica_full.loc[1995:,['E_reduceSilicatoMGSi']] #trim to 1995-2030
 
 
-# ## Melting
+# In[38]:
+
+
+plt.plot(e_reducesilica_trim)
+plt.title('Electricity to reduce silica to MG-Si')
+plt.ylabel('Electricity Demand [kWh/kg]')
+
+
+# ## Refine MG-Si to Solar or Electrical Grade polysilicon
 # 
-# The next step in glass manufacturing is the melting of the glass. This is seperated out in the literature from the forming, although the process is usually continuous. This step also involves a significant quantity of methane gas heating. We will note this important aspect in our accounting as a fraciton of the total energy neede for each step.
+# The next step in crystalline silicon PV cell manufacturing is purifying or refining the metallurgical grade silicon to solar or electronic grade polysilicon. Currently this is primarily done through the Seimens process, which entails conversion through trichlorosilane:
+# 
+#     Si(s) + 3HCl = HSiCl3 + H2        (26)  followed by HSiCl3 + H = Si + 3HCl
+#     This reaction occurs at 350°C normally without a catalyst. A competing reaction is 
+#     Si(s) + 4HCl = SiCl4 + 2H2        (27) 
+#     contributing to the formation of unsuitable tetrachlorosilane in molar proportion of 10 to 20%."
+#     "for  each  mole  of  Si  converted  to  polysilicon,  3  to  4  moles  are  converted  to SiCl4,"
+#     "The present market of fumed silica is about 60 000 MT measured in terms of silicon unit. This presently corresponds to three times the  output  of  polysilicon  in  2000."
+# 	A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSITY OF SCIENCE AND TECHNOLOGY, Feb. 2008.
+# 
+# Here we will combine MG-Si to Trichlorosilane and trichlorosilane to polysilicon electricity demands.
+# 
+# We will create energy values for both the Siemens process and the FBR process as options for user.
 
-# In[ ]:
+# In[42]:
 
 
-cwd = os.getcwd()
 #skipcols = ['Source', 'Notes','Country']
-e_meltrefine_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-glass-meltrefine.csv",
+e_refinesilicon_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-refineMGtoSo.csv",
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[ ]:
+# In[54]:
 
 
-e_meltrefine_raw.dropna(how='all')
+#split siemens and fbr dataframes
+e_refineSi_siemens = e_refinesilicon_raw.iloc[:,0:4]
+e_refineSi_fbr = e_refinesilicon_raw.iloc[:,[4,5,6,7]]
 
 
-# In[ ]:
+# ### Siemens
+
+# In[58]:
 
 
-e_meltrefine_raw.loc[2019,'Notes']
+e_refineSi_siemens.dropna(how='all')
 
 
-# One of the fractions of methane is lower than the others. This is M. Zier, P. Stenzel, L. Kotzur, and D. Stolten, “A review of decarbonization options for the glass industry,” Energy Conversion and Management: X, vol. 10, p. 100083, Jun. 2021, doi: 10.1016/j.ecmx.2021.100083. and the energy was adjusted by the overall energy carrier for glass manufacturing in Germany. This may not be representative of the whole world, and it may also include more than just the melting step. Given that the other years are all in agreement, and the 77% is an average since the 1990s, we will remove this value and use the previous datapoint (95% from Worrell).
-
-# In[ ]:
+# In[63]:
 
 
-e_meltrefine = e_meltrefine_raw.copy()
-e_meltrefine.loc[2019,'Prct_Fuel_melt'] = np.nan
-
-#previous version used the average of all values, but this cause the fraction to rise again.
-#e_meltrefine.loc[2019,'Prct_Fuel'] = round(e_meltrefine.loc[:,'Prct_Fuel'].mean(),0) 
-#e_meltrefine.loc[2019,'Prct_Fuel']
-
-
-# Now we'll examine the energy totals.
-
-# In[ ]:
-
-
-plt.plot(e_meltrefine.index,e_meltrefine.iloc[:,0], marker='o')
-plt.title('Energy: Melt and Refine Glass')
+plt.plot(e_refineSi_siemens.index,e_refineSi_siemens.iloc[:,0], marker='o')
+plt.title('Energy: Siemens Process')
 plt.ylabel('[kWh/kg]')
 
 
-# The 1980 value is much lower than the 1997 value. This data point is from H. L. Brown, Energy Analysis of 108 Industrial Processes. The Fairmont Press, Inc., 1996. (note the publication date and the data date are not the same). and the noted batch size is a few pounds, meaning this is potentially a different scale of glass manufacturing than we are considering. Additionally, we only need to go back to 1995, therefore, we will drop this datapoint, and back propogate the 1997 data.
+# Starting with the major outlier in 1996 from Williams et al 2002. This data point is the sum of 250 and 50 from Table 3, and the data is sourced from 3 citations ranging from 1990 through 1998. It is noted that this is the electrical energy for the two Siemens steps. Handbook from 1990 has the 250, 305 enegries but these are for small reactors, Takegoshi 1996 is unavailable, Tsuo et al 1998 state "about 250 kWh/kg" number with no citation.  Therefore we will exclude Williams et al. 
 
-# In[ ]:
-
-
-e_meltrefine_subrange = e_meltrefine.loc[1995:,['E_melt_refine_total_kWhpkg','Prct_Fuel_melt']]
+# In[69]:
 
 
-# Now we will interpolate to create a complete data set for history. It will hold the edge values constant forward and backward.
-
-# In[ ]:
-
-
-e_meltrefine_filled = e_meltrefine_subrange.interpolate(limit_direction='both')
+e_refineSi_siemens.loc[1996] = np.nan
 
 
 # In[ ]:
 
 
-fig, ax1 = plt.subplots() 
-#left axis
-ax1.set_ylabel('Melting and Refining Energy [kWh/kg]', color='blue') 
-ax1.plot(e_meltrefine_filled.index,e_meltrefine_filled.iloc[:,0], color='blue') 
-ax1.set_ylim(0,4)
-ax1.set_xlim(1995,2025)
-
-#right axis
-ax2 = ax1.twinx()
-plt.ylabel('Fraction of Energy provided by Methane [%]', color='red')
-ax2.plot(e_meltrefine_filled.index,e_meltrefine_filled.iloc[:,1], color='red')  
-ax2.set_ylim(80,100)
-
-plt.title('Energy: Melt & Refine Glass')
-
-plt.show()
 
 
-# In[ ]:
+
+# ### FBR
+
+# In[59]:
 
 
-e_meltrefine_filled.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_meltrefine.csv")
+e_refineSi_fbr.dropna(how='all')
 
 
-# ## Forming
-# The next step in flat glass formation is forming the flat plate from the melt. There are many ways to do this; float glass entails the molten glass to drop into and float on a bath of molten tin; Rolled glass is drawn through cooled rollers. We will use these two processes interchangably here due to a lack of data.
-
-# In[ ]:
-
-
-cwd = os.getcwd()
-#skipcols = ['Source', 'Notes','Country']
-e_glassform_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-glassforming.csv",
-                                     index_col='year')#, usecols=lambda x: x not in skipcols)
-
-
-# In[ ]:
-
-
-e_glassform_raw.dropna(how='all')
-
-
-# In[ ]:
-
-
-plt.plot(e_glassform_raw.index,e_glassform_raw['E_Glassforming_kWhpkg'], marker='o')
-plt.title('Energy of Forming Flat glass')
-plt.xlabel('[kWh/kg]')
-
-
-# Like the previous set of data, the 1980 datapoint seems unreasonably low, and we know this might potentially be a smaller scale than the other data. Therefore, we will exclude it and perform the same interpolation for the needed time range.
-
-# In[ ]:
-
-
-e_glassform = e_glassform_raw.loc[1995:,['E_Glassforming_kWhpkg','Prct_Fuel_form']]
-e_glassform_filled = e_glassform.interpolate(limit_direction='both')
-
-
-# In[ ]:
-
-
-fig, ax1 = plt.subplots() 
-#left axis
-ax1.set_ylabel('[kWh/kg]', color='blue') 
-ax1.plot(e_glassform_filled.index,e_glassform_filled.iloc[:,0], color='blue') 
-ax1.set_ylim(0,1)
-ax1.set_xlim(1995,2025)
-
-#right axis
-#ax2 = ax1.twinx()
-#plt.ylabel('Fraction of Energy provided by Methane [%]', color='red')
-#ax2.plot(e_glassform_filled.index,e_glassform_filled.iloc[:,1], color='red')  
-#ax2.set_ylim(0,2)
-
-plt.title('Energy for Forming Flat Glass')
-
-plt.show()
-
-
-# In[ ]:
-
-
-e_glassform_filled.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_formflat.csv")
-
-
-# ## Post Forming: Anneal and Temper
+# ## Ingot growth
 # 
-# All PV flat glass for c-Si PV is tempered for safety reasons, and all tempered glass has already been annealed. Therefore, we will account for both the energy to anneal and temper the flat glass.
-# 
-# For Bifacial PV technology, the glasses are actually NOT tempered. They are heat treated instead. LOOK INTO DIFFERENCES IN THIS ENERGY DEMAND.
-
-# In[ ]:
-
-
-cwd = os.getcwd()
-#skipcols = ['Source', 'Notes','Country']
-e_glass_annealtemper_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-glass-postforming.csv",
-                                     index_col='year')#, usecols=lambda x: x not in skipcols)
-
-
-# In[ ]:
-
-
-e_glass_annealtemper_raw.dropna(how='all')
-
-
-# In[ ]:
-
-
-e_glass_annealtemper_raw.loc[1997,'Notes']
-
-
-# In[ ]:
-
-
-plt.plot(e_glass_annealtemper_raw.index,e_glass_annealtemper_raw['E_GlassTempering_kWhpkg'], marker='o')
-plt.title('Energy of Annealing and Tempering Flat glass')
-plt.xlabel('[kWh/kg]')
-
-
-# Once again, the 1980 datapoint seems excessively low and will therefore be excluded.
-# 
-# The jump between 1997 and 2001 data seems unlikely to be a trend and more attributable to differing methods of calculating the energy requirements. The modern datapoint falls between these two points. Therefore, like for the batching energy, we wil take an average of these 3 points and use that for all time. 
-
-# In[ ]:
-
-
-e_glass_annealtemper_trim = e_glass_annealtemper_raw.loc[1995:,['E_GlassTempering_kWhpkg','Prct_fuel_annealtemper']]
-
-
-# In[ ]:
-
-
-avg_annealtemper_e = e_glass_annealtemper_trim.iloc[:,0].mean()
-avg_prctfuel_annealtemper = e_glass_annealtemper_trim.iloc[:,1].mean()
-e_glass_annealtemper_trim['E_GlassTempering_kWhpkg']= avg_annealtemper_e
-e_glass_annealtemper_trim['Prct_fuel_annealtemper']= avg_prctfuel_annealtemper
-e_glass_annealtemper_trim.head(5)
-
+# Cz
 
 # ## Combine All MFG energy
 # 
