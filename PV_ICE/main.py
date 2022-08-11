@@ -183,7 +183,7 @@ def _unitReferences(keyword):
                         'mat_Total_MFG_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
                         'mat_Total_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
                         'mat_Total_Recycled_OU': {'unit': 'Mass [g]', 'source': 'generated'},
-                        'Yearly_Sum_Area_disposedby_Failure': {'unit': 'Area [m\u00b2]', 'source': 'generated'}
+                        'Yearly_Sum_Area_disposedby_Failure': {'unit': 'Area [m$^2$]', 'source': 'generated'}
                         }
 
 

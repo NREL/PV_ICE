@@ -69,14 +69,26 @@ r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='50_Year_Module', file=moduleFile)
 r1.scenario['50_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['50_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
+r1.scenario['50_Year_Module'].addMaterial('silver', file=r'..\baselines\baseline_material_silver.csv')
+r1.scenario['50_Year_Module'].addMaterial('copper', file=r'..\baselines\baseline_material_copper.csv')
+r1.scenario['50_Year_Module'].addMaterial('aluminium_frames', file=r'..\baselines\baseline_material_aluminium_frames.csv')
+r1.scenario['50_Year_Module'].addMaterial('encapsulant', file=r'..\baselines\baseline_material_encapsulant.csv')
 
 r1.createScenario(name='15_Year_Module', file=moduleFile)
 r1.scenario['15_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['15_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
+r1.scenario['15_Year_Module'].addMaterial('silver', file=r'..\baselines\baseline_material_silver.csv')
+r1.scenario['15_Year_Module'].addMaterial('copper', file=r'..\baselines\baseline_material_copper.csv')
+r1.scenario['15_Year_Module'].addMaterial('aluminium_frames', file=r'..\baselines\baseline_material_aluminium_frames.csv')
+r1.scenario['15_Year_Module'].addMaterial('encapsulant', file=r'..\baselines\baseline_material_encapsulant.csv')
 
 r1.createScenario(name='base', file=moduleFile)
 r1.scenario['base'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
 r1.scenario['base'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
+r1.scenario['base'].addMaterial('silver', file=r'..\baselines\baseline_material_silver.csv')
+r1.scenario['base'].addMaterial('copper', file=r'..\baselines\baseline_material_copper.csv')
+r1.scenario['base'].addMaterial('aluminium_frames', file=r'..\baselines\baseline_material_aluminium_frames.csv')
+r1.scenario['base'].addMaterial('encapsulant', file=r'..\baselines\baseline_material_encapsulant.csv')
 
 
 # In[6]:
@@ -90,7 +102,6 @@ r1.scenario['50_Year_Module'].data.keys()
 # In[7]:
 
 
-
 r1.scenario['50_Year_Module'].data['mod_reliability_t50'] = 60
 r1.scenario['50_Year_Module'].data['mod_reliability_t90'] = 70
 r1.scenario['50_Year_Module'].data['mod_lifetime'] = 50
@@ -100,6 +111,7 @@ r1.scenario['15_Year_Module'].data['mod_reliability_t50'] = 20
 r1.scenario['15_Year_Module'].data['mod_reliability_t90'] = 25
 r1.scenario['15_Year_Module'].data['mod_lifetime'] = 15
 r1.scenario['15_Year_Module'].data['mod_degradation'] = 1.4
+
 
 
 # ## Change Recyclability Values
@@ -131,6 +143,8 @@ r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EOL_Recycling_
 r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EOL_Recycled_into_HQ'] = 100.0
 r1.scenario['50_Year_Module'].material['glass'].materialdata['mat_EoL_Recycled_HQ_into_MFG'] = 100.0 #95% of the above 2 gets turned into new panels
 
+
+# ## Turn IRENA lifetime values on or off & run PV ICE simulation
 
 # In[9]:
 
@@ -333,6 +347,7 @@ plt.ylabel('Virgin Glass [Million Tonnes]')
 plt.legend()
 plt.title('Annual Virgin Material Input')
 plt.xlim([2000, 2050])
+
 
 
 # In[25]:

@@ -28,6 +28,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 import PV_ICE
 
 
+
 # ### Step 2: Add Scenarios and Materials
 # 
 # ``silicon`` and ``glass`` materials are added to the two simulations, along with a scenario, in this case the ``baseline_modules_US``. The baseline files for decadence scenario will be modified.
