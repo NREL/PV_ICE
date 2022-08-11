@@ -326,9 +326,9 @@ class Simulation:
                 os.makedirs(path)
                 print('Making path: '+path)
 
-    def createScenario(self, name, file=None):
+    def createScenario(self, name, massmodulefile=None, energymodulefile=None, file=None):
 
-        self.scenario[name] = Scenario(name, file)
+        self.scenario[name] = Scenario(name, file=file, massmodulefile=massmodulefile, energymodulefile=energymodulefile)
 
 
 
@@ -397,6 +397,8 @@ class Simulation:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
 
+        print(">>>> Calculating Material Flows <<<<\n")
+        
         for scen in scenarios:
 
             print("Working on Scenario: ", scen)
@@ -1090,44 +1092,51 @@ class Simulation:
             if isinstance(materials, str):
                 materials = [materials]
 
+        print("\n\n>>>> Calculating Energy Flows <<<<\n")
+
         for scen in scenarios:
-            for mat in materials:
-                df = self.scenario[scen].data
-                dm = self.scenario[scen].material[mat].massdata
-                
-                modEnergy=self.scenario[scen].energydata
-                matEnergy=self.scenario[scen].material[mat].energymatdata
-                                
-                de = pd.DataFrame()
+            print("Working on Scenario: ", scen)
+            print("********************")
             
-                de['mod_MFG'] = df['ModuleTotal_MFG']*modEnergy['e_mod_MFG']
-                de['mod_Install'] = df['Area']*modEnergy['e_mod_Install']
-                de['mod_OandM'] = df['Cumulative_Active_Area']*modEnergy['e_mod_OandM']
-                de['mod_Repair'] = df['Repaired_Area']*modEnergy['e_mod_Repair']
-                de['mod_Demount'] = (df['Resold_Area']+df['Status_BAD_Area']+df['Landfill_0']
-                                   +df['Area_for_EOL_pathsG'])*modEnergy['e_mod_Demount']
-                de['mod_Store'] = df['P2_stored']*modEnergy['e_mod_Store']
-                de['mod_Resell_Certify'] = df['Resold_Area']*modEnergy['e_mod_Resell_Certify']
-                de['mod_ReMFG_Disassembly'] = df['P3_reMFG']*modEnergy['e_mod_ReMFG_Disassembly']
-                de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
+            df = self.scenario[scen].data
+            modEnergy=self.scenario[scen].energydata
 
-            #material
-                de['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
-                de['mat_MFG_virgin'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
-                de['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
-                de['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
-
-                de['mat_Landfill'] = dm['mat_Total_Landfilled']*matEnergy['e_mat_Landfill']
-                de['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*matEnergy['e_mat_EoL_ReMFG_clean']
-                de['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
-                de['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
+            de = pd.DataFrame()
+            de['mod_MFG'] = df['ModuleTotal_MFG']*modEnergy['e_mod_MFG']
+            de['mod_Install'] = df['Area']*modEnergy['e_mod_Install']
+            de['mod_OandM'] = df['Cumulative_Active_Area']*modEnergy['e_mod_OandM']
+            de['mod_Repair'] = df['Repaired_Area']*modEnergy['e_mod_Repair']
+            de['mod_Demount'] = (df['Resold_Area']+df['Status_BAD_Area']+df['Landfill_0']
+                               +df['Area_for_EOL_pathsG'])*modEnergy['e_mod_Demount']
+            de['mod_Store'] = df['P2_stored']*modEnergy['e_mod_Store']
+            de['mod_Resell_Certify'] = df['Resold_Area']*modEnergy['e_mod_Resell_Certify']
+            de['mod_ReMFG_Disassembly'] = df['P3_reMFG']*modEnergy['e_mod_ReMFG_Disassembly']
+            de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
 
             #Energy Generation, Energy_out = Insolation * ActivePower/Irradience * time * PR
             de['e_out_annual_[Wh]'] = insolation * (df['Installed_Capacity_[W]']/df['irradiance_stc']) * 365 * PR
+            
+            self.scenario[scen].energyResults = de
 
-            de_cum = pd.DataFrame(de.sum(), columns=[str(scen)])
+            for mat in materials:
 
-            return de, de_cum
+                print("==> Working on Energy for Material : ", mat)
+                
+                dm = self.scenario[scen].material[mat].massdata               
+                matEnergy=self.scenario[scen].material[mat].energymatdata
+    
+                demat = pd.DataFrame()
+                demat['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
+                demat['mat_MFG_virgin'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
+                demat['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
+                demat['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
+
+                demat['mat_Landfill'] = dm['mat_Total_Landfilled']*matEnergy['e_mat_Landfill']
+                demat['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*matEnergy['e_mat_EoL_ReMFG_clean']
+                demat['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
+                demat['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
+
+                self.scenario[scen].material[mat].energyResultsMat = demat
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
 
@@ -1561,7 +1570,7 @@ class Simulation:
 
 class Scenario(Simulation):
 
-    def __init__(self, name, massmodulefile=None, energymodfile = None, file=None):
+    def __init__(self, name, massmodulefile=None, energymodulefile = None, file=None):
 
         if massmodulefile is None and file is not None:
             print("Deprecation warning: file has been deprecated as of v 0.3 as",
@@ -1585,13 +1594,13 @@ class Scenario(Simulation):
         self.metdata = meta
         self.data = data
         
-        if energymodfile is not None:
-            self.addEnergytoModule(energymodfile)
+        if energymodulefile is not None:
+            self.addEnergytoModule(energymodulefile)
 
-    def addEnergytoModule(self, energymodfile):
-        data, meta = _readPVICEFile(energymodfile)
+    def addEnergytoModule(self, energymodulefile):
+        data, meta = _readPVICEFile(energymodulefile)
 
-        self.energyfile = energymodfile
+        self.energyfile = energymodulefile
         self.energymetdata = meta
         self.energydata = data
         
