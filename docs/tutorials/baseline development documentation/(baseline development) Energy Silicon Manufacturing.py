@@ -109,14 +109,14 @@ e_reducesilica_end.loc[2030,['E_reduceSilicatoMGSi']] = 11
 #e_reducesilica_end
 
 
-# In[13]:
+# In[10]:
 
 
 #join all together
 e_reducesilica_gappy = pd.concat([e_reducesilica,wtd_mrktshr_mgsi_region,e_reducesilica_end])
 
 
-# In[30]:
+# In[11]:
 
 
 e_reducesilica_gaps = e_reducesilica_gappy.astype(float) #for some reason this was objects?!
@@ -124,7 +124,7 @@ e_reducesilica_full = e_reducesilica_gaps.interpolate() #linearly interpolate be
 e_reducesilica_trim = e_reducesilica_full.loc[1995:,['E_reduceSilicatoMGSi']] #trim to 1995-2030
 
 
-# In[38]:
+# In[12]:
 
 
 plt.plot(e_reducesilica_trim)
@@ -136,7 +136,7 @@ plt.ylabel('Electricity Demand [kWh/kg]')
 # 
 # The next step in crystalline silicon PV cell manufacturing is purifying or refining the metallurgical grade silicon to solar or electronic grade polysilicon. Currently this is primarily done through the Seimens process, which entails conversion through trichlorosilane:
 # 
-#     Si(s) + 3HCl = HSiCl3 + H2        (26)  followed by HSiCl3 + H = Si + 3HCl
+#     Si(s) + 3HCl = HSiCl3 + H2        (26)  followed by HSiCl3 + 3H = Si + 3HCl
 #     This reaction occurs at 350°C normally without a catalyst. A competing reaction is 
 #     Si(s) + 4HCl = SiCl4 + 2H2        (27) 
 #     contributing to the formation of unsuitable tetrachlorosilane in molar proportion of 10 to 20%."
@@ -144,11 +144,11 @@ plt.ylabel('Electricity Demand [kWh/kg]')
 #     "The present market of fumed silica is about 60 000 MT measured in terms of silicon unit. This presently corresponds to three times the  output  of  polysilicon  in  2000."
 # 	A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSITY OF SCIENCE AND TECHNOLOGY, Feb. 2008.
 # 
-# Here we will combine MG-Si to Trichlorosilane and trichlorosilane to polysilicon electricity demands.
+# Here we will combine the steps of MG-Si to Trichlorosilane and trichlorosilane to polysilicon electricity demands.
 # 
 # We will create energy values for both the Siemens process and the FBR process as options for user.
 
-# In[42]:
+# In[35]:
 
 
 #skipcols = ['Source', 'Notes','Country']
@@ -156,7 +156,7 @@ e_refinesilicon_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMate
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[54]:
+# In[36]:
 
 
 #split siemens and fbr dataframes
@@ -166,32 +166,34 @@ e_refineSi_fbr = e_refinesilicon_raw.iloc[:,[4,5,6,7]]
 
 # ### Siemens
 
-# In[58]:
+# In[37]:
 
 
 e_refineSi_siemens.dropna(how='all')
 
 
-# In[63]:
+# In[38]:
 
 
 plt.plot(e_refineSi_siemens.index,e_refineSi_siemens.iloc[:,0], marker='o')
-plt.title('Energy: Siemens Process')
+plt.title('Electricity: Siemens Process')
 plt.ylabel('[kWh/kg]')
 
 
 # Starting with the major outlier in 1996 from Williams et al 2002. This data point is the sum of 250 and 50 from Table 3, and the data is sourced from 3 citations ranging from 1990 through 1998. It is noted that this is the electrical energy for the two Siemens steps. Handbook from 1990 has the 250, 305 enegries but these are for small reactors, Takegoshi 1996 is unavailable, Tsuo et al 1998 state "about 250 kWh/kg" number with no citation.  Therefore we will exclude Williams et al. 
 
-# In[69]:
+# In[39]:
 
 
-e_refineSi_siemens.loc[1996] = np.nan
+e_refineSi_siemens.loc[1996] = np.nan #removing Williams et al.
 
 
-# In[ ]:
+# In[40]:
 
 
-
+plt.plot(e_refineSi_siemens.index, e_refineSi_siemens.iloc[:,0], marker='o')
+plt.title('Electricity: Siemens Process')
+plt.ylabel('[kWh/kg]')
 
 
 # ### FBR
