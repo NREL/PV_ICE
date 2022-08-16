@@ -144,11 +144,11 @@ plt.ylabel('Electricity Demand [kWh/kg]')
 #     "The present market of fumed silica is about 60 000 MT measured in terms of silicon unit. This presently corresponds to three times the  output  of  polysilicon  in  2000."
 # 	A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSITY OF SCIENCE AND TECHNOLOGY, Feb. 2008.
 # 
-# Here we will combine the steps of MG-Si to Trichlorosilane and trichlorosilane to polysilicon electricity demands.
+# Here we will combine the steps of MG-Si to Trichlorosilane and trichlorosilane to polysilicon electricity demands. Please note these are electricity demands, not total ENERGY demands.
 # 
 # We will create energy values for both the Siemens process and the FBR process as options for user.
 
-# In[35]:
+# In[64]:
 
 
 #skipcols = ['Source', 'Notes','Country']
@@ -156,23 +156,23 @@ e_refinesilicon_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMate
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[36]:
+# In[28]:
 
 
 #split siemens and fbr dataframes
-e_refineSi_siemens = e_refinesilicon_raw.iloc[:,0:4]
-e_refineSi_fbr = e_refinesilicon_raw.iloc[:,[4,5,6,7]]
+e_refineSi_siemens = e_refinesilicon_raw.iloc[:,0:2]
+e_refineSi_fbr = e_refinesilicon_raw.iloc[:,3:5]
 
 
 # ### Siemens
 
-# In[37]:
+# In[29]:
 
 
 e_refineSi_siemens.dropna(how='all')
 
 
-# In[38]:
+# In[30]:
 
 
 plt.plot(e_refineSi_siemens.index,e_refineSi_siemens.iloc[:,0], marker='o')
@@ -182,13 +182,13 @@ plt.ylabel('[kWh/kg]')
 
 # Starting with the major outlier in 1996 from Williams et al 2002. This data point is the sum of 250 and 50 from Table 3, and the data is sourced from 3 citations ranging from 1990 through 1998. It is noted that this is the electrical energy for the two Siemens steps. Handbook from 1990 has the 250, 305 enegries but these are for small reactors, Takegoshi 1996 is unavailable, Tsuo et al 1998 state "about 250 kWh/kg" number with no citation.  Therefore we will exclude Williams et al. 
 
-# In[39]:
+# In[31]:
 
 
 e_refineSi_siemens.loc[1996] = np.nan #removing Williams et al.
 
 
-# In[40]:
+# In[32]:
 
 
 plt.plot(e_refineSi_siemens.index, e_refineSi_siemens.iloc[:,0], marker='o')
@@ -196,9 +196,30 @@ plt.title('Electricity: Siemens Process')
 plt.ylabel('[kWh/kg]')
 
 
+# There is noise, but generally there is an observable downward trend. Rather than curve fitting and being wrong all the time, I will manually remove points that cause upward or downward jumps, and interpolate based on the remaining data points. This is not a perfect solution, but should provide a decent approximation to reality.
+
+# In[62]:
+
+
+e_refineSi_siemens_manual = e_refineSi_siemens.copy()
+e_refineSi_siemens_manual.loc[1998] = np.nan #removing bumps
+e_refineSi_siemens_manual.loc[2008] = np.nan #removing bumps
+e_refineSi_siemens_manual.loc[2014] = np.nan #removing bumps
+e_refineSi_siemens_manual.loc[2015] = np.nan #removing bumps
+
+e_refineSi_siemens_manual=e_refineSi_siemens_manual.interpolate()
+
+plt.plot(e_refineSi_siemens_manual.index, e_refineSi_siemens_manual.iloc[:,0], marker='o')
+plt.plot(e_refineSi_siemens.index, e_refineSi_siemens.iloc[:,0], marker='^', color='black')
+
+plt.title('Electricity: Siemens Process')
+plt.ylabel('[kWh/kg]')
+plt.xlim(1989,2021)
+
+
 # ### FBR
 
-# In[59]:
+# In[65]:
 
 
 e_refineSi_fbr.dropna(how='all')
@@ -206,7 +227,46 @@ e_refineSi_fbr.dropna(how='all')
 
 # ## Ingot growth
 # 
-# Cz
+# The next step in manufacturing silicon PV is ingot growth. There are two primary methods of ingot growth in the PV industry over it's history; multi-crystalline silicon and monocrystalline silicon. Initially, all PV was monocrystalline, then Multicrystalline silicon ingots were the dominent market share for most of a decade, and currently monocrystalline is making a resurgence to market dominence. We will cover the energy associated with both processes here, and weight the historical energy demand by the marketshare of these two technologies.
+
+# In[68]:
+
+
+pvice_mcSimono_marketshare = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv",
+                                     index_col='Year')
+
+
+# ### Multi-crystalline Silicon
+# 
+# mc-Si is created through putting chunked polysilicon into a large block, heating and casting into a single large block. This process results in many crystallographic grains within the block, which slightly reduces the efficiency of the cell, but is cheap. 
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# ### Mono-crystalline Silicon
+# 
+# mono-Si is created through the Czochralski process, in which a seed crystal is rotated and drawn away from a vat of molten silicon, growing a large boule. This results in the whole boule/ingot being oriented in one crystallographic direction, which increases the cell efficiency, but is time consuming and expensive.
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
 
 # ## Combine All MFG energy
 # 
