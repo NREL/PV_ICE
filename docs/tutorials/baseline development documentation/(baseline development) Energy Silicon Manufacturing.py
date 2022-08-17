@@ -148,7 +148,7 @@ plt.ylabel('Electricity Demand [kWh/kg]')
 # 
 # We will create energy values for both the Siemens process and the FBR process as options for user.
 
-# In[64]:
+# In[13]:
 
 
 #skipcols = ['Source', 'Notes','Country']
@@ -156,7 +156,7 @@ e_refinesilicon_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMate
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[28]:
+# In[14]:
 
 
 #split siemens and fbr dataframes
@@ -166,13 +166,13 @@ e_refineSi_fbr = e_refinesilicon_raw.iloc[:,3:5]
 
 # ### Siemens
 
-# In[29]:
+# In[15]:
 
 
 e_refineSi_siemens.dropna(how='all')
 
 
-# In[30]:
+# In[16]:
 
 
 plt.plot(e_refineSi_siemens.index,e_refineSi_siemens.iloc[:,0], marker='o')
@@ -182,13 +182,13 @@ plt.ylabel('[kWh/kg]')
 
 # Starting with the major outlier in 1996 from Williams et al 2002. This data point is the sum of 250 and 50 from Table 3, and the data is sourced from 3 citations ranging from 1990 through 1998. It is noted that this is the electrical energy for the two Siemens steps. Handbook from 1990 has the 250, 305 enegries but these are for small reactors, Takegoshi 1996 is unavailable, Tsuo et al 1998 state "about 250 kWh/kg" number with no citation.  Therefore we will exclude Williams et al. 
 
-# In[31]:
+# In[17]:
 
 
 e_refineSi_siemens.loc[1996] = np.nan #removing Williams et al.
 
 
-# In[32]:
+# In[18]:
 
 
 plt.plot(e_refineSi_siemens.index, e_refineSi_siemens.iloc[:,0], marker='o')
@@ -198,7 +198,7 @@ plt.ylabel('[kWh/kg]')
 
 # There is noise, but generally there is an observable downward trend. Rather than curve fitting and being wrong all the time, I will manually remove points that cause upward or downward jumps, and interpolate based on the remaining data points. This is not a perfect solution, but should provide a decent approximation to reality.
 
-# In[62]:
+# In[19]:
 
 
 e_refineSi_siemens_manual = e_refineSi_siemens.copy()
@@ -229,7 +229,7 @@ e_refineSi_fbr.dropna(how='all')
 # 
 # The next step in manufacturing silicon PV is ingot growth. There are two primary methods of ingot growth in the PV industry over it's history; multi-crystalline silicon and monocrystalline silicon. Initially, all PV was monocrystalline, then Multicrystalline silicon ingots were the dominent market share for most of a decade, and currently monocrystalline is making a resurgence to market dominence. We will cover the energy associated with both processes here, and weight the historical energy demand by the marketshare of these two technologies.
 
-# In[68]:
+# In[20]:
 
 
 pvice_mcSimono_marketshare = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv",
