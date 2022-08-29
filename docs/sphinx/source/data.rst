@@ -1,4 +1,4 @@
-.. _data:
+y.. _data:
 
 Data: Mass
 ===========
@@ -163,105 +163,107 @@ This first set of output variables are the ones which are most useful as a user 
 
 **Module Outputs**
 
-``Yearly_Sum_Area_disposedby_Failure`` and ``Yearly_Sum_Power_disposedby_Failure``
+``Yearly_Sum_Area_disposedby_Failure [m2] : float`` and ``Yearly_Sum_Power_disposedby_Failure [W] : float``
 The annual module area and power removed from the field through Weibull controlled failure.
 
-``Yearly_Sum_Area_disposedby_ProjectLifetime`` and ``Yearly_Sum_Power_disposedby_ProjectLifetime``
+``Yearly_Sum_Area_disposedby_ProjectLifetime [m2] : float`` and ``Yearly_Sum_Power_disposedby_ProjectLifetime [W] : float``
 The annual module area and power removed from the field by economic project lifetime.
 
-``Yearly_Sum_Area_disposed`` and ``Yearly_Sum_Power_disposed``
+``Yearly_Sum_Area_disposed [m2] : float`` and ``Yearly_Sum_Power_disposed [W] : float``
 The annual sum of module area and power disposed by all EOL modes.
 
-``landfilled_noncollected``
+``landfilled_noncollected [m2] : float``
 The annual module area of not collected at EOL. These are sent to landfill.
 
-``Repaired_[W]`` and ``Repaired_Area``
+``Repaired_[W] [W] : float`` and ``Repaired_Area [m2] : float``
 The annual module area and power which are repaired and return to the field.
 
-``Resold_Area`` and ``Resold_[W]``
+``Resold_Area [m2] : float`` and ``Resold_[W] [W] : float``
 The annual module area and power which are resold on the secondary market and return to the field.
 
-``Cumulative_Active_Area`` and ``Installed_Capacity_[W]``
+``Cumulative_Active_Area [m2] : float`` and ``Installed_Capacity_[W] [W] : float``
 The running quantity of area and power active in the field. This is the basis of effective capacity.
 
-``Status_BAD_Area`` and ``Status_BAD_[W]``
+``Status_BAD_Area [m2] : float`` and ``Status_BAD_[W] [W] : float``
 The annual module area and power designated as bad status, i.e. the area that reached EOL through failure and/or are less than 80% of nameplate power.
 
-``Area_for_EOL_pathsG`` and ``Power_for_EOL_pathsG``
+``Area_for_EOL_pathsG [m2] : float`` and ``Power_for_EOL_pathsG [W] : float``
 The annual module area and power designated as good status, i.e. the area that reached EOL through economic EOL and is at or above 80% of nameplate power.
 
-``WeibullParams``
+``WeibullParams [none] : float``
 The calculated alpha and beta Weibull parameters based on T50 and T90. 
 
-``EOL_Landfill0``
-``Landfill_0``
-The annual module area which is sent to the landfill after being collected. landfill area not collected running sum
+``EOL_Landfill0 [m2] : float``
+The annual module area in total which is sent to the landfill, including all non collected area and the collected area (Landfill_0)
 
-``EOL_BadStatus``
+``Landfill_0 [m2] : float``
+The annual module area which is sent to the landfill after being collected. This does not include not collected landfill area.
+
+``EOL_BadStatus [m2] : float``
 The annual sum of module area which is in the bad status category.
 
-``EOL_PG``
+``EOL_PG [m2] : float``
 The annual sum of module area which is in the good status category. 
 
-``EOL_PATHS``
+``EOL_PATHS [m2] : float``
 The annual sum of module area including all good status and all collected bad status.
 
-``P2_stored``
+``P2_stored [m2] : float``
 The annual sum of good and bad status module area which is stored.
 
-``P3_reMFG``
+``P3_reMFG [m2] : float``
 The annual sum of good and bad status module area which is remanufactured.
 
-``P4_recycled``
+``P4_recycled [m2] : float``
 The annual sum of good and bad status module area which is recycled.
 
-``ModuleTotal_MFG``
+``ModuleTotal_MFG [m2] : float``
 The annual total module area which is manufactured. This value accounts for the increase needed due to module manufacturing yield.
 
 
 
 **Material Outputs**
 
-``mat_PG2_stored``
+``mat_PG2_stored [g] : float``
 The annual mass flow of EOL material that is stored.
 
-``mat_reMFG``
+``mat_reMFG [g] : float``
 The annual mass flow of EOL material that is remanufactured.
 
-``mat_reMFG_2_recycle``
+``mat_reMFG_2_recycle [g] : float``
 The annual mass flow of EOL material that unsuccessfully remanufactured and sent to recycling instead.
 
-``mat_recycled_all``
+``mat_recycled_all [g] : float``
 The annual mass flow of EOL material that is sent to recycling, including remanufature to recycling and straight to recycling.
 
-``mat_recycled_yield``
+``mat_recycled_yield [g] : float``
 The annual mass flow of EOL material that is successfully recycled.
 
-``mat_EOL_Recycled_HQ_into_MFG``
+``mat_EOL_Recycled_HQ_into_MFG [g] : float``
 The annual mass flow of EOL material that is successfully recycled into high quality/high purity and is used in the manufacture of PV modules (closed-loop), offsetting virgin material demand.
 
-``mat_Manufacturing_Input``
+``mat_Manufacturing_Input [g] : float``
 The annual mass flow of material entering material manufacturing (the precursor step to module manufacturing), including raw virgin material and recycled material. Remanufactured material skips this step, but does reduce this quantity.
 
-``mat_MFG_Scrap``
+``mat_MFG_Scrap [g] : float``
 The annual mass flow of material which was not successfully manufactured, manufacturing scrap, or unyield.
 
-``mat_MFG_Scrap_Sentto_Recycling``
+``mat_MFG_Scrap_Sentto_Recycling [g] : float``
 The annual mass flow of material manufacturing scrap which is sent to recycling.
 
-``mat_MFG_Recycled_HQ_into_MFG``
+``mat_MFG_Recycled_HQ_into_MFG [g] : float``
 The annual mass flow of material manufacturing scrap which is sucessfully recycled and is used in the manufacture of a PV module (closed-loop), offsetting virgin material demand.
 
-``mat_Virgin_Stock``
+``mat_Virgin_Stock [g] : float``
 The annual mass flow of virgin material demand.
 
-``mat_Total_EOL_Landfilled``
+``mat_Total_EOL_Landfilled [g] : float``
 The annual mass flow of EOL material which is landfilled.
 
-``mat_Total_MFG_Landfilled``
+``mat_Total_MFG_Landfilled [g] : float``
 The annual mass flow of material manufacturing scrap which is landfilled.
 
-``mat_Total_Landfilled``
+``mat_Total_Landfilled [g] : float``
 The annual mass flow of material which is landfilled, including EOL and manufacturing scrap.
 
 
@@ -272,16 +274,16 @@ This set of variables exist within the code and support the calculation of the m
 
 **Module Outputs**
 
-``Area``
+``Area [m2] : float``
 This annual variable keeps track of the module area with additions and subtractions annually. This variable supports module mass flow calculations.
 
-``EOL_PG_Year_##``
+``EOL_PG_Year_## [m2] : float``
 This set of variables tracks how much area goes through the status/path good in the year
 
-``EOL_L0_Year_##``
+``EOL_L0_Year_## [m2] : float``
 This set of variables tracks how much area goes to the landfill on any particular year. This is the sum of all paths to the landfill.
 
-``EOL_BS_Year#``
+``EOL_BS_Year# [m2] : float``
 This set of variables tracks how much area goes through the status/path bad in the year.
 
 For each the good and bad status modules, there are designated paths available. The following variables are **PG for path/status good** and **PB for path/status bad**. The variable tracks the same area/mass flow for the respective module status. The path number designates the final destination: 
@@ -290,110 +292,110 @@ For each the good and bad status modules, there are designated paths available. 
 3. Remanufacture
 4. Recycle
 
-``PG/PB1_landfill``
+``PG/PB1_landfill [m2] : float``
 The annual module area of good/bad status modules which are sent to the landfill. This is partially controlled by user inputs.
 
-``PG/PB2_stored``
+``PG/PB2_stored [m2] : float``
 The annual module area of good/bad status modules which are sent to storage. This is partially controlled by user inputs.
 
-``PG/PB3_reMFG``
+``PG/PB3_reMFG [m2] : float``
 The annual module area of good/bad status modules which are sent to remanufacturing. This is partially controlled by user inputs.
 
-``PG/PB3_reMFG_yield``
+``PG/PB3_reMFG_yield [m2] : float``
 The annual module area of status good/bad which is successfully remanufactured and sent on to material level remanufacturing.
 
-``PG/PB3_reMFG_unyield``
+``PG/PB3_reMFG_unyield [m2] : float``
 The annual module area of status good/bad which is NOT successfully remanufactured and sent on to material level remanufacturing.
 
-``PG/PB4_recycled``
+``PG/PB4_recycled [m2] : float``
 The annual module area of good/bad status modules which are sent to recycling. This is partially controlled by user inputs.
 
 
 
 **Material Outputs**
 
-``mat_L0``
+``mat_L0 [g] : float``
 The annual mass flow of material which is landfilled from the module not being collected at EOL.
 
-``mat_L1``
+``mat_L1 [g] : float``
 The annual mass flow of material which is landfilled intentionally after module collection.
 
-``mat_reMFG_mod_unyield``
+``mat_reMFG_mod_unyield [g] : float``
 The annual mass flow of material contained in modules which were unsuccessfully remanufactured, module remanufacturing scrap. This material can either be landfilled (L2) or sent to recycling (reMFG to recycle module property).
 
-``mat_reMFG_target``
+``mat_reMFG_target [g] : float``
 The annual mass flow of material which is a remanufacturing target. This is determined by user input.
 
-``mat_reMFG_untarget``
+``mat_reMFG_untarget [g] : float``
 The annual mass flow of material which is NOT a remanufacturing target. This is the inverse of mat_reMFG_target.
 
-``mat_reMFG_yield``
+``mat_reMFG_yield [g] : float``
 The annual mass flow of material which was successfully remanufactured. This is determined by user input.
 
-``mat_reMFG_unyield``
+``mat_reMFG_unyield [g] : float``
 The annual mass flow of material which was NOT successfully remanufactured. This is the inverse of mat_reMFG_yield.
 
-``mat_reMFG_all_unyields``
+``mat_reMFG_all_unyields [g] : float``
 The annual mass flow of material of all unsucessful remanufacturing from both the module and material flows. This summed path has the option of being landfilled or recycled.
 
-``mat_L2``
+``mat_L2 [g] : float``
 The annual mass flow of material which is unsuccessfully remanufactured and not sent to recycling, remanufacturing scrap which is landfilled or unrecoverable. Includes un-yields of module and material remanufacturing.
 
-``mat_recycled_PG4``
+``mat_recycled_PG4 [g] : float``
 The annual mass flow of material sent to recycling from the module flow.
 
-``mat_recycled_target``
+``mat_recycled_target [g] : float``
 The annual mass flow of material which is targeted for and sent to recycling. This can be smaller than mat_recycled_PG4.
 
-``mat_L3``
+``mat_L3 [g] : float``
 The annual mass flow of EOL material which is not targeted for recycling.
 
-``mat_L4``
+``mat_L4 [g] : float``
 The annual mass flow of EOL material which is unsuccessfully recycled, recycling scrap which is unrecoverable.
 
-``mat_EOL_Recycled_2_HQ``
+``mat_EOL_Recycled_2_HQ [g] : float``
 The annual mass flow of EOL material which is recycled into high quality/high purity material.
 
-``mat_EOL_Recycled_2_OQ``
+``mat_EOL_Recycled_2_OQ [g] : float``
 The annual mass flow of EOL material which is recycled into a lower quality/purity material not suitable for PV manufacturing, open-loop or downcycling.
 
-``mat_EOL_Recycled_HQ_into_OU``
+``mat_EOL_Recycled_HQ_into_OU [g] : float``
 The annual mass flow of material which is recycled into high/puroty/high quality material and used for another industry, open-loop high quality recycling.
 
-``mat_EnteringModuleManufacturing_total``
+``mat_EnteringModuleManufacturing_total [g] : float``
 The annual mass flow of material entering module manufacturing, as determined by the annual deployment requirement accounting for the module manufacturing yield (i.e. this is larger than the material actually deployed).
 
-``mat_UsedSuccessfullyinModuleManufacturing``
+``mat_UsedSuccessfullyinModuleManufacturing [g] : float``
 The annual mass flow of material which makes it into the module and is deployed.
 
-``mat_LostinModuleManufacturing``
+``mat_LostinModuleManufacturing [g] : float``
 The annual mass flow of material lost during module manufacturing due to module yield.
 
-``mat_EnteringModuleManufacturing_virgin``
+``mat_EnteringModuleManufacturing_virgin [g] : float``
 The annual mass flow of virgin material which enters module manufacturing. This value is reduced by any closed-loop offsets.
 
-``mat_MFG_Scrap_Landfilled``
+``mat_MFG_Scrap_Landfilled [g] : float``
 The annual mass flow of material which is unsuccessfully manufactured and is landfilled (as opposed to MFG scrap recycled).
 
-``mat_MFG_Scrap_Recycled_Successfully``
+``mat_MFG_Scrap_Recycled_Successfully [g] : float``
 The annual mass flow of material manufacturing scrap which is sucessfully recycled.
 
-``mat_MFG_Scrap_Recycled_Losses_Landfilled``
+``mat_MFG_Scrap_Recycled_Losses_Landfilled [g] : float``
 The annual mass flow of material which cannot be recovered from manufacturing scrap during recycling, and is landfilled. This is controlled by the yield of manufacturing scrap recycling.
 
-``mat_MFG_Recycled_into_HQ``
+``mat_MFG_Recycled_into_HQ [g] : float``
 The annual mass flow of material manufacturing scrap which is successfully recycled into high quality/high purity material.
 
-``mat_MFG_Recycled_into_OQ``
+``mat_MFG_Recycled_into_OQ [g] : float``
 The annual mass flow of material manufacturing scrap which is successfully recycled into a lower quality/purity not suitable for PV manufacturing, open-loop or downcycling.
 
-``mat_MFG_Recycled_HQ_into_OU``
+``mat_MFG_Recycled_HQ_into_OU [g] : float``
 The annual mass flow of material manufacturing scrap which is successfully recycled into high quality/high purity and is used in another industry, open-loop recycling.
 
-``mat_Virgin_Stock_Raw``
+``mat_Virgin_Stock_Raw [g] : float``
 The annual mass flow of virgin material which is sent through virgin material processing. This is the amount of material extracted including overburden, the quantity accounts for the virgin material yield.
 
-``mat_Total_Recycled_OU``
+``mat_Total_Recycled_OU [g] : float``
 The annual mass flow of material from EOL and manufacturing which is recycled at a quality/purity not suitable for PV manufacturing, open-loop or downcycling.
 
 
