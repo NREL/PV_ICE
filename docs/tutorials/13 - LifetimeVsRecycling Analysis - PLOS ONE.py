@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# In[ ]:
+
+
+
+
+
 # # 100% RE by 2050 and the Effects of Lifetime and Recycling
 # 
 # Comparison case using the functions in PV ICE to compare how PV module lifetime and PV module recycling effect the energy transition to 100% clean energy by 2050.
@@ -258,7 +264,7 @@ for ii in range (len(df.unstack(level=1))):
 # 
 # step: Collect all the scenario names and downselect to the scenario(s) of interest.
 
-# In[16]:
+# In[4]:
 
 
 scenarios = ['Reference.Mod',
@@ -275,7 +281,7 @@ SFscenarios = ['95-by-35_Elec.Adv_DR'] #Decarb+E
 SFscenarios
 
 
-# In[17]:
+# In[5]:
 
 
 #add materials for simulation
@@ -284,7 +290,7 @@ MATERIALS = ['glass','aluminium_frames','silicon','silver', 'copper', 'encapsula
 
 # Set up the PV ICE simulation with scenario and materials
 
-# In[18]:
+# In[10]:
 
 
 r1 = PV_ICE.Simulation(name='SF-LvR', path=testfolder) #create simulation r1
@@ -293,17 +299,23 @@ r1 = PV_ICE.Simulation(name='SF-LvR', path=testfolder) #create simulation r1
 for scen in range(len(SFscenarios)):
     modulefile = SFscenarios[scen]+'.csv' #pick the scenario csv
     modulefile = os.path.join(testfolder, 'USA', modulefile) #point at the file path for the whole US
-    r1.createScenario(name='Decarb+E_PVICE_defaults', file=modulefile) #change name=SFscenarios[scen] if multiple scenarios
+    r1.createScenario(name='Decarb+E_PVICE_defaults', massmodulefile=modulefile) #change name=SFscenarios[scen] if multiple scenarios
     r1.scenario['Decarb+E_PVICE_defaults'].addMaterials(MATERIALS)  # baselinefolder=baselinefolder)
     r1.trim_Years(startYear=2010)
 
 
 # Run the simulation
 
-# In[19]:
+# In[7]:
 
 
 r1.calculateMassFlow()
+
+
+# In[20]:
+
+
+r1.scenario['Decarb+E_PVICE_defaults'].weibull_params()
 
 
 # In[20]:
@@ -327,7 +339,7 @@ r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 # ### Create lifetime and recycling ranges
 
-# In[22]:
+# In[13]:
 
 
 Lifetime_Range = pd.concat([pd.Series(range(15,30,3)),pd.Series(range(30,51,2))]) # absolute lifetime values
@@ -341,7 +353,7 @@ Recycling_Range = pd.Series(range(0,105,5)) # this is absolute recycling values 
 #print(Recycling_Range)
 
 
-# In[23]:
+# In[14]:
 
 
 #list of material recycling variables
@@ -352,7 +364,7 @@ RecyclingYields = ['mat_MFG_scrap_Recycling_eff', 'mat_Recycling_yield']
 
 # Automatically generate T50 and T90 values for each lifetime, by creating a linear regression for mod_reliability_t50 & mod_reliability_t90 vs. mod_lifetime to estimate t50 and t90 values to input for various lifetimes.
 
-# In[24]:
+# In[15]:
 
 
 #first create data frame with the existing lifetimes and T50 and T90 values (which vary with time)
@@ -362,7 +374,7 @@ reliability_baselines['mod_reliability_t50'] = r1.scenario['Decarb+E_PVICE_defau
 reliability_baselines['mod_reliability_t90'] = r1.scenario['Decarb+E_PVICE_defaults'].data['mod_reliability_t90']
 
 
-# In[25]:
+# In[16]:
 
 
 X_lifetime = reliability_baselines.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
@@ -386,7 +398,7 @@ t90_list = list(chain(*t90_list)) #unnest list
 t90_range_simple = pd.Series([ '%.2f' % elem for elem in t90_list ]) #pull out the T90 values
 
 
-# In[26]:
+# In[17]:
 
 
 #create a tidy dataframe summarizing all the lifetime, degradation, reliability values
