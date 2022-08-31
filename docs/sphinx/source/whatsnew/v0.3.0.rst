@@ -1,0 +1,44 @@
+.. _whatsnew_0300:
+
+
+v0.3.0 (09/01/2022)
+=======================
+
+* Added remanufacturing pathway
+* Re-strucutred Reuse into merchant tail and re-sale, added storage
+* Two separate paths for damaged (bad) and undamaged (good) modules. Current values for the subpath are very similar except for damaged modules are not considered for resale.
+* Energy baselines included, and calculations to evaluate Energy In, Out and Balance.
+
+Usage Improvements
+--------------------
+* Automatic routines for visualing results
+* Improved ways to modify materials, adding the usual materials automatically, etc.
+* Functions to modify scenarios for IRENA reliability and lifetime assumptions.
+* Year trimming implemented internally so baselines are consistent.
+* More outpus provided in the results dataframes, including Area equivalencies for many of the steps.
+
+New Structuring
+^^^^^^^^^^^^^^^^
+* ``data`` changed to ``dataIn_m`` and ``dataIn_e`` for module level, and ``materialdata`` changed to ``matdataIn_m`` and ``matdataIn_e`` where ``_m`` stands for mass and ``_e`` stands for energy
+* Output data changed to ``dataOut_m``, ``dataOut_e``, ``matdataOut_m``, ``matdataOut_e`` for modules and materials and mass and energy respectively
+
+
+Baseline Updates
+-----------------
+* 2022 annual module and material updates
+* added glass virgin material efficiency
+* Module and material energy files added
+
+New Documentation and Analysis
+---------------------------------
+13 - Journal for mass analysis of lifetime vs recycling, documenting the analysis in the Mirletz et al 2022 PLOS ONE publication.
+14 - Historical US Installs Waste Projections journal.
+15 - Energy and Material Flows PVSC 2022 paper analysis, focusing on energy balance of remanfuacturing versus recycling glass as a case study for Pervoskites All-Back-Contact (ABC) technology.
+16 - New Energy Flows tutorial introduction
+
+
+Contributors
+~~~~~~~~~~~~
+* Silvana Ayala (:ghuser:`shirubana`)
+* Heather Mirletz (:ghuser:`heathermirletz`)
+* Acadia Hegedus (:ghuser:`acadiajean`)
