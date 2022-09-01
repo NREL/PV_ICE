@@ -1120,23 +1120,28 @@ class Simulation:
             self.scenario[scen].dataOut_e = de
 
             for mat in materials:
-
-                print("==> Working on Energy for Material : ", mat)
                 
-                dm = self.scenario[scen].material[mat].matdataOut_m               
-                matEnergy=self.scenario[scen].material[mat].matdataIn_e
+                if self.scenario[scen].material[mat].matdataIn_e is None:
+                    print("==> No energy material found for Material : ", mat, ". Skipping Energy calculations.")
+                    demat = None
+                else:
     
-                demat = pd.DataFrame()
-                demat['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
-                demat['mat_MFG_virgin'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
-                demat['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
-                demat['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
-
-                demat['mat_Landfill'] = dm['mat_Total_Landfilled']*matEnergy['e_mat_Landfill']
-                demat['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*matEnergy['e_mat_EoL_ReMFG_clean']
-                demat['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
-                demat['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
-
+                    print("==> Working on Energy for Material : ", mat)
+                    
+                    dm = self.scenario[scen].material[mat].matdataOut_m               
+                    matEnergy=self.scenario[scen].material[mat].matdataIn_e
+        
+                    demat = pd.DataFrame()
+                    demat['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
+                    demat['mat_MFG_virgin'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
+                    demat['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
+                    demat['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
+    
+                    demat['mat_Landfill'] = dm['mat_Total_Landfilled']*matEnergy['e_mat_Landfill']
+                    demat['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*matEnergy['e_mat_EoL_ReMFG_clean']
+                    demat['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
+                    demat['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
+    
                 self.scenario[scen].material[mat].matdataOut_e = demat
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
@@ -1627,7 +1632,7 @@ class Scenario(Simulation):
         for mat in materials:
             filematmass = baselinefolder + nameformatMass.format(mat)
             filematenergy = baselinefolder + nameformatEnergy.format(mat)
-            if os.path.is_file(filematenergy):
+            if os.path.isfile(filematenergy):
                 print("Adding Mass AND Energy files for: ", mat )
             else:
                 filematenergy = None
@@ -1673,14 +1678,17 @@ class Material:
                                 'on this system. Try installing X-Quartz and reloading')
 
         data, meta = _readPVICEFile(massmatfile)
-        
+         
         self.massmatfile = massmatfile
         self.matmetdataIn_m = meta
         self.matdataIn_m = data
 
         if energymatfile is not None:
             self.addEnergytoMaterial(energymatfile)
-    
+        else:
+            self.energymatfile = None
+            self.matmetdataIn_e = None
+            self.matdataIn_e = None
     
     def addEnergytoMaterial(self, energymatfile):
 
