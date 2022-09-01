@@ -17,7 +17,7 @@
 # 
 # ![Folder 15 vs 50 year Module](../images_wiki/2_15vs50Overview.PNG)
 
-# In[151]:
+# In[1]:
 
 
 import PV_ICE
@@ -46,7 +46,7 @@ print("Your simulation input data will be written/read from %s" % inputfolder)
 print("Material files will be from %s" % materialsfolder)
 
 
-# In[3]:
+# In[155]:
 
 
 if not os.path.exists(testfolder):
@@ -59,12 +59,12 @@ if not os.path.exists(testfolder):
 
 # First, we load the Module Baseline. This file will be used later to populate all the columns other than 'new_Installed_Capacity_[MW]'. Deployment schedule for this analysis will be supplied by the REEDS model. This analysis will use PV ICE developed material and module baselines.
 
-# In[4]:
+# In[6]:
 
 
 rtest = PV_ICE.Simulation(name='Sim1', path=inputfolder)
-rtest.createScenario(name='test', file=r'..\baselines\baseline_modules_US.csv')
-baseline = rtest.scenario['test'].data
+rtest.createScenario(name='test', massmodulefile=r'..\baselines\baseline_modules_mass_US.csv')
+baseline = rtest.scenario['test'].dataIn_m
 baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
 baseline.set_index('year', inplace=True)
 baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
@@ -73,15 +73,13 @@ baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
 
 # Drop 1995 through 2009 because chosen deployment schedule begins in 2010. Technically this neglects ~1.5 GW of installs from 1995 through 2009.
 
-# In[5]:
+# In[ ]:
 
 
 baseline.drop(baseline.loc['1995':'2009'].index, inplace=True)
 
 
 # Now we load the deployment schedule. This is derived from ReEDS simulation output, and in this case we're using one of the deployment projections as used in Solar Futures (includes PCA regions, States). 
-# 
-# NOTE: The ReEDS deployment file is stored outside of the PV ICE folder and therefore not publicly available on github. Please contact the authors for this file.
 
 # In[59]:
 
@@ -265,7 +263,7 @@ for ii in range (len(df.unstack(level=1))):
 # 
 # step: Collect all the scenario names and downselect to the scenario(s) of interest.
 
-# In[21]:
+# In[3]:
 
 
 scenarios = ['Reference.Mod',
@@ -282,7 +280,7 @@ SFscenarios = ['95-by-35_Elec.Adv_DR'] #Decarb+E
 SFscenarios
 
 
-# In[22]:
+# In[4]:
 
 
 #add materials for simulation
@@ -291,7 +289,7 @@ MATERIALS = ['glass','aluminium_frames','silicon','silver', 'copper', 'encapsula
 
 # Set up the PV ICE simulation with scenario and materials
 
-# In[23]:
+# In[5]:
 
 
 r1 = PV_ICE.Simulation(name='SF-LvR', path=testfolder) #create simulation r1
@@ -309,7 +307,7 @@ for scen in range(len(SFscenarios)):
 
 # Run the simulation
 
-# In[24]:
+# In[6]:
 
 
 r1.calculateMassFlow()
@@ -327,10 +325,10 @@ r1.scenario['Decarb+E_PVICE_defaults'].dataOut_m['WeibullParams']
 r1.scenario['Decarb+E_PVICE_defaults'].material['glass'].matdataIn_m.tail(5)
 
 
-# In[152]:
+# In[7]:
 
 
-r1.plotScenariosComparison('Installed_Capacity_[W]') 
+#r1.plotScenariosComparison('Installed_Capacity_[W]') 
 # leaving the key/argument of this function will print out set of plotting options
 
 
@@ -502,13 +500,13 @@ r1.calculateMassFlow()
 # In[32]:
 
 
-r1.plotScenariosComparison('Installed_Capacity_[W]')
+#r1.plotScenariosComparison('Installed_Capacity_[W]')
 
 
 # In[33]:
 
 
-r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
+#r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
 
 
 # Use the PV ICE "aggregate results" function to print out a table of Virgin Material Demands, Lifecycle Wastes (MFG, EoL, both), new installed capacity and effective cumulative capacity, both annually and cumulatively.
