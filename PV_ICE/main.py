@@ -1406,16 +1406,37 @@ class Simulation:
                 scenarios = [scenarios]
 
         if keyword is None:
+            # TODO: Not ideal way to provide this info, but will have to work for this release.
             scens = list(self.scenario.keys())[0]
-            print("Choose one of the keywords: ", list(self.scenario[scens].data.keys()))
+            try:
+                print("Choose one of the keywords: ", 
+                  "\n ** Scenario Data In Mass ", list(self.scenario[scens].dataIn_m.keys()),
+                  "\n ** Scenario Data In Energy ", list(self.scenario[scens].dataIn_e.keys()),
+                  "\n ** Scenario Data Out Mass ", list(self.scenario[scens].dataOut_m.keys()),
+                  "\n ** Scenario Data Out Mass ", list(self.scenario[scens].dataOut_e.keys())
+                  )
+            except:
+                print("Please pass a keyword.")
             return
 
+        
         yunits = _unitReferences(keyword)
 
         plt.figure()
 
-        for scen in scenarios:
-            plt.plot(self.scenario[scen].dataOut_m['year'],self.scenario[scen].dataOut_m[keyword], label=scen)
+        
+        for scen in scenarios:       
+            # Not very elegant but works?
+            if keyword in self.scenario[scen].dataIn_m:                
+                plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataIn_m[keyword], label=scen)
+            elif keyword in self.scenario[scen].dataIn_e: 
+                plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataIn_e[keyword], label=scen)
+            elif keyword in self.scenario[scen].dataOut_m: 
+                plt.plot(self.scenario[scen].dataOut_m['year'],self.scenario[scen].dataOut_m[keyword], label=scen)
+            elif keyword in self.scenario[scen].dataOut_e: 
+                plt.plot(self.scenario[scen].dataOut_e['year'],self.scenario[scen].dataOut_e[keyword], label=scen)
+            else:
+                print("No data for ", keyword, "for Scenario ", scen)
         plt.legend()
         plt.xlabel('Year')
         plt.title(keyword.replace('_', " "))
