@@ -276,10 +276,11 @@ plt.ylabel('Electricity Demand [kWh/kg]')
 
 # From this lovely scatter plot graph, we can see that the energy demand of directional solification casting for mc-Si has not particularly changed in the last decades. Therefore, we will take an average of these datapoints and apply it for all time.
 
-# In[39]:
+# In[176]:
 
 
 e_casting_mcSi = e_casting_manual['E_mcSiCast_kWhpkg'].mean()
+print('The electrical energy to make mc-Si through direct solidification is '+str(e_casting_mcSi)+' kWh/kg.')
 
 
 # ### Mono-crystalline Silicon
@@ -363,37 +364,54 @@ e_ingots_wtd['mocsi'] = pvice_mcSimono_marketshare_trim['mcSi']*e_ingots['E_DS_k
 e_ingots_wtd_final = e_ingots_wtd.sum(axis=1) # sum the annual energy demand PV Si ingot growth
 
 
-# In[130]:
+# In[160]:
 
 
-plt.plot(e_ingots_wtd_final, label='WtdWvg Electricity Demand')
-plt.scatter(e_growczingot_raw.index, e_growczingot_raw['E_Cz_kWhpkg'], color='black', label='CZ, mono-Si')
-plt.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'], color='green', marker='^', label='Direct Solidification, mc-Si')
+fig, ax1 = plt.subplots()
+
+ax1.plot(e_ingots_wtd_final, label='Wtd Avg Electricity Demand')
+ax1.scatter(e_growczingot_raw.index, e_growczingot_raw['E_Cz_kWhpkg'], color='black', label='CZ, mono-Si, raw data')
+ax1.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'], color='green', 
+            marker='^', label='DS, mc-Si, raw data')
+ax1.set_ylabel('Electricity Demand [kWh/kg]')
+
+ax2 = ax1.twinx()
+ax2.plot(pvice_mcSimono_marketshare_trim['monoSi'], color ='orange', label='Mono Si Market Share', ls=':', lw=3)
+ax2.set_ylim(0,1.0)
+plt.ylabel('Market Share Monocrystalline Si [%]', color='orange')
+ax2.tick_params(axis='y', color='red', labelcolor='orange')
+
 plt.xlim(1989,2030)
 plt.title('Electricity: Weighted Average of Si Ingot Growth')
-plt.ylabel('Electricity Demand [kWh/kg]')
-plt.legend()
+
+ax1.legend(loc='upper center')
+plt.show()
 
 
-# In[ ]:
+# ## Wafering Electricity
+# 
+# This step captures the electricity demands of wafering the grown silicon ingot (CZ or DS) into wafers. This includes the prep and demounting as well as the sawing step itself.
+
+# In[173]:
 
 
+e_wafering_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-wafering.csv",
+                             index_col='year')
 
 
-
-# ## Wafering and Cell Production Energy
-
-# In[ ]:
+# In[174]:
 
 
+e_wafering_raw.dropna(how='all')
 
 
-
-# In[ ]:
-
+# In[175]:
 
 
+plt.scatter(e_wafering_raw.index, e_wafering_raw['E_Wafering_kWhpkg'])
 
+
+# ## Cell Production Electricity
 
 # In[ ]:
 
@@ -410,102 +428,35 @@ plt.legend()
 # In[ ]:
 
 
-dfs = [e_batchglass_trim, e_meltrefine_filled, e_glassform_filled, e_glass_annealtemper_trim]
-energies_mfg_glass = pd.concat(dfs, axis=1, keys = ['batch','melt','form','anneal'])
-energies_mfg_glass.head(5)
+
 
 
 # In[ ]:
 
 
-#Sum the manufacturing energies
-energies_mfg_glass['sum','E_mfg_glass_kWhpkg'] = energies_mfg_glass.filter(like='E_').sum(axis=1)
-energies_mfg_glass.head(5)
+
 
 
 # In[ ]:
 
 
-#Take weighted average of PRCT Fuel by energy step
-wting_factors = energies_mfg_glass.filter(like='E_')
-wting_factors = wting_factors.div(energies_mfg_glass['sum','E_mfg_glass_kWhpkg'], axis=0)
-#wting_factors.drop('E_mfg_glass_kWhpkg', axis=1, inplace=True)
-wting_factors.head(5)
+
 
 
 # In[ ]:
 
 
-fuel_fraction = energies_mfg_glass.filter(like='Prct_')
-fuel_fraction.columns.levels[0]
 
-
-# In[ ]:
-
-
-#drop the column name levels to leave the process steps, allowing multiplication
-wting_factors.columns = wting_factors.columns.droplevel(1)
-fuel_fraction.columns = fuel_fraction.columns.droplevel(1)
 
 
 # In[ ]:
 
 
-wtd_fuel_fraction = wting_factors.mul(fuel_fraction, axis = 1) #multiply fraction of energy/step * PRCT Fuel fraction
-wtd_fuel_fraction['sum'] = wtd_fuel_fraction.sum(axis=1) #sum the fuel fraction
 
-
-# In[ ]:
-
-
-e_mfg_glass_output = pd.concat([energies_mfg_glass['sum','E_mfg_glass_kWhpkg'], wtd_fuel_fraction['sum']], axis=1)
-e_mfg_glass_output.columns=['E_mfg_glass_kWhpkg','Prct_fuel']
-e_mfg_glass_output.head(5)
 
 
 # In[ ]:
 
 
-fig, ax1 = plt.subplots() 
-#left axis
-ax1.set_ylabel('Manufacturing Energy [kWh/kg]', color='blue') 
-ax1.plot(e_mfg_glass_output.index,e_mfg_glass_output.iloc[:,0], color='blue') 
-ax1.set_ylim(0,5)
-
-#right axis
-ax2 = ax1.twinx()
-plt.ylabel('Fraction of Energy provided by \n Natural Gas (Methane) [%]', color='red')
-ax2.plot(e_mfg_glass_output.index,e_mfg_glass_output.iloc[:,1], color='red')  
-ax2.set_ylim(75,100)
-
-plt.title('Energy and Fuel to Manufacture Flat Glass')
-
-plt.show()
-
-
-# In[ ]:
-
-
-fig, ax1 = plt.subplots() 
-#left axis
-ax1.set_ylabel('Manufacturing Energy [kWh/kg]', color='blue') 
-ax1.plot(e_mfg_glass_output.index,e_mfg_glass_output.iloc[:,0], color='blue') 
-ax1.set_ylim(0,5)
-ax1.set_xlim(1995,2025)
-
-#right axis
-ax2 = ax1.twinx()
-plt.ylabel('Fraction of Energy provided by \n Natural Gas (Methane) [%]', color='red')
-ax2.plot(e_mfg_glass_output.index,e_mfg_glass_output.iloc[:,1], color='red')  
-ax2.set_ylim(75,100)
-
-plt.title('Energy and Fuel to Manufacture Flat Glass')
-
-plt.show()
-
-
-# In[ ]:
-
-
-e_mfg_glass_output.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_glass_MFG_FUEL.csv")
+.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon.csv")
 

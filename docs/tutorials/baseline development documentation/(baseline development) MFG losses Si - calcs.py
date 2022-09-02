@@ -216,7 +216,7 @@ plt.ylabel('Grams of Silicon per cell')
 
 # INSERT WILLEKE 2002 45%-35% MFG YIELD DATA, FIG 3
 
-# Here, as previously stated, we set 2003 and earlier years to 50% mfg efficiency. A 50% MFG efficiency corresponds to using 2x as much material as ends up in the final cell. Therefore, we will multiply the grams of silicon per cell, as calculated by the silicon baseline, by 2.0. Because the cell size changes from 100mm on a side to 125 mm on a side (step change) there is a resulting step change increase in the amount of silicon used per cell.
+# Using Willeke 2002, we set 2003 and prior MFG Yield to 45%. A 50% MFG efficiency corresponds to using 2x as much material as ends up in the final cell. Therefore, we will multiply the grams of silicon per cell, as calculated by the silicon baseline, by 2.0. Because the cell size changes from 100mm on a side to 125 mm on a side (step change) there is a resulting step change increase in the amount of silicon used per cell.
 
 # In[13]:
 
