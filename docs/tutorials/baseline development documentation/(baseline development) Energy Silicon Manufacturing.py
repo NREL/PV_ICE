@@ -37,11 +37,11 @@ e_reducesilica_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMater
 e_reducesilica_raw.dropna(how='all')
 
 
-# In[4]:
+# In[128]:
 
 
 plt.scatter(e_reducesilica_raw.index,e_reducesilica_raw.iloc[:,0])
-plt.title('Energy: Silica Reduction')
+plt.title('Electricity: Silica Reduction')
 plt.ylabel('[kWh/kg]')
 
 
@@ -59,11 +59,11 @@ e_reducesilica_raw.loc[2016,['E_reduce_SilicatoMGSi']] = 12.0 #Chen Fig. 2
 e_reducesilica_raw.loc[2022,['E_reduce_SilicatoMGSi']] = 11.0 #Heidari Anctil
 
 
-# In[6]:
+# In[127]:
 
 
 plt.scatter(e_reducesilica_raw.index,e_reducesilica_raw.iloc[:,0])
-plt.title('Energy: Silica Reduction')
+plt.title('Electricity: Silica Reduction')
 plt.ylabel('[kWh/kg]')
 
 
@@ -229,11 +229,9 @@ e_refineSi_fbr.dropna(how='all')
 # 
 # The next step in manufacturing silicon PV is ingot growth. There are two primary methods of ingot growth in the PV industry over it's history; multi-crystalline silicon and monocrystalline silicon. Initially, all PV was monocrystalline, then Multicrystalline silicon ingots were the dominent market share for most of a decade, and currently monocrystalline is making a resurgence to market dominence. We will cover the energy associated with both processes here, and weight the historical energy demand by the marketshare of these two technologies.
 
-# In[21]:
+# In[26]:
 
 
-pvice_mcSimono_marketshare = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv",
-                                     index_col='Year')
 e_ingotenergy_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-ingotgrowing.csv",
                                      index_col='year')
 
@@ -242,14 +240,14 @@ e_ingotenergy_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
 # 
 # mc-Si is created through putting chunked polysilicon into a large block, heating and casting into a single large block. This process results in many crystallographic grains within the block, which slightly reduces the efficiency of the cell, but is cheap. 
 
-# In[22]:
+# In[27]:
 
 
 e_casting_raw = e_ingotenergy_raw.iloc[:,3:6]
 e_casting_raw.dropna(how='all')
 
 
-# In[23]:
+# In[28]:
 
 
 plt.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'])
@@ -259,7 +257,7 @@ plt.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'])
 # 
 # Next the energy seems to step up and then down over time. This is potenially real due the increasing size of blocks over time.
 
-# In[24]:
+# In[29]:
 
 
 e_casting_manual = e_casting_raw.copy()
@@ -267,27 +265,40 @@ e_casting_manual.loc[2016] = np.nan #drop Fan et al
 e_casting_manual.loc[2018] = np.nan # drop Woodhouse et al
 
 
-# In[ ]:
+# In[126]:
 
 
+plt.scatter(e_casting_manual.index, e_casting_manual['E_mcSiCast_kWhpkg'])
+plt.ylim(5,16)
+plt.title('Electricity: DS of mc-Si')
+plt.ylabel('Electricity Demand [kWh/kg]')
 
+
+# From this lovely scatter plot graph, we can see that the energy demand of directional solification casting for mc-Si has not particularly changed in the last decades. Therefore, we will take an average of these datapoints and apply it for all time.
+
+# In[39]:
+
+
+e_casting_mcSi = e_casting_manual['E_mcSiCast_kWhpkg'].mean()
 
 
 # ### Mono-crystalline Silicon
 # 
 # mono-Si is created through the Czochralski process, in which a seed crystal is rotated and drawn away from a vat of molten silicon, growing a large boule. This results in the whole boule/ingot being oriented in one crystallographic direction, which increases the cell efficiency, but is time consuming and expensive.
 
-# In[25]:
+# In[40]:
 
 
 e_growczingot_raw = e_ingotenergy_raw.iloc[:,0:3]
 e_growczingot_raw.dropna(how='all')
 
 
-# In[26]:
+# In[41]:
 
 
 plt.scatter(e_growczingot_raw.index, e_growczingot_raw['E_Cz_kWhpkg'])
+plt.title('Electricity: Cz Ingot Growth')
+plt.ylabel('[kWh/kg]')
 
 
 # There is a general downward trend. There is a lot of noise at the end. The 2016 datapoint from Fan et al is much higher, as is Woodhouse et al 2018. Fan et al data is the average of Chinese manufacturers surveys and literature data. Both sources include the wafering step (Which we prefer to calculate separately). Therefore we will drop both datapoints for this calculation, but use them as a reality check later for energy demand of the two steps.
@@ -296,7 +307,7 @@ plt.scatter(e_growczingot_raw.index, e_growczingot_raw['E_Cz_kWhpkg'])
 # 
 # Lastly, the final datapoint from Muller et al ticks upward slightly, however, the previous datapoint is from ITRPV which is a global survey report whereas the Muller et al is an updated LCI ostensibly with real world data. Therefore, we will leave this slight increase  given the data quality and non-drastic change.
 
-# In[27]:
+# In[42]:
 
 
 e_growczingot_manual = e_growczingot_raw.copy()
@@ -304,7 +315,7 @@ e_growczingot_manual.loc[2016] = np.nan #drop Fan et al
 e_growczingot_manual.loc[2018] = np.nan # drop Woodhouse et al
 
 
-# In[28]:
+# In[43]:
 
 
 avg = np.mean([e_growczingot_manual.loc[1999,'E_Cz_kWhpkg'], e_growczingot_manual.loc[2004,'E_Cz_kWhpkg']])
@@ -312,13 +323,13 @@ e_growczingot_manual.loc[1999] = avg
 e_growczingot_manual.loc[2004] = avg
 
 
-# In[29]:
+# In[44]:
 
 
 e_ingotcz_filled = e_growczingot_manual.interpolate()
 
 
-# In[30]:
+# In[45]:
 
 
 plt.plot(e_ingotcz_filled.index, e_ingotcz_filled['E_Cz_kWhpkg'])
@@ -330,6 +341,53 @@ plt.xlim(1993,2021)
 
 # ### Market Share Weight mono-Si vs mc-Si
 # Here we blend the two calculated data into an annual average energy demand based on the marketshare of installed cell type.
+
+# In[86]:
+
+
+pvice_mcSimono_marketshare = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv",
+                                     index_col='Year')
+
+
+# In[117]:
+
+
+e_ingotcz = e_ingotcz_filled.loc[1995:,['E_Cz_kWhpkg']] #slice Cz dataframe
+e_ingots = e_ingotcz.copy() #create new df for math
+e_ingots['E_DS_kWhpkg'] = e_casting_mcSi #add column for mcsi DS
+pvice_mcSimono_marketshare_trim = pvice_mcSimono_marketshare.loc[1995:,] #trim the marketshare to start in 1995
+
+e_ingots_wtd = pd.DataFrame(index=e_ingots.index) #create new df for math
+e_ingots_wtd['mono'] = pvice_mcSimono_marketshare_trim['monoSi']*e_ingots['E_Cz_kWhpkg'] #mrktshr mono*CZ energy
+e_ingots_wtd['mocsi'] = pvice_mcSimono_marketshare_trim['mcSi']*e_ingots['E_DS_kWhpkg'] #mrktshr mcSi*DS energy
+e_ingots_wtd_final = e_ingots_wtd.sum(axis=1) # sum the annual energy demand PV Si ingot growth
+
+
+# In[130]:
+
+
+plt.plot(e_ingots_wtd_final, label='WtdWvg Electricity Demand')
+plt.scatter(e_growczingot_raw.index, e_growczingot_raw['E_Cz_kWhpkg'], color='black', label='CZ, mono-Si')
+plt.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'], color='green', marker='^', label='Direct Solidification, mc-Si')
+plt.xlim(1989,2030)
+plt.title('Electricity: Weighted Average of Si Ingot Growth')
+plt.ylabel('Electricity Demand [kWh/kg]')
+plt.legend()
+
+
+# In[ ]:
+
+
+
+
+
+# ## Wafering and Cell Production Energy
+
+# In[ ]:
+
+
+
+
 
 # In[ ]:
 

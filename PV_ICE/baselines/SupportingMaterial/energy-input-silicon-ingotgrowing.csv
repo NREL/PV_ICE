@@ -26,12 +26,12 @@
 2014,,,,,,
 2015,68.2,"V. Fthenakis and E. Leccisi, “Updated sustainability status of crystalline silicon-based photovoltaic systems: Life-cycle energy and environmental impact reduction trends,” Progress in Photovoltaics: Research and Applications, vol. 29, no. 10, pp. 1068–1077, 2021, doi: 10.1002/pip.3441.",,15.5,"V. Fthenakis and E. Leccisi, “Updated sustainability status of crystalline silicon-based photovoltaic systems: Life-cycle energy and environmental impact reduction trends,” Progress in Photovoltaics: Research and Applications, vol. 29, no. 10, pp. 1068–1077, 2021, doi: 10.1002/pip.3441.",
 2016,101.6,"M. Fan, Z. Yu, W. Ma, and L. Li, “Life Cycle Assessment of Crystalline Silicon Wafers for Photovoltaic Power Generation,” Silicon, vol. 13, no. 9, pp. 3177–3189, Sep. 2021, doi: 10.1007/s12633-020-00670-4.","factory survey, includes ingot and wafering",40.95,"M. Fan, Z. Yu, W. Ma, and L. Li, “Life Cycle Assessment of Crystalline Silicon Wafers for Photovoltaic Power Generation,” Silicon, vol. 13, no. 9, pp. 3177–3189, Sep. 2021, doi: 10.1007/s12633-020-00670-4.","factory survey, includes ingot and wafering"
-2017,35,"ITRPV 2019, Fig 19",,6.5,"ITRPV 2019, Fig 19",
+2017,35,"ITRPV 2019, Fig 19",,6.5,"ITRPV 2019, Fig 19",850 kg ingot
 2018,87,"M. A. Woodhouse, B. Smith, A. Ramdas, and R. M. Margolis, “Crystalline Silicon Photovoltaic Module Manufacturing Costs and Sustainable Pricing: 1H 2018 Benchmark and Cost Reduction Road Map,” NREL/TP-6A20-72134, 1495719, Feb. 2019. doi: 10.2172/1495719.","wafer = 156.75mm x 180 micron, energy includes wafering",34,"M. A. Woodhouse, B. Smith, A. Ramdas, and R. M. Margolis, “Crystalline Silicon Photovoltaic Module Manufacturing Costs and Sustainable Pricing: 1H 2018 Benchmark and Cost Reduction Road Map,” NREL/TP-6A20-72134, 1495719, Feb. 2019. doi: 10.2172/1495719.","wafer = 156.75mm x 180 micron, energy includes wafering"
-2019,32,"ITRPV 2020, Fig. 6",,7,"ITRPV 2020, Fig. 6",
+2019,32,"ITRPV 2020, Fig. 6",,7,"ITRPV 2020, Fig. 6",850 kg ingot
 2020,38.4,"A. Müller, L. Friedrich, C. Reichel, S. Herceg, M. Mittag, and D. H. Neuhaus, “A comparative life cycle assessment of silicon PV modules: Impact of module design, manufacturing location and inventory,” Solar Energy Materials and Solar Cells, vol. 230, p. 111277, Sep. 2021, doi: 10.1016/j.solmat.2021.111277.","electrical only, LCI from Friedrich",,,
 2021,,,,,,
-2022,,,,,,
+2022,,,,15,"Raji, Madhesh, Kesavan Venkatachalam, Jyh-Chen Chen, Srinivasan Manikkam, and Ramasamy Perumalsamy. 2022. “The Influence of Heat Flux Control Unit for Improving the Multi- Crystalline Silicon Ingot for Photovoltaic Application.” Silicon, May. https://doi.org/10.1007/s12633-022-01947-6.","Numerical model, NOT EMPIRICAL, but shows very little change and is consistent with the other data"
 2023,,,,,,
 2024,,,,,,
 2025,,,,,,
