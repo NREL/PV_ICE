@@ -147,7 +147,7 @@ The long-term success of PV ICE requires substantial community support.
 License
 =======
 
-BSD 3-clause
+PV_ICE open-source code is copyrighted by the Alliance for Sustainable Energy and licensed with BSD-3-Clause terms, found [here](https://github.com/NREL/PV_ICE/blob/main/LICENSE.md).
 
 
 Getting support
@@ -170,9 +170,14 @@ If you use PV_ICE in a published work, please cite:
 
 
 and also please also cite the DOI corresponding to the specific version of
+<<<<<<< HEAD
 PV ICE that you used. PV ICE DOIs are listed at
 [Zenodo.org](https://zenodo.org/). For example for version 0.2.0:
+=======
+PV_ICE that you used. PV_ICE DOIs are listed at
+[Zenodo.org](https://zenodo.org/). For example for version 0.2.1:
+>>>>>>> 70365158dd6c3502bb63a65d95571dd3d5b3641b
 
-	Silvana Ayala, Heather Mirletz, & Acadia Hegedus. (2021). 
-	NREL/PV_ICE: Release version 2 (v0.2.0). Zenodo. 
-	https://doi.org/10.5281/zenodo.5196342
+	Silvana Ovaitt, Heather Mirletz. (2021). 
+	NREL/PV_ICE: Release version 2.1 (v0.2.1). Zenodo. 
+	https://doi.org/10.5281/zenodo.5659151

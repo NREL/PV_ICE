@@ -24,7 +24,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'DURAMAT')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[8]:
+# In[2]:
 
 
 MATERIALS = ['glass','silver','silicon', 'copper','aluminium_frames']
@@ -34,7 +34,7 @@ MODULEBASELINE = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_
 MODULEBASELINE_High = r'..\..\baselines\ElectrificationFutures_2021\baseline_modules_US_NREL_Electrification_Futures_2021_LowREHighElec.csv'
 
 
-# In[3]:
+# In[4]:
 
 
 import PV_ICE
