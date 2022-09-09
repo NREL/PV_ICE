@@ -24,15 +24,6 @@
 	</a>
   </td>
 </tr>
-<tr>
-  <td>Publications</td>
-  <td>
-    <!--- <a href="https://doi.org/10.5281/zenodo.3762635">
-    <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.3762635.svg" alt="zenodo reference">
-     ---> Connected to Zenodo, awaiting first release
-    </a>
-  </td>
-</tr>
 </table>
 
 
@@ -173,6 +164,6 @@ and also please also cite the DOI corresponding to the specific version of
 PV ICE that you used. PV ICE DOIs are listed at
 [Zenodo.org](https://zenodo.org/). For example for version 0.2.0:
 
-	Silvana Ayala, Heather Mirletz, & Acadia Hegedus. (2021). 
-	NREL/PV_ICE: Release version 2 (v0.2.0). Zenodo. 
-	https://doi.org/10.5281/zenodo.5196342
+	S. Ovaitt, H. Mirletz, A. Hegedus. (2022). 
+	NREL/PV_ICE: v0.3.0 Release. Zenodo. 
+	https://doi.org/10.5281/zenodo.7065727
