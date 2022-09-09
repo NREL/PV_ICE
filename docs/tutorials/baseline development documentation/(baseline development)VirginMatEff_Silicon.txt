@@ -22,3 +22,5 @@ so Min = 0.8*0.25 = 0.2 or 20% yield
 and Max = 0.9*0.33 = 0.3 or 30% yield
 That is shockingly low. We will assume 20% in 1995, and 30% in 2020, with linear interpolation for now.
 After 2020, the 30% is held constant through 2050 for lack of good extrapolation for this data.
+
+This range of findings is supported by the analysis in S. M. Heidari and A. Anctil, Country-specific carbon footprint and cumulative energy demand of metallurgical grade silicon production for silicon photovoltaics, Resources, Conservation and Recycling, 2022, 180, 106171. The range of yields from silica sand through MG-Si is 20.3% to 34.4%, where the low end uses low quality silica deposits which require mpre refinement energy, and the upper is high quality silica deposits which have a high sorting and washing yield.

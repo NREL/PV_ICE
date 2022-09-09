@@ -1,0 +1,57 @@
+﻿year,Ingot Energy mc-si kWhpkg,Ingot Energy cast mono kWhpkg,Ingot Energy mono-Si kWhpkg,Source,Ingot mass mc-Si kg,Ingot mass cast mono kg,Ingot mass mono-Si kg,Source,Note,Ingot kWh/kg,Source
+1995,,,,,,,,,"Make sure to account for BOULE of Si, not ""ingot"", b.c whole boule has to be grown but ingot is useable part (ex: 375 kg boule of which 288kg is useable",,
+1996,,,,,,,,,,,
+1997,,,,,,,,,,,
+1998,,,,,,,,,,,
+1999,,,,,,,,,,,
+2000,,,,,,,,,,,
+2001,,,,,,,,,,,
+2002,,,,,,,,,,,
+2003,,,,,,,,,,,
+2004,,,,,,,,,,,
+2005,,,,,,,,,,,
+2006,,,,,,,,,,110,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2007,,,,,,,,,,100,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2008,,,,,,,,,,90,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2009,,,,,,,,,,85,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2010,,,,,,,,recycle Si ingot offcuts = 100 kW/240kg for etch and remelt,crop boule at 100 kw/1boule/hr,80,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2011,,,,,,,,,,75,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2012,,,,,,,,,,70,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2013,,,,,,wafercleanandsort = 150kW/6000wafer/hr,grinding and glue = 100kW/8boule,,,65,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2014,,,,,800,,150,"ITRPV 2015, Fig. 12",,60,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2015,,,,,750,,180,"ITRPV 2016, Fig. 16",,55,"E. Bracquene, J. R. Peeters, W. Dewulf, and J. R. Duflou, “Taking Evolution into Account in a Parametric LCA Model for PV Panels,” Procedia CIRP, vol. 69, pp. 389–394, Jan. 2018, doi: 10.1016/j.procir.2017.11.103."
+2016,,,,,800,,180,"ITRPV 2017, Fig. 19",,,
+2017,,,,,820,,200,ITRPV 2018 Fig. 19,,,
+2018,6.5,,35,"ITRPV 2019, Fig 19",850,,210,"ITRPV 2019, Fig. 18",,,
+2019,6.5,10,30,"ITRPV 2020, Fig. 6",850,700,350,"ITRPV 2020, Fig. 5",,80kW/13278 wafers/0.121boules/hr - Jinggogng Sci and Tech SNEC 2019 brochure,
+2020,,,38.4,"A. Müller, L. Friedrich, C. Reichel, S. Herceg, M. Mittag, and D. H. Neuhaus, “A comparative life cycle assessment of silicon PV modules: Impact of module design, manufacturing location and inventory,” Solar Energy Materials and Solar Cells, vol. 230, p. 111277, Sep. 2021, doi: 10.1016/j.solmat.2021.111277.",,1110,400,"ITRPV 2021, Fig. 5",,,
+2021,,,,,,,,,,,
+2022,,,,,,1120,420,"ITRPV 2021, Fig. 5",,,
+2023,,,,,,,,,,,
+2024,,,,,,1150,420,"ITRPV 2021, Fig. 5",,,
+2025,,,,,,,,,,,
+2026,,,,,,,,,,,
+2027,,,,,,1150,450,"ITRPV 2021, Fig. 5",,,
+2028,,,,,,,,,,,
+2029,,,,,,,,,,,
+2030,,,,,,1250,475,"ITRPV 2021, Fig. 5",,,
+2031,,,,,,,,,,,
+2032,,,,,,,,,,,
+2033,,,,,,,,,,,
+2034,,,,,,,,,,,
+2035,,,,,,,,,,,
+2036,,,,,,,,,,,
+2037,,,,,,,,,,,
+2038,,,,,,,,,,,
+2039,,,,,,,,,,,
+2040,,,,,,,,,,,
+2041,,,,,,,,,,,
+2042,,,,,,,,,,,
+2043,,,,,,,,,,,
+2044,,,,,,,,,,,
+2045,,,,,,,,,,,
+2046,,,,,,,,,,,
+2047,,,,,,,,,,,
+2048,,,,,,,,,,,
+2049,,,,,,,,,,,
+2050,,,,,,,,,,,

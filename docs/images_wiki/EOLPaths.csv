@@ -1,0 +1,6 @@
+﻿EOL Path,Status Requirement,Module Variables,Material Variables
+0. Resold,Good,mod_EOL_pg0_resell,NA
+1. Landfilled,Good/Bad,"mod_EOL_pg1_landfill, mod_EOL_pb1_landfill",NA
+2. Stored,Good/Bad,"mod_EOL_pg2_stored, mod_EOL_pb2_stored",NA
+3. Remanufactured,Good/Bad,"mod_EOL_pg3_reMFG, mod_EOL_pb3_reMFG","mat_PG3_ReMFG_target, mat_ReMFG_yield"
+4. Recycled,Good/Bad,"mod_EOL_pg4_recycled, mod_EOL_pb4_recycled, mod_EOL_sp_reMFG_recycle","mat_PG4_Recycling_target, mat_Recycling_yield, mat_EOL_Recycled_into_HQ, mat_EOL_RecycledHQ_Reused4MFG"

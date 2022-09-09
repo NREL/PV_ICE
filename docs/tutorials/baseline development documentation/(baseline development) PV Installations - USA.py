@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# # US c-Si PV installations, Residential, Commerical, and Utility Scale
+
 # In[1]:
 
 
@@ -18,7 +20,7 @@ plt.rcParams['figure.figsize'] = (30, 15)
 
 
 cwd = os.getcwd() #grabs current working directory
-df_installs_raw = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/PVInstalls_USA_AllSources.csv", index_col='Year')
+df_installs_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/PVInstalls_USA_AllSources.csv", index_col='Year')
 
 
 # In[3]:
@@ -45,7 +47,7 @@ plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
 # In[4]:
 
 
-installs_2010_2019 = df_installs_raw.loc[(df_installs_raw.index>=2010) & (df_installs_raw.index<=2019)]
+installs_2010_2019 = df_installs_raw.loc[(df_installs_raw.index>=2010) & (df_installs_raw.index<=2020)]
 installs_recent = pd.DataFrame(installs_2010_2019[sources[0]])
 installs_recent.columns = ['installed_pv_MW']
 print(installs_recent)
@@ -96,7 +98,7 @@ plt.title('Installations of PV in the USA (MW) since 1995')
 
 
 cwd = os.getcwd() #grabs current working directory
-df_raw_mrktshr_siVtf = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/MarketShare_US_siliconVSthinfilm.csv", index_col='Year')
+df_raw_mrktshr_siVtf = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/MarketShare_US_siliconVSthinfilm.csv", index_col='Year')
 
 
 # In[9]:
@@ -130,7 +132,7 @@ df_mrktshr_us =  pd.DataFrame(df_raw_mrktshr_siVtf['All_Marketshare'])
 df_mrktshr_us_si_complete = df_mrktshr_us.interpolate(limit_area='inside')
 plt.plot(df_mrktshr_us_si_complete)
 plt.title('Marketshare of Silicon PV installed since 1995')
-df_mrktshr_us_si_complete.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_USA_Si_marketshare.csv', index=True)
+df_mrktshr_us_si_complete.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_Si_marketshare.csv', index=True)
 
 
 # # Marketshare weight PV installs by percent Silicon
@@ -157,7 +159,53 @@ plt.legend()
 # In[13]:
 
 
-us_si_installs.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_USA_SiPV_installs.csv', index=True)
+us_si_installs.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_SiPV_installs.csv', index=True)
 
 
-# This data only takes installes through 2018. For the remaining years through 2050, a compound annual growth rate of 8.9% was used to predict increasing installations. This compound annual growth rate was sourced from IRENA 2016 EoL Mangement Report.
+# This data only takes installes through 2019. For the remaining years through 2050, a compound annual growth rate of 8.9% was used to predict increasing installations. This compound annual growth rate was sourced from IRENA 2016 EoL Mangement Report.
+
+# In[14]:
+
+
+us_si_installed = pd.DataFrame(us_si_installs, columns=['installed_pv_MW'])
+us_tf_installed = installs-us_si_installed
+
+
+# In[15]:
+
+
+plt.plot(us_tf_installed)
+plt.yscale('log')
+plt.title('Thin Film PV Installations (MW) in the USA, 1995 through 2018')
+
+
+# In[16]:
+
+
+us_tf_installed.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_TFPV_installs.csv', index=True)
+
+
+# # Only Commercial and Utility Scale c-Si
+
+# The sources used to create this baseline pre-2010 are:
+# 
+# 1. L. Sherwood, “U.S. Solar Market Trends 2008,” Interstate Renewable Energy Council, Jul. 2009. Accessed: Sep. 15, 2021. [Online]. Available: https://irecusa.org/wp-content/uploads/2021/07/Solar-Market-Trends-2008.pdf
+# 2. K. Bolcar and K. Ardani, “National Survey Report of PV Power Applications in the United States 2010,” IEA-PVPS, National Survey T1-19:2010, 2010. [Online]. Available: https://iea-pvps.org/national-survey-reports/.
+# 3. S. Kann et al., “U.S. Solar Market Insight Report: 2012 Year in Review Full Report,” Greentech Media Inc. & SEIA, 2013.
+# 
+# Note that data from these sources were digitized from graphs, so there is approximately a +/- 10 MWdc error (based on comparison to charted data within the report).
+# 
+# From 2010 forward we will use Wood Mackenzie Data.
+# 
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+

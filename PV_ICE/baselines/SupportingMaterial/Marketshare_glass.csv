@@ -1,5 +1,5 @@
 ﻿Year,glass-backsheet,glass-glass,foil-foil,Source,3pt2mm,gtr3mm,2to3mm,less2mm,Source
-1995,,,,,,,,,
+1995,,,,,100,,,,"Phylipsen GJM, Alsema EA. Environmental life-cycle assessment of multicrystalline silicon solar cell modules. Netherlands: Netherlands Agency for Energy and the Environment,NOVEM; 1995 Sep p. 66."
 1996,,,,,,,,,
 1997,,,,,,,,,
 1998,,,,,,,,,
@@ -25,18 +25,18 @@
 2018,94,6,,"ITRPV 2019, Fig. 16a",,93,7,0,"ITRPV 2019, Fig. 10"
 2019,90,10,,"ITRPV 2020, Fig. 51",,90,10,0,"ITRPV 2020, Fig. 43"
 2020,84,16,0,"ITRPV 2021, Fig. 45",,85,15,0,ITRPV 2021. Fig. 38
-2021,80,19,1,"ITRPV 2021, Fig. 45",,80,20,0,ITRPV 2021. Fig. 38
-2022,,,,,,,,,
-2023,76,23,1,"ITRPV 2021, Fig. 45",,75,23,2,ITRPV 2021. Fig. 38
-2024,,,,,,,,,
-2025,74,24,2,"ITRPV 2021, Fig. 45",,68,30,2,ITRPV 2021. Fig. 38
-2026,,,,,,,,,
+2021,74.5,25,0.5,"ITRPV 2022, Fig. 45",,70,29,1,"ITRPV 2022, Fig. 36"
+2022,68,31,1,"ITRPV 2022, Fig. 45",,68,30,2,"ITRPV 2022, Fig. 36"
+2023,,,,,,,,,
+2024,60,39,1,"ITRPV 2022, Fig. 45",,60,36,4,"ITRPV 2022, Fig. 36"
+2025,,,,,,,,,
+2026,56,42,2,"ITRPV 2022, Fig. 45",,52,43,5,"ITRPV 2022, Fig. 36"
 2027,,,,,,,,,
-2028,65,33,2,"ITRPV 2021, Fig. 45",,62,35,3,ITRPV 2021. Fig. 38
-2029,,,,,,,,,
+2028,,,,,,,,,
+2029,47,50,3,"ITRPV 2022, Fig. 45",,48,44,8,"ITRPV 2022, Fig. 36"
 2030,,,,,,,,,
-2031,55,43,2,"ITRPV 2021, Fig. 45",,56,41,3,ITRPV 2021. Fig. 38
-2032,,,,,,,,,
+2031,,,,,,,,,
+2032,46,51,3,"ITRPV 2022, Fig. 45",,43,46,11,"ITRPV 2022, Fig. 36"
 2033,,,,,,,,,
 2034,,,,,,,,,
 2035,,,,,,,,,

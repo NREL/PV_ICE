@@ -63,29 +63,30 @@ def power_law(x, a, b):
     return a*np.power(x, b)
 
 
-# In[13]:
+# In[7]:
 
 
 #generae a dataset for the area in between
 mod_eff_late = mod_eff_raw.loc[(mod_eff_raw.index>=2020)]
-y_dummy = power_law(mod_eff_late.index-2019, mod_eff_late['mod_eff'][2020], 0.065) 
+y_dummy = power_law(mod_eff_late.index-2019, mod_eff_late['mod_eff'][2020], 0.065) #17.9
 #played around with the exponential until y_dummy[31] closely matched projected 25.06% value. CITE
 print(y_dummy[30])
 plt.plot(y_dummy)
 
 
-# In[14]:
+# In[8]:
 
 
 #create a dataframe of the projection
 mod_eff_late['mod_eff'] = y_dummy
 #print(mod_eff_late)
 plt.plot(mod_eff_late)
+#mod_eff_late.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_module_eff_perovskite.csv', index=True)
 
 
 # Now smash the two dataframes back together for our average module efficiency baseline.
 
-# In[15]:
+# In[9]:
 
 
 mod_eff = pd.concat([mod_eff_history, mod_eff_late])
@@ -95,14 +96,14 @@ plt.title('Average Module Efficiency (%)')
 plt.ylabel('Efficiency (%)')
 
 
-# In[16]:
+# In[10]:
 
 
 #graph for paper
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
-plt.axvspan(2020, 2050.5, facecolor='gray', alpha=0.1)
+plt.axvspan(2021, 2050.5, facecolor='gray', alpha=0.1)
 plt.plot(mod_eff_raw, marker='o', label='Raw Data')
 plt.plot(mod_eff, '--k', label='PV ICE Baseline')
 plt.title('Average Module Efficiency [%]')
@@ -111,14 +112,30 @@ plt.legend()
 plt.xlim([1974, 2050.5])
 
 
-# In[ ]:
+# # Bifaciality Factor
+# 
+# With the advent of bifacial cells and modules with transparent backsheets/glass, there is a bonus energy produced from the slightly less efficient backside cell. This section of the journal records the increasing bifaciality factor, which is how this extra generation is currently tracked (2021).
+
+# Current procedure is to update the historical and projected factors in the baseline file, then run it through here to interpolate, and replace the file.
+
+# In[11]:
 
 
+cwd = os.getcwd() #grabs current working directory
+bifi_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/baseline_bifaciality_factor.csv", 
+                          index_col='Year')
 
 
-
-# In[ ]:
-
+# In[14]:
 
 
+bifi = bifi_raw.interpolate()
+plt.plot(bifi)
+plt.ylim(0,1.0)
+
+
+# In[15]:
+
+
+bifi.to_csv(cwd+'/../../../PV_ICE/baselines/baseline_bifaciality_factor.csv', index=True)
 

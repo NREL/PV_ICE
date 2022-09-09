@@ -9,7 +9,7 @@
 
 # The mass of silicon contained in a PV module is dependent on the size, thickness and number of cells in an average module. Since there is a range of sizes and number of cells per module, we will attempt a weighted average. These weighted averages are based on ITRPV data, which goes back to 2010, Fraunhofer data back to 1990, and 
 
-# In[2]:
+# In[1]:
 
 
 import numpy as np
@@ -26,7 +26,7 @@ density_si = 2.3290 #g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/
 
 # A Fraunhofer report indicates that in 1990, wafers were 400 micron thick, decreasing to the more modern 180 micron thickness by 2008. ITRPVs back to 2010 indicate that 156 mm x 156mm was the standard size wafer through 2015.
 
-# In[3]:
+# In[2]:
 
 
 #now lets try to do this for 2019 through 2030 all at once with dataframes
@@ -34,7 +34,7 @@ density_si = 2.3290 #g/cm^3 from Wikipedia of Silicon (https://en.wikipedia.org/
 
 #first we input the market share data for mcSi and monoSi, read in from csv
 cwd = os.getcwd() #grabs current working directory
-skipcols=['Source']
+skipcols=['Source','Notes','Note']
 mrktshr_cellsize = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/MarketShare_CellSize.csv",
                                index_col='Year', usecols=lambda x: x not in skipcols)
 mrktshr_cellsize /=100 #turn whole numbers into decimal percentages
@@ -43,9 +43,6 @@ mrktshr_cellsize /=100 #turn whole numbers into decimal percentages
 #then split them into two dataframes for later computations
 dfmarketshare_mcSi = mrktshr_cellsize.filter(regex = 'mcSi')
 dfmarketshare_monoSi = mrktshr_cellsize.filter(regex = 'monoSi')
-#adjust column names for matching computation later
-dfmarketshare_mcSi.columns = ['share156','share156.75','share157.75','share163','share166up']
-dfmarketshare_monoSi.columns = ['share156','share156.75','share157.75','share163','share166up']
 
 print(dfmarketshare_mcSi)
 print(dfmarketshare_monoSi)
@@ -55,7 +52,7 @@ print(dfmarketshare_monoSi)
 # ----
 # choosing to interpolate market share of different sizes rather than cell size because this should be more basedin technology - i.e. crystals only grow certain sizes. Additionally, it is more helpful to understand the impact silicon usage by keeping cell size and marketshare seperate.
 
-# In[4]:
+# In[3]:
 
 
 #interpolate for missing marketshare data
@@ -72,28 +69,38 @@ print(dfmarketshare_mcSi)
 print(dfmarketshare_monoSi)
 
 
-# In[5]:
+# In[4]:
 
 
 #multiply each marketshare dataframe column by it's respective size
 #dfmarketshare_mcSi.share156 *=156 #this is a slow way to multiply each column by its respective size
 
-cellsizes = {'share156':156,
-            'share156.75':156.75,
-            'share157.75':157.75,
-            'share163':163.875,
-            'share166up':166} #dictionary of the average cell dimension for each market share bin (ITRPV 2020)
+mcSi_cellsizes = {'mcSi_156mm':156,
+            'mcSi_156.75mm':156.75,
+            'mcSi_158.75mm':157.75,
+            'mcSi_161.75mm':163.875,
+            'mcSi_166mm':166,
+            'mcSi_182mm':182,
+            'mcSi_182mmup':210} #dictionary cell dimensions for mc-Si cells
+
+monoSi_cellsizes = {'monoSi_156mm':156,
+                   'monoSi_156.75mm':156.75,
+                   'monoSi_158.75mm':158.75,
+                   'monoSi_161.7mm':161.7,
+                   'monoSi_166mm':166,
+                   'monoSi_182mm':182,
+                   'monoSi_210mm':210}
 
 #multiply cell dimensions by their market share to get a weighted average
 ##this is where the column names needed to match
-df_scalecell_mcSi = dfmarketshare_mcSi.mul(cellsizes,'columns')
-df_scalecell_monoSi = dfmarketshare_monoSi.mul(cellsizes,'columns')
+df_scalecell_mcSi = dfmarketshare_mcSi.mul(mcSi_cellsizes,'columns')
+df_scalecell_monoSi = dfmarketshare_monoSi.mul(monoSi_cellsizes,'columns')
 
 print(df_scalecell_mcSi)
 print(df_scalecell_monoSi)
 
 
-# In[6]:
+# In[5]:
 
 
 #now add the columns together to get the weighted average cell size for each year for each technology
@@ -113,7 +120,7 @@ print(df_avgcell)
 # 
 # Based on these sources, we will say that cell sizes in 1995 were 100 mm, and in 2000 were 125 mm, and 156mm in 2010 (where ITRPV data starts). These will be step functions instead of linear interpolations to attempt to better represent that most size changes requires a replacement of the manufacturing line equipment. In reality, there would be some marketshare blending, which could be added with improved future data finding.
 
-# In[7]:
+# In[6]:
 
 
 #turn zeros back into NaN
@@ -143,7 +150,7 @@ print(df_avgcell)
 
 # Next, we apply the marketshare of mc-Si vs mono-Si to get the average cell dimension for the year. Market share of mc-Si vs mono-Si is taken from LBNL "Tracking the Sun" report (warning: this is non-utility scale data i.e. <5MW, and is from 2002-2018), from Mints 2019 SPV report, from ITRPVs, and old papers (Costello & Rappaport 1980, Maycock 2003 & 2005).
 
-# In[8]:
+# In[7]:
 
 
 #read in a csv that was copied from CE Data google sheet
@@ -156,7 +163,7 @@ print(techmarketshare)
 
 # #### create a harmonization of annual market share, and interpolate
 
-# In[9]:
+# In[8]:
 
 
 # first, create a single value of tech market share in each year or NaN
@@ -173,7 +180,7 @@ labelnames_mcSi = [e[5:] for e in mcSikeys]
 #print(monoSikeys)
 
 
-# In[10]:
+# In[9]:
 
 
 #aggregate all the columns of mono or mcSi into one averaged market share
@@ -202,7 +209,7 @@ plt.xlabel('Year')
 plt.ylabel('Market Share of Mono-Si [%]')
 
 
-# In[11]:
+# In[10]:
 
 
 plt.plot(mcSi_cols.index,mcSi_cols[mcSikeys[0]],lw=2,marker='o',label=labelnames_mcSi[0])
@@ -272,7 +279,7 @@ plt.ylabel('Market Share (%)')
 #which have already been cell size marketshare weighted
 #going to ignore "otherSi" because for the most part less than 2%, except 2002
 
-#trim the techmarketshare data to 1995 through 2030
+#trim the techmarketshare data to 1995 through latest prediction
 est_mrktshrs_sub = scaled_marketshares.loc[est_mrktshrs.index>=1995] #could also use a filter function instead
 
 #multiply the share of each tech by the weighted average cell size
@@ -341,7 +348,7 @@ wafer_thick_cm = wafer_thickness/10000 # microns in a cm
 
 #There are missing data, so we will interpolate linearly for missing years
 wafer_thick_cm = wafer_thick_cm.interpolate(method='linear',axis=0)
-print(wafer_thick_cm)
+#print(wafer_thick_cm)
 plt.plot(wafer_thick_cm, label='Wafer Thickness (cm)')
 plt.title('Wafer Thickness (cm)')
 
@@ -370,7 +377,7 @@ df_cell_volume.columns = ['cell_volume_cm3']
 df_Simass_percell = df_cell_volume.mul(density_si)
 df_Simass_percell.columns = ['Si_gpercell']
 print(df_Simass_percell)
-df_Simass_percell.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_si_g_per_cell.csv', index=True)
+df_Simass_percell.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_si_g_per_cell.csv', index=True)
 plt.plot(df_Simass_percell, label='Mass Si per cell (g/cell)')
 #plt.legend()
 plt.title('Mass Silicon per cell annually')
@@ -382,14 +389,14 @@ plt.ylabel('Silicon (grams/cell)')
 
 # Now take the above mass of silicon per cell and multiply it by the factor of number of cells per m^2 of module
 
-# In[ ]:
+# In[20]:
 
 
 df_Simass_percell.columns = df_cellperm2.columns = ['Si_g'] #rename to a common name
 df_Simass_perm2 = df_Simass_percell.mul(df_cellperm2, 'columns') #multiply
 #print(df_Simass_perm2)
 #print out to a csv
-df_Simass_perm2.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_si_g_per_m2.csv', index=True)
+df_Simass_perm2.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_si_g_per_m2.csv', index=True)
 
 #make a pretty plot
 plt.plot(df_Simass_perm2, label='Silicon g/m^2 of module')
@@ -401,7 +408,7 @@ plt.ylabel('Silicon (grams/m^2)')
 
 # For post-2030, the mass per m^2 of silicon was held constant through 2050 due to the uncertainty about future technology trends. For example, there are at least 3 different cell sizes which are vying for becoming the next mainstream technology, the move to all bifiacial might affect silicon use differently, and the half-cut and smaller cell technologies will also have an affect. Therefore, we have held it constant from 2030 onward, and this assumption can be modified by the user.
 
-# In[ ]:
+# In[21]:
 
 
 #understanding what influences the changes in Si mass/module m^2

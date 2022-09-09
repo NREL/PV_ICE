@@ -145,6 +145,10 @@ htmlhelp_basename = 'PV_ICEdoc'
 # A workaround for the responsive tables always having annoying scrollbars.
 def setup(app):
     app.add_css_file("no_scrollbars.css")
+<<<<<<< HEAD
+    #app.add_stylesheet("no_scrollbars.css")
+=======
+>>>>>>> 70365158dd6c3502bb63a65d95571dd3d5b3641b
     
 """    
 # -- Options for LaTeX output ---------------------------------------------
