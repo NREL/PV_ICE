@@ -100,7 +100,7 @@ wtd_mrktshr_mgsi_region.columns=['E_reduceSilicatoMGSi'] #rename for merge/join
 #wtd_mrktshr_mgsi_region
 
 
-# In[112]:
+# In[9]:
 
 
 #2018-2030, linear decrease to 11 kWh/kg in 2030
@@ -110,14 +110,14 @@ e_reducesilica_end.loc[2030,['E_reduceSilicatoMGSi']] = 11
 #e_reducesilica_end
 
 
-# In[113]:
+# In[10]:
 
 
 #join all together
 e_reducesilica_gappy = pd.concat([e_reducesilica,wtd_mrktshr_mgsi_region,e_reducesilica_end])
 
 
-# In[114]:
+# In[11]:
 
 
 e_reducesilica_gaps = e_reducesilica_gappy.astype(float) #for some reason this was objects?!
@@ -125,7 +125,7 @@ e_reducesilica_full = e_reducesilica_gaps.interpolate() #linearly interpolate be
 e_reducesilica_trim = e_reducesilica_full.loc[1995:,['E_reduceSilicatoMGSi']] #trim to 1995-2050
 
 
-# In[115]:
+# In[12]:
 
 
 plt.plot(e_reducesilica_trim)
@@ -199,7 +199,7 @@ plt.ylabel('[kWh/kg]')
 
 # There is noise, but generally there is an observable downward trend. Rather than curve fitting and being wrong all the time, I will manually remove points that cause upward or downward jumps, and interpolate based on the remaining data points. This is not a perfect solution, but should provide a decent approximation to reality.
 
-# In[107]:
+# In[19]:
 
 
 e_refineSi_siemens_manual = e_refineSi_siemens.copy()
@@ -214,7 +214,7 @@ e_refineSi_siemens_final=e_refineSi_siemens_trim.interpolate()
 #e_refineSi_siemens_final
 
 
-# In[109]:
+# In[20]:
 
 
 plt.plot(e_refineSi_siemens_final.index, e_refineSi_siemens_final.iloc[:,0])
@@ -227,7 +227,7 @@ plt.xlim(1989,2023)
 
 # ### FBR
 
-# In[20]:
+# In[21]:
 
 
 e_refineSi_fbr.dropna(how='all')
@@ -237,7 +237,7 @@ e_refineSi_fbr.dropna(how='all')
 # 
 # The next step in manufacturing silicon PV is ingot growth. There are two primary methods of ingot growth in the PV industry over it's history; multi-crystalline silicon and monocrystalline silicon. Initially, all PV was monocrystalline, then Multicrystalline silicon ingots were the dominent market share for most of a decade, and currently monocrystalline is making a resurgence to market dominence. We will cover the energy associated with both processes here, and weight the historical energy demand by the marketshare of these two technologies.
 
-# In[21]:
+# In[22]:
 
 
 e_ingotenergy_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-ingotgrowing.csv",
@@ -248,14 +248,14 @@ e_ingotenergy_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
 # 
 # mc-Si is created through putting chunked polysilicon into a large block, heating and casting into a single large block. This process results in many crystallographic grains within the block, which slightly reduces the efficiency of the cell, but is cheap. 
 
-# In[22]:
+# In[23]:
 
 
 e_casting_raw = e_ingotenergy_raw.iloc[:,3:6]
 e_casting_raw.dropna(how='all')
 
 
-# In[23]:
+# In[24]:
 
 
 plt.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'])
@@ -265,7 +265,7 @@ plt.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'])
 # 
 # Next the energy seems to step up and then down over time. This is potenially real due the increasing size of blocks over time.
 
-# In[24]:
+# In[25]:
 
 
 e_casting_manual = e_casting_raw.copy()
@@ -273,7 +273,7 @@ e_casting_manual.loc[2016] = np.nan #drop Fan et al
 e_casting_manual.loc[2018] = np.nan # drop Woodhouse et al
 
 
-# In[25]:
+# In[26]:
 
 
 plt.scatter(e_casting_manual.index, e_casting_manual['E_mcSiCast_kWhpkg'])
@@ -284,7 +284,7 @@ plt.ylabel('Electricity Demand [kWh/kg]')
 
 # From this lovely scatter plot graph, we can see that the energy demand of directional solification casting for mc-Si has not particularly changed in the last decades. Therefore, we will take an average of these datapoints and apply it for all time.
 
-# In[26]:
+# In[27]:
 
 
 e_casting_mcSi = e_casting_manual['E_mcSiCast_kWhpkg'].mean()
@@ -295,14 +295,14 @@ print('The electrical energy to make mc-Si through direct solidification is '+st
 # 
 # mono-Si is created through the Czochralski process, in which a seed crystal is rotated and drawn away from a vat of molten silicon, growing a large boule. This results in the whole boule/ingot being oriented in one crystallographic direction, which increases the cell efficiency, but is time consuming and expensive.
 
-# In[27]:
+# In[28]:
 
 
 e_growczingot_raw = e_ingotenergy_raw.iloc[:,0:3]
 e_growczingot_raw.dropna(how='all')
 
 
-# In[28]:
+# In[29]:
 
 
 plt.scatter(e_growczingot_raw.index, e_growczingot_raw['E_Cz_kWhpkg'])
@@ -316,7 +316,7 @@ plt.ylabel('[kWh/kg]')
 # 
 # Lastly, the final datapoint from Muller et al ticks upward slightly, however, the previous datapoint is from ITRPV which is a global survey report whereas the Muller et al is an updated LCI ostensibly with real world data. Therefore, we will leave this slight increase  given the data quality and non-drastic change.
 
-# In[29]:
+# In[30]:
 
 
 e_growczingot_manual = e_growczingot_raw.copy()
@@ -324,7 +324,7 @@ e_growczingot_manual.loc[2016] = np.nan #drop Fan et al
 e_growczingot_manual.loc[2018] = np.nan # drop Woodhouse et al
 
 
-# In[30]:
+# In[31]:
 
 
 avg = np.mean([e_growczingot_manual.loc[1999,'E_Cz_kWhpkg'], e_growczingot_manual.loc[2004,'E_Cz_kWhpkg']])
@@ -332,13 +332,13 @@ e_growczingot_manual.loc[1999] = avg
 e_growczingot_manual.loc[2004] = avg
 
 
-# In[31]:
+# In[32]:
 
 
 e_ingotcz_filled = e_growczingot_manual.interpolate()
 
 
-# In[32]:
+# In[33]:
 
 
 plt.plot(e_ingotcz_filled.index, e_ingotcz_filled['E_Cz_kWhpkg'])
@@ -351,14 +351,14 @@ plt.xlim(1993,2021)
 # ### Market Share Weight mono-Si vs mc-Si
 # Here we blend the two calculated data into an annual average energy demand based on the marketshare of installed cell type.
 
-# In[166]:
+# In[34]:
 
 
 pvice_mcSimono_marketshare = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv",
                                      index_col='Year')
 
 
-# In[167]:
+# In[35]:
 
 
 e_ingotcz = e_ingotcz_filled.loc[1995:,['E_Cz_kWhpkg']] #slice Cz dataframe
@@ -374,7 +374,7 @@ e_ingots_wtd_final = pd.DataFrame(e_ingots_wtd.sum(axis=1)) # sum the annual ene
 e_ingots_wtd_final.columns =['E_Ingot_kWhpkg']
 
 
-# In[168]:
+# In[36]:
 
 
 fig, ax1 = plt.subplots()
@@ -402,40 +402,40 @@ plt.show()
 # 
 # This step captures the electricity demands of wafering the grown silicon ingot (CZ or DS) into wafers. This includes the prep and demounting as well as the sawing step itself.
 
-# In[95]:
+# In[37]:
 
 
 e_wafering_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-wafering.csv",
                              index_col='year')
 
 
-# In[96]:
+# In[38]:
 
 
 e_wafering_raw.dropna(how='all')
 
 
-# In[97]:
+# In[39]:
 
 
 plt.scatter(e_wafering_raw.index, e_wafering_raw['E_Wafering_kWhpkg']) 
 
 
-# In[98]:
+# In[40]:
 
 
 e_wafering_trim_drop=e_wafering_raw.loc[1995:,['E_Wafering_kWhpkg']]
 e_wafering_trim_drop.loc[1997] = np.nan # this is an outlier
 
 
-# In[99]:
+# In[41]:
 
 
 e_wafering_filled = e_wafering_trim_drop.interpolate()
 #e_wafering_filled
 
 
-# In[101]:
+# In[42]:
 
 
 plt.plot(e_wafering_filled, label='interpolated')
@@ -463,7 +463,7 @@ plt.scatter(e_cellprocess_raw.index, e_cellprocess_raw['E_cellProcess_kWhpkg'])
 
 # There appear to be 2 outliers - Woodhouse 2018 is estimated machine-by-machine, and might be high. The 1994 datapoint is outrageously high, not sure why. Also got an outlier number from V. Fthenakis and E. Leccisi 2021, despite claiming to use the Frischknecht PVPS report. Dropping outliers and then interpolating.
 
-# In[54]:
+# In[45]:
 
 
 e_cellprocess = e_cellprocess_raw.copy()
@@ -472,7 +472,7 @@ e_cellprocess.loc[2018] = np.nan
 #e_cellprocess.dropna(how='all')
 
 
-# In[55]:
+# In[46]:
 
 
 e_cellprocess_fill = e_cellprocess.loc[1990:,['E_cellProcess_kWhpkg']] 
@@ -480,7 +480,7 @@ e_cellprocess_fill.interpolate(inplace=True)
 e_cellprocess_final = e_cellprocess_fill.loc[1995:,['E_cellProcess_kWhpkg']] 
 
 
-# In[63]:
+# In[47]:
 
 
 plt.plot(e_cellprocess_final)
@@ -494,7 +494,7 @@ plt.title('Electricity Demand: Cell Processing')
 # 
 # Now we will combine all of the manufacturing steps associated with silicon and the silicon wafer into a single dynamic column, e_mat_MFG. This will get multiplied by the virgin material stock required to manufacture PV modules annually.
 
-# In[170]:
+# In[48]:
 
 
 mfg_energies = [e_reducesilica_trim, e_refineSi_siemens_final, e_ingots_wtd_final, e_wafering_filled, e_cellprocess_final]
@@ -502,13 +502,13 @@ df_mfg_energies = pd.concat(mfg_energies, axis=1)
 df_mfg_energies['e_mfg_kWhpkg'] = df_mfg_energies.sum(axis=1)
 
 
-# In[171]:
+# In[49]:
 
 
 df_mfg_energies.columns
 
 
-# In[175]:
+# In[50]:
 
 
 plt.plot([],[],color='blue', label='Reduce Si')
@@ -530,7 +530,7 @@ plt.legend()
 plt.show()
 
 
-# In[179]:
+# In[51]:
 
 
 plt.plot(df_mfg_energies.index, df_mfg_energies['e_mfg_kWhpkg'])
@@ -542,7 +542,7 @@ plt.ylim(0,)
 
 # Now to check this overall electricity demand against literature values as a reality check. Doing VERY ROUGH ballpark checks.
 
-# In[188]:
+# In[52]:
 
 
 #N. Jungbluth, “Life cycle assessment of crystalline photovoltaics in the Swiss ecoinvent database,” 
@@ -562,7 +562,7 @@ wildscholten2013_kWh = (961+73.4+81.4)*0.27777
 phyl_alsema1995_kWh= (511-27) #kWh/m2 to kWh/kg estimating 5 kg/module
 
 
-# In[190]:
+# In[53]:
 
 
 plt.plot(df_mfg_energies.index, df_mfg_energies['e_mfg_kWhpkg'])
@@ -580,8 +580,8 @@ plt.xlim(1994,2022)
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[54]:
 
 
-.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon.csv")
+df_mfg_energies['e_mfg_kWhpkg'].to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg.csv")
 
