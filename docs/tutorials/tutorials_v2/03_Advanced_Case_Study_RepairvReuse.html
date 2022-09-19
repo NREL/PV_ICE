@@ -14596,7 +14596,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -14617,6 +14617,38 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ModuleNotFoundError</span>                       Traceback (most recent call last)
+Input <span class="ansi-green-fg">In [1]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 3&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> <span class="ansi-bold" style="color: rgb(0,0,255)">os</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span> <span class="ansi-bold" style="color: rgb(0,0,255)">pathlib</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> Path
+<span class="ansi-green-fg">----&gt; 3</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> <span class="ansi-bold" style="color: rgb(0,0,255)">PV_ICE</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> <span class="ansi-bold" style="color: rgb(0,0,255)">matplotlib</span><span class="ansi-bold" style="color: rgb(0,0,255)">.</span><span class="ansi-bold" style="color: rgb(0,0,255)">pyplot</span> <span class="ansi-bold" style="color: rgb(0,135,0)">as</span> <span class="ansi-bold" style="color: rgb(0,0,255)">plt</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> <span class="ansi-bold" style="color: rgb(0,0,255)">pandas</span> <span class="ansi-bold" style="color: rgb(0,135,0)">as</span> <span class="ansi-bold" style="color: rgb(0,0,255)">pd</span>
+
+<span class="ansi-red-fg">ModuleNotFoundError</span>: No module named &#39;PV_ICE&#39;</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -14975,6 +15007,118 @@ Finished Area+Power Generation Calculations
  &#39;EOL_L0_Year_53&#39;,
  &#39;EOL_L0_Year_54&#39;,
  &#39;EOL_L0_Year_55&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;EOL_L0_Year_0&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_2&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_3&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_4&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_5&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_6&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_7&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_8&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_9&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_10&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_11&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_12&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_13&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_14&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_15&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_16&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_17&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_18&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_19&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_20&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_21&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_22&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_23&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_24&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_25&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_26&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_27&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_28&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_29&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_30&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_31&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_32&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_33&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_34&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_35&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_36&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_37&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_38&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_39&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_40&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_41&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_42&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_43&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_44&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_45&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_46&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_47&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_48&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_49&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_50&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_51&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_52&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_53&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_54&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;EOL_L0_Year_55&#39;</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&#39;EOL_L0_Year_0&#39;</pre>
 </div>
 
 </div>

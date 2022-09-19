@@ -86,6 +86,73 @@ filter_col = [col for col in r3.scenario['Repair_0'].data if col.startswith('EOL
 filter_col
 
 
+# In[1]:
+
+
+list = ['EOL_L0_Year_0',
+ 'EOL_L0_Year_1',
+ 'EOL_L0_Year_2',
+ 'EOL_L0_Year_3',
+ 'EOL_L0_Year_4',
+ 'EOL_L0_Year_5',
+ 'EOL_L0_Year_6',
+ 'EOL_L0_Year_7',
+ 'EOL_L0_Year_8',
+ 'EOL_L0_Year_9',
+ 'EOL_L0_Year_10',
+ 'EOL_L0_Year_11',
+ 'EOL_L0_Year_12',
+ 'EOL_L0_Year_13',
+ 'EOL_L0_Year_14',
+ 'EOL_L0_Year_15',
+ 'EOL_L0_Year_16',
+ 'EOL_L0_Year_17',
+ 'EOL_L0_Year_18',
+ 'EOL_L0_Year_19',
+ 'EOL_L0_Year_20',
+ 'EOL_L0_Year_21',
+ 'EOL_L0_Year_22',
+ 'EOL_L0_Year_23',
+ 'EOL_L0_Year_24',
+ 'EOL_L0_Year_25',
+ 'EOL_L0_Year_26',
+ 'EOL_L0_Year_27',
+ 'EOL_L0_Year_28',
+ 'EOL_L0_Year_29',
+ 'EOL_L0_Year_30',
+ 'EOL_L0_Year_31',
+ 'EOL_L0_Year_32',
+ 'EOL_L0_Year_33',
+ 'EOL_L0_Year_34',
+ 'EOL_L0_Year_35',
+ 'EOL_L0_Year_36',
+ 'EOL_L0_Year_37',
+ 'EOL_L0_Year_38',
+ 'EOL_L0_Year_39',
+ 'EOL_L0_Year_40',
+ 'EOL_L0_Year_41',
+ 'EOL_L0_Year_42',
+ 'EOL_L0_Year_43',
+ 'EOL_L0_Year_44',
+ 'EOL_L0_Year_45',
+ 'EOL_L0_Year_46',
+ 'EOL_L0_Year_47',
+ 'EOL_L0_Year_48',
+ 'EOL_L0_Year_49',
+ 'EOL_L0_Year_50',
+ 'EOL_L0_Year_51',
+ 'EOL_L0_Year_52',
+ 'EOL_L0_Year_53',
+ 'EOL_L0_Year_54',
+ 'EOL_L0_Year_55']
+
+
+# In[4]:
+
+
+list[0]
+
+
 # In[121]:
 
 
