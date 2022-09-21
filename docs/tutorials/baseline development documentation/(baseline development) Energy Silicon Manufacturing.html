@@ -15128,7 +15128,7 @@ A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSI
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.collections.PathCollection at 0x233cce35be0&gt;</pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x23898ccd2b0&gt;</pre>
 </div>
 
 </div>
@@ -15890,7 +15890,7 @@ A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSI
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.collections.PathCollection at 0x233ce628e50&gt;</pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x2389a4b8e20&gt;</pre>
 </div>
 
 </div>
@@ -16159,7 +16159,7 @@ A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSI
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.collections.PathCollection at 0x233ce571ca0&gt;</pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x2389a401c70&gt;</pre>
 </div>
 
 </div>
@@ -16289,12 +16289,12 @@ A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSI
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mfg_energies</span> <span class="o">=</span> <span class="p">[</span><span class="n">e_reducesilica_trim</span><span class="p">,</span> <span class="n">e_refineSi_siemens_final</span><span class="p">,</span> <span class="n">e_ingots_wtd_final</span><span class="p">,</span> <span class="n">e_wafering_filled</span><span class="p">,</span> <span class="n">e_cellprocess_final</span><span class="p">]</span>
 <span class="n">df_mfg_energies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">mfg_energies</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;e_mfg_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;e_mfg_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16555,10 +16555,33 @@ A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSI
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;e_mfg_kWhpkg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg.csv&quot;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="EOL-Recycling-to-HQ-energy-Calculation">EOL Recycling to HQ energy Calculation<a class="anchor-link" href="#EOL-Recycling-to-HQ-energy-Calculation">&#182;</a></h2><p>No literature found recycled EOL silicon to higher than MG-Si. Therefore, we will use the extraction energy at EOL from Latunussa et al 2016 (1.6 kWh/kg) for the FRELP process as the LQ. We will also add this quantity to the energy to MFG as calculated here, from Seimens forward.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[69]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">latunussa2016</span> <span class="o">=</span> <span class="mf">1.6</span> <span class="c1">#kWh/kg</span>
+<span class="n">e_eol_recycle</span> <span class="o">=</span> <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;e_mfg_kWhpkg&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;E_reduceSilicatoMGSi&#39;</span><span class="p">]</span> <span class="c1">#creates a series</span>
+<span class="n">e_eol_recycle_HQ</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">e_eol_recycle</span><span class="o">+</span><span class="n">latunussa2016</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">e_eol_recycle_HQ</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv&quot;</span><span class="p">)</span>
 </pre></div>
 
      </div>

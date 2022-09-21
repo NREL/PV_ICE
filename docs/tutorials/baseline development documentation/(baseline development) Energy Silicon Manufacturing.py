@@ -494,12 +494,12 @@ plt.title('Electricity Demand: Cell Processing')
 # 
 # Now we will combine all of the manufacturing steps associated with silicon and the silicon wafer into a single dynamic column, e_mat_MFG. This will get multiplied by the virgin material stock required to manufacture PV modules annually.
 
-# In[48]:
+# In[67]:
 
 
 mfg_energies = [e_reducesilica_trim, e_refineSi_siemens_final, e_ingots_wtd_final, e_wafering_filled, e_cellprocess_final]
 df_mfg_energies = pd.concat(mfg_energies, axis=1)
-df_mfg_energies['e_mfg_kWhpkg'] = df_mfg_energies.sum(axis=1)
+df_mfg_energies['e_mfg_kWhpkg'] = round(df_mfg_energies.sum(axis=1),2)
 
 
 # In[49]:
@@ -580,8 +580,21 @@ plt.xlim(1994,2022)
 plt.ylim(0,)
 
 
-# In[54]:
+# In[68]:
 
 
 df_mfg_energies['e_mfg_kWhpkg'].to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg.csv")
+
+
+# ## EOL Recycling to HQ energy Calculation
+# 
+# No literature found recycled EOL silicon to higher than MG-Si. Therefore, we will use the extraction energy at EOL from Latunussa et al 2016 (1.6 kWh/kg) for the FRELP process as the LQ. We will also add this quantity to the energy to MFG as calculated here, from Seimens forward. 
+
+# In[69]:
+
+
+latunussa2016 = 1.6 #kWh/kg
+e_eol_recycle = df_mfg_energies['e_mfg_kWhpkg']-df_mfg_energies['E_reduceSilicatoMGSi'] #creates a series
+e_eol_recycle_HQ = round(e_eol_recycle+latunussa2016,2)
+e_eol_recycle_HQ.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv")
 
