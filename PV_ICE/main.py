@@ -1296,7 +1296,7 @@ class Simulation:
                 scenarios = [scenarios]
 
         for scen in scenarios:
-            self.scenario[scen].data['mod_MFG_eff'] = 100.0
+            self.scenario[scen].dataIn_m['mod_MFG_eff'] = 100.0
 
             for mat in self.scenario[scen].material:
                 self.scenario[scen].material[mat].matdataIn_m['mat_virgin_eff'] = 100.0

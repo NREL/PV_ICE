@@ -55,17 +55,17 @@ print(os.getcwd())
 
 MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
 MATERIAL = MATERIALS[0]
-moduleFile = r'..\baselines\baseline_modules_US_HistoryUtilCommOnly.csv'
+moduleFile = r'..\baselines\baseline_modules_mass_US_HistoryUtilCommOnly.csv'
 
 
 # In[5]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='USHistory', file=moduleFile)
+r1.createScenario(name='USHistory', massmodulefile=moduleFile)
 for mat in range (0, len(MATERIALS)):
-    MATERIALBASELINE = r'..\baselines\baseline_material_'+MATERIALS[mat]+'.csv'
-    r1.scenario['USHistory'].addMaterial(MATERIALS[mat], file=MATERIALBASELINE)
+    MATERIALBASELINE = r'..\baselines\baseline_material_mass_'+MATERIALS[mat]+'.csv'
+    r1.scenario['USHistory'].addMaterial(MATERIALS[mat], massmatfile=MATERIALBASELINE)
 
 
 # ### Set All Material Virgin, MFG, and circularity to 0
@@ -103,7 +103,7 @@ r1.calculateMassFlow()
 
 
 #print(r1.scenario.keys())
-print(r1.scenario['USHistory'].data.keys())
+print(r1.scenario['USHistory'].dataOut_m.keys())
 #print(r1.scenario['USHistory'].material['glass'].materialdata.keys())
 
 
@@ -122,8 +122,8 @@ r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_MF
 # In[11]:
 
 
-plt.plot(r1.scenario['USHistory'].data['year'], 
-         r1.scenario['USHistory'].data['Installed_Capacity_[W]'], label='Installed [W]')
+plt.plot(r1.scenario['USHistory'].dataIn_m['year'], 
+         r1.scenario['USHistory'].dataOut_m['Installed_Capacity_[W]'], label='Installed [W]')
 
 plt.title('Installed Capacity Annually')
 plt.ylabel('Installed Cap [W]')
@@ -139,7 +139,7 @@ uscumr1.to_csv('historicalUS-cumulative.csv')
 
 # ## Pretty Plots
 
-# In[13]:
+# In[15]:
 
 
 #create a yearly Module Waste Mass
@@ -147,7 +147,7 @@ USyearly=pd.DataFrame()
 keyword = 'mat_Total_Landfilled'
 for mat in range (0, len(MATERIALS)):
     material = MATERIALS[mat]
-    foo = r1.scenario['USHistory'].material[material].materialdata[keyword].copy()
+    foo = r1.scenario['USHistory'].material[material].matdataOut_m[keyword].copy()
     foo = foo.to_frame(name=material)
     USyearly["Waste_"+material] = foo[material]
 
@@ -157,28 +157,28 @@ USyearly['Waste_Module'] = USyearly.sum(axis=1)
 USyearly.head(10)
 
 
-# In[14]:
+# In[ ]:
 
 
 #add index
-USyearly.index = r1.scenario['USHistory'].data['year']
+USyearly.index = r1.scenario['USHistory'].dataIn_m['year']
 
 
-# In[15]:
+# In[ ]:
 
 
 #Convert to million metric tonnes
 USyearly_mil_tonnes=USyearly/1000000000000
 
 
-# In[16]:
+# In[ ]:
 
 
 #Adding new installed capacity for decomissioning calc
-USyearly_mil_tonnes['new_Installed_Capacity_[MW]'] = r1.scenario['USHistory'].data['new_Installed_Capacity_[MW]'].values
+USyearly_mil_tonnes['new_Installed_Capacity_[MW]'] = r1.scenario['USHistory'].dataIn_m['new_Installed_Capacity_[MW]'].values
 
 
-# In[17]:
+# In[ ]:
 
 
 UScum = USyearly_mil_tonnes.copy()
@@ -187,14 +187,14 @@ UScum = UScum.cumsum()
 UScum.head()
 
 
-# In[18]:
+# In[ ]:
 
 
 bottoms = pd.DataFrame(UScum.loc[2050])
 bottoms
 
 
-# In[19]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -248,20 +248,20 @@ a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0] ), ('Glass', 'Alumini
 # 
 # Create a table output of installs, active generating capacity annually decommissioned, cumulatively decomissioned, and cumulative decomissioned module mass.
 
-# In[40]:
+# In[ ]:
 
 
 usyearlyr1.head()
 
 
-# In[30]:
+# In[ ]:
 
 
 tidy_results = usyearlyr1.iloc[:,32:]
 tidy_results.columns = ('new_Installed_Capacity_[MW]', 'Active_Capacity_[MW]','Cumulative_Decomissioned_Capacity_[MW]')
 
 
-# In[44]:
+# In[ ]:
 
 
 #tidy_results['Annual_Decommissioned_Capacity_[MW]'] = 
