@@ -4,15 +4,18 @@
 # # 1 - Estimate when US Installs will reach EoL
 # 
 # 
-# Historical installations for U.S. Utility and non-Residential sector was calculated from
-# 1. L. Sherwood, “U.S. Solar Market Trends 2008,” Interstate Renewable Energy Council, Jul. 2009. Accessed: Sep. 15, 2021. [Online]. Available: https://irecusa.org/wp-content/uploads/2021/07/Solar-Market-Trends-2008.pdf
-# 2. All Sherwood reports 2009-2014 for 1999 through 2009
-# 3. Wood Mackenzie Data from 2010 forward.
-# 4. “U.S. Solar Market Insight Report: 2012 Year in Review Full Report,” Greentech Media Inc. & SEIA, 2013 as a sanity check.
+# Historical installations for U.S. Utility and non-Residential sector was calculated from:
+# 1. 1995 through 1998: K. Bolcar and K. Ardani, “National Survey Report of PV Power Applications in the United States 2010,” IEA-PVPS, National Survey T1-19:2010, 2010. [Online]. Available: https://iea-pvps.org/national-survey-reports/.
+# 2. L. Sherwood, “U.S. Solar Market Trends 2008,” Interstate Renewable Energy Council, Jul. 2009. Accessed: Sep. 15, 2021. [Online]. Available: https://irecusa.org/wp-content/uploads/2021/07/Solar-Market-Trends-2008.pdf
+# 3. All Sherwood reports 2009-2014 for 1999 through 2009
+# 4. Wood Mackenzie Data from 2010 forward.
+# 5. “U.S. Solar Market Insight Report: 2012 Year in Review Full Report,” Greentech Media Inc. & SEIA, 2013 as a sanity check.
+# 
 # The calculations to select for only these 2 sectors and weight for c-Si can be found in Supporting Materials folder, files "Calculations-Installs-Subset-CommUtility.xlsx", "Installs-SubsetCommUtility.xlsx", and "Installs-SubsetCommUtility.csv".
 # 
 # These installations where then put into a module file. Installations after 2020 are set to 0, manufacturing efficiency is set to 100, and all circular EoL pathways are set to 0, sending all EoL material to the landfill. All lifetime and reliability, module efficiencies, and module degradation rates are taken from PV ICE baseline. The purpose of this calculation is to estimate when currently installed PV modules will come out of the field and need to be managed at EoL.
 # 
+# NOTE: this analysis has been updated for a 2022 release of an NREL decommissioning report. The update includes resolving a bug in how the Weibull function was applied to the cohorts, resolution of edge cases, and an update to the installation inputs, examining all 3 sectors of PV installs using Wood Mackenzie assumptions.
 
 # This analysis conducted for Taylor Curtis
 
@@ -27,9 +30,6 @@ import pandas as pd
 import numpy as np
 
 testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
-
-# Another option using relative address; for some operative systems you might need '/' instead of '\'
-# testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
 
 print ("Your simulation will be stored in %s" % testfolder)
 

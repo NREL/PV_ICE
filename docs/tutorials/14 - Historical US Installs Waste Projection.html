@@ -13971,15 +13971,17 @@ a.anchor-link {
 
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="1---Estimate-when-US-Installs-will-reach-EoL">1 - Estimate when US Installs will reach EoL<a class="anchor-link" href="#1---Estimate-when-US-Installs-will-reach-EoL">&#182;</a></h1><p>Historical installations for U.S. Utility and non-Residential sector was calculated from</p>
+<h1 id="1---Estimate-when-US-Installs-will-reach-EoL">1 - Estimate when US Installs will reach EoL<a class="anchor-link" href="#1---Estimate-when-US-Installs-will-reach-EoL">&#182;</a></h1><p>Historical installations for U.S. Utility and non-Residential sector was calculated from:</p>
 <ol>
+<li>1995 through 1998: K. Bolcar and K. Ardani, “National Survey Report of PV Power Applications in the United States 2010,” IEA-PVPS, National Survey T1-19:2010, 2010. [Online]. Available: <a href="https://iea-pvps.org/national-survey-reports/">https://iea-pvps.org/national-survey-reports/</a>.</li>
 <li>L. Sherwood, “U.S. Solar Market Trends 2008,” Interstate Renewable Energy Council, Jul. 2009. Accessed: Sep. 15, 2021. [Online]. Available: <a href="https://irecusa.org/wp-content/uploads/2021/07/Solar-Market-Trends-2008.pdf">https://irecusa.org/wp-content/uploads/2021/07/Solar-Market-Trends-2008.pdf</a></li>
 <li>All Sherwood reports 2009-2014 for 1999 through 2009</li>
 <li>Wood Mackenzie Data from 2010 forward.</li>
-<li>“U.S. Solar Market Insight Report: 2012 Year in Review Full Report,” Greentech Media Inc. &amp; SEIA, 2013 as a sanity check.
-The calculations to select for only these 2 sectors and weight for c-Si can be found in Supporting Materials folder, files "Calculations-Installs-Subset-CommUtility.xlsx", "Installs-SubsetCommUtility.xlsx", and "Installs-SubsetCommUtility.csv".</li>
+<li>“U.S. Solar Market Insight Report: 2012 Year in Review Full Report,” Greentech Media Inc. &amp; SEIA, 2013 as a sanity check.</li>
 </ol>
+<p>The calculations to select for only these 2 sectors and weight for c-Si can be found in Supporting Materials folder, files "Calculations-Installs-Subset-CommUtility.xlsx", "Installs-SubsetCommUtility.xlsx", and "Installs-SubsetCommUtility.csv".</p>
 <p>These installations where then put into a module file. Installations after 2020 are set to 0, manufacturing efficiency is set to 100, and all circular EoL pathways are set to 0, sending all EoL material to the landfill. All lifetime and reliability, module efficiencies, and module degradation rates are taken from PV ICE baseline. The purpose of this calculation is to estimate when currently installed PV modules will come out of the field and need to be managed at EoL.</p>
+<p>NOTE: this analysis has been updated for a 2022 release of an NREL decommissioning report. The update includes resolving a bug in how the Weibull function was applied to the cohorts, resolution of edge cases, and an update to the installation inputs, examining all 3 sectors of PV installs using Wood Mackenzie assumptions.</p>
 
 </div>
 </div>
@@ -14002,9 +14004,6 @@ The calculations to select for only these 2 sectors and weight for c-Si can be f
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">)</span>
-
-<span class="c1"># Another option using relative address; for some operative systems you might need &#39;/&#39; instead of &#39;\&#39;</span>
-<span class="c1"># testfolder = os.path.abspath(r&#39;..\..\PV_DEMICE\TEMP&#39;)  </span>
 
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Your simulation will be stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">testfolder</span><span class="p">)</span>
 </pre></div>
