@@ -46,7 +46,7 @@ print("Your simulation input data will be written/read from %s" % inputfolder)
 print("Material files will be from %s" % materialsfolder)
 
 
-# In[155]:
+# In[3]:
 
 
 if not os.path.exists(testfolder):
@@ -59,7 +59,7 @@ if not os.path.exists(testfolder):
 
 # First, we load the Module Baseline. This file will be used later to populate all the columns other than 'new_Installed_Capacity_[MW]'. Deployment schedule for this analysis will be supplied by the REEDS model. This analysis will use PV ICE developed material and module baselines.
 
-# In[6]:
+# In[4]:
 
 
 rtest = PV_ICE.Simulation(name='Sim1', path=inputfolder)
@@ -73,7 +73,7 @@ baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
 
 # Drop 1995 through 2009 because chosen deployment schedule begins in 2010. Technically this neglects ~1.5 GW of installs from 1995 through 2009.
 
-# In[ ]:
+# In[5]:
 
 
 baseline.drop(baseline.loc['1995':'2009'].index, inplace=True)
@@ -81,16 +81,16 @@ baseline.drop(baseline.loc['1995':'2009'].index, inplace=True)
 
 # Now we load the deployment schedule. This is derived from ReEDS simulation output, and in this case we're using one of the deployment projections as used in Solar Futures (includes PCA regions, States). 
 
-# In[59]:
+# In[11]:
 
 
 #in the Supporting Material Folder
-reedsFile = str(Path().resolve().parent.parent /'baselines'/'SupportingMaterial' /
+reedsFile = str(Path().resolve().parent.parent/ 'PV_ICE' /'baselines'/'SupportingMaterial' /
                 'December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx')
 print ("Input file is stored in %s" % reedsFile)
 
 
-# In[7]:
+# In[12]:
 
 
 REEDSInput = pd.read_excel(reedsFile, sheet_name="new installs PV")
@@ -99,7 +99,7 @@ REEDSInput = pd.read_excel(reedsFile, sheet_name="new installs PV")
 
 # First create a copy which groups the data by PCA region
 
-# In[8]:
+# In[13]:
 
 
 rawdf = REEDSInput.copy()
@@ -110,7 +110,7 @@ rawdf.set_index(['Scenario','Year','PCA'], inplace=True)
 
 # For each Scenario and for each PCA, combine with baseline and save as input file. This will be in a folder PCAs under the simulation folder in TEMP
 
-# In[9]:
+# In[14]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):

@@ -113,13 +113,13 @@ print(r1.scenario['USHistory'].dataOut_m.keys())
 r1.plotScenariosComparison(keyword='Yearly_Sum_Area_disposed')
 
 
-# In[10]:
+# In[ ]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_MFG_Landfilled')
 
 
-# In[11]:
+# In[ ]:
 
 
 plt.plot(r1.scenario['USHistory'].dataIn_m['year'], 
@@ -129,7 +129,7 @@ plt.title('Installed Capacity Annually')
 plt.ylabel('Installed Cap [W]')
 
 
-# In[12]:
+# In[10]:
 
 
 usyearlyr1, uscumr1 = r1.aggregateResults()
@@ -139,7 +139,7 @@ uscumr1.to_csv('historicalUS-cumulative.csv')
 
 # ## Pretty Plots
 
-# In[15]:
+# In[11]:
 
 
 #create a yearly Module Waste Mass
@@ -157,28 +157,28 @@ USyearly['Waste_Module'] = USyearly.sum(axis=1)
 USyearly.head(10)
 
 
-# In[ ]:
+# In[12]:
 
 
 #add index
 USyearly.index = r1.scenario['USHistory'].dataIn_m['year']
 
 
-# In[ ]:
+# In[13]:
 
 
 #Convert to million metric tonnes
 USyearly_mil_tonnes=USyearly/1000000000000
 
 
-# In[ ]:
+# In[14]:
 
 
 #Adding new installed capacity for decomissioning calc
 USyearly_mil_tonnes['new_Installed_Capacity_[MW]'] = r1.scenario['USHistory'].dataIn_m['new_Installed_Capacity_[MW]'].values
 
 
-# In[ ]:
+# In[15]:
 
 
 UScum = USyearly_mil_tonnes.copy()
@@ -187,14 +187,14 @@ UScum = UScum.cumsum()
 UScum.head()
 
 
-# In[ ]:
+# In[16]:
 
 
 bottoms = pd.DataFrame(UScum.loc[2050])
 bottoms
 
 
-# In[ ]:
+# In[17]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -248,20 +248,20 @@ a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0] ), ('Glass', 'Alumini
 # 
 # Create a table output of installs, active generating capacity annually decommissioned, cumulatively decomissioned, and cumulative decomissioned module mass.
 
-# In[ ]:
+# In[18]:
 
 
 usyearlyr1.head()
 
 
-# In[ ]:
+# In[19]:
 
 
 tidy_results = usyearlyr1.iloc[:,32:]
 tidy_results.columns = ('new_Installed_Capacity_[MW]', 'Active_Capacity_[MW]','Cumulative_Decomissioned_Capacity_[MW]')
 
 
-# In[ ]:
+# In[20]:
 
 
 #tidy_results['Annual_Decommissioned_Capacity_[MW]'] = 
@@ -270,8 +270,26 @@ tidy_results['Cumulative_Module_Mass_Decommissioned_[million tonnes]'] = usyearl
 tidy_results
 
 
-# In[ ]:
+# In[21]:
 
 
 tidy_results.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_Decomissioning.csv')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
