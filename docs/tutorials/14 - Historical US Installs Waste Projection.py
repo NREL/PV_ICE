@@ -19,7 +19,7 @@
 
 # This analysis conducted for Taylor Curtis
 
-# In[2]:
+# In[1]:
 
 
 import os
@@ -36,7 +36,7 @@ supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' /
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[3]:
+# In[2]:
 
 
 PV_ICE.__version__
@@ -45,14 +45,14 @@ PV_ICE.__version__
 # ### Add Scenarios and Materials
 # 
 
-# In[4]:
+# In[3]:
 
 
 cwd=os.getcwd()
 print(os.getcwd())
 
 
-# In[5]:
+# In[4]:
 
 
 MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
@@ -60,19 +60,19 @@ moduleFile = os.path.join(baselinesfolder, 'baseline_modules_mass_US_HistoryUtil
 newmodfilesPAth = os.path.join(supportMatfolder,'Calculations-Installs-Subset-CommUtility.xlsx')
 
 
-# In[6]:
+# In[5]:
 
 
 newmoduleFile_raw = pd.read_excel(newmodfilesPAth, sheet_name='SectorInstalls', header=2)
 
 
-# In[7]:
+# In[6]:
 
 
 newmoduleFile_raw.columns
 
 
-# In[8]:
+# In[7]:
 
 
 installs_allPV_df = newmoduleFile_raw.loc[:,newmoduleFile_raw.columns[0:5]] # all PV tech installs
@@ -81,13 +81,13 @@ installs_cSiPV_df = newmoduleFile_raw.loc[:,['Residential c-Si', 'Commercial c-S
 installs_df = pd.concat([installs_allPV_df, installs_cSiPV_df], axis=1)
 
 
-# In[9]:
+# In[8]:
 
 
 installs_df.columns
 
 
-# In[10]:
+# In[9]:
 
 
 #load in a baseline and materials for modification
@@ -101,7 +101,7 @@ for mat in range (0, len(MATERIALS)):
 # ### Modify the Simulation, create scenarios for each install/deployment history
 # Using the old/standard module baseline, we will modify/replace for each deployment schedule in the excel file. We will run the simulation for all tech and for just c-Si tech. For the all tech deployment, we will disregard the mass out since it it not representative of technologies (this will be improved in future). 
 
-# In[12]:
+# In[10]:
 
 
 scennames = installs_df.columns[1:]
@@ -110,7 +110,7 @@ scennames = installs_df.columns[1:]
 scennames
 
 
-# In[13]:
+# In[11]:
 
 
 for scens in scennames: #create all scenarios
@@ -120,7 +120,7 @@ for scens in scennames: #create all scenarios
         r1.scenario[scens].addMaterial(mat, massmatfile=materialfile) # add all materials listed in MATERIALS
 
 
-# In[14]:
+# In[12]:
 
 
 #modify the scenario for deployments and degraation, T50 T90 values
@@ -138,7 +138,7 @@ r1.scenMod_PerfectManufacturing() #sets all manufacturing values to 100% efficie
 #r1.scenario['USHistory'].material['glass'].materialdata['mat_MFG_eff']
 
 
-# In[15]:
+# In[13]:
 
 
 r1.scenario['Utility c-Si'].dataIn_m
@@ -146,7 +146,7 @@ r1.scenario['Utility c-Si'].dataIn_m
 
 # ### Run the Mass Flow Calculations on All Scenarios and Materials
 
-# In[16]:
+# In[14]:
 
 
 r1.calculateMassFlow()
@@ -162,7 +162,7 @@ r1.calculateMassFlow()
 #     
 #     print(r1.scenario['standard'].material['glass'].materialdata.keys())
 
-# In[17]:
+# In[15]:
 
 
 #print(r1.scenario.keys())
@@ -170,7 +170,7 @@ print(r1.scenario['USHistory'].dataOut_m.keys())
 #print(r1.scenario['USHistory'].material['glass'].materialdata.keys())
 
 
-# In[23]:
+# In[16]:
 
 
 for scen in scennames:
@@ -182,7 +182,7 @@ plt.ylabel('Installed Cap [MW]')
 plt.legend()
 
 
-# In[24]:
+# In[58]:
 
 
 usyearlyr1, uscumr1 = r1.aggregateResults()
@@ -190,16 +190,18 @@ usyearlyr1.to_csv('historicalUS-yearly.csv')
 uscumr1.to_csv('historicalUS-cumulative.csv')
 
 
+# In[59]:
+
+
+#subset result dataframes to look at all tech and just cSi and remove old USHistory file
+usyearlyr1_sub = usyearlyr1[usyearlyr1.columns.drop(list(usyearlyr1.filter(like='USHistory')))]
+yearlycSi_agg = usyearlyr1_sub.filter(like='c-Si')
+yearlyallPV_agg = usyearlyr1_sub[usyearlyr1_sub.columns.difference(yearlycSi_agg.columns)]
+
+
 # ## Pretty Plots
 
-# In[32]:
-
-
-alltechscens = installs_df.columns[1:5]
-cSitechscens = installs_cSiPV_df.columns
-
-
-# In[ ]:
+# In[61]:
 
 
 #all techs plot
@@ -208,156 +210,104 @@ plt.plot([],[],color='orange', label='Commercial')
 plt.plot([],[],color='brown', label='Utility')
 
 
-plt.stackplot(df_mfg_energies.index, 
-              df_mfg_energies['E_reduceSilicatoMGSi'], 
-              df_mfg_energies['ErefineSiemens kWh/kg'],
-              df_mfg_energies['E_Ingot_kWhpkg'], 
-              df_mfg_energies['E_Wafering_kWhpkg'], 
-              df_mfg_energies['E_cellProcess_kWhpkg'],
-             colors = ['blue','orange','brown','green','red'])
-plt.title('Electricity: Silicon Manufacturing')
-plt.ylabel('Electricity Demand [kWh/kg]')
-plt.xlim(1995,2022)
+plt.stackplot(yearlyallPV_agg.index, 
+              yearlyallPV_agg['ActiveCapacity_Simulation1_Residential_[MW]'], 
+              yearlyallPV_agg['ActiveCapacity_Simulation1_Commercial_[MW]'],
+              yearlyallPV_agg['ActiveCapacity_Simulation1_Utility_[MW]'], 
+              colors = ['blue','orange','brown'])
+plt.title('Effective Capacity All PV tech')
+plt.ylabel('Effective Capacity [MWdc]')
+plt.xlim(1995,2050)
 plt.legend()
 plt.show()
 
 
-# In[34]:
+# In[66]:
 
 
-#c-Si  plot
-plt.plot([],[],color='blue', label='Reduce Si')
-plt.plot([],[],color='orange', label='Refine Si')
-plt.plot([],[],color='brown', label='Ingot')
-plt.plot([],[],color='green', label='Wafer')
-plt.plot([],[],color='red', label='Cell')
+#cSi plot
+plt.plot([],[],color='red', label='Residential')
+plt.plot([],[],color='purple', label='Commercial')
+plt.plot([],[],color='grey', label='Utility')
 
-plt.stackplot(df_mfg_energies.index, df_mfg_energies['E_reduceSilicatoMGSi'], 
-              df_mfg_energies['ErefineSiemens kWh/kg'],
-              df_mfg_energies['E_Ingot_kWhpkg'], 
-              df_mfg_energies['E_Wafering_kWhpkg'], 
-              df_mfg_energies['E_cellProcess_kWhpkg'],
-             colors = ['blue','orange','brown','green','red'])
-plt.title('Electricity: Silicon Manufacturing')
-plt.ylabel('Electricity Demand [kWh/kg]')
-plt.xlim(1995,2022)
+
+plt.stackplot(yearlycSi_agg.index, 
+              yearlycSi_agg['ActiveCapacity_Simulation1_Residential c-Si_[MW]'], 
+              yearlycSi_agg['ActiveCapacity_Simulation1_Commercial c-Si_[MW]'],
+              yearlycSi_agg['ActiveCapacity_Simulation1_Utility c-Si_[MW]'], 
+              colors = ['red','purple','grey'])
+plt.title('Effective Capacity c-Si')
+plt.ylabel('Effective Capacity [MWdc]')
+plt.xlim(1995,2050)
 plt.legend()
 plt.show()
 
 
-# In[ ]:
+# In[69]:
 
 
-#create a yearly Module Waste Mass
-USyearly=pd.DataFrame()
-keyword = 'mat_Total_Landfilled'
-for mat in range (0, len(MATERIALS)):
-    material = MATERIALS[mat]
-    foo = r1.scenario['USHistory'].material[material].matdataOut_m[keyword].copy()
-    foo = foo.to_frame(name=material)
-    USyearly["Waste_"+material] = foo[material]
-
-#sum the columns for module mass
-USyearly['Waste_Module'] = USyearly.sum(axis=1)
-
-USyearly.head(10)
+yearlyallPV_agg.filter(like='Decommisioned').columns
 
 
-# In[ ]:
+# In[82]:
 
 
-#add index
-USyearly.index = r1.scenario['USHistory'].dataIn_m['year']
+#all techs plot
+plt.plot([],[],color='blue', label='Residential')
+plt.plot([],[],color='orange', label='Commercial')
+plt.plot([],[],color='brown', label='Utility')
 
 
-# In[ ]:
+plt.stackplot(yearlyallPV_agg.index, 
+              yearlyallPV_agg['DecommisionedCapacity_Simulation1_Residential_[MW]'], 
+              yearlyallPV_agg['DecommisionedCapacity_Simulation1_Commercial_[MW]'],
+              yearlyallPV_agg['DecommisionedCapacity_Simulation1_Utility_[MW]'], 
+              colors = ['blue','orange','brown'])
+plt.title('Decommissioned  Capacity All PV tech')
+plt.ylabel('Cumulative Decommissioned Capacity [MWdc]')
+plt.xlim(1995,2050)
+plt.legend()
+plt.show()
 
 
-#Convert to million metric tonnes
-USyearly_mil_tonnes=USyearly/1000000000000
+# In[83]:
 
 
-# In[ ]:
+yearlycSi_agg.filter(like='Decommisioned').columns
 
 
-#Adding new installed capacity for decomissioning calc
-USyearly_mil_tonnes['new_Installed_Capacity_[MW]'] = r1.scenario['USHistory'].dataIn_m['new_Installed_Capacity_[MW]'].values
+# In[84]:
 
 
-# In[ ]:
+#cSi plot
+plt.plot([],[],color='red', label='Residential')
+plt.plot([],[],color='purple', label='Commercial')
+plt.plot([],[],color='grey', label='Utility')
 
 
-UScum = USyearly_mil_tonnes.copy()
-UScum = UScum.cumsum()
-
-UScum.head()
-
-
-# In[ ]:
-
-
-bottoms = pd.DataFrame(UScum.loc[2050])
-bottoms
-
-
-# In[ ]:
+plt.stackplot(yearlycSi_agg.index, 
+              yearlycSi_agg['DecommisionedCapacity_Simulation1_Residential c-Si_[MW]'], 
+              yearlycSi_agg['DecommisionedCapacity_Simulation1_Commercial c-Si_[MW]'],
+              yearlycSi_agg['DecommisionedCapacity_Simulation1_Utility c-Si_[MW]'], 
+              colors = ['red','purple','grey'])
+plt.title('Decommissioned Capacity c-Si')
+plt.ylabel('Cumulative Decommissioned Capacity [MWdc]')
+plt.xlim(1995,2050)
+plt.legend()
+plt.show()
 
 
-plt.rcParams.update({'font.size': 15})
-plt.rcParams['figure.figsize'] = (15, 8)
-
-f, (a0, a1) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [3, 1]})
-
-########################    
-# SUBPLOT 1
-########################
-a0.plot(USyearly_mil_tonnes.index, USyearly_mil_tonnes['Waste_Module'], 'k.', linewidth=5, label='EoL Module Mass')
-a0.plot(USyearly_mil_tonnes.index, USyearly_mil_tonnes['Waste_glass'], 'k', linewidth=5, label='EoL Glass Mass')
-a0.fill_between(USyearly_mil_tonnes.index, USyearly_mil_tonnes['Waste_glass'], USyearly_mil_tonnes['Waste_Module'],
-                color='k', alpha=0.3, interpolate=True)
-
-a0.legend()
-a0.set_title('Yearly EoL Material Mass')
-a0.set_ylabel('Mass [Million Tonnes]')
-a0.set_xlim([1995, 2050])
-a0.set_xlabel('Years')
-
-########################    
-# SUBPLOT 2
-########################
-## Plot BARS Stuff
-ind=np.arange(1)
-width=0.35 # width of the bars.
-
-bottoms = pd.DataFrame(UScum.loc[2050])
-
-p0 = a1.bar(ind, UScum.loc[2050]['Waste_glass'], width, color='c')
-p1 = a1.bar(ind, UScum.loc[2050]['Waste_aluminium_frames'], width, bottom=bottoms.iloc[0])
-p2 = a1.bar(ind, UScum.loc[2050]['Waste_silicon'], width, bottom=(bottoms.iloc[1]+bottoms.iloc[0]))
-p3 = a1.bar(ind, UScum.loc[2050]['Waste_copper'], width, bottom=(bottoms.iloc[2]+bottoms.iloc[1]+bottoms.iloc[0]))
-p4 = a1.bar(ind, UScum.loc[2050]['Waste_silver'], width, bottom=(bottoms.iloc[3]+bottoms.iloc[2]+bottoms.iloc[1]+bottoms.iloc[0]))
-p5 = a1.bar(ind, UScum.loc[2050]['Waste_encapsulant'], width, bottom=(bottoms.iloc[4]+bottoms.iloc[3]+bottoms.iloc[2]+bottoms.iloc[1]+bottoms.iloc[0]))
-p6 = a1.bar(ind, UScum.loc[2050]['Waste_backsheet'], width, bottom=(bottoms.iloc[5]+bottoms.iloc[4]+bottoms.iloc[3]+bottoms.iloc[2]+bottoms.iloc[1]+bottoms.iloc[0]))
-
-a1.yaxis.set_label_position("right")
-a1.yaxis.tick_right()
-a1.set_ylabel('EoL PV Material [Million Tonnes]')
-a1.set_xlabel('Cumulative in 2050')
-a1.set_xticks(ind)
-a1.legend((p0[0], p1[0], p2[0], p3[0], p4[0], p5[0], p6[0] ), ('Glass', 'Aluminium frames', 'Silicon','Copper','Silver', 'Encapsulant', 'Backsheet'))
-
-
-# # Plot and Table of decommissioned in MW
+# # Table of decommissioned in MW
 # decommissioned yearly = cumulative new installs - yearly active capacity
 # 
 # the decommissioned yearly column is actually cumulative, so do reverse cum on it.
 # 
 # Create a table output of installs, active generating capacity annually decommissioned, cumulatively decomissioned, and cumulative decomissioned module mass.
 
-# In[ ]:
+# In[79]:
 
 
-usyearlyr1.head()
+df_Capacity_all = usyearlyr1_sub[usyearlyr1_sub.filter(like='[MW]').columns]
 
 
 # In[ ]:
