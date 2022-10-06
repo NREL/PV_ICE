@@ -91,7 +91,7 @@ installs_df.columns
 
 
 #load in a baseline and materials for modification
-r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
+r1 = PV_ICE.Simulation(name='sim1', path=testfolder)
 r1.createScenario(name='USHistory', massmodulefile=moduleFile) #points at the old module history installs file
 for mat in range (0, len(MATERIALS)):
     MATERIALBASELINE = r'..\baselines\baseline_material_mass_'+MATERIALS[mat]+'.csv'
@@ -123,7 +123,8 @@ for scens in scennames: #create all scenarios
 # In[12]:
 
 
-#modify the scenario for deployments and degraation, T50 T90 values
+#modify the scenario for deployments
+#IF WE GET SECTOR-wise T5-T90, modify here!
 for scens in scennames:
     r1.scenario[scens].dataIn_m.loc[0:len(installs_df['year']-1),'new_Installed_Capacity_[MW]'] = installs_df[scens]
 
@@ -182,7 +183,7 @@ plt.ylabel('Installed Cap [MW]')
 plt.legend()
 
 
-# In[58]:
+# In[17]:
 
 
 usyearlyr1, uscumr1 = r1.aggregateResults()
@@ -190,7 +191,7 @@ usyearlyr1.to_csv('historicalUS-yearly.csv')
 uscumr1.to_csv('historicalUS-cumulative.csv')
 
 
-# In[59]:
+# In[18]:
 
 
 #subset result dataframes to look at all tech and just cSi and remove old USHistory file
@@ -201,7 +202,7 @@ yearlyallPV_agg = usyearlyr1_sub[usyearlyr1_sub.columns.difference(yearlycSi_agg
 
 # ## Pretty Plots
 
-# In[61]:
+# In[72]:
 
 
 #all techs plot
@@ -218,11 +219,11 @@ plt.stackplot(yearlyallPV_agg.index,
 plt.title('Effective Capacity All PV tech')
 plt.ylabel('Effective Capacity [MWdc]')
 plt.xlim(1995,2050)
-plt.legend()
+plt.legend(loc='upper left')
 plt.show()
 
 
-# In[66]:
+# In[71]:
 
 
 #cSi plot
@@ -239,17 +240,17 @@ plt.stackplot(yearlycSi_agg.index,
 plt.title('Effective Capacity c-Si')
 plt.ylabel('Effective Capacity [MWdc]')
 plt.xlim(1995,2050)
-plt.legend()
+plt.legend(loc='upper left')
 plt.show()
 
 
-# In[69]:
+# In[21]:
 
 
 yearlyallPV_agg.filter(like='Decommisioned').columns
 
 
-# In[82]:
+# In[70]:
 
 
 #all techs plot
@@ -266,17 +267,17 @@ plt.stackplot(yearlyallPV_agg.index,
 plt.title('Decommissioned  Capacity All PV tech')
 plt.ylabel('Cumulative Decommissioned Capacity [MWdc]')
 plt.xlim(1995,2050)
-plt.legend()
+plt.legend(loc='upper left')
 plt.show()
 
 
-# In[83]:
+# In[23]:
 
 
 yearlycSi_agg.filter(like='Decommisioned').columns
 
 
-# In[84]:
+# In[69]:
 
 
 #cSi plot
@@ -293,8 +294,50 @@ plt.stackplot(yearlycSi_agg.index,
 plt.title('Decommissioned Capacity c-Si')
 plt.ylabel('Cumulative Decommissioned Capacity [MWdc]')
 plt.xlim(1995,2050)
-plt.legend()
+plt.legend(loc='upper left')
 plt.show()
+
+
+# In[59]:
+
+
+cSiMatWastes_cum = uscumr1.filter(like='WasteAll').filter(like='c-Si').filter(like='All Sector')/1e6 #convert to million metric tonnes
+cSiMatWastes_cum.columns
+
+
+# In[75]:
+
+
+#cSi plot
+plt.plot([],[],color='aqua', label='glass')
+plt.plot([],[],color='lightcoral', label='aluminium_frames')
+plt.plot([],[],color='silver', label='silver')
+plt.plot([],[],color='blue', label='silicon')
+plt.plot([],[],color='orange', label='copper')
+plt.plot([],[],color='purple', label='encapsulant')
+plt.plot([],[],color='black', label='backsheet')
+
+
+plt.stackplot(cSiMatWastes_cum.index, 
+              cSiMatWastes_cum.iloc[:,0], 
+              cSiMatWastes_cum.iloc[:,1],
+              cSiMatWastes_cum.iloc[:,2],
+              cSiMatWastes_cum.iloc[:,3],
+              cSiMatWastes_cum.iloc[:,4],
+              cSiMatWastes_cum.iloc[:,5],
+              cSiMatWastes_cum.iloc[:,6],
+              colors = ['aqua','lightcoral','silver','blue','orange','purple','black'])
+plt.title('Cumulative c-Si Material Waste from All Sectors')
+plt.ylabel('Cumulative Mass Waste [million metric tonnes]')
+plt.xlim(1995,2050)
+plt.legend(loc='upper left')
+plt.show()
+
+
+# In[ ]:
+
+
+#2050 stacked bar graph of cumulative waste by Material
 
 
 # # Table of decommissioned in MW
@@ -304,48 +347,49 @@ plt.show()
 # 
 # Create a table output of installs, active generating capacity annually decommissioned, cumulatively decomissioned, and cumulative decomissioned module mass.
 
-# In[79]:
+# In[25]:
 
 
 df_Capacity_all = usyearlyr1_sub[usyearlyr1_sub.filter(like='[MW]').columns]
 
 
-# In[ ]:
+# In[27]:
 
 
-tidy_results = usyearlyr1.iloc[:,32:]
-tidy_results.columns = ('new_Installed_Capacity_[MW]', 'Active_Capacity_[MW]','Cumulative_Decomissioned_Capacity_[MW]')
+capacity_results_alltech = yearlyallPV_agg.filter(like='[MW]')
+capacity_results_cSi = yearlycSi_agg.filter(like='[MW]')
 
 
-# In[ ]:
+# In[28]:
 
 
-#tidy_results['Annual_Decommissioned_Capacity_[MW]'] = 
-tidy_results['Annual_Decomissioned_Capacity_[MW]'] = tidy_results['Cumulative_Decomissioned_Capacity_[MW]']-tidy_results['Cumulative_Decomissioned_Capacity_[MW]'].shift(1).fillna(0)
-tidy_results['Cumulative_Module_Mass_Decommissioned_[million tonnes]'] = usyearlyr1.filter(like='WasteAll_Module')/1e6
-tidy_results
+#caution, run this only once
+for colname in df_Capacity_all.filter(like='Decommisioned').columns:
+    df_Capacity_all[str('Annual_'+colname)] = df_Capacity_all[colname]-df_Capacity_all[colname].shift(1).fillna(0)
 
 
-# In[ ]:
+# In[30]:
 
 
-tidy_results.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_Decomissioning.csv')
+df_Capacity_all.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_Decomissioning_Sectorwise.csv')
 
 
-# In[ ]:
+# ### Pull out the 2030 and 2050 Values of interest
+# the request was for 2030 and 2050 values for decommissioning and cumulative c-Si waste, by sector. Create a table of just those results.
+
+# In[50]:
 
 
+subset_results_capacity = df_Capacity_all.filter(like='Decommisioned').loc[[2030,2050]]
+subset_results_capacity.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_Decomissioning20302050_Sectorwise.csv')
+round(subset_results_capacity.T,)
 
 
-
-# In[ ]:
-
+# In[52]:
 
 
-
-
-# In[ ]:
-
-
-
+cSiwaste_cum = uscumr1.filter(like='WasteAll_Module').filter(like='c-Si')/1e6 #convert to million metric tonnes
+subset_results_waste = cSiwaste_cum.loc[[2030,2050]]
+subset_results_waste.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_cSiWaste20302050_Sectorwise.csv')
+round(subset_results_waste.T,2)
 
