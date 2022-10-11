@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[8]:
+# In[5]:
 
 
 import numpy as np
 import pandas as pd
 import os,sys
+from pathlib import Path
 import matplotlib.pyplot as plt
 plt.rcParams.update({'font.size': 28})
 plt.rcParams['figure.figsize'] = (30, 15)
@@ -18,7 +19,7 @@ plt.rcParams['figure.figsize'] = (30, 15)
 
 
 cwd = os.getcwd() #grabs current working directory
-df_installs_raw = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/PVInstalls_World_AllSources.csv", index_col='Year')
+df_installs_raw = pd.read_csv(str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial'/'PVInstalls_World_AllSources.csv'), index_col='Year')
 sources = df_installs_raw.columns
 print(len(sources))
 
@@ -142,3 +143,57 @@ world_si_installs.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_
 
 
 # This data only takes installs through 2019. For the remaining years through 2050, a compound annual growth rate of 8.9% was used to predict increasing installations. This compound annual growth rate was sourced from IRENA 2016 EoL Mangement Report and IRENA 2019 Future of PV Report.
+
+# # Global Installations by Country
+# 
+# This section documents and munges the IRENA world historical PV install data by country. We can then modify it by the world marketshare of silicon.
+
+# In[52]:
+
+
+import numpy as np
+import pandas as pd
+import os,sys
+from pathlib import Path
+import matplotlib.pyplot as plt
+cwd = os.getcwd() #grabs current working directory
+
+supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
+
+
+# In[56]:
+
+
+IRENA_raw_file = os.path.join(supportMatfolder, 'HistoricalCapacityWorld-QueryResult-PVNetAdds.xlsx')
+IRENA_global_raw = pd.read_excel(IRENA_raw_file, header=7, index_col=0) #set Country/area as index
+#remove the flag indicator columns or any unnamed
+IRENA_global_raw.drop(columns=list(IRENA_global_raw.filter(like='Unnamed')), inplace=True) 
+IRENA_global_raw.drop(columns=['Technology','Indicator'], inplace=True) #drop these columns
+
+
+# In[61]:
+
+
+IRENA_locs = list(IRENA_global_raw.index)
+regions = ['Africa','Asia','C America + Carib','Eurasia','Europe','EU 27','Middle East','N America','Oceania','S America']
+countries = [i for i in IRENA_locs if i not in regions] #leaves in world
+
+
+# In[65]:
+
+
+IRENA_global = IRENA_global_raw.T
+
+
+# In[68]:
+
+
+IRENA_regions = IRENA_global.loc[:,regions]
+IRENA_countries = IRENA_global.loc[:,countries]
+
+
+# In[70]:
+
+
+IRENA_regions
+
