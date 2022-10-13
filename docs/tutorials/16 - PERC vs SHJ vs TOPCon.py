@@ -4,7 +4,7 @@
 # # Analysis of Cell Technology
 # 3 competing cell technologies may claim marketshare in future; Bifacial PERC, bifacial SHJ, and Bifacial TOPCon. Each design has different efficiency and a different silver intensity. This analysis seeks compare these technologies on a mass and energy basis. A global deployment projection is used so that silver demand can be evaluated at the global level.
 
-# In[14]:
+# In[1]:
 
 
 import numpy as np
@@ -12,8 +12,6 @@ import pandas as pd
 import os,sys
 from pathlib import Path
 import matplotlib.pyplot as plt
-plt.rcParams.update({'font.size': 28})
-plt.rcParams['figure.figsize'] = (30, 15)
 
 cwd = os.getcwd() #grabs current working directory
 
@@ -26,7 +24,7 @@ if not os.path.exists(testfolder):
     os.makedirs(testfolder)
 
 
-# In[16]:
+# In[2]:
 
 
 scennames = ['PERC','SHJ','TOPCon']
@@ -35,19 +33,10 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# Make the Module files
-
-# In[8]:
+# In[ ]:
 
 
-#access the global historical install and create projection
-IRENA_hist_cSi = pd.read_csv(os.path.join(supportMatfolder,'output-CountryInstalls-cSi.csv'), index_col=0)
 
-
-# In[12]:
-
-
-IRENA_hist_cSi_world = IRENA_hist_cSi['World'] #extract just the global projection
 
 
 # In[ ]:
@@ -101,12 +90,6 @@ for scen in scennames:
     if not os.path.exists(subtestfolder):
         os.makedirs(subtestfolder)
     filetitle = os.path.join(subtestfolder, filetitle)
-
-
-# In[ ]:
-
-
-
 
 
 # In[ ]:
