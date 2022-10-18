@@ -107,14 +107,14 @@ plt.ylabel('Carbon-based energy [kWh/kg]')
 # 
 # 2018 through 2030, we will do a linear interpolation down to 11 kWh/kg, assuming continued improvement.
 
-# In[33]:
+# In[11]:
 
 
 e_reducesilica = e_reducesilica_raw.loc[1995:2004,['E_reduce_SilicatoMGSi']]
 #e_reducesilica
 
 
-# In[34]:
+# In[12]:
 
 
 #2005-2018
@@ -127,7 +127,7 @@ wtd_mrktshr_mgsi_region.columns=['E_reduce_SilicatoMGSi'] #rename for merge/join
 #wtd_mrktshr_mgsi_region
 
 
-# In[35]:
+# In[13]:
 
 
 #2018-2030, linear decrease to 11 kWh/kg in 2030
@@ -137,7 +137,7 @@ e_reducesilica_end.loc[2030,['E_reduce_SilicatoMGSi']] = 11
 #e_reducesilica_end
 
 
-# In[42]:
+# In[14]:
 
 
 #join all together
@@ -145,7 +145,7 @@ e_reducesilica_gappy = pd.concat([e_reducesilica,wtd_mrktshr_mgsi_region,e_reduc
 #e_reducesilica_gappy
 
 
-# In[37]:
+# In[15]:
 
 
 e_reducesilica_gaps = e_reducesilica_gappy.astype(float) #for some reason this was objects?!
@@ -153,7 +153,7 @@ e_reducesilica_full = e_reducesilica_gaps.interpolate() #linearly interpolate be
 #e_reducesilica_trim = e_reducesilica_full.loc[1995:,['E_reduceSilicatoMGSi']] #trim to 1995-2050
 
 
-# In[41]:
+# In[16]:
 
 
 plt.plot(e_reducesilica_full)
@@ -164,33 +164,39 @@ plt.ylabel('Electricity Demand [kWh/kg]')
 
 # Combine Eletricity needs with Carboniferous energy
 
-# In[45]:
+# In[17]:
 
 
 e_reduce = pd.concat([e_reducesilica_full,e_reduce_carbonpart_filled], axis=1, join='inner')
 
 
-# In[48]:
+# In[18]:
 
 
-e_reduce['E_reduce_sum'] = e_reduce.sum(axis=1) #run only once if possible
+e_reduce['E_reduce_sum_kWhpkg'] = e_reduce.sum(axis=1) #run only once if possible
 
 
 # Create fuel fraction column
 
-# In[60]:
+# In[19]:
 
 
 #run only once if possible
-e_reduce['E_FuelFraction'] = e_reduce['E_reduce_carbonpart']/e_reduce['E_reduce_sum'] 
+e_reduce['E_FuelFraction'] = e_reduce['E_reduce_carbonpart']/e_reduce['E_reduce_sum_kWhpkg'] *100
 
 
-# In[68]:
+# In[20]:
+
+
+e_reduce_silica = e_reduce.iloc[:,[2,3]]
+
+
+# In[21]:
 
 
 fig, ax1 = plt.subplots()
 
-ax1.plot(e_reduce['E_reduce_sum'], label='Total Energy')
+ax1.plot(e_reduce['E_reduce_sum_kWhpkg'], label='Total Energy')
 ax1.scatter(e_reducesilica_raw.index,e_reducesilica_raw.iloc[:,0], label='raw energy data')
 
 ax1.set_ylabel('Electricity and Carboniferous [kWh/kg]')
@@ -227,7 +233,7 @@ plt.show()
 # 
 # We will create energy values for both the Siemens process and the FBR process as options for user.
 
-# In[120]:
+# In[22]:
 
 
 #skipcols = ['Source', 'Notes','Country']
@@ -235,7 +241,7 @@ e_refinesilicon_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMate
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[121]:
+# In[23]:
 
 
 #split siemens and fbr dataframes
@@ -245,13 +251,13 @@ e_refineSi_siemens = e_refinesilicon_raw.iloc[:,0:4]
 
 # ### Siemens
 
-# In[122]:
+# In[24]:
 
 
 e_refineSi_siemens.dropna(how='all')
 
 
-# In[123]:
+# In[25]:
 
 
 fig, ax1 = plt.subplots()
@@ -271,13 +277,13 @@ plt.show()
 
 # Starting with the major outlier in 1996 from Williams et al 2002. This data point is the sum of 250 and 50 from Table 3, and the data is sourced from 3 citations ranging from 1990 through 1998. It is noted that this is the electrical energy for the two Siemens steps. Handbook from 1990 has the 250, 305 enegries but these are for small reactors, Takegoshi 1996 is unavailable, Tsuo et al 1998 state "about 250 kWh/kg" number with no citation.  Therefore we will exclude Williams et al. 
 
-# In[124]:
+# In[26]:
 
 
 e_refineSi_siemens.loc[1996] = np.nan #removing Williams et al.
 
 
-# In[125]:
+# In[27]:
 
 
 fig, ax1 = plt.subplots()
@@ -297,19 +303,19 @@ plt.show()
 
 # There is noise, but generally there is an observable downward trend. I will try a curve fit for the total energy demand, and use 31 % fuel fraction since this seems to be constant, and the final low datapoint (Fan et al 2021) is an estimation.
 
-# In[157]:
+# In[28]:
 
 
 e_refineSi_siemens.loc[1995:2000] = np.nan #removing low looking data for fitting
 
 
-# In[158]:
+# In[29]:
 
 
 e_siemens_fitting = e_refineSi_siemens.dropna(how='all')
 
 
-# In[201]:
+# In[30]:
 
 
 #fit polynomial
@@ -326,7 +332,7 @@ plt.plot(polyline, model1(polyline), color='green', marker='x')
 plt.show()
 
 
-# In[216]:
+# In[31]:
 
 
 #extract the values of the fitted data
@@ -334,7 +340,7 @@ e_siemens_fitting1 = pd.DataFrame(model1(polyline), index=polyline.astype(int),
                                   columns=['E_refineSiemens_kWhpkg'])
 
 
-# In[203]:
+# In[32]:
 
 
 #define function to calculate adjusted r-squared
@@ -353,13 +359,13 @@ def adjR(x, y, degree):
 
 # Check the Adjusted R squared fit value for the linear and the quad fit:
 
-# In[204]:
+# In[33]:
 
 
 adjR(x, y, 1) #linear
 
 
-# In[205]:
+# In[34]:
 
 
 adjR(x, y, 2) #quad 
@@ -367,7 +373,7 @@ adjR(x, y, 2) #quad
 
 # The quad fit is slightly better than the linear. Now we will compare it to an interpolation
 
-# In[218]:
+# In[35]:
 
 
 e_siemens_fitting2 = e_refineSi_siemens.iloc[:,[0,1]]
@@ -375,12 +381,12 @@ e_siemens_fitting2.loc[2021] = np.nan #remove Fan et al 2021
 e_siemens_fitting2.interpolate(limit_direction='both', inplace=True)
 
 
-# In[219]:
+# In[36]:
 
 
 fig, ax1 = plt.subplots()
 
-ax1.scatter(e_refineSi_siemens.index,e_refineSi_siemens.iloc[:,0], color='black')
+ax1.scatter(e_refinesilicon_raw.index,e_refinesilicon_raw.iloc[:,0], color='black')
 ax1.plot(e_siemens_fitting2.index,e_siemens_fitting2.iloc[:,0])
 ax1.plot(e_siemens_fitting1, color='green')
 
@@ -402,18 +408,43 @@ plt.show()
 
 # The fitted curve does a decent job of representing the raw data while smoothing the noise. Therefore we will use the fitted data through 2021 and then hold it constant. We will also use a constant 31% Fuel fraction.
 
-# In[233]:
+# In[37]:
 
 
 e_siemens_fitting1['E_refine_FuelFraction'] = 31.0 #add fuel fraction column and set to 31
 #extend index through 2050 and fill (uses idx from above)
+idx = e_refinesilicon_raw.index
 e_siemens_final = e_siemens_fitting1.reindex(idx).fillna(method='ffill') 
+
+
+# In[38]:
+
+
+fig, ax1 = plt.subplots()
+
+ax1.scatter(e_refinesilicon_raw.index,e_refinesilicon_raw.iloc[:,0], color='black')
+ax1.plot(e_siemens_final.index, e_siemens_final.iloc[:,0], color='black')
+
+plt.title('Electricity: Siemens Process')
+ax1.set_ylabel('[kWh/kg]')
+
+ax2 = ax1.twinx()
+
+ax2.scatter(e_refineSi_siemens.index,e_refineSi_siemens.iloc[:,1], color='red', marker='^')
+ax2.plot(e_siemens_final.iloc[:,1], color='red')
+
+ax2.set_ylim(0,100)
+plt.ylabel('Fuel Fraction [%]', color='red')
+
+ax2.set_xlim(1989,2025)
+
+plt.show()
 
 
 # ### FBR
 # Currently disregarded due to small market share
 
-# In[ ]:
+# In[39]:
 
 
 e_refineSi_fbr.dropna(how='all')
@@ -423,7 +454,7 @@ e_refineSi_fbr.dropna(how='all')
 # 
 # The next step in manufacturing silicon PV is ingot growth. There are two primary methods of ingot growth in the PV industry over it's history; multi-crystalline silicon and monocrystalline silicon. Initially, all PV was monocrystalline, then Multicrystalline silicon ingots were the dominent market share for most of a decade, and currently monocrystalline is making a resurgence to market dominence. We will cover the energy associated with both processes here, and weight the historical energy demand by the marketshare of these two technologies.
 
-# In[ ]:
+# In[40]:
 
 
 e_ingotenergy_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-ingotgrowing.csv",
@@ -434,14 +465,14 @@ e_ingotenergy_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
 # 
 # mc-Si is created through putting chunked polysilicon into a large block, heating and casting into a single large block. This process results in many crystallographic grains within the block, which slightly reduces the efficiency of the cell, but is cheap. 
 
-# In[ ]:
+# In[41]:
 
 
-e_casting_raw = e_ingotenergy_raw.iloc[:,3:6]
+e_casting_raw = e_ingotenergy_raw.iloc[:,4:8]
 e_casting_raw.dropna(how='all')
 
 
-# In[ ]:
+# In[42]:
 
 
 plt.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'])
@@ -451,7 +482,7 @@ plt.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'])
 # 
 # Next the energy seems to step up and then down over time. This is potenially real due the increasing size of blocks over time.
 
-# In[ ]:
+# In[43]:
 
 
 e_casting_manual = e_casting_raw.copy()
@@ -459,7 +490,7 @@ e_casting_manual.loc[2016] = np.nan #drop Fan et al
 e_casting_manual.loc[2018] = np.nan # drop Woodhouse et al
 
 
-# In[ ]:
+# In[44]:
 
 
 plt.scatter(e_casting_manual.index, e_casting_manual['E_mcSiCast_kWhpkg'])
@@ -470,7 +501,7 @@ plt.ylabel('Electricity Demand [kWh/kg]')
 
 # From this lovely scatter plot graph, we can see that the energy demand of directional solification casting for mc-Si has not particularly changed in the last decades. Therefore, we will take an average of these datapoints and apply it for all time.
 
-# In[ ]:
+# In[45]:
 
 
 e_casting_mcSi = e_casting_manual['E_mcSiCast_kWhpkg'].mean()
@@ -481,14 +512,14 @@ print('The electrical energy to make mc-Si through direct solidification is '+st
 # 
 # mono-Si is created through the Czochralski process, in which a seed crystal is rotated and drawn away from a vat of molten silicon, growing a large boule. This results in the whole boule/ingot being oriented in one crystallographic direction, which increases the cell efficiency, but is time consuming and expensive.
 
-# In[ ]:
+# In[46]:
 
 
-e_growczingot_raw = e_ingotenergy_raw.iloc[:,0:3]
+e_growczingot_raw = e_ingotenergy_raw.iloc[:,0:4]
 e_growczingot_raw.dropna(how='all')
 
 
-# In[ ]:
+# In[47]:
 
 
 plt.scatter(e_growczingot_raw.index, e_growczingot_raw['E_Cz_kWhpkg'])
@@ -496,13 +527,13 @@ plt.title('Electricity: Cz Ingot Growth')
 plt.ylabel('[kWh/kg]')
 
 
-# There is a general downward trend. There is a lot of noise at the end. The 2016 datapoint from Fan et al is much higher, as is Woodhouse et al 2018. Fan et al data is the average of Chinese manufacturers surveys and literature data. Both sources include the wafering step (Which we prefer to calculate separately). Therefore we will drop both datapoints for this calculation, but use them as a reality check later for energy demand of the two steps.
+# There is a general downward trend with noise at the end. The 2016 datapoint from Fan et al is much higher, as is Woodhouse et al 2018. Fan et al data is the average of Chinese manufacturers surveys and literature data. Both sources include the wafering step (Which we prefer to calculate separately). Therefore we will drop both datapoints for this calculation, but use them as a reality check later for energy demand of the two steps.
 # 
 # Knapp 1999 is lower than Jungbluth 2004. This is possible, but is a very small difference in overall energy demand (117 vs 123 kWh/kg). Therefore, we will take the average of the two points, and set both dates equal to that average.
 # 
 # Lastly, the final datapoint from Muller et al ticks upward slightly, however, the previous datapoint is from ITRPV which is a global survey report whereas the Muller et al is an updated LCI ostensibly with real world data. Therefore, we will leave this slight increase  given the data quality and non-drastic change.
 
-# In[ ]:
+# In[48]:
 
 
 e_growczingot_manual = e_growczingot_raw.copy()
@@ -510,7 +541,7 @@ e_growczingot_manual.loc[2016] = np.nan #drop Fan et al
 e_growczingot_manual.loc[2018] = np.nan # drop Woodhouse et al
 
 
-# In[ ]:
+# In[49]:
 
 
 avg = np.mean([e_growczingot_manual.loc[1999,'E_Cz_kWhpkg'], e_growczingot_manual.loc[2004,'E_Cz_kWhpkg']])
@@ -518,13 +549,13 @@ e_growczingot_manual.loc[1999] = avg
 e_growczingot_manual.loc[2004] = avg
 
 
-# In[ ]:
+# In[50]:
 
 
 e_ingotcz_filled = e_growczingot_manual.interpolate()
 
 
-# In[ ]:
+# In[51]:
 
 
 plt.plot(e_ingotcz_filled.index, e_ingotcz_filled['E_Cz_kWhpkg'])
@@ -537,14 +568,14 @@ plt.xlim(1993,2021)
 # ### Market Share Weight mono-Si vs mc-Si
 # Here we blend the two calculated data into an annual average energy demand based on the marketshare of installed cell type.
 
-# In[ ]:
+# In[52]:
 
 
 pvice_mcSimono_marketshare = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv",
                                      index_col='Year')
 
 
-# In[ ]:
+# In[53]:
 
 
 e_ingotcz = e_ingotcz_filled.loc[1995:,['E_Cz_kWhpkg']] #slice Cz dataframe
@@ -560,7 +591,7 @@ e_ingots_wtd_final = pd.DataFrame(e_ingots_wtd.sum(axis=1)) # sum the annual ene
 e_ingots_wtd_final.columns =['E_Ingot_kWhpkg']
 
 
-# In[ ]:
+# In[54]:
 
 
 fig, ax1 = plt.subplots()
@@ -584,44 +615,85 @@ ax1.legend(loc='upper center')
 plt.show()
 
 
+# We observe from the literature that the ingot step appears to use electricity and no fuel energy. Therefore, we will will assume 0% fuel fraction for ingot step.
+
+# In[55]:
+
+
+e_ingots_wtd_final['E_Ingot_FuelFraction'] = 0.0
+e_ingots_wtd_final.head()
+
+
 # ## Wafering Electricity
 # 
 # This step captures the electricity demands of wafering the grown silicon ingot (CZ or DS) into wafers. This includes the prep and demounting as well as the sawing step itself.
 
-# In[ ]:
+# In[56]:
 
 
 e_wafering_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-wafering.csv",
                              index_col='year')
 
 
-# In[ ]:
+# In[57]:
 
 
 e_wafering_raw.dropna(how='all')
 
 
-# In[ ]:
+# In[58]:
 
 
 plt.scatter(e_wafering_raw.index, e_wafering_raw['E_Wafering_kWhpkg']) 
 
 
-# In[ ]:
+# There is a general downward trend. Source data has a lot of variation of what is included. For example, some datapoints are the average of mono and mc-Si wafer cutting, others don't specify.
+# 
+# Curve fitting was attempted - it looked terrible. We will take the average of various time periods, and piece them together.
+# 
+# We also see that only a few datapoints contain a fuel fraction; we will take the average fuel fraction and apply it for all time.
+
+# In[59]:
 
 
-e_wafering_trim_drop=e_wafering_raw.loc[1995:,['E_Wafering_kWhpkg']]
-e_wafering_trim_drop.loc[1997] = np.nan # this is an outlier
+#average fuel fraction
+avg_FuelFraction = e_wafering_raw.iloc[:,1].mean()
+print('The average fuel fraction in wafering energy is '+str(avg_FuelFraction)+'%')
 
 
-# In[ ]:
+# In[60]:
 
 
-e_wafering_filled = e_wafering_trim_drop.interpolate()
+#Pre-2000 average
+avg_wafering_pre2000 = e_wafering_raw.loc[1995:1999,'E_Wafering_kWhpkg'].mean()
+print('Pre-2000, the average wafering energy was '+str(avg_wafering_pre2000)+' kWh/kg')
+#Post-2005 average
+avg_wafering_post2005 = e_wafering_raw.loc[2005:,'E_Wafering_kWhpkg'].mean()
+print('Post-2005, the average wafering energy was '+str(avg_wafering_post2005)+' kWh/kg')
+
+
+# In[61]:
+
+
+e_wafering = e_wafering_raw.iloc[:,[0]]
+e_wafering.loc[:1999,['E_Wafering_kWhpkg']] = avg_wafering_pre2000
+e_wafering.loc[2005:,['E_Wafering_kWhpkg']] = avg_wafering_post2005
+
+
+# In[62]:
+
+
+e_wafering_filled = e_wafering.interpolate()
 #e_wafering_filled
 
 
-# In[ ]:
+# In[63]:
+
+
+e_wafering_filled['E_Wafer_FuelFraction'] = avg_FuelFraction
+
+
+# In[64]:
 
 
 plt.plot(e_wafering_filled, label='interpolated')
@@ -633,7 +705,7 @@ plt.xlim(1989,2023)
 
 # ## Cell Production Electricity
 
-# In[ ]:
+# In[65]:
 
 
 e_cellprocess_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-cellProcess.csv",
@@ -641,37 +713,69 @@ e_cellprocess_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
 e_cellprocess_raw.dropna(how='all')
 
 
-# In[ ]:
+# In[66]:
 
 
 plt.scatter(e_cellprocess_raw.index, e_cellprocess_raw['E_cellProcess_kWhpkg'])
 
 
-# There appear to be 2 outliers - Woodhouse 2018 is estimated machine-by-machine, and might be high. The 1994 datapoint is outrageously high, not sure why. Also got an outlier number from V. Fthenakis and E. Leccisi 2021, despite claiming to use the Frischknecht PVPS report. Dropping outliers and then interpolating.
+# There appear to be 4 outliers - Woodhouse 2018 is estimated machine-by-machine, and might be high. The 1994 datapoint is outrageously high, not sure why. Also got an outlier number from V. Fthenakis and E. Leccisi 2021, despite claiming to use the Frischknecht PVPS report.
 
-# In[ ]:
-
-
-e_cellprocess = e_cellprocess_raw.copy()
-e_cellprocess.loc[1994] = np.nan
-e_cellprocess.loc[2018] = np.nan
-#e_cellprocess.dropna(how='all')
+# In[67]:
 
 
-# In[ ]:
+e_cellprocess = e_cellprocess_raw.loc[1994:,['E_cellProcess_kWhpkg']].dropna(how='all')
 
 
-e_cellprocess_fill = e_cellprocess.loc[1990:,['E_cellProcess_kWhpkg']] 
-e_cellprocess_fill.interpolate(inplace=True)
-e_cellprocess_final = e_cellprocess_fill.loc[1995:,['E_cellProcess_kWhpkg']] 
+# In[68]:
 
 
-# In[ ]:
+y_cell = e_cellprocess.iloc[:,0]
+x_cell = e_cellprocess.index
+
+model1 = np.poly1d(np.polyfit(x_cell, y_cell, 2))
+
+#create data for plotting
+polyline = np.linspace(1995, 2021, 27) #(start, stop, number=2021-1990)
+
+#plot for viewing
+plt.scatter(e_cellprocess_raw.index,e_cellprocess_raw.iloc[:,0])
+plt.plot(polyline, model1(polyline), color='green', marker='x')
+plt.show()
 
 
-plt.plot(e_cellprocess_final)
+# In[69]:
+
+
+#extract the values of the fitted data
+e_cellprocess_fitting1 = pd.DataFrame(model1(polyline), index=polyline.astype(int),
+                                  columns=['E_cellProcess_kWhpkg'])
+
+
+# It is unclear how much natural gas or heat based energy is used in this step - where there is data it appears to range between 0.1% and 14%. We will assume 10% for all time.
+
+# In[70]:
+
+
+#create fuel fraction column
+e_cellprocess_fitting1['E_cell_FuelFraction'] = 10.0
+#.reindex(idx).fillna(method='ffill')
+
+
+# In[71]:
+
+
+idx_app= e_cellprocess_raw.loc[2022:,['E_cellProcess_kWhpkg','E_cell_FuelFraction']]
+e_cellprocess_final = pd.concat([e_cellprocess_fitting1, idx_app])
+e_cellprocess_final.interpolate(inplace=True)
+
+
+# In[72]:
+
+
+plt.plot(e_cellprocess_final['E_cellProcess_kWhpkg'])
 plt.scatter(e_cellprocess_raw.index, e_cellprocess_raw['E_cellProcess_kWhpkg'], color='black')
-plt.xlim(1989,2023)
+plt.xlim(1989,2025)
 plt.ylabel('[kWh/kg Si]')
 plt.title('Electricity Demand: Cell Processing')
 
@@ -680,18 +784,88 @@ plt.title('Electricity Demand: Cell Processing')
 # 
 # Now we will combine all of the manufacturing steps associated with silicon and the silicon wafer into a single dynamic column, e_mat_MFG. This will get multiplied by the virgin material stock required to manufacture PV modules annually.
 
-# In[ ]:
+# In[73]:
 
 
-mfg_energies = [e_reducesilica_trim, e_refineSi_siemens_final, e_ingots_wtd_final, e_wafering_filled, e_cellprocess_final]
-df_mfg_energies = pd.concat(mfg_energies, axis=1)
-df_mfg_energies['e_mfg_kWhpkg'] = round(df_mfg_energies.sum(axis=1),2)
+mfg_energies = [e_reduce_silica, e_siemens_final, e_ingots_wtd_final, e_wafering_filled, e_cellprocess_final]
+df_mfg_energies = pd.concat(mfg_energies, axis=1, join='inner')
+#df_mfg_energies['e_mfg_kWhpkg'] = round(df_mfg_energies.sum(axis=1),2)
 
 
-# In[ ]:
+# In[74]:
+
+
+df_mfg_energies.head()
+
+
+# In[75]:
 
 
 df_mfg_energies.columns
+
+
+# To create a representative fuel fraction for each year that is based on the total MFGing energy, we need to create a dataframe of the energy attributable to fuel each year, and divide by the sum of energy needed for the year. 
+
+# In[76]:
+
+
+fuelfracts = df_mfg_energies.filter(like='FuelFraction')/100
+mfg_energies = df_mfg_energies.filter(like='kWhpkg')
+
+
+# In[79]:
+
+
+fuelfracts.columns = mfg_energies.columns
+
+
+# In[80]:
+
+
+mfg_energy_fuels = mfg_energies*fuelfracts
+
+
+# In[82]:
+
+
+mfg_energy_fuels.head()
+
+
+# In[94]:
+
+
+mfg_energy_fuels_sum = mfg_energy_fuels.sum(axis=1)
+mfg_energies_sum = mfg_energies.sum(axis=1)
+mfg_FuelFraction = mfg_energy_fuels_sum/mfg_energies_sum
+mfg_energy_final = pd.concat([mfg_energies_sum,mfg_FuelFraction], axis=1)
+mfg_energy_final.columns = ['E_MFG_kWhpkg','E_mfgFuelFraction']
+
+
+# In[96]:
+
+
+mfg_energy_final.head()
+
+
+# In[104]:
+
+
+fig, ax1 = plt.subplots()
+
+ax1.plot(mfg_energy_final['E_MFG_kWhpkg'])
+ax1.set_ylabel('Electricity Demand [kWh/kg]')
+
+ax2 = ax1.twinx()
+ax2.plot(mfg_energy_final['E_mfgFuelFraction'], color='red')
+ax2.set_ylim(0,1.0)
+plt.ylabel('Fuel Fraction of MFG Energy', color='red')
+ax2.tick_params(axis='y', color='red', labelcolor='red')
+
+plt.xlim(1994,2030)
+plt.title('Energy of Si MFG')
+
+#ax1.legend(loc='upper center')
+plt.show()
 
 
 # In[ ]:
@@ -728,7 +902,7 @@ plt.ylim(0,)
 
 # Now to check this overall electricity demand against literature values as a reality check. Doing VERY ROUGH ballpark checks.
 
-# In[ ]:
+# In[100]:
 
 
 #N. Jungbluth, “Life cycle assessment of crystalline photovoltaics in the Swiss ecoinvent database,” 
@@ -748,10 +922,10 @@ wildscholten2013_kWh = (961+73.4+81.4)*0.27777
 phyl_alsema1995_kWh= (511-27) #kWh/m2 to kWh/kg estimating 5 kg/module
 
 
-# In[ ]:
+# In[101]:
 
 
-plt.plot(df_mfg_energies.index, df_mfg_energies['e_mfg_kWhpkg'])
+plt.plot(mfg_energy_final['E_MFG_kWhpkg'])
 
 #literature
 plt.scatter(1995, phyl_alsema1995_kWh, color='pink')
@@ -766,10 +940,10 @@ plt.xlim(1994,2022)
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[102]:
 
 
-df_mfg_energies['e_mfg_kWhpkg'].to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg.csv")
+mfg_energy_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg.csv")
 
 
 # ## EOL Recycling to HQ energy Calculation
