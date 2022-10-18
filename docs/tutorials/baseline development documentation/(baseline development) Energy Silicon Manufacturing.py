@@ -940,10 +940,11 @@ plt.xlim(1994,2022)
 plt.ylim(0,)
 
 
-# In[102]:
+# In[108]:
 
 
-mfg_energy_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg.csv")
+mfg_energy_final_rounded = round(mfg_energy_final,2)
+mfg_energy_final_rounded.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg.csv")
 
 
 # ## EOL Recycling to HQ energy Calculation
