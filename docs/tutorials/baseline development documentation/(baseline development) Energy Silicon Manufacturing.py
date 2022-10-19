@@ -203,9 +203,9 @@ ax1.set_ylabel('Electricity and Carboniferous [kWh/kg]')
 
 ax2 = ax1.twinx()
 ax2.plot(e_reduce['E_FuelFraction'], color='red', label='Fuel Fraction')
-ax2.scatter(e_reducesilica_raw.index,e_reducesilica_raw.iloc[:,1]/100, 
+ax2.scatter(e_reducesilica_raw.index,e_reducesilica_raw.iloc[:,1], 
             color='red', marker='^', label='raw fuel fraction data')
-ax2.set_ylim(0,1.0)
+ax2.set_ylim(0,100)
 plt.ylabel('Fuel Fraction [%]', color='red')
 ax2.tick_params(axis='y', color='red', labelcolor='red')
 
@@ -447,7 +447,7 @@ plt.show()
 # In[39]:
 
 
-e_refineSi_fbr.dropna(how='all')
+#e_refineSi_fbr.dropna(how='all')
 
 
 # ## Ingot growth
@@ -813,25 +813,25 @@ fuelfracts = df_mfg_energies.filter(like='FuelFraction')/100
 mfg_energies = df_mfg_energies.filter(like='kWhpkg')
 
 
-# In[79]:
+# In[77]:
 
 
 fuelfracts.columns = mfg_energies.columns
 
 
-# In[80]:
+# In[78]:
 
 
 mfg_energy_fuels = mfg_energies*fuelfracts
 
 
-# In[82]:
+# In[79]:
 
 
 mfg_energy_fuels.head()
 
 
-# In[94]:
+# In[80]:
 
 
 mfg_energy_fuels_sum = mfg_energy_fuels.sum(axis=1)
@@ -841,13 +841,13 @@ mfg_energy_final = pd.concat([mfg_energies_sum,mfg_FuelFraction], axis=1)
 mfg_energy_final.columns = ['E_MFG_kWhpkg','E_mfgFuelFraction']
 
 
-# In[96]:
+# In[81]:
 
 
 mfg_energy_final.head()
 
 
-# In[104]:
+# In[82]:
 
 
 fig, ax1 = plt.subplots()
@@ -868,7 +868,7 @@ plt.title('Energy of Si MFG')
 plt.show()
 
 
-# In[ ]:
+# In[83]:
 
 
 plt.plot([],[],color='blue', label='Reduce Si')
@@ -890,7 +890,7 @@ plt.legend()
 plt.show()
 
 
-# In[ ]:
+# In[84]:
 
 
 plt.plot(df_mfg_energies.index, df_mfg_energies['e_mfg_kWhpkg'])
@@ -902,7 +902,7 @@ plt.ylim(0,)
 
 # Now to check this overall electricity demand against literature values as a reality check. Doing VERY ROUGH ballpark checks.
 
-# In[100]:
+# In[85]:
 
 
 #N. Jungbluth, “Life cycle assessment of crystalline photovoltaics in the Swiss ecoinvent database,” 
@@ -922,7 +922,7 @@ wildscholten2013_kWh = (961+73.4+81.4)*0.27777
 phyl_alsema1995_kWh= (511-27) #kWh/m2 to kWh/kg estimating 5 kg/module
 
 
-# In[101]:
+# In[86]:
 
 
 plt.plot(mfg_energy_final['E_MFG_kWhpkg'])
@@ -940,7 +940,7 @@ plt.xlim(1994,2022)
 plt.ylim(0,)
 
 
-# In[108]:
+# In[87]:
 
 
 mfg_energy_final_rounded = round(mfg_energy_final,2)
@@ -949,13 +949,27 @@ mfg_energy_final_rounded.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
 
 # ## EOL Recycling to HQ energy Calculation
 # 
-# No literature found recycled EOL silicon to higher than MG-Si. Therefore, we will use the extraction energy at EOL from Latunussa et al 2016 (1.6 kWh/kg) for the FRELP process as the LQ. We will also add this quantity to the energy to MFG as calculated here, from Seimens forward. 
+# No literature found recycled EOL silicon to higher than MG-Si. Therefore, we will use the extraction energy at EOL from Latunussa et al 2016 (1.6 kWh/kg) for the FRELP process as the LQ. For HQ recycling, we will use the energy to MFG as calculated here, from Seimens forward. In the Energy flow calculation the LQ energy requirement is inherently added to the HQ energy requirement.
 
-# In[ ]:
+# In[121]:
 
 
-latunussa2016 = 1.6 #kWh/kg
-e_eol_recycle = df_mfg_energies['e_mfg_kWhpkg']-df_mfg_energies['E_reduceSilicatoMGSi'] #creates a series
-e_eol_recycle_HQ = round(e_eol_recycle+latunussa2016,2)
-e_eol_recycle_HQ.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv")
+e_eol_recycle = mfg_energy_final['E_MFG_kWhpkg']-(mfg_energy_fuels['E_reduce_sum_kWhpkg']+ mfg_energies['E_reduce_sum_kWhpkg'])#creates a series
+e_eol_recycle_HQ = pd.DataFrame(round(e_eol_recycle,2), columns=['E_RecycleHQ_sum_kWhpkg'])
+
+
+# These steps in MFGing require fuel based energy. Therefore, we need to calculate a fuel fraction for the HQ recycling process.
+
+# In[122]:
+
+
+recycle_hq_fuels = mfg_energy_fuels.iloc[:,[1,2,3,4]].sum(axis=1) #sum all fuel energy excluding e_reduce
+recycle_hq_fuelsfraction = pd.DataFrame(round(recycle_hq_fuels/e_eol_recycle,2), columns=['E_RecycleHQ_fuelfraction'])
+e_eol_recycle_HQ_complete = pd.concat([e_eol_recycle_HQ,recycle_hq_fuelsfraction], axis=1)
+
+
+# In[123]:
+
+
+e_eol_recycle_HQ_complete.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv")
 

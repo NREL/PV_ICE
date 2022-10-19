@@ -4,20 +4,21 @@ Mining
 Mining is primarily trucks etc, not much electricity.
 
 Refining and Product making
-Cumulative energy demands seem to be around 400-600 kWh/kg. [Ecoinvent V2.2 as cited by Voet, E. van der. 2013. Environmental Risks and Challenges of Anthropogenic Metals Flows and Cycles. Report 3. Nairobi, Kenya, Paris, France: United Nations Environment Programme ; International Resource Panel. and Farjana, Shahjadi Hisan, Nazmul Huda, and M. A. Parvez Mahmud. 2019. “Life Cycle Analysis of Copper-Gold-Lead-Silver-Zinc Beneficiation Process.” Science of The Total Environment 659 (April): 41–52. https://doi.org/10.1016/j.scitotenv.2018.12.318.]
+Cumulative energy demands or embodied energy seem to be between 400-600 kWh/kg. [Ecoinvent V2.2 as cited by Voet, E. van der. 2013. Environmental Risks and Challenges of Anthropogenic Metals Flows and Cycles. Report 3. Nairobi, Kenya, Paris, France: United Nations Environment Programme ; International Resource Panel. and Farjana, Shahjadi Hisan, Nazmul Huda, and M. A. Parvez Mahmud. 2019. “Life Cycle Analysis of Copper-Gold-Lead-Silver-Zinc Beneficiation Process.” Science of The Total Environment 659 (April): 41–52. https://doi.org/10.1016/j.scitotenv.2018.12.318.]
 
-The electricity demands for the electro-processing of the metal ores are around 197 kWh/kg with more energy from natural gas [Farjana, Shahjadi Hisan, Nazmul Huda, and M. A. Parvez Mahmud. 2019. “Life Cycle Analysis of Copper-Gold-Lead-Silver-Zinc Beneficiation Process.” Science of The Total Environment 659 (April): 41–52. https://doi.org/10.1016/j.scitotenv.2018.12.318.]
+The electricity demands for the electro-processing of the metal ores are around 197 kWh/kg plus 29 MJ from natural gas and other fuel contributions [Farjana, Shahjadi Hisan, Nazmul Huda, and M. A. Parvez Mahmud. 2019. “Life Cycle Analysis of Copper-Gold-Lead-Silver-Zinc Beneficiation Process.” Science of The Total Environment 659 (April): 41–52. https://doi.org/10.1016/j.scitotenv.2018.12.318.]
+The total of electricity and fuels is ~260 kWh/kg silver, with up to 25-40% fuel attribution.
 
-0.3 kWh/kg solder containing silver [Socolof, M.L., J.R. Geibig, and M.B. Swanson. 2003. “Cradle to Gate Toxic Impacts of Solders: A Comparison of Impact Assessment Methods.” In IEEE International Symposium on Electronics and the Environment, 2003., 66–71. https://doi.org/10.1109/ISEE.2003.1208049.]
+1.2 to 1.7 kWh/kg solder containing silver with 75-82% attributable to fuels, mostly natural gas, for solder production [Socolof, M.L., J.R. Geibig, and M.B. Swanson. 2003. “Cradle to Gate Toxic Impacts of Solders: A Comparison of Impact Assessment Methods.” In IEEE International Symposium on Electronics and the Environment, 2003., 66–71. https://doi.org/10.1109/ISEE.2003.1208049.]
 
-0.834 kWh/m2 cell [Louwen, A., W.g.j.h.m. van Sark, R.e.i. Schropp, W.c. Turkenburg, and A.p.c. Faaij. 2015. “Life-Cycle Greenhouse Gas Emissions and Energy Payback Time of Current and Prospective Silicon Heterojunction Solar Cell Designs.” Progress in Photovoltaics: Research and Applications 23 (10): 1406–28. https://doi.org/10.1002/pip.2540.] 
+0.834 kWh/m2 cell to perform screen printing [Louwen, A., W.g.j.h.m. van Sark, R.e.i. Schropp, W.c. Turkenburg, and A.p.c. Faaij. 2015. “Life-Cycle Greenhouse Gas Emissions and Energy Payback Time of Current and Prospective Silicon Heterojunction Solar Cell Designs.” Progress in Photovoltaics: Research and Applications 23 (10): 1406–28. https://doi.org/10.1002/pip.2540.] 
 
-We'll call it 200 kWh/kg for MFGing energy of Silver. 
+We will assume the MFG energy from silver refining through product and cell processing is 260 kWh/kg.  Based on the weighted fuel fractions of each contribution (i.e. most energy demand is from refining silver), we will assume 25% is attributable to fuel.
 
 Recycling
 No data was found for MFG scrap recycling energy, and little data was found for end of life silver recycling. The two datapoints are:
 96% energy savings [Ecoinvent V2.2 as cited by Voet, E. van der. 2013. Environmental Risks and Challenges of Anthropogenic Metals Flows and Cycles. Report 3. Nairobi, Kenya, Paris, France: United Nations Environment Programme ; International Resource Panel.]
 and
-56.76 kWh producing 0.5 kg of Silver from the FRELP process [Latunussa, Cynthia E. L., Fulvio Ardente, Gian Andrea Blengini, and Lucia Mancini. 2016. “Life Cycle Assessment of an Innovative Recycling Process for Crystalline Silicon Photovoltaic Panels.” Solar Energy Materials and Solar Cells, Life cycle, environmental, ecology and impact analysis of solar technology, 156 (November): 101–11. https://doi.org/10.1016/j.solmat.2016.03.020.]
+56.76 kWh producing 0.5 kg of Silver from the FRELP process [Latunussa, Cynthia E. L., Fulvio Ardente, Gian Andrea Blengini, and Lucia Mancini. 2016. “Life Cycle Assessment of an Innovative Recycling Process for Crystalline Silicon Photovoltaic Panels.” Solar Energy Materials and Solar Cells, Life cycle, environmental, ecology and impact analysis of solar technology, 156 (November): 101–11. https://doi.org/10.1016/j.solmat.2016.03.020.] There appears to be an internal thermal energy recovery process from burning PV EOL plastics.
 
 These two datapoints do not correlate: 56.76 kWh is only ~70% energy savings. 56.76 kWh rated for the mass of silver out is only 0.7 kWh/kg "attributable" to the silver product. There is no description of purity of silver output from FRELP. 96% energy savings would be 8 kWh/kg
