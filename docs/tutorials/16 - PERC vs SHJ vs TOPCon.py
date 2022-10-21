@@ -484,23 +484,20 @@ sim1.plotMetricResults()
 sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
 
 
-# In[80]:
+# In[85]:
 
 
-sim1.scenario['PERC'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
-
-
-# In[81]:
-
-
+#pulling out energy generation results
+#the index location is a temp fix due to having extra lenght index, likely due to empty material energy files
 perc_energyGen_annual = sim1.scenario['PERC'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
 shj_energyGen_annual = sim1.scenario['SHJ'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
 topcon_energyGen_annual = sim1.scenario['TOPCon'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
 energyGen = pd.concat([perc_energyGen_annual, shj_energyGen_annual, topcon_energyGen_annual],axis=1)
 energyGen.index=idx_temp
+energyGen.columns = ['PERC','SHJ','TOPCon']
 
 
-# In[83]:
+# In[86]:
 
 
 fig, ax1 = plt.subplots()
@@ -512,7 +509,7 @@ ax1.plot(energyGen)
 #ax2.plot(sf_reeds['TW_cum'], color='orange')
 #ax2.set_ylabel('Cumulative Capacity [TW]', color='orange')
 
-#plt.legend(['Cumulative Capacity'])
+plt.legend(energyGen.columns)
 plt.title('Annual Energy Generation')
 plt.show()
 
