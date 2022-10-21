@@ -163,16 +163,46 @@ bifiFactors = {'PERC':0.7,
               'TOPCon':0.8} # ITRPV 2022, Fig. 58
 
 
+# In[16]:
+
+
+#PV ICE currently set up to read in a csv of bifi factors, so generate files to read in 
+idx_temp = Aguse.index
+df_temp = pd.DataFrame(index=idx_temp, columns=['bifi'], dtype=float)
+bifi_perc = df_temp.copy()
+bifi_perc['bifi'] = bifiFactors['PERC']
+bifi_shj = df_temp.copy()
+bifi_shj['bifi'] = bifiFactors['SHJ']
+bifi_topcon = df_temp.copy()
+bifi_topcon['bifi'] = bifiFactors['TOPCon']
+
+
+# In[17]:
+
+
+bifi_perc.to_csv(path_or_buf=os.path.join(testfolder,'bifi_perc.csv'), index_label='Year')
+bifi_shj.to_csv(path_or_buf=os.path.join(testfolder,'bifi_shj.csv'), index_label='Year')
+bifi_topcon.to_csv(path_or_buf=os.path.join(testfolder,'bifi_topcon.csv'), index_label='Year')
+
+
+# In[18]:
+
+
+bifi_perc_path = os.path.join(testfolder,'bifi_perc.csv')
+bifi_shj_path = os.path.join(testfolder,'bifi_shj.csv')
+bifi_topcon_path = os.path.join(testfolder,'bifi_topcon.csv')
+
+
 # To create a blended scenario, we will use the ITRPV 2022 cell market share projection through 2030, and then keep it constant through 2050.
 
-# In[16]:
+# In[19]:
 
 
 #insert data from Jarett here
 itrpv_celltech_marketshare = pd.read_csv(os.path.join(supportMatfolder,'CellTechCompare','ITRPV_celltech_marketshare.csv'), index_col=0)
 
 
-# In[17]:
+# In[20]:
 
 
 itrpv_celltech_marketshare.columns
@@ -181,7 +211,7 @@ itrpv_celltech_marketshare.columns
 #remove and renormalize.
 
 
-# In[18]:
+# In[21]:
 
 
 #subset for desired techs
@@ -195,13 +225,13 @@ celltech_marketshare_scaled = celltech_marketshare_sub_raw.iloc[:,[0,1,2,3]]*cel
 #celltech_marketshare_scaled.sum(axis=1) # test check that everything adds to 1
 
 
-# In[19]:
+# In[22]:
 
 
 celltech_marketshare_scaled.columns
 
 
-# In[20]:
+# In[23]:
 
 
 plt.plot([],[],color='blue', label='PERC')
@@ -224,7 +254,7 @@ plt.legend(loc='lower center')
 plt.show()
 
 
-# In[21]:
+# In[24]:
 
 
 celltech_marketshare_scaled['TOPCon'] = celltech_marketshare_scaled.filter(like='TOPCon').sum(axis=1)
@@ -238,7 +268,7 @@ celltech_marketshare_scaled['TOPCon'] = celltech_marketshare_scaled.filter(like=
 # - Weibull Failure probabilities are identical between technologies (until we get better data)
 # - No ciruclarity
 
-# In[22]:
+# In[25]:
 
 
 #glass-glass package mass per area calculation
@@ -250,32 +280,32 @@ print('The mass per module area of glass is '+str(glassperm2)+' g/m^2')
 
 # Pull in deployment projection. This deployment is based on the Solar Futures report, but has been modified to be more reasonable annual deployment schedule (i.e. manufacturing ramps up). However, this does not achieve 95% RE by 2035, but it does achieve 100% RE in 2050.
 
-# In[112]:
+# In[26]:
 
 
 sf_reeds_alts = pd.read_excel(os.path.join(supportMatfolder,'SF_reeds_alternates.xlsx'),index_col=0)
 
 
-# In[113]:
+# In[27]:
 
 
 sf_reeds = sf_reeds_alts.loc[2023:2050,['MW']]
 
 
-# In[114]:
+# In[28]:
 
 
 #try sorting the Reeds Deployment to be in ascending order
 sf_reeds['MW'].values.sort() #this sorts the column values in place
 
 
-# In[115]:
+# In[29]:
 
 
 sf_reeds['TW_cum'] = sf_reeds['MW'].cumsum()/1e6
 
 
-# In[116]:
+# In[30]:
 
 
 fig, ax1 = plt.subplots()
@@ -291,19 +321,19 @@ plt.legend(['Cumulative Capacity'])
 plt.show()
 
 
-# In[117]:
+# In[31]:
 
 
 sf_reeds.loc[2030]
 
 
-# In[118]:
+# In[32]:
 
 
 sf_reeds.loc[2050]
 
 
-# In[119]:
+# In[33]:
 
 
 #historical 2020-2022 from Wood Mac
@@ -321,7 +351,7 @@ newdeploymentcurve = pd.concat([history,projection],axis=0)
 
 # # Scenario Creation
 
-# In[120]:
+# In[34]:
 
 
 scennames = ['PERC','SHJ','TOPCon'] #add later Blend and bifi on/off
@@ -330,7 +360,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[121]:
+# In[35]:
 
 
 #load in a baseline and materials for modification
@@ -357,21 +387,21 @@ for scen in scennames:
 # - glass per m2
 # - silver per m2
 
-# In[122]:
+# In[36]:
 
 
 #trim to 2020-2050, this trims module and materials
 sim1.trim_Years(startYear=2020)
 
 
-# In[123]:
+# In[37]:
 
 
 #no circularity
 sim1.scenMod_noCircularity()
 
 
-# In[124]:
+# In[38]:
 
 
 #deployment projection
@@ -381,7 +411,7 @@ for scen in scennames:
     sim1.scenario[scen].dataIn_m.loc[0:len(newdeploymentcurve.index-1),'new_Installed_Capacity_[MW]'] = newdeploymentcurve.values
 
 
-# In[125]:
+# In[39]:
 
 
 #module eff
@@ -390,7 +420,7 @@ for scen in scennames:
     sim1.scenario[scen].dataIn_m.loc[0:len(modeffs.index-1),'mod_eff'] = modeffs[scen].values
 
 
-# In[126]:
+# In[40]:
 
 
 #glass modify
@@ -398,7 +428,7 @@ for scen in scennames:
     sim1.scenario[scen].material['glass'].matdataIn_m['mat_massperm2'] = glassperm2
 
 
-# In[127]:
+# In[41]:
 
 
 #silver modify
@@ -407,24 +437,94 @@ for scen in scennames:
     sim1.scenario[scen].material['silver'].matdataIn_m.loc[0:len(Aguse.index-1),'mat_massperm2'] = Aguse[scen].values
 
 
-# In[128]:
+# In[42]:
 
 
-sim1.scenario[scen].dataIn_m
+sim1.scenario['PERC'].dataIn_m.head()
 
 
-# In[129]:
+# In[43]:
 
 
-sim1.scenario[scen].material['silver'].matdataIn_m
+sim1.scenario['PERC'].material['silver'].matdataIn_m.head()
 
 
 # # Run Simulations
 
+# In[44]:
+
+
+scennames
+bifi_perc_path
+bifi_shj_path 
+bifi_topcon_path 
+
+
+# In[49]:
+
+
+sim1.calculateFlows(scenarios='PERC', bifacialityfactors=bifi_perc_path)
+sim1.calculateFlows(scenarios='SHJ', bifacialityfactors=bifi_shj_path)
+sim1.calculateFlows(scenarios='TOPCon', bifacialityfactors=bifi_topcon_path)
+
+perc_yearly, perc_cum = sim1.aggregateResults(scenarios='PERC')
+shj_yearly, shj_cum = sim1.aggregateResults(scenarios='SHJ')
+topcon_yearly, topcon_cum = sim1.aggregateResults(scenarios='TOPCon')
+
+
+# In[59]:
+
+
+sim1.plotMetricResults()
+
+
+# In[62]:
+
+
+sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
+
+
+# In[80]:
+
+
+sim1.scenario['PERC'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
+
+
+# In[81]:
+
+
+perc_energyGen_annual = sim1.scenario['PERC'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
+shj_energyGen_annual = sim1.scenario['SHJ'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
+topcon_energyGen_annual = sim1.scenario['TOPCon'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
+energyGen = pd.concat([perc_energyGen_annual, shj_energyGen_annual, topcon_energyGen_annual],axis=1)
+energyGen.index=idx_temp
+
+
+# In[83]:
+
+
+fig, ax1 = plt.subplots()
+
+ax1.plot(energyGen)
+#ax1.set_ylabel('Annual Deployments [MW]', color='blue')
+
+#ax2 = ax1.twinx()
+#ax2.plot(sf_reeds['TW_cum'], color='orange')
+#ax2.set_ylabel('Cumulative Capacity [TW]', color='orange')
+
+#plt.legend(['Cumulative Capacity'])
+plt.title('Annual Energy Generation')
+plt.show()
+
+
 # In[ ]:
 
 
-bifiFactors
 
-sim1.calculateFlows(bifacialityfactors=bifi[scen]) #modify bifi factors at calc flows
+
+
+# In[ ]:
+
+
+
 
