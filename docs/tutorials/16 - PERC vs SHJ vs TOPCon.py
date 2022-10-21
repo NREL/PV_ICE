@@ -39,21 +39,13 @@ if not os.path.exists(testfolder):
     os.makedirs(testfolder)
 
 
-# In[2]:
-
-
-scennames = ['PERC','SHJ','TOPCon'] #add turn on/off bifacial
-MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
-moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
-moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
-
-
+# # Data Preparation
 # Bring in the data from Zhang et al 2021 and Gervais et al 2021.
 
 # In[92]:
 
 
-lit_celltech = pd.read_excel(os.path.join(supportMatfolder,'PERCvSHJvTOPCon-LitData.xlsx'), sheet_name='Sheet2',
+lit_celltech = pd.read_excel(os.path.join(supportMatfolder,'CellTechCompare','PERCvSHJvTOPCon-LitData.xlsx'), sheet_name='Sheet2',
                              header=[0,1,2], index_col=0)
 
 
@@ -173,37 +165,91 @@ bifiFactors = {'PERC':0.7,
 
 # To create a blended scenario, we will use the ITRPV 2022 cell market share projection through 2030, and then keep it constant through 2050.
 
-# In[ ]:
+# In[204]:
 
 
 #insert data from Jarett here
+itrpv_celltech_marketshare = pd.read_csv(os.path.join(supportMatfolder,'CellTechCompare','ITRPV_celltech_marketshare.csv'), index_col=0)
 
 
-# In[ ]:
+# In[205]:
 
 
+itrpv_celltech_marketshare.columns
+#there are more cell techs here than I need - I'm not currently concerned with n-type vs p-type
+#the marketshares of "n-type back contact", "n-type other", "tandem si-based" are small and outside scope of study
+#remove and renormalize.
 
 
-
-# In[ ]:
-
+# In[209]:
 
 
+#subset for desired techs
+celltech_marketshare_sub_raw = itrpv_celltech_marketshare.loc[2020:].filter(regex=('PERC|TOPCon|SHJ')) 
+#interpolate to fill gaps
+celltech_marketshare_sub_raw.interpolate(inplace=True, limit_direction='both')
+#renormalize
+celltech_marketshare_sub_raw['temp_sum'] = celltech_marketshare_sub_raw.iloc[:,[0,1,2,3]].sum(axis=1)
+celltech_marketshare_sub_raw['scale'] = 1/celltech_marketshare_sub_raw['temp_sum'] #create scaling factor
+celltech_marketshare_scaled = celltech_marketshare_sub_raw.iloc[:,[0,1,2,3]]*celltech_marketshare_sub_raw.loc[:,['scale']].values
+#celltech_marketshare_scaled.sum(axis=1) # test check that everything adds to 1
 
 
-# In[ ]:
+# In[210]:
 
 
+celltech_marketshare_scaled.columns
 
+
+# In[222]:
+
+
+plt.plot([],[],color='blue', label='PERC')
+plt.plot([],[],color='orange', label='TOPCon (p-type)')
+plt.plot([],[],color='red', label='TOPCon (n-type)')
+plt.plot([],[],color='purple', label='SHJ')
+#plt.plot([],[],color='red', label='Cell')
+
+plt.stackplot(celltech_marketshare_scaled.index,
+              celltech_marketshare_scaled['p-type (PERC)'],
+              celltech_marketshare_scaled['p-type (TOPCon)'],
+              celltech_marketshare_scaled['n-type (TOPCon)'],
+              celltech_marketshare_scaled['n-type (SHJ)'],
+              colors = ['blue','orange','red','purple'])
+
+plt.title('Market Share Cell Type: Blended Projection')
+plt.ylabel('Market Share [fraction]')
+#plt.xlim(1995,2022)
+plt.legend(loc='lower center')
+plt.show()
+
+
+# In[224]:
+
+
+celltech_marketshare_scaled['TOPCon'] = celltech_marketshare_scaled.filter(like='TOPCon').sum(axis=1)
 
 
 # Other Assumptions:
 # - silicon wafer thickness is identical, and improvements are identical
+# - glass-glass module package for bifacial using 2.5mm glass for both
 # - module manufacturing energy is identical (until we get better data)
 # - degradation rates between the technologies are identical (until we get better data)
 # - Weibull Failure probabilities are identical between technologies (until we get better data)
 # - No ciruclarity
 
+# In[227]:
+
+
+#glass-glass package mass per area calculation
+#ITRPV 2022 Figs 36 and 38, we are assuming that the front and back glass heave equal thickness of 2.5mm
+density_glass = 2500*1000 # g/m^3 
+glassperm2 = (2.5/1000)* 2 * density_glass
+print('The mass per module area of glass is '+str(glassperm2)+' g/m^2')
+
+
+# Pull in deployment projection 
+
 # In[ ]:
 
 
@@ -211,50 +257,103 @@ bifiFactors = {'PERC':0.7,
 
 
 # In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# # Scenario Creation
+
+# In[236]:
+
+
+scennames = ['PERC','SHJ','TOPCon'] #add later Blend and bifi on/off
+MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
+moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
+moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
+
+
+# In[238]:
 
 
 #load in a baseline and materials for modification
+import PV_ICE
+
 sim1 = PV_ICE.Simulation(name='sim1', path=testfolder)
 for scen in scennames:
     sim1.createScenario(name=scen, massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
-        for mat in range (0, len(MATERIALS)):
-            matbaseline_m = r'..\baselines\baseline_material_mass_'+MATERIALS[mat]+'.csv'
-            matbaseline_e = r'..\baselines\baseline_material_energy_'+MATERIALS[mat]+'.csv'
-            sim1.scenario['USHistory'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    for mat in range (0, len(MATERIALS)):
+        matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+        matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+        sim1.scenario[scen].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+
+
+# Modify the all one tech scenarios Scenarios:
+# 
+# Module level
+# - trim to 2020-2050
+# - no circularity
+# - deployment projection
+# - module eff
+# 
+# material level
+# - glass per m2
+# - silver per m2
+
+# In[257]:
+
+
+#trim to 2020-2050, this trims module and materials
+sim1.trim_Years(startYear=2020)
+
+
+# In[278]:
+
+
+#no circularity
+sim1.scenMod_noCircularity()
 
 
 # In[ ]:
 
 
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-rtest = PV_ICE.Simulation(name='Sim1', path=inputfolder) #create fake simulation
-rtest.createScenario(name='test', massmodulefile=r'..\baselines\baseline_modules_mass_US.csv') #create fake scenario, pull in module baseline
-baseline = rtest.scenario['test'].dataIn_m #save baseline data as a seperate dataframe
-baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]']) #drop the installs column
-baseline.set_index('year', inplace=True) #set index inplace to the year column
-baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual #inform the index that it is an annual period
-
-
-# In[ ]:
-
+#deployment projection
+#NEED TO PULL IN DEPLOYMENT PROJECTION
 
 for scen in scennames:
-    filetitle = scen+'.csv'
-    subtestfolder = os.path.join(testfolder, 'Inputs')
-    if not os.path.exists(subtestfolder):
-        os.makedirs(subtestfolder)
-    filetitle = os.path.join(subtestfolder, filetitle)
+    sim1.scenario[scen].dataIn_m.loc[0:len(installs_df['year']-1),'new_Installed_Capacity_[MW]'] = installs_df[scens]
+
+
+# In[273]:
+
+
+#module eff
+#modeffs
+for scen in scennames:
+    sim1.scenario[scen].dataIn_m.loc[0:len(modeffs.index-1),'mod_eff'] = modeffs[scen].values
+
+
+# In[247]:
+
+
+#glass modify
+for scen in scennames:
+    sim1.scenario[scen].material['glass'].matdataIn_m['mat_massperm2'] = glassperm2
+
+
+# In[282]:
+
+
+#silver modify
+#Aguse
+for scen in scennames:
+    sim1.scenario[scen].material['silver'].matdataIn_m.loc[0:len(Aguse.index-1),'mat_massperm2'] = Aguse[scen].values
 
 
 # In[ ]:
@@ -266,17 +365,15 @@ for scen in scennames:
 # In[ ]:
 
 
-#load in a baseline and materials for modification
-r1 = PV_ICE.Simulation(name='sim1', path=testfolder)
-r1.createScenario(name='USHistory', massmodulefile=moduleFile) #points at the old module history installs file
-for mat in range (0, len(MATERIALS)):
-    MATERIALBASELINE = r'..\baselines\baseline_material_mass_'+MATERIALS[mat]+'.csv'
-    r1.scenario['USHistory'].addMaterial(MATERIALS[mat], massmatfile=MATERIALBASELINE)
 
+
+
+# # Run Simulations
 
 # In[ ]:
 
 
-for scens in scennames:
-    r1.scenario[scens].dataIn_m.loc[0:len(installs_df['year']-1),'new_Installed_Capacity_[MW]'] = installs_df[scens]
+bifiFactors
+
+sim1.calculateFlows(bifacialityfactors=bifi[scen]) #modify bifi factors at calc flows
 
