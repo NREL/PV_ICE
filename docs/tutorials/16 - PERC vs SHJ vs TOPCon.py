@@ -42,27 +42,27 @@ if not os.path.exists(testfolder):
 # # Data Preparation
 # Bring in the data from Zhang et al 2021 and Gervais et al 2021.
 
-# In[92]:
+# In[2]:
 
 
 lit_celltech = pd.read_excel(os.path.join(supportMatfolder,'CellTechCompare','PERCvSHJvTOPCon-LitData.xlsx'), sheet_name='Sheet2',
                              header=[0,1,2], index_col=0)
 
 
-# In[93]:
+# In[3]:
 
 
 lit_celltech.columns.get_level_values
 
 
-# In[94]:
+# In[4]:
 
 
 #Zhang et al Table 2 gives cell size assumptions 166mm cells
 cell_size_m2 = np.square(0.166)
 
 
-# In[95]:
+# In[5]:
 
 
 #calculate silver use per meter squared for each tech
@@ -73,13 +73,13 @@ zhang_topcon_Ag_kgpm2 = lit_celltech['Zhang et al 2021 (hallam)']['TOPCon']['Ag_
 
 # Gervais et al 2021 also project silver use, but through 2050. We wil use Zhang et al silver intensity through 2030, then a futher decrease from Gervais et al to 2050. There is no projection of TOPCon from Gervais et al, so we will assume a similar magnitude of continued decrease.
 
-# In[96]:
+# In[6]:
 
 
 lit_celltech.loc[2030]
 
 
-# In[97]:
+# In[7]:
 
 
 Gervais_perc_2050 = pd.Series({2050:40}) #mg/cell
@@ -91,7 +91,7 @@ Gervais_shj_2050_kgpm2 = Gervais_shj_2050/1000/cell_size_m2
 guess_topcon_2050_kgpm2 = guess_topcon_2050/1000/cell_size_m2
 
 
-# In[98]:
+# In[8]:
 
 
 perc_Ag_kgpm2 = pd.concat([zhang_perc_Ag_kgpm2.loc[:2049], Gervais_perc_2050_kgpm2])
@@ -99,7 +99,7 @@ shj_Ag_kgpm2 = pd.concat([zhang_shj_Ag_kgpm2.loc[:2049], Gervais_shj_2050_kgpm2]
 topcon_Ag_kgpm2 = pd.concat([zhang_topcon_Ag_kgpm2.loc[:2049], guess_topcon_2050_kgpm2])
 
 
-# In[99]:
+# In[9]:
 
 
 #filled projections 2020 through 2050
@@ -110,7 +110,7 @@ topcon_Ag_kgpm2.interpolate(inplace=True)
 
 # Now lets use Zhang et al's projections of efficiency increases. These are reasonably ambitious, achieving ~25% by 2030, but PV is usually an overachiever. We will hold efficiency constant after 2030.
 
-# In[102]:
+# In[10]:
 
 
 zhang_perc_modeff = lit_celltech['Zhang et al 2021 (hallam)']['PERC']['ModuleEff']
@@ -118,7 +118,7 @@ zhang_shj_modeff = lit_celltech['Zhang et al 2021 (hallam)']['SHJ']['ModuleEff']
 zhang_topcon_modeff = lit_celltech['Zhang et al 2021 (hallam)']['TOPCon']['ModuleEff']
 
 
-# In[103]:
+# In[11]:
 
 
 zhang_perc_modeff.interpolate(inplace=True)
@@ -126,7 +126,7 @@ zhang_shj_modeff.interpolate(inplace=True)
 zhang_topcon_modeff.interpolate(inplace=True)
 
 
-# In[106]:
+# In[12]:
 
 
 modeffs = pd.concat([zhang_perc_modeff,zhang_shj_modeff,zhang_topcon_modeff], axis=1)
@@ -135,7 +135,7 @@ Aguse = pd.concat([perc_Ag_kgpm2,shj_Ag_kgpm2,topcon_Ag_kgpm2], axis=1)
 Aguse.columns=['PERC','SHJ','TOPCon']
 
 
-# In[112]:
+# In[13]:
 
 
 plt.plot(modeffs, label=modeffs.columns)
@@ -144,7 +144,7 @@ plt.title('Module Efficiency over Time')
 plt.ylabel('Module Efficiency [%]')
 
 
-# In[113]:
+# In[14]:
 
 
 plt.plot(Aguse, label=Aguse.columns)
@@ -155,7 +155,7 @@ plt.ylabel('Silver Intensity [kg/m2]')
 
 # One important aspect of these technologies is bifaciality. Each has a different bifaciality factor, and they are not expected to increase substantially with time (ITRPV 2022). We plan to explore monofacial and bifacial modules of these technologies (for example residential vs utility). We will use a static inventory of bifacial factors.
 
-# In[114]:
+# In[15]:
 
 
 bifiFactors = {'PERC':0.7,
@@ -165,14 +165,14 @@ bifiFactors = {'PERC':0.7,
 
 # To create a blended scenario, we will use the ITRPV 2022 cell market share projection through 2030, and then keep it constant through 2050.
 
-# In[204]:
+# In[16]:
 
 
 #insert data from Jarett here
 itrpv_celltech_marketshare = pd.read_csv(os.path.join(supportMatfolder,'CellTechCompare','ITRPV_celltech_marketshare.csv'), index_col=0)
 
 
-# In[205]:
+# In[17]:
 
 
 itrpv_celltech_marketshare.columns
@@ -181,7 +181,7 @@ itrpv_celltech_marketshare.columns
 #remove and renormalize.
 
 
-# In[209]:
+# In[18]:
 
 
 #subset for desired techs
@@ -195,13 +195,13 @@ celltech_marketshare_scaled = celltech_marketshare_sub_raw.iloc[:,[0,1,2,3]]*cel
 #celltech_marketshare_scaled.sum(axis=1) # test check that everything adds to 1
 
 
-# In[210]:
+# In[19]:
 
 
 celltech_marketshare_scaled.columns
 
 
-# In[222]:
+# In[20]:
 
 
 plt.plot([],[],color='blue', label='PERC')
@@ -224,7 +224,7 @@ plt.legend(loc='lower center')
 plt.show()
 
 
-# In[224]:
+# In[21]:
 
 
 celltech_marketshare_scaled['TOPCon'] = celltech_marketshare_scaled.filter(like='TOPCon').sum(axis=1)
@@ -238,7 +238,7 @@ celltech_marketshare_scaled['TOPCon'] = celltech_marketshare_scaled.filter(like=
 # - Weibull Failure probabilities are identical between technologies (until we get better data)
 # - No ciruclarity
 
-# In[227]:
+# In[22]:
 
 
 #glass-glass package mass per area calculation
@@ -248,18 +248,69 @@ glassperm2 = (2.5/1000)* 2 * density_glass
 print('The mass per module area of glass is '+str(glassperm2)+' g/m^2')
 
 
-# Pull in deployment projection 
+# Pull in deployment projection. This deployment is based on the Solar Futures report, but has been modified to be more reasonable annual deployment schedule (i.e. manufacturing ramps up). However, this does not achieve 95% RE by 2035, but it does achieve 100% RE in 2050.
 
-# In[ ]:
-
-
+# In[112]:
 
 
-
-# In[ ]:
-
+sf_reeds_alts = pd.read_excel(os.path.join(supportMatfolder,'SF_reeds_alternates.xlsx'),index_col=0)
 
 
+# In[113]:
+
+
+sf_reeds = sf_reeds_alts.loc[2023:2050,['MW']]
+
+
+# In[114]:
+
+
+#try sorting the Reeds Deployment to be in ascending order
+sf_reeds['MW'].values.sort() #this sorts the column values in place
+
+
+# In[115]:
+
+
+sf_reeds['TW_cum'] = sf_reeds['MW'].cumsum()/1e6
+
+
+# In[116]:
+
+
+fig, ax1 = plt.subplots()
+
+ax1.plot(sf_reeds['MW'])
+ax1.set_ylabel('Annual Deployments [MW]', color='blue')
+
+ax2 = ax1.twinx()
+ax2.plot(sf_reeds['TW_cum'], color='orange')
+ax2.set_ylabel('Cumulative Capacity [TW]', color='orange')
+
+plt.legend(['Cumulative Capacity'])
+plt.show()
+
+
+# In[117]:
+
+
+sf_reeds.loc[2030]
+
+
+# In[118]:
+
+
+sf_reeds.loc[2050]
+
+
+# In[119]:
+
+
+#historical 2020-2022 from Wood Mac
+history = sf_reeds_alts.loc[2020:2022,['Historically annual']]
+history.columns=['MW']
+projection = sf_reeds[['MW']]
+newdeploymentcurve = pd.concat([history,projection],axis=0)
 
 
 # In[ ]:
@@ -270,7 +321,7 @@ print('The mass per module area of glass is '+str(glassperm2)+' g/m^2')
 
 # # Scenario Creation
 
-# In[236]:
+# In[120]:
 
 
 scennames = ['PERC','SHJ','TOPCon'] #add later Blend and bifi on/off
@@ -279,7 +330,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[238]:
+# In[121]:
 
 
 #load in a baseline and materials for modification
@@ -306,31 +357,31 @@ for scen in scennames:
 # - glass per m2
 # - silver per m2
 
-# In[257]:
+# In[122]:
 
 
 #trim to 2020-2050, this trims module and materials
 sim1.trim_Years(startYear=2020)
 
 
-# In[278]:
+# In[123]:
 
 
 #no circularity
 sim1.scenMod_noCircularity()
 
 
-# In[ ]:
+# In[124]:
 
 
 #deployment projection
 #NEED TO PULL IN DEPLOYMENT PROJECTION
 
 for scen in scennames:
-    sim1.scenario[scen].dataIn_m.loc[0:len(installs_df['year']-1),'new_Installed_Capacity_[MW]'] = installs_df[scens]
+    sim1.scenario[scen].dataIn_m.loc[0:len(newdeploymentcurve.index-1),'new_Installed_Capacity_[MW]'] = newdeploymentcurve.values
 
 
-# In[273]:
+# In[125]:
 
 
 #module eff
@@ -339,7 +390,7 @@ for scen in scennames:
     sim1.scenario[scen].dataIn_m.loc[0:len(modeffs.index-1),'mod_eff'] = modeffs[scen].values
 
 
-# In[247]:
+# In[126]:
 
 
 #glass modify
@@ -347,7 +398,7 @@ for scen in scennames:
     sim1.scenario[scen].material['glass'].matdataIn_m['mat_massperm2'] = glassperm2
 
 
-# In[282]:
+# In[127]:
 
 
 #silver modify
@@ -356,16 +407,16 @@ for scen in scennames:
     sim1.scenario[scen].material['silver'].matdataIn_m.loc[0:len(Aguse.index-1),'mat_massperm2'] = Aguse[scen].values
 
 
-# In[ ]:
+# In[128]:
 
 
+sim1.scenario[scen].dataIn_m
 
 
-
-# In[ ]:
-
+# In[129]:
 
 
+sim1.scenario[scen].material['silver'].matdataIn_m
 
 
 # # Run Simulations
