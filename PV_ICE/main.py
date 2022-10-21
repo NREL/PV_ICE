@@ -351,10 +351,10 @@ class Simulation:
     def calculateFlows(self, scenarios = None, materials=None, weibullInputParams = None,
                           bifacialityfactors = None, reducecapacity = True, debugflag=False):
         
-        self.calculateMassFlow(scenarios = None, materials=None, weibullInputParams = None,
-                              bifacialityfactors = None, reducecapacity = True, debugflag=False)
+        self.calculateMassFlow(scenarios = scenarios, materials=materials, weibullInputParams = weibullInputParams,
+                              bifacialityfactors = bifacialityfactors, reducecapacity = reducecapacity, debugflag=debugflag)
 
-        self.calculateEnergyFlow(scenarios = None, materials=None)
+        self.calculateEnergyFlow(scenarios = scenarios, materials=materials)
 
             
         
