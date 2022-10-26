@@ -1103,6 +1103,7 @@ class Simulation:
             print("********************")
             
             df = self.scenario[scen].dataOut_m
+            df_in = self.scenario[scen].dataIn_m
             modEnergy=self.scenario[scen].dataIn_e
 
             de = pd.DataFrame()
@@ -1117,8 +1118,9 @@ class Simulation:
             de['mod_ReMFG_Disassembly'] = df['P3_reMFG']*modEnergy['e_mod_ReMFG_Disassembly']
             de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
 
-            #Energy Generation, Energy_out = Insolation * ActivePower/Irradience * time * PR
-            de['e_out_annual_[Wh]'] = insolation * (df['Installed_Capacity_[W]']/df['irradiance_stc']) * 365 * PR
+            #Energy Generation, Energy_out = Insolation* (bifi modify factor) * ActivePower/Irradience * time * PR
+            de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Installed_Capacity_[W]']/1000) * 365 * PR
+            #de['e_out_annual_alt_[Wh]'] = df['irradiance_stc'] * PR * (df_in['mod_eff']*0.01 )* (5*365) * df['Cumulative_Active_Area'] #can't currently account for bifi
             
             self.scenario[scen].dataOut_e = de
 
