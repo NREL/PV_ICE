@@ -354,7 +354,8 @@ newdeploymentcurve = pd.concat([history,projection],axis=0)
 # In[34]:
 
 
-scennames = ['PERC','SHJ','TOPCon'] #add later Blend and bifi on/off
+#creating scenarios for identical power and identical area deployed
+scennames = ['PERC_p','SHJ_p','TOPCon_p', 'PERC_a','SHJ_a','TOPCon_a'] #add later Blend and bifi on/off
 MATERIALS = ['glass','silver','silicon'] #, 'copper', 'encapsulant', 'backsheet', 'aluminum_frames'
 moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
@@ -417,7 +418,7 @@ for scen in scennames:
 #module eff
 #modeffs
 for scen in scennames:
-    sim1.scenario[scen].dataIn_m.loc[0:len(modeffs.index-1),'mod_eff'] = modeffs[scen].values
+    sim1.scenario[scen].dataIn_m.loc[0:len(modeffs.index-1),'mod_eff'] = modeffs.filter(like=str(scen[0:3])).values
 
 
 # In[40]:
@@ -434,253 +435,160 @@ for scen in scennames:
 #silver modify
 #Aguse
 for scen in scennames:
-    sim1.scenario[scen].material['silver'].matdataIn_m.loc[0:len(Aguse.index-1),'mat_massperm2'] = Aguse[scen].values
+    sim1.scenario[scen].material['silver'].matdataIn_m.loc[0:len(Aguse.index-1),'mat_massperm2'] = Aguse.filter(like=str(scen[0:3])).values
 
+
+# Check to make sure the modifications took.
 
 # In[42]:
 
 
-sim1.scenario['PERC'].dataIn_m.head()
+sim1.scenario['SHJ_a'].dataIn_m.head()
 
 
 # In[43]:
 
 
-sim1.scenario['SHJ'].material['silver'].matdataIn_m.head()
+sim1.scenario['SHJ_p'].material['silver'].matdataIn_m.head()
 
 
 # # Run Simulations
 
+# ## Option 1: Compare with Idential Power Installed
+
 # In[44]:
 
 
-scennames
-bifi_perc_path
-bifi_shj_path 
-bifi_topcon_path
+scennames_p = ['PERC_p','SHJ_p','TOPCon_p']
 bifipaths = [bifi_perc_path,bifi_shj_path,bifi_topcon_path]
-bifipaths[0]
 
 
 # In[45]:
 
 
-#simple area deploy list to test new feature
-idx_temp = Aguse.index
-area_deploy = pd.DataFrame(index=idx_temp, dtype=float)
-area_deploy['Area'] = 100.0
-type(area_deploy)
+#option 1, install identical power
+sim1.calculateFlows(scenarios='PERC_p', bifacialityfactors=bifi_perc_path)
+sim1.calculateFlows(scenarios='SHJ_p', bifacialityfactors=bifi_shj_path)
+sim1.calculateFlows(scenarios='TOPCon_p', bifacialityfactors=bifi_topcon_path)
 
+perc_p_yearly, perc_p_cum = sim1.aggregateResults(scenarios='PERC_p')
+shj_p_yearly, shj_p_cum = sim1.aggregateResults(scenarios='SHJ_p')
+topcon_p_yearly, topcon_p_cum = sim1.aggregateResults(scenarios='TOPCon_p')
+
+
+# ## Option 2: Compare with Idential Area Installed
 
 # In[46]:
 
 
-list(area_deploy['Area'])
+scennames_a = ['PERC_a','SHJ_a','TOPCon_a']
+bifipaths = [bifi_perc_path,bifi_shj_path,bifi_topcon_path]
 
 
 # In[47]:
 
 
-list()
+#Calculate Area deployed based on PERC and modified SF projection above
+idx_temp = Aguse.index #grab matching index
+area_deploy = pd.DataFrame(index=idx_temp, dtype=float) #create an empty DF
+area_deploy['Area'] = sim1.scenario['PERC_p'].dataOut_m['Area'].values
+area_deploy.head()
 
 
 # In[48]:
 
 
 #option 1, install identical power
-sim1.calculateFlows(scenarios='PERC', bifacialityfactors=bifi_perc_path, installByArea=list(area_deploy['Area']))
-sim1.calculateFlows(scenarios='SHJ', bifacialityfactors=bifi_shj_path,  installByArea=list(area_deploy['Area']))
-sim1.calculateFlows(scenarios='TOPCon', bifacialityfactors=bifi_topcon_path,  installByArea=list(area_deploy['Area']))
+sim1.calculateFlows(scenarios='PERC_a', bifacialityfactors=bifi_perc_path, installByArea=list(area_deploy['Area']))
+sim1.calculateFlows(scenarios='SHJ_a', bifacialityfactors=bifi_shj_path,  installByArea=list(area_deploy['Area']))
+sim1.calculateFlows(scenarios='TOPCon_a', bifacialityfactors=bifi_topcon_path,  installByArea=list(area_deploy['Area']))
 
-perc_yearly, perc_cum = sim1.aggregateResults(scenarios='PERC')
-shj_yearly, shj_cum = sim1.aggregateResults(scenarios='SHJ')
-topcon_yearly, topcon_cum = sim1.aggregateResults(scenarios='TOPCon')
+perc_a_yearly, perc_a_cum = sim1.aggregateResults(scenarios='PERC_a')
+shj_a_yearly, shj_a_cum = sim1.aggregateResults(scenarios='SHJ_a')
+topcon_a_yearly, topcon_a_cum = sim1.aggregateResults(scenarios='TOPCon_a')
 
 
 # In[49]:
 
 
-sim1.scenario['TOPCon'].dataOut_m.head()
+sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
 
 
-# In[62]:
+# In[50]:
 
 
-plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['PERC'].dataOut_m['Installed_Capacity_[W]'])
-plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['SHJ'].dataOut_m['Installed_Capacity_[W]'])
-plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['TOPCon'].dataOut_m['Installed_Capacity_[W]'])
-plt.title('Installed Capacity [W]')
-plt.legend(['PERC','SHJ','TOPCon'])
+all_results_yearly, all_results_cum = sim1.aggregateResults()
+all_results_yearly.columns
 
 
 # In[51]:
 
 
-sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
+silver_demand_cum = pd.DataFrame(all_results_cum.filter(like='VirginStock_silver').loc[2050]).T
 
 
 # In[52]:
 
 
-plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['PERC'].dataOut_m['Cumulative_Active_Area'])
-plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['SHJ'].dataOut_m['Cumulative_Active_Area'])
-plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['TOPCon'].dataOut_m['Cumulative_Active_Area'])
-plt.title('Active Area')
-plt.legend(['PERC','SHJ','TOPCon'])
+silver_demand_cum
 
 
 # In[53]:
 
 
-sim1.scenario['PERC'].dataOut_m['irradiance_stc'].head()
+plt.bar(silver_demand_cum.columns, silver_demand_cum.loc[2050], tick_label=(scennames), color=['blue','orange','green'])
+plt.title('Silver Demand by Scenario')
+plt.ylabel('[Tonnes]')
 
 
 # In[54]:
 
 
-plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['PERC'].dataOut_m['Yearly_Sum_Area_disposed'])
-plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['SHJ'].dataOut_m['Yearly_Sum_Area_disposed'])
-plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['TOPCon'].dataOut_m['Yearly_Sum_Area_disposed'])
-plt.title('Yearly Sum of Area Disposed')
-plt.legend(['PERC','SHJ','TOPCon'])
+#compile all energy out results
+energy_mod=pd.DataFrame()
+for scen in scennames:
+    # add the scen name as a prefix for later filtering
+    scende = sim1.scenario[scen].dataOut_e.loc[0:30].add_prefix(str(scen+'_'))
+    #concat into one large df
+    energy_mod = pd.concat([energy_mod, scende], axis=1)
+
+energy_mod.tail()
 
 
-# In[60]:
+# In[55]:
 
 
-sim1.scenario['PERC'].dataOut_m.head()
+energy_mat = pd.DataFrame()
+for scen in scennames:
+    for mat in MATERIALS:
+        # add the scen name as a prefix for later filtering
+        scenmatde = sim1.scenario[scen].material[mat].matdataOut_e.loc[0:30].add_prefix(str(scen+'_'+mat+'_'))
+        #concat into one large df
+        energy_mat = pd.concat([energy_mat, scenmatde], axis=1)
+
+energy_mat.tail()
+
+
+# In[ ]:
+
+
+
 
 
 # In[56]:
 
 
-#pulling out energy generation results
-#the index location is a temp fix due to having extra lenght index, likely due to empty material energy files
-perc_energyGen_annual = sim1.scenario['PERC'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
-shj_energyGen_annual = sim1.scenario['SHJ'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
-topcon_energyGen_annual = sim1.scenario['TOPCon'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
-energyGen = pd.concat([perc_energyGen_annual, shj_energyGen_annual, topcon_energyGen_annual],axis=1)
-energyGen.index=idx_temp
-energyGen.columns = ['PERC','SHJ','TOPCon']
+allenergy = pd.concat([energy_mod,energy_mat], axis=1)
+allenergy.index=idx_temp
 
 
 # In[57]:
 
 
-fig, ax1 = plt.subplots()
-
-ax1.plot(energyGen)
-#ax1.set_ylabel('Annual Deployments [MW]', color='blue')
-
-#ax2 = ax1.twinx()
-#ax2.plot(sf_reeds['TW_cum'], color='orange')
-#ax2.set_ylabel('Cumulative Capacity [TW]', color='orange')
-
-plt.legend(energyGen.columns)
-plt.title('Annual Energy Generation')
-plt.show()
+energyGen = allenergy.filter(like='e_out_annual')
 
 
-# In[ ]:
-
-
-fig, ax1 = plt.subplots()
-
-ax1.plot(energyGen_alt)
-#ax1.set_ylabel('Annual Deployments [MW]', color='blue')
-
-#ax2 = ax1.twinx()
-#ax2.plot(sf_reeds['TW_cum'], color='orange')
-#ax2.set_ylabel('Cumulative Capacity [TW]', color='orange')
-
-plt.legend(energyGen_alt.columns)
-plt.title('Annual Energy Generation Alternate Calc')
-plt.show()
-
-
-# In[ ]:
-
-
-#option 2, compensation for area deployed
-#styled on installation compensation
-subscens = ['SHJ','TOPCon']
-
-sim1.calculateFlows(scenarios='PERC', bifacialityfactors=bifi_perc_path)
-
-for row in range (0,len(sim1.scenario['PERC'].dataIn_m)):
-    for scenario in range (0, len(subscens)):
-        scen = list(subscens)[scenario] 
-        
-        #perc will install the most area because lowest eff and lowest bifi, so compare to PERC
-        #bigger number-smaller number = (+)
-        perc_area_installed = (sim1.scenario['PERC'].dataIn_m['new_Installed_Capacity_[MW]'][row]*1e6)/(sim1.scenario['PERC'].dataIn_m['mod_eff'][row]*0.01)/1070
-                                #installed cap in W / module eff that year / irradiance that year
-        scen_area_installed = sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row]*1e6/(sim1.scenario[scen].dataIn_m['mod_eff'][row]*0.01)/(1000+bifiFactors[scen]*100) #this bifi factor thing only works because it is constant rn
-                                #
-        delta_install_area = perc_area_installed-scen_area_installed
-        
-        #Convert area difference into a new installs modficiation
-        delta_install_power = (delta_install_area * (1000+bifiFactors[scen]*100)* (sim1.scenario[scen].dataIn_m['mod_eff'][row]*0.01))/1000000 #MW
-        
-        #update the new installations to compensate for area deployed
-        sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] -= delta_install_power #subtracting installs
-        
-    sim1.calculateFlows(bifacialityfactors=bifipaths[scenario])
-
-
-
-
-# In[ ]:
-
-
-sim1_yearly, sim1_cum = sim1.aggregateResults()
-
-
-# In[ ]:
-
-
-plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['PERC'].dataOut_m['Installed_Capacity_[W]'])
-plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['SHJ'].dataOut_m['Installed_Capacity_[W]'])
-plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['TOPCon'].dataOut_m['Installed_Capacity_[W]'])
-plt.title('Installed Capacity [W]')
-
-
-# In[ ]:
-
-
-sim1.plotMetricResults()
-
-
-# In[ ]:
-
-
-sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
-
-
-# In[ ]:
-
-
-plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['PERC'].dataOut_m['Area'])
-plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['SHJ'].dataOut_m['Area'])
-plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['TOPCon'].dataOut_m['Area'])
-plt.title('Active Area')
-plt.legend(['PERC','SHJ','TOPCon'])
-
-
-# In[ ]:
-
-
-#pulling out energy generation results
-#the index location is a temp fix due to having extra lenght index, likely due to empty material energy files
-perc_energyGen_annual = sim1.scenario['PERC'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
-shj_energyGen_annual = sim1.scenario['SHJ'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
-topcon_energyGen_annual = sim1.scenario['TOPCon'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
-energyGen = pd.concat([perc_energyGen_annual, shj_energyGen_annual, topcon_energyGen_annual],axis=1)
-energyGen.index=idx_temp
-energyGen.columns = ['PERC','SHJ','TOPCon']
-
-
-# In[ ]:
+# In[58]:
 
 
 fig, ax1 = plt.subplots()
@@ -697,29 +605,45 @@ plt.title('Annual Energy Generation')
 plt.show()
 
 
-# PROBLEMS:
-# - Not deploying the same area - deploying the same power
-# - Bifi constants --> create irradiance change --> decreasing the annual energy generation - which seems wrong
+# In[59]:
+
+
+energyGen_cum = energyGen.cumsum()
+energyGen_cum_2050 = energyGen_cum.loc[[2050]]
+
+
+# In[65]:
+
+
+plt.bar(energyGen_cum_2050.columns, energyGen_cum_2050.loc[2050]/1e12, tick_label=(scennames), color=['blue','orange','green'])
+plt.title('Energy Generated Cumulatively by Scenario')
+plt.ylabel('[TWh]')
+
+
+# In[81]:
+
+
+energyGen_cum_2050.columns=silver_demand_cum.columns=scennames
+whpag = (energyGen_cum_2050)/silver_demand_cum #Wh generated cumulative, per silver demand
+normalizer = whpag.loc[2050,'PERC_a']
+whpag#/normalizer
+
+
+# In[82]:
+
+
+plt.bar(whpag.columns, whpag.loc[2050]/1e12, tick_label=(scennames), color=['blue','orange','green'])
+plt.title('Energy Generated Cumulatively by Scenario per Silver Demand Tonnes')
+plt.ylabel('[TWh/tonnes]')
+
 
 # In[ ]:
 
 
-sim1.scenario['TOPCon'].dataIn_m
-
-
-# In[ ]:
 
 
 
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
+# In[63]:
 
 
 def aggregateEnergyResults(self, scenarios=None, materials=None):
