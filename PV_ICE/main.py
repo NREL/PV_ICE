@@ -359,7 +359,8 @@ class Simulation:
             
         
     def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None,
-                          bifacialityfactors = None, reducecapacity = True, debugflag=False):
+                          bifacialityfactors = None, reducecapacity = True, debugflag=False,
+                          installByArea = None):
         '''
         Function takes as input a baseline dataframe already imported,
         with the right number of columns and content.
@@ -382,6 +383,12 @@ class Simulation:
             scenario(s) modeled.
         bifacialityfactors : str
             File with bifacialtiy factors for each year under consideration
+        installByArea : list floats
+            When deploying each generation, it overrides using 
+            `new_Installed_Capacity_[MW]` to calculate deployed area, and
+            installs this area instead calculating the installed capacity based
+            on the module characteristics (efficiency and bifaciality factor).
+            Length must match the years in the loaded dataframes.
 
         Returns
         --------
@@ -419,12 +426,21 @@ class Simulation:
 
             # Calculating Area and Mass
 
+            # Method to pass mass instead of calculating by Power to Area
             if 'Mass_[MetricTonnes]' in df:
                 df['new_Installed_Capacity_[W]'] = 0
                 df['new_Installed_Capacity_[MW]'] = 0
                 df['Area'] = df['Mass_[MetricTonnes]']
                 print("Warning, this is for special debuging of Wambach Procedure."+
                       "Make sure to use Wambach Module")
+            # Method to pass Area to then calculate Power
+            elif installByArea is not None: 
+                df['Area'] = installByArea
+                df['new_Installed_Capacity_[W]'] = (df['mod_eff']*0.01)*df['irradiance_stc']*df['Area'] # W
+                df['new_Installed_Capacity_[MW]'] = df['new_Installed_Capacity_[W]']/1000000
+                print("Calculating installed capacity based on installed Area")
+                
+            # Standard method to calculate Area from the Power
             else:
                 df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
 
