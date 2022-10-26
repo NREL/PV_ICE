@@ -349,10 +349,10 @@ class Simulation:
             self.scenario[scen].dataIn_m.loc[selectyears, stage] = value
 
     def calculateFlows(self, scenarios = None, materials=None, weibullInputParams = None,
-                          bifacialityfactors = None, reducecapacity = True, debugflag=False):
+                          bifacialityfactors = None, reducecapacity = True, debugflag=False, installByArea = None):
         
         self.calculateMassFlow(scenarios = scenarios, materials=materials, weibullInputParams = weibullInputParams,
-                              bifacialityfactors = bifacialityfactors, reducecapacity = reducecapacity, debugflag=debugflag)
+                              bifacialityfactors = bifacialityfactors, reducecapacity = reducecapacity, debugflag=debugflag, installByArea = installByArea)
 
         self.calculateEnergyFlow(scenarios = scenarios, materials=materials)
 
