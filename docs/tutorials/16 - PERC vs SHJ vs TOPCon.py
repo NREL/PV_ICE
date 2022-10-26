@@ -355,7 +355,7 @@ newdeploymentcurve = pd.concat([history,projection],axis=0)
 
 
 scennames = ['PERC','SHJ','TOPCon'] #add later Blend and bifi on/off
-MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsulant', 'backsheet']
+MATERIALS = ['glass','silver','silicon'] #, 'copper', 'encapsulant', 'backsheet', 'aluminum_frames'
 moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
@@ -457,12 +457,15 @@ sim1.scenario['PERC'].material['silver'].matdataIn_m.head()
 scennames
 bifi_perc_path
 bifi_shj_path 
-bifi_topcon_path 
+bifi_topcon_path
+bifipaths = [bifi_perc_path,bifi_shj_path,bifi_topcon_path]
+bifipaths[0]
 
 
-# In[49]:
+# In[45]:
 
 
+#option 1, install identical power
 sim1.calculateFlows(scenarios='PERC', bifacialityfactors=bifi_perc_path)
 sim1.calculateFlows(scenarios='SHJ', bifacialityfactors=bifi_shj_path)
 sim1.calculateFlows(scenarios='TOPCon', bifacialityfactors=bifi_topcon_path)
@@ -472,19 +475,23 @@ shj_yearly, shj_cum = sim1.aggregateResults(scenarios='SHJ')
 topcon_yearly, topcon_cum = sim1.aggregateResults(scenarios='TOPCon')
 
 
-# In[59]:
-
-
-sim1.plotMetricResults()
-
-
-# In[62]:
+# In[46]:
 
 
 sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
 
 
-# In[85]:
+# In[47]:
+
+
+plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['PERC'].dataOut_m['Area'])
+plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['SHJ'].dataOut_m['Area'])
+plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['TOPCon'].dataOut_m['Area'])
+plt.title('Active Area')
+plt.legend(['PERC','SHJ','TOPCon'])
+
+
+# In[48]:
 
 
 #pulling out energy generation results
@@ -497,7 +504,7 @@ energyGen.index=idx_temp
 energyGen.columns = ['PERC','SHJ','TOPCon']
 
 
-# In[86]:
+# In[49]:
 
 
 fig, ax1 = plt.subplots()
@@ -524,4 +531,167 @@ plt.show()
 
 
 
+
+
+# In[50]:
+
+
+#option 2, compensation for area deployed
+#styled on installation compensation
+subscens = ['SHJ','TOPCon']
+
+sim1.calculateFlows(scenarios='PERC', bifacialityfactors=bifi_perc_path)
+
+for row in range (0,len(sim1.scenario['PERC'].dataIn_m)):
+    for scenario in range (0, len(subscens)):
+        scen = list(subscens)[scenario] 
+        
+        #perc will install the most area because lowest eff and lowest bifi, so compare to PERC
+        #bigger number-smaller number = (+)
+        perc_area_installed = (sim1.scenario['PERC'].dataIn_m['new_Installed_Capacity_[MW]'][row]*1e6)/(sim1.scenario['PERC'].dataIn_m['mod_eff'][row]*0.01)/1070
+                                #installed cap in W / module eff that year / irradiance that year
+        scen_area_installed = sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row]*1e6/(sim1.scenario[scen].dataIn_m['mod_eff'][row]*0.01)/(1000+bifiFactors[scen]*100) #this bifi factor thing only works because it is constant rn
+                                #
+        delta_install_area = perc_area_installed-scen_area_installed
+        
+        #Convert area difference into a new installs modficiation
+        delta_install_power = (delta_install_area * (1000+bifiFactors[scen]*100)* (sim1.scenario[scen].dataIn_m['mod_eff'][row]*0.01))/1000000 #MW
+        
+        #update the new installations to compensate for area deployed
+        sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] -= delta_install_power #subtracting installs
+        
+    sim1.calculateFlows(bifacialityfactors=bifipaths[scenario])
+
+
+
+
+# In[51]:
+
+
+sim1_yearly, sim1_cum = sim1.aggregateResults()
+
+
+# In[52]:
+
+
+plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['PERC'].dataOut_m['Installed_Capacity_[W]'])
+plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['SHJ'].dataOut_m['Installed_Capacity_[W]'])
+plt.plot(sim1.scenario['PERC'].dataIn_m['year'], sim1.scenario['TOPCon'].dataOut_m['Installed_Capacity_[W]'])
+plt.title('Installed Capacity [W]')
+
+
+# In[53]:
+
+
+sim1.plotMetricResults()
+
+
+# In[54]:
+
+
+sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
+
+
+# In[55]:
+
+
+plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['PERC'].dataOut_m['Area'])
+plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['SHJ'].dataOut_m['Area'])
+plt.plot(sim1.scenario['TOPCon'].dataIn_m['year'],sim1.scenario['TOPCon'].dataOut_m['Area'])
+plt.title('Active Area')
+plt.legend(['PERC','SHJ','TOPCon'])
+
+
+# In[56]:
+
+
+#pulling out energy generation results
+#the index location is a temp fix due to having extra lenght index, likely due to empty material energy files
+perc_energyGen_annual = sim1.scenario['PERC'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
+shj_energyGen_annual = sim1.scenario['SHJ'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
+topcon_energyGen_annual = sim1.scenario['TOPCon'].dataOut_e.loc[0:30,['e_out_annual_[Wh]']]
+energyGen = pd.concat([perc_energyGen_annual, shj_energyGen_annual, topcon_energyGen_annual],axis=1)
+energyGen.index=idx_temp
+energyGen.columns = ['PERC','SHJ','TOPCon']
+
+
+# In[57]:
+
+
+fig, ax1 = plt.subplots()
+
+ax1.plot(energyGen)
+#ax1.set_ylabel('Annual Deployments [MW]', color='blue')
+
+#ax2 = ax1.twinx()
+#ax2.plot(sf_reeds['TW_cum'], color='orange')
+#ax2.set_ylabel('Cumulative Capacity [TW]', color='orange')
+
+plt.legend(energyGen.columns)
+plt.title('Annual Energy Generation')
+plt.show()
+
+
+# PROBLEMS:
+# - Not deploying the same area - deploying the same power
+# - Bifi constants --> create irradiance change --> decreasing the annual energy generation - which seems wrong
+
+# In[58]:
+
+
+sim1.scenario['TOPCon'].dataIn_m
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[60]:
+
+
+def aggregateEnergyResults(self, scenarios=None, materials=None):
+        if scenarios is None:
+        scenarios = list(self.scenario.keys())
+    else:
+        if isinstance(scenarios, str):
+            scenarios = [scenarios]
+
+    if materials is None:
+        materials = list(self.scenario[scenarios[0]].material.keys())
+    else:
+        if isinstance(materials, str):
+            materials = [materials]
+    #categorize the energy in values into lifecycle stages
+    mfg_energies = ['mod_MFG','mat_extraction','mat_MFG_virgin']
+    mfg_recycle_energies_LQ = ['mat_MFGScrap_LQ'] #LQ and HQ are separate becuase LQ is only LQ
+    mfg_recycle_energies_HQ = ['mat_MFGScrap_HQ'] #and HQ material is E_LQ + E_HQ
+    use_energies = ['mod_Install','mod_OandM','mod_Repair']
+    eol_energies = ['mat_Landfill','mod_Demount','mod_Store','mod_Resell_Certify']
+    eol_remfg_energies = ['mod_ReMFG_Disassmbly','mat_EoL_ReMFG_clean']
+    eol_recycle_energies_LQ = ['mod_Recycle_Crush','mat_Recycled_LQ']
+    eol_recycle_energies_HQ = ['mod_Recycle_Crush','mat_Recycled_HQ']
+    
+    
+
+
+# In[ ]:
+
+
+#categorize the energy in values into lifecycle stages
+mfg_energies = ['mod_MFG','mat_extraction','mat_MFG_virgin']
+mfg_recycle_energies_LQ = ['mat_MFGScrap_LQ'] #LQ and HQ are separate becuase LQ is only LQ
+mfg_recycle_energies_HQ = ['mat_MFGScrap_HQ'] #and HQ material is E_LQ + E_HQ
+use_energies = ['mod_Install','mod_OandM','mod_Repair']
+eol_energies = ['mat_Landfill','mod_Demount','mod_Store','mod_Resell_Certify']
+eol_remfg_energies = ['mod_ReMFG_Disassmbly','mat_EoL_ReMFG_clean']
+eol_recycle_energies_LQ = ['mod_Recycle_Crush','mat_Recycled_LQ']
+eol_recycle_energies_HQ = ['mod_Recycle_Crush','mat_Recycled_HQ']
 

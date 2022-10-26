@@ -641,8 +641,10 @@ class Simulation:
                     # and adding initial area
                     fixinitialareacount = next((i for i, e in enumerate(x) if e), None) - 1
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']
-                    area_powergen[fixinitialareacount] = (area_powergen[fixinitialareacount] +
+                    area_powergen[fixinitialareacount] = (area_powergen[fixinitialareacount] + #this addition seems to do nothing.
                                          row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])
+                    
+                    
                 except:
                     # Last value does not have a xclip value of nonzero so it goes
                     # to except. But it also means the loop finished for the calculations
@@ -651,6 +653,7 @@ class Simulation:
                     activeareacount[fixinitialareacount] = activeareacount[fixinitialareacount]+row['Area']
                     area_powergen[fixinitialareacount] = (area_powergen[fixinitialareacount] +
                                          row['Area'] * row['mod_eff'] *0.01 * row['irradiance_stc'])
+                    
                     print("Finished Area+Power Generation Calculations")
 
 
@@ -1233,7 +1236,7 @@ class Simulation:
 
             if averageEfficiency:
                 prev = baseline.loc[(baseline['year']<startYear)].mean()
-                reduced.loc[reduced['year'] == startYear, 'mod_eff	'] = prev['mod_eff	']
+                reduced.loc[reduced['year'] == startYear, 'mod_eff'] = prev['mod_eff']
 
             reduced.reset_index(drop=True, inplace=True)
             self.scenario[scen].dataIn_m = reduced #reassign the material data to the simulation
@@ -1312,11 +1315,21 @@ class Simulation:
                 scenarios = [scenarios]
 
         for scen in scenarios:
-            self.scenario[scen].dataIn_m['mod_EOL_collection_eff '] = 0.0
-            self.scenario[scen].dataIn_m['mod_EOL_collected_recycled'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_collection_eff '] = 0.0 #this should send all to landfill, but just in case set rest to 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pg0_resell'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pg1_landfill'] = 100.0 #all to landfill
+            self.scenario[scen].dataIn_m['mod_EOL_pg2_stored'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pg3_reMFG'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pg4_recycled'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_sp_reMFG_recycle'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pb1_landfill'] = 100.0 #all to landfill
+            self.scenario[scen].dataIn_m['mod_EOL_pb2_stored'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pb3_reMFG'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pb4_recycled'] = 0.0
             self.scenario[scen].dataIn_m['mod_Repair'] = 0.0
-            self.scenario[scen].dataIn_m['mod_MerchantTail'] = 0.0
-            self.scenario[scen].dataIn_m['mod_Reuse'] = 0.0
+            self.scenario[scen].dataIn_m['mod_MerchantTail'] = 0.0 #should this one be set to 0?
+            
+            
 
             for mat in self.scenario[scen].material:
                 self.scenario[scen].material[mat].matdataIn_m['mat_MFG_scrap_Recycled'] = 0.0
@@ -1324,8 +1337,9 @@ class Simulation:
                 self.scenario[scen].material[mat].matdataIn_m['mat_MFG_scrap_Recycled_into_HQ'] = 0.0
                 self.scenario[scen].material[mat].matdataIn_m['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 0.0
 
-                self.scenario[scen].material[mat].matdataIn_m['mod_EOL_p5_recycled'] = 0.0
-                self.scenario[scen].material[mat].matdataIn_m['mat_EOL_Recycling_yield'] = 0.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_PG3_ReMFG_target'] = 0.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_PG4_Recycling_target'] = 0.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_Recycling_yield'] = 0.0
                 self.scenario[scen].material[mat].matdataIn_m['mat_EOL_Recycled_into_HQ'] = 0.0
                 self.scenario[scen].material[mat].matdataIn_m['mat_EOL_RecycledHQ_Reused4MFG'] = 0.0
 
@@ -1430,11 +1444,12 @@ class Simulation:
             if keyword in self.scenario[scen].dataIn_m:                
                 plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataIn_m[keyword], label=scen)
             elif keyword in self.scenario[scen].dataIn_e: 
-                plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataIn_e[keyword], label=scen)
-            elif keyword in self.scenario[scen].dataOut_m: 
-                plt.plot(self.scenario[scen].dataOut_m['year'],self.scenario[scen].dataOut_m[keyword], label=scen)
-            elif keyword in self.scenario[scen].dataOut_e: 
-                plt.plot(self.scenario[scen].dataOut_e['year'],self.scenario[scen].dataOut_e[keyword], label=scen)
+                plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataIn_e[keyword], label=scen) 
+                # the year column is not getting added to the dataOut DFs
+            elif keyword in self.scenario[scen].dataIn_m: 
+                plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataOut_m[keyword], label=scen)
+            elif keyword in self.scenario[scen].dataIn_e: 
+                plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataOut_e[keyword], label=scen)
             else:
                 print("No data for ", keyword, "for Scenario ", scen)
         plt.legend()
