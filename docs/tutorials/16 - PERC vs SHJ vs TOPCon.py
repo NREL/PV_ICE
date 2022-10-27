@@ -440,10 +440,10 @@ for scen in scennames:
 
 # Check to make sure the modifications took.
 
-# In[42]:
+# In[125]:
 
 
-sim1.scenario['SHJ_a'].dataIn_m.head()
+sim1.scenario['SHJ_a'].dataIn_m.head(10)
 
 
 # In[43]:
@@ -508,12 +508,6 @@ shj_a_yearly, shj_a_cum = sim1.aggregateResults(scenarios='SHJ_a')
 topcon_a_yearly, topcon_a_cum = sim1.aggregateResults(scenarios='TOPCon_a')
 
 
-# In[49]:
-
-
-sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
-
-
 # In[50]:
 
 
@@ -521,24 +515,152 @@ all_results_yearly, all_results_cum = sim1.aggregateResults()
 all_results_yearly.columns
 
 
+# ### Compare Effective Capacity
+
+# In[133]:
+
+
+activecapacity_yearly_TW = pd.DataFrame(all_results_yearly.filter(like='ActiveCapacity'))/1e6
+activecapacity_yearly_TW_p = activecapacity_yearly_TW.filter(like='_p')
+activecapacity_yearly_TW_a = activecapacity_yearly_TW.filter(like='_a')
+
+
+# In[161]:
+
+
+plt.plot(activecapacity_yearly_TW_p.index, activecapacity_yearly_TW_p.iloc[:,[0]], color='#003f5c')
+plt.plot(activecapacity_yearly_TW_p.index, activecapacity_yearly_TW_p.iloc[:,[1]], color='#ee005b', ls='--')
+plt.plot(activecapacity_yearly_TW_p.index, activecapacity_yearly_TW_p.iloc[:,[2]], color='#734296', ls='-.')
+plt.legend(scennames_p)
+plt.title('Identical Installed Power: Effective Capacity')
+plt.ylabel('Effective Capacity [TW]')
+
+
+# In[160]:
+
+
+plt.plot(activecapacity_yearly_TW_a.index, activecapacity_yearly_TW_a.iloc[:,[0]], color='#006fa2')
+plt.plot(activecapacity_yearly_TW_a.index, activecapacity_yearly_TW_a.iloc[:,[1]], color='#ee005b', ls='--')
+plt.plot(activecapacity_yearly_TW_a.index, activecapacity_yearly_TW_a.iloc[:,[2]], color='#734296', ls='-.')
+plt.legend(scennames_a)
+plt.title('Identical Installed Area: Effective Capacity')
+plt.ylabel('Effective Capacity [TW]')
+
+
+# ### Compare Area Deployed
+
+# In[155]:
+
+
+#compile all energy out results
+area_deployed=pd.DataFrame()
+for scen in scennames:
+    # add the scen name as a prefix for later filtering
+    scen_area = sim1.scenario[scen].dataOut_m[['Cumulative_Active_Area']].add_prefix(str(scen+'_'))
+    #concat into one large df
+    area_deployed = pd.concat([area_deployed, scen_area], axis=1)
+
+area_deployed.index = idx_temp
+area_deployed.tail()
+
+
+# In[162]:
+
+
+plt.plot(area_deployed.index, area_deployed.iloc[:,[0]]/1e6, color='#006fa2')
+plt.plot(area_deployed.index, area_deployed.iloc[:,[1]]/1e6, color='#ee005b', ls='--')
+plt.plot(area_deployed.index, area_deployed.iloc[:,[2]]/1e6, color='#734296', ls='-.')
+plt.legend(scennames_p)
+plt.title('Identical Installed Power: Cumulative Active Area')
+plt.ylabel('Area [million m2]')
+
+
+# In[163]:
+
+
+plt.plot(area_deployed.index, area_deployed.iloc[:,[3]]/1e6, color='#006fa2')
+plt.plot(area_deployed.index, area_deployed.iloc[:,[4]]/1e6, color='#ee005b', ls='--')
+plt.plot(area_deployed.index, area_deployed.iloc[:,[5]]/1e6, color='#734296', ls='-.')
+plt.legend(scennames_a)
+plt.title('Identical Installed Area: Cumulative Active Area')
+plt.ylabel('Area [million m2]')
+
+
+# ### Compare Silver Demand
+
+# In[49]:
+
+
+sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
+
+
+# #### Identical Power Deployed
+
 # In[51]:
 
 
 silver_demand_cum = pd.DataFrame(all_results_cum.filter(like='VirginStock_silver').loc[2050]).T
 
 
-# In[52]:
+# In[165]:
+
+
+silver_demand_cum
+silver_demand_cum.to_csv(os.path.join(testfolder,'Ag_demand_cum2050_allScens.csv'))
+
+
+# In[164]:
+
+
+plt.bar(silver_demand_cum.columns, silver_demand_cum.loc[2050], tick_label=(scennames), color=['#006fa2','#ee005b','#734296'])
+plt.title('Silver Demand by Scenario')
+plt.ylabel('[Tonnes]')
+
+
+# In[120]:
 
 
 silver_demand_cum
 
 
-# In[53]:
+# In[121]:
 
 
-plt.bar(silver_demand_cum.columns, silver_demand_cum.loc[2050], tick_label=(scennames), color=['blue','orange','green'])
-plt.title('Silver Demand by Scenario')
-plt.ylabel('[Tonnes]')
+activecapacity = pd.DataFrame(all_results_yearly.loc[2050].filter(like='ActiveCapacity')).T/1e6
+activecapacity
+
+
+# In[122]:
+
+
+silver_demand_cum.columns = activecapacity.columns = scennames
+
+
+# In[123]:
+
+
+agperW = silver_demand_cum/activecapacity
+agperW
+
+
+# In[173]:
+
+
+plt.bar(agperW.columns[0:3], agperW.loc[2050][0:3], color=['#006fa2','#ee005b','#734296'])
+plt.title('Silver Demand per Capacity')
+plt.ylabel('Tonne/TW')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[54]:
@@ -575,20 +697,20 @@ energy_mat.tail()
 
 
 
-# In[56]:
+# In[192]:
 
 
 allenergy = pd.concat([energy_mod,energy_mat], axis=1)
 allenergy.index=idx_temp
 
 
-# In[57]:
+# In[193]:
 
 
 energyGen = allenergy.filter(like='e_out_annual')
 
 
-# In[58]:
+# In[194]:
 
 
 fig, ax1 = plt.subplots()
@@ -603,6 +725,49 @@ ax1.plot(energyGen)
 plt.legend(energyGen.columns)
 plt.title('Annual Energy Generation')
 plt.show()
+
+
+# In[195]:
+
+
+energyGen_p = energyGen.filter(like='_p')/1e12
+energyGen_a = energyGen.filter(like='_a')/1e12
+
+
+# In[196]:
+
+
+#plt.plot(energyGen_p)#, color=['#006fa2','#ee005b','#734296'])
+plt.plot(energyGen_p.index, energyGen_p.iloc[:,[0]], color='#006fa2')
+plt.plot(energyGen_p.index, energyGen_p.iloc[:,[1]], color='#ee005b', ls='--')
+plt.plot(energyGen_p.index, energyGen_p.iloc[:,[2]], color='#734296', ls='-.')
+plt.legend(scennames_p)
+plt.title('Identical Power Installed: Annual Energy Generation')
+plt.ylabel('Energy Generated [TWh]')
+
+
+# In[198]:
+
+
+#plt.plot(energyGen_p)#, color=['#006fa2','#ee005b','#734296'])
+plt.plot(energyGen_a.index, energyGen_a.iloc[:,[0]], color='#006fa2')
+plt.plot(energyGen_a.index, energyGen_a.iloc[:,[1]], color='#ee005b', ls='--')
+plt.plot(energyGen_a.index, energyGen_a.iloc[:,[2]], color='#734296', ls='-.')
+plt.legend(scennames_a)
+plt.title('Identical Area Installed: Annual Energy Generation')
+plt.ylabel('Energy Generated [TWh]')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[59]:
@@ -635,6 +800,59 @@ whpag#/normalizer
 plt.bar(whpag.columns, whpag.loc[2050]/1e12, tick_label=(scennames), color=['blue','orange','green'])
 plt.title('Energy Generated Cumulatively by Scenario per Silver Demand Tonnes')
 plt.ylabel('[TWh/tonnes]')
+
+
+# In[89]:
+
+
+energyGen_cum_2050.columns=silver_demand_cum.columns=scennames
+agpwh= silver_demand_cum/(energyGen_cum_2050) #Wh generated cumulative, per silver demand
+normalizer = agpwh.loc[2050,'PERC_a']
+agpwh/normalizer
+
+
+# In[92]:
+
+
+plt.bar(agpwh.columns, agpwh.loc[2050]*1e12, tick_label=(scennames), color=['blue','orange','green'])
+plt.title('Silver Demand Tonnes per energy generation, normalized')
+plt.ylabel('[tonnes/TWh] Normalized')
+
+
+# In[ ]:
+
+
+#net energy
+allenergy
+
+
+# In[86]:
+
+
+type(energy_demands)
+
+
+# In[84]:
+
+
+energyGen.filter(like=energy_demands)
+
+
+# In[83]:
+
+
+#categorize the energy in values into lifecycle stages
+mfg_energies = ['mod_MFG','mat_extraction','mat_MFG_virgin']
+mfg_recycle_energies_LQ = ['mat_MFGScrap_LQ'] #LQ and HQ are separate becuase LQ is only LQ
+mfg_recycle_energies_HQ = ['mat_MFGScrap_HQ'] #and HQ material is E_LQ + E_HQ
+use_energies = ['mod_Install','mod_OandM','mod_Repair']
+eol_energies = ['mat_Landfill','mod_Demount','mod_Store','mod_Resell_Certify']
+eol_remfg_energies = ['mod_ReMFG_Disassmbly','mat_EoL_ReMFG_clean']
+eol_recycle_energies_LQ = ['mod_Recycle_Crush','mat_Recycled_LQ']
+eol_recycle_energies_HQ = ['mod_Recycle_Crush','mat_Recycled_HQ']
+
+energy_demands = [mfg_energies,mfg_recycle_energies_LQ,mfg_recycle_energies_HQ,use_energies,eol_energies,
+                  eol_remfg_energies,eol_recycle_energies_LQ,eol_recycle_energies_HQ]
 
 
 # In[ ]:
