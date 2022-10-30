@@ -348,15 +348,38 @@ projection = sf_reeds[['MW']]
 newdeploymentcurve = pd.concat([history,projection],axis=0)
 
 
-# In[ ]:
+# In[34]:
 
 
+#modify projection to be closer to global scale by x10
+newdeploymentcurve_global = newdeploymentcurve*10
 
+
+# In[35]:
+
+
+newdeploymentcurve_global['TW_cum'] = newdeploymentcurve_global['MW'].cumsum()/1e6
+
+
+# In[36]:
+
+
+fig, ax1 = plt.subplots()
+
+ax1.plot(newdeploymentcurve_global['MW']/1000)
+ax1.set_ylabel('Annual Deployments [GW]', color='blue')
+
+ax2 = ax1.twinx()
+ax2.plot(newdeploymentcurve_global['TW_cum'], color='orange')
+ax2.set_ylabel('Cumulative Capacity [TW]', color='orange')
+
+plt.legend(['Cumulative Capacity'])
+plt.show()
 
 
 # # Scenario Creation
 
-# In[34]:
+# In[37]:
 
 
 #creating scenarios for identical power and identical area deployed
@@ -366,7 +389,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[35]:
+# In[38]:
 
 
 #load in a baseline and materials for modification
@@ -393,31 +416,31 @@ for scen in scennames:
 # - glass per m2
 # - silver per m2
 
-# In[36]:
+# In[39]:
 
 
 #trim to 2020-2050, this trims module and materials
 sim1.trim_Years(startYear=2020)
 
 
-# In[37]:
+# In[40]:
 
 
 #no circularity
 sim1.scenMod_noCircularity()
 
 
-# In[38]:
+# In[41]:
 
 
 #deployment projection
 #NEED TO PULL IN DEPLOYMENT PROJECTION
 
 for scen in scennames:
-    sim1.scenario[scen].dataIn_m.loc[0:len(newdeploymentcurve.index-1),'new_Installed_Capacity_[MW]'] = newdeploymentcurve.values
+    sim1.scenario[scen].dataIn_m.loc[0:len(newdeploymentcurve.index-1),'new_Installed_Capacity_[MW]'] = newdeploymentcurve_global['MW'].values
 
 
-# In[39]:
+# In[42]:
 
 
 #module eff
@@ -426,7 +449,7 @@ for scen in scennames:
     sim1.scenario[scen].dataIn_m.loc[0:len(modeffs.index-1),'mod_eff'] = modeffs.filter(like=str(scen[0:3])).values
 
 
-# In[40]:
+# In[43]:
 
 
 #glass modify
@@ -434,7 +457,7 @@ for scen in scennames:
     sim1.scenario[scen].material['glass'].matdataIn_m['mat_massperm2'] = glassperm2
 
 
-# In[41]:
+# In[44]:
 
 
 #silver modify
@@ -445,13 +468,13 @@ for scen in scennames:
 
 # Check to make sure the modifications took.
 
-# In[42]:
+# In[45]:
 
 
 sim1.scenario['SHJ_a'].dataIn_m.head(10)
 
 
-# In[43]:
+# In[46]:
 
 
 sim1.scenario['SHJ_p'].material['silver'].matdataIn_m.head()
@@ -461,14 +484,14 @@ sim1.scenario['SHJ_p'].material['silver'].matdataIn_m.head()
 
 # ## Option 1: Compare with Idential Power Installed
 
-# In[44]:
+# In[47]:
 
 
 scennames_p = ['PERC_p','SHJ_p','TOPCon_p']
 bifipaths = [bifi_perc_path,bifi_shj_path,bifi_topcon_path]
 
 
-# In[45]:
+# In[48]:
 
 
 #option 1, install identical power
@@ -483,14 +506,14 @@ topcon_p_yearly, topcon_p_cum = sim1.aggregateResults(scenarios='TOPCon_p')
 
 # ## Option 2: Compare with Idential Area Installed
 
-# In[46]:
+# In[49]:
 
 
 scennames_a = ['PERC_a','SHJ_a','TOPCon_a']
 bifipaths = [bifi_perc_path,bifi_shj_path,bifi_topcon_path]
 
 
-# In[47]:
+# In[50]:
 
 
 #Calculate Area deployed based on PERC and modified SF projection above
@@ -500,7 +523,7 @@ area_deploy['Area'] = sim1.scenario['PERC_p'].dataOut_m['Area'].values
 area_deploy.head()
 
 
-# In[48]:
+# In[51]:
 
 
 #option 1, install identical power
@@ -513,7 +536,7 @@ shj_a_yearly, shj_a_cum = sim1.aggregateResults(scenarios='SHJ_a')
 topcon_a_yearly, topcon_a_cum = sim1.aggregateResults(scenarios='TOPCon_a')
 
 
-# In[49]:
+# In[52]:
 
 
 all_results_yearly, all_results_cum = sim1.aggregateResults()
@@ -522,7 +545,7 @@ all_results_yearly.columns
 
 # ### Compare Effective Capacity
 
-# In[50]:
+# In[53]:
 
 
 activecapacity_yearly_TW = pd.DataFrame(all_results_yearly.filter(like='ActiveCapacity'))/1e6
@@ -530,7 +553,7 @@ activecapacity_yearly_TW_p = activecapacity_yearly_TW.filter(like='_p')
 activecapacity_yearly_TW_a = activecapacity_yearly_TW.filter(like='_a')
 
 
-# In[51]:
+# In[54]:
 
 
 plt.plot(activecapacity_yearly_TW_p.index, activecapacity_yearly_TW_p.iloc[:,[0]], color='#0079C2')
@@ -541,7 +564,7 @@ plt.title('Identical Installed Power: Effective Capacity')
 plt.ylabel('Effective Capacity [TW]')
 
 
-# In[52]:
+# In[55]:
 
 
 plt.plot(activecapacity_yearly_TW_a.index, activecapacity_yearly_TW_a.iloc[:,[0]], color='#0079C2')
@@ -554,7 +577,7 @@ plt.ylabel('Effective Capacity [TW]')
 
 # ### Compare Area Deployed
 
-# In[53]:
+# In[56]:
 
 
 #compile all energy out results
@@ -569,7 +592,7 @@ area_deployed.index = idx_temp
 area_deployed.tail()
 
 
-# In[54]:
+# In[57]:
 
 
 plt.plot(area_deployed.index, area_deployed.iloc[:,[0]]/1e6, color='#0079C2')
@@ -580,7 +603,7 @@ plt.title('Identical Installed Power: Cumulative Active Area')
 plt.ylabel('Area [million m2]')
 
 
-# In[55]:
+# In[58]:
 
 
 plt.plot(area_deployed.index, area_deployed.iloc[:,[3]]/1e6, color='#0079C2')
@@ -593,26 +616,34 @@ plt.ylabel('Area [million m2]')
 
 # ## Compare Silver Demand
 
-# In[56]:
+# In[59]:
 
 
 sim1.plotMaterialComparisonAcrossScenarios(keyword='mat_Virgin_Stock', material='silver')
 
 
-# In[57]:
+# In[60]:
+
+
+annual_demand_silver = all_results_yearly.filter(like='VirginStock_silver')
+annual_demand_silver.columns=scennames
+annual_demand_silver.to_csv(os.path.join(testfolder,'annual_demand_silver.csv'))
+
+
+# In[61]:
 
 
 silver_demand_cum = pd.DataFrame(all_results_cum.filter(like='VirginStock_silver').loc[2050]).T
 
 
-# In[58]:
+# In[62]:
 
 
 silver_demand_cum
 silver_demand_cum.to_csv(os.path.join(testfolder,'Ag_demand_cum2050_allScens.csv'))
 
 
-# In[59]:
+# In[63]:
 
 
 plt.bar(silver_demand_cum.columns, silver_demand_cum.loc[2050], tick_label=(scennames), color=['#0079C2','#F7A11A','#5D9732'])
@@ -620,43 +651,52 @@ plt.title('Silver Demand by Scenario')
 plt.ylabel('[Tonnes]')
 
 
-# In[60]:
+# In[64]:
 
 
 silver_demand_cum
 
 
-# In[61]:
+# In[65]:
+
+
+all_results_yearly.loc[2050].filter(like='newInstalledCapacity') 
+#FYI the area deployment doesn't overwrite the new installs column - do not trust those numbers!
+
+
+# In[66]:
 
 
 activecapacity = pd.DataFrame(all_results_yearly.loc[2050].filter(like='ActiveCapacity')).T/1e6
-activecapacity
+#activecapacity
+newInstalledCap_cum_TW = pd.DataFrame(all_results_yearly.loc[2050].filter(like='newInstalledCapacity')).T
+newInstalledCap_cum_TW
 
 
-# In[62]:
+# In[67]:
 
 
-silver_demand_cum.columns = activecapacity.columns = scennames
+silver_demand_cum.columns = newInstalledCap_cum_TW.columns = scennames
 
 
-# In[63]:
+# In[68]:
 
 
-agperW = silver_demand_cum/activecapacity
+agperW = silver_demand_cum/newInstalledCap_cum_TW
 agperW
 
 
-# In[64]:
+# In[69]:
 
 
 plt.bar(agperW.columns[0:3], agperW.loc[2050][0:3], color=['#0079C2','#F7A11A','#5D9732'])
 plt.title('Silver Demand per Capacity')
-plt.ylabel('Tonne/TW')
+plt.ylabel('Tonne/MW')
 
 
 # ## Energy Data Org
 
-# In[65]:
+# In[70]:
 
 
 #compile all energy out results
@@ -670,7 +710,7 @@ for scen in scennames:
 energy_mod.tail()
 
 
-# In[66]:
+# In[71]:
 
 
 energy_mat = pd.DataFrame()
@@ -684,7 +724,7 @@ for scen in scennames:
 energy_mat.tail()
 
 
-# In[67]:
+# In[72]:
 
 
 allenergy = pd.concat([energy_mod,energy_mat], axis=1)
@@ -693,13 +733,13 @@ allenergy.index=idx_temp
 
 # ## Graphing Energy Generation
 
-# In[68]:
+# In[73]:
 
 
 energyGen = allenergy.filter(like='e_out_annual')
 
 
-# In[69]:
+# In[74]:
 
 
 fig, ax1 = plt.subplots()
@@ -717,14 +757,14 @@ plt.title('Annual Energy Generation')
 plt.show()
 
 
-# In[70]:
+# In[75]:
 
 
 energyGen_p = energyGen.filter(like='_p')/1e12
 energyGen_a = energyGen.filter(like='_a')/1e12
 
 
-# In[71]:
+# In[76]:
 
 
 #plt.plot(energyGen_p)#, color=['#006fa2','#ee005b','#734296'])
@@ -736,7 +776,7 @@ plt.title('Identical Power Installed: Annual Energy Generation')
 plt.ylabel('Energy Generated [TWh]')
 
 
-# In[72]:
+# In[77]:
 
 
 #plt.plot(energyGen_p)#, color=['#006fa2','#ee005b','#734296'])
@@ -750,7 +790,7 @@ plt.ylabel('Energy Generated [TWh]')
 
 # Or as a bar plot
 
-# In[73]:
+# In[78]:
 
 
 energyGen_cum = energyGen.cumsum()
@@ -760,7 +800,7 @@ energyGen_cum_2050.columns = scennames
 energyGen_cum_2050
 
 
-# In[74]:
+# In[79]:
 
 
 plt.bar(energyGen_cum_2050.columns, energyGen_cum_2050.loc[2050]/1e12, tick_label=(scennames), color=['#0079C2','#F7A11A','#5D9732'])
@@ -768,7 +808,7 @@ plt.title('Energy Generated Cumulatively by Scenario')
 plt.ylabel('[TWh]')
 
 
-# In[75]:
+# In[80]:
 
 
 energyGen_cum_2050_norm = energyGen_cum_2050/energyGen_cum_2050.loc[2050,'PERC_a']
@@ -777,7 +817,7 @@ plt.title('Energy Generated Cumulatively by Scenario - Normalized to PERC')
 plt.ylabel('[TWh]')
 
 
-# In[76]:
+# In[81]:
 
 
 energyGen_cum_2050_norm
@@ -785,7 +825,7 @@ energyGen_cum_2050_norm
 
 # ## Energy vs Silver Demand
 
-# In[77]:
+# In[82]:
 
 
 energyGen_cum_2050.columns=silver_demand_cum.columns=scennames
@@ -794,7 +834,7 @@ normalizer = whpag.loc[2050,'PERC_a']
 whpag/normalizer
 
 
-# In[78]:
+# In[83]:
 
 
 plt.bar(whpag.columns, whpag.loc[2050]/1e12, tick_label=(scennames), color=['#0079C2','#F7A11A','#5D9732'])
@@ -802,7 +842,7 @@ plt.title('Energy Generated Cumulatively per Silver Demand Tonnes')
 plt.ylabel('[TWh/tonnes]')
 
 
-# In[79]:
+# In[84]:
 
 
 energyGen_cum_2050.columns=silver_demand_cum.columns=scennames
@@ -812,7 +852,7 @@ agpwh_norm = agpwh/normalizer
 agpwh_norm
 
 
-# In[80]:
+# In[85]:
 
 
 plt.bar(agpwh_norm.columns, agpwh_norm.loc[2050], tick_label=(scennames), color=['#0079C2','#F7A11A','#5D9732'])
@@ -822,7 +862,7 @@ plt.ylabel('[tonnes/TWh] Normalized')
 
 # ## Net Energy Calcs
 
-# In[81]:
+# In[86]:
 
 
 #categorize the energy in values into lifecycle stages
@@ -842,7 +882,7 @@ energy_demands_flat = list(itertools.chain(*energy_demands_keys))
 #energy_demands_flat
 
 
-# In[82]:
+# In[87]:
 
 
 #select the non energy generation columns for all scenarios
@@ -855,7 +895,7 @@ edemand_shj_a = energy_demands.filter(like='SHJ_a')
 edemand_topcon_a = energy_demands.filter(like='TOPCon_a')
 
 
-# In[83]:
+# In[88]:
 
 
 #for each scenario, create a cumulative total energy demand
@@ -864,7 +904,7 @@ for scen in scennames:
     energy_demands[colname] = energy_demands.filter(like=scen).sum(axis=1)
 
 
-# In[84]:
+# In[89]:
 
 
 energy_demands_annual = energy_demands.filter(like='e_demand_total')
@@ -876,7 +916,7 @@ yrlyedemand_shj_a = energy_demands_annual.filter(like='SHJ_a')
 yrlyedemand_topcon_a = energy_demands_annual.filter(like='TOPCon_a')
 
 
-# In[85]:
+# In[90]:
 
 
 #plt.plot(energy_demands_annual)
@@ -888,7 +928,7 @@ plt.title('Identical Power Installed: Annual Energy Demands for Manufacturing')
 plt.ylabel('Energy Demand [TWh]')
 
 
-# In[86]:
+# In[91]:
 
 
 energy_demand_total_cum = energy_demands.filter(like='e_demand_total').cumsum()
@@ -896,27 +936,27 @@ energy_demand_total_cum_2050 = energy_demand_total_cum.loc[[2050]]
 energy_demand_total_cum_2050.columns = scennames
 
 
-# In[87]:
+# In[92]:
 
 
 energy_demand_total_cum_2050/1e12
 
 
-# In[88]:
+# In[93]:
 
 
 energy_demand_total_cum_2050/energy_demand_total_cum_2050.loc[2050,'PERC_p']
 
 
-# In[89]:
+# In[94]:
 
 
 plt.bar(energy_demand_total_cum_2050.columns, energy_demand_total_cum_2050.loc[2050]/1e12, tick_label=(scennames), color=['#0079C2','#F7A11A','#5D9732'])
-plt.title('Cumulative Energy Demand 2020-2050')
+plt.title('Cumulative Manufacturing Energy 2020-2050')
 plt.ylabel('[TWh]')
 
 
-# In[90]:
+# In[95]:
 
 
 energyGen_cum_2050/1e12
@@ -924,14 +964,14 @@ energyGen_cum_2050/1e12
 
 # ## Net Energy
 
-# In[91]:
+# In[96]:
 
 
 net_energy_cum_2050 = (energyGen_cum_2050-energy_demand_total_cum_2050)/1e12
 net_energy_cum_2050
 
 
-# In[92]:
+# In[97]:
 
 
 plt.bar(net_energy_cum_2050.columns, net_energy_cum_2050.loc[2050], tick_label=(scennames), color=['#0079C2','#F7A11A','#5D9732'])
@@ -939,20 +979,20 @@ plt.title('Net Energy Cumulatively 2020-2050')
 plt.ylabel('[TWh]')
 
 
-# In[93]:
+# In[98]:
 
 
 energyGen.columns = energy_demands_annual.columns = scennames
 netEnergyAnnual_TWh = (energyGen - energy_demands_annual)/1e12
 
 
-# In[94]:
+# In[99]:
 
 
 round(netEnergyAnnual_TWh,0)
 
 
-# In[95]:
+# In[100]:
 
 
 fig, ax1 = plt.subplots()
@@ -1001,7 +1041,7 @@ plt.show()
 # # Simulation for EROI and EBPT
 # Currently we dont have the ability to do cohort energy tracking. Therefore, we will test discrete points in time to evaluate a single cohort (i.e. install in only 1 year and track the energy in and out over time from that one cohort)
 
-# In[96]:
+# In[101]:
 
 
 single_deploy_2020 = pd.DataFrame(index=idx_temp, columns=['MW'], dtype=float)
@@ -1009,7 +1049,7 @@ single_deploy_2020['MW'] = 0.0
 single_deploy_2020.loc[2020,'MW'] = 100.0
 
 
-# In[97]:
+# In[102]:
 
 
 #creating scenarios for identical power and identical area deployed
@@ -1019,7 +1059,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[98]:
+# In[103]:
 
 
 #load in a baseline and materials for modification
@@ -1046,7 +1086,7 @@ for scen in scennames2:
 # - glass per m2
 # - silver per m2
 
-# In[99]:
+# In[104]:
 
 
 #trim to 2020-2050, this trims module and materials
@@ -1069,7 +1109,7 @@ for scen in scennames2:
     
 
 
-# In[100]:
+# In[105]:
 
 
 #deployment projection
@@ -1079,13 +1119,13 @@ for scen in scennames2:
     sim2.scenario[scen].dataIn_m.loc[0:len(single_deploy_2020.index-1),'new_Installed_Capacity_[MW]'] = single_deploy_2020.values
 
 
-# In[101]:
+# In[106]:
 
 
 sim2.scenario['PERC'].dataIn_m
 
 
-# In[102]:
+# In[107]:
 
 
 for scen in scennames2:
@@ -1094,7 +1134,7 @@ for scen in scennames2:
 
 # ## 2020 Module
 
-# In[103]:
+# In[108]:
 
 
 #option 1, install identical power
@@ -1108,13 +1148,13 @@ sim2.calculateFlows(scenarios='TOPCon', bifacialityfactors=bifi_topcon_path)
 #topcon_p_yearly, topcon_p_cum = sim2.aggregateResults(scenarios='TOPCon')
 
 
-# In[104]:
+# In[109]:
 
 
 plt.plot(sim2.scenario['PERC'].dataOut_m['Installed_Capacity_[W]'])
 
 
-# In[105]:
+# In[110]:
 
 
 #compile all energy out results
@@ -1128,7 +1168,7 @@ for scen in scennames2:
 #energy_mod2.head()
 
 
-# In[106]:
+# In[111]:
 
 
 energy_mat2 = pd.DataFrame()
@@ -1142,20 +1182,20 @@ for scen in scennames2:
 #energy_mat2.tail()
 
 
-# In[107]:
+# In[112]:
 
 
 allenergy2 = pd.concat([energy_mod2,energy_mat2], axis=1)
 allenergy2.index=idx_temp
 
 
-# In[108]:
+# In[113]:
 
 
 allenergy2
 
 
-# In[109]:
+# In[114]:
 
 
 perc_e_flows = allenergy2.filter(like='PERC')
@@ -1171,7 +1211,7 @@ topcon_e_out = topcon_e_flows.filter(like='e_out_annual_[Wh]')
 topcon_e_demand = topcon_e_flows.loc[:,~topcon_e_flows.columns.isin(topcon_e_out.columns)] 
 
 
-# In[110]:
+# In[115]:
 
 
 perc_e_demand_total_annual = pd.DataFrame(perc_e_demand.sum(axis=1), columns=['Wh']) #includes module and material
@@ -1179,7 +1219,7 @@ shj_e_demand_total_annual = pd.DataFrame(shj_e_demand.sum(axis=1), columns=['Wh'
 topcon_e_demand_total_annual = pd.DataFrame(topcon_e_demand.sum(axis=1), columns=['Wh']) #includes module and material
 
 
-# In[111]:
+# In[116]:
 
 
 perc_e_out.columns=perc_e_demand_total_annual.columns
@@ -1195,7 +1235,7 @@ topcon_net_energy_annual = topcon_e_out - topcon_e_demand_total_annual
 #perc_net_energy_annual/1e9 # GWh
 
 
-# In[112]:
+# In[117]:
 
 
 width = 0.3
@@ -1208,7 +1248,7 @@ plt.title('Net Annual Energy: 2020 Module')
 plt.ylabel('Net Energy [GWh]')
 
 
-# In[113]:
+# In[118]:
 
 
 #EROI = Eout/Ein
@@ -1217,7 +1257,7 @@ perc_e_in_cum = perc_e_demand_total_annual.sum()
 perc_e_out_cum/perc_e_in_cum
 
 
-# In[114]:
+# In[119]:
 
 
 shj_e_out_cum = shj_e_out.sum()
@@ -1225,7 +1265,7 @@ shj_e_in_cum = shj_e_demand_total_annual.sum()
 shj_e_out_cum/shj_e_in_cum
 
 
-# In[115]:
+# In[120]:
 
 
 topcon_e_out_cum = topcon_e_out.sum()
@@ -1236,7 +1276,7 @@ topcon_e_out_cum/topcon_e_in_cum
 # ## 2030 Module
 # Grab the module properties from 2030, and deploy 100 MW for 30 yr project life
 
-# In[116]:
+# In[121]:
 
 
 idx_30_60 = pd.Series(range(2030,2061))
@@ -1246,7 +1286,7 @@ single_deploy_2030.loc[2030,'MW'] = 100.0
 #single_deploy_2030
 
 
-# In[117]:
+# In[122]:
 
 
 #creating scenarios for identical power and identical area deployed
@@ -1256,7 +1296,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[118]:
+# In[123]:
 
 
 #load in a baseline and materials for modification
@@ -1283,7 +1323,7 @@ for scen in scennames3:
 # - glass per m2
 # - silver per m2
 
-# In[119]:
+# In[124]:
 
 
 #trim to 2020-2050, this trims module and materials
@@ -1306,7 +1346,7 @@ for scen in scennames3:
     
 
 
-# In[120]:
+# In[125]:
 
 
 #Set 2020 module and material properties = 2030
@@ -1317,7 +1357,7 @@ for scen in scennames3:
 sim3.scenario[scen].dataIn_m.head()
 
 
-# In[121]:
+# In[126]:
 
 
 #deployment projection
@@ -1327,13 +1367,13 @@ for scen in scennames3:
     sim3.scenario[scen].dataIn_m.loc[0:len(single_deploy_2020.index-1),'new_Installed_Capacity_[MW]'] = single_deploy_2020.values
 
 
-# In[122]:
+# In[127]:
 
 
 sim3.scenario[scen].dataIn_m.head()
 
 
-# In[123]:
+# In[128]:
 
 
 #deployment projection
@@ -1343,7 +1383,7 @@ sim3.scenario[scen].dataIn_m.head()
 #    sim2.scenario[scen].dataIn_m.loc[0:len(single_deploy_2030.index-1),'new_Installed_Capacity_[MW]'] = single_deploy_2030.values
 
 
-# In[124]:
+# In[129]:
 
 
 #option 1, install identical power
@@ -1363,13 +1403,13 @@ sim3.calculateFlows(scenarios='TOPCon', bifacialityfactors=bifi_topcon_path)
 
 
 
-# In[125]:
+# In[130]:
 
 
 plt.plot(sim3.scenario['PERC'].dataOut_m['Installed_Capacity_[W]'])
 
 
-# In[126]:
+# In[131]:
 
 
 #compile all energy out results
@@ -1383,7 +1423,7 @@ for scen in scennames3:
 #energy_mod2.head()
 
 
-# In[127]:
+# In[132]:
 
 
 #compile material energy demands
@@ -1398,20 +1438,20 @@ for scen in scennames3:
 #energy_mat3.tail()
 
 
-# In[128]:
+# In[133]:
 
 
 allenergy3 = pd.concat([energy_mod3,energy_mat3], axis=1)
 allenergy3.index=idx_30_60
 
 
-# In[129]:
+# In[134]:
 
 
 allenergy3
 
 
-# In[130]:
+# In[135]:
 
 
 perc_e_flows = allenergy3.filter(like='PERC')
@@ -1427,7 +1467,7 @@ topcon_e_out = topcon_e_flows.filter(like='e_out_annual_[Wh]')
 topcon_e_demand = topcon_e_flows.loc[:,~topcon_e_flows.columns.isin(topcon_e_out.columns)] 
 
 
-# In[131]:
+# In[136]:
 
 
 perc_e_demand_total_annual = pd.DataFrame(perc_e_demand.sum(axis=1), columns=['Wh']) #includes module and material
@@ -1435,7 +1475,7 @@ shj_e_demand_total_annual = pd.DataFrame(shj_e_demand.sum(axis=1), columns=['Wh'
 topcon_e_demand_total_annual = pd.DataFrame(topcon_e_demand.sum(axis=1), columns=['Wh']) #includes module and material
 
 
-# In[132]:
+# In[137]:
 
 
 perc_e_out.columns=perc_e_demand_total_annual.columns
@@ -1451,7 +1491,7 @@ topcon_net_energy_annual = topcon_e_out - topcon_e_demand_total_annual
 #perc_net_energy_annual/1e9 # GWh
 
 
-# In[133]:
+# In[138]:
 
 
 width = 0.3
@@ -1464,7 +1504,7 @@ plt.title('Net Annual Energy: 2030 Module')
 plt.ylabel('Net Energy [GWh]')
 
 
-# In[134]:
+# In[139]:
 
 
 #EROI = Eout/Ein
@@ -1473,7 +1513,7 @@ perc_e_in_cum = perc_e_demand_total_annual.sum()
 perc_e_out_cum/perc_e_in_cum
 
 
-# In[135]:
+# In[140]:
 
 
 shj_e_out_cum = shj_e_out.sum()
@@ -1481,7 +1521,7 @@ shj_e_in_cum = shj_e_demand_total_annual.sum()
 shj_e_out_cum/shj_e_in_cum
 
 
-# In[136]:
+# In[141]:
 
 
 topcon_e_out_cum = topcon_e_out.sum()
@@ -1497,13 +1537,13 @@ topcon_e_out_cum/topcon_e_in_cum
 
 
 
-# In[137]:
+# In[142]:
 
 
 idx_50_80 = pd.Series(range(2050,2081))
 
 
-# In[138]:
+# In[143]:
 
 
 #creating scenarios for identical power and identical area deployed
@@ -1513,7 +1553,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[139]:
+# In[144]:
 
 
 #load in a baseline and materials for modification
@@ -1540,7 +1580,7 @@ for scen in scennames4:
 # - glass per m2
 # - silver per m2
 
-# In[140]:
+# In[145]:
 
 
 #trim to 2020-2050, this trims module and materials
@@ -1563,7 +1603,7 @@ for scen in scennames4:
     
 
 
-# In[141]:
+# In[146]:
 
 
 #Set 2020 module and material properties = 2030
@@ -1574,7 +1614,7 @@ for scen in scennames4:
 sim4.scenario[scen].dataIn_m.head()
 
 
-# In[142]:
+# In[147]:
 
 
 #deployment projection
@@ -1584,13 +1624,13 @@ for scen in scennames4:
     sim4.scenario[scen].dataIn_m.loc[0:len(single_deploy_2020.index-1),'new_Installed_Capacity_[MW]'] = single_deploy_2020.values
 
 
-# In[143]:
+# In[148]:
 
 
 sim4.scenario[scen].dataIn_m.head()
 
 
-# In[144]:
+# In[149]:
 
 
 #deployment projection
@@ -1600,7 +1640,7 @@ sim4.scenario[scen].dataIn_m.head()
 #    sim2.scenario[scen].dataIn_m.loc[0:len(single_deploy_2030.index-1),'new_Installed_Capacity_[MW]'] = single_deploy_2030.values
 
 
-# In[145]:
+# In[150]:
 
 
 #option 1, install identical power
@@ -1620,13 +1660,13 @@ sim4.calculateFlows(scenarios='TOPCon', bifacialityfactors=bifi_topcon_path)
 
 
 
-# In[146]:
+# In[151]:
 
 
 plt.plot(sim4.scenario['PERC'].dataOut_m['Installed_Capacity_[W]'])
 
 
-# In[147]:
+# In[152]:
 
 
 #compile all energy out results
@@ -1640,7 +1680,7 @@ for scen in scennames4:
 #energy_mod2.head()
 
 
-# In[148]:
+# In[153]:
 
 
 #compile material energy demands
@@ -1655,20 +1695,20 @@ for scen in scennames4:
 #energy_mat3.tail()
 
 
-# In[149]:
+# In[154]:
 
 
 allenergy4 = pd.concat([energy_mod4,energy_mat4], axis=1)
 allenergy4.index=idx_50_80
 
 
-# In[150]:
+# In[155]:
 
 
 allenergy4
 
 
-# In[151]:
+# In[156]:
 
 
 perc_e_flows = allenergy4.filter(like='PERC')
@@ -1684,7 +1724,7 @@ topcon_e_out = topcon_e_flows.filter(like='e_out_annual_[Wh]')
 topcon_e_demand = topcon_e_flows.loc[:,~topcon_e_flows.columns.isin(topcon_e_out.columns)] 
 
 
-# In[152]:
+# In[157]:
 
 
 perc_e_demand_total_annual = pd.DataFrame(perc_e_demand.sum(axis=1), columns=['Wh']) #includes module and material
@@ -1692,7 +1732,7 @@ shj_e_demand_total_annual = pd.DataFrame(shj_e_demand.sum(axis=1), columns=['Wh'
 topcon_e_demand_total_annual = pd.DataFrame(topcon_e_demand.sum(axis=1), columns=['Wh']) #includes module and material
 
 
-# In[153]:
+# In[158]:
 
 
 perc_e_out.columns=perc_e_demand_total_annual.columns
@@ -1708,7 +1748,7 @@ topcon_net_energy_annual = topcon_e_out - topcon_e_demand_total_annual
 #perc_net_energy_annual/1e9 # GWh
 
 
-# In[154]:
+# In[159]:
 
 
 width = 0.3
@@ -1721,7 +1761,7 @@ plt.title('Net Annual Energy: 2050 Module')
 plt.ylabel('Net Energy [GWh]')
 
 
-# In[155]:
+# In[160]:
 
 
 #EROI = Eout/Ein
@@ -1730,7 +1770,7 @@ perc_e_in_cum = perc_e_demand_total_annual.sum()
 perc_e_out_cum/perc_e_in_cum
 
 
-# In[156]:
+# In[161]:
 
 
 shj_e_out_cum = shj_e_out.sum()
@@ -1738,7 +1778,7 @@ shj_e_in_cum = shj_e_demand_total_annual.sum()
 shj_e_out_cum/shj_e_in_cum
 
 
-# In[157]:
+# In[162]:
 
 
 topcon_e_out_cum = topcon_e_out.sum()
@@ -1750,4 +1790,231 @@ topcon_e_out_cum/topcon_e_in_cum
 
 
 
+
+
+# ## Manufacturing Energy of One module each year
+
+# Assuming a 2.0 m^2 module
+
+# In[163]:
+
+
+scennames_anModule = ['PERC_anModule','SHJ_anModule','TOPCon_anModule']
+bifipaths = [bifi_perc_path,bifi_shj_path,bifi_topcon_path]
+
+
+# In[164]:
+
+
+#create an area dataframe to feed in a module each year
+idx_temp = Aguse.index #grab matching index
+area_deploy_anModule = pd.DataFrame(index=idx_temp, dtype=float) #create an empty DF
+area_deploy_anModule['Area'] = 2.0
+area_deploy_anModule.head()
+
+
+# In[165]:
+
+
+#creating scenarios for identical power and identical area deployed
+MATERIALS = ['glass','silver','silicon'] #, 'copper', 'encapsulant', 'backsheet', 'aluminum_frames'
+moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
+moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
+
+
+# In[166]:
+
+
+#load in a baseline and materials for modification
+import PV_ICE
+
+sim_anModule = PV_ICE.Simulation(name='sim_anModule', path=testfolder)
+for scen in scennames_anModule:
+    sim_anModule.createScenario(name=scen, massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+    for mat in range (0, len(MATERIALS)):
+        matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+        matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+        sim_anModule.scenario[scen].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+
+
+# Modify the all one tech scenarios Scenarios:
+# 
+# Module level
+# - trim to 2020-2050
+# - no circularity
+# - deployment projection
+# - module eff
+# 
+# material level
+# - glass per m2
+# - silver per m2
+
+# In[167]:
+
+
+#trim to 2020-2050, this trims module and materials
+sim_anModule.trim_Years(startYear=2020)
+
+#no circularity
+sim_anModule.scenMod_noCircularity()
+
+#module eff
+for scen in scennames_anModule:
+    sim_anModule.scenario[scen].dataIn_m.loc[0:len(modeffs.index-1),'mod_eff'] = modeffs.filter(like=str(scen[0:3])).values
+
+#glass modify
+for scen in scennames_anModule:
+    sim_anModule.scenario[scen].material['glass'].matdataIn_m['mat_massperm2'] = glassperm2
+    
+#silver modify
+for scen in scennames_anModule:
+    sim_anModule.scenario[scen].material['silver'].matdataIn_m.loc[0:len(Aguse.index-1),'mat_massperm2'] = Aguse.filter(like=str(scen[0:3])).values
+    
+
+
+# In[168]:
+
+
+#option 1, install identical power
+sim_anModule.calculateFlows(scenarios='PERC_anModule', bifacialityfactors=bifi_perc_path, installByArea=list(area_deploy_anModule['Area']))
+sim_anModule.calculateFlows(scenarios='SHJ_anModule', bifacialityfactors=bifi_shj_path,  installByArea=list(area_deploy_anModule['Area']))
+sim_anModule.calculateFlows(scenarios='TOPCon_anModule', bifacialityfactors=bifi_topcon_path,  installByArea=list(area_deploy_anModule['Area']))
+
+perc_anModule_yearly, perc_anModule_cum = sim_anModule.aggregateResults(scenarios='PERC_anModule')
+shj_anModule_yearly, shj_anModule_cum = sim_anModule.aggregateResults(scenarios='SHJ_anModule')
+topcon_anModule_yearly, topcon_anModule_cum = sim_anModule.aggregateResults(scenarios='TOPCon_anModule')
+
+
+# In[169]:
+
+
+anModule_yearly, anModule_cum = sim_anModule.aggregateResults()
+anModule_yearly.columns
+
+
+# In[255]:
+
+
+#compile all energy out results
+energy_anModule=pd.DataFrame()
+for scen in scennames_anModule:
+    # add the scen name as a prefix for later filtering
+    scende = sim_anModule.scenario[scen].dataOut_e.loc[0:30].add_prefix(str(scen+'_'))
+    #concat into one large df
+    energy_anModule = pd.concat([energy_anModule, scende], axis=1)
+
+energy_anModule.tail()
+
+
+# In[252]:
+
+
+energy_mat_anModule = pd.DataFrame()
+for scen in scennames_anModule:
+    for mat in MATERIALS:
+        # add the scen name as a prefix for later filtering
+        scenmatde = sim_anModule.scenario[scen].material[mat].matdataOut_e.loc[0:30].add_prefix(str(scen+'_'+mat+'_'))
+        #concat into one large df
+        energy_mat_anModule = pd.concat([energy_mat_anModule, scenmatde], axis=1)
+
+energy_mat_anModule.tail()
+
+
+# In[172]:
+
+
+allenergy_anModule = pd.concat([energy_anModule,energy_mat_anModule], axis=1)
+allenergy_anModule.index=idx_temp
+
+
+# In[200]:
+
+
+remove = allenergy_anModule.filter(like='e_out_annual').columns
+energy_demand_anModule = allenergy_anModule.drop(columns=remove)
+
+
+# In[208]:
+
+
+energy_demand_anModule_perc = energy_demand_anModule.filter(like='PERC')
+energy_demand_anModule_shj = energy_demand_anModule.filter(like='SHJ')
+energy_demand_anModule_topcon = energy_demand_anModule.filter(like='TOPCon')
+
+
+# In[221]:
+
+
+energy_demand_anModule_perc_cum = pd.DataFrame(energy_demand_anModule_perc.sum(axis=1), columns=['E_mfg_anModule_[Wh]'])
+energy_demand_anModule_shj_cum = pd.DataFrame(energy_demand_anModule_shj.sum(axis=1), columns=['E_mfg_anModule_[Wh]'])
+energy_demand_anModule_topcon_cum = pd.DataFrame(energy_demand_anModule_topcon.sum(axis=1), columns=['E_mfg_anModule_[Wh]'])
+mfg_anModule = pd.concat([energy_demand_anModule_perc_cum,energy_demand_anModule_shj_cum,energy_demand_anModule_topcon_cum], axis=1)
+mfg_anModule.columns = scennames_anModule
+
+
+# In[222]:
+
+
+fig, ax1 = plt.subplots()
+#ax1.plot(netEnergyAnnual_TWh)
+
+
+ax1.plot(energy_demand_anModule_perc_cum/1e6, color='#0079C2')
+ax1.plot(energy_demand_anModule_shj_cum/1e6, color='#F7A11A', ls='--')
+ax1.plot(energy_demand_anModule_topcon_cum/1e6, color='#5D9732', ls='-.')
+
+plt.legend(scennames)
+#ax1.set_yscale('log')
+ax1.set_ylabel('Manufacturing Energy [MWh/module]')
+plt.title('Manufacturing Energy by Technology over Time')
+plt.show()
+
+
+# In[249]:
+
+
+#mfg_anModule
+#shows that they are in fact slightly different energy demands between technologies.
+#lets divide by PERC and see % wise how different.
+mfg_anModule_normalized = mfg_anModule.iloc[:,[0,1,2]]/mfg_anModule.iloc[:,[0]].values
+mfg_anModule_normalized#.loc[[2050]]
+
+
+# separate out by module vs material energy demand
+
+# In[263]:
+
+
+energy_mat_anModule_perc_glass = energy_mat_anModule.filter(like='PERC').filter(like='glass')
+energy_mat_anModule_perc_si = energy_mat_anModule.filter(like='PERC').filter(like='silicon')
+energy_mat_anModule_perc_ag = energy_mat_anModule.filter(like='PERC').filter(like='silver')
+
+energy_anModule_perc_mod_temp = energy_anModule.filter(like='PERC')
+remove_1 = energy_anModule.filter(like='PERC').filter(like='e_out').columns
+energy_anModule_perc_mod = energy_anModule_perc_mod_temp.drop(columns=remove_1)
+
+
+# In[267]:
+
+
+emod = energy_anModule_perc_mod.sum(axis=1)
+eglass = energy_mat_anModule_perc_glass.sum(axis=1)
+esi = energy_mat_anModule_perc_si.sum(axis=1)
+eag = energy_mat_anModule_perc_ag.sum(axis=1)
+e_bkdwn_mod_mat = pd.concat([emod,eglass,esi,eag], axis=1, keys=['mod','glass','silicon','silver'])
+
+
+# In[272]:
+
+
+e_bkdwn_mod_mat
+
+
+# In[271]:
+
+
+plt.plot(e_bkdwn_mod_mat/1e6)
+plt.legend(e_bkdwn_mod_mat.columns)
+plt.title('PERC MFGing energy Demands by component')
+plt.ylabel('Manufacturing Energy [MWh/module]')
 
