@@ -1259,6 +1259,31 @@ class Simulation:
             reduced.reset_index(drop=True, inplace=True)
             self.scenario[scen].dataIn_m = reduced #reassign the material data to the simulation
 
+            try:
+                baseline = self.scenario[scen].dataIn_e
+
+                # Add check if data does not need to be reduced to not do these.
+                reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
+
+                
+                if aggregateInstalls:
+                    print("Warning: Attempting to aggregate Installs for "+ 
+                          "triming years for Energy Data. This is not yet "+
+                          "implemented, it will just clip data to years "+
+                          "selected. Let silvana know this feature is "+
+                          "actually needed so she works on it.")
+                if averageEfficiency:
+                    print("Warning: Attempting to averageEfficiency for "+
+                          "triming years for Energy Data. This is not yet "+
+                          "implemented, it will just clip data to years "+
+                          "selected. Let silvana know this feature is "+
+                          "actually needed so she works on it.")
+                reduced.reset_index(drop=True, inplace=True)
+                self.scenario[scen].dataIn_e = reduced #reassign the material data to the simulation
+                
+            except:
+                print("No energy data loaded.")
+                
             for mat in self.scenario[scen].material:
                 if int(startYear) < int(dataStartYear):
                     print("ADD YEARS HERE. not done yet")
@@ -1277,6 +1302,22 @@ class Simulation:
 
                 reduced.reset_index(drop=True, inplace=True)
                 self.scenario[scen].material[mat].matdataIn_m = reduced #reassign the material data to the simulation
+
+                try:
+                    matdf = self.scenario[scen].material[mat].matdataIn_e #pull out the df
+                    reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
+    
+                    if averagemassdata == 'average':
+                        print("Warning: Attempting to averagemassdata for "+
+                              "triming years for Energy Data. This is not yet "+
+                              "implemented, it will just clip data to years "+
+                              "selected. Let silvana know this feature is "+
+                              "actually needed so she works on it.")
+    
+                    reduced.reset_index(drop=True, inplace=True)
+                    self.scenario[scen].material[mat].matdataIn_e = reduced #reassign the material data to the simulation
+                except:
+                    print("No material energy data loaded.")
 
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
