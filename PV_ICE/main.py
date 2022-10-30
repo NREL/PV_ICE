@@ -651,6 +651,7 @@ class Simulation:
 
                         activeareacount.append(activearea)
                         area_powergen.append(activearea*poweragegen)
+                        #print('PowerAgeGen: '+str(poweragegen))
 
                 try:
                     # becuase the clip starts with 0 for the installation year, identifying installation year
@@ -1243,7 +1244,10 @@ class Simulation:
                 print("ADD YEARS HERE. not done yet")
 
             if int(endYear) > int(dataEndYear):
-                print("ADD YEARS HERE. not done yet")
+                #idx = pd.Series(range(0,(endYear-dataEndYear))
+                #self.scenario[scen].dataIn_m['year'] = pd.concat([self.scenario[scen].dataIn_m['year'],idx])
+                #self.scenario[scen].dataIn_m.fillna(method='ffill')
+                print("Testing adding years to end")
 
             # Add check if data does not need to be reduced to not do these.
             reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
