@@ -349,17 +349,18 @@ class Simulation:
             self.scenario[scen].dataIn_m.loc[selectyears, stage] = value
 
     def calculateFlows(self, scenarios = None, materials=None, weibullInputParams = None,
-                          bifacialityfactors = None, reducecapacity = True, debugflag=False):
+                          bifacialityfactors = None, reducecapacity = True, debugflag=False, installByArea = None):
         
         self.calculateMassFlow(scenarios = scenarios, materials=materials, weibullInputParams = weibullInputParams,
-                              bifacialityfactors = bifacialityfactors, reducecapacity = reducecapacity, debugflag=debugflag)
+                              bifacialityfactors = bifacialityfactors, reducecapacity = reducecapacity, debugflag=debugflag, installByArea = installByArea)
 
         self.calculateEnergyFlow(scenarios = scenarios, materials=materials)
 
             
         
     def calculateMassFlow(self, scenarios = None, materials=None, weibullInputParams = None,
-                          bifacialityfactors = None, reducecapacity = True, debugflag=False):
+                          bifacialityfactors = None, reducecapacity = True, debugflag=False,
+                          installByArea = None):
         '''
         Function takes as input a baseline dataframe already imported,
         with the right number of columns and content.
@@ -382,6 +383,12 @@ class Simulation:
             scenario(s) modeled.
         bifacialityfactors : str
             File with bifacialtiy factors for each year under consideration
+        installByArea : list floats
+            When deploying each generation, it overrides using 
+            `new_Installed_Capacity_[MW]` to calculate deployed area, and
+            installs this area instead calculating the installed capacity based
+            on the module characteristics (efficiency and bifaciality factor).
+            Length must match the years in the loaded dataframes.
 
         Returns
         --------
@@ -419,12 +426,21 @@ class Simulation:
 
             # Calculating Area and Mass
 
+            # Method to pass mass instead of calculating by Power to Area
             if 'Mass_[MetricTonnes]' in df:
                 df['new_Installed_Capacity_[W]'] = 0
                 df['new_Installed_Capacity_[MW]'] = 0
                 df['Area'] = df['Mass_[MetricTonnes]']
                 print("Warning, this is for special debuging of Wambach Procedure."+
                       "Make sure to use Wambach Module")
+            # Method to pass Area to then calculate Power
+            elif installByArea is not None: 
+                df['Area'] = installByArea
+                df['new_Installed_Capacity_[W]'] = (df['mod_eff']*0.01)*df['irradiance_stc']*df['Area'] # W
+                df['new_Installed_Capacity_[MW]'] = df['new_Installed_Capacity_[W]']/1000000
+                print("Calculating installed capacity based on installed Area")
+                
+            # Standard method to calculate Area from the Power
             else:
                 df['new_Installed_Capacity_[W]'] = df['new_Installed_Capacity_[MW]']*1e6
 
@@ -635,6 +651,7 @@ class Simulation:
 
                         activeareacount.append(activearea)
                         area_powergen.append(activearea*poweragegen)
+                        #print('PowerAgeGen: '+str(poweragegen))
 
                 try:
                     # becuase the clip starts with 0 for the installation year, identifying installation year
@@ -1103,6 +1120,7 @@ class Simulation:
             print("********************")
             
             df = self.scenario[scen].dataOut_m
+            df_in = self.scenario[scen].dataIn_m
             modEnergy=self.scenario[scen].dataIn_e
 
             de = pd.DataFrame()
@@ -1117,8 +1135,9 @@ class Simulation:
             de['mod_ReMFG_Disassembly'] = df['P3_reMFG']*modEnergy['e_mod_ReMFG_Disassembly']
             de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
 
-            #Energy Generation, Energy_out = Insolation * ActivePower/Irradience * time * PR
-            de['e_out_annual_[Wh]'] = insolation * (df['Installed_Capacity_[W]']/df['irradiance_stc']) * 365 * PR
+            #Energy Generation, Energy_out = Insolation* (bifi modify factor) * ActivePower/Irradience * time * PR
+            de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Installed_Capacity_[W]']/1000) * 365 * PR
+            #de['e_out_annual_alt_[Wh]'] = df['irradiance_stc'] * PR * (df_in['mod_eff']*0.01 )* (5*365) * df['Cumulative_Active_Area'] #can't currently account for bifi
             
             self.scenario[scen].dataOut_e = de
 
@@ -1225,7 +1244,10 @@ class Simulation:
                 print("ADD YEARS HERE. not done yet")
 
             if int(endYear) > int(dataEndYear):
-                print("ADD YEARS HERE. not done yet")
+                #idx = pd.Series(range(0,(endYear-dataEndYear))
+                #self.scenario[scen].dataIn_m['year'] = pd.concat([self.scenario[scen].dataIn_m['year'],idx])
+                #self.scenario[scen].dataIn_m.fillna(method='ffill')
+                print("Testing adding years to end")
 
             # Add check if data does not need to be reduced to not do these.
             reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
@@ -1241,6 +1263,31 @@ class Simulation:
             reduced.reset_index(drop=True, inplace=True)
             self.scenario[scen].dataIn_m = reduced #reassign the material data to the simulation
 
+            try:
+                baseline = self.scenario[scen].dataIn_e
+
+                # Add check if data does not need to be reduced to not do these.
+                reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
+
+                
+                if aggregateInstalls:
+                    print("Warning: Attempting to aggregate Installs for "+ 
+                          "triming years for Energy Data. This is not yet "+
+                          "implemented, it will just clip data to years "+
+                          "selected. Let silvana know this feature is "+
+                          "actually needed so she works on it.")
+                if averageEfficiency:
+                    print("Warning: Attempting to averageEfficiency for "+
+                          "triming years for Energy Data. This is not yet "+
+                          "implemented, it will just clip data to years "+
+                          "selected. Let silvana know this feature is "+
+                          "actually needed so she works on it.")
+                reduced.reset_index(drop=True, inplace=True)
+                self.scenario[scen].dataIn_e = reduced #reassign the material data to the simulation
+                
+            except:
+                print("No energy data loaded.")
+                
             for mat in self.scenario[scen].material:
                 if int(startYear) < int(dataStartYear):
                     print("ADD YEARS HERE. not done yet")
@@ -1259,6 +1306,22 @@ class Simulation:
 
                 reduced.reset_index(drop=True, inplace=True)
                 self.scenario[scen].material[mat].matdataIn_m = reduced #reassign the material data to the simulation
+
+                try:
+                    matdf = self.scenario[scen].material[mat].matdataIn_e #pull out the df
+                    reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
+    
+                    if averagemassdata == 'average':
+                        print("Warning: Attempting to averagemassdata for "+
+                              "triming years for Energy Data. This is not yet "+
+                              "implemented, it will just clip data to years "+
+                              "selected. Let silvana know this feature is "+
+                              "actually needed so she works on it.")
+    
+                    reduced.reset_index(drop=True, inplace=True)
+                    self.scenario[scen].material[mat].matdataIn_e = reduced #reassign the material data to the simulation
+                except:
+                    print("No material energy data loaded.")
 
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
