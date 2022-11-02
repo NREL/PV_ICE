@@ -26,6 +26,12 @@ df_installs_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial
 # In[3]:
 
 
+df_installs_raw
+
+
+# In[4]:
+
+
 sources = df_installs_raw.columns
 #print(len(sources))
 plt.plot(df_installs_raw.index,df_installs_raw[sources[0]],lw=4,marker='*',label=sources[0])
@@ -44,10 +50,10 @@ plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
 
 # The IRENA is consistently lower than the other sources from 2012 through the present. Given that all other sources are in agreement, we will select one of these data sets to use for installation data, rather than IRENA. In this case, we will select the Wood Mackenzie Power & Renewables quarterly reports and PV forecasts from 2010 through 2019.
 
-# In[4]:
+# In[5]:
 
 
-installs_2010_2019 = df_installs_raw.loc[(df_installs_raw.index>=2010) & (df_installs_raw.index<=2020)]
+installs_2010_2019 = df_installs_raw.loc[(df_installs_raw.index>=2010)]
 installs_recent = pd.DataFrame(installs_2010_2019[sources[0]])
 installs_recent.columns = ['installed_pv_MW']
 print(installs_recent)
@@ -55,7 +61,7 @@ print(installs_recent)
 
 # Only 1 dataset exists from 1995 to 2000, from IEA PVPS 2010 National Survey report. This seems to track reasonably well with Wood Mackenzie data between 2008 and 2010. Therefore, this will be used up to 2010. 
 
-# In[5]:
+# In[6]:
 
 
 installs_upto2010 = df_installs_raw.loc[(df_installs_raw.index<2010)]
@@ -67,7 +73,7 @@ print(installs_old)
 # However, there are 2 problems with this data. 1) There is an error in the original published table, such that it appears only 4 MW of PV were installed in 2006. To address this problem we will utilize SEIA & GTM/Wood Mackenzie data for 2006. 2) Due to the way the original data was presented, we had to calculate the difference between years to capture installed PV data, meaning that we don't have data for 1995. To address this problem, we will fill in the data point from “IEA PVPS Task 1 1997,” IEA-PVPS, IEA PVPS T1:1997, Mar. 1997. Accessed: Aug. 13, 2020. [Online]. Available: https://iea-pvps.org/wp-content/uploads/2020/01/tr_1995_01.pdf, which specifies the added PV in 1995 in the US (Table 2.2).
 # 
 
-# In[6]:
+# In[7]:
 
 
 #dealing with 2006 error
@@ -81,7 +87,7 @@ installs_old['installed_pv_MW'][1995] = 12.5 #MW
 
 # ### Collect the installation data together into a single df
 
-# In[7]:
+# In[8]:
 
 
 installs = pd.concat([installs_old,installs_recent])
@@ -94,14 +100,14 @@ plt.title('Installations of PV in the USA (MW) since 1995')
 
 # In addition to compiling a single installation record for 1995 through the present, this data is total cumulative, but the tool it currently considering silicon technology only. Especially in the United States, where First Solar holds significant marketshare, this distinction is important. Currently, we also do not feel it is critical track circular economy of CdTe given that First Solar already recycles all their panels.
 
-# In[8]:
+# In[9]:
 
 
 cwd = os.getcwd() #grabs current working directory
 df_raw_mrktshr_siVtf = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/MarketShare_US_siliconVSthinfilm.csv", index_col='Year')
 
 
-# In[9]:
+# In[10]:
 
 
 refs = df_raw_mrktshr_siVtf.columns
@@ -117,7 +123,7 @@ plt.ylim(0,1.1)
 # 
 # Mints does have marketshare data overlapping the late 2000s to the present, however, this data is based on MFG capcity and shipments at a global scale. This PV installation baseline is for the USA, and is focused on the install side, rather than the MFG capacity side.
 
-# In[10]:
+# In[11]:
 
 
 #bfill function "collapses" values from all columns into a single column, then make a df of only that data
@@ -126,7 +132,7 @@ df_mrktshr_us =  pd.DataFrame(df_raw_mrktshr_siVtf['All_Marketshare'])
 #print( df_mrktshr_us)
 
 
-# In[11]:
+# In[12]:
 
 
 df_mrktshr_us_si_complete = df_mrktshr_us.interpolate(limit_area='inside')
@@ -138,7 +144,7 @@ df_mrktshr_us_si_complete.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMater
 # # Marketshare weight PV installs by percent Silicon
 # Now we have a marketshare percentage of silicon for 1995 through 2018. We will multiply the PV installs by this silicon marketshare to get the MW of silicon PV installed in the US since 1995.
 
-# In[12]:
+# In[13]:
 
 
 dfs = [installs,df_mrktshr_us_si_complete]
@@ -156,22 +162,28 @@ plt.title('Silicon PV Installations (MW) in the USA, 1995 through 2018')
 plt.legend()
 
 
-# In[13]:
+# In[14]:
 
 
 us_si_installs.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_SiPV_installs.csv', index=True)
 
 
+# In[15]:
+
+
+installs.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_allPV_installs.csv', index=True)
+
+
 # This data only takes installes through 2019. For the remaining years through 2050, a compound annual growth rate of 8.9% was used to predict increasing installations. This compound annual growth rate was sourced from IRENA 2016 EoL Mangement Report.
 
-# In[14]:
+# In[16]:
 
 
 us_si_installed = pd.DataFrame(us_si_installs, columns=['installed_pv_MW'])
 us_tf_installed = installs-us_si_installed
 
 
-# In[15]:
+# In[17]:
 
 
 plt.plot(us_tf_installed)
@@ -179,7 +191,7 @@ plt.yscale('log')
 plt.title('Thin Film PV Installations (MW) in the USA, 1995 through 2018')
 
 
-# In[16]:
+# In[18]:
 
 
 us_tf_installed.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_TFPV_installs.csv', index=True)
