@@ -684,12 +684,13 @@ silver_demand_cum
 silver_demand_cum.to_csv(os.path.join(testfolder,'Ag_demand_cum2050_allScens.csv'))
 
 
-# In[65]:
+# In[201]:
 
 
 plt.bar(silver_demand_cum.columns, silver_demand_cum.loc[2050], tick_label=(scennames), color=['#0079C2','#F7A11A','#5D9732'])
 plt.title('Silver Demand by Scenario')
 plt.ylabel('[Tonnes]')
+plt.rc('xtick', labelsize=12) #fontsize of the x tick labels
 
 
 # In[66]:
@@ -731,14 +732,15 @@ ag_annual_mgpW = annual_demand_silver_kg/newInstalledCap_MW_annual #kg/MW = mg/W
 ag_annual_mgpW.loc[2050]
 
 
-# In[71]:
+# In[203]:
 
 
 #silver_demand_cum #tonne
 newInstalledCap_MW_annual_cum = newInstalledCap_MW_annual.cumsum()
+silver_demand_cum.columns
 
 
-# In[72]:
+# In[204]:
 
 
 agintensity_mgpW = silver_demand_cum*1000/newInstalledCap_MW_annual_cum.loc[2050] #kg/MW = mg/W
@@ -1076,7 +1078,7 @@ ax1.plot(netEnergyAnnual_TWh.index, netEnergyAnnual_TWh.iloc[:,[4]], color='#FFC
 ax1.plot(netEnergyAnnual_TWh.index, netEnergyAnnual_TWh.iloc[:,[5]], color='#8CC63F', ls='-.')
 ax1.legend(scennames)
 
-ax1.set_ylabel('Energy Demand [TWh]')
+ax1.set_ylabel('Net Energy [TWh]')
 plt.title('Annual Net Energy')
 plt.show()
 
