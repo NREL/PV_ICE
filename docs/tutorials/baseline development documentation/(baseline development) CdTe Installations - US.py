@@ -27,318 +27,178 @@ plt.rcParams['figure.figsize'] = (30, 15)
 cwd = os.getcwd() #grabs current working directory
 
 supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
-supportMatfolder
+baselinesFolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines')
 
 
-# #### Load new PV capacity generated from 2013 to 2020 by [eia](https://www.eia.gov/electricity/generatorcosts/)
+# #### Load new PV capacity generated from 2001 to 2021 by [eia](https://www.eia.gov/electricity/data/eia860/)
+# 
+# I downloaded the 2021 zip file and filtered for Thin Film (CdTe).
 
-# In[37]:
-
-
-cwd = os.getcwd()
-supportMatfolder
-df_cdte_installs = pd.read_excel(os.path.join(supportMatfolder, 'RELOG_PV_ICE.xlsx'), sheet_name='CdTe_Market_Sare', index_col='Year')
+# In[3]:
 
 
-# In[38]:
+df_cdte_installs = pd.read_excel(os.path.join(supportMatfolder, 'RELOG_PV_ICE.xlsx'), sheet_name='CdTe Capacity from eia')
+
+
+# In[4]:
 
 
 df_cdte_installs.columns
 
 
-# In[39]:
+# In[5]:
 
 
-df_cdte_installs_total = df_cdte_installs.drop(['Average new capacity  at new plants (MW)', 'Average new capacity  at existing plants (MW)'], axis=1)
+df_cdte_installs_total = df_cdte_installs.drop(['Cummulative Capacity (MW)'], axis=1)
 df_cdte_installs_total
 
 
-# In[40]:
+# Group by year.
+
+# In[6]:
 
 
-sns.lineplot(x=df_cdte_installs_total.index, y='Total new capacity (MW)', hue='Technology', data=df_cdte_installs_total)
-plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, frameon=False)
+df_cdte_installs_total_grouped = df_cdte_installs_total.groupby('Operating Year').sum()
+df_cdte_installs_total_grouped
 
 
-# In[41]:
+# Insert the years that don't have new capacity instlled.
+
+# In[7]:
 
 
-cwd = os.getcwd() #grabs current working directory
-df_installs_raw = pd.read_csv(os.path.join(supportMatfolder,'PVInstalls_World_AllSources.csv'), index_col='Year')
-sources = df_installs_raw.columns
-print(len(sources))
-df_installs_raw
+dict_missing = {'years' : list(range(2002,2008)), 'CdTe New Installs Capacity (MW)':[0, 0, 0, 0, 0, 0]}
+missing_years = pd.DataFrame(dict_missing).set_index('years')
+df_cdte_installs_total_grouped = pd.concat([df_cdte_installs_total_grouped, missing_years]).sort_index()
+df_cdte_installs_total_grouped.columns
+df_cdte_installs_total_grouped
 
+
+# #### Load US all PV tech dataframe
 
 # In[8]:
 
 
-df_cdte_installs_total['Technology'].iloc[1]
+df_us_installs = pd.read_csv(os.path.join(supportMatfolder,'output_USA_allPV_installs.csv'), index_col='Year')
+df_us_installs;
 
 
-# In[15]:
+# #### Calculate market share
+
+# In[9]:
 
 
-df_cdte_installs_total.loc[(df_cdte_installs_total['Technology'] == 'Crystalline silicon') |
-                           (df_cdte_installs_total['Technology'] == 'Crystalline silicon, fixed tilt') |
-                           (df_cdte_installs_total['Technology'] == 'Crystalline silicon, axis-based tracking'), 'Technology'] = 'c-Si'
-df_cdte_installs_total.loc[(df_cdte_installs_total['Technology'] == 'Thin-film CdTe, all types') |
-                           (df_cdte_installs_total['Technology'] == 'Thin-film CdTe, fixed tilt') |
-                           (df_cdte_installs_total['Technology'] == 'Thin-film CdTe, axis-based tracking'), 'Technology'] = 'CdTe'
+df_cdte_installs_total_grouped['Total PV US installs (MW)'] = df_us_installs['installed_pv_MW']
 
 
-# In[34]:
+# In[10]:
 
 
-df_cdte_installs_total_group = df_cdte_installs_total.groupby(['Year', 'Technology']).sum()
-df_cdte_installs_total_group = df_cdte_installs_total_group.reset_index()
-df_cdte_installs_total_group
-
-
-# In[36]:
-
-
-sns.lineplot(x='Year', y='Total new capacity (MW)', data=df_cdte_installs_total_group, hue='Technology')
+df_cdte_installs_total_grouped
 
 
 # In[11]:
 
 
-plt.plot(df_installs_raw.index,df_installs_raw[sources[0]],lw=4,marker='*',label=sources[0])
-plt.plot(df_installs_raw.index,df_installs_raw[sources[1]],lw=3,marker='o',label=sources[1])
-plt.plot(df_installs_raw.index,df_installs_raw[sources[2]],lw=2,marker='o',label=sources[2])
-plt.plot(df_installs_raw.index,df_installs_raw[sources[3]],lw=2,marker='o',label=sources[3])
-
-plt.yscale('log')
-plt.ylabel('PV Installed (MW)')
-plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
-#plt.plot(df_installs_raw, marker='o')
+df_cdte_installs_total_grouped['Market share [%]'] = df_cdte_installs_total_grouped['CdTe New Installs Capacity (MW)']/df_cdte_installs_total_grouped['Total PV US installs (MW)']*100
+df_cdte_installs_total_grouped
 
 
-# # Select the data to use for installs
-
-# Based on the above graph, we will utilize Goetzberger data through 2000, then IRENA online query tool after 2000.
+# #### Import Si installs and market share
 
 # In[12]:
 
 
-#Before 2000 = Goetz
-installs_old = df_installs_raw.loc[(df_installs_raw.index<=2000) & (df_installs_raw.index>=1995)]
-installs_old_Goetz = pd.DataFrame(installs_old[sources[3]])
-installs_old_Goetz.columns = ['installed_pv_MW']
-
-#After 2000 = IRENA
-installs_recent = df_installs_raw.loc[(df_installs_raw.index>2000) & (df_installs_raw.index<2020)]
-installs_recent_IRENA = pd.DataFrame(installs_recent[sources[0]])
-installs_recent_IRENA.columns = ['installed_pv_MW']
-#print(installs_recent_IRENA)
+si_installs_us = pd.read_csv(os.path.join(supportMatfolder,'output_USA_SiPV_installs.csv'), index_col='Year')
+si_installs_us;
 
 
-# ### Collect the installation data together into a single df
-
-# In[42]:
+# In[13]:
 
 
-installs = pd.concat([installs_old_Goetz,installs_recent_IRENA])
-plt.plot(installs)
-plt.yscale('log')
-plt.title('Installations of PV Globally (MW) since 1995')
+df_cdte_installs_total_grouped.loc[2009:2021]['CdTe New Installs Capacity (MW)']
 
 
-# # Marketshare weight the installation data for percent of Silicon vs Thin Film
-
-# In addition to compiling a single installation record for 1995 through the present, this data is total cumulative, but the tool it currently considering crystalline silicon technology only (i.e. mono and multi, but not ribbon or amorphous).
-
-# In[ ]:
+# In[14]:
 
 
-cwd = os.getcwd() #grabs current working directory
-df_raw_mrktshr_siVtf = pd.read_csv(os.path.join(supportMatfolder,'MarketShare_global_c-SiVSthinfilm.csv'), index_col='Year')
-refs = df_raw_mrktshr_siVtf.columns
-print(len(refs))
+df_cdte_installs_total_grouped.describe()
 
 
-# In[ ]:
+# In[15]:
 
 
-df_raw_mrktshr_siVtf
+si_installs_us_baseline = pd.read_csv(os.path.join(baselinesFolder,'baseline_modules_mass_US.csv'), index_col='year')
+si_installs_us_baseline = si_installs_us_baseline.iloc[1: , :]
+si_installs_us_baseline['new_Installed_Capacity_[MW]'] = si_installs_us_baseline['new_Installed_Capacity_[MW]'].astype(float)
+si_installs_us_baseline.info()
 
 
-# In[ ]:
+# In[23]:
 
 
-plt.rcParams.update({'font.size': 14})
-plt.rcParams['figure.figsize'] = (12, 6)
-plt.plot(df_raw_mrktshr_siVtf.index,df_raw_mrktshr_siVtf[refs[0]],marker='o',label=refs[0])
-plt.plot(df_raw_mrktshr_siVtf.index,df_raw_mrktshr_siVtf[refs[1]],marker='o',label=refs[1])
-plt.plot(df_raw_mrktshr_siVtf.index,df_raw_mrktshr_siVtf[refs[2]],marker='o',label=refs[2])
-plt.plot(df_raw_mrktshr_siVtf.index,df_raw_mrktshr_siVtf[refs[3]],marker='o',label=refs[3])
-plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
-plt.ylim(50,100)
+plt.plot(df_cdte_installs_total_grouped.index,df_cdte_installs_total_grouped['CdTe New Installs Capacity (MW)'],lw=2,marker='*', label='CdTe New Installs')
+plt.plot(df_cdte_installs_total_grouped.index,df_cdte_installs_total_grouped['Total PV US installs (MW)'],lw=2,marker='o', label='All PV Tech New Installs')
+plt.plot(si_installs_us.index,si_installs_us['0'],lw=2,marker='.', label='Si New Installs')
+plt.plot(range(1995, 2051), si_installs_us_baseline['new_Installed_Capacity_[MW]'],lw=2,marker='v', label='PV ICE baseline Si New Installs')
 
 
-# The 2020 Fraunhofer and 2014 Fraunhofer appear to agree reasonably closely, and Mints agrees closely for the amount of time there is overlap. The unknown sourced wikipedia figure doesn't agree until 2010, but given the unknown source, it will be discarded. We will use the Fraunhofer ISE 2020 market share data for the entire time period.
-
-# In[ ]:
-
-
-refs
-
-
-# In[ ]:
-
-
-df_mrktshr_global =  pd.DataFrame(df_raw_mrktshr_siVtf[refs[2]]) #select Fraunhofer for historical 1995-2020
-mrktshr_global = df_mrktshr_global.loc[(df_mrktshr_global.index>=1995)]
-# use PMints for most recent data
-mrktshr_global.columns = ['Global_MarketShare']
-#print(mrktshr_global)
+# ax = plt.gca()
+# ax.set_ylim([-10, 10^5])
+#plt.yscale('symlog') # This way we can see the zero values
+#plt.ylim(0, 30000)
+plt.ylim(0, 3000)
+plt.xlim(2001, 2020)
+plt.ylabel('PV Installed (MW)')
+plt.xlabel('Years')
+#plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
+plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
+#plt.plot(df_installs_raw, marker='o')
 
 
-# In[ ]:
+# #### Import Si market share
+
+# In[17]:
 
 
-#convert to decimal
-mrktshr_global_pct = mrktshr_global/100
-
-plt.rcParams['figure.figsize'] = (12, 6)
-plt.plot(mrktshr_global_pct)
-plt.title('Global Marketshare of Silicon PV installed since 1995')
-plt.ylim(0,1.1)
+si_maketshare_us = pd.read_csv(os.path.join(supportMatfolder,'output_USA_Si_marketshare.csv'), index_col='Year')
+si_maketshare_us;
 
 
-# # Marketshare weight PV installs by percent Silicon
-# Now we have a marketshare percentage of silicon for 1995 through 2019. We will multiply the PV installs by this silicon marketshare to get the MW of silicon PV installed globally since 1995.
-
-# In[ ]:
+# In[18]:
 
 
-#put the two dataframes together, joining for available data (excludes NANs)
-dfs = [installs,mrktshr_global_pct]
-df = pd.concat(dfs, axis=1, join='inner')
-df_clean = df.dropna()
-#creates the marketshare weighted c-Si install data
-world_si_installs = df_clean.agg('prod', axis='columns') 
+plt.plot(si_maketshare_us.index,si_maketshare_us['All_Marketshare']*100,lw=2,marker='*', label='Si Market Share')
+plt.plot(df_cdte_installs_total_grouped.index,df_cdte_installs_total_grouped['Market share [%]'],lw=2,marker='o', label='CdTe Market Share')
 
-#print(us_si_installs)
-plt.rcParams.update({'font.size': 18})
-plt.rcParams['figure.figsize'] = (15, 8)
-plt.plot(installs, label='All Global PV Installed', color='orange')
-plt.plot(world_si_installs, label='Silicon PV Installed, World', color='blue')
-plt.yscale('log')
-plt.title('Silicon PV Installations (MW) Globally, 1995 through 2019')
-plt.legend()
+# ax = plt.gca()
+# ax.set_ylim([-10, 10^5])
+#plt.yscale('symlog') # This way we can see the zero values
+#plt.ylim(0, 16000)
+
+plt.ylabel('PV Maket Share (%)')
+plt.xlabel('Years')
+#plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
+plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
+#plt.plot(df_installs_raw, marker='o')
 
 
-# In[ ]:
+# In[19]:
 
 
-world_si_installs.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_Global_SiPV_installs.csv', index=True)
+total_share = df_cdte_installs_total_grouped['Market share [%]'] + si_maketshare_us['All_Marketshare']*100
 
 
-# This data only takes installs through 2019. For the remaining years through 2050, a compound annual growth rate of 8.9% was used to predict increasing installations. This compound annual growth rate was sourced from IRENA 2016 EoL Mangement Report and IRENA 2019 Future of PV Report.
+# In[20]:
 
-# # Global Installations by Country
+
+total_share
+
+
+# ### To do:
 # 
-# This section documents and munges the IRENA world historical PV install data by country. We can then modify it by the world marketshare of silicon.
-
-# In[ ]:
-
-
-import numpy as np
-import pandas as pd
-import os,sys
-from pathlib import Path
-import matplotlib.pyplot as plt
-cwd = os.getcwd() #grabs current working directory
-
-supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
-
-
-# In[ ]:
-
-
-IRENA_raw_file = os.path.join(supportMatfolder, 'HistoricalCapacityWorld-QueryResult-PVCumCap.xlsx') #THIS IS CUMULATIVE
-IRENA_global_raw = pd.read_excel(IRENA_raw_file, header=7, index_col=0) #set Country/area as index
-#remove the flag indicator columns or any unnamed
-IRENA_global_raw.drop(columns=list(IRENA_global_raw.filter(like='Unnamed')), inplace=True) 
-IRENA_global_raw.drop(columns=['Technology','Indicator'], inplace=True) #drop these columns
-
-
-# In[ ]:
-
-
-IRENA_locs = list(IRENA_global_raw.index)
-regions = ['Africa','Asia','C America + Carib','Eurasia','Europe','EU 27','Middle East','N America','Oceania','S America']
-countries = [i for i in IRENA_locs if i not in regions] #leaves in world
-
-
-# In[ ]:
-
-
-IRENA_global = IRENA_global_raw.T
-
-
-# In[ ]:
-
-
-shiftpos = IRENA_global.shift(1).fillna(0)
-
-
-# In[ ]:
-
-
-IRENA_global_annual = IRENA_global-shiftpos
-
-
-# In[ ]:
-
-
-IRENA_regions = IRENA_global_annual.loc[:,regions]
-IRENA_countries = IRENA_global_annual.loc[:,countries]
-
-
-# In[ ]:
-
-
-IRENA_regions.to_csv(path_or_buf=os.path.join(supportMatfolder, 'output-RegionInstalls-alltech.csv'))
-IRENA_countries.to_csv(path_or_buf=os.path.join(supportMatfolder, 'output-CountryInstalls-alltech.csv'))
-
-
-# ## Market Share Weight Global installs by Silicon
-
-# In[ ]:
-
-
-mrktshr_global.index[-1] #what is the last year we have data for?
-
-
-# In[ ]:
-
-
-#trim the c-Si marketshare to match index of IRENA installs
-mrktshr_cSiglobal_IRENA = mrktshr_global.loc[mrktshr_global.index>1999]/100 #turn into decimal
-
-
-# In[ ]:
-
-
-mrktshr_cSiglobal_IRENA.columns
-
-
-# In[ ]:
-
-
-IRENA_regions_cSi = IRENA_regions.multiply(mrktshr_cSiglobal_IRENA["Global_MarketShare"], axis="index")
-IRENA_countries_cSi = IRENA_countries.multiply(mrktshr_cSiglobal_IRENA["Global_MarketShare"], axis="index")
-
-
-# In[ ]:
-
-
-IRENA_regions_cSi.to_csv(path_or_buf=os.path.join(supportMatfolder, 'output-RegionInstalls-cSi.csv'))
-IRENA_countries_cSi.to_csv(path_or_buf=os.path.join(supportMatfolder, 'output-CountryInstalls-cSi.csv'))
-
+# * Check out with Heather or Silvana why total market shares of Si and CdTe are over 100 in some instances.
+# * Ask how to do the projection of CdTe over time. Do I assume a % growth of market share of CdTe over time and multiply it by the installed capacity of Solar Futures?
 
 # In[ ]:
 
@@ -349,80 +209,5 @@ IRENA_countries_cSi.to_csv(path_or_buf=os.path.join(supportMatfolder, 'output-Co
 # In[ ]:
 
 
-#access the global historical install and create projection
-IRENA_hist_cSi = pd.read_csv(os.path.join(supportMatfolder,'output-CountryInstalls-cSi.csv'), index_col=0)
 
-
-# In[ ]:
-
-
-IRENA_hist_cSi_world = pd.DataFrame(IRENA_hist_cSi['World']) #extract just the global historical installs (this is a series)
-
-
-# In[ ]:
-
-
-#create a full historical deployment + projection 
-# 2050 needs cumulative of 14,036 GW of PV globally [World Energy Transitions Outlook: 1.5°C Pathway.IRENA; 2021]
-#https://irena.org/Statistics/View-Data-by-Topic/Energy-Transition/REmap-Energy-Generation-and-Capacity
-idx = pd.RangeIndex(start=2018,stop=2051,step=1) #create the index
-IRENA_world_cSi_project = pd.DataFrame(index=idx, columns=['World_cum'], dtype=float) #turn into df and add column to match other series
-IRENA_world_cSi_project.loc[2018]=481*1000 #MW in 2018
-IRENA_world_cSi_project.loc[2050]=14036*1000 #MW in 2050
-
-
-# In[ ]:
-
-
-# exponential interpolation option - not great
-# Import curve fitting package from scipy
-from scipy.optimize import curve_fit
-# Function to calculate the power-law with constants a and b
-def power_law(x, a, b):
-    return a*np.power(x, b)
-#generae a dataset for the area in between
-y_dummy = power_law(IRENA_world_cSi_project.index-2017, IRENA_world_cSi_project['World_cum'][2018], 0.965)
-#played around with the exponential until y_dummy[31] closely matched 14036 GW.
-print(y_dummy[32])
-plt.plot(y_dummy)
-#plt.plot(IRENA_world_cSi_project['World_cum'][2050], marker='o')
-
-
-# In[ ]:
-
-
-IRENA_world_cSi_project['World_cum_fill']=y_dummy
-IRENA_world_cSi_project.loc[2050]
-
-
-# In[ ]:
-
-
-#IRENA_world_cSi_project.interpolate(inplace=True) #create the cumulative global deployed pv each year (linear also not great)
-IRENA_world_cSi_project['World'] = IRENA_world_cSi_project['World_cum_fill']-IRENA_world_cSi_project['World_cum_fill'].shift(1).fillna(0)
-
-
-# In[ ]:
-
-
-IRENA_world_cSi_project_annual_torev = IRENA_world_cSi_project.loc[2022:2050,['World']]
-IRENA_world_cSi_project_annual = IRENA_world_cSi_project_annual_torev.iloc[::-1] #reverse the exponential to be more realistic
-IRENA_world_cSi_project_annual.index = IRENA_world_cSi_project_annual_torev.index #reset index related to above
-
-
-# In[ ]:
-
-
-IRENA_cSi_world = pd.concat([IRENA_hist_cSi_world,IRENA_world_cSi_project_annual])
-#IRENA_cSi_world
-
-
-# In[ ]:
-
-
-plt.rcParams.update({'font.size': 14})
-plt.rcParams['figure.figsize'] = (10, 5)
-plt.plot(IRENA_cSi_world)
-plt.title('PV Installation Globally')
-plt.ylabel('Annually Deployed PV [MWdc]')
 
