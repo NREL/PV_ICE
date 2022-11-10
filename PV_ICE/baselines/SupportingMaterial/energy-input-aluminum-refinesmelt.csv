@@ -1,21 +1,21 @@
 ﻿year,E_refineSmelt_kWhpkg,PrctFuel,Source,Notes
-1993,16.3,,"U.S. Energy Requirements for Aluminum Production: Historical Perspective, Theoretical Limits and Current Practices (2007). EERE DOE, p. 150. Available at: https://www.energy.gov/sites/default/files/2013/11/f4/al_theoretical.pdf (Accessed: 7 November 2022).",Figure 5.2
+1993,16.3,,"U.S. Energy Requirements for Aluminum Production: Historical Perspective, Theoretical Limits and Current Practices (2007). EERE DOE, p. 150. Available at: https://www.energy.gov/sites/default/files/2013/11/f4/al_theoretical.pdf (Accessed: 7 November 2022).","Figure 5.2, electricity only"
 1994,,,,
 1995,55,,"G. J. M. Phylipsen and E. A. Alsema, “Environmental life-cycle assessment of multicrystalline silicon solar cell modules,” Netherlands Agency for Energy and the Environment,NOVEM, Netherlands, Sep. 1995.","""gross energy requirement of Al feedstock"""
-1996,16.1,,"U.S. Energy Requirements for Aluminum Production: Historical Perspective, Theoretical Limits and Current Practices (2007). EERE DOE, p. 150. Available at: https://www.energy.gov/sites/default/files/2013/11/f4/al_theoretical.pdf (Accessed: 7 November 2022).",figure 5.2
+1996,16.1,,"U.S. Energy Requirements for Aluminum Production: Historical Perspective, Theoretical Limits and Current Practices (2007). EERE DOE, p. 150. Available at: https://www.energy.gov/sites/default/files/2013/11/f4/al_theoretical.pdf (Accessed: 7 November 2022).","Figure 5.2, electricity only"
 1997,,,,
-1998,15.6,,"U.S. Energy Requirements for Aluminum Production: Historical Perspective, Theoretical Limits and Current Practices (2007). EERE DOE, p. 150. Available at: https://www.energy.gov/sites/default/files/2013/11/f4/al_theoretical.pdf (Accessed: 7 November 2022).",figure 5.2
+1998,15.6,,"U.S. Energy Requirements for Aluminum Production: Historical Perspective, Theoretical Limits and Current Practices (2007). EERE DOE, p. 150. Available at: https://www.energy.gov/sites/default/files/2013/11/f4/al_theoretical.pdf (Accessed: 7 November 2022).","Figure 5.2, electricity only"
 1999,,,,
 2000,58.7,,"Rankin, John. 2012. “Energy Use in Metal Production.” In , 3. Swinburne University of Technology.",embodied energy primary production
 2001,,,,
 2002,,,,
-2003,23.51,,"U.S. Energy Requirements for Aluminum Production: Historical Perspective, Theoretical Limits and Current Practices (2007). EERE DOE, p. 150. Available at: https://www.energy.gov/sites/default/files/2013/11/f4/al_theoretical.pdf (Accessed: 7 November 2022).",bauxite to alumina (7.27)+carbon anode production & smelting/electrolysis
+2003,61.86,,"U.S. Energy Requirements for Aluminum Production: Historical Perspective, Theoretical Limits and Current Practices (2007). EERE DOE, p. 150. Available at: https://www.energy.gov/sites/default/files/2013/11/f4/al_theoretical.pdf (Accessed: 7 November 2022).","bauxite to alumina (7.27)+carbon anode production & smelting/electrolysis, Gross Energy Req Table A1"
 2004,,,,
 2005,,,,
 2006,,,,
 2007,,,,
 2008,,,,
-2009,14.6,,"Bleiwas, Donald. 2011. “Estimates of Electricity Requirements for the Recovery of Mineral Commodities, with Examples Applied to Sub-Saharan Africa.” Open-File Report 2011–1253. Open-File Report. USGS.","Table 7, average of Africa Al mining and refining"
+2009,14.6,,"Bleiwas, Donald. 2011. “Estimates of Electricity Requirements for the Recovery of Mineral Commodities, with Examples Applied to Sub-Saharan Africa.” Open-File Report 2011–1253. Open-File Report. USGS.","Table 7, average of Africa Al mining and refining, electricity only"
 2010,,,,
 2011,48.60975,,"Norgate, Terry, and Sharif Jahanshahi. 2011. “Reducing the Greenhouse Gas Footprint of Primary Metal Production: Where Should the Focus Be?” Minerals Engineering 24 (14): 1563–70. https://doi.org/10.1016/j.mineng.2011.08.007.","Al extraction and refining, embodied E"
 2012,,,,
@@ -25,10 +25,10 @@
 2016,,,,
 2017,,,,
 2018,18.70994761,21,World Aluminium — Primary Aluminium Production (no date). Available at: https://www.world-aluminium.org/statistics/ (Accessed: 1 February 2021).,"calculations from 2019 LCI, see excel GLO, mostly nat gas and coal"
-2019,1.859,,"Farjana, S.H., Huda, N. and Mahmud, M.A.P. (2019) ‘Impacts of aluminum production: A cradle to gate investigation using life-cycle assessment’, Science of The Total Environment, 663, pp. 958–970. Available at: https://doi.org/10.1016/j.scitotenv.2019.01.400.",alumina+smelt+ingot
+2019,1.859,,"Farjana, S.H., Huda, N. and Mahmud, M.A.P. (2019) ‘Impacts of aluminum production: A cradle to gate investigation using life-cycle assessment’, Science of The Total Environment, 663, pp. 958–970. Available at: https://doi.org/10.1016/j.scitotenv.2019.01.400.","alumina+smelt+ingot, electricity only"
 2020,35.45823405,,"Farjana, S.H., Huda, N. and Mahmud, M.A.P. (2019) ‘Impacts of aluminum production: A cradle to gate investigation using life-cycle assessment’, Science of The Total Environment, 663, pp. 958–970. Available at: https://doi.org/10.1016/j.scitotenv.2019.01.400.","Table 7 alumina, smelting and refining HHV"
 2021,,,,
-2022,17.3888884,,"Lennon, A. et al. (2022) ‘The aluminium demand risk of terawatt photovoltaics for net zero emissions by 2050’, Nature Sustainability, pp. 1–7. Available at: https://doi.org/10.1038/s41893-021-00838-9.",suuplement table S2
+2022,17.3888884,,"Lennon, A. et al. (2022) ‘The aluminium demand risk of terawatt photovoltaics for net zero emissions by 2050’, Nature Sustainability, pp. 1–7. Available at: https://doi.org/10.1038/s41893-021-00838-9.","suplement table S2, all energy, bauxite to alumina is 3-4% electricity, Hall-Heroult process all electricity"
 2023,,,,
 2024,,,,
 2025,,,,
