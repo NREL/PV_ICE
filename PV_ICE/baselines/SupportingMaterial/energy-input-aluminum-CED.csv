@@ -1,0 +1,57 @@
+﻿year,PED_kWhpkg,% Fuel,Source,Notes
+1995,,,,
+1996,,,,
+1997,,,,
+1998,,,,
+1999,,,,
+2000,,,,
+2001,,,,
+2002,,,,
+2003,62.2,,"U.S. Energy Requirements for Aluminum Production: Historical Perspective, Theoretical Limits and Current Practices (2007). EERE DOE, p. 150. Available at: https://www.energy.gov/sites/default/files/2013/11/f4/al_theoretical.pdf (Accessed: 7 November 2022).","pg 64/79,  (62.2 tf)"
+2004,,,,
+2005,,,,
+2006,,,,
+2007,58.61,,"Norgate, T.E., Jahanshahi, S. and Rankin, W.J. (2007) ‘Assessing the environmental impact of metal production processes’, Journal of Cleaner Production, 15(8), pp. 838–848. Available at: https://doi.org/10.1016/j.jclepro.2006.06.018.","cradle to gate, likely doesn't include forming into product"
+2008,,,,
+2009,45.27651,,"Nunez, P. and Jones, S. (2016) ‘Cradle to gate: life cycle impact of primary aluminium production’, The International Journal of Life Cycle Assessment, 21(11), pp. 1594–1604. Available at: https://doi.org/10.1007/s11367-015-1003-7.","depletion of fossil fuels, Table 4. IAI team"
+2010,55.55,,"Strachala, Dávid, Josef Hylskỳ, Jiří Vaněk, Günter Fafilek, and Kristỳna Jandová. 2017. “Methods for Recycling Photovoltaic Modules and Their Impact on Environment and Raw Material Extraction.” Acta Montanistica Slovaca 22 (3).","electricity only, primary production cites Balomenos 2011"
+2011,,,,
+2012,,,,
+2013,,,,
+2014,,,,
+2015,,,,
+2016,,,,
+2017,29.44362,50%,"Yang, Y. et al. (2019) ‘Environmental impact assessment of China’s primary aluminum based on life cycle assessment’, Transactions of Nonferrous Metals Society of China, 29(8), pp. 1784–1792. Available at: https://doi.org/10.1016/S1003-6326(19)65086-7.",Table 3 PED total for hydropower
+2018,73.05351,25%,"Yang, Y. et al. (2019) ‘Environmental impact assessment of China’s primary aluminum based on life cycle assessment’, Transactions of Nonferrous Metals Society of China, 29(8), pp. 1784–1792. Available at: https://doi.org/10.1016/S1003-6326(19)65086-7.",Table 2 PED total thermal based (not hydropower)
+2019,18.71605871,21%,World Aluminium — Primary Aluminium Production (no date). Available at: https://www.world-aluminium.org/statistics/ (Accessed: 1 February 2021).,"calculations from 2019 LCI, see excel GLO"
+2020,62.2498257,,"Camaratta, R., Volkmer, T.M. and Osorio, A.G. (2020) ‘Embodied energy in beverage packaging’, Journal of Environmental Management, 260, p. 110172. Available at: https://doi.org/10.1016/j.jenvman.2020.110172.","unknown source, embodied energy"
+2021,13.713,,"Zhu, S. et al. (2022) ‘An assessment of environmental impacts and economic benefits of multiple aluminum production methods’, Journal of Cleaner Production, 370, p. 133523. Available at: https://doi.org/10.1016/j.jclepro.2022.133523.","looks to be CED, mostly based on Farjana"
+2022,,,,
+2023,,,,
+2024,,,,
+2025,,,,
+2026,,,,
+2027,,,,
+2028,,,,
+2029,,,,
+2030,,,,
+2031,,,,
+2032,,,,
+2033,,,,
+2034,,,,
+2035,,,,
+2036,,,,
+2037,,,,
+2038,,,,
+2039,,,,
+2040,,,,
+2041,,,,
+2042,,,,
+2043,,,,
+2044,,,,
+2045,,,,
+2046,,,,
+2047,,,,
+2048,,,,
+2049,,,,
+2050,,,,
