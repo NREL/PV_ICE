@@ -1,4 +1,4 @@
-﻿year,E_mine_kWhpkg,Prct_fuel,Source,Notes
+﻿year,E_mine_kWhpkg,PrctFuel,Source,Notes
 1995,,,,
 1996,,,,
 1997,,,,
@@ -22,7 +22,7 @@
 2015,,,,
 2016,,,,
 2017,,,,
-2018,51.7,56%,World Aluminium — Primary Aluminium Production (no date). Available at: https://www.world-aluminium.org/statistics/ (Accessed: 1 February 2021).,"calculations from 2019 LCI, see excel GLO, removed diesel for transport"
+2018,0.014,56%,World Aluminium — Primary Aluminium Production (no date). Available at: https://www.world-aluminium.org/statistics/ (Accessed: 1 February 2021).,"calculations from 2019 LCI, see excel GLO, removed diesel for transport"
 2019,0.00039,"mostly fuels, some electricity","Farjana, S.H., Huda, N. and Mahmud, M.A.P. (2019) ‘Impacts of aluminum production: A cradle to gate investigation using life-cycle assessment’, Science of The Total Environment, 663, pp. 958–970. Available at: https://doi.org/10.1016/j.scitotenv.2019.01.400.","bauxite mining, electricity shown, mostly fuels"
 2020,1.13,,"Farjana, S.H., Huda, N. and Mahmud, M.A.P. (2019) ‘Impacts of aluminum production: A cradle to gate investigation using life-cycle assessment’, Science of The Total Environment, 663, pp. 958–970. Available at: https://doi.org/10.1016/j.scitotenv.2019.01.400.",Table 7 bauxite hhv
 2021,,,,

@@ -97,12 +97,13 @@ IAI_aluminumSmelt_totE_world = IAI_aluminumSmelt_totE[['World']]/1000
 IAI_refinesmelt_world = IAI_alumina_kwhpkg_world + IAI_aluminumSmelt_totE_world
 
 
-# In[10]:
+# In[92]:
 
 
-plt.plot(IAI_refinesmelt_world)
+plt.plot(IAI_refinesmelt_world, color='orange')
 plt.title('World Alumina+Aluminum Smelting Energy \n Neglects Anode Energy and mining')
 plt.ylabel('kWh/kg')
+plt.ylim(10,22)
 
 
 # In[ ]:
@@ -119,7 +120,7 @@ plt.ylabel('kWh/kg')
 
 # ## Bauxite Mining
 
-# In[11]:
+# In[81]:
 
 
 #skipcols = ['Source', 'Notes','Country']
@@ -127,30 +128,26 @@ e_mineAl_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/en
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[12]:
+# In[82]:
 
 
 e_mineAl_raw.dropna(how='all')
 
 
-# So this is a massively wide range. I have confidence in the International Aluminum Inst. LCI, but it is also the highest value. However, when compared to the other numbers from that report, it is still <1% of the overall energy demand
+# Mining energy is a small contributor. Unlike other ores, bauxite usually doesnt require blasting or apparently significant sorting/crushing. For conservative estimate, we will take the mean of the energy values and use 56% fuels from IAI (2018).
 
-# In[ ]:
-
-
+# In[151]:
 
 
-
-# In[ ]:
-
-
-
+mine_avg = e_mineAl_raw[['E_mine_kWhpkg']].mean().values
+e_mineAl = pd.DataFrame({'E_mine_kWhpkg':mine_avg, 'PrctFuel':56}, index=e_mineAl_raw.index)
+e_mineAl.head()
 
 
 # ## Alumina Production & Aluminum Smelting
 # This step includes the production of alumina from bauxite, and the smelting of aluminum from alumina through the Hall-H process. Energy of the anode has been included here (i.e. more than just electricity and fuels) because the anode is critical and is mostly fuels and electricity.
 
-# In[13]:
+# In[37]:
 
 
 #skipcols = ['Source', 'Notes','Country']
@@ -158,13 +155,13 @@ e_refinesmeltAl_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMate
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[14]:
+# In[38]:
 
 
 e_refinesmeltAl_raw.dropna(how='all')
 
 
-# In[15]:
+# In[39]:
 
 
 plt.scatter(e_refinesmeltAl_raw.index, e_refinesmeltAl_raw['E_refineSmelt_kWhpkg'], marker='o')
@@ -173,15 +170,16 @@ plt.ylabel('kWh/kg')
 plt.plot(IAI_refinesmelt_world, color='orange')
 
 
-# In[16]:
+# In[44]:
 
 
 #teasing out the differences
 e_refinesmeltAl_trim = e_refinesmeltAl_raw.dropna(how='all')
 e_refinesmeltAl_trim_elecOnly = e_refinesmeltAl_trim[e_refinesmeltAl_trim['Notes'].str.contains('electricity only')]
+e_refinesmeltAl_trim_elecOnly.index
 
 
-# In[17]:
+# In[41]:
 
 
 plt.scatter(e_refinesmeltAl_raw.index, e_refinesmeltAl_raw['E_refineSmelt_kWhpkg'], marker='o')
@@ -194,28 +192,53 @@ plt.plot(IAI_refinesmelt_world, color='orange')
 
 # The low values are electricity only, while the higher values are full energy demand. Therefore we will drop those numbers, and interpolate between the full energy numbers
 
-# In[43]:
+# In[47]:
 
 
-#remove the electricity only rows
-#e_refinesmeltAl_raw.loc[~e_refinesmeltAl_raw.index.isin(e_refinesmeltAl_trim.index),:]
-e_refinesmeltAl_raw[~e_refinesmeltAl_trim['Notes'].str.contains('electricity only')]
-
-#.loc[:,~allenergy.columns.isin(energyGen.columns)], e_refinesmeltAl_trim_elecOnly 
-#e_refinesmeltAl_trim[e_refinesmeltAl_trim['Notes'].str.contains('electricity only')]
-#IAI_aluminumSmelt_raw.loc[(slice(None),['Total Energy_ac']),:] #slice on the multilevel
-#IAI_aluminumSmelt_totE = IAI_aluminumSmelt_raw[['World']].xs('Total Energy_ac', level=1) # slice on the multilevel
+#set the electricity only rows to Nan
+e_refinesmeltAl = e_refinesmeltAl_raw.copy()
+e_refinesmeltAl.loc[e_refinesmeltAl_raw.index.isin(e_refinesmeltAl_trim_elecOnly.index),:]=np.nan
+e_refinesmeltAl.head()
 
 
-# In[ ]:
+# In[45]:
 
 
+plt.scatter(e_refinesmeltAl.index, e_refinesmeltAl['E_refineSmelt_kWhpkg'], marker='o')
 
+plt.title('Energy Refine and Smelt Gross Energy')
+plt.ylabel('kWh/kg')
+plt.plot(IAI_refinesmelt_world, color='orange')
+
+
+# In[50]:
+
+
+e_refinesmeltAl.dropna(how='all')
+
+
+# Based on the resources and level of detailed information provided, I trust the International Aluminum Institute and (therefore) Lennon et al 2022 more than Farjana. Therefore, we will drop Farjana and interpolate. We will also use the 21% fuels vs electricity from IAI (2018).
+
+# In[95]:
+
+
+e_refinesmeltAl.loc[2020]=np.nan #droping Farjana
+e_refinesmeltAl_filled = e_refinesmeltAl.loc[1995:,['E_refineSmelt_kWhpkg']].interpolate()
+e_refinesmeltAl_filled['PrctFuel'] = e_refinesmeltAl.loc[2018,'PrctFuel']
+
+
+# In[96]:
+
+
+plt.plot(e_refinesmeltAl_filled)
+plt.title('Energy to Refine and Smelt Al')
+plt.ylabel('kWh/kg')
+plt.legend(e_refinesmeltAl_filled.columns)
 
 
 # ## Casting, Extruding, Anodizing
 
-# In[18]:
+# In[57]:
 
 
 #skipcols = ['Source', 'Notes','Country']
@@ -223,7 +246,7 @@ e_formanodize_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[19]:
+# In[58]:
 
 
 e_formanodize_raw.dropna(how='all')
@@ -231,21 +254,57 @@ e_formanodize_raw.dropna(how='all')
 
 # These are not helped by plotting. extrude and anodize seem to be mostly thermal processes maxing out around 5 kWh/kg. (Note the Harscoet is in kg/m2, not per mass and are intented to be added together. Therefore we will assume 5 kWh/kg and 87% of the energy is fuels for thermal.
 
-# In[ ]:
+# In[99]:
 
 
+e_formanodize = pd.DataFrame({'E_formanodize_kWhpkg':5.0,'PrctFuel':87}, index=e_formanodize_raw.index)
 
 
-
-# In[ ]:
-
+# In[100]:
 
 
+#plt.plot(e_formanodize)
+
+
+# ## Sum the Mining, Refine and Smelt, and Form and Anodize Energies
+
+# In[152]:
+
+
+pd.concat([e_refinesmeltAl_filled,e_formanodize], axis=1)
+
+
+# In[153]:
+
+
+e_AlFrames = e_refinesmeltAl_filled['E_refineSmelt_kWhpkg']+e_formanodize['E_formanodize_kWhpkg']
+
+
+# In[154]:
+
+
+#e_mine_wtd = e_mineAl['E_mine_kWhpkg']*(e_mineAl['PrctFuel']/100)
+e_refine_wtd = e_refinesmeltAl_filled['E_refineSmelt_kWhpkg']*(e_refinesmeltAl_filled['PrctFuel']/100)
+e_form_wtd = e_formanodize['E_formanodize_kWhpkg']*(e_formanodize['PrctFuel']/100)
+fuel_sum = e_refine_wtd+e_form_wtd
+
+
+# In[155]:
+
+
+fuel_prct = fuel_sum/e_AlFrames
+
+
+# In[157]:
+
+
+e_AlFrames_final = pd.concat([e_AlFrames,fuel_prct*100], axis=1, keys=['E_AlFrames_kWhpkg','PrctFuel'])
+e_AlFrames_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output-energy-aluminumframes.csv")
 
 
 # ## Cumulative Energy Demand Comparison
 
-# In[20]:
+# In[159]:
 
 
 #skipcols = ['Source', 'Notes','Country']
@@ -253,31 +312,26 @@ e_AlCED_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/ene
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[21]:
+# In[160]:
 
 
 e_AlCED_raw.dropna(how='all')
 
 
-# In[22]:
+# In[158]:
 
 
-plt.scatter(e_AlCED_raw.index, e_AlCED_raw['PED_kWhpkg'], marker='o')
-plt.title('Cumulative Energy Demand Raw Lit')
-plt.ylabel('kWh/kg')
-plt.plot(IAI_refinesmelt_world, color='orange')
+#literature
+plt.scatter(e_AlCED_raw.index, e_AlCED_raw['PED_kWhpkg'], marker='o', label='Lit. CED')
+plt.scatter(e_AlCED_raw.index, e_AlCED_raw['PrctFuel'], marker='^', color='orange', label='Lit. %Fuel')
+plt.plot(IAI_refinesmelt_world, color='blue', label='Lit. Refine&Smelt')
+#our baseline
+plt.plot(e_AlFrames_final, label=['PVICE Energy','PVICE % Fuel'], ls='--')
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
+plt.title('Energy for Al Frames\n Comparison with Literature')
+plt.ylabel('kWh/kg and %')
+plt.xlim(1993,2025)
+plt.legend()
 
 
 # In[ ]:
@@ -288,7 +342,7 @@ plt.plot(IAI_refinesmelt_world, color='orange')
 
 # ## Recycling
 
-# In[23]:
+# In[161]:
 
 
 #skipcols = ['Source', 'Notes','Country']
@@ -296,7 +350,7 @@ e_recycleAl_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[24]:
+# In[162]:
 
 
 e_recycleAl_raw.dropna(how='all')
@@ -304,12 +358,36 @@ e_recycleAl_raw.dropna(how='all')
 
 # The regular reported energy savings is that recycling is only ~5% of primary Al production. So either I can use these raw data, OR can take 5% of the CED of Al MFGing energy
 
-# In[26]:
+# In[163]:
 
 
 plt.scatter(e_recycleAl_raw.index,e_recycleAl_raw['E_recycle_kWhpkg'])
 plt.title('Energy of Recycling Aluminum')
 plt.ylabel('kWh/kg')
+
+
+# In[165]:
+
+
+e_recycleAl_raw['E_recycle_kWhpkg'].mean()
+
+
+# In[168]:
+
+
+e_recycleAl_raw['E_recycle_kWhpkg'].mean()/e_AlFrames_final['E_AlFrames_kWhpkg']
+
+
+# In[172]:
+
+
+e_AlFrames_final['E_AlFrames_kWhpkg']*0.08
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
