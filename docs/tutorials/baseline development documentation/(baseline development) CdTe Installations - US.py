@@ -3,6 +3,8 @@
 
 # # Calculations for PV CdTe installs, CdTe Market Share
 
+# **UPDATE:** Since the data from CdTe was obtained from eia860 and the PV data afrom literature, there are conflicting values in the market share. Therefore I invite you to visit the notebook **EIA860 Processing - cSi CdTe Installation** for the most updated version of installs and market share, both for cSi and CdTe.
+
 # This journal documents the manipulation of CdTe PV installation data for US installs. This covers selection of data, and weighting by marketshare.
 
 # In[1]:
@@ -134,7 +136,29 @@ si_installs_us_baseline['new_Installed_Capacity_[MW]'] = si_installs_us_baseline
 si_installs_us_baseline.info()
 
 
-# In[23]:
+# In[16]:
+
+
+plt.plot(df_cdte_installs_total_grouped.index,df_cdte_installs_total_grouped['CdTe New Installs Capacity (MW)'],lw=2,marker='*', label='CdTe New Installs')
+plt.plot(df_cdte_installs_total_grouped.index,df_cdte_installs_total_grouped['Total PV US installs (MW)'],lw=2,marker='o', label='All PV Tech New Installs')
+plt.plot(si_installs_us.index,si_installs_us['0'],lw=2,marker='.', label='Si New Installs')
+plt.plot(range(1995, 2051), si_installs_us_baseline['new_Installed_Capacity_[MW]'],lw=2,marker='v', label='PV ICE baseline Si New Installs')
+
+
+# ax = plt.gca()
+# ax.set_ylim([-10, 10^5])
+#plt.yscale('symlog') # This way we can see the zero values
+#plt.ylim(0, 30000)
+plt.ylim(0, 3000)
+plt.xlim(2001, 2020)
+plt.ylabel('PV Installed (MW)')
+plt.xlabel('Years')
+#plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
+plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
+#plt.plot(df_installs_raw, marker='o')
+
+
+# In[17]:
 
 
 plt.plot(df_cdte_installs_total_grouped.index,df_cdte_installs_total_grouped['CdTe New Installs Capacity (MW)'],lw=2,marker='*', label='CdTe New Installs')
@@ -158,14 +182,14 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # #### Import Si market share
 
-# In[17]:
+# In[18]:
 
 
 si_maketshare_us = pd.read_csv(os.path.join(supportMatfolder,'output_USA_Si_marketshare.csv'), index_col='Year')
 si_maketshare_us;
 
 
-# In[18]:
+# In[19]:
 
 
 plt.plot(si_maketshare_us.index,si_maketshare_us['All_Marketshare']*100,lw=2,marker='*', label='Si Market Share')
@@ -183,13 +207,13 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 #plt.plot(df_installs_raw, marker='o')
 
 
-# In[19]:
+# In[20]:
 
 
 total_share = df_cdte_installs_total_grouped['Market share [%]'] + si_maketshare_us['All_Marketshare']*100
 
 
-# In[20]:
+# In[21]:
 
 
 total_share
