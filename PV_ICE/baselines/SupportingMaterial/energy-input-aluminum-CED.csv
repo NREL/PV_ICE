@@ -1,4 +1,4 @@
-﻿year,PED_kWhpkg,% Fuel,Source,Notes
+﻿year,PED_kWhpkg,PrctFuel,Source,Notes
 1995,,,,
 1996,,,,
 1997,,,,
@@ -21,9 +21,9 @@
 2014,,,,
 2015,,,,
 2016,,,,
-2017,29.44362,50%,"Yang, Y. et al. (2019) ‘Environmental impact assessment of China’s primary aluminum based on life cycle assessment’, Transactions of Nonferrous Metals Society of China, 29(8), pp. 1784–1792. Available at: https://doi.org/10.1016/S1003-6326(19)65086-7.",Table 3 PED total for hydropower
-2018,73.05351,25%,"Yang, Y. et al. (2019) ‘Environmental impact assessment of China’s primary aluminum based on life cycle assessment’, Transactions of Nonferrous Metals Society of China, 29(8), pp. 1784–1792. Available at: https://doi.org/10.1016/S1003-6326(19)65086-7.",Table 2 PED total thermal based (not hydropower)
-2019,18.71605871,21%,World Aluminium — Primary Aluminium Production (no date). Available at: https://www.world-aluminium.org/statistics/ (Accessed: 1 February 2021).,"calculations from 2019 LCI, see excel GLO"
+2017,29.44362,50,"Yang, Y. et al. (2019) ‘Environmental impact assessment of China’s primary aluminum based on life cycle assessment’, Transactions of Nonferrous Metals Society of China, 29(8), pp. 1784–1792. Available at: https://doi.org/10.1016/S1003-6326(19)65086-7.",Table 3 PED total for hydropower
+2018,73.05351,25,"Yang, Y. et al. (2019) ‘Environmental impact assessment of China’s primary aluminum based on life cycle assessment’, Transactions of Nonferrous Metals Society of China, 29(8), pp. 1784–1792. Available at: https://doi.org/10.1016/S1003-6326(19)65086-7.",Table 2 PED total thermal based (not hydropower)
+2019,18.71605871,21,World Aluminium — Primary Aluminium Production (no date). Available at: https://www.world-aluminium.org/statistics/ (Accessed: 1 February 2021).,"calculations from 2019 LCI, see excel GLO"
 2020,62.2498257,,"Camaratta, R., Volkmer, T.M. and Osorio, A.G. (2020) ‘Embodied energy in beverage packaging’, Journal of Environmental Management, 260, p. 110172. Available at: https://doi.org/10.1016/j.jenvman.2020.110172.","unknown source, embodied energy"
 2021,13.713,,"Zhu, S. et al. (2022) ‘An assessment of environmental impacts and economic benefits of multiple aluminum production methods’, Journal of Cleaner Production, 370, p. 133523. Available at: https://doi.org/10.1016/j.jclepro.2022.133523.","looks to be CED, mostly based on Farjana"
 2022,,,,
