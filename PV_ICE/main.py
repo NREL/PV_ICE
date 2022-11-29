@@ -1199,11 +1199,12 @@ class Simulation:
         '''
         print ("Not Done")
 
-    def trim_Years( self, startYear=None, endYear=None, aggregateInstalls=False,
+    def trim_Years( self, startYear, endYear, aggregateInstalls=False,
                    averageEfficiency=False, averagemassdata = False, methodAddedYears='repeat',
                    scenarios=None, materials=None):
         '''
-
+        This function now just trims years at the start or end
+        
         methodStart : str
             'trim' or 'aggregate'. Trim cuts the values before the year specified.
             Aggregate sums the values (if any) up to the year specified and sets it
@@ -1225,29 +1226,9 @@ class Simulation:
         dataStartYear = int(self.scenario[scen0].dataIn_m.iloc[0]['year'])
         dataEndYear = int(self.scenario[scen0].dataIn_m.iloc[-1]['year'])
 
-        if startYear is None:
-            startYear = dataStartYear
-            print("startYear not provided. Setting to start year of Module data", startYear)
-
-        if endYear is None:
-            endYear = dataEndYear
-            print("endYear not provided. Setting to end year of Module data", endYear)
-
-        startYear = startYear
-        endYear = endYear
-
-
+        tryenergy = True
         for scen in scenarios:
             baseline = self.scenario[scen].dataIn_m
-
-            if int(startYear) < int(dataStartYear):
-                print("ADD YEARS HERE. not done yet")
-
-            if int(endYear) > int(dataEndYear):
-                #idx = pd.Series(range(0,(endYear-dataEndYear))
-                #self.scenario[scen].dataIn_m['year'] = pd.concat([self.scenario[scen].dataIn_m['year'],idx])
-                #self.scenario[scen].dataIn_m.fillna(method='ffill')
-                print("Testing adding years to end")
 
             # Add check if data does not need to be reduced to not do these.
             reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
@@ -1263,37 +1244,36 @@ class Simulation:
             reduced.reset_index(drop=True, inplace=True)
             self.scenario[scen].dataIn_m = reduced #reassign the material data to the simulation
 
-            try:
-                baseline = self.scenario[scen].dataIn_e
-
-                # Add check if data does not need to be reduced to not do these.
-                reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
-
+            if tryenergy: # I'm sure theres a more elegant way to check if a dataframe exists.
                 
-                if aggregateInstalls:
-                    print("Warning: Attempting to aggregate Installs for "+ 
-                          "triming years for Energy Data. This is not yet "+
-                          "implemented, it will just clip data to years "+
-                          "selected. Let silvana know this feature is "+
-                          "actually needed so she works on it.")
-                if averageEfficiency:
-                    print("Warning: Attempting to averageEfficiency for "+
-                          "triming years for Energy Data. This is not yet "+
-                          "implemented, it will just clip data to years "+
-                          "selected. Let silvana know this feature is "+
-                          "actually needed so she works on it.")
-                reduced.reset_index(drop=True, inplace=True)
-                self.scenario[scen].dataIn_e = reduced #reassign the material data to the simulation
-                
-            except:
-                print("No energy data loaded.")
-                
+                try:
+                    baseline = self.scenario[scen].dataIn_e
+    
+                    # Add check if data does not need to be reduced to not do these.
+                    reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
+    
+                    
+                    if aggregateInstalls:
+                        print("Warning: Attempting to aggregate Installs for "+ 
+                              "triming years for Energy Data. This is not yet "+
+                              "implemented, it will just clip data to years "+
+                              "selected. Let silvana know this feature is "+
+                              "actually needed so she works on it.")
+                    if averageEfficiency:
+                        print("Warning: Attempting to averageEfficiency for "+
+                              "triming years for Energy Data. This is not yet "+
+                              "implemented, it will just clip data to years "+
+                              "selected. Let silvana know this feature is "+
+                              "actually needed so she works on it.")
+                    reduced.reset_index(drop=True, inplace=True)
+                    self.scenario[scen].dataIn_e = reduced #reassign the material data to the simulation
+                    
+                except:
+                    print("No energy data loaded. Skipping for all next scenarios and materials")
+                    tryenergy = False
+                    
+            
             for mat in self.scenario[scen].material:
-                if int(startYear) < int(dataStartYear):
-                    print("ADD YEARS HERE. not done yet")
-
-                if int(endYear) > int(dataEndYear):
-                    print("ADD YEARS HERE. not done yet")
 
                 matdf = self.scenario[scen].material[mat].matdataIn_m #pull out the df
                 reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
@@ -1307,22 +1287,26 @@ class Simulation:
                 reduced.reset_index(drop=True, inplace=True)
                 self.scenario[scen].material[mat].matdataIn_m = reduced #reassign the material data to the simulation
 
-                try:
-                    matdf = self.scenario[scen].material[mat].matdataIn_e #pull out the df
-                    reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
+                if tryenergy: # I'm sure theres a more elegant way to check if a dataframe exists.
     
-                    if averagemassdata == 'average':
-                        print("Warning: Attempting to averagemassdata for "+
-                              "triming years for Energy Data. This is not yet "+
-                              "implemented, it will just clip data to years "+
-                              "selected. Let silvana know this feature is "+
-                              "actually needed so she works on it.")
-    
-                    reduced.reset_index(drop=True, inplace=True)
-                    self.scenario[scen].material[mat].matdataIn_e = reduced #reassign the material data to the simulation
-                except:
-                    print("No material energy data loaded.")
+                    try:
+                        matdf = self.scenario[scen].material[mat].matdataIn_e #pull out the df
+                        reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
+        
+                        if averagemassdata == 'average':
+                            print("Warning: Attempting to averagemassdata for "+
+                                  "triming years for Energy Data. This is not yet "+
+                                  "implemented, it will just clip data to years "+
+                                  "selected. Let silvana know this feature is "+
+                                  "actually needed so she works on it.")
+        
+                        reduced.reset_index(drop=True, inplace=True)
+                        self.scenario[scen].material[mat].matdataIn_e = reduced #reassign the material data to the simulation
+                    except:
+                        print("No material energy data loaded.")
 
+            print("Data trimed, years now encompass ", startYear, " to ", endYear)
+            
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
 
@@ -1378,7 +1362,7 @@ class Simulation:
                 scenarios = [scenarios]
 
         for scen in scenarios:
-            self.scenario[scen].dataIn_m['mod_EOL_collection_eff '] = 0.0 #this should send all to landfill, but just in case set rest to 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_collection_eff'] = 0.0 #this should send all to landfill, but just in case set rest to 0.0
             self.scenario[scen].dataIn_m['mod_EOL_pg0_resell'] = 0.0
             self.scenario[scen].dataIn_m['mod_EOL_pg1_landfill'] = 100.0 #all to landfill
             self.scenario[scen].dataIn_m['mod_EOL_pg2_stored'] = 0.0
