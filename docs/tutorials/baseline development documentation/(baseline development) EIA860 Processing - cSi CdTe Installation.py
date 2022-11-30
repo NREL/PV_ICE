@@ -58,11 +58,17 @@ eia860_raw = pd.read_excel(os.path.join(supportMatfolder, '3_3_Solar_Y2021.xlsx'
 # In[4]:
 
 
+eia860_raw[(eia860_raw['Operating Year'] == 2001) & (eia860_raw['Technology'] == 'Solar Photovoltaic') & (eia860_raw['Plant Name'] == 'Springerville')]
+
+
+# In[5]:
+
+
 index_num = eia860_raw[(eia860_raw['Operating Year'] == 2001) & (eia860_raw['Technology'] == 'Solar Photovoltaic') & (eia860_raw['Plant Name'] == 'Springerville')].index.values.astype(int)[0]
 eia860_raw_correct_1 = pd.concat([eia860_raw, eia860_raw.iloc[[index_num]]*1],ignore_index=True)
 
 
-# In[5]:
+# In[6]:
 
 
 row_si_num = eia860_raw_correct_1[(eia860_raw_correct_1['Operating Year'] == 2001) & (eia860_raw_correct_1['Technology'] == 'Solar Photovoltaic') & (eia860_raw_correct_1['Plant Name'] == 'Springerville')].index.values.astype(int)[0]
@@ -77,13 +83,13 @@ row_cdte_num = eia860_raw_correct_1[(eia860_raw_correct_1['Operating Year'] == 2
 
 # Values replacement and correction
 
-# In[6]:
+# In[7]:
 
 
 eia860_raw_correct_1.keys()
 
 
-# In[7]:
+# In[8]:
 
 
 eia860_raw_correct_1.loc[row_si_num, 'Thin-Film (CdTe)?'], eia860_raw_correct_1.loc[row_si_num, 'Nameplate Capacity (MW)'] = 'N', 2.7
@@ -92,24 +98,24 @@ eia860_raw_correct_1.loc[row_cdte_num, 'Crystalline Silicon?'], eia860_raw_corre
 
 # Check to see if I change the values:
 
-# In[8]:
+# In[20]:
 
 
-#eia860_raw_correct_1.loc[row_si_num]
-eia860_raw_correct_1.loc[row_cdte_num];
+eia860_raw_correct_1.loc[row_si_num]
+#eia860_raw_correct_1.loc[row_cdte_num]
 
 
 # #### Correction 2: Solar Gen 2 Solar Facility
 
 # I am going to change the Solar Gen 2 Solar Facility to be only CdTe (more explenation at the end of this notebook).
 
-# In[9]:
+# In[11]:
 
 
 index_list = eia860_raw[(eia860_raw['Plant Name'] == 'Solar Gen 2 Solar Facility')].index.values
 
 
-# In[10]:
+# In[12]:
 
 
 eia860_raw_correct_1.loc[index_list, 'Crystalline Silicon?'] = 'N'
@@ -120,30 +126,31 @@ eia860_raw_correct_1.loc[index_list]
 
 # There is no data on what kind Springbok 3 is. However, I can assume it is not CdTe because First Solar is not mentioned in their [website](https://avantus.com/development) nor in the [2019 First Solar annual report](https://s2.q4cdn.com/646275317/files/doc_financials/2019/ar/First-Solar-2019-Annual-Report-vPost.pdf).
 
-# In[11]:
+# In[21]:
 
 
 index_3 = eia860_raw[(eia860_raw['Plant Name'] == 'Springbok 3 Solar Farm Hybrid')].index.values
 index_3
 
 
-# In[12]:
+# In[22]:
 
 
-eia860_raw_correct_1.loc[index_list, 'Thin-Film (CdTe)?'] = 'N'
+eia860_raw_correct_1.loc[index_3, 'Thin-Film (CdTe)?'] = 'N'
+eia860_raw_correct_1.loc[index_3]
 
 
 # ---
 # ## Total PV
 
-# In[13]:
+# In[23]:
 
 
 eia860_raw_pv = eia860_raw_correct_1[eia860_raw_correct_1['Technology'] == 'Solar Photovoltaic']
 eia860_all_pv = eia860_raw_pv.groupby('Operating Year').sum()
 
 
-# In[14]:
+# In[24]:
 
 
 plt.plot(eia860_all_pv.index, eia860_all_pv['Nameplate Capacity (MW)'])
@@ -156,7 +163,7 @@ plt.plot(eia860_all_pv.index, eia860_all_pv['Nameplate Capacity (MW)'])
 
 # Load the original PV installs data and drop the years from 2001.
 
-# In[15]:
+# In[25]:
 
 
 us_installs_original = pd.read_csv(os.path.join(supportMatfolder,'output_USA_allPV_installs.csv'), index_col='Year')
@@ -164,7 +171,7 @@ us_installs_original.rename(columns={'installed_pv_MW':'Nameplate Capacity (MW)'
 us_installs_original_before_2001 = us_installs_original.loc[(us_installs_original.index<2001)]
 
 
-# In[16]:
+# In[26]:
 
 
 plt.plot(us_installs_original_before_2001.index, us_installs_original_before_2001['Nameplate Capacity (MW)'])
@@ -172,13 +179,13 @@ plt.plot(us_installs_original_before_2001.index, us_installs_original_before_200
 
 # Now I concatenate both datasets, and boom... we get a new PV all tech installs line.
 
-# In[17]:
+# In[27]:
 
 
 new_pv_installs = pd.concat([us_installs_original_before_2001, eia860_all_pv])
 
 
-# In[18]:
+# In[28]:
 
 
 plt.plot(new_pv_installs.index, new_pv_installs['Nameplate Capacity (MW)'], label= 'eia860 and Heathers pre 2001')
@@ -191,7 +198,7 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Yes, the drop is huge. Therefore I will use the total PV installs from Heather to calculate the market shares since it represents more the total PV, not only utility.
 
-# In[19]:
+# In[ ]:
 
 
 # Export to csv
@@ -209,7 +216,7 @@ new_pv_installs['Nameplate Capacity (MW)'].to_csv(os.path.join(supportMatfolder,
 
 # Find cSi data and CdTe from the eia890 dataframe.
 
-# In[20]:
+# In[29]:
 
 
 eia860_raw_cSi = eia860_raw_correct_1[eia860_raw_correct_1['Crystalline Silicon?'] == 'Y']
@@ -221,7 +228,7 @@ eia860_raw_CdTe = eia860_raw_correct_1[eia860_raw_correct_1['Thin-Film (CdTe)?']
 
 # Group by year.
 
-# In[21]:
+# In[30]:
 
 
 eia860_cSi = eia860_raw_cSi.groupby('Operating Year').sum()
@@ -233,13 +240,13 @@ eia860_CdTe = eia860_raw_CdTe.groupby('Operating Year').sum()
 
 # Concatenate cSi data pre-2001 since it was 100% c-Si.
 
-# In[22]:
+# In[31]:
 
 
 eia860_cSi = pd.concat([us_installs_original_before_2001, eia860_cSi])
 
 
-# In[23]:
+# In[32]:
 
 
 eia860_cSi.to_csv(os.path.join(supportMatfolder, 'output_eia860_c-Si_installs_utility.csv'))
@@ -248,7 +255,7 @@ eia860_CdTe.to_csv(os.path.join(supportMatfolder, 'output_eia860_CdTe_installs_u
 
 # Plot.
 
-# In[24]:
+# In[33]:
 
 
 plt.plot(new_pv_installs.index, new_pv_installs['Nameplate Capacity (MW)'], label='All PV')
@@ -267,22 +274,29 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # ### Market share calculations - utility
 
-# In[25]:
+# In[34]:
 
 
 ms_utility = pd.DataFrame()
-ms_utility['c-Si'] = eia860_cSi['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
-ms_utility['CdTe (Thin film)'] = eia860_CdTe['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
+ms_utility['c-Si (%)'] = eia860_cSi['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
+ms_utility['CdTe (%)'] = eia860_CdTe['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
 # ms['CIGS (Thin film)'] = eia860_CIGS['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
 # ms['A-Si (Thin film)'] = eia860_ASi['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
 #ms['Other (Thin film)'] = eia860_Other['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
 ms_utility.fillna(0, inplace=True)
+ms_utility = ms_utility.round(4)
 ms_utility.to_csv(os.path.join(supportMatfolder, 'output_eia860_market_share_c-Si_CdTe_utility.csv'))
+
+
+# In[35]:
+
+
+ms_utility
 
 
 # Tidy data version
 
-# In[26]:
+# In[36]:
 
 
 ms_utility.reset_index(inplace=True)
@@ -291,14 +305,14 @@ tidy_ms_utility = ms_utility.melt('Year', var_name='Technology', value_name='Mar
 tidy_ms_utility.to_csv(os.path.join(supportMatfolder, 'output_eia860_tidy_cSi_CdTe_market_share_utility.csv'))
 
 
-# In[28]:
+# In[37]:
 
 
 ax = sns.lineplot(x='Year', y='Market share', data=tidy_ms_utility, hue='Technology')
-plt.gca().xaxis.set_major_formatter(FuncFormatter(lambda x, _: int(x))) # Sets year x axis as 
-ax.yaxis.set_major_formatter(PercentFormatter(1))
+#plt.gca().xaxis.set_major_formatter(FuncFormatter(lambda x, _: int(x))) # Sets year x axis as 
+#ax.yaxis.set_major_formatter(PercentFormatter(1))
 
-plt.ylabel('PV Market Share')
+plt.ylabel('PV Market Share (%)')
 plt.xlabel('Years')
 #plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
 plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
@@ -309,14 +323,14 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # In this version, I use Heather's original data for all PV and c-Si fraction since it comprises residential, commercial and CdTe. CdTe is virtually only utility scale.
 
-# In[30]:
+# In[38]:
 
 
 heather_csi_data = pd.read_csv(os.path.join(supportMatfolder,'output_USA_SiPV_installs.csv'), index_col='Year')
 heather_csi_data.rename(columns={'0': 'Nameplate Capacity (MW)'}, inplace=True)
 
 
-# In[37]:
+# In[39]:
 
 
 plt.plot(us_installs_original.index, us_installs_original['Nameplate Capacity (MW)'], label= 'Heather')
@@ -332,7 +346,7 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # This one shows a more realistic scenario. Let's now calculate market share.
 
-# In[32]:
+# In[47]:
 
 
 ms_all = pd.DataFrame()
@@ -342,10 +356,18 @@ ms_all['CdTe (Thin film)'] = eia860_CdTe['Nameplate Capacity (MW)']/us_installs_
 # ms['A-Si (Thin film)'] = eia860_ASi['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
 #ms['Other (Thin film)'] = eia860_Other['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
 ms_all.fillna(0, inplace=True)
+ms_all = ms_all.round(2)
 ms_all.to_csv(os.path.join(supportMatfolder, 'output_eia860_market_share_c-Si_CdTe_all.csv'))
 
 
-# In[33]:
+# In[46]:
+
+
+ms_all['add'] = ms_all['c-Si'] + ms_all['CdTe (Thin film)']
+ms_all
+
+
+# In[ ]:
 
 
 ms_all.reset_index(inplace=True)
@@ -354,7 +376,7 @@ tidy_ms_all = ms_all.melt('Year', var_name='Technology', value_name='Market shar
 tidy_ms_all.to_csv(os.path.join(supportMatfolder, 'output_eia860_tidy_cSi_CdTe_market_share_all.csv'))
 
 
-# In[34]:
+# In[ ]:
 
 
 ax = sns.lineplot(x='Year', y='Market share', data=tidy_ms_all, hue='Technology')
