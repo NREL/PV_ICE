@@ -78,7 +78,6 @@ import PV_ICE
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='US', massmodulefile=r'..\baselines\baseline_modules_mass_US.csv')
 r1.scenMod_noCircularity() # Reeds Solar Future Study had circularity paths set to 0
-r1.scenario['US'].dataIn_m['mod_EOL_collection_eff'] = 0.0 # Redudnat but oh well.
 baseline = r1.scenario['US'].dataIn_m
 baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
 baseline.set_index('year', inplace=True)
@@ -109,13 +108,19 @@ with open(massmodulefile, newline='') as f:
 row11 = 'year'
 for x in row1[1:]:
     row11 = row11 + ',' + x 
-    
+
 row22 = 'year'
 for x in row2[1:]:
     row22 = row22 + ',' + x 
 
 
 # In[9]:
+
+
+row11
+
+
+# In[10]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -155,7 +160,7 @@ for ii in range (len(rawdf.unstack(level=1))):
 
 # #### Reassign data from REEDS Input, as we need one of the columns we dropped.
 
-# In[10]:
+# In[11]:
 
 
 rawdf = REEDSInput.copy()
@@ -167,7 +172,7 @@ rawdf.head(21)
 
 # #### Group data so we can work with the States instead
 
-# In[11]:
+# In[12]:
 
 
 #df = rawdf.groupby(['Scenario','State', 'Year'])['Capacity (GW)'].sum(axis=0)
@@ -178,7 +183,7 @@ df.head()
 
 # #### For each Scenario and for each STATE, combine with baseline and save as input file
 
-# In[12]:
+# In[13]:
 
 
 for ii in range (len(df.unstack(level=2))):   
@@ -221,7 +226,7 @@ for ii in range (len(df.unstack(level=2))):
 
 # ### Create a copy of the REEDS Input and modify structure for PCA focus
 
-# In[13]:
+# In[14]:
 
 
 rawdf = REEDSInput.copy()
@@ -231,7 +236,7 @@ rawdf.set_index(['Scenario','Year'], inplace=True)
 rawdf.head(21)
 
 
-# In[14]:
+# In[15]:
 
 
 #df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum(axis=0)
@@ -240,7 +245,7 @@ df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum()
 
 # ### Loading Module Baseline. Will be used later to populate all the columsn other than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[15]:
+# In[16]:
 
 
 import PV_ICE
@@ -257,7 +262,7 @@ baseline.head()
 
 # ### For each Scenario, combine with baseline and save as input file¶
 
-# In[16]:
+# In[17]:
 
 
 for ii in range (len(df.unstack(level=1))):
