@@ -330,12 +330,27 @@ heather_csi_data = pd.read_csv(os.path.join(supportMatfolder,'output_USA_SiPV_in
 heather_csi_data.rename(columns={'0': 'Nameplate Capacity (MW)'}, inplace=True)
 
 
-# In[31]:
+# Since the addition of cSi and CdTe market share is a bit off, I am double check with the data from LBNL :)
+
+# In[48]:
+
+
+lbnl = pd.read_excel(os.path.join(supportMatfolder,'lbnl_thinfilm.xlsx'),index_col=0)
+
+
+# In[49]:
+
+
+lbnl
+
+
+# In[50]:
 
 
 plt.plot(us_installs_original.index, us_installs_original['Nameplate Capacity (MW)'], label= 'Heather')
 plt.plot(heather_csi_data.index, heather_csi_data['Nameplate Capacity (MW)'], label='cSi')
-plt.plot(eia860_CdTe.index, eia860_CdTe['Nameplate Capacity (MW)'], label='CdTe (Thin film)')
+plt.plot(eia860_CdTe.index, eia860_CdTe['Nameplate Capacity (MW)'], label='CdTe')
+plt.plot(lbnl.index, lbnl['Total (MW)'], label='CdTe (LBNL)')
 plt.ylabel('PV Installed (MW)')
 plt.xlabel('Years')
 #plt.yscale('symlog') # Comment this one if you want to see it at normal scale
@@ -345,6 +360,12 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 
 # This one shows a more realistic scenario. Let's now calculate market share.
+
+# In[ ]:
+
+
+
+
 
 # In[32]:
 
@@ -396,16 +417,17 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Upload Electrification Futures baseline.
 
-# In[ ]:
+# In[46]:
 
 
-ef_baseline = pd.read_csv(os.path.join(supportMatfolder,'output_USA_SiPV_installs.csv'), index_col='Year')
+sf_reeds_alts = pd.read_excel(os.path.join(supportMatfolder,'SF_reeds_alternates.xlsx'),index_col=0)
+sf_reeds = sf_reeds_alts.loc[2023:2050,['MW']]
 
 
-# In[ ]:
+# In[47]:
 
 
-
+sf_reeds
 
 
 # In[ ]:
@@ -445,55 +467,55 @@ eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y') & (eia860_raw['Thin-Film 
 'Thin-Film (Other)?'
 
 
-# In[ ]:
+# In[36]:
 
 
 len(eia860_raw)
 
 
-# In[ ]:
+# In[37]:
 
 
 csi = len(eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y')])
 
 
-# In[ ]:
+# In[38]:
 
 
 eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y') & (eia860_raw['Thin-Film (CdTe)?'] == 'Y')];
 
 
-# In[ ]:
+# In[39]:
 
 
 cdte = len(eia860_raw[(eia860_raw['Thin-Film (CdTe)?'] == 'Y')])
 
 
-# In[ ]:
+# In[40]:
 
 
 cigs = len(eia860_raw[(eia860_raw['Thin-Film (CIGS)?'] == 'Y')])
 
 
-# In[ ]:
+# In[41]:
 
 
 asi = len(eia860_raw[(eia860_raw['Thin-Film (A-Si)?'] == 'Y')])
 
 
-# In[ ]:
+# In[42]:
 
 
 other = len(eia860_raw[(eia860_raw['Thin-Film (Other)?'] == 'Y')])
 
 
-# In[ ]:
+# In[43]:
 
 
 csi + cdte + cigs + asi + other
 
 
-# In[ ]:
+# In[44]:
 
 
 eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y') & (eia860_raw['Thin-Film (CdTe)?'] == 'Y')]
