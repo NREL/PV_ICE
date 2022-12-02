@@ -14559,12 +14559,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14657,7 +14657,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Your simulation will be stored in C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP
+<pre>Your simulation will be stored in /Users/mmendez/Documents/Postdoc/Software_dev/PV_ICE/PV_ICE/TEMP
 </pre>
 </div>
 </div>
@@ -14698,7 +14698,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;v0.2.0+282.g02830de&#39;</pre>
+<pre>&#39;v0.2.0+286.gd7f3e3e&#39;</pre>
 </div>
 
 </div>
@@ -14760,7 +14760,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Input file is stored in C:\Users\sayala\Documents\GitHub\December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx
+<pre>Input file is stored in /Users/mmendez/Documents/Postdoc/Software_dev/December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx
 </pre>
 </div>
 </div>
@@ -15009,11 +15009,11 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Simulation1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
-<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cSi&#39;</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_modules_mass_US.csv&#39;</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;cSi&#39;</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;../baselines/baseline_modules_mass_US.csv&#39;</span><span class="p">)</span>
 <span class="c1"># MAC: I think we probably want noCircularity so everything goes to landfill and</span>
 <span class="c1"># it&#39;s easy to calculate the &#39;BEST case for Recycling scenario&#39;. Otherwise comment out...</span>
 <span class="n">r1</span><span class="o">.</span><span class="n">scenMod_noCircularity</span><span class="p">()</span> 
@@ -15025,7 +15025,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <span class="n">baseline</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>  <span class="c1"># A -- Annual</span>
 <span class="n">baseline</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 
-<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;CdTe&#39;</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_modules_mass_US_CdTe.csv&#39;</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;CdTe&#39;</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;../baselines/baseline_modules_mass_US_CdTe.csv&#39;</span><span class="p">)</span>
 <span class="c1"># MAC: I think we probably want noCircularity so everything goes to landfill and</span>
 <span class="c1"># it&#39;s easy to calculate the &#39;BEST case for Recycling scenario&#39;. Otherwise comment out...</span>
 <span class="n">r1</span><span class="o">.</span><span class="n">scenMod_noCircularity</span><span class="p">()</span> 
@@ -15055,7 +15055,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>path = C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP
+<pre>path = /Users/mmendez/Documents/Postdoc/Software_dev/PV_ICE/PV_ICE/TEMP
 </pre>
 </div>
 </div>
@@ -15063,7 +15063,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
 
 
 
@@ -15290,12 +15290,12 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">csv</span>
 
-<span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_modules_mass_US.csv&#39;</span>
+<span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;../baselines/baseline_modules_mass_US.csv&#39;</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">massmodulefile</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
   <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -15340,7 +15340,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">marketsharefile</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;..\baselines\SupportingMaterial\output_eia860_market_share_c-Si_CdTe_all.csv&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">marketsharefile</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;../baselines/SupportingMaterial/output_eia860_market_share_c-Si_CdTe_all.csv&#39;</span>
 <span class="n">marketshare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">marketsharefile</span><span class="p">)</span>
 <span class="c1"># Not elegant but I need to trim down to ReEds year start which is 2010</span>
 <span class="n">marketshare</span> <span class="o">=</span> <span class="n">marketshare</span><span class="p">[</span><span class="n">marketshare</span><span class="p">[</span><span class="s1">&#39;Year&#39;</span><span class="p">]</span><span class="o">&gt;=</span><span class="mi">2010</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

@@ -79,11 +79,11 @@ rawdf.head(21)
 
 # #### Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[7]:
+# In[8]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='cSi', massmodulefile=r'..\baselines\baseline_modules_mass_US.csv')
+r1.createScenario(name='cSi', massmodulefile=r'../baselines/baseline_modules_mass_US.csv')
 # MAC: I think we probably want noCircularity so everything goes to landfill and
 # it's easy to calculate the 'BEST case for Recycling scenario'. Otherwise comment out...
 r1.scenMod_noCircularity() 
@@ -95,7 +95,7 @@ baseline.set_index('year', inplace=True)
 baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
 baseline.head()
 
-r1.createScenario(name='CdTe', massmodulefile=r'..\baselines\baseline_modules_mass_US_CdTe.csv')
+r1.createScenario(name='CdTe', massmodulefile=r'../baselines/baseline_modules_mass_US_CdTe.csv')
 # MAC: I think we probably want noCircularity so everything goes to landfill and
 # it's easy to calculate the 'BEST case for Recycling scenario'. Otherwise comment out...
 r1.scenMod_noCircularity() 
@@ -114,12 +114,12 @@ baselineCdTe.head()
 # Set header dynamically
 
 
-# In[9]:
+# In[10]:
 
 
 import csv
 
-massmodulefile=r'..\baselines\baseline_modules_mass_US.csv'
+massmodulefile=r'../baselines/baseline_modules_mass_US.csv'
 
 with open(massmodulefile, newline='') as f:
   reader = csv.reader(f)
@@ -144,7 +144,7 @@ for x in row2[1:]:
 # In[13]:
 
 
-marketsharefile = r'..\baselines\SupportingMaterial\output_eia860_market_share_c-Si_CdTe_all.csv'
+marketsharefile = r'../baselines/SupportingMaterial/output_eia860_market_share_c-Si_CdTe_all.csv'
 marketshare = pd.read_csv(marketsharefile)
 # Not elegant but I need to trim down to ReEds year start which is 2010
 marketshare = marketshare[marketshare['Year']>=2010].reset_index(drop=True)

@@ -24,6 +24,8 @@ import seaborn as sns
 from matplotlib.ticker import FormatStrFormatter
 from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import PercentFormatter
+from scipy.integrate import simpson
+from numpy import trapz
 
 plt.rcParams.update({'font.size': 18})
 plt.rcParams['figure.figsize'] = (10, 6)
@@ -75,21 +77,21 @@ row_si_num = eia860_raw_correct_1[(eia860_raw_correct_1['Operating Year'] == 200
 row_cdte_num = eia860_raw_correct_1[(eia860_raw_correct_1['Operating Year'] == 2001) & (eia860_raw_correct_1['Technology'] == 'Solar Photovoltaic') & (eia860_raw_correct_1['Plant Name'] == 'Springerville')].index.values.astype(int)[1]
 
 
-# In[ ]:
+# In[7]:
 
 
-
+eia860_raw
 
 
 # Values replacement and correction
 
-# In[7]:
+# In[8]:
 
 
 eia860_raw_correct_1.keys()
 
 
-# In[8]:
+# In[9]:
 
 
 eia860_raw_correct_1.loc[row_si_num, 'Thin-Film (CdTe)?'], eia860_raw_correct_1.loc[row_si_num, 'Nameplate Capacity (MW)'] = 'N', 2.7
@@ -98,7 +100,7 @@ eia860_raw_correct_1.loc[row_cdte_num, 'Crystalline Silicon?'], eia860_raw_corre
 
 # Check to see if I change the values:
 
-# In[9]:
+# In[10]:
 
 
 eia860_raw_correct_1.loc[row_si_num]
@@ -109,13 +111,13 @@ eia860_raw_correct_1.loc[row_si_num]
 
 # I am going to change the Solar Gen 2 Solar Facility to be only CdTe (more explenation at the end of this notebook).
 
-# In[10]:
+# In[11]:
 
 
 index_list = eia860_raw[(eia860_raw['Plant Name'] == 'Solar Gen 2 Solar Facility')].index.values
 
 
-# In[11]:
+# In[12]:
 
 
 eia860_raw_correct_1.loc[index_list, 'Crystalline Silicon?'] = 'N'
@@ -126,14 +128,14 @@ eia860_raw_correct_1.loc[index_list]
 
 # There is no data on what kind Springbok 3 is. However, I can assume it is not CdTe because First Solar is not mentioned in their [website](https://avantus.com/development) nor in the [2019 First Solar annual report](https://s2.q4cdn.com/646275317/files/doc_financials/2019/ar/First-Solar-2019-Annual-Report-vPost.pdf).
 
-# In[12]:
+# In[13]:
 
 
 index_3 = eia860_raw[(eia860_raw['Plant Name'] == 'Springbok 3 Solar Farm Hybrid')].index.values
 index_3
 
 
-# In[13]:
+# In[14]:
 
 
 eia860_raw_correct_1.loc[index_3, 'Thin-Film (CdTe)?'] = 'N'
@@ -143,14 +145,14 @@ eia860_raw_correct_1.loc[index_3]
 # ---
 # ## Total PV
 
-# In[14]:
+# In[15]:
 
 
 eia860_raw_pv = eia860_raw_correct_1[eia860_raw_correct_1['Technology'] == 'Solar Photovoltaic']
 eia860_all_pv = eia860_raw_pv.groupby('Operating Year').sum()
 
 
-# In[15]:
+# In[16]:
 
 
 plt.plot(eia860_all_pv.index, eia860_all_pv['Nameplate Capacity (MW)'])
@@ -163,7 +165,7 @@ plt.plot(eia860_all_pv.index, eia860_all_pv['Nameplate Capacity (MW)'])
 
 # Load the original PV installs data and drop the years from 2001.
 
-# In[16]:
+# In[17]:
 
 
 us_installs_original = pd.read_csv(os.path.join(supportMatfolder,'output_USA_allPV_installs.csv'), index_col='Year')
@@ -171,7 +173,7 @@ us_installs_original.rename(columns={'installed_pv_MW':'Nameplate Capacity (MW)'
 us_installs_original_before_2001 = us_installs_original.loc[(us_installs_original.index<2001)]
 
 
-# In[17]:
+# In[18]:
 
 
 plt.plot(us_installs_original_before_2001.index, us_installs_original_before_2001['Nameplate Capacity (MW)'])
@@ -179,13 +181,13 @@ plt.plot(us_installs_original_before_2001.index, us_installs_original_before_200
 
 # Now I concatenate both datasets, and boom... we get a new PV all tech installs line.
 
-# In[18]:
+# In[19]:
 
 
 new_pv_installs = pd.concat([us_installs_original_before_2001, eia860_all_pv])
 
 
-# In[19]:
+# In[20]:
 
 
 plt.plot(new_pv_installs.index, new_pv_installs['Nameplate Capacity (MW)'], label= 'eia860 and Heathers pre 2001')
@@ -198,7 +200,7 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Yes, the drop is huge. Therefore I will use the total PV installs from Heather to calculate the market shares since it represents more the total PV, not only utility.
 
-# In[20]:
+# In[21]:
 
 
 # Export to csv
@@ -216,7 +218,7 @@ new_pv_installs['Nameplate Capacity (MW)'].to_csv(os.path.join(supportMatfolder,
 
 # Find cSi data and CdTe from the eia890 dataframe.
 
-# In[21]:
+# In[22]:
 
 
 eia860_raw_cSi = eia860_raw_correct_1[eia860_raw_correct_1['Crystalline Silicon?'] == 'Y']
@@ -228,7 +230,7 @@ eia860_raw_CdTe = eia860_raw_correct_1[eia860_raw_correct_1['Thin-Film (CdTe)?']
 
 # Group by year.
 
-# In[22]:
+# In[23]:
 
 
 eia860_cSi = eia860_raw_cSi.groupby('Operating Year').sum()
@@ -240,13 +242,13 @@ eia860_CdTe = eia860_raw_CdTe.groupby('Operating Year').sum()
 
 # Concatenate cSi data pre-2001 since it was 100% c-Si.
 
-# In[23]:
+# In[24]:
 
 
 eia860_cSi = pd.concat([us_installs_original_before_2001, eia860_cSi])
 
 
-# In[24]:
+# In[25]:
 
 
 eia860_cSi.to_csv(os.path.join(supportMatfolder, 'output_eia860_c-Si_installs_utility.csv'))
@@ -255,7 +257,7 @@ eia860_CdTe.to_csv(os.path.join(supportMatfolder, 'output_eia860_CdTe_installs_u
 
 # Plot.
 
-# In[25]:
+# In[26]:
 
 
 plt.plot(new_pv_installs.index, new_pv_installs['Nameplate Capacity (MW)'], label='All PV')
@@ -274,7 +276,7 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # ### Market share calculations - utility
 
-# In[26]:
+# In[27]:
 
 
 ms_utility = pd.DataFrame()
@@ -286,12 +288,6 @@ ms_utility['CdTe (%)'] = eia860_CdTe['Nameplate Capacity (MW)']/new_pv_installs[
 ms_utility.fillna(0, inplace=True)
 ms_utility = ms_utility.round(4)
 ms_utility.to_csv(os.path.join(supportMatfolder, 'output_eia860_market_share_c-Si_CdTe_utility.csv'))
-
-
-# In[27]:
-
-
-ms_utility
 
 
 # Tidy data version
@@ -332,19 +328,13 @@ heather_csi_data.rename(columns={'0': 'Nameplate Capacity (MW)'}, inplace=True)
 
 # Since the addition of cSi and CdTe market share is a bit off, I am double check with the data from LBNL :)
 
-# In[48]:
+# In[31]:
 
 
 lbnl = pd.read_excel(os.path.join(supportMatfolder,'lbnl_thinfilm.xlsx'),index_col=0)
 
 
-# In[49]:
-
-
-lbnl
-
-
-# In[50]:
+# In[32]:
 
 
 plt.plot(us_installs_original.index, us_installs_original['Nameplate Capacity (MW)'], label= 'Heather')
@@ -359,20 +349,33 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 #plt.plot(df_installs_raw, marker='o')
 
 
+# Let's see the area under the curve for CdTe eiea data and for LBNL data.
+
+# In[33]:
+
+
+eia860_CdTe_cut = eia860_CdTe.loc[2011:2021]['Nameplate Capacity (MW)']
+lbnl_cut = lbnl.loc[2011:2021]['Total (MW)']
+
+
+# In[34]:
+
+
+area_eia = trapz(eia860_CdTe_cut, dx=5)
+area_lbnl = trapz(lbnl_cut, dx=5)
+print(" area eia =", area_eia, '\n', "area lbnl =", area_lbnl)
+
+
 # This one shows a more realistic scenario. Let's now calculate market share.
 
-# In[ ]:
-
-
-
-
-
-# In[32]:
+# In[35]:
 
 
 ms_all = pd.DataFrame()
 ms_all['cSi'] = heather_csi_data['Nameplate Capacity (MW)']/us_installs_original['Nameplate Capacity (MW)']
 ms_all['CdTe'] = eia860_CdTe['Nameplate Capacity (MW)']/us_installs_original['Nameplate Capacity (MW)']
+ms_all['CdTe LBNL'] = lbnl['Total (MW)']/us_installs_original['Nameplate Capacity (MW)']
+
 # ms['CIGS (Thin film)'] = eia860_CIGS['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
 # ms['A-Si (Thin film)'] = eia860_ASi['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
 #ms['Other (Thin film)'] = eia860_Other['Nameplate Capacity (MW)']/new_pv_installs['Nameplate Capacity (MW)']
@@ -381,14 +384,49 @@ ms_all = ms_all.round(2)
 ms_all.to_csv(os.path.join(supportMatfolder, 'output_eia860_market_share_c-Si_CdTe_all.csv'))
 
 
-# In[33]:
+# In[36]:
 
 
-ms_all['add'] = ms_all['cSi'] + ms_all['CdTe']
-ms_all
+ms_all['add cSi + CdTe'] = ms_all['cSi'] + ms_all['CdTe']
+ms_all['add cSi + CdTe LBNL'] = ms_all['cSi'] + ms_all['CdTe LBNL']
 
 
-# In[34]:
+# #### Add projected market share for cSi and CdTe
+# I will be using 16% for CdTe and 84% for cSi
+
+# In[37]:
+
+
+ms_all['cSi'][27:56] = 0.84
+
+
+# In[38]:
+
+
+ms_all['CdTe LBNL'][27:56] = 0.16
+
+
+# ### Decision to use eia or LBNL data
+
+# #### eia assumptions and data sources
+# * The survey Form EIA-860 collects generator-level specific information about existing and planned generators and associated environmental equipment at electric power plants with 1 megawatt or greater of combined nameplate capacity.
+# 
+# * The total generator nameplate capacity is the sum of the maximum ratings in MW on the nameplates of all applicable generators at a specific site. For photovoltaic solar, the total generator nameplate capacity is the sum of the AC ratings of the array.
+# 
+# * Data comes from individuals that submitted it to eia. I have seen some inconsistencies (as seen in the correction sections), so my level of trust has declined a bit. 
+
+# #### LBNL assumptions and data sources
+# * Analysis of empirical plant-level data from the U.S. fleet of ground-mounted photovoltaic (PV), PV+battery, and concentrating solar-thermal power (CSP) plants with capacities exceeding 5 MWAC. While focused on key developments in 2021, this report explores trends in deployment, technology, capital and operating costs, capacity factors, the levelized cost of solar energy (LCOE), power purchase agreement (PPA) prices, and wholesale market value.
+# 
+# * Theis disclaimer: While this document is believed to contain correct information, neither the United States Government nor any agency thereof, nor The Regents of the University of California, nor any of their employees, makes any warranty, express or implied, or assumes any legal responsibility for the accuracy, completeness, or usefulness of any information, apparatus, product, or process disclosed, or represents that its use would not infringe privately owned rights.
+# 
+# * Sources: Wood Mackenzie/SEIA Solar Market Insight Reports, Berkeley Lab.
+
+# #### My veredict:
+# 
+# Both sources seem reliable. **However**, LBNL seems to have data that passed some filters through Wood Mackenzie, whereas eia's seems more raw data. This have its tradeoffs, where LBNL could be a bit "diluted" so some data might be missing or omitted, on the other hand, eia has proven to have some inconsistencies where some capacity is double counted. In light of this, I decide to use LBNL because: (1) it has already been filtered, and (2) the addition with cSi does not surpass our total install capacity values.
+
+# In[39]:
 
 
 ms_all.reset_index(inplace=True)
@@ -397,7 +435,7 @@ tidy_ms_all = ms_all.melt('Year', var_name='Technology', value_name='Market shar
 tidy_ms_all.to_csv(os.path.join(supportMatfolder, 'output_eia860_tidy_cSi_CdTe_market_share_all.csv'))
 
 
-# In[35]:
+# In[40]:
 
 
 ax = sns.lineplot(x='Year', y='Market share', data=tidy_ms_all, hue='Technology')
@@ -417,17 +455,80 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Upload Electrification Futures baseline.
 
-# In[46]:
+# In[62]:
 
 
 sf_reeds_alts = pd.read_excel(os.path.join(supportMatfolder,'SF_reeds_alternates.xlsx'),index_col=0)
-sf_reeds = sf_reeds_alts.loc[2023:2050,['MW']]
+sf_reeds = sf_reeds_alts.loc[2022:2050,['MW']]
 
 
-# In[47]:
+# #### Reorder the installed capacity. 
+# Refer to Heather for explanation why. In a nutshell: The Reeds projections have massive drops in capacity in certain years, this is challenging because such drops would significantly affect the solar industry.
+
+# In[63]:
 
 
-sf_reeds
+sf_reeds.index = sf_reeds.index.astype(int)
+
+
+# In[67]:
+
+
+sf_reeds['MW'].values.sort()
+sf_reeds.rename(columns={'MW':'Nameplate Capacity (MW)'},inplace=True)
+
+
+# #### Concatenate values withe ore 2023 values and add projected market share
+
+# In[68]:
+
+
+us_installs_original_snip = pd.DataFrame(us_installs_original.loc[1995:2021, 'Nameplate Capacity (MW)'])
+
+
+# In[69]:
+
+
+full_installs = pd.DataFrame()
+
+
+# In[70]:
+
+
+full_installs = pd.concat([us_installs_original_snip, sf_reeds], axis=0)
+
+
+# In[71]:
+
+
+full_installs
+
+
+# In[73]:
+
+
+full_installs.index = full_installs.index.astype(int)
+full_installs['cSi Market Share'] = ms_all['cSi']
+full_installs['CdTe Market Share'] = ms_all['CdTe LBNL']
+
+
+# In[77]:
+
+
+full_installs['cSi Capacity (MW)'] = full_installs['Nameplate Capacity (MW)']*full_installs['cSi Market Share']
+full_installs['CdTe Capacity (MW)'] = full_installs['Nameplate Capacity (MW)']*full_installs['CdTe Market Share']
+
+
+# In[78]:
+
+
+full_installs.to_csv(os.path.join(supportMatfolder, 'output_RELOG_cSi_CdTe_capacity_reeds.csv'))
+
+
+# In[79]:
+
+
+len(full_installs)
 
 
 # In[ ]:
@@ -443,7 +544,7 @@ sf_reeds
 
 # Now let's look at the conflicting years that share CdTe and PV.
 
-# In[ ]:
+# In[52]:
 
 
 eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y') & (eia860_raw['Thin-Film (CdTe)?'] == 'Y')][['Operating Year', 'Nameplate Capacity (MW)', 'Plant Name', 'Crystalline Silicon?', 'Thin-Film (CdTe)?']]
@@ -456,70 +557,6 @@ eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y') & (eia860_raw['Thin-Film 
 # Solar Gen 2 Solar Facility is [solely CdTe](https://www.southernpowercompany.com/content/dam/southernpower/pdfs/fact-sheets/SolarGEN2_Solar_Facility_factsheet.pdf) with 163 MW of more than 1 million First Solar modules. I don't know why they split it in three (54.4 x 3 = 163.2), this checks out so I will jsut convert these three into a three that are only CdTe (i.e. I change Silicon to 'N'). Luckily Solar Gen 2 has the data only in 2014. This should be easy to fix :).
 # 
 # Lastly, I have not able to find anything about Springbok 3 Solar Farm Hybrid. If it was using CdTe probably First Solar would have announced it in one of their reports. Therefore I am going to assume that that 90 MW is solely c-Si.
-
-# In[ ]:
-
-
-'Crystalline Silicon?'
-'Thin-Film (CdTe)?'
-'Thin-Film (CIGS)?'
-'Thin-Film (A-Si)?'
-'Thin-Film (Other)?'
-
-
-# In[36]:
-
-
-len(eia860_raw)
-
-
-# In[37]:
-
-
-csi = len(eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y')])
-
-
-# In[38]:
-
-
-eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y') & (eia860_raw['Thin-Film (CdTe)?'] == 'Y')];
-
-
-# In[39]:
-
-
-cdte = len(eia860_raw[(eia860_raw['Thin-Film (CdTe)?'] == 'Y')])
-
-
-# In[40]:
-
-
-cigs = len(eia860_raw[(eia860_raw['Thin-Film (CIGS)?'] == 'Y')])
-
-
-# In[41]:
-
-
-asi = len(eia860_raw[(eia860_raw['Thin-Film (A-Si)?'] == 'Y')])
-
-
-# In[42]:
-
-
-other = len(eia860_raw[(eia860_raw['Thin-Film (Other)?'] == 'Y')])
-
-
-# In[43]:
-
-
-csi + cdte + cigs + asi + other
-
-
-# In[44]:
-
-
-eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y') & (eia860_raw['Thin-Film (CdTe)?'] == 'Y')]
-
 
 # In[ ]:
 
