@@ -15835,7 +15835,7 @@ Name: 21, dtype: object</pre>
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&lt;matplotlib.lines.Line2D at 0x1770daf50&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x16a2646d0&gt;]</pre>
 </div>
 
 </div>
@@ -15938,7 +15938,7 @@ jp-needs-light-background
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&lt;matplotlib.lines.Line2D at 0x177365e40&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x16a5071c0&gt;]</pre>
 </div>
 
 </div>
@@ -16031,7 +16031,7 @@ jp-needs-light-background
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.legend.Legend at 0x1772fb700&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x16a5065f0&gt;</pre>
 </div>
 
 </div>
@@ -16280,7 +16280,7 @@ jp-needs-light-background
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.legend.Legend at 0x177577550&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x16a6689d0&gt;</pre>
 </div>
 
 </div>
@@ -16414,7 +16414,7 @@ jp-needs-light-background
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.legend.Legend at 0x17700a230&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x16a639ff0&gt;</pre>
 </div>
 
 </div>
@@ -16551,7 +16551,7 @@ jp-needs-light-background
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.legend.Legend at 0x1773f4400&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x16a3ad720&gt;</pre>
 </div>
 
 </div>
@@ -16869,7 +16869,7 @@ jp-needs-light-background
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.legend.Legend at 0x17728f910&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x16a351ae0&gt;</pre>
 </div>
 
 </div>
@@ -16937,16 +16937,201 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[62]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sf_reeds_alts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span><span class="s1">&#39;SF_reeds_alternates.xlsx&#39;</span><span class="p">),</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">sf_reeds</span> <span class="o">=</span> <span class="n">sf_reeds_alts</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">:</span><span class="mi">2050</span><span class="p">,[</span><span class="s1">&#39;MW&#39;</span><span class="p">]]</span>
+<span class="n">sf_reeds</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;MW&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">15000</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sf_reeds</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[47]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MW</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2022.0</th>
+      <td>15000.00000</td>
+    </tr>
+    <tr>
+      <th>2023.0</th>
+      <td>24236.41597</td>
+    </tr>
+    <tr>
+      <th>2024.0</th>
+      <td>24236.41597</td>
+    </tr>
+    <tr>
+      <th>2025.0</th>
+      <td>74146.08849</td>
+    </tr>
+    <tr>
+      <th>2026.0</th>
+      <td>74146.08849</td>
+    </tr>
+    <tr>
+      <th>2027.0</th>
+      <td>57401.30156</td>
+    </tr>
+    <tr>
+      <th>2028.0</th>
+      <td>57401.30156</td>
+    </tr>
+    <tr>
+      <th>2029.0</th>
+      <td>81197.98651</td>
+    </tr>
+    <tr>
+      <th>2030.0</th>
+      <td>81197.98651</td>
+    </tr>
+    <tr>
+      <th>2031.0</th>
+      <td>66012.06178</td>
+    </tr>
+    <tr>
+      <th>2032.0</th>
+      <td>66012.06178</td>
+    </tr>
+    <tr>
+      <th>2033.0</th>
+      <td>59935.85522</td>
+    </tr>
+    <tr>
+      <th>2034.0</th>
+      <td>59935.85522</td>
+    </tr>
+    <tr>
+      <th>2035.0</th>
+      <td>67039.35151</td>
+    </tr>
+    <tr>
+      <th>2036.0</th>
+      <td>67039.35151</td>
+    </tr>
+    <tr>
+      <th>2037.0</th>
+      <td>78553.28785</td>
+    </tr>
+    <tr>
+      <th>2038.0</th>
+      <td>78553.28785</td>
+    </tr>
+    <tr>
+      <th>2039.0</th>
+      <td>87426.89474</td>
+    </tr>
+    <tr>
+      <th>2040.0</th>
+      <td>87426.89474</td>
+    </tr>
+    <tr>
+      <th>2041.0</th>
+      <td>26258.30132</td>
+    </tr>
+    <tr>
+      <th>2042.0</th>
+      <td>26258.30132</td>
+    </tr>
+    <tr>
+      <th>2043.0</th>
+      <td>23596.72896</td>
+    </tr>
+    <tr>
+      <th>2044.0</th>
+      <td>23596.72896</td>
+    </tr>
+    <tr>
+      <th>2045.0</th>
+      <td>29613.99335</td>
+    </tr>
+    <tr>
+      <th>2046.0</th>
+      <td>29613.99335</td>
+    </tr>
+    <tr>
+      <th>2047.0</th>
+      <td>35203.62713</td>
+    </tr>
+    <tr>
+      <th>2048.0</th>
+      <td>35203.62713</td>
+    </tr>
+    <tr>
+      <th>2049.0</th>
+      <td>51033.75604</td>
+    </tr>
+    <tr>
+      <th>2050.0</th>
+      <td>51033.75604</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -16966,7 +17151,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[63]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sf_reeds</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">sf_reeds</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -16977,12 +17162,196 @@ jp-needs-light-background
 </div>
 </div>
 
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sf_reeds</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[49]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MW</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2022</th>
+      <td>15000.00000</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>24236.41597</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>24236.41597</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>74146.08849</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>74146.08849</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>57401.30156</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>57401.30156</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>81197.98651</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>81197.98651</td>
+    </tr>
+    <tr>
+      <th>2031</th>
+      <td>66012.06178</td>
+    </tr>
+    <tr>
+      <th>2032</th>
+      <td>66012.06178</td>
+    </tr>
+    <tr>
+      <th>2033</th>
+      <td>59935.85522</td>
+    </tr>
+    <tr>
+      <th>2034</th>
+      <td>59935.85522</td>
+    </tr>
+    <tr>
+      <th>2035</th>
+      <td>67039.35151</td>
+    </tr>
+    <tr>
+      <th>2036</th>
+      <td>67039.35151</td>
+    </tr>
+    <tr>
+      <th>2037</th>
+      <td>78553.28785</td>
+    </tr>
+    <tr>
+      <th>2038</th>
+      <td>78553.28785</td>
+    </tr>
+    <tr>
+      <th>2039</th>
+      <td>87426.89474</td>
+    </tr>
+    <tr>
+      <th>2040</th>
+      <td>87426.89474</td>
+    </tr>
+    <tr>
+      <th>2041</th>
+      <td>26258.30132</td>
+    </tr>
+    <tr>
+      <th>2042</th>
+      <td>26258.30132</td>
+    </tr>
+    <tr>
+      <th>2043</th>
+      <td>23596.72896</td>
+    </tr>
+    <tr>
+      <th>2044</th>
+      <td>23596.72896</td>
+    </tr>
+    <tr>
+      <th>2045</th>
+      <td>29613.99335</td>
+    </tr>
+    <tr>
+      <th>2046</th>
+      <td>29613.99335</td>
+    </tr>
+    <tr>
+      <th>2047</th>
+      <td>35203.62713</td>
+    </tr>
+    <tr>
+      <th>2048</th>
+      <td>35203.62713</td>
+    </tr>
+    <tr>
+      <th>2049</th>
+      <td>51033.75604</td>
+    </tr>
+    <tr>
+      <th>2050</th>
+      <td>51033.75604</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sf_reeds</span><span class="p">[</span><span class="s1">&#39;MW&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
@@ -17010,7 +17379,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">us_installs_original_snip</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">us_installs_original</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:</span><span class="mi">2021</span><span class="p">,</span> <span class="s1">&#39;Nameplate Capacity (MW)&#39;</span><span class="p">])</span>
@@ -17026,7 +17395,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[69]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_installs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
@@ -17042,7 +17411,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[70]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_installs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">us_installs_original_snip</span><span class="p">,</span> <span class="n">sf_reeds</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -17058,7 +17427,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[71]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_installs</span>
@@ -17079,7 +17448,7 @@ jp-needs-light-background
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[71]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[54]:</div>
 
 
 
@@ -17216,7 +17585,7 @@ jp-needs-light-background
     </tr>
     <tr>
       <th>2022</th>
-      <td>23596.72896</td>
+      <td>15000.00000</td>
     </tr>
     <tr>
       <th>2023</th>
@@ -17224,7 +17593,7 @@ jp-needs-light-background
     </tr>
     <tr>
       <th>2024</th>
-      <td>24236.41597</td>
+      <td>23596.72896</td>
     </tr>
     <tr>
       <th>2025</th>
@@ -17341,16 +17710,43 @@ jp-needs-light-background
 
 </div>
 
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Add the value for 2022:</p>
+
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[73]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_installs</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">full_installs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">full_installs</span><span class="p">[</span><span class="s1">&#39;cSi Market Share&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ms_all</span><span class="p">[</span><span class="s1">&#39;cSi&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ms_all</span> <span class="o">=</span> <span class="n">ms_all</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_installs</span><span class="p">[</span><span class="s1">&#39;cSi Market Share&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ms_all</span><span class="p">[</span><span class="s1">&#39;cSi&#39;</span><span class="p">]</span>
 <span class="n">full_installs</span><span class="p">[</span><span class="s1">&#39;CdTe Market Share&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ms_all</span><span class="p">[</span><span class="s1">&#39;CdTe LBNL&#39;</span><span class="p">]</span>
 </pre></div>
 
@@ -17364,7 +17760,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[77]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[69]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_installs</span><span class="p">[</span><span class="s1">&#39;cSi Capacity (MW)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">full_installs</span><span class="p">[</span><span class="s1">&#39;Nameplate Capacity (MW)&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">full_installs</span><span class="p">[</span><span class="s1">&#39;cSi Market Share&#39;</span><span class="p">]</span>
@@ -17381,7 +17777,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[78]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[70]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_installs</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span> <span class="s1">&#39;output_RELOG_cSi_CdTe_capacity_reeds.csv&#39;</span><span class="p">))</span>
@@ -17397,7 +17793,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[79]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[71]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">full_installs</span><span class="p">)</span>
@@ -17418,7 +17814,7 @@ jp-needs-light-background
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[79]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[71]:</div>
 
 
 
@@ -17433,20 +17829,520 @@ jp-needs-light-background
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[72]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">full_installs</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[72]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Nameplate Capacity (MW)</th>
+      <th>cSi Market Share</th>
+      <th>CdTe Market Share</th>
+      <th>cSi Capacity (MW)</th>
+      <th>CdTe Capacity (MW)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1995</th>
+      <td>12.50000</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>12.500000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1996</th>
+      <td>9.70000</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>9.700000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1997</th>
+      <td>11.70000</td>
+      <td>0.99</td>
+      <td>0.00</td>
+      <td>11.583000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1998</th>
+      <td>11.90000</td>
+      <td>0.99</td>
+      <td>0.00</td>
+      <td>11.781000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1999</th>
+      <td>17.20000</td>
+      <td>0.98</td>
+      <td>0.00</td>
+      <td>16.856000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2000</th>
+      <td>21.50000</td>
+      <td>0.97</td>
+      <td>0.00</td>
+      <td>20.855000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2001</th>
+      <td>29.00000</td>
+      <td>0.96</td>
+      <td>0.00</td>
+      <td>27.840000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2002</th>
+      <td>44.40000</td>
+      <td>0.96</td>
+      <td>0.00</td>
+      <td>42.624000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2003</th>
+      <td>63.00000</td>
+      <td>0.95</td>
+      <td>0.00</td>
+      <td>59.850000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2004</th>
+      <td>100.80000</td>
+      <td>0.94</td>
+      <td>0.00</td>
+      <td>94.752000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2005</th>
+      <td>103.00000</td>
+      <td>0.94</td>
+      <td>0.00</td>
+      <td>96.820000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2006</th>
+      <td>105.00000</td>
+      <td>0.94</td>
+      <td>0.00</td>
+      <td>98.700000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2007</th>
+      <td>347.50000</td>
+      <td>0.93</td>
+      <td>0.00</td>
+      <td>323.175000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2008</th>
+      <td>338.00000</td>
+      <td>0.93</td>
+      <td>0.03</td>
+      <td>314.340000</td>
+      <td>10.140000</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>464.50000</td>
+      <td>0.93</td>
+      <td>0.04</td>
+      <td>431.985000</td>
+      <td>18.580000</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>848.58800</td>
+      <td>0.85</td>
+      <td>0.14</td>
+      <td>721.299800</td>
+      <td>118.802320</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>1920.51000</td>
+      <td>0.93</td>
+      <td>0.06</td>
+      <td>1786.074300</td>
+      <td>115.230600</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>3373.42700</td>
+      <td>0.91</td>
+      <td>0.07</td>
+      <td>3069.818570</td>
+      <td>236.139890</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>4765.80200</td>
+      <td>0.85</td>
+      <td>0.10</td>
+      <td>4050.931700</td>
+      <td>476.580200</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>6243.87300</td>
+      <td>0.60</td>
+      <td>0.35</td>
+      <td>3746.323800</td>
+      <td>2185.355550</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>7500.64200</td>
+      <td>0.91</td>
+      <td>0.07</td>
+      <td>6825.584220</td>
+      <td>525.044940</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>15095.64000</td>
+      <td>0.85</td>
+      <td>0.11</td>
+      <td>12831.294000</td>
+      <td>1660.520400</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>10969.09000</td>
+      <td>0.89</td>
+      <td>0.08</td>
+      <td>9762.490100</td>
+      <td>877.527200</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>10740.38000</td>
+      <td>0.87</td>
+      <td>0.09</td>
+      <td>9344.130600</td>
+      <td>966.634200</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>13385.90000</td>
+      <td>0.82</td>
+      <td>0.12</td>
+      <td>10976.438000</td>
+      <td>1606.308000</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>19221.00000</td>
+      <td>0.81</td>
+      <td>0.15</td>
+      <td>15569.010000</td>
+      <td>2883.150000</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>23565.00000</td>
+      <td>0.00</td>
+      <td>0.16</td>
+      <td>0.000000</td>
+      <td>3770.400000</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>15000.00000</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>12600.000000</td>
+      <td>2400.000000</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>23596.72896</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>19821.252326</td>
+      <td>3775.476634</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>23596.72896</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>19821.252326</td>
+      <td>3775.476634</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>24236.41597</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>20358.589415</td>
+      <td>3877.826555</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>24236.41597</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>20358.589415</td>
+      <td>3877.826555</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>26258.30132</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>22056.973109</td>
+      <td>4201.328211</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>26258.30132</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>22056.973109</td>
+      <td>4201.328211</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>29613.99335</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>24875.754414</td>
+      <td>4738.238936</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>29613.99335</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>24875.754414</td>
+      <td>4738.238936</td>
+    </tr>
+    <tr>
+      <th>2031</th>
+      <td>35203.62713</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>29571.046789</td>
+      <td>5632.580341</td>
+    </tr>
+    <tr>
+      <th>2032</th>
+      <td>35203.62713</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>29571.046789</td>
+      <td>5632.580341</td>
+    </tr>
+    <tr>
+      <th>2033</th>
+      <td>51033.75604</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>42868.355074</td>
+      <td>8165.400966</td>
+    </tr>
+    <tr>
+      <th>2034</th>
+      <td>51033.75604</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>42868.355074</td>
+      <td>8165.400966</td>
+    </tr>
+    <tr>
+      <th>2035</th>
+      <td>57401.30156</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>48217.093310</td>
+      <td>9184.208250</td>
+    </tr>
+    <tr>
+      <th>2036</th>
+      <td>57401.30156</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>48217.093310</td>
+      <td>9184.208250</td>
+    </tr>
+    <tr>
+      <th>2037</th>
+      <td>59935.85522</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>50346.118385</td>
+      <td>9589.736835</td>
+    </tr>
+    <tr>
+      <th>2038</th>
+      <td>59935.85522</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>50346.118385</td>
+      <td>9589.736835</td>
+    </tr>
+    <tr>
+      <th>2039</th>
+      <td>66012.06178</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>55450.131895</td>
+      <td>10561.929885</td>
+    </tr>
+    <tr>
+      <th>2040</th>
+      <td>66012.06178</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>55450.131895</td>
+      <td>10561.929885</td>
+    </tr>
+    <tr>
+      <th>2041</th>
+      <td>67039.35151</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>56313.055268</td>
+      <td>10726.296242</td>
+    </tr>
+    <tr>
+      <th>2042</th>
+      <td>67039.35151</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>56313.055268</td>
+      <td>10726.296242</td>
+    </tr>
+    <tr>
+      <th>2043</th>
+      <td>74146.08849</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>62282.714332</td>
+      <td>11863.374158</td>
+    </tr>
+    <tr>
+      <th>2044</th>
+      <td>74146.08849</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>62282.714332</td>
+      <td>11863.374158</td>
+    </tr>
+    <tr>
+      <th>2045</th>
+      <td>78553.28785</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>65984.761794</td>
+      <td>12568.526056</td>
+    </tr>
+    <tr>
+      <th>2046</th>
+      <td>78553.28785</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>65984.761794</td>
+      <td>12568.526056</td>
+    </tr>
+    <tr>
+      <th>2047</th>
+      <td>81197.98651</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>68206.308668</td>
+      <td>12991.677842</td>
+    </tr>
+    <tr>
+      <th>2048</th>
+      <td>81197.98651</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>68206.308668</td>
+      <td>12991.677842</td>
+    </tr>
+    <tr>
+      <th>2049</th>
+      <td>87426.89474</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>73438.591582</td>
+      <td>13988.303158</td>
+    </tr>
+    <tr>
+      <th>2050</th>
+      <td>87426.89474</td>
+      <td>0.84</td>
+      <td>0.16</td>
+      <td>73438.591582</td>
+      <td>13988.303158</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -17485,12 +18381,12 @@ jp-needs-light-background
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">eia860_raw</span><span class="p">[(</span><span class="n">eia860_raw</span><span class="p">[</span><span class="s1">&#39;Crystalline Silicon?&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">eia860_raw</span><span class="p">[</span><span class="s1">&#39;Thin-Film (CdTe)?&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">)][[</span><span class="s1">&#39;Operating Year&#39;</span><span class="p">,</span> <span class="s1">&#39;Nameplate Capacity (MW)&#39;</span><span class="p">,</span> <span class="s1">&#39;Plant Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Crystalline Silicon?&#39;</span><span class="p">,</span> <span class="s1">&#39;Thin-Film (CdTe)?&#39;</span><span class="p">]]</span>
@@ -17499,98 +18395,6 @@ jp-needs-light-background
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[52]:</div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Operating Year</th>
-      <th>Nameplate Capacity (MW)</th>
-      <th>Plant Name</th>
-      <th>Crystalline Silicon?</th>
-      <th>Thin-Film (CdTe)?</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>21</th>
-      <td>2001</td>
-      <td>3.7</td>
-      <td>Springerville</td>
-      <td>Y</td>
-      <td>Y</td>
-    </tr>
-    <tr>
-      <th>909</th>
-      <td>2014</td>
-      <td>54.4</td>
-      <td>Solar Gen 2 Solar Facility</td>
-      <td>Y</td>
-      <td>Y</td>
-    </tr>
-    <tr>
-      <th>910</th>
-      <td>2014</td>
-      <td>54.4</td>
-      <td>Solar Gen 2 Solar Facility</td>
-      <td>Y</td>
-      <td>Y</td>
-    </tr>
-    <tr>
-      <th>911</th>
-      <td>2014</td>
-      <td>54.4</td>
-      <td>Solar Gen 2 Solar Facility</td>
-      <td>Y</td>
-      <td>Y</td>
-    </tr>
-    <tr>
-      <th>2121</th>
-      <td>2019</td>
-      <td>90.0</td>
-      <td>Springbok 3 Solar Farm Hybrid</td>
-      <td>Y</td>
-      <td>Y</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div>
 
 </div>

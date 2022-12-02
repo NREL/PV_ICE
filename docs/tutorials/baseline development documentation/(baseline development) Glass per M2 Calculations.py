@@ -31,7 +31,6 @@ density_glass = 2500*1000 # g/m^3
 # In[2]:
 
 
-
 thickness_glass = 0.0032  # m
 glassperm2 = thickness_glass * density_glass
 print("Glass g/m2 up to 2012:", glassperm2)
@@ -189,8 +188,6 @@ conformation_perc.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/outp
 # In[13]:
 
 
-
-
 #eqn = density glass * mm to m * [(mrktshr g-g * 2 * avg glass thickmm )+ (mrktshr g-b * 1 * avg glass thick)]
 mass_glass_pm2 = density_glass*(0.001)*((conformation_perc['glass-glass']*2*wtd_glass_thick['avg_glass_thickness_mm']) + (conformation_perc['glass-backsheet']*wtd_glass_thick['avg_glass_thickness_mm']))
 mass_glass_pm2_baseline = pd.DataFrame(mass_glass_pm2)
@@ -199,6 +196,23 @@ mass_glass_pm2_baseline.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMateria
 #print(mass_glass_pm2)
 plt.plot(mass_glass_pm2_baseline)
 plt.title('Baseline g/m^2 of glass')
+
+
+# ### UPDATE: Baseline calculation for CdTe
+# 
+# CdTe is glass-glass, so the marketshare will be 100% for it, which simplifies everything. What i will o is taking the weighted average glass thickness and remake the baseline with the same thickness reduction assumptions.
+
+# In[ ]:
+
+
+#eqn = density glass * mm to m * [(mrktshr g-g * 2 * avg glass thickmm )
+mass_glass_pm2_cdte = density_glass*(0.001)*(2*wtd_glass_thick['avg_glass_thickness_mm']) 
+mass_glass_pm2_baseline_cdte = pd.DataFrame(mass_glass_pm2_cdte)
+mass_glass_pm2_baseline_cdte.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_glass_g_per_m2_cdte.csv', index=True)
+
+#print(mass_glass_pm2)
+plt.plot(mass_glass_pm2_baseline_cdte)
+plt.title('Baseline g/m^2 of glass in CdTe')
 
 
 # # Calculations for increasing fraction of glass-glass to 50% by 2030 (hold through 2050)

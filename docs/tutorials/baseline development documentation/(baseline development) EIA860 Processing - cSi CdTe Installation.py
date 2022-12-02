@@ -455,23 +455,36 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Upload Electrification Futures baseline.
 
-# In[62]:
+# In[46]:
 
 
 sf_reeds_alts = pd.read_excel(os.path.join(supportMatfolder,'SF_reeds_alternates.xlsx'),index_col=0)
 sf_reeds = sf_reeds_alts.loc[2022:2050,['MW']]
+sf_reeds.loc[2022, ['MW']] = 15000
+
+
+# In[47]:
+
+
+sf_reeds
 
 
 # #### Reorder the installed capacity. 
 # Refer to Heather for explanation why. In a nutshell: The Reeds projections have massive drops in capacity in certain years, this is challenging because such drops would significantly affect the solar industry.
 
-# In[63]:
+# In[48]:
 
 
 sf_reeds.index = sf_reeds.index.astype(int)
 
 
-# In[67]:
+# In[49]:
+
+
+sf_reeds
+
+
+# In[50]:
 
 
 sf_reeds['MW'].values.sort()
@@ -480,61 +493,68 @@ sf_reeds.rename(columns={'MW':'Nameplate Capacity (MW)'},inplace=True)
 
 # #### Concatenate values withe ore 2023 values and add projected market share
 
-# In[68]:
+# In[51]:
 
 
 us_installs_original_snip = pd.DataFrame(us_installs_original.loc[1995:2021, 'Nameplate Capacity (MW)'])
 
 
-# In[69]:
+# In[52]:
 
 
 full_installs = pd.DataFrame()
 
 
-# In[70]:
+# In[53]:
 
 
 full_installs = pd.concat([us_installs_original_snip, sf_reeds], axis=0)
 
 
-# In[71]:
+# In[54]:
 
 
 full_installs
 
 
-# In[73]:
+# Add the value for 2022:
+
+# In[67]:
 
 
-full_installs.index = full_installs.index.astype(int)
+ms_all = ms_all.set_index('Year')
+
+
+# In[68]:
+
+
 full_installs['cSi Market Share'] = ms_all['cSi']
 full_installs['CdTe Market Share'] = ms_all['CdTe LBNL']
 
 
-# In[77]:
+# In[69]:
 
 
 full_installs['cSi Capacity (MW)'] = full_installs['Nameplate Capacity (MW)']*full_installs['cSi Market Share']
 full_installs['CdTe Capacity (MW)'] = full_installs['Nameplate Capacity (MW)']*full_installs['CdTe Market Share']
 
 
-# In[78]:
+# In[70]:
 
 
 full_installs.to_csv(os.path.join(supportMatfolder, 'output_RELOG_cSi_CdTe_capacity_reeds.csv'))
 
 
-# In[79]:
+# In[71]:
 
 
 len(full_installs)
 
 
-# In[ ]:
+# In[72]:
 
 
-
+full_installs
 
 
 # ---
@@ -544,7 +564,7 @@ len(full_installs)
 
 # Now let's look at the conflicting years that share CdTe and PV.
 
-# In[52]:
+# In[ ]:
 
 
 eia860_raw[(eia860_raw['Crystalline Silicon?'] == 'Y') & (eia860_raw['Thin-Film (CdTe)?'] == 'Y')][['Operating Year', 'Nameplate Capacity (MW)', 'Plant Name', 'Crystalline Silicon?', 'Thin-Film (CdTe)?']]
