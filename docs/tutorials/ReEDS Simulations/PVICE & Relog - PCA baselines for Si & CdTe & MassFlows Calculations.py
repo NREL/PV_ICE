@@ -79,11 +79,11 @@ rawdf.head(21)
 
 # #### Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[8]:
+# In[7]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='cSi', massmodulefile=r'../baselines/baseline_modules_mass_US.csv')
+r1.createScenario(name='cSi', massmodulefile=r'../baselines/RELOG/baseline_modules_mass_US_cSi.csv')
 # MAC: I think we probably want noCircularity so everything goes to landfill and
 # it's easy to calculate the 'BEST case for Recycling scenario'. Otherwise comment out...
 r1.scenMod_noCircularity() 
@@ -95,7 +95,7 @@ baseline.set_index('year', inplace=True)
 baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
 baseline.head()
 
-r1.createScenario(name='CdTe', massmodulefile=r'../baselines/baseline_modules_mass_US_CdTe.csv')
+r1.createScenario(name='CdTe', massmodulefile=r'../baselines/RELOG/baseline_modules_mass_US_CdTe.csv')
 # MAC: I think we probably want noCircularity so everything goes to landfill and
 # it's easy to calculate the 'BEST case for Recycling scenario'. Otherwise comment out...
 r1.scenMod_noCircularity() 
@@ -114,17 +114,17 @@ baselineCdTe.head()
 # Set header dynamically
 
 
-# In[10]:
+# In[9]:
 
 
 import csv
 
-massmodulefile=r'../baselines/baseline_modules_mass_US.csv'
+massmodulefile=r'../baselines/RELOG/baseline_modules_mass_US_cSi.csv'
 
 with open(massmodulefile, newline='') as f:
-  reader = csv.reader(f)
-  row1 = next(reader)  # gets the first line
-  row2 = next(reader)  # gets the first line
+    reader = csv.reader(f)
+    row1 = next(reader)  # gets the first line
+    row2 = next(reader)  # gets the first line
 
 row11 = 'year'
 for x in row1[1:]:
@@ -141,10 +141,10 @@ for x in row2[1:]:
 # Load MarketShare File
 
 
-# In[13]:
+# In[11]:
 
 
-marketsharefile = r'../baselines/SupportingMaterial/output_eia860_market_share_c-Si_CdTe_all.csv'
+marketsharefile = r'../baselines/SupportingMaterial/output_RELOG_cSi_CdTe_capacity_reeds.csv'
 marketshare = pd.read_csv(marketsharefile)
 # Not elegant but I need to trim down to ReEds year start which is 2010
 marketshare = marketshare[marketshare['Year']>=2010].reset_index(drop=True)
@@ -152,7 +152,7 @@ marketshare.set_index('Year', inplace=True)
 marketshare.head()
 
 
-# In[14]:
+# In[12]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -171,7 +171,7 @@ for ii in range (len(rawdf.unstack(level=1))):
     A.index=pd.PeriodIndex(A.index, freq='A')
     A = pd.DataFrame(A)
     B = A.copy()
-    B['new_Installed_Capacity_[MW]'] = B['new_Installed_Capacity_[MW]'] * marketshare['cSi'].values
+    B['new_Installed_Capacity_[MW]'] = B['new_Installed_Capacity_[MW]'] * marketshare['cSi Market Share'].values
     B['new_Installed_Capacity_[MW]'] = B['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
     # Add other columns
     B = pd.concat([B, baseline.reindex(A.index)], axis=1)
@@ -192,7 +192,7 @@ for ii in range (len(rawdf.unstack(level=1))):
     filetitle = os.path.join(subtestfolder, filetitle)
 
     B = A.copy()
-    B['new_Installed_Capacity_[MW]'] = B['new_Installed_Capacity_[MW]'] * marketshare['CdTe'].values
+    B['new_Installed_Capacity_[MW]'] = B['new_Installed_Capacity_[MW]'] * marketshare['CdTe Market Share'].values
     B['new_Installed_Capacity_[MW]'] = B['new_Installed_Capacity_[MW]'] * 1000   # ReEDS file is in GW.
     # Add other columns
     B = pd.concat([B, baselineCdTe.reindex(B.index)], axis=1)
@@ -209,16 +209,15 @@ for ii in range (len(rawdf.unstack(level=1))):
     
 
 
-# In[15]:
+# In[13]:
 
 
 PCAs = list(rawdf.unstack(level=2).iloc[0].unstack(level=0).index.unique())
-PCAs
 
 
-# ## 2. Loading the PCA baselnies and doing the PV ICE Calculations
+# ## 2. Loading the PCA baselines and doing the PV ICE Calculations
 
-# In[16]:
+# In[14]:
 
 
 SFscenarios = ['95-by-35_Elec.Adv_DR_cSi', '95-by-35_Elec.Adv_DR_CdTe']
@@ -226,7 +225,7 @@ SFscenarios = ['95-by-35_Elec.Adv_DR_cSi', '95-by-35_Elec.Adv_DR_CdTe']
 
 # ### Reading GIS inputs
 
-# In[17]:
+# In[15]:
 
 
 GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
@@ -234,13 +233,13 @@ GIS = pd.read_excel(GISfile)
 GIS = GIS.set_index('id')
 
 
-# In[18]:
+# In[16]:
 
 
 GIS.head()
 
 
-# In[19]:
+# In[17]:
 
 
 GIS.loc['p1'].long
@@ -250,7 +249,31 @@ GIS.loc['p1'].long
 # 
 # Keeping track of each scenario as its own PV ICE Object.
 
+# In[18]:
+
+
+Path().resolve().parent
+
+
+# In[19]:
+
+
+baselinefolder = os.path.join(Path().resolve().parent, 'baselines')
+
+
 # In[20]:
+
+
+baselinefolder
+
+
+# In[21]:
+
+
+testfolder
+
+
+# In[22]:
 
 
 #for ii in range (0, 1): #len(scenarios):
@@ -261,7 +284,7 @@ for jj in range (0, len(PCAs)):
     filetitle = SFscenarios[i]+'_'+PCAs[jj]+'.csv'
     filetitle = os.path.join(testfolder, 'PCAs_RELOG', filetitle)    
     r1.createScenario(name=PCAs[jj], massmodulefile=filetitle)
-    r1.scenario[PCAs[jj]].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant', 'backsheet'], baselinefolder=r'..\baselines')
+    r1.scenario[PCAs[jj]].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant', 'backsheet'], baselinefolder=baselinefolder)
     # All -- but these where not included in the Reeds initial study as we didnt have encapsulant or backsheet
     # r1.scenario[PCAs[jj]].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant', 'backsheet'], baselinefolder=r'..\baselines')
     r1.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
@@ -277,7 +300,7 @@ for jj in range (0, len(PCAs)):
     filetitle = os.path.join(testfolder, 'PCAs_RELOG', filetitle)        
     r2.createScenario(name=PCAs[jj], massmodulefile=filetitle)
     # MAC Add here the materials you want.
-    r2.scenario[PCAs[jj]].addMaterials(['cadmium', 'tellurium', 'silver', 'glass', 'aluminium_frames'], baselinefolder=r'..\baselines')
+    r2.scenario[PCAs[jj]].addMaterials(['cadmium', 'tellurium', 'glass_cdte', 'aluminium_frames_cdte'], baselinefolder=baselinefolder)
     # All -- but these where not included in the Reeds initial study as we didnt have encapsulant or backsheet
     # r2.scenario[PCAs[jj]].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant', 'backsheet'], baselinefolder=r'..\baselines')
     r2.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
@@ -288,7 +311,7 @@ r2.trim_Years(startYear=2010, endYear=2050)
 
 # ### Set characteristics for Manufacturing (probably don't want to inflate this as the waste happens elsewhere, just want EOL
 
-# In[27]:
+# In[ ]:
 
 
 PERFECTMFG = True
@@ -303,14 +326,14 @@ else:
 
 # #### Calculate Mass Flow
 
-# In[28]:
+# In[ ]:
 
 
 r1.calculateMassFlow()
 r2.calculateMassFlow()
 
 
-# In[29]:
+# In[ ]:
 
 
 print("PCAs:", r1.scenario.keys())
@@ -318,7 +341,7 @@ print("Module Keys:", r1.scenario[PCAs[jj]].dataIn_m.keys())
 print("Material Keys: ", r1.scenario[PCAs[jj]].material['glass'].matdataIn_m.keys())
 
 
-# In[30]:
+# In[ ]:
 
 
 """
@@ -333,34 +356,34 @@ pass
 
 # ## 4. Aggregate & Save Data
 
-# In[31]:
+# In[ ]:
 
 
 r1.aggregateResults()
 r2.aggregateResults()
 
 
-# In[32]:
+# In[ ]:
 
 
 datay = r1.USyearly
 datac = r1.UScum
 
 
-# In[35]:
+# In[ ]:
 
 
 datay_CdTe = r2.USyearly
 datac_CdTe = r2.UScum
 
 
-# In[34]:
+# In[ ]:
 
 
 datay.keys()
 
 
-# In[42]:
+# In[ ]:
 
 
 filter_colc = [col for col in datay if col.startswith('WasteEOL')]
