@@ -11,7 +11,7 @@
 # o	95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrification scenario"
 # 
 
-# In[1]:
+# In[ ]:
 
 
 import PV_ICE
@@ -25,7 +25,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[2]:
+# In[ ]:
 
 
 import os
@@ -36,7 +36,7 @@ testfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'TEMP')
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[3]:
+# In[ ]:
 
 
 PV_ICE.__version__
@@ -46,14 +46,14 @@ PV_ICE.__version__
 
 # ### A. Reading a standard ReEDS output file
 
-# In[4]:
+# In[ ]:
 
 
 reedsFile = str(Path().resolve().parent.parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx')
 print ("Input file is stored in %s" % reedsFile)
 
 
-# In[5]:
+# In[ ]:
 
 
 REEDSInput = pd.read_excel(reedsFile,
@@ -67,7 +67,7 @@ REEDSInput = pd.read_excel(reedsFile,
 
 # #### Create a copy of the REEDS Input and modify structure for PCA focus
 
-# In[6]:
+# In[ ]:
 
 
 rawdf = REEDSInput.copy()
@@ -79,7 +79,7 @@ rawdf.head(21)
 
 # #### Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[7]:
+# In[ ]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -108,13 +108,13 @@ baselineCdTe.head()
 
 # #### For each Scenario and for each PCA, combine with baseline and save as input file
 
-# In[8]:
+# In[ ]:
 
 
 # Set header dynamically
 
 
-# In[9]:
+# In[ ]:
 
 
 import csv
@@ -135,13 +135,13 @@ for x in row2[1:]:
     row22 = row22 + ',' + x 
 
 
-# In[10]:
+# In[ ]:
 
 
 # Load MarketShare File
 
 
-# In[11]:
+# In[ ]:
 
 
 marketsharefile = r'../baselines/SupportingMaterial/output_RELOG_cSi_CdTe_capacity_reeds.csv'
@@ -152,7 +152,7 @@ marketshare.set_index('Year', inplace=True)
 marketshare.head()
 
 
-# In[12]:
+# In[ ]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -209,7 +209,7 @@ for ii in range (len(rawdf.unstack(level=1))):
     
 
 
-# In[13]:
+# In[ ]:
 
 
 PCAs = list(rawdf.unstack(level=2).iloc[0].unstack(level=0).index.unique())
@@ -217,7 +217,7 @@ PCAs = list(rawdf.unstack(level=2).iloc[0].unstack(level=0).index.unique())
 
 # ## 2. Loading the PCA baselines and doing the PV ICE Calculations
 
-# In[14]:
+# In[ ]:
 
 
 SFscenarios = ['95-by-35_Elec.Adv_DR_cSi', '95-by-35_Elec.Adv_DR_CdTe']
@@ -225,7 +225,7 @@ SFscenarios = ['95-by-35_Elec.Adv_DR_cSi', '95-by-35_Elec.Adv_DR_CdTe']
 
 # ### Reading GIS inputs
 
-# In[15]:
+# In[ ]:
 
 
 from geopy.geocoders import Nominatim
@@ -234,7 +234,7 @@ from geopy.point import Point
 geolocator = Nominatim(user_agent="geoapiExercises")
 
 
-# In[16]:
+# In[ ]:
 
 
 GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
@@ -242,7 +242,7 @@ GIS = pd.read_excel(GISfile)
 GIS = GIS.set_index('id')
 
 
-# In[17]:
+# In[ ]:
 
 
 GIS
@@ -381,31 +381,51 @@ len(GIS_us)
 # 
 # Keeping track of each scenario as its own PV ICE Object.
 
+<<<<<<< HEAD
 # In[32]:
+=======
+# In[ ]:
+>>>>>>> 8c0261169911a671b811c08c65db3501fc859342
 
 
 Path().resolve().parent
 
 
+<<<<<<< HEAD
 # In[33]:
+=======
+# In[ ]:
+>>>>>>> 8c0261169911a671b811c08c65db3501fc859342
 
 
 baselinefolder = os.path.join(Path().resolve().parent, 'baselines')
 
 
+<<<<<<< HEAD
 # In[34]:
+=======
+# In[ ]:
+>>>>>>> 8c0261169911a671b811c08c65db3501fc859342
 
 
 baselinefolder
 
 
+<<<<<<< HEAD
 # In[35]:
+=======
+# In[ ]:
+>>>>>>> 8c0261169911a671b811c08c65db3501fc859342
 
 
 testfolder
 
 
+<<<<<<< HEAD
 # In[36]:
+=======
+# In[ ]:
+>>>>>>> 8c0261169911a671b811c08c65db3501fc859342
 
 
 #for ii in range (0, 1): #len(scenarios):
@@ -481,7 +501,6 @@ r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
 r1.scenario['p1'].dataIn_m.head(21)
 r2.scenario['p1'].dataIn_m.head(21)
-r3.scenario['p1'].dataIn_m.head(21)
 """
 pass
 
@@ -524,14 +543,129 @@ filter_colc = [col for col in datay_CdTe if col.startswith('WasteEOL')]
 datay_CdTe[filter_colc].to_csv('PVICE_RELOG_PCA_CdTe_WasteEOL.csv')
 
 
+<<<<<<< HEAD
 # In[ ]:
 
 
 datay
+=======
+# ## 5. Save GIS centroids with correction factors 
+
+# In[ ]:
+
+
+#!pip install geopy
+#!pip install Nominatim
+>>>>>>> 8c0261169911a671b811c08c65db3501fc859342
 
 
 # In[ ]:
 
 
+<<<<<<< HEAD
 
 
+=======
+from geopy.geocoders import Nominatim
+
+
+# In[ ]:
+
+
+GISfile = os.path.join(str(Path().resolve().parent.parent.parent.parent), 'gis_centroid_n.xlsx')
+#GISfile = r'C:\Users\sayala\Documents\GitHub\gis_centroid_n.xlsx'
+
+
+# In[ ]:
+
+
+GIS = pd.read_excel(GISfile)
+
+
+# In[ ]:
+
+
+GIS.head(2)
+
+
+# In[ ]:
+
+
+geolocator = Nominatim(user_agent="geoapiExercises")
+
+
+# In[ ]:
+
+
+def city_state_country(row):
+    coord = f"{row['lat']}, {row['long']}"
+    location = geolocator.reverse(coord, exactly_one=True)
+    address = location.raw['address']
+    city = address.get('city', '')
+    county = address.get('county', '')
+    state = address.get('state', '')
+    country = address.get('country', '')
+    row['city'] = city
+    row['county'] = county
+    row['state'] = state
+    row['country'] = country
+    return row
+
+GIS = GIS.apply(city_state_country, axis=1)
+GIS_us = GIS[GIS.country == 'United States']
+
+
+# In[ ]:
+
+
+GIS_us
+
+
+# In[ ]:
+
+
+cost_factors_file = os.path.join(str(Path().resolve().parent.parent.parent.parent), 'RICE', 'data', 'cost_factors.xlsx')
+#cost_factors_file = r'C:\Users\sayala\Documents\GitHub\RICE\data\cost_factors.xlsx'
+
+
+# In[ ]:
+
+
+cost_factors = pd.read_excel(cost_factors_file)
+
+
+# In[ ]:
+
+
+cost_factors.head(2)
+
+
+# In[ ]:
+
+
+GIS_us['labor rate factor'] = np.nan
+GIS_us['productivity factor'] = np.nan
+GIS_us['relative labor rate ratio'] = np.nan
+GIS_us['relative productivity factor ratio'] = np.nan
+GIS_us['area cost factor'] = np.nan
+
+
+# In[ ]:
+
+
+for rr in range (0, len(cost_factors)):
+#    print(cost_factors.loc[rr]['state'])
+    GIS_us.loc[GIS_us['state'] == cost_factors.loc[rr]['state'],'labor rate factor'] = cost_factors.loc[rr]['labor rate factor']
+    GIS_us.loc[GIS_us['state'] == cost_factors.loc[rr]['state'],'productivity factor'] = cost_factors.loc[rr]['productivity factor']
+    GIS_us.loc[GIS_us['state'] == cost_factors.loc[rr]['state'],'relative labor rate ratio'] = cost_factors.loc[rr]['relative labor rate ratio']
+    GIS_us.loc[GIS_us['state'] == cost_factors.loc[rr]['state'],'relative productivity factor ratio'] = cost_factors.loc[rr]['relative productivity factor ratio']
+    GIS_us.loc[GIS_us['state'] == cost_factors.loc[rr]['state'],'area cost factor'] = cost_factors.loc[rr]['area cost factor']
+
+
+# In[ ]:
+
+
+# sanity check rr = 2
+GIS_us[GIS_us['state'] == cost_factors.loc[rr]['state']]
+
+>>>>>>> 8c0261169911a671b811c08c65db3501fc859342
