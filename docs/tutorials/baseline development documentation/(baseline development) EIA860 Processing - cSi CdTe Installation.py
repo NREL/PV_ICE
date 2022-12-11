@@ -200,6 +200,12 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Yes, the drop is huge. Therefore I will use the total PV installs from Heather to calculate the market shares since it represents more the total PV, not only utility.
 
+# In[73]:
+
+
+us_installs_original['Nameplate Capacity (MW)'][2021]
+
+
 # In[21]:
 
 

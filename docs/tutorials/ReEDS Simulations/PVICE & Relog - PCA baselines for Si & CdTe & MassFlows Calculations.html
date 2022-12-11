@@ -14698,7 +14698,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;v0.2.0+290.g3699082.dirty&#39;</pre>
+<pre>&#39;v0.2.0+291.g5e1250d.dirty&#39;</pre>
 </div>
 
 </div>
@@ -15582,6 +15582,25 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">geopy.geocoders</span> <span class="kn">import</span> <span class="n">Nominatim</span>
+<span class="kn">from</span> <span class="nn">geopy.point</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="c1"># initialize Nominatim API</span>
+<span class="n">geolocator</span> <span class="o">=</span> <span class="n">Nominatim</span><span class="p">(</span><span class="n">user_agent</span><span class="o">=</span><span class="s2">&quot;geoapiExercises&quot;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">GISfile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;gis_centroid_n.xlsx&#39;</span><span class="p">)</span>
 <span class="n">GIS</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">GISfile</span><span class="p">)</span>
 <span class="n">GIS</span> <span class="o">=</span> <span class="n">GIS</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
@@ -15597,10 +15616,10 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span>
 </pre></div>
 
      </div>
@@ -15618,7 +15637,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 
 
 
@@ -15683,8 +15702,45 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
       <td>26.677092</td>
       <td>USA</td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>p201</th>
+      <td>-116.933572</td>
+      <td>32.485742</td>
+      <td>MEX</td>
+    </tr>
+    <tr>
+      <th>p202</th>
+      <td>-116.345053</td>
+      <td>31.558623</td>
+      <td>MEX</td>
+    </tr>
+    <tr>
+      <th>p203</th>
+      <td>-115.418298</td>
+      <td>32.607552</td>
+      <td>MEX</td>
+    </tr>
+    <tr>
+      <th>p204</th>
+      <td>-114.836778</td>
+      <td>32.379719</td>
+      <td>MEX</td>
+    </tr>
+    <tr>
+      <th>p205</th>
+      <td>-110.589268</td>
+      <td>24.163894</td>
+      <td>MEX</td>
+    </tr>
   </tbody>
 </table>
+<p>205 rows × 3 columns</p>
 </div>
 </div>
 
@@ -15694,15 +15750,113 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 
 </div>
 
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">GIS</span><span class="p">)):</span>
+    <span class="n">Longitude</span> <span class="o">=</span> <span class="n">GIS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="p">]</span><span class="o">.</span><span class="n">long</span>
+    <span class="n">Latitude</span> <span class="o">=</span> <span class="n">GIS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="p">]</span><span class="o">.</span><span class="n">lat</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">reverse</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">Latitude</span><span class="p">,</span> <span class="n">Longitude</span><span class="p">))</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">county</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;county&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">GIS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="p">]</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">county</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">state</span><span class="p">)</span> 
+    
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">city_state_country</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+    <span class="n">coord</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;long&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">geolocator</span><span class="o">.</span><span class="n">reverse</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">exactly_one</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">raw</span><span class="p">[</span><span class="s1">&#39;address&#39;</span><span class="p">]</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">county</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;county&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">country</span> <span class="o">=</span> <span class="n">address</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">row</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">city</span>
+    <span class="n">row</span><span class="p">[</span><span class="s1">&#39;county&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">county</span>
+    <span class="n">row</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="n">row</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">country</span>
+    <span class="k">return</span> <span class="n">row</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span> <span class="o">=</span> <span class="n">GIS</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">city_state_country</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">GIS_us</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">[</span><span class="n">GIS</span><span class="o">.</span><span class="n">country</span> <span class="o">==</span> <span class="s1">&#39;United States&#39;</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Geographic area dictionaries:</p>
+
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;p1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">long</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS</span>
 </pre></div>
 
      </div>
@@ -15720,19 +15874,568 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>long</th>
+      <th>lat</th>
+      <th>country</th>
+      <th>city</th>
+      <th>county</th>
+      <th>state</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>p1</td>
+      <td>-121.452252</td>
+      <td>47.820991</td>
+      <td>United States</td>
+      <td></td>
+      <td>Snohomish County</td>
+      <td>Washington</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>p10</td>
+      <td>-117.159039</td>
+      <td>35.120104</td>
+      <td>United States</td>
+      <td></td>
+      <td>CAL Fire San Bernardino Unit</td>
+      <td>California</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>p100</td>
+      <td>-78.257714</td>
+      <td>38.791108</td>
+      <td>United States</td>
+      <td></td>
+      <td>Warren County</td>
+      <td>Virginia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>p101</td>
+      <td>-82.192477</td>
+      <td>28.708695</td>
+      <td>United States</td>
+      <td></td>
+      <td>Sumter County</td>
+      <td>Florida</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>p102</td>
+      <td>-80.563731</td>
+      <td>26.677092</td>
+      <td>United States</td>
+      <td></td>
+      <td>Palm Beach County</td>
+      <td>Florida</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>200</th>
+      <td>p201</td>
+      <td>-116.933572</td>
+      <td>32.485742</td>
+      <td>México</td>
+      <td>Tijuana</td>
+      <td>Municipio de Tijuana</td>
+      <td>Baja California</td>
+    </tr>
+    <tr>
+      <th>201</th>
+      <td>p202</td>
+      <td>-116.345053</td>
+      <td>31.558623</td>
+      <td>México</td>
+      <td></td>
+      <td>Municipio de Ensenada</td>
+      <td>Baja California</td>
+    </tr>
+    <tr>
+      <th>202</th>
+      <td>p203</td>
+      <td>-115.418298</td>
+      <td>32.607552</td>
+      <td>México</td>
+      <td>Mexicali</td>
+      <td>Municipio de Mexicali</td>
+      <td>Baja California</td>
+    </tr>
+    <tr>
+      <th>203</th>
+      <td>p204</td>
+      <td>-114.836778</td>
+      <td>32.379719</td>
+      <td>México</td>
+      <td></td>
+      <td>San Luis Río Colorado</td>
+      <td>Sonora</td>
+    </tr>
+    <tr>
+      <th>204</th>
+      <td>p205</td>
+      <td>-110.589268</td>
+      <td>24.163894</td>
+      <td>México</td>
+      <td></td>
+      <td>Municipio de La Paz</td>
+      <td>Baja California Sur</td>
+    </tr>
+  </tbody>
+</table>
+<p>205 rows × 7 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS_us</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>long</th>
+      <th>lat</th>
+      <th>country</th>
+      <th>city</th>
+      <th>county</th>
+      <th>state</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>p1</td>
+      <td>-121.452252</td>
+      <td>47.820991</td>
+      <td>United States</td>
+      <td></td>
+      <td>Snohomish County</td>
+      <td>Washington</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>p10</td>
+      <td>-117.159039</td>
+      <td>35.120104</td>
+      <td>United States</td>
+      <td></td>
+      <td>CAL Fire San Bernardino Unit</td>
+      <td>California</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>p100</td>
+      <td>-78.257714</td>
+      <td>38.791108</td>
+      <td>United States</td>
+      <td></td>
+      <td>Warren County</td>
+      <td>Virginia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>p101</td>
+      <td>-82.192477</td>
+      <td>28.708695</td>
+      <td>United States</td>
+      <td></td>
+      <td>Sumter County</td>
+      <td>Florida</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>p102</td>
+      <td>-80.563731</td>
+      <td>26.677092</td>
+      <td>United States</td>
+      <td></td>
+      <td>Palm Beach County</td>
+      <td>Florida</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>152</th>
+      <td>p96</td>
+      <td>-80.470185</td>
+      <td>33.666562</td>
+      <td>United States</td>
+      <td></td>
+      <td>Clarendon County</td>
+      <td>South Carolina</td>
+    </tr>
+    <tr>
+      <th>153</th>
+      <td>p97</td>
+      <td>-81.469485</td>
+      <td>35.703545</td>
+      <td>United States</td>
+      <td></td>
+      <td>Burke County</td>
+      <td>North Carolina</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>p98</td>
+      <td>-78.063174</td>
+      <td>35.438992</td>
+      <td>United States</td>
+      <td></td>
+      <td>Wayne County</td>
+      <td>North Carolina</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>p99</td>
+      <td>-78.022226</td>
+      <td>37.641073</td>
+      <td>United States</td>
+      <td></td>
+      <td>Powhatan County</td>
+      <td>Virginia</td>
+    </tr>
+    <tr>
+      <th>168</th>
+      <td>p169</td>
+      <td>-99.491584</td>
+      <td>27.345318</td>
+      <td>United States</td>
+      <td></td>
+      <td>Webb County</td>
+      <td>Texas</td>
+    </tr>
+  </tbody>
+</table>
+<p>135 rows × 7 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">us_regions</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;New England&#39;</span> <span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;Connecticut&#39;</span><span class="p">,</span> <span class="s1">&#39;Maine&#39;</span><span class="p">,</span> <span class="s1">&#39;Massachusetts&#39;</span><span class="p">,</span> <span class="s1">&#39;New Hampshire&#39;</span><span class="p">,</span> <span class="s1">&#39;Rhode Island&#39;</span><span class="p">,</span> <span class="s1">&#39;Vermont&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;Middle Atlantic&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;Delaware&#39;</span><span class="p">,</span> <span class="s1">&#39;the District of Columbia&#39;</span><span class="p">,</span> <span class="s1">&#39;Maryland&#39;</span><span class="p">,</span> <span class="s1">&#39;New Jersey&#39;</span><span class="p">,</span> <span class="s1">&#39;New York&#39;</span><span class="p">,</span> <span class="s1">&#39;Pennsylvania&#39;</span><span class="p">,</span> <span class="s1">&#39;Virginia&#39;</span><span class="p">,</span> <span class="s1">&#39;West Virginia&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;South Atlantic&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;Georgia&#39;</span><span class="p">,</span> <span class="s1">&#39;North Carolina&#39;</span><span class="p">,</span> <span class="s1">&#39;South Carolina&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;Midwest&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;Illinois&#39;</span><span class="p">,</span> <span class="s1">&#39;Indiana&#39;</span><span class="p">,</span> <span class="s1">&#39;Iowa&#39;</span><span class="p">,</span> <span class="s1">&#39;Kansas&#39;</span><span class="p">,</span> <span class="s1">&#39;Michigan&#39;</span><span class="p">,</span> <span class="s1">&#39;Minnesota&#39;</span><span class="p">,</span> <span class="s1">&#39;Missouri&#39;</span><span class="p">,</span> <span class="s1">&#39;Nebraska&#39;</span><span class="p">,</span> <span class="s1">&#39;North Dakota&#39;</span><span class="p">,</span> <span class="s1">&#39;Ohio&#39;</span><span class="p">,</span> <span class="s1">&#39;South Dakota&#39;</span><span class="p">,</span> <span class="s1">&#39;Wisconsin&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;Gulf&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;Texas&#39;</span><span class="p">,</span> <span class="s1">&#39;Louisiana&#39;</span><span class="p">,</span> <span class="s1">&#39;Mississippi&#39;</span><span class="p">,</span> <span class="s1">&#39;Alabama&#39;</span><span class="p">,</span> <span class="s1">&#39;Florida&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;Southwest&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;Nevada&#39;</span><span class="p">,</span> <span class="s1">&#39;Oklahoma&#39;</span><span class="p">,</span> <span class="s1">&#39;Utah&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;Mountain&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;Arizona&#39;</span><span class="p">,</span> <span class="s1">&#39;Colorado&#39;</span><span class="p">,</span> <span class="s1">&#39;Idaho&#39;</span><span class="p">,</span> <span class="s1">&#39;Montana&#39;</span><span class="p">,</span> <span class="s1">&#39;New Mexico&#39;</span><span class="p">,</span> <span class="s1">&#39;Wyoming&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;Pacific Coast&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;California&#39;</span><span class="p">,</span> <span class="s1">&#39;Oregon&#39;</span><span class="p">,</span> <span class="s1">&#39;Washington&#39;</span><span class="p">,</span> <span class="s1">&#39;Alaska&#39;</span><span class="p">,</span> <span class="s1">&#39;Hawaii&#39;</span><span class="p">])}</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;uno&#39;</span><span class="p">,</span><span class="s1">&#39;dos&#39;</span><span class="p">,</span><span class="s1">&#39;tres&#39;</span><span class="p">]),</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;tres&#39;</span><span class="p">,</span> <span class="s1">&#39;cuatro&#39;</span><span class="p">])}</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">k</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">())))</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;letter&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">keys</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">)})</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">k</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">us_regions</span><span class="o">.</span><span class="n">items</span><span class="p">())))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#us_regions_df = pd.DataFrame({&#39;region&#39;: list(keys), &#39;state&#39;: list(values)})</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIS_us</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
 
 
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>-121.4522522</pre>
+<pre>array([&#39;Washington&#39;, &#39;California&#39;, &#39;Virginia&#39;, &#39;Florida&#39;, &#39;Michigan&#39;,
+       &#39;Indiana&#39;, &#39;Kentucky&#39;, &#39;Ohio&#39;, &#39;Pennsylvania&#39;, &#39;West Virginia&#39;,
+       &#39;Nevada&#39;, &#39;Maryland&#39;, &#39;Delaware&#39;, &#39;New Jersey&#39;, &#39;New York&#39;,
+       &#39;Vermont&#39;, &#39;New Hampshire&#39;, &#39;Massachusetts&#39;, &#39;Connecticut&#39;,
+       &#39;Rhode Island&#39;, &#39;Maine&#39;, &#39;Idaho&#39;, &#39;Montana&#39;, &#39;Wyoming&#39;, &#39;Utah&#39;,
+       &#39;Arizona&#39;, &#39;New Mexico&#39;, &#39;South Dakota&#39;, &#39;Colorado&#39;,
+       &#39;North Dakota&#39;, &#39;Nebraska&#39;, &#39;Minnesota&#39;, &#39;Iowa&#39;, &#39;Wisconsin&#39;,
+       &#39;Texas&#39;, &#39;Oklahoma&#39;, &#39;Oregon&#39;, &#39;Kansas&#39;, &#39;Missouri&#39;, &#39;Arkansas&#39;,
+       &#39;Louisiana&#39;, &#39;Illinois&#39;, &#39;Mississippi&#39;, &#39;Alabama&#39;, &#39;Tennessee&#39;,
+       &#39;Georgia&#39;, &#39;South Carolina&#39;, &#39;North Carolina&#39;], dtype=object)</pre>
 </div>
 
 </div>
 
 </div>
 
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">GIS_us</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[31]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>135</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div>
@@ -15752,7 +16455,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
@@ -15773,7 +16476,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
 
 
 
@@ -15793,7 +16496,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">baselinefolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;baselines&#39;</span><span class="p">)</span>
@@ -15809,7 +16512,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">baselinefolder</span>
@@ -15830,7 +16533,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[34]:</div>
 
 
 
@@ -15850,7 +16553,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">testfolder</span>
@@ -15871,7 +16574,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[35]:</div>
 
 
 
@@ -15891,7 +16594,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for ii in range (0, 1): #len(scenarios):</span>
@@ -15918,7 +16621,7 @@ o   95-by-35+Elec.Adv+DR ,  a.k.a. "Solar Futures Decarbonization + Electrificat
     <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;PCAs_RELOG&#39;</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>        
     <span class="n">r2</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">PCAs</span><span class="p">[</span><span class="n">jj</span><span class="p">],</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="n">filetitle</span><span class="p">)</span>
     <span class="c1"># MAC Add here the materials you want.</span>
-    <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">PCAs</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterials</span><span class="p">([</span><span class="s1">&#39;cadmium&#39;</span><span class="p">,</span> <span class="s1">&#39;tellurium&#39;</span><span class="p">,</span> <span class="s1">&#39;glass_cdte&#39;</span><span class="p">,</span> <span class="s1">&#39;aluminium_frames_cdte&#39;</span><span class="p">],</span> <span class="n">baselinefolder</span><span class="o">=</span><span class="n">baselinefolder</span><span class="p">)</span>
+    <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">PCAs</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">.</span><span class="n">addMaterials</span><span class="p">([</span><span class="s1">&#39;cadmium&#39;</span><span class="p">,</span> <span class="s1">&#39;tellurium&#39;</span><span class="p">,</span> <span class="s1">&#39;glass_cdte&#39;</span><span class="p">,</span> <span class="s1">&#39;aluminium_frames_cdte&#39;</span><span class="p">,</span> <span class="s1">&#39;encapsulant_cdte&#39;</span><span class="p">,</span> <span class="s1">&#39;copper_cdte&#39;</span><span class="p">],</span> <span class="n">baselinefolder</span><span class="o">=</span><span class="n">baselinefolder</span><span class="p">)</span>
     <span class="c1"># All -- but these where not included in the Reeds initial study as we didnt have encapsulant or backsheet</span>
     <span class="c1"># r2.scenario[PCAs[jj]].addMaterials([&#39;glass&#39;, &#39;silicon&#39;, &#39;silver&#39;, &#39;copper&#39;, &#39;aluminium_frames&#39;, &#39;encapsulant&#39;, &#39;backsheet&#39;], baselinefolder=r&#39;..\baselines&#39;)</span>
     <span class="n">r2</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">PCAs</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">GIS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">PCAs</span><span class="p">[</span><span class="n">jj</span><span class="p">]]</span><span class="o">.</span><span class="n">lat</span>
@@ -15951,7 +16654,6 @@ Adding Mass AND Energy files for:  glass
 Adding Mass AND Energy files for:  silicon
 Adding Mass AND Energy files for:  silver
 Adding Mass AND Energy files for:  copper
-Adding Mass AND Energy files for:  aluminium_frames
 </pre>
 </div>
 </div>
@@ -15966,7 +16668,7 @@ Adding Mass AND Energy files for:  aluminium_frames
 <pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
 <span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
-Input <span class="ansi-green-fg">In [22]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 5&gt;</span><span class="ansi-blue-fg">()</span>
+Input <span class="ansi-green-fg">In [36]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 5&gt;</span><span class="ansi-blue-fg">()</span>
 <span class="ansi-green-intense-fg ansi-bold">      7</span> filetitle <span style="color: rgb(98,98,98)">=</span> os<span style="color: rgb(98,98,98)">.</span>path<span style="color: rgb(98,98,98)">.</span>join(testfolder, <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">PCAs_RELOG</span><span style="color: rgb(175,0,0)">&#39;</span>, filetitle)    
 <span class="ansi-green-intense-fg ansi-bold">      8</span> r1<span style="color: rgb(98,98,98)">.</span>createScenario(name<span style="color: rgb(98,98,98)">=</span>PCAs[jj], massmodulefile<span style="color: rgb(98,98,98)">=</span>filetitle)
 <span class="ansi-green-fg">----&gt; 9</span> <span class="ansi-yellow-bg">r1</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">scenario</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">PCAs</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">jj</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">addMaterials</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">glass</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">silicon</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">silver</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">copper</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">aluminium_frames</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">encapsulant</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">backsheet</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">baselinefolder</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">baselinefolder</span><span class="ansi-yellow-bg">)</span>
@@ -15994,7 +16696,7 @@ File <span class="ansi-green-fg">~/Documents/Postdoc/Software_dev/PV_ICE/PV_ICE/
 <span class="ansi-green-intense-fg ansi-bold">     40</span>     csvdata <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">open</span>(<span style="color: rgb(0,135,0)">str</span>(file), <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">r</span><span style="color: rgb(175,0,0)">&#39;</span>, encoding<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">UTF-8-sig</span><span style="color: rgb(175,0,0)">&#34;</span>)
 <span class="ansi-green-intense-fg ansi-bold">     41</span>     firstline <span style="color: rgb(98,98,98)">=</span> csvdata<span style="color: rgb(98,98,98)">.</span>readline()
 
-<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/Users/mmendez/Documents/Postdoc/Software_dev/PV_ICE/PV_ICE/baselines/baseline_material_mass_aluminium_frames.csv&#39;</pre>
+<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/Users/mmendez/Documents/Postdoc/Software_dev/PV_ICE/PV_ICE/baselines/baseline_material_mass_copper.csv&#39;</pre>
 </div>
 </div>
 
@@ -16195,6 +16897,38 @@ File <span class="ansi-green-fg">~/Documents/Postdoc/Software_dev/PV_ICE/PV_ICE/
 <span class="n">datay</span><span class="p">[</span><span class="n">filter_colc</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;PVICE_RELOG_PCA_cSi_WasteEOL.csv&#39;</span><span class="p">)</span>
 <span class="n">filter_colc</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">datay_CdTe</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;WasteEOL&#39;</span><span class="p">)]</span>
 <span class="n">datay_CdTe</span><span class="p">[</span><span class="n">filter_colc</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;PVICE_RELOG_PCA_CdTe_WasteEOL.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">datay</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
      </div>

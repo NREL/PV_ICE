@@ -228,52 +228,184 @@ SFscenarios = ['95-by-35_Elec.Adv_DR_cSi', '95-by-35_Elec.Adv_DR_CdTe']
 # In[15]:
 
 
-GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
-GIS = pd.read_excel(GISfile)
-GIS = GIS.set_index('id')
+from geopy.geocoders import Nominatim
+from geopy.point import Point
+# initialize Nominatim API
+geolocator = Nominatim(user_agent="geoapiExercises")
 
 
 # In[16]:
 
 
-GIS.head()
+GISfile = str(Path().resolve().parent.parent.parent / 'gis_centroid_n.xlsx')
+GIS = pd.read_excel(GISfile)
+GIS = GIS.set_index('id')
 
 
 # In[17]:
 
 
-GIS.loc['p1'].long
+GIS
+
+
+# In[18]:
+
+
+GIS.reset_index(inplace=True)
+
+
+# In[19]:
+
+
+for row in range(len(GIS)):
+    Longitude = GIS.loc[row].long
+    Latitude = GIS.loc[row].lat
+    location = geolocator.reverse(Point(Latitude, Longitude))
+    address = location.raw['address']
+    city = address.get('city', '')
+    county = address.get('county', '')
+    state = address.get('state', '')
+    GIS.loc[row].location = str(county + ", " + state) 
+    
+
+
+# In[20]:
+
+
+def city_state_country(row):
+    coord = f"{row['lat']}, {row['long']}"
+    location = geolocator.reverse(coord, exactly_one=True)
+    address = location.raw['address']
+    city = address.get('city', '')
+    county = address.get('county', '')
+    state = address.get('state', '')
+    country = address.get('country', '')
+    row['city'] = city
+    row['county'] = county
+    row['state'] = state
+    row['country'] = country
+    return row
+
+
+# In[21]:
+
+
+GIS = GIS.apply(city_state_country, axis=1)
+GIS_us = GIS[GIS.country == 'United States']
+
+
+# Geographic area dictionaries:
+
+# In[22]:
+
+
+GIS
+
+
+# In[23]:
+
+
+GIS_us
+
+
+# In[24]:
+
+
+from itertools import chain
+
+
+# In[25]:
+
+
+us_regions = {'New England' : set(['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'Rhode Island', 'Vermont']),
+            'Middle Atlantic': set(['Delaware', 'the District of Columbia', 'Maryland', 'New Jersey', 'New York', 'Pennsylvania', 'Virginia', 'West Virginia']),
+            'South Atlantic': set(['Georgia', 'North Carolina', 'South Carolina']),
+            'Midwest': set(['Illinois', 'Indiana', 'Iowa', 'Kansas', 'Michigan', 'Minnesota', 'Missouri', 'Nebraska', 'North Dakota', 'Ohio', 'South Dakota', 'Wisconsin']),
+            'Gulf': set(['Texas', 'Louisiana', 'Mississippi', 'Alabama', 'Florida']),
+            'Southwest': set(['Nevada', 'Oklahoma', 'Utah']),
+            'Mountain': set(['Arizona', 'Colorado', 'Idaho', 'Montana', 'New Mexico', 'Wyoming']),
+            'Pacific Coast': set(['California', 'Oregon', 'Washington', 'Alaska', 'Hawaii'])}
+
+
+# In[ ]:
+
+
+
+
+
+# In[26]:
+
+
+d = {'a': set(['uno','dos','tres']), 'b': set(['tres', 'cuatro'])}
+
+
+# In[27]:
+
+
+keys, values = map(chain.from_iterable, zip(*((k*len(v), v) for k, v in d.items())))
+
+df = pd.DataFrame({'letter': list(keys), 'value': list(values)})
+
+
+# In[28]:
+
+
+keys, values = map(chain.from_iterable, zip(*((k*len(v), v) for k, v in us_regions.items())))
+
+
+# In[29]:
+
+
+#us_regions_df = pd.DataFrame({'region': list(keys), 'state': list(values)})
+
+
+# In[30]:
+
+
+GIS_us.state.unique()
+
+
+# In[31]:
+
+
+len(GIS_us)
+
+
+# In[ ]:
+
+
+
 
 
 # #### Create the 2 Scenarios and assign Baselines
 # 
 # Keeping track of each scenario as its own PV ICE Object.
 
-# In[18]:
+# In[32]:
 
 
 Path().resolve().parent
 
 
-# In[19]:
+# In[33]:
 
 
 baselinefolder = os.path.join(Path().resolve().parent, 'baselines')
 
 
-# In[20]:
+# In[34]:
 
 
 baselinefolder
 
 
-# In[21]:
+# In[35]:
 
 
 testfolder
 
 
-# In[22]:
+# In[36]:
 
 
 #for ii in range (0, 1): #len(scenarios):
@@ -300,7 +432,7 @@ for jj in range (0, len(PCAs)):
     filetitle = os.path.join(testfolder, 'PCAs_RELOG', filetitle)        
     r2.createScenario(name=PCAs[jj], massmodulefile=filetitle)
     # MAC Add here the materials you want.
-    r2.scenario[PCAs[jj]].addMaterials(['cadmium', 'tellurium', 'glass_cdte', 'aluminium_frames_cdte'], baselinefolder=baselinefolder)
+    r2.scenario[PCAs[jj]].addMaterials(['cadmium', 'tellurium', 'glass_cdte', 'aluminium_frames_cdte', 'encapsulant_cdte', 'copper_cdte'], baselinefolder=baselinefolder)
     # All -- but these where not included in the Reeds initial study as we didnt have encapsulant or backsheet
     # r2.scenario[PCAs[jj]].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant', 'backsheet'], baselinefolder=r'..\baselines')
     r2.scenario[PCAs[jj]].latitude = GIS.loc[PCAs[jj]].lat
@@ -390,4 +522,16 @@ filter_colc = [col for col in datay if col.startswith('WasteEOL')]
 datay[filter_colc].to_csv('PVICE_RELOG_PCA_cSi_WasteEOL.csv')
 filter_colc = [col for col in datay_CdTe if col.startswith('WasteEOL')]
 datay_CdTe[filter_colc].to_csv('PVICE_RELOG_PCA_CdTe_WasteEOL.csv')
+
+
+# In[ ]:
+
+
+datay
+
+
+# In[ ]:
+
+
+
 
