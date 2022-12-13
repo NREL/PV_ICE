@@ -1,0 +1,57 @@
+﻿year,CED_Cu_kWhpkg,PrctFuel,Source,Notes
+1995,25,,"G. J. M. Phylipsen and E. A. Alsema, “Environmental life-cycle assessment of multicrystalline silicon solar cell modules,” Netherlands Agency for Energy and the Environment,NOVEM, Netherlands, Sep. 1995.","gross energy requirement cathodic copper, van Heijningen 1992"
+1996,,,,
+1997,,,,
+1998,11.70598404,49,"Alvarado, S. 2002. “Long Term Energy-Related Environmental Issues of Copper Production.” Energy 27 (2): 183–96. https://doi.org/10.1016/S0360-5442(01)00067-6.","Table 4, data source apparently COCHILCO, only direct fuel uses, pyro, not an amazing paper"
+1999,0.294,,"R. U. Ayres, L. W. Ayres, and I. Råde, The Life Cycle of Copper, Its Co-Products and Byproducts. Dordrecht: Springer Netherlands, 2003. Accessed: Jan. 19, 2021. [Online]. Available: http://public.ebookcentral.proquest.com/choice/publicfullrecord.aspx?p=3105211","Chilean Cu Smelters, average"
+2000,9.1667,,"Rankin, John. 2012. “Energy Use in Metal Production.” In , 3. Swinburne University of Technology.","embodied energy, pyro, from Norgate and Rankin 2000-2002"
+2001,17.917,,"Rankin, John. 2012. “Energy Use in Metal Production.” In , 3. Swinburne University of Technology.","embodied energy, hydro, from Norgate and Rankin 2000-2002"
+2002,,,,
+2003,16.667,,"R. U. Ayres, L. W. Ayres, and I. Råde, The Life Cycle of Copper, Its Co-Products and Byproducts. Dordrecht: Springer Netherlands, 2003. Accessed: Jan. 19, 2021. [Online]. Available: http://public.ebookcentral.proquest.com/choice/publicfullrecord.aspx?p=3105211","avg ore grade (>0.1% grade), OECD"
+2004,,,,
+2005,14.9,20,"Marsden, John O. “Energy Efficiency & Copper Hydrometallurgy.” Presented at the Hydrometallurgy 6th Annual Symposium SME, Arizona, August 2008. http://metallurgium.com/pdf/JOM%20Energy%20Hydromet%202008%20rev5.pdf.","Slide 33+35, 35% SX/EW hydro 65% Concentrate pyro, assumes 0.5% ore grade, PrctFuel from bar plot excluding diesel and steel wear wtd avg two processes"
+2006,17.777,,"Norgate, T. E., S. Jahanshahi, and W. J. Rankin. 2007. “Assessing the Environmental Impact of Metal Production Processes.” Journal of Cleaner Production, From Cleaner Production to Sustainable Production and Consumption in Australia and New Zealand: Achievements, Challenges, and Opportunities, 15 (8): 838–48. https://doi.org/10.1016/j.jclepro.2006.06.018.","GER, cradle to gate, heap leaching and SX/EW process, hydro"
+2007,9.166,,"Norgate, T. E., S. Jahanshahi, and W. J. Rankin. 2007. “Assessing the Environmental Impact of Metal Production Processes.” Journal of Cleaner Production, From Cleaner Production to Sustainable Production and Consumption in Australia and New Zealand: Achievements, Challenges, and Opportunities, 15 (8): 838–48. https://doi.org/10.1016/j.jclepro.2006.06.018.","GER, cradle to gate of mfg, includes Smelting/converting and electro-refining, pyro"
+2008,16.833,,"Nuss, Philip, and Matthew J. Eckelman. 2014. “Life Cycle Assessment of Metals: A Scientific Synthesis.” PLOS ONE 9 (7): e101298. https://doi.org/10.1371/journal.pone.0101298.","average of non-secondary, different mine sources, still ecoinvent data"
+2009,14.917,,"Nuss, Philip, and Matthew J. Eckelman. 2014. “Life Cycle Assessment of Metals: A Scientific Synthesis.” PLOS ONE 9 (7): e101298. https://doi.org/10.1371/journal.pone.0101298.","includes secondary content, is the mean distribution [42.1, 68.6], ecoinvent 2.2 data [2010]"
+2010,19.167,,"Rötzer, Nadine, and Mario Schmidt. 2020. “Historical, Current, and Future Energy Demand from Global Copper Production and Its Impact on Climate Change.” Resources 9 (4): 44. https://doi.org/10.3390/resources9040044.","CED for Cu anodes (not wire), pyrometallurgy focus"
+2011,,,,
+2012,14.7,,"“The Environmental Profile of Copper Products A ‘cradle-to-Gate‘ Life-Cycle Assessment for Copper Tube, Sheet and Wire Produced in Europe.” 2012. European Copper Institute.","Copper Wire in EU from companies, likely includes scrap content"
+2013,16.6662,,"Elshkaki, Ayman, T. E. Graedel, Luca Ciacci, and Barbara K. Reck. 2016. “Copper Demand, Supply, and Associated Energy Use to 2050.” Global Environmental Change 39 (July): 305–15. https://doi.org/10.1016/j.gloenvcha.2016.06.006.","""primary production"" from UNEP 2013, average, their range is 30-90 but they cite Kupfer 2005"
+2014,,,,
+2015,,,,
+2016,,,,
+2017,,,,
+2018,,,,
+2019,7.778,,"“The Role of Critical Minerals in Clean Energy Transitions,” IEA, May 2021. [Online]. Available: https://iea.blob.core.windows.net/assets/24d5dfbb-a77a-4647-abcc-667867207f74/TheRoleofCriticalMineralsinCleanEnergyTransitions.pdf","pg 124, Energy use for concentrate covers mine, concentrating plant, smelter, refinery and services. For heap leaching, energy use covers mine, leaching, solvent, extraction, electro-winning processes and services"
+2020,,,,
+2021,,,,
+2022,,,,
+2023,,,,
+2024,,,,
+2025,,,,
+2026,,,,
+2027,,,,
+2028,,,,
+2029,,,,
+2030,,,,
+2031,,,,
+2032,,,,
+2033,,,,
+2034,,,,
+2035,,,,
+2036,,,,
+2037,,,,
+2038,,,,
+2039,,,,
+2040,,,,
+2041,,,,
+2042,,,,
+2043,,,,
+2044,,,,
+2045,,,,
+2046,,,,
+2047,,,,
+2048,,,,
+2049,15.2,,"Haas, Jannik, Simón Moreno-Leiva, Tobias Junne, Po-Jung Chen, Giovanni Pamparana, Wolfgang Nowak, Willy Kracht, and Julián M. Ortiz. 2020. “Copper Mining: 100% Solar Electricity by 2030?” Applied Energy 262 (March): 114506. https://doi.org/10.1016/j.apenergy.2020.114506.","Figure 5b, average of all countries except Indonesia, uses Norgate equations and solar powered mines"
+2050,16.9,,"Rötzer, Nadine, and Mario Schmidt. 2020. “Historical, Current, and Future Energy Demand from Global Copper Production and Its Impact on Climate Change.” Resources 9 (4): 44. https://doi.org/10.3390/resources9040044.","copper cathode, assumes 0.5% ore grade and 100% renewable energy, pyrometallurgy focus"
