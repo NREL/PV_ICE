@@ -4,29 +4,38 @@
 # # Copper Energy Demands
 # This journal documents the energy demands of mining, refining, drawing and recycling of copper for use inside the PV cell. Probably also applies to copper in wiring (not yet considered)
 
-# In[1]:
+# In[8]:
 
 
 import numpy as np
 import pandas as pd
 import os,sys
+from pathlib import Path
 import matplotlib.pyplot as plt
 plt.rcParams.update({'font.size': 18})
 plt.rcParams['figure.figsize'] = (8, 4)
 cwd = os.getcwd() #grabs current working directory
 
+supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
+baselinesFolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines')
+
 
 # ### Mining Energy
 
-# In[2]:
+# In[16]:
 
 
-cu_mining_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-copper-mining.csv",
-                                     index_col='year')
+os.path.join(supportMatfolder+"\energy-input-copper-mining.csv")
+
+
+# In[17]:
+
+
+cu_mining_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-mining.csv"), index_col='year')
 cu_mining_raw.dropna(how='all')
 
 
-# In[3]:
+# In[ ]:
 
 
 plt.scatter(cu_mining_raw.index, cu_mining_raw['E_CuMining_kWhpkg'], marker='o')
@@ -34,7 +43,7 @@ plt.title('CED_Cu_kWhpkg')
 plt.ylabel('kWh/kg')
 
 
-# In[4]:
+# In[ ]:
 
 
 #drop ones that include more than just mining and concentration.
@@ -43,7 +52,7 @@ cu_mining_raw.loc[2010] = np.nan
 cu_mining_raw.loc[2011] = np.nan
 
 
-# In[5]:
+# In[ ]:
 
 
 plt.scatter(cu_mining_raw.index, cu_mining_raw['E_CuMining_kWhpkg'], marker='o')
@@ -57,7 +66,7 @@ plt.ylabel('kWh/kg')
 # ### CED
 # CED would include mining, so we might subtract the mining energy from the final CED trend.
 
-# In[6]:
+# In[ ]:
 
 
 cu_CED_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-copper-CED.csv",
@@ -65,7 +74,7 @@ cu_CED_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/ener
 cu_CED_raw.dropna(how='all')
 
 
-# In[7]:
+# In[ ]:
 
 
 plt.scatter(cu_CED_raw.index, cu_CED_raw['CED_Cu_kWhpkg'], marker='o')
@@ -73,7 +82,7 @@ plt.title('CED_Cu_kWhpkg')
 plt.ylabel('kWh/kg')
 
 
-# In[8]:
+# In[ ]:
 
 
 #drop the low outlier
@@ -86,19 +95,19 @@ cu_CED_raw.loc[2012] = np.nan
 
 # The remaining lower energy points are associated with the difference between Hydro and Pyro metallurgy. 
 
-# In[9]:
+# In[ ]:
 
 
 cu_CED_raw.loc[2000:2001,['Notes']]
 
 
-# In[10]:
+# In[ ]:
 
 
 cu_CED_raw.loc[2006:2007,['Notes']]
 
 
-# In[11]:
+# In[ ]:
 
 
 #find pyro data
@@ -107,7 +116,7 @@ cu_CED_trim_pyro = cu_CED_trim[cu_CED_trim['Notes'].str.contains('pyro')]
 cu_CED_trim_pyro#.index
 
 
-# In[12]:
+# In[ ]:
 
 
 #find hydro data
@@ -115,7 +124,7 @@ cu_CED_trim_hydro = cu_CED_trim[cu_CED_trim['Notes'].str.contains('hydro')]
 cu_CED_trim_hydro#.index
 
 
-# In[13]:
+# In[ ]:
 
 
 plt.scatter(cu_CED_raw.index, cu_CED_raw['CED_Cu_kWhpkg'], marker='o', label='alldata', color='black', s=40)
@@ -130,14 +139,14 @@ plt.legend()
 
 # Our method will be to take the average of the hydro and average of the pyro CEDs, then use marketshare of each technology over time for 1995 through 2050. Then we will use the projected energy from Rotzer for 2050 and interpolate. This neglects the detail of increasing energy demands for decreasing ore grade - however, the correlation from Northey is <0.4 for the full process and average global ore grade over time has been hard to find and is not fully representative of energy demands.
 
-# In[14]:
+# In[ ]:
 
 
 #hydro
 CED_hydro = cu_CED_trim_hydro['CED_Cu_kWhpkg'].mean()
 
 
-# In[15]:
+# In[ ]:
 
 
 #pyro
@@ -146,7 +155,7 @@ CED_pyro = cu_CED_trim_pyro['CED_Cu_kWhpkg'].mean()
 CED_pyro
 
 
-# In[16]:
+# In[ ]:
 
 
 #import marketshare
@@ -154,7 +163,7 @@ mrktshr_pyrohydro_raw = pd.read_excel(cwd+"/../../../PV_ICE/baselines/Supporting
               sheet_name='pyrovshydro', index_col=0, header=[0])
 
 
-# In[17]:
+# In[ ]:
 
 
 mrktshr_pyrohydro = mrktshr_pyrohydro_raw[['% PYRO','% HYDRO']]
@@ -163,27 +172,27 @@ plt.stackplot(mrktshr_pyrohydro.index, mrktshr_pyrohydro['% PYRO'], mrktshr_pyro
 plt.legend(mrktshr_pyrohydro.columns, loc='lower right')
 
 
-# In[18]:
+# In[ ]:
 
 
 pyro_mrktshr_CED = mrktshr_pyrohydro['% PYRO']*CED_pyro
 pyro_mrktshr_CED[0:5]
 
 
-# In[19]:
+# In[ ]:
 
 
 hydro_mrktshr_CED = mrktshr_pyrohydro['% HYDRO']*CED_hydro
 hydro_mrktshr_CED[0:5]
 
 
-# In[20]:
+# In[ ]:
 
 
 11.727135+1.439028
 
 
-# In[21]:
+# In[ ]:
 
 
 CED_mrktshr = pd.DataFrame(pyro_mrktshr_CED+hydro_mrktshr_CED)
@@ -193,7 +202,7 @@ plt.ylim(10,20)
 
 # Now in 2050 we have two projections of energy demand in 2050. There is another projection from Elshkaki 2016, but this is older and nearly double the other two estimates. We will average the two 2050 projection estimates and interpolate to that value.
 
-# In[29]:
+# In[ ]:
 
 
 CED_Cu_tofill = pd.concat([CED_mrktshr.loc[1995:],cu_CED_raw.loc[2022:,'CED_Cu_kWhpkg']])
@@ -207,7 +216,7 @@ CED_Cu_tofill.loc[2050]=CED_2050_mean
 CED_Cu_filled = CED_Cu_tofill.interpolate()
 
 
-# In[30]:
+# In[ ]:
 
 
 plt.plot(CED_Cu_filled)
