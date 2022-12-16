@@ -209,7 +209,7 @@ CED_Cu_tofill.loc[2050]=CED_2050_mean
 CED_Cu_filled = CED_Cu_tofill.interpolate()
 
 
-# In[24]:
+# In[23]:
 
 
 plt.plot(CED_Cu_filled)
@@ -218,14 +218,14 @@ plt.ylim(10,20)
 
 # ### Add the Energy to turn Cu cathode in to Cu wire
 
-# In[25]:
+# In[24]:
 
 
 cu_wireDraw_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-wireDraw.csv"), index_col='year')
 cu_wireDraw_raw.dropna(how='all')
 
 
-# In[44]:
+# In[25]:
 
 
 #subtract the average historical CED of Cu from the 2012 data to get just wire pulling part
@@ -234,7 +234,7 @@ cu_wireDraw_raw.loc[2012,'E_wireDraw_kWhpkg'] = adj_wire[0]
 adj_wire
 
 
-# In[45]:
+# In[26]:
 
 
 cu_wireDraw_raw.dropna(how='all')
@@ -242,14 +242,14 @@ cu_wireDraw_raw.dropna(how='all')
 
 # None of these are very large. We will average these values to estimate the wire drawing requirements, then add it to the CED to get a MFGing of virgin Cu. This value will also be added to the recycling processing requirements below.
 
-# In[48]:
+# In[27]:
 
 
 e_wireDraw = cu_wireDraw_raw['E_wireDraw_kWhpkg'].mean()
 e_wireDraw
 
 
-# In[55]:
+# In[28]:
 
 
 CED_Cu_virgin = round(CED_Cu_filled+e_wireDraw,2)
@@ -258,23 +258,22 @@ CED_Cu_virgin.to_csv(os.path.join(supportMatfolder+'\output_energy_Cu_Mfging.csv
 
 # # Cu Recycling
 
-# In[ ]:
+# In[35]:
 
 
+cu_recycle_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-recycle.csv"), index_col='year')
+cu_recycle_raw.dropna(how='all')
 
 
-
-# In[ ]:
-
+# In[36]:
 
 
+plt.scatter(cu_recycle_raw.index, cu_recycle_raw['E_recycleCu_kWhpkg'])
 
 
-# In[ ]:
-
-
-
-
+# We will use Dong et al 2022, based on their inventory in their supplemental information. We will use the WEEE specific data (2018), CED, which account for processing e-waste (which is the closest approximation to a PV module), then smelts and refines the copper.
+# 
+# I cannot find any information on low purity copper recycling, therefore, we will assume all this copper gets recycled to high quality (i.e. LQ recycling will be all energy). The energy associated with HQ will be the wire drawing energy (calculated above). We will also assume the same fuel fraction for recycling as primary since it is using the same smelting processes.
 
 # In[ ]:
 
