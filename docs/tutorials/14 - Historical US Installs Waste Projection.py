@@ -200,9 +200,90 @@ yearlycSi_agg = usyearlyr1_sub.filter(like='c-Si')
 yearlyallPV_agg = usyearlyr1_sub[usyearlyr1_sub.columns.difference(yearlycSi_agg.columns)]
 
 
+# #### Area Equivilent Calcs
+
+# In[19]:
+
+
+keys = pd.DataFrame(r1.scenario['USHistory'].dataOut_m.keys())
+import re
+keys[keys[0].str.contains('area', flags=re.IGNORECASE)]
+
+
+# In[20]:
+
+
+for scen in scennames:
+    plt.plot(r1.scenario[scen].dataIn_m['year'], 
+             r1.scenario[scen].dataOut_m['Yearly_Sum_Area_disposed'], label=scen)
+
+plt.title('Yearly sum Disposed')
+plt.ylabel('Disposed Area [m2]')
+plt.legend()
+
+
+# In[21]:
+
+
+#extract area disposed from simulation #should be m2
+yearly_AreaDisposed_Results = pd.DataFrame()
+for scen in scennames:
+    temp = r1.scenario[scen].dataOut_m['Yearly_Sum_Area_disposed']
+    yearly_AreaDisposed_Results = pd.concat([yearly_AreaDisposed_Results,temp], axis=1)
+
+
+# In[22]:
+
+
+yearly_AreaDisposed_Results.index = r1.scenario['Residential'].dataIn_m['year']
+yearly_AreaDisposed_Results.columns = scennames
+yearly_AreaDisposed_Results.tail()
+
+
+# In[23]:
+
+
+yearly_AreaDisposed_Results_cum = yearly_AreaDisposed_Results.cumsum()
+yearly_AreaDisposed_Results_cum.tail()
+
+
+# Now we take the area and divide it by 1.6 m2 or 2 m2 to approximate the # of modules. And Also extract the 2030 and 2050 values for area equivilence estimations.
+
+# In[24]:
+
+
+subset_areaDisposed_yearly = yearly_AreaDisposed_Results.loc[[2030,2050]]
+subset_areaDisposed_cum = yearly_AreaDisposed_Results_cum.loc[[2030,2050]]
+
+
+# In[25]:
+
+
+subset_1pt6m2ModulesDisposed_yearly = subset_areaDisposed_yearly/1.6
+subset_1pt6m2ModulesDisposed_cum = subset_areaDisposed_cum/1.6
+subset_2m2ModulesDisposed_yearly = subset_areaDisposed_yearly/2
+subset_2m2ModulesDisposed_cum = subset_areaDisposed_cum/2
+idxmulti = pd.MultiIndex.from_arrays([['yearly','yearly','cumulative','cumulative'],['1.6m$^2$','2m$^2$','1.6m$^2$','2m$^2$']])
+subset_NoModules = pd.concat([subset_1pt6m2ModulesDisposed_yearly,
+           subset_2m2ModulesDisposed_yearly,
+           subset_1pt6m2ModulesDisposed_cum,
+           subset_2m2ModulesDisposed_cum],
+         keys = idxmulti)
+subset_NoModules.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_NoModulesDisposed.csv')
+subset_NoModules
+
+
+# In[26]:
+
+
+AreaDisposed_Eq = pd.concat([subset_areaDisposed_yearly,subset_areaDisposed_cum], keys = ['yearly','cumulative'])
+AreaDisposed_Eq.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_AreaDisposed_EQ.csv')
+AreaDisposed_Eq
+
+
 # ## Pretty Plots
 
-# In[72]:
+# In[27]:
 
 
 #all techs plot
@@ -212,9 +293,9 @@ plt.plot([],[],color='brown', label='Utility')
 
 
 plt.stackplot(yearlyallPV_agg.index, 
-              yearlyallPV_agg['ActiveCapacity_Simulation1_Residential_[MW]'], 
-              yearlyallPV_agg['ActiveCapacity_Simulation1_Commercial_[MW]'],
-              yearlyallPV_agg['ActiveCapacity_Simulation1_Utility_[MW]'], 
+              yearlyallPV_agg['ActiveCapacity_sim1_Residential_[MW]'], 
+              yearlyallPV_agg['ActiveCapacity_sim1_Commercial_[MW]'],
+              yearlyallPV_agg['ActiveCapacity_sim1_Utility_[MW]'], 
               colors = ['blue','orange','brown'])
 plt.title('Effective Capacity All PV tech')
 plt.ylabel('Effective Capacity [MWdc]')
@@ -223,7 +304,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[71]:
+# In[28]:
 
 
 #cSi plot
@@ -233,9 +314,9 @@ plt.plot([],[],color='grey', label='Utility')
 
 
 plt.stackplot(yearlycSi_agg.index, 
-              yearlycSi_agg['ActiveCapacity_Simulation1_Residential c-Si_[MW]'], 
-              yearlycSi_agg['ActiveCapacity_Simulation1_Commercial c-Si_[MW]'],
-              yearlycSi_agg['ActiveCapacity_Simulation1_Utility c-Si_[MW]'], 
+              yearlycSi_agg['ActiveCapacity_sim1_Residential c-Si_[MW]'], 
+              yearlycSi_agg['ActiveCapacity_sim1_Commercial c-Si_[MW]'],
+              yearlycSi_agg['ActiveCapacity_sim1_Utility c-Si_[MW]'], 
               colors = ['red','purple','grey'])
 plt.title('Effective Capacity c-Si')
 plt.ylabel('Effective Capacity [MWdc]')
@@ -244,13 +325,13 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[21]:
+# In[29]:
 
 
 yearlyallPV_agg.filter(like='Decommisioned').columns
 
 
-# In[70]:
+# In[30]:
 
 
 #all techs plot
@@ -260,9 +341,9 @@ plt.plot([],[],color='brown', label='Utility')
 
 
 plt.stackplot(yearlyallPV_agg.index, 
-              yearlyallPV_agg['DecommisionedCapacity_Simulation1_Residential_[MW]'], 
-              yearlyallPV_agg['DecommisionedCapacity_Simulation1_Commercial_[MW]'],
-              yearlyallPV_agg['DecommisionedCapacity_Simulation1_Utility_[MW]'], 
+              yearlyallPV_agg['DecommisionedCapacity_sim1_Residential_[MW]'], 
+              yearlyallPV_agg['DecommisionedCapacity_sim1_Commercial_[MW]'],
+              yearlyallPV_agg['DecommisionedCapacity_sim1_Utility_[MW]'], 
               colors = ['blue','orange','brown'])
 plt.title('Decommissioned  Capacity All PV tech')
 plt.ylabel('Cumulative Decommissioned Capacity [MWdc]')
@@ -271,13 +352,13 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[23]:
+# In[31]:
 
 
 yearlycSi_agg.filter(like='Decommisioned').columns
 
 
-# In[69]:
+# In[32]:
 
 
 #cSi plot
@@ -287,9 +368,9 @@ plt.plot([],[],color='grey', label='Utility')
 
 
 plt.stackplot(yearlycSi_agg.index, 
-              yearlycSi_agg['DecommisionedCapacity_Simulation1_Residential c-Si_[MW]'], 
-              yearlycSi_agg['DecommisionedCapacity_Simulation1_Commercial c-Si_[MW]'],
-              yearlycSi_agg['DecommisionedCapacity_Simulation1_Utility c-Si_[MW]'], 
+              yearlycSi_agg['DecommisionedCapacity_sim1_Residential c-Si_[MW]'], 
+              yearlycSi_agg['DecommisionedCapacity_sim1_Commercial c-Si_[MW]'],
+              yearlycSi_agg['DecommisionedCapacity_sim1_Utility c-Si_[MW]'], 
               colors = ['red','purple','grey'])
 plt.title('Decommissioned Capacity c-Si')
 plt.ylabel('Cumulative Decommissioned Capacity [MWdc]')
@@ -298,14 +379,14 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[59]:
+# In[33]:
 
 
 cSiMatWastes_cum = uscumr1.filter(like='WasteAll').filter(like='c-Si').filter(like='All Sector')/1e6 #convert to million metric tonnes
 cSiMatWastes_cum.columns
 
 
-# In[75]:
+# In[34]:
 
 
 #cSi plot
@@ -334,7 +415,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[ ]:
+# In[35]:
 
 
 #2050 stacked bar graph of cumulative waste by Material
@@ -347,20 +428,20 @@ plt.show()
 # 
 # Create a table output of installs, active generating capacity annually decommissioned, cumulatively decomissioned, and cumulative decomissioned module mass.
 
-# In[25]:
+# In[36]:
 
 
 df_Capacity_all = usyearlyr1_sub[usyearlyr1_sub.filter(like='[MW]').columns]
 
 
-# In[27]:
+# In[37]:
 
 
 capacity_results_alltech = yearlyallPV_agg.filter(like='[MW]')
 capacity_results_cSi = yearlycSi_agg.filter(like='[MW]')
 
 
-# In[28]:
+# In[38]:
 
 
 #caution, run this only once
@@ -368,7 +449,7 @@ for colname in df_Capacity_all.filter(like='Decommisioned').columns:
     df_Capacity_all[str('Annual_'+colname)] = df_Capacity_all[colname]-df_Capacity_all[colname].shift(1).fillna(0)
 
 
-# In[30]:
+# In[39]:
 
 
 df_Capacity_all.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_Decomissioning_Sectorwise.csv')
@@ -377,7 +458,7 @@ df_Capacity_all.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historic
 # ### Pull out the 2030 and 2050 Values of interest
 # the request was for 2030 and 2050 values for decommissioning and cumulative c-Si waste, by sector. Create a table of just those results.
 
-# In[50]:
+# In[40]:
 
 
 subset_results_capacity = df_Capacity_all.filter(like='Decommisioned').loc[[2030,2050]]
@@ -385,11 +466,23 @@ subset_results_capacity.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_
 round(subset_results_capacity.T,)
 
 
-# In[52]:
+# In[41]:
 
 
 cSiwaste_cum = uscumr1.filter(like='WasteAll_Module').filter(like='c-Si')/1e6 #convert to million metric tonnes
 subset_results_waste = cSiwaste_cum.loc[[2030,2050]]
 subset_results_waste.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_cSiWaste20302050_Sectorwise.csv')
 round(subset_results_waste.T,2)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 

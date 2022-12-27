@@ -1,3 +1,3 @@
-year,WasteAll_Module_Simulation1_Residential c-Si_[Tonnes],WasteAll_Module_Simulation1_Commercial c-Si_[Tonnes],WasteAll_Module_Simulation1_Utility c-Si_[Tonnes],WasteAll_Module_Simulation1_All Sector c-Si Installs_[MWdc]_[Tonnes]
-2030,0.048411413337085644,0.0756345669181114,0.02765393774830637,0.15169991800350335
-2050,1.1270893621735565,1.0374431190477393,2.3329017050835623,4.497434186304857
+year,WasteAll_Module_sim1_Residential c-Si_[Tonnes],WasteAll_Module_sim1_Commercial c-Si_[Tonnes],WasteAll_Module_sim1_Utility c-Si_[Tonnes],WasteAll_Module_sim1_All Sector c-Si Installs_[MWdc]_[Tonnes]
+2030,0.049374582152298105,0.0771398878168845,0.028200131890301613,0.15471460185948416
+2050,1.1491149002662646,1.0577560598803504,2.3784454537311754,4.5853164138777895
