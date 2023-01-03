@@ -1419,7 +1419,7 @@ class Simulation:
                     except:
                         print("No material energy data loaded.")
 
-            print("Data trimed, years now encompass ", startYear, " to ", endYear)
+            print("Data trimed, years now encompass ", startYear, " to ", endYear) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
             
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):

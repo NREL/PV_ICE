@@ -14924,6 +14924,10 @@ Name: 2030, dtype: float64</pre>
 <span class="n">modeffs</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PERC&#39;</span><span class="p">,</span><span class="s1">&#39;SHJ&#39;</span><span class="p">,</span><span class="s1">&#39;TOPCon&#39;</span><span class="p">]</span>
 <span class="n">Aguse</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">perc_Ag_gpm2</span><span class="p">,</span><span class="n">shj_Ag_gpm2</span><span class="p">,</span><span class="n">topcon_Ag_gpm2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">Aguse</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PERC&#39;</span><span class="p">,</span><span class="s1">&#39;SHJ&#39;</span><span class="p">,</span><span class="s1">&#39;TOPCon&#39;</span><span class="p">]</span>
+
+<span class="c1">#print for use in other journals</span>
+<span class="n">modeffs</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span> <span class="s1">&#39;output-celltech-modeffimprovements.csv&#39;</span><span class="p">))</span>
+<span class="n">Aguse</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span> <span class="s1">&#39;output-celltech-Agusageimprovements.csv&#39;</span><span class="p">))</span>
 </pre></div>
 
      </div>

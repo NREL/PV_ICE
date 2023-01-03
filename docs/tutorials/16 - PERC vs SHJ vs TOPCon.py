@@ -137,6 +137,10 @@ modeffs.columns=['PERC','SHJ','TOPCon']
 Aguse = pd.concat([perc_Ag_gpm2,shj_Ag_gpm2,topcon_Ag_gpm2], axis=1)
 Aguse.columns=['PERC','SHJ','TOPCon']
 
+#print for use in other journals
+modeffs.to_csv(os.path.join(supportMatfolder, 'output-celltech-modeffimprovements.csv'))
+Aguse.to_csv(os.path.join(supportMatfolder, 'output-celltech-Agusageimprovements.csv'))
+
 
 # In[13]:
 
