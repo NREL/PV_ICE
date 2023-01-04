@@ -12,7 +12,7 @@
 # 
 # We will use a literture-sourced global scale deployment schedule through 2050, then assume that capacity increases at a lower constant rate through 2100.
 
-# In[ ]:
+# In[1]:
 
 
 import numpy as np
@@ -41,7 +41,7 @@ if not os.path.exists(testfolder):
 
 
 
-# In[ ]:
+# In[2]:
 
 
 #creating scenarios for identical power of multiple technologies
@@ -53,7 +53,7 @@ moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 # We will be deploying based on power (not area) because each of these have different efficiencies, and those differences should be accounted for in the simulation. Additionally, we will run the installation compensation to simulate the required replacements for each module type.
 
-# In[ ]:
+# In[3]:
 
 
 #load in a baseline and materials for modification
@@ -68,12 +68,40 @@ for scen in scennames:
         sim1.scenario[scen].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[ ]:
+# In[4]:
 
 
 #trim to start in 2000, this trims module and materials
 #had to specify and end year, cannot use to extend
-sim1.trim_Years(startYear=2000, endYear=2100, methodAddedYears='repeat')
+sim1.trim_Years(startYear=2000, endYear=2100)
+
+
+# In[5]:
+
+
+sim1.scenario['SHJ'].dataIn_m
+
+
+# In[ ]:
+
+
+newindex = pd.RangeIndex(0,50,1)
+add = pd.DataFrame(columns=sim1.scenario['SHJ'].dataIn_m.columns, index=newindex)
+#add.columns=sim1.scenario['SHJ'].dataIn_m.columns
+test = pd.concat([sim1.scenario['SHJ'].dataIn_m,add])
+
+
+# In[ ]:
+
+
+test.reset_index(inplace=True, drop=True)
+
+
+# In[ ]:
+
+
+test.ffill(inplace=True)
+test
 
 
 # In[ ]:
@@ -81,12 +109,6 @@ sim1.trim_Years(startYear=2000, endYear=2100, methodAddedYears='repeat')
 
 idx_late = pd.RangeIndex(start=2050,stop=2101,step=1) #create the index
 proj_2050_2100_energyIncrease = pd.DataFrame(index=idx_late, columns=['World_cum'], dtype=float) #turn into df 
-
-
-# In[ ]:
-
-
-sim1.scenario['SHJ'].dataIn_m['year'] 
 
 
 # ## Module Types

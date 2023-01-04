@@ -1346,6 +1346,17 @@ class Simulation:
             
             if int(endYear) > int(dataEndYear):
                 print('developing year extension')
+                reduced = baseline.loc[(baseline['year']>=startYear)].copy() #trim to the start year
+                lengthtoadd = int(endYear) - int(dataEndYear)
+                newIndex = pd.RangeIndex(0,lengthtoadd,1) #create a new index to append
+                add = pd.DataFrame(columns=baseline.columns, index=newIndex) #create new df, using new index to append
+                extended = pd.concat([reduced,add]) #concat the trimmed early years with the new extended years
+                extended.reset_index(inplace=True, drop=True) #reset the index and don't include the old in new df
+                extended.ffill(inplace=True) #forward fill columns
+                # fix years here
+                print(newIndex)
+                print(extended.tail(5))
+                self.scenario[scen].dataIn_m = extended #reassign the material data to the simulation
 
             # Add check if data does not need to be reduced to not do these.
             reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
