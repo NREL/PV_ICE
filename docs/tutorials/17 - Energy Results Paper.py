@@ -12,7 +12,7 @@
 # 
 # We will use a literture-sourced global scale deployment schedule through 2050, then assume that capacity increases at a lower constant rate through 2100.
 
-# In[2]:
+# In[ ]:
 
 
 import numpy as np
@@ -22,7 +22,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 plt.rcParams.update({'font.size': 18})
-#plt.rcParams['figure.figsize'] = (10, 6)
+plt.rcParams['figure.figsize'] = (10, 6)
 
 cwd = os.getcwd() #grabs current working directory
 
@@ -41,11 +41,11 @@ if not os.path.exists(testfolder):
 
 
 
-# In[7]:
+# In[ ]:
 
 
 #creating scenarios for identical power of multiple technologies
-scennames = ['PERC_50','SHJ','Perovskite','RecycledPERC','CheapCrap','Repowered']
+scennames = ['PERC_50','SHJ','Perovskite','RecycledPERC','CheapCrap','Repowered'] #might need a PV ICE baseline too
 MATERIALS = ['glass','silver','silicon', 'copper', 'aluminium_frames'] #'encapsulant', 'backsheet',
 moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
@@ -53,7 +53,7 @@ moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 # We will be deploying based on power (not area) because each of these have different efficiencies, and those differences should be accounted for in the simulation. Additionally, we will run the installation compensation to simulate the required replacements for each module type.
 
-# In[8]:
+# In[ ]:
 
 
 #load in a baseline and materials for modification
@@ -68,7 +68,7 @@ for scen in scennames:
         sim1.scenario[scen].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[20]:
+# In[ ]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -76,7 +76,14 @@ for scen in scennames:
 sim1.trim_Years(startYear=2000, endYear=2100, methodAddedYears='repeat')
 
 
-# In[21]:
+# In[ ]:
+
+
+idx_late = pd.RangeIndex(start=2050,stop=2101,step=1) #create the index
+proj_2050_2100_energyIncrease = pd.DataFrame(index=idx_late, columns=['World_cum'], dtype=float) #turn into df 
+
+
+# In[ ]:
 
 
 sim1.scenario['SHJ'].dataIn_m['year'] 
@@ -86,7 +93,7 @@ sim1.scenario['SHJ'].dataIn_m['year']
 # 
 # This module includes continuing improvements in silver usage and efficiency, as created in 16-PERC vs SHJ vs TOPCon journal.
 
-# In[2]:
+# In[ ]:
 
 
 celltech_modeff = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-modeffimprovements.csv')) #pull in module eff
@@ -122,12 +129,23 @@ for scen in scennames:
 
 
 # ### Apply deployment curve
-# For the full derivation of the deployment curve, see the "PV Installations - Global" development journal. Essentially, the projection is 2000-2021 IRENA historical installation data, 2022 through 2050 is a quadratic fit to achieve 50 TW in 2050, and from 2050 to 2100 is a linear increase to approx 60 TW based on 2000-2021 global increase in electricity capacity (219.32 GW/year)
+# For the full derivation of the deployment curve, see the "PV Installations - Global" development journal. Essentially, the projection is 2000-2021 IRENA historical installation data, 2022 through 2050 is a quadratic fit to achieve 50 TW in 2050, and from 2050 to 2100 is a linear increase to approx 60 TW based on 2000-2021 global increase in electricity capacity (219.32 GW/year).
+# 
+# This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[8]:
+# In[ ]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
+
+fig, ax1 = plt.subplots()
+
+ax1.plot(global_projection['World_cum']/1e6, color='orange')
+ax1.set_ylabel('Cumulative Solar Capacity [TW]', color='orange')
+ax2 = ax1.twinx()
+ax2.plot(global_projection['World_annual_[MWdc]']/1e6)
+ax2.set_ylabel('Annual Installations [TW]')
+plt.show()
 
 
 # In[ ]:
@@ -135,5 +153,17 @@ global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInst
 
 #deployment projection
 for scen in scennames:
-    sim1.scenario[scen].dataIn_m.loc[0:len(newdeploymentcurve.index-1),'new_Installed_Capacity_[MW]'] = newdeploymentcurve_global['MW'].values
+    sim1.scenario[scen].dataIn_m.loc[0:len(global_projection.index-1),'new_Installed_Capacity_[MW]'] = global_projection['World_annual_[MWdc]'].values
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 

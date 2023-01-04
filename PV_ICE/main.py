@@ -1343,6 +1343,9 @@ class Simulation:
         tryenergy = True
         for scen in scenarios:
             baseline = self.scenario[scen].dataIn_m
+            
+            if int(endYear) > int(dataEndYear):
+                print('developing year extension')
 
             # Add check if data does not need to be reduced to not do these.
             reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
