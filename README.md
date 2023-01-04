@@ -37,7 +37,7 @@ The provided PV ICE module and material baselines leverage published data from m
 How it Works
 =============
 
-This section provides a brief description of how the PV ICE tool works. FULL DOCUMENTATION CAN BE FOUND AT [readthedocs](http://CircularEconomy-MassFlowCalculator.readthedocs.io/en/latest/).
+This section provides a brief description of how the PV ICE tool works. FULL DOCUMENTATION CAN BE FOUND AT [readthedocs](https://pv-ice.readthedocs.io/en/latest/?badge=latest).
 
 
 Mass
@@ -49,7 +49,7 @@ PV ICE is a dynamic mass flow based tool. It takes in any deployment forecast of
 
 Annually deployed cohorts of modules are tracked through the simulation, subjected to lifetime, degradation, and reliability parameters, and guided along user defined CE pathways (ex: resell, recycling). The PV ICE framework is designed for scenario comparisons (ex: different deployment schedules, module designs, or circular pathways) and is capable of both geospatial and temporal analysis (i.e. when and where materials will be demanded or are available).
 
-Module and material properties are known to be variable with time, and PV ICE can capture this dynamic evolution of PV technology. Dynamic baseline inputs for crystalline silicon PV modules and component materials are provided in the PV_ICE \ baselines folder. These baselines are dervied from [literature and report data](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing). Module baselines capture the annual average crystalline silicon module (i.e. a market share weighted average of the silicon PV technologies deployed). Each material similarly is a market share weighted average of silicon PV technologies, compiled from multiple sources, most notably consistent with ITRPV data. Please see the Jupyter Journals (tutorials \ baseline development documentation) for the derivations and sources (baselines \ SupportingMaterials) of the provided c-Si baselines. Alternate module and material files can be created by the user, and an expanded set of PV technology baselines is planned for the future, including CdTe and perovskites.
+Module and material properties are known to be variable with time, and PV ICE can capture this dynamic evolution of PV technology. Dynamic baseline inputs for crystalline silicon PV modules and component materials are provided in the PV_ICE \ baselines folder. These baselines are dervied from [literature and report data](https://docs.google.com/spreadsheets/d/1Ec5JRBSN2NFXjEABgUp1ch-EG6uQao8j5Rk1MLuZZYI/edit?usp=sharing). Module baselines capture the annual average crystalline silicon module (i.e. a market share weighted average of the silicon PV technologies deployed). Each material similarly is a market share weighted average of silicon PV technologies, compiled from multiple sources, most notably consistent with ITRPV data. Please see the Jupyter Journals (tutorials \ baseline development documentation) for the derivations and sources (baselines \ SupportingMaterials) of the provided c-Si baselines. Alternate module and material files can be created by the user, and an expanded set of PV technology baselines is planned for the future, including CdTe and perovskites.
 
 
 Energy
@@ -59,7 +59,7 @@ The energy balance of renewable energy technologies is as important and the mass
 
 The energy flows of PV ICE are based on the mass flows. These energy flows, like the mass flows, are dynamic with time and are seperated into module and material energies. For each supply chain process step captured in the mass flows, an energy per module area or energy per material mass is captured as an input (ex: module manufacturing energy, energy to manufacture rolled glass from silica sand, energy to crush a module for recycling ). The energy demanded for each step is the sum of all electrical energy demands and all fuel/heating energy demands. 
 
-We provide an energy baseline for crystalline silicon modules and component materials. Data for these baselines is being compiled from [literature and report data](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing). For the complete derivation of the energy demands for crystalline silicon modules and materials, please see the Jupyter Journals (tutorials \ baseline development documentation) and (baselines \ SupportingMaterials). Alternate module and material files can be created by the user, and an expanded set of PV technology baselines is planned for the future, including CdTe and perovskites.
+We provide an energy baseline for crystalline silicon modules and component materials. Data for these baselines is being compiled from [literature and report data](https://docs.google.com/spreadsheets/d/1Ec5JRBSN2NFXjEABgUp1ch-EG6uQao8j5Rk1MLuZZYI/edit?usp=sharing). For the complete derivation of the energy demands for crystalline silicon modules and materials, please see the Jupyter Journals (tutorials \ baseline development documentation) and (baselines \ SupportingMaterials). Alternate module and material files can be created by the user, and an expanded set of PV technology baselines is planned for the future, including CdTe and perovskites.
 
 After running a mass flow simulation, an energy flow calculation can be run which will multiply the energy demands by the mass flows and calculate annual generation from the deployed modules. Results of this calculation provide annual, cumulative, and lifetime energy demands and energy generated. These values can be used to calculate energy balance metrics such as energy return on investment (EROI), net energy, and energy payback time (EPBT). These features are actively under development, so check back for updates soon!
 
@@ -156,7 +156,7 @@ If you use PV_ICE in a published work, please cite:
 
 and also please also cite the DOI corresponding to the specific version of
 PV_ICE that you used. PV_ICE DOIs are listed at
-[Zenodo.org](https://zenodo.org/). For example for version 0.2.1:
+[Zenodo.org](https://zenodo.org/badge/latestdoi/248347431). For example for version 0.2.1:
 
 	S. Ovaitt, H. Mirletz, A. Hegedus. (2022). 
 	NREL/PV_ICE: v0.3.0 Release. Zenodo. 
