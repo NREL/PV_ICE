@@ -12,7 +12,7 @@
 # 
 # We will use a literture-sourced global scale deployment schedule through 2050, then assume that capacity increases at a lower constant rate through 2100.
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np
@@ -122,11 +122,12 @@ for scen in scennames:
 
 
 # ### Apply deployment curve
+# For the full derivation of the deployment curve, see the "PV Installations - Global" development journal. Essentially, the projection is 2000-2021 IRENA historical installation data, 2022 through 2050 is a quadratic fit to achieve 50 TW in 2050, and from 2050 to 2100 is a linear increase to approx 60 TW based on 2000-2021 global increase in electricity capacity (219.32 GW/year)
 
-# In[ ]:
+# In[8]:
 
 
-pd.read_csv(os.path.join(supportMatfolder, 'output-.csv'))
+global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
 
 
 # In[ ]:

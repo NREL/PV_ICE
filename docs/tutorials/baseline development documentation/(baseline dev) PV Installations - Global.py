@@ -427,7 +427,7 @@ print('A total of '+str(round(req_additions,0))+' MWdc need to be added between 
 req_additions/(2050-2022)
 
 
-# In[64]:
+# In[41]:
 
 
 idx_fullrange = pd.RangeIndex(start=2000,stop=2051,step=1) #create the index
@@ -442,7 +442,7 @@ altproj_50TW_cum_shift = altproj_50TW_cum.shift(1).fillna(0)
 altproj_50TW_cum['World_annual_[MWdc]'] = altproj_50TW_cum-altproj_50TW_cum_shift
 
 
-# In[78]:
+# In[42]:
 
 
 fig, ax1 = plt.subplots()
@@ -456,7 +456,7 @@ ax2.set_ylabel('Annual Installations [MW]')
 plt.show()
 
 
-# In[80]:
+# In[43]:
 
 
 altproj_50TW_annual_TW = altproj_50TW_cum['World_annual_[MWdc]']/1e6
@@ -469,7 +469,7 @@ altproj_50TW_annual_TW.loc[2040]
 altproj_50TW_annual_TW.loc[2050]
 
 
-# In[82]:
+# In[44]:
 
 
 altproj_50TW_cum.loc[2030,'World_cum']/1e6
@@ -479,7 +479,7 @@ altproj_50TW_cum.loc[2030,'World_cum']/1e6
 # 
 # There is also a smooth transitition of increasing deployments, as opposed to a step change.
 
-# In[76]:
+# In[45]:
 
 
 altproj_50TW_cum.to_csv(os.path.join(supportMatfolder,'output-installationProjection-World-50TW.csv'))
@@ -491,28 +491,51 @@ altproj_50TW_cum.to_csv(os.path.join(supportMatfolder,'output-installationProjec
 # - small amount of growth, possibly based on historical average increasing energy demands
 # 
 # **For Small growth through 2100:**
-# From Haegel et al, there are historical increasing energy demands 2000 through 2050, derived from the World Energy Outlook
-# the slopes of these lines are 0.624 for increasing electricity demand and 1.532 for increasing energy consumption (see LiteratureIntallationProjections.xlsx in SupportingMaterials folder). If we assume broad electrification, we would need to use the energy consumption slope. If we assume that PV maintains a constant marketshare of that energy supply, then we can apply the energy demand slope to 2050 through 2100 as a steady increase in PV installation starting at the 50 TW in 2050.
+# From https://ember-climate.org/data/data-explorer/historical there is a linear increase in cumulative installed capacity. The slope of the increase is 219.32 GW/yr (see LiteratureIntallationProjections.xlsx in SupportingMaterials folder). If we assume that PV maintains a constant marketshare, then we can apply the increasing capacity slope to 2050 through 2100 as a steady increase in PV installation starting at the 50 TW in 2050.
 
-# In[94]:
+# In[75]:
 
 
-#y=1.532t + 50 #TW
+#calculate the cumulative installed capacity in 2100 using 2000-2021 historical increase in global electrical capacity
+#y=219.32 GW/yr * t + 50 TW
 idx_late = pd.RangeIndex(start=2050,stop=2101,step=1) #create the index
 proj_2050_2100_energyIncrease = pd.DataFrame(index=idx_late, columns=['World_cum'], dtype=float) #turn into df 
-proj_2050_2100_energyIncrease.loc[2050,'World_cum'] = 50*1e6 #set 2050
+proj_2050_2100_energyIncrease.loc[2050,'World_cum'] = 50*1e6 #set 2050 in MW
+proj_2050_2100_energyIncrease.loc[2100,'World_cum'] = 219.32*1e3*(2100-2050)+50*1e6 #calculate 2100 in MW
+#interpolate for each year cumulative
+proj_2050_2100_energyIncrease.interpolate(inplace=True)
 
 #create a annual additions df
-added = pd.DataFrame(index = pd.RangeIndex(start=0, stop=51, step=1), dtype=float)
-added['World_annual[MWdc]'] = 1.532*(proj_2050_2100_energyIncrease.index[t]-2050) #incremental increase every year
-
-#create cumulative
+#because it is a linear increase, it will just be the slope additions
+proj_2050_2100_energyIncrease['World_annual_[MWdc]'] = 219.32*1e3
 
 
-# In[91]:
+# In[76]:
 
 
-proj_2050_2100_energyIncrease.index[0]-2050
+#combine with through 2050 projection
+global_projection_full = pd.concat([altproj_50TW_cum, proj_2050_2100_energyIncrease.loc[2051:]]) #loc to remove duplicate 2050
+global_projection_full.to_csv(os.path.join(supportMatfolder, 'output-globalInstallsProjection.csv'))
+global_projection_full.loc[2021]
+
+
+# In[77]:
+
+
+fig, ax1 = plt.subplots()
+
+ax1.plot(global_projection_full['World_cum']/1e6, color='orange')
+ax1.set_ylabel('Cumulative Solar Capacity [TW]', color='orange')
+ax2 = ax1.twinx()
+ax2.plot(global_projection_full['World_annual_[MWdc]']/1e6)
+ax2.set_ylabel('Annual Installations [TW]')
+plt.show()
+
+
+# In[ ]:
+
+
+
 
 
 # ## Country wise
