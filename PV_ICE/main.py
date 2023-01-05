@@ -1343,23 +1343,24 @@ class Simulation:
         tryenergy = True
         for scen in scenarios:
             baseline = self.scenario[scen].dataIn_m
-            
-            if int(endYear) > int(dataEndYear):
-                print('developing year extension')
-                reduced = baseline.loc[(baseline['year']>=startYear)].copy() #trim to the start year
-                lengthtoadd = int(endYear) - int(dataEndYear)
-                newIndex = pd.RangeIndex(0,lengthtoadd,1) #create a new index to append
-                add = pd.DataFrame(columns=baseline.columns, index=newIndex) #create new df, using new index to append
-                extended = pd.concat([reduced,add]) #concat the trimmed early years with the new extended years
-                extended.reset_index(inplace=True, drop=True) #reset the index and don't include the old in new df
-                extended.ffill(inplace=True) #forward fill columns
-                # fix years here
-                print(newIndex)
-                print(extended.tail(5))
-                self.scenario[scen].dataIn_m = extended #reassign the material data to the simulation
-
             # Add check if data does not need to be reduced to not do these.
             reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
+            reduced.reset_index(drop=True, inplace=True)
+            self.scenario[scen].dataIn_m = reduced #reassign the material data to the simulation
+            
+            if int(endYear) > int(dataEndYear): # extend data with start trimming
+                lengthtoadd = int(endYear) - int(dataEndYear)
+                newIndex = pd.RangeIndex(0,lengthtoadd,1) #create a new index to append
+                add = pd.DataFrame(columns=baseline.columns, index=newIndex) #create empty df, using new index
+                extended = pd.concat([reduced,add]) #concat the trimmed early years with the new extended years
+                #reset the index and forward fill the last values
+                extended.reset_index(inplace=True, drop=True) #reset the index and don't include the old in new df
+                extended.ffill(inplace=True) #forward fill columns
+                # fix years
+                newYears = pd.Series(range(dataEndYear+1,endYear+1,1)) #create a series of years to overwrite the ffill
+                extended.loc[len(reduced):,'year'] = newYears.values
+                
+                self.scenario[scen].dataIn_m = extended #reassign to the simulation
 
             if aggregateInstalls:
                 prev = baseline.loc[(baseline['year']<startYear)].sum()
@@ -1369,9 +1370,6 @@ class Simulation:
                 prev = baseline.loc[(baseline['year']<startYear)].mean()
                 reduced.loc[reduced['year'] == startYear, 'mod_eff'] = prev['mod_eff']
 
-            reduced.reset_index(drop=True, inplace=True)
-            self.scenario[scen].dataIn_m = reduced #reassign the material data to the simulation
-
             if tryenergy: # I'm sure theres a more elegant way to check if a dataframe exists.
                 
                 try:
@@ -1379,7 +1377,22 @@ class Simulation:
     
                     # Add check if data does not need to be reduced to not do these.
                     reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
-    
+                    reduced.reset_index(drop=True, inplace=True)
+                    self.scenario[scen].dataIn_e = reduced #reassign the material data to the simulation
+                    
+                    if int(endYear) > int(dataEndYear): # extend data with start trimming
+                        lengthtoadd = int(endYear) - int(dataEndYear)
+                        newIndex = pd.RangeIndex(0,lengthtoadd,1) #create a new index to append
+                        add = pd.DataFrame(columns=baseline.columns, index=newIndex) #create empty df, using new index
+                        extended = pd.concat([reduced,add]) #concat the trimmed df with the new extended years
+                        
+                        extended.reset_index(inplace=True, drop=True) #reset the index and don't include the old in new df
+                        extended.ffill(inplace=True) #forward fill columns
+                        # fix years
+                        newYears = pd.Series(range(dataEndYear+1,endYear+1,1)) #create a series of years to overwrite the ffill
+                        extended.loc[len(reduced):,'year'] = newYears.values
+                        #print(extended.tail(5))
+                        self.scenario[scen].dataIn_e = extended #reassign to the simulation
                     
                     if aggregateInstalls:
                         print("Warning: Attempting to aggregate Installs for "+ 
@@ -1393,8 +1406,7 @@ class Simulation:
                               "implemented, it will just clip data to years "+
                               "selected. Let silvana know this feature is "+
                               "actually needed so she works on it.")
-                    reduced.reset_index(drop=True, inplace=True)
-                    self.scenario[scen].dataIn_e = reduced #reassign the material data to the simulation
+
                     
                 except:
                     print("No energy data loaded. Skipping for all next scenarios and materials")
@@ -1405,22 +1417,53 @@ class Simulation:
 
                 matdf = self.scenario[scen].material[mat].matdataIn_m #pull out the df
                 reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
-
+                reduced.reset_index(drop=True, inplace=True)
+                self.scenario[scen].material[mat].matdataIn_m = reduced #reassign the material data to the simulation
+                
+                if int(endYear) > int(dataEndYear): # extend data with start trimming
+                    lengthtoadd = int(endYear) - int(dataEndYear)
+                    newIndex = pd.RangeIndex(0,lengthtoadd,1) #create a new index to append
+                    add = pd.DataFrame(columns=baseline.columns, index=newIndex) #create empty df, using new index
+                    extended = pd.concat([reduced,add]) #concat the trimmed early years with the new extended years
+                    extended.reset_index(inplace=True, drop=True) #reset the index and don't include the old in new df
+                    extended.ffill(inplace=True) #forward fill columns
+                    # fix years
+                    newYears = pd.Series(range(dataEndYear+1,endYear+1,1)) #create a series of years to overwrite the ffill
+                    extended.loc[len(reduced):,'year'] = newYears.values
+                    
+                    #print(extended.tail(5))
+                    self.scenario[scen].material[mat].matdataIn_m = extended #reassign to the simulation
+                
                 if averagemassdata == 'average':
                     prev = matdf.loc[(baseline['year']<startYear)].mean()
                     matkeys = list(reduced.keys())[1:12]
                     for matkey in matkeys: # skipping year (0). Skipping added columsn from mass flow
                         reduced.loc[reduced['year'] == startYear, matkey] = prev[matkey]
 
-                reduced.reset_index(drop=True, inplace=True)
-                self.scenario[scen].material[mat].matdataIn_m = reduced #reassign the material data to the simulation
+
 
                 if tryenergy: # I'm sure theres a more elegant way to check if a dataframe exists.
     
                     try:
                         matdf = self.scenario[scen].material[mat].matdataIn_e #pull out the df
                         reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
+                        reduced.reset_index(drop=True, inplace=True)
+                        self.scenario[scen].material[mat].matdataIn_e = reduced #reassign the material data to the simulation
         
+                        if int(endYear) > int(dataEndYear): # extend data with start trimming
+                            lengthtoadd = int(endYear) - int(dataEndYear)
+                            newIndex = pd.RangeIndex(0,lengthtoadd,1) #create a new index to append
+                            add = pd.DataFrame(columns=baseline.columns, index=newIndex) #create empty df, using new index
+                            extended = pd.concat([reduced,add]) #concat the trimmed early years with the new extended years
+                            extended.reset_index(inplace=True, drop=True) #reset the index and don't include the old in new df
+                            extended.ffill(inplace=True) #forward fill columns
+                            # fix years
+                            newYears = pd.Series(range(dataEndYear+1,endYear+1,1)) #create a series of years to overwrite the ffill
+                            extended.loc[len(reduced):,'year'] = newYears.values
+                            
+                            #print(extended.tail(5))
+                            self.scenario[scen].material[mat].matdataIn_e = extended #reassign to the simulation
+                            
                         if averagemassdata == 'average':
                             print("Warning: Attempting to averagemassdata for "+
                                   "triming years for Energy Data. This is not yet "+
@@ -1428,12 +1471,21 @@ class Simulation:
                                   "selected. Let silvana know this feature is "+
                                   "actually needed so she works on it.")
         
-                        reduced.reset_index(drop=True, inplace=True)
-                        self.scenario[scen].material[mat].matdataIn_e = reduced #reassign the material data to the simulation
                     except:
                         print("No material energy data loaded.")
-
-            print("Data trimed, years now encompass ", startYear, " to ", endYear) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
+            #consistent year check
+            newStartYear_m = int(self.scenario[scen0].dataIn_m.iloc[0]['year'])
+            newEndYear_m = int(self.scenario[scen0].dataIn_m.iloc[-1]['year'])
+            newStartYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[0]['year'])
+            newEndYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[-1]['year'])
+            newStartYear_e = int(self.scenario[scen0].dataIn_e.iloc[0]['year'])
+            newEndYear_e = int(self.scenario[scen0].dataIn_e.iloc[-1]['year'])
+            newStartYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[0]['year'])
+            newEndYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[-1]['year'])
+            if (newStartYear_m == newStartYear_mat == newStartYear_e == newStartYear_emat)&(newEndYear_m == newEndYear_mat == newEndYear_e == newEndYear_emat):
+                print("Data trimed, years now encompass ", newStartYear_m, " to ", newEndYear_m) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
+            else:
+                print('There is an issue with year modification!!')
             
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):

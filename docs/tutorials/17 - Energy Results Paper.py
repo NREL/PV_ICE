@@ -35,12 +35,6 @@ if not os.path.exists(testfolder):
     os.makedirs(testfolder)
 
 
-# In[ ]:
-
-
-
-
-
 # In[2]:
 
 
@@ -79,29 +73,21 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 # In[5]:
 
 
-sim1.scenario['SHJ'].dataIn_m
+sim1.scenario['SHJ'].material['glass'].matdataIn_e
 
 
 # In[ ]:
 
 
-newindex = pd.RangeIndex(0,50,1)
-add = pd.DataFrame(columns=sim1.scenario['SHJ'].dataIn_m.columns, index=newindex)
-#add.columns=sim1.scenario['SHJ'].dataIn_m.columns
-test = pd.concat([sim1.scenario['SHJ'].dataIn_m,add])
+tester = sim1.scenario['SHJ'].dataIn_m
+filleryears = pd.Series(range(2050,2101,1))
+#tester.loc[len(filleryears)-1:,'year'] = filleryears.values
 
 
 # In[ ]:
 
 
-test.reset_index(inplace=True, drop=True)
-
-
-# In[ ]:
-
-
-test.ffill(inplace=True)
-test
+tester.iloc[40:70]
 
 
 # In[ ]:
@@ -109,6 +95,12 @@ test
 
 idx_late = pd.RangeIndex(start=2050,stop=2101,step=1) #create the index
 proj_2050_2100_energyIncrease = pd.DataFrame(index=idx_late, columns=['World_cum'], dtype=float) #turn into df 
+
+
+# In[ ]:
+
+
+
 
 
 # ## Module Types
