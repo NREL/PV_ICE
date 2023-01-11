@@ -62,6 +62,237 @@ for scen in scennames:
         sim1.scenario[scen].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
+# In[ ]:
+
+
+#idx_late = pd.RangeIndex(start=2050,stop=2101,step=1) #create the index
+#proj_2050_2100_energyIncrease = pd.DataFrame(index=idx_late, columns=['World_cum'], dtype=float) #turn into df 
+
+
+# In[ ]:
+
+
+
+
+
+# ## Module Types Creation
+
+# In[7]:
+
+
+sim1.scenario.keys()
+
+
+# In[8]:
+
+
+celltech_modeff = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-modeffimprovements.csv')) #pull in module eff
+celltech_aguse = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-Agusageimprovements.csv')) #pull in Ag use
+
+
+# In[46]:
+
+
+#glass-glass package mass per area calculation
+#ITRPV 2022 Figs 36 and 38, we are assuming that the front and back glass heave equal thickness of 2.5mm
+density_glass = 2500*1000 # g/m^3 
+glassperm2 = (2.5/1000)* 2 * density_glass
+print('The mass per module area of glass is '+str(glassperm2)+' g/m^2 for all modules with a glass-glass package')
+
+
+# #### PERC_50
+
+# In[35]:
+
+
+#silver modify for PERC
+sim1.scenario['PERC_50'].material['silver'].matdataIn_m.loc[20:(20+len(celltech_aguse)-1),'mat_massperm2'] = celltech_aguse['PERC'].values
+
+
+# In[ ]:
+
+
+#modify package to glass glass
+sim1.scenario['PERC_50'].material['glass'].matdataIn_m.loc[20:(20+len(celltech_aguse)-1),'mat_massperm2'] = glassperm2
+
+
+# In[40]:
+
+
+#module efficiency modify for PERC
+sim1.scenario['PERC_50'].dataIn_m.loc[20:(20+len(celltech_modeff)-1),'mod_eff'] = celltech_modeff['PERC'].values
+
+
+# In[45]:
+
+
+#Lifetime and Degradation
+#values taken from lifetime vs recycling paper
+#degradation rate:
+sim1.modifyScenario('PERC_50', 'mod_degradation', 0.445, start_year=2022) #annual power degradation to reach 80% at 50 yrs
+#T50
+sim1.modifyScenario('PERC_50', 'mod_reliability_t50', 56.07, start_year=2022)
+#t90
+sim1.modifyScenario('PERC_50', 'mod_reliability_t90', 59.15, start_year=2022) 
+#Mod Project Lifetime
+sim1.modifyScenario('PERC_50', 'mod_lifetime', 50, start_year=2022) #project lifetime of 50 years
+#Merchant Tail set high
+sim1.modifyScenario('PERC_50', 'mod_MerchantTail', 100, start_year=2022) #all installations stay for merchant tail
+
+
+# In[ ]:
+
+
+#Change to no recycling
+
+
+# In[ ]:
+
+
+#include bifaciality of 0.7%
+
+
+# In[44]:
+
+
+sim1.scenario['PERC_50'].dataIn_m.keys()
+
+
+# In[ ]:
+
+
+
+
+
+# #### SHJ
+
+# In[37]:
+
+
+#silver modify for SHJ
+sim1.scenario['SHJ'].material['silver'].matdataIn_m.loc[20:(20+len(celltech_aguse)-1),'mat_massperm2'] = celltech_aguse['SHJ'].values
+
+
+# In[41]:
+
+
+#module efficiency modify for PERC
+sim1.scenario['SHJ'].dataIn_m.loc[20:(20+len(celltech_modeff)-1),'mod_eff'] = celltech_modeff['SHJ'].values
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# #### Perovskite
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# #### Recycled PERC
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# #### Cheap Crap
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# #### Repowered
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# ### Modify Years 2000 to 2100
+# We do this after we modify the baselines to propogate the modified 2050 values forward
+
 # In[4]:
 
 
@@ -76,78 +307,12 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 sim1.scenario['SHJ'].material['glass'].matdataIn_e
 
 
-# In[ ]:
-
-
-tester = sim1.scenario['SHJ'].dataIn_m
-filleryears = pd.Series(range(2050,2101,1))
-#tester.loc[len(filleryears)-1:,'year'] = filleryears.values
-
-
-# In[ ]:
-
-
-tester.iloc[40:70]
-
-
-# In[ ]:
-
-
-idx_late = pd.RangeIndex(start=2050,stop=2101,step=1) #create the index
-proj_2050_2100_energyIncrease = pd.DataFrame(index=idx_late, columns=['World_cum'], dtype=float) #turn into df 
-
-
-# In[ ]:
-
-
-
-
-
-# ## Module Types
-# 
-# This module includes continuing improvements in silver usage and efficiency, as created in 16-PERC vs SHJ vs TOPCon journal.
-
-# In[ ]:
-
-
-celltech_modeff = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-modeffimprovements.csv')) #pull in module eff
-celltech_aguse = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-Agusageimprovements.csv')) #pull in Ag use
-
-
-# In[ ]:
-
-
-#silver modify for PERC and SHJ
-for scen in scennames:
-    sim1.scenario[scen].material['silver'].matdataIn_m.loc[0:len(Aguse.index-1),'mat_massperm2'] = Aguse.filter(like=str(scen[0:3])).values
-
-
-# In[ ]:
-
-
-#module eff for PERC and SHJ
-for scen in scennames:
-    sim1.scenario[scen].dataIn_m.loc[0:len(modeffs.index-1),'mod_eff'] = modeffs.filter(like=str(scen[0:3])).values
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # ### Apply deployment curve
 # For the full derivation of the deployment curve, see the "PV Installations - Global" development journal. Essentially, the projection is 2000-2021 IRENA historical installation data, 2022 through 2050 is a quadratic fit to achieve 50 TW in 2050, and from 2050 to 2100 is a linear increase to approx 60 TW based on 2000-2021 global increase in electricity capacity (219.32 GW/year).
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[ ]:
+# In[42]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
