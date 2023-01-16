@@ -1572,6 +1572,46 @@ class Simulation:
 
 
         return
+    
+    def scenMod_perfectRecycling(self, scenarios=None):
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        for scen in scenarios:
+            self.scenario[scen].dataIn_m['mod_EOL_collection_eff'] = 100.0 #this should send all to landfill, but just in case set rest to 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pg0_resell'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pg1_landfill'] = 0.0 #all to landfill
+            self.scenario[scen].dataIn_m['mod_EOL_pg2_stored'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pg3_reMFG'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pg4_recycled'] = 100.0
+            self.scenario[scen].dataIn_m['mod_EOL_sp_reMFG_recycle'] = 100.0
+            self.scenario[scen].dataIn_m['mod_EOL_pb1_landfill'] = 0.0 #all to landfill
+            self.scenario[scen].dataIn_m['mod_EOL_pb2_stored'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pb3_reMFG'] = 0.0
+            self.scenario[scen].dataIn_m['mod_EOL_pb4_recycled'] = 100.0
+            self.scenario[scen].dataIn_m['mod_Repair'] = 0.0
+            self.scenario[scen].dataIn_m['mod_MerchantTail'] = 0.0 #should this one be set to 0?
+            
+            
+
+            for mat in self.scenario[scen].material:
+                self.scenario[scen].material[mat].matdataIn_m['mat_MFG_scrap_Recycled'] = 100.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_MFG_scrap_Recycling_eff'] = 100.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_MFG_scrap_Recycled_into_HQ'] = 100.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] = 100.0
+
+                self.scenario[scen].material[mat].matdataIn_m['mat_PG3_ReMFG_target'] = 100.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_PG4_Recycling_target'] = 100.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_Recycling_yield'] = 100.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_EOL_Recycled_into_HQ'] = 100.0
+                self.scenario[scen].material[mat].matdataIn_m['mat_EOL_RecycledHQ_Reused4MFG'] = 100.0
+
+
+        return
 
     def aggregateResults(self, scenarios=None, materials=None):
 

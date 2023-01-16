@@ -62,7 +62,7 @@ for scen in scennames:
         sim1.scenario[scen].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[ ]:
+# In[4]:
 
 
 #idx_late = pd.RangeIndex(start=2050,stop=2101,step=1) #create the index
@@ -77,20 +77,20 @@ for scen in scennames:
 
 # ## Module Types Creation
 
-# In[7]:
+# In[5]:
 
 
 sim1.scenario.keys()
 
 
-# In[8]:
+# In[6]:
 
 
 celltech_modeff = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-modeffimprovements.csv')) #pull in module eff
 celltech_aguse = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-Agusageimprovements.csv')) #pull in Ag use
 
 
-# In[46]:
+# In[7]:
 
 
 #glass-glass package mass per area calculation
@@ -102,28 +102,28 @@ print('The mass per module area of glass is '+str(glassperm2)+' g/m^2 for all mo
 
 # #### PERC_50
 
-# In[35]:
+# In[8]:
 
 
 #silver modify for PERC
 sim1.scenario['PERC_50'].material['silver'].matdataIn_m.loc[20:(20+len(celltech_aguse)-1),'mat_massperm2'] = celltech_aguse['PERC'].values
 
 
-# In[ ]:
+# In[9]:
 
 
 #modify package to glass glass
 sim1.scenario['PERC_50'].material['glass'].matdataIn_m.loc[20:(20+len(celltech_aguse)-1),'mat_massperm2'] = glassperm2
 
 
-# In[40]:
+# In[10]:
 
 
 #module efficiency modify for PERC
 sim1.scenario['PERC_50'].dataIn_m.loc[20:(20+len(celltech_modeff)-1),'mod_eff'] = celltech_modeff['PERC'].values
 
 
-# In[45]:
+# In[11]:
 
 
 #Lifetime and Degradation
@@ -140,19 +140,19 @@ sim1.modifyScenario('PERC_50', 'mod_lifetime', 50, start_year=2022) #project lif
 sim1.modifyScenario('PERC_50', 'mod_MerchantTail', 100, start_year=2022) #all installations stay for merchant tail
 
 
-# In[ ]:
+# In[12]:
 
 
 #Change to no recycling
 
 
-# In[ ]:
+# In[13]:
 
 
 #include bifaciality of 0.7%
 
 
-# In[44]:
+# In[14]:
 
 
 sim1.scenario['PERC_50'].dataIn_m.keys()
@@ -166,14 +166,14 @@ sim1.scenario['PERC_50'].dataIn_m.keys()
 
 # #### SHJ
 
-# In[37]:
+# In[15]:
 
 
 #silver modify for SHJ
 sim1.scenario['SHJ'].material['silver'].matdataIn_m.loc[20:(20+len(celltech_aguse)-1),'mat_massperm2'] = celltech_aguse['SHJ'].values
 
 
-# In[41]:
+# In[16]:
 
 
 #module efficiency modify for PERC
@@ -293,7 +293,7 @@ sim1.scenario['SHJ'].dataIn_m.loc[20:(20+len(celltech_modeff)-1),'mod_eff'] = ce
 # ### Modify Years 2000 to 2100
 # We do this after we modify the baselines to propogate the modified 2050 values forward
 
-# In[4]:
+# In[17]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -301,7 +301,7 @@ sim1.scenario['SHJ'].dataIn_m.loc[20:(20+len(celltech_modeff)-1),'mod_eff'] = ce
 sim1.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[5]:
+# In[18]:
 
 
 sim1.scenario['SHJ'].material['glass'].matdataIn_e
@@ -312,7 +312,7 @@ sim1.scenario['SHJ'].material['glass'].matdataIn_e
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[42]:
+# In[19]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -327,7 +327,7 @@ ax2.set_ylabel('Annual Installations [TW]')
 plt.show()
 
 
-# In[ ]:
+# In[20]:
 
 
 #deployment projection
