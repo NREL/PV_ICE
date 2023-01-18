@@ -391,10 +391,16 @@ class Simulation:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
 
-        selectyears = self.scenario[scenarios[0]].dataIn_m['year'] > start_year
+        selectyears = self.scenario[scenarios[0]].dataIn_m['year'] >= start_year
 
-        for scen in scenarios:
-            self.scenario[scen].dataIn_m.loc[selectyears, stage] = value
+        if isinstance(value, (pd.Series)):
+            for scen in scenarios:
+                timeshift = start_year - self.scenario[scen].dataIn_m.iloc[0,0]
+                self.scenario[scen].dataIn_m.loc[timeshift:, stage] = value.values
+
+        else:
+            for scen in scenarios:
+                self.scenario[scen].dataIn_m.loc[selectyears, stage] = value
 
     def calculateFlows(self, scenarios=None, materials=None,
                        weibullInputParams=None, bifacialityfactors=None,
@@ -1972,10 +1978,16 @@ class Scenario(Simulation):
             if isinstance(materials, str):
                 materials = [materials]
 
-        selectyears = self.dataIn_m['year']>start_year
-
-        for mat in materials:
-            self.material[mat].matdataIn_m.loc[selectyears, stage] = value
+        selectyears = self.dataIn_m['year']>=start_year
+        
+        if isinstance(value, (pd.Series)):
+            for mat in materials:
+                timeshift = start_year - self.dataIn_m.iloc[0,0]
+                self.material[mat].matdataIn_m.loc[timeshift:, stage] = value.values
+            
+        else:
+            for mat in materials:
+                self.material[mat].matdataIn_m.loc[selectyears, stage] = value
 
 
     def __getitem__(self, key):

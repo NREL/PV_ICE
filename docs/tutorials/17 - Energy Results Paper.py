@@ -64,6 +64,10 @@ for scen in scennames:
 
 # ## Module Types Creation
 # Starting modifications in 2022, using PV ICE baseline as historical for all modules
+# 
+# **NOTE: Currently have to modify all scenarios before extending the years to avoid errors.**
+# 
+# **NOTE: all dynamic values changed with PV ICE modify functions must feed in a Pandas Series**
 
 # In[4]:
 
@@ -71,7 +75,7 @@ for scen in scennames:
 sim1.scenario.keys()
 
 
-# In[26]:
+# In[5]:
 
 
 celltech_modeff = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-modeffimprovements.csv'),index_col=0) #pull in module eff
@@ -91,7 +95,7 @@ print('The mass per module area of glass is '+str(glassperm2)+' g/m^2 for all mo
 # In[7]:
 
 
-#time shift for all modifications
+#time shift for modifications
 
 
 # In[8]:
@@ -100,7 +104,7 @@ print('The mass per module area of glass is '+str(glassperm2)+' g/m^2 for all mo
 sim_start_year = sim1.scenario['Perovskite'].dataIn_m.iloc[0,0]
 mod_start_year = 2022
 timeshift = mod_start_year - sim_start_year
-print('Time shift:'+str(timeshift))
+print('Time shift: '+str(timeshift))
 
 
 # In[ ]:
@@ -155,52 +159,30 @@ bifi_topcon_path = os.path.join(testfolder,'bifi_topcon.csv')
 # ### PERC_50
 # This module represents current PERC technology (so good efficiency) if it were to have it's lifetime extended significantly. Glass-glass technology is assumed, expected decreases in silver usage and increases in module efficiency are derived from Zhang et al 2021, Gervais et al 2021 and ITRPV 2022. It is assumed that this module is no more recyclable than current technology (downcycle glass and recycle aluminium frames).
 
-# In[34]:
-
-
-celltech_aguse.loc[2022:,'PERC']
-
-
-# In[32]:
-
-
-(timeshift+len(celltech_aguse))
-
-
-# In[33]:
-
-
-len(sim1.scenario['PERC_50'].material['silver'].matdataIn_m)
-
-
-# In[29]:
-
-
-sim1.scenario['PERC_50'].modifyMaterials('silver', 'mat_massperm2', celltech_aguse.loc[2022:,'PERC'].values, start_year=2022) #99% yeild
-
-
-# In[17]:
-
-
-#silver modify for PERC
-sim1.scenario['PERC_50'].material['silver'].matdataIn_m.loc[timeshift:(timeshift+len(celltech_aguse)-1),'mat_massperm2'] = celltech_aguse['PERC'].values
-
-
-# In[ ]:
-
-
-#modify package to glass glass
-sim1.scenario['PERC_50'].material['glass'].matdataIn_m.loc[timeshift:(timeshift+len(celltech_aguse)-1),'mat_massperm2'] = glassperm2
-
-
-# In[ ]:
+# In[13]:
 
 
 #module efficiency modify for PERC
-sim1.scenario['PERC_50'].dataIn_m.loc[timeshift:(timeshift+len(celltech_modeff)-1),'mod_eff'] = celltech_modeff['PERC'].values
+sim1.modifyScenario('PERC_50', 'mod_eff', celltech_modeff.loc[2022:,'PERC'], start_year=2022) #changing module eff
 
 
-# In[ ]:
+# In[14]:
+
+
+#silver modify for PERC
+sim1.scenario['PERC_50'].modifyMaterials('silver', 'mat_massperm2', celltech_aguse.loc[2022:,'PERC'], start_year=2022)
+#old way
+#sim1.scenario['PERC_50'].material['silver'].matdataIn_m.loc[timeshift:,'mat_massperm2'] = celltech_aguse.loc[2022:,'PERC'].values
+
+
+# In[15]:
+
+
+#modify package to glass glass
+sim1.scenario['PERC_50'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022) #
+
+
+# In[16]:
 
 
 #Lifetime and Degradation
@@ -215,7 +197,7 @@ sim1.modifyScenario('PERC_50', 'mod_reliability_t90', 59.15, start_year=2022)
 sim1.modifyScenario('PERC_50', 'mod_lifetime', 50, start_year=2022) #project lifetime of 50 years
 
 
-# In[ ]:
+# In[17]:
 
 
 #Merchant Tail set high
@@ -232,28 +214,29 @@ sim1.modifyScenario('PERC_50', 'mod_MerchantTail', 100, start_year=2022) #all in
 # ### SHJ
 # This is a modern SHJ module with expected silver and module efficiency improvements taken from Zhang et al 2021, Gervais et al 2021, and ITPRV 2022. See PERC vs SHJ vs TOPCon for a more detailed evaluation.
 
-# In[ ]:
-
-
-#silver modify for SHJ
-sim1.scenario['SHJ'].material['silver'].matdataIn_m.loc[timeshift:(timeshift+len(celltech_aguse)-1),'mat_massperm2'] = celltech_aguse['SHJ'].values
-
-
-# In[ ]:
+# In[18]:
 
 
 #module efficiency modify for PERC
-sim1.scenario['SHJ'].dataIn_m.loc[20:(20+len(celltech_modeff)-1),'mod_eff'] = celltech_modeff['SHJ'].values
+sim1.modifyScenario('SHJ', 'mod_eff', celltech_modeff.loc[2022:,'SHJ'], start_year=2022) #changing module eff
+#sim1.scenario['SHJ'].dataIn_m.loc[timeshift:,'mod_eff'] = celltech_modeff.loc[2022:,'SHJ'].values
 
 
-# In[ ]:
+# In[19]:
+
+
+#modify silver usage for SHJ
+sim1.scenario['SHJ'].modifyMaterials('silver', 'mat_massperm2', celltech_aguse.loc[2022:,'SHJ'], start_year=2022)
+
+
+# In[20]:
 
 
 #modify package to glass glass
-sim1.scenario['SHJ'].material['glass'].matdataIn_m.loc[timeshift:(timeshift+len(celltech_aguse)-1),'mat_massperm2'] = glassperm2
+sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
 
 
-# In[ ]:
+# In[21]:
 
 
 #Lifetime and Degradation
@@ -268,7 +251,7 @@ sim1.modifyScenario('SHJ', 'mod_reliability_t50', 28, start_year=2022)
 sim1.modifyScenario('SHJ', 'mod_reliability_t90', 33, start_year=2022) 
 
 
-# In[ ]:
+# In[22]:
 
 
 #Merchant Tail set high
@@ -285,7 +268,7 @@ sim1.modifyScenario('SHJ', 'mod_MerchantTail', 50, start_year=2022) #50% stay fo
 # ### Perovskite
 # This perovskite module uses current best module and cell efficiencies, has a prospective life of 15 years and 1.5% degradation rate, and is highly circular. This is a best case scenario for perovskites given current data.
 
-# In[ ]:
+# In[23]:
 
 
 #2022 module eff = 17.9% #https://www.nrel.gov/pv/assets/pdfs/champion-module-efficiencies-rev220401b.pdf
@@ -297,28 +280,21 @@ df_perovskite_eff.loc[2050] = 32.5
 df_perovskite_eff.interpolate(inplace=True)
 
 
-# In[ ]:
+# In[24]:
 
 
 #module efficiency modify for PERC
-sim1.scenario['Perovskite'].dataIn_m.loc[timeshift:(timeshift+len(df_perovskite_eff)-1),'mod_eff'] = df_perovskite_eff['mod_eff_p'].values
+sim1.modifyScenario('Perovskite', 'mod_eff', df_perovskite_eff['mod_eff_p'], start_year=2022) #changing module eff
 
 
-# In[ ]:
-
-
-#check
-sim1.scenario['Perovskite'].dataIn_m
-
-
-# In[ ]:
+# In[25]:
 
 
 #modify package to glass glass
-sim1.scenario['Perovskite'].material['glass'].matdataIn_m.loc[timeshift:(timeshift+len(celltech_aguse)-1),'mat_massperm2'] = glassperm2
+sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
 
 
-# In[ ]:
+# In[26]:
 
 
 #Lifetime and Degradation
@@ -333,7 +309,7 @@ sim1.modifyScenario('Perovskite', 'mod_reliability_t50', 19, start_year=2022)
 sim1.modifyScenario('Perovskite', 'mod_reliability_t90', 23, start_year=2022) 
 
 
-# In[ ]:
+# In[27]:
 
 
 #As Circular as possible
@@ -396,14 +372,14 @@ sim1.scenario['Perovskite'].modifyMaterials('aluminium_frames', 'mat_EOL_Recycle
 # #### Recycled PERC
 # This module is based on the recent test from Fraunhofer ISE in which an old module was dissassembled, and the silicon wafer cleaned, put into a Cz ingot growth process and made using standard PERC processing, creating a 19% efficient module.
 
-# In[ ]:
+# In[28]:
 
 
 #module efficiency
 sim1.modifyScenario('RecycledPERC', 'mod_eff', 19, start_year=2022)
 
 
-# In[ ]:
+# In[29]:
 
 
 #Lifetime and Degradation
@@ -479,7 +455,7 @@ sim1.modifyScenario('RecycledPERC', 'mod_reliability_t90', 30, start_year=2022)
 # ### Modify Years 2000 to 2100
 # We do this after we modify the baselines to propogate the modified 2050 values forward
 
-# In[ ]:
+# In[30]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -487,7 +463,7 @@ sim1.modifyScenario('RecycledPERC', 'mod_reliability_t90', 30, start_year=2022)
 sim1.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[ ]:
+# In[31]:
 
 
 #check
@@ -499,7 +475,7 @@ sim1.scenario['SHJ'].material['glass'].matdataIn_e
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[ ]:
+# In[32]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -514,7 +490,7 @@ ax2.set_ylabel('Annual Installations [TW]')
 plt.show()
 
 
-# In[ ]:
+# In[33]:
 
 
 #deployment projection
