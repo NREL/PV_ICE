@@ -16128,12 +16128,12 @@ class="
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>C:\Users\hmirletz\AppData\Local\Temp\1\ipykernel_17988\4149674213.py:2: SettingWithCopyWarning: 
+<pre>C:\Users\hmirletz\AppData\Local\Temp\1\ipykernel_16400\4149674213.py:2: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   e_siemens_fitting2.loc[2021] = np.nan #remove Fan et al 2021
-C:\Users\hmirletz\AppData\Local\Temp\1\ipykernel_17988\4149674213.py:3: SettingWithCopyWarning: 
+C:\Users\hmirletz\AppData\Local\Temp\1\ipykernel_16400\4149674213.py:3: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
@@ -16550,7 +16550,7 @@ class="
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.collections.PathCollection at 0x15a8fdd68b0&gt;</pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x1e8b77740d0&gt;</pre>
 </div>
 
 </div>
@@ -17542,7 +17542,7 @@ class="
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.collections.PathCollection at 0x15a908bb730&gt;</pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x1e8b7c4f760&gt;</pre>
 </div>
 
 </div>
@@ -17701,12 +17701,12 @@ Post-2005, the average wafering energy was 8.31 kWh/kg
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>C:\Users\hmirletz\AppData\Local\Temp\1\ipykernel_17988\606483038.py:2: SettingWithCopyWarning: 
+<pre>C:\Users\hmirletz\AppData\Local\Temp\1\ipykernel_16400\606483038.py:2: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   e_wafering.loc[:1999,[&#39;E_Wafering_kWhpkg&#39;]] = avg_wafering_pre2000
-C:\Users\hmirletz\AppData\Local\Temp\1\ipykernel_17988\606483038.py:3: SettingWithCopyWarning: 
+C:\Users\hmirletz\AppData\Local\Temp\1\ipykernel_16400\606483038.py:3: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
@@ -18004,7 +18004,7 @@ class="
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&lt;matplotlib.collections.PathCollection at 0x15a90bbc2e0&gt;</pre>
+<pre>&lt;matplotlib.collections.PathCollection at 0x1e8b7d2e2e0&gt;</pre>
 </div>
 
 </div>
@@ -19150,7 +19150,7 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[121]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[88]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_eol_recycle</span> <span class="o">=</span> <span class="n">mfg_energy_final</span><span class="p">[</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">mfg_energy_fuels</span><span class="p">[</span><span class="s1">&#39;E_reduce_sum_kWhpkg&#39;</span><span class="p">]</span><span class="o">+</span> <span class="n">mfg_energies</span><span class="p">[</span><span class="s1">&#39;E_reduce_sum_kWhpkg&#39;</span><span class="p">])</span><span class="c1">#creates a series</span>
@@ -19179,7 +19179,7 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[122]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[89]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">recycle_hq_fuels</span> <span class="o">=</span> <span class="n">mfg_energy_fuels</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#sum all fuel energy excluding e_reduce</span>
@@ -19197,10 +19197,114 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[123]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[90]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_eol_recycle_HQ_complete</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv&quot;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Alternate-HQ-recycling">Alternate HQ recycling<a class="anchor-link" href="#Alternate-HQ-recycling">&#182;</a></h2><p>Fraunhofer recently attempted recycling a recovered silicon wafer by cleaning, and directly putting into the Cz ingot growth process (i.e. skip Siemens and reduction), and otherwise performing the normal modern PERC process to it. Therefore, we will create an energy profile to reflect this process. It will be studies in tutorial Jupyter Journal "17- Energy Results Paper"</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[100]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_ingotcz</span><span class="p">[</span><span class="s1">&#39;E_Cz_FuelFraction&#39;</span><span class="p">]</span><span class="o">=</span><span class="mf">0.0</span>
+
+<span class="n">altHQRecycle</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">e_ingotcz</span><span class="p">,</span><span class="n">e_wafering_filled</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:],</span><span class="n">e_cellprocess_final</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">fuelfracts_alt</span> <span class="o">=</span> <span class="n">altHQRecycle</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;FuelFraction&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">altHQ_energies</span> <span class="o">=</span> <span class="n">altHQRecycle</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;kWh&#39;</span><span class="p">)</span>
+
+<span class="n">fuelfracts_alt</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">altHQ_energies</span><span class="o">.</span><span class="n">columns</span> <span class="c1">#ish</span>
+<span class="n">altHQ_fuelenergy</span> <span class="o">=</span> <span class="n">altHQ_energies</span><span class="o">*</span><span class="n">fuelfracts_alt</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[103]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">altHQ_fuelenergy_sum</span> <span class="o">=</span> <span class="n">altHQ_fuelenergy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">altHQ_energies_sum</span> <span class="o">=</span> <span class="n">altHQ_energies</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">altHQ_FuelFraction</span> <span class="o">=</span> <span class="n">altHQ_fuelenergy_sum</span><span class="o">/</span><span class="n">altHQ_energies_sum</span>
+<span class="n">altHQ_energies_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">altHQ_energies_sum</span><span class="p">,</span><span class="n">altHQ_FuelFraction</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">altHQ_energies_final</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;E_mfgFuelFraction&#39;</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[105]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">altHQ_energies_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ_ALT.csv&quot;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
      </div>

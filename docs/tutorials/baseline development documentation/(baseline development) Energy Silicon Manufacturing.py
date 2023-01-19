@@ -951,7 +951,7 @@ mfg_energy_final_rounded.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
 # 
 # No literature found recycled EOL silicon to higher than MG-Si. Therefore, we will use the extraction energy at EOL from Latunussa et al 2016 (1.6 kWh/kg) for the FRELP process as the LQ. For HQ recycling, we will use the energy to MFG as calculated here, from Seimens forward. In the Energy flow calculation the LQ energy requirement is inherently added to the HQ energy requirement.
 
-# In[121]:
+# In[88]:
 
 
 e_eol_recycle = mfg_energy_final['E_MFG_kWhpkg']-(mfg_energy_fuels['E_reduce_sum_kWhpkg']+ mfg_energies['E_reduce_sum_kWhpkg'])#creates a series
@@ -960,7 +960,7 @@ e_eol_recycle_HQ = pd.DataFrame(round(e_eol_recycle,2), columns=['E_RecycleHQ_su
 
 # These steps in MFGing require fuel based energy. Therefore, we need to calculate a fuel fraction for the HQ recycling process.
 
-# In[122]:
+# In[89]:
 
 
 recycle_hq_fuels = mfg_energy_fuels.iloc[:,[1,2,3,4]].sum(axis=1) #sum all fuel energy excluding e_reduce
@@ -968,8 +968,54 @@ recycle_hq_fuelsfraction = pd.DataFrame(round(recycle_hq_fuels/e_eol_recycle,2),
 e_eol_recycle_HQ_complete = pd.concat([e_eol_recycle_HQ,recycle_hq_fuelsfraction], axis=1)
 
 
-# In[123]:
+# In[90]:
 
 
 e_eol_recycle_HQ_complete.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv")
+
+
+# ## Alternate HQ recycling
+# 
+# Fraunhofer recently attempted recycling a recovered silicon wafer by cleaning, and directly putting into the Cz ingot growth process (i.e. skip Siemens and reduction), and otherwise performing the normal modern PERC process to it. Therefore, we will create an energy profile to reflect this process. It will be studies in tutorial Jupyter Journal "17- Energy Results Paper"
+
+# In[100]:
+
+
+e_ingotcz['E_Cz_FuelFraction']=0.0
+
+altHQRecycle = pd.concat([e_ingotcz,e_wafering_filled.loc[1995:],e_cellprocess_final], axis=1)
+
+fuelfracts_alt = altHQRecycle.filter(like='FuelFraction')/100
+altHQ_energies = altHQRecycle.filter(like='kWh')
+
+fuelfracts_alt.columns = altHQ_energies.columns #ish
+altHQ_fuelenergy = altHQ_energies*fuelfracts_alt
+
+
+# In[103]:
+
+
+altHQ_fuelenergy_sum = altHQ_fuelenergy.sum(axis=1)
+altHQ_energies_sum = altHQ_energies.sum(axis=1)
+altHQ_FuelFraction = altHQ_fuelenergy_sum/altHQ_energies_sum
+altHQ_energies_final = pd.concat([altHQ_energies_sum,altHQ_FuelFraction], axis=1)
+altHQ_energies_final.columns = ['E_MFG_kWhpkg','E_mfgFuelFraction']
+
+
+# In[105]:
+
+
+altHQ_energies_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ_ALT.csv")
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
