@@ -457,13 +457,8 @@ sim1.scenario['RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_EOL_Recyc
 
 #the cool feature of this module was that the wafer was directly put into the Cz process
 #therefore, we need to modify the recycling energy to reflect this
+#this energy profile is output by the (baseline development) Energy Silicon Manufacturing journal.
 altHQRecycle_e = pd.read_csv(os.path.join(supportMatfolder, 'output_energy_silicon_eol_recycleHQ_ALT.csv'), index_col=0)
-
-
-# In[34]:
-
-
-altHQRecycle_e
 
 
 # In[38]:

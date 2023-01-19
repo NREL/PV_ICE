@@ -401,6 +401,31 @@ class Simulation:
         else:
             for scen in scenarios:
                 self.scenario[scen].dataIn_m.loc[selectyears, stage] = value
+                
+                
+                
+    def modifyScenarioEnergy(self, scenarios, stage, value, start_year=None):
+
+        if start_year is None:
+            start_year = int(datetime.datetime.now().year)
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        selectyears = self.scenario[scenarios[0]].dataIn_e['year'] >= start_year
+
+        if isinstance(value, (pd.Series)):
+            for scen in scenarios:
+                timeshift = start_year - self.scenario[scen].dataIn_e.iloc[0,0]
+                self.scenario[scen].dataIn_e.loc[timeshift:, stage] = value.values
+
+        else:
+            for scen in scenarios:
+                self.scenario[scen].dataIn_e.loc[selectyears, stage] = value
+
 
     def calculateFlows(self, scenarios=None, materials=None,
                        weibullInputParams=None, bifacialityfactors=None,
