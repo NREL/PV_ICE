@@ -1990,6 +1990,29 @@ class Scenario(Simulation):
                 self.material[mat].matdataIn_m.loc[selectyears, stage] = value
 
 
+    def modifyMaterialEnergy(self, materials, stage, value, start_year=None):
+
+        if start_year is None:
+            start_year = int(datetime.datetime.now().year)
+
+        if materials is None:
+            materials = list(self.material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+        selectyears = self.dataIn_e['year']>=start_year
+        
+        if isinstance(value, (pd.Series)):
+            for mat in materials:
+                timeshift = start_year - self.dataIn_e.iloc[0,0]
+                self.material[mat].matdataIn_e.loc[timeshift:, stage] = value.values
+            
+        else:
+            for mat in materials:
+                self.material[mat].matdataIn_e.loc[selectyears, stage] = value
+
+
     def __getitem__(self, key):
         return getattr(self, key)
 

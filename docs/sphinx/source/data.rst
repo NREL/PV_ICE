@@ -444,9 +444,11 @@ Average annual efficiency in % from:
 2. International Technology Roadmap for Photovoltaic (ITRPV) 2021 Results, ITRPV, Apr. 2022 [Online]. Available: https://itrpv.vdma.org/
 3. International Technology Roadmap for Photovoltiac (ITRPV): 2020 Results, ITRPV, Apr. 2021. Accessed: Apr. 30, 2021. [Online]. Available: https://itrpv.vdma.org/documents/27094228/29066965/2021%30ITRPV/08ccda3a-585e-6a58-6afa-6c20e436cf41
 
-Degradation rate (in percentage power loss per year): 
+Degradation rate of PV system (in percentage power loss per year): 
 
-- D.C. Jordan, S. R. Kurtz, K. VanSant, and J. Newmiller, "Compendium of photovoltaic degradation rates," Progress in Photovoltaics: Research and Applications, vol. 24, no. 7, pp. 978-989, 2016, doi: 10.1002/pip.2744.
+- Jordan, Dirk C., Kevin Anderson, Kirsten Perry, Matthew Muller, Michael Deceglie, Robert White, and Chris Deline. 2022. “Photovoltaic Fleet Degradation Insights.” Progress in Photovoltaics: Research and Applications n/a (n/a). https://doi.org/10.1002/pip.3566.
+
+- Lindig, Sascha, Julian Ascencio-Vasquez, Jonathan Leloux, David Moser, and Angele Reinders. 2021. “Performance Analysis and Degradation of a Large Fleet of PV Systems.” IEEE Journal of Photovoltaics 11 (5): 1312–18. https://doi.org/10.1109/JPHOTOV.2021.3093049.
 
 
 Failure probability data, i.e. T50 and T90, in years: 
