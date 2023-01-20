@@ -193,7 +193,7 @@ uscumr1.to_csv('historicalUS-cumulative.csv')
 
 # Examine a specific year
 
-# In[19]:
+# In[18]:
 
 
 #subset result dataframes to look at all tech and just cSi and remove old USHistory file
@@ -204,7 +204,7 @@ yearlyallPV_agg = usyearlyr1_sub[usyearlyr1_sub.columns.difference(yearlycSi_agg
 
 # #### Area Equivilent Calcs
 
-# In[20]:
+# In[19]:
 
 
 keys = pd.DataFrame(r1.scenario['USHistory'].dataOut_m.keys())
@@ -212,7 +212,7 @@ import re
 keys[keys[0].str.contains('area', flags=re.IGNORECASE)]
 
 
-# In[21]:
+# In[20]:
 
 
 for scen in scennames:
@@ -224,7 +224,7 @@ plt.ylabel('Disposed Area [m2]')
 plt.legend()
 
 
-# In[22]:
+# In[21]:
 
 
 #extract area disposed from simulation #should be m2
@@ -234,7 +234,7 @@ for scen in scennames:
     yearly_AreaDisposed_Results = pd.concat([yearly_AreaDisposed_Results,temp], axis=1)
 
 
-# In[23]:
+# In[22]:
 
 
 yearly_AreaDisposed_Results.index = r1.scenario['Residential'].dataIn_m['year']
@@ -242,7 +242,7 @@ yearly_AreaDisposed_Results.columns = scennames
 yearly_AreaDisposed_Results.tail()
 
 
-# In[24]:
+# In[23]:
 
 
 yearly_AreaDisposed_Results_cum = yearly_AreaDisposed_Results.cumsum()
@@ -251,14 +251,14 @@ yearly_AreaDisposed_Results_cum.tail()
 
 # Now we take the area and divide it by 1.6 m2 or 2 m2 to approximate the # of modules. And Also extract the 2030 and 2050 values for area equivilence estimations.
 
-# In[25]:
+# In[24]:
 
 
 subset_areaDisposed_yearly = yearly_AreaDisposed_Results.loc[[2030,2050]]
 subset_areaDisposed_cum = yearly_AreaDisposed_Results_cum.loc[[2030,2050]]
 
 
-# In[26]:
+# In[25]:
 
 
 subset_1pt6m2ModulesDisposed_yearly = subset_areaDisposed_yearly/1.6
@@ -277,21 +277,21 @@ subset_NoModules
 
 # ### in 2022
 
-# In[79]:
+# In[26]:
 
 
 #annual
 round(yearly_AreaDisposed_Results.loc[[2022]]/1.6,0)
 
 
-# In[80]:
+# In[27]:
 
 
 #cumulative
 round(yearly_AreaDisposed_Results_cum.loc[[2022]]/1.6,0)
 
 
-# In[27]:
+# In[28]:
 
 
 AreaDisposed_Eq = pd.concat([subset_areaDisposed_yearly,subset_areaDisposed_cum], keys = ['yearly','cumulative'])
@@ -301,7 +301,7 @@ AreaDisposed_Eq
 
 # ## Pretty Plots
 
-# In[28]:
+# In[29]:
 
 
 #all techs plot
@@ -322,7 +322,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[29]:
+# In[30]:
 
 
 #cSi plot
@@ -343,13 +343,13 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[30]:
+# In[31]:
 
 
 yearlyallPV_agg.filter(like='Decommisioned').columns
 
 
-# In[31]:
+# In[32]:
 
 
 #all techs plot
@@ -489,7 +489,7 @@ round(subset_results_waste.T,2)
 
 # ## 2022 Values
 
-# In[74]:
+# In[43]:
 
 
 subset_results_capacity = df_Capacity_all.filter(like='Decommisioned').loc[[2022]]
@@ -497,7 +497,7 @@ subset_results_capacity = df_Capacity_all.filter(like='Decommisioned').loc[[2022
 round(subset_results_capacity.T,)
 
 
-# In[76]:
+# In[44]:
 
 
 cSiwaste_cum = uscumr1.filter(like='WasteAll_Module').filter(like='c-Si')#/1e6 #convert to million metric tonnes

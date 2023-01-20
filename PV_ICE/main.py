@@ -431,7 +431,24 @@ class Simulation:
                        weibullInputParams=None, bifacialityfactors=None,
                        reducecapacity=True, debugflag=False,
                        installByArea=None):
-
+        
+        # #create a check that the start year on mass and energy files are the same
+        # for scen in scenarios:
+        #     mod_m_startyear = self.scenario[scen].dataIn_m.iloc[0,0]
+        #     mod_e_startyear = self.scenario[scen].dataIn_e.iloc[0,0]
+            
+        #     if  mod_m_startyear != mod_e_startyear:
+        #         print('The start year of mass and energy files do not match, please fix! Mass: '+str(mod_m_startyear)+' Energy: '+str(mod_e_startyear))
+        #         return
+        #     for mat in materials:
+        #         if self.scenario[scen].material[mat].matdataIn_m.iloc[0,0] != self.scenario[scen].material[mat].matdataIn_e.iloc[0,0]:
+        #             print('The start year of '+str(mat)+' mass and energy files do not match, please fix!')
+        #             return
+        #         if self.scenario[scen].material[mat].matdataIn_m.iloc[0,0] != mod_m_startyear:
+        #             print('Start year of '+str(mat)+' mass file does not match module start year, please fix!')
+        #             return
+        
+        
         self.calculateMassFlow(scenarios=scenarios, materials=materials,
                                weibullInputParams=weibullInputParams,
                                bifacialityfactors=bifacialityfactors,
@@ -1280,9 +1297,8 @@ class Simulation:
             de['mod_ReMFG_Disassembly'] = df['P3_reMFG']*modEnergy['e_mod_ReMFG_Disassembly']
             de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
 
-            #Energy Generation, Energy_out = Insolation* (bifi modify factor) * ActivePower/Irradience * time * PR
+            #Energy Generation, Energy_out = Insolation (adjusted for bifi) * ActivePower/Irradience * time * PR
             de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Installed_Capacity_[W]']/1000) * 365 * PR
-            #de['e_out_annual_alt_[Wh]'] = df['irradiance_stc'] * PR * (df_in['mod_eff']*0.01 )* (5*365) * df['Cumulative_Active_Area'] #can't currently account for bifi
             
             self.scenario[scen].dataOut_e = de
 
