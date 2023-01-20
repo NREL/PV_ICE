@@ -12,7 +12,7 @@
 # 
 # We will use a literture-sourced global scale deployment schedule through 2050, then assume that capacity increases at a lower constant rate through 2100.
 
-# In[1]:
+# In[86]:
 
 
 import numpy as np
@@ -22,7 +22,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 plt.rcParams.update({'font.size': 18})
-plt.rcParams['figure.figsize'] = (10, 6)
+plt.rcParams['figure.figsize'] = (8, 4)
 
 cwd = os.getcwd() #grabs current working directory
 
@@ -259,7 +259,7 @@ sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_massperm2', glassperm2
 #degradation rate:
 sim1.modifyScenario('Perovskite', 'mod_degradation', 1.5, start_year=2022) #annual power degradation
 #Mod Project Lifetime
-sim1.modifyScenario('Perovskite', 'mod_lifetime', 15, start_year=2022) #project lifetime of 30 years
+sim1.modifyScenario('Perovskite', 'mod_lifetime', 15, start_year=2022) #project lifetime of 15 years
 #T50
 sim1.modifyScenario('Perovskite', 'mod_reliability_t50', 19, start_year=2022)
 #t90
@@ -282,12 +282,12 @@ sim1.modifyScenario('Perovskite', 'mod_EOL_pb3_reMFG', 100, start_year=2022) # r
 sim1.modifyScenario('Perovskite', 'mod_EOL_reMFG_yield', 98, start_year=2022) # REMFG YIELD 98%
 
 #set all other paths to 0
-sim1.modifyScenario('Perovskite', 'mod_EOL_pg0_resell', 0.0, start_year=2022) # REMFG YIELD 98%
-sim1.modifyScenario('Perovskite', 'mod_EOL_pg1_landfill', 0.0, start_year=2022) # REMFG YIELD 98%
-sim1.modifyScenario('Perovskite', 'mod_EOL_pg4_recycled', 0.0, start_year=2022) # REMFG YIELD 98%
-sim1.modifyScenario('Perovskite', 'mod_EOL_pb1_landfill', 0.0, start_year=2022) # REMFG YIELD 98%
-sim1.modifyScenario('Perovskite', 'mod_EOL_pb2_stored', 0.0, start_year=2022) # REMFG YIELD 98%
-sim1.modifyScenario('Perovskite', 'mod_EOL_pb4_recycled', 0.0, start_year=2022) # REMFG YIELD 98%
+sim1.modifyScenario('Perovskite', 'mod_EOL_pg0_resell', 0.0, start_year=2022) # 
+sim1.modifyScenario('Perovskite', 'mod_EOL_pg1_landfill', 0.0, start_year=2022) # 
+sim1.modifyScenario('Perovskite', 'mod_EOL_pg4_recycled', 0.0, start_year=2022) # 
+sim1.modifyScenario('Perovskite', 'mod_EOL_pb1_landfill', 0.0, start_year=2022) # 
+sim1.modifyScenario('Perovskite', 'mod_EOL_pb2_stored', 0.0, start_year=2022) # 
+sim1.modifyScenario('Perovskite', 'mod_EOL_pb4_recycled', 0.0, start_year=2022) # 
 
 
 #Material Remanufacture
@@ -302,7 +302,7 @@ sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 100
 sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 0.0, start_year=2022) #send none to recycle
 sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_ReMFG_yield', 99.0, start_year=2022) #99% yeild
 
-#silicon Remanufacture or recycle?
+#silicon Recycle
 #mfg scrap
 sim1.scenario['Perovskite'].modifyMaterials('silicon', 'mat_MFG_scrap_Recycled', 100.0, start_year=2022) #send mfg scrap to recycle
 sim1.scenario['Perovskite'].modifyMaterials('silicon', 'mat_MFG_scrap_Recycling_eff', 98.0, start_year=2022) #98% yield
@@ -560,7 +560,7 @@ sim1.calculateMassFlow()
 # In[37]:
 
 
-ii_yearly, ii_cum = sim1.aggregateResults() #have to do this to get auto plots
+ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
 # In[38]:
@@ -618,55 +618,144 @@ for f in bifiFactors.keys(): #loop over module types
 # In[42]:
 
 
-
+#currently takes 15 mins to run with 5 mateirals and 5 scenarios
 for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of years
     for scenario in range (0, len(sim1.scenario.keys())): #loop over scenarios
         scen = list(sim1.scenario.keys())[scenario] #select the nth scenario in a list of scenarios
-        Under_Installment = ( (global_projection.iloc[row,0] - sim1.scenario[scen].dataOut_m['Installed_Capacity_[W]'][row])/1000000 )  # MWATTS
+        Under_Installment = global_projection.iloc[row,0] - ((sim1.scenario[scen].dataOut_m['Installed_Capacity_[W]'][row])/1e6)  # MWATTS
         sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment
     sim1.calculateFlows(bifacialityfactors=bifiPathDict[scen]) #figure this out for multiple bifi factors
 
 
-# In[43]:
+# In[61]:
 
 
-cc_yearly, cc_cum = sim1.aggregateResults() #have to do this to get auto plots
+cc_yearly, cc_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[58]:
+# # RESULTS: Effective Capacity and Replacements
+
+# In[99]:
 
 
 effective_capacity = cc_yearly.filter(like='ActiveCapacity')
-plt.plot(effective_capacity)
+plt.plot(effective_capacity/1e6)
 plt.legend(scennames)
 plt.ylabel('Effective Capacity [TW]')
 plt.title('Effective Capacity: With Replacements')
 
 
-# In[54]:
+# In[135]:
 
 
-annual_installs = cc_yearly.filter(like='Installed')
-plt.plot(annual_installs)
+annual_EoL = cc_yearly.filter(like='DecommisionedCapacity')
+plt.plot(annual_EoL/1e6)
 plt.legend(scennames)
-plt.ylabel('Annual installed [MW]')
+plt.ylabel('Annual EoL [TW]')
+plt.title('Annual Decommissions [TW]')
+
+
+# In[89]:
+
+
+annual_installs = cc_yearly.filter(like='newInstalled')
+plt.plot(annual_installs/1e6)
+plt.legend(scennames)
+plt.ylabel('Annual installed [TW]')
 plt.title('Annual Installs with Replacements')
 
 
-# In[57]:
+# In[105]:
 
 
-cc_cum.filter(like='Installed')
+cumu_installs_annually = cc_cumu.filter(like='newInstalled')
+plt.plot(cumu_installs_annually/1e6)
+plt.legend(scennames)
+plt.ylabel('Cumulative installed [TW]')
+plt.title('Replacements Adjusted Deployment Curve \n Cumulative Installs with Replacements')
+
+
+# In[107]:
+
+
+cumu_installs = cc_cumu.filter(like='newInstalled')
+plt.bar(scennames, cumu_installs.loc[2100]/1e6, tick_label=scennames)
+plt.legend(scennames)
+plt.ylabel('Cumulative installed [TW]')
+plt.title('Cumulative Installs with Replacements')
+
+
+# In[96]:
+
+
+cumulative_nameplate_installs = global_projection.loc[2100,'World_cum'] #MW
+print('The nameplate installations for energy transition and through 2100 are '+str(cumulative_nameplate_installs/1e6)+' TW.')
+
+
+# In[97]:
+
+
+global_projection['World_annual_[MWdc]'].sum()
+
+
+# In[109]:
+
+
+Additional_installs = cumu_installs.loc[2100]-global_projection.loc[2100,'World_cum']
+plt.bar(scennames, Additional_installs/1e6, tick_label=scennames)
+plt.legend(scennames)
+plt.ylabel('Cumulative Replacements [TW]')
+plt.title('Replacements Required by Technology')
+
+
+# # RESULTS: Virgin Material Demands
+
+# In[115]:
+
+
+cumu_virgin_module = cc_cumu.filter(like='VirginStock_Module')
+plt.bar(scennames, cumu_virgin_module.loc[2100], tick_label=scennames)
+plt.legend(scennames)
+plt.ylabel('Cumulative Virgin Material Extraction: Module')
+plt.title('Virgin Material Requirements [tonnes]')
+
+
+# In[116]:
+
+
+cumu_virgin_module = cc_cumu.filter(like='VirginStock_Module')
+plt.plot(cumu_virgin_module)
+plt.legend(scennames)
+plt.ylabel('Cumulative Virgin Material Extraction: Module')
+plt.title('Virgin Material Requirements [tonnes]')
 
 
 # In[ ]:
 
 
-annual_installs = cc_yearly.filter(like='Installed')
-plt.bar(annual_installs)
-plt.legend(scennames)
-plt.ylabel('Annual installed [MW]')
-plt.title('Annual Installs with Replacements')
+cumu_virgin_module_exclude_perovskite = 
+
+
+# In[120]:
+
+
+
+
+
+# In[125]:
+
+
+perovskite_exclude = cumu_virgin_module.filter(like='Perovskite').columns
+subset_virgin_module = cumu_virgin_module.loc[:,~cumu_virgin_module.columns.isin(perovskite_exclude)]
+
+
+# In[127]:
+
+
+plt.plot(subset_virgin_module)
+plt.legend(subset_virgin_module.columns)
+plt.ylabel('Cumulative Virgin Material Extraction: Module')
+plt.title('Virgin Material Requirements [tonnes]')
 
 
 # In[ ]:
