@@ -116,7 +116,7 @@ print('Time shift: '+str(timeshift))
 # ### PERC_50
 # This module represents current PERC technology (so good efficiency) if it were to have it's lifetime extended significantly. Glass-glass technology is assumed, expected decreases in silver usage and increases in module efficiency are derived from Zhang et al 2021, Gervais et al 2021 and ITRPV 2022. It is assumed that this module is no more recyclable than current technology (downcycle glass and recycle aluminium frames).
 
-# In[ ]:
+# In[9]:
 
 
 #module efficiency modify for PERC
@@ -225,7 +225,7 @@ sim1.modifyScenario('SHJ', 'mod_MerchantTail', 50, start_year=2022) #50% stay fo
 # ### Perovskite
 # This perovskite module uses current best module and cell efficiencies, has a prospective life of 15 years and 1.5% degradation rate, and is highly circular. This is a best case scenario for perovskites given current data.
 
-# In[9]:
+# In[10]:
 
 
 #2022 module eff = 17.9% #https://www.nrel.gov/pv/assets/pdfs/champion-module-efficiencies-rev220401b.pdf
@@ -237,21 +237,21 @@ df_perovskite_eff.loc[2050] = 32.5
 df_perovskite_eff.interpolate(inplace=True)
 
 
-# In[10]:
+# In[11]:
 
 
 #module efficiency modify for PERC
 sim1.modifyScenario('Perovskite', 'mod_eff', df_perovskite_eff['mod_eff_p'], start_year=2022) #changing module eff
 
 
-# In[11]:
+# In[12]:
 
 
 #modify package to glass glass
 sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
 
 
-# In[12]:
+# In[13]:
 
 
 #Lifetime and Degradation
@@ -266,7 +266,7 @@ sim1.modifyScenario('Perovskite', 'mod_reliability_t50', 14, start_year=2022)
 sim1.modifyScenario('Perovskite', 'mod_reliability_t90', 20, start_year=2022) 
 
 
-# In[13]:
+# In[14]:
 
 
 #As Circular as possible
@@ -317,6 +317,7 @@ sim1.scenario['Perovskite'].modifyMaterials('silicon', 'mat_PG4_Recycling_target
 sim1.scenario['Perovskite'].modifyMaterials('silicon', 'mat_Recycling_yield', 98.0, start_year=2022) #99% yeild
 sim1.scenario['Perovskite'].modifyMaterials('silicon', 'mat_EOL_Recycled_into_HQ', 100.0, start_year=2022) #all HQ
 sim1.scenario['Perovskite'].modifyMaterials('silicon', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
+sim1.scenario['Perovskite'].modifyMaterials('silicon', 'mat_ReMFG_yield', 0.0, start_year=2022) #99% yeild
 
 #aluminium_frames recycle
 #mfg scrap
@@ -330,6 +331,7 @@ sim1.scenario['Perovskite'].modifyMaterials('aluminium_frames', 'mat_PG4_Recycli
 sim1.scenario['Perovskite'].modifyMaterials('aluminium_frames', 'mat_Recycling_yield', 99.0, start_year=2022) #99% yeild
 sim1.scenario['Perovskite'].modifyMaterials('aluminium_frames', 'mat_EOL_Recycled_into_HQ', 100.0, start_year=2022) #all HQ
 sim1.scenario['Perovskite'].modifyMaterials('aluminium_frames', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
+sim1.scenario['Perovskite'].modifyMaterials('aluminium_frames', 'mat_ReMFG_yield', 0.0, start_year=2022) #0% yeild
 
 
 # In[ ]:
@@ -501,7 +503,7 @@ sim1.scenario['RecycledPERC'].material['silicon'].matdataIn_e.iloc[25:30,]
 # ### Modify Years 2000 to 2100
 # We do this after we modify the baselines to propogate the modified 2050 values forward
 
-# In[14]:
+# In[15]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -509,7 +511,7 @@ sim1.scenario['RecycledPERC'].material['silicon'].matdataIn_e.iloc[25:30,]
 sim1.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[15]:
+# In[16]:
 
 
 #check
@@ -521,7 +523,7 @@ sim1.scenario['SHJ'].material['glass'].matdataIn_e
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[16]:
+# In[18]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -536,7 +538,7 @@ ax2.set_ylabel('Annual Installations [TW]')
 plt.show()
 
 
-# In[17]:
+# In[19]:
 
 
 #deployment projection for all scenarios
@@ -554,22 +556,63 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', value= g
 # # Calculate Mass flow
 # Can just calc mass here (exclude energy) because we're going to immediately do Install Compensation.
 
-# In[18]:
+# In[20]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[19]:
+# In[21]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[20]:
+# In[22]:
 
 
 sim1.plotMetricResults()
+
+
+# In[33]:
+
+
+l0 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L0']
+l1 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L1']
+l2 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L2']
+l3 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L3']
+l4 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L4']
+
+#plt.plot(l0, ls='-.')
+#plt.plot(l1)
+plt.plot(l2)
+plt.plot(l3)
+plt.plot(l4)
+plt.legend(['l2','l3','l4'])
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
@@ -622,7 +665,7 @@ for f in bifiFactors.keys(): #loop over module types
 
 
 #currently takes 15 mins to run with 5 mateirals and 5 scenarios
-for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of years
+for row in range (0,len(sim1.scenario['Perovskite'].dataIn_m)): #loop over length of years
     for scenario in range (0, len(sim1.scenario.keys())): #loop over scenarios
         scen = list(sim1.scenario.keys())[scenario] #select the nth scenario in a list of scenarios
         Under_Installment = global_projection.iloc[row,0] - ((sim1.scenario[scen].dataOut_m['Installed_Capacity_[W]'][row])/1e6)  # MWATTS
@@ -634,6 +677,12 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
 
 
 cc_yearly, cc_cumu = sim1.aggregateResults() #have to do this to get auto plots
+
+
+# In[ ]:
+
+
+sim1.plotMetricResults()
 
 
 # # RESULTS: Effective Capacity and Replacements
