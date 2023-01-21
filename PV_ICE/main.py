@@ -1208,7 +1208,12 @@ class Simulation:
                     # Manufacturing Virgin Needs:
                     dm['mat_Virgin_Stock'] = (dm['mat_Manufacturing_Input'] -
                                               dm['mat_EOL_Recycled_VAT'] -
-                                              dm['mat_MFG_Recycled_HQ_into_MFG'])                                              
+                                              dm['mat_MFG_Recycled_HQ_into_MFG'])     
+                    # This is what goes into OU in the 'else' statement.
+                    dm['mat_EOL_Recycled_HQ_into_MFG_notUSED'] = (
+                        dm['mat_EOL_Recycled_HQ_into_MFG'] - dm['mat_EOL_Recycled_VAT'])
+
+                    # Have ot think on the recycledendofsimsurplus... 
                 else:
                 # Input from Successful Recycling to offset Material
                 # Manufacturing Virgin Needs:                   
