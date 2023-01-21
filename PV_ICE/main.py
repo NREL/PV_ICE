@@ -720,8 +720,7 @@ class Simulation:
                             # area_notrepaired0 = 0
                             # power_notrepaired0 = 0
 
-                            if deg_nameplate > 0.8:
-                                # TO DO: check math here
+                            if deg_nameplate > 0.7: 
                                 area_collected = (
                                     disposed_projectlifetime *
                                     (df.iloc[age]['mod_EOL_collection_eff'] *
@@ -749,7 +748,9 @@ class Simulation:
                                     disposed_projectlifetime - area_resold0)
                                 powerdisposed_projectlifetime0 = (
                                     disposed_projectlifetime*poweragegen)
-                            else:
+                            else: 
+                                # TODO check this! killing and not sending 
+                                # to EOL collection paths,
                                 area_bad_status0 = disposed_projectlifetime
                                 power_bad_status0 = (
                                     area_bad_status0 * poweragegen)

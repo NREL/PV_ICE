@@ -257,7 +257,7 @@ sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_massperm2', glassperm2
 #Lifetime and Degradation
 #values taken from lifetime vs recycling paper
 #degradation rate:
-sim1.modifyScenario('Perovskite', 'mod_degradation', 1.5, start_year=2022) #annual power degradation
+sim1.modifyScenario('Perovskite', 'mod_degradation', 1.47, start_year=2022) #annual power degradation
 #Mod Project Lifetime
 sim1.modifyScenario('Perovskite', 'mod_lifetime', 15, start_year=2022) #project lifetime of 15 years
 #T50
@@ -271,15 +271,15 @@ sim1.modifyScenario('Perovskite', 'mod_reliability_t90', 20, start_year=2022)
 
 #As Circular as possible
 #100% collection rate
-sim1.modifyScenario('Perovskite', 'mod_EOL_collection_eff', 100, start_year=2022) #100% collection
+sim1.modifyScenario('Perovskite', 'mod_EOL_collection_eff', 100.0, start_year=2022) #100% collection
 sim1.modifyScenario('Perovskite', 'mod_EOL_pg1_landfill', 0.0, start_year=2022) #100% collection
 sim1.modifyScenario('Perovskite', 'mod_EOL_pb1_landfill', 0.0, start_year=2022) #100% collection
 
 # remanufacturing
-sim1.modifyScenario('Perovskite', 'mod_EOL_pg3_reMFG', 100, start_year=2022) #all modules attempt remfg
-sim1.modifyScenario('Perovskite', 'mod_EOL_sp_reMFG_recycle', 100, start_year=2022) # recycle if can't remfg
-sim1.modifyScenario('Perovskite', 'mod_EOL_pb3_reMFG', 100, start_year=2022) # remfg bad mods too
-sim1.modifyScenario('Perovskite', 'mod_EOL_reMFG_yield', 98, start_year=2022) # REMFG YIELD 98%
+sim1.modifyScenario('Perovskite', 'mod_EOL_pg3_reMFG', 100.0, start_year=2022) #all modules attempt remfg
+sim1.modifyScenario('Perovskite', 'mod_EOL_sp_reMFG_recycle', 100.0, start_year=2022) # recycle if can't remfg
+sim1.modifyScenario('Perovskite', 'mod_EOL_pb3_reMFG', 100.0, start_year=2022) # remfg bad mods too
+sim1.modifyScenario('Perovskite', 'mod_EOL_reMFG_yield', 98.0, start_year=2022) # REMFG YIELD 98%
 
 #set all other paths to 0
 sim1.modifyScenario('Perovskite', 'mod_EOL_pg0_resell', 0.0, start_year=2022) # 
@@ -302,8 +302,10 @@ sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_int
 sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
 #eol
 sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 100.0, start_year=2022) #send all to remfg
-sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 0.0, start_year=2022) #send none to recycle
+sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100.0, start_year=2022) #send none to recycle
 sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_ReMFG_yield', 99.0, start_year=2022) #99% yeild
+sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_Recycling_yield', 99.0, start_year=2022) #99% yeild
+
 
 #silicon Recycle (or should it be remfg?)
 #mfg scrap
@@ -574,19 +576,25 @@ ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 sim1.plotMetricResults()
 
 
-# In[38]:
+# In[22]:
 
 
 ii_cumu.loc[2100,'WasteAll_Module_sim1_Perovskite_[Tonnes]']
 
 
-# In[41]:
+# In[23]:
 
 
 ii_cumu.loc[2100,'VirginStock_Module_sim1_Perovskite_[Tonnes]']
 
 
-# In[42]:
+# In[24]:
+
+
+ii_cumu.loc[2100,'WasteAll_Module_sim1_Perovskite_[Tonnes]']/ii_cumu.loc[2100,'VirginStock_Module_sim1_Perovskite_[Tonnes]']
+
+
+# In[25]:
 
 
 l0 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L0']
@@ -595,15 +603,21 @@ l2 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L2']
 l3 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L3']
 l4 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L4']
 
-#plt.plot(l0, ls='-.')
-#plt.plot(l1)
-plt.plot(l2)
-plt.plot(l3)
-plt.plot(l4)
-plt.legend(['l2','l3','l4'])
+#plt.plot(l0, label='uncollected')
+#plt.plot(l1, label='landfilled')
+plt.plot(l2, label='not remfg, unyields')
+plt.plot(l3, label='recycle untarget')
+plt.plot(l4, label='recycling unyield')
+plt.legend()
 
 
-# In[43]:
+# In[ ]:
+
+
+l0.sum()
+
+
+# In[ ]:
 
 
 plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_all_unyields'], label='unyields')
@@ -612,7 +626,7 @@ plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_2
 plt.legend()
 
 
-# In[44]:
+# In[ ]:
 
 
 plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_all_unyields'], label='mat_reMFG_all_unyields')
