@@ -1178,12 +1178,55 @@ class Simulation:
                                           dm['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'] * 0.01)
                 dm['mat_MFG_Recycled_HQ_into_OU'] = dm['mat_MFG_Recycled_into_HQ'] - dm['mat_MFG_Recycled_HQ_into_MFG']
 
-                # Input from Successful Recycling to offset Mateirla Manufacturing Virgin Needs:
-                dm['mat_Virgin_Stock'] = dm['mat_Manufacturing_Input'] - dm['mat_EOL_Recycled_HQ_into_MFG'] - dm['mat_MFG_Recycled_HQ_into_MFG']
+                dm['mat_EOL_Recycled_VAT'] = dm['mat_EOL_Recycled_HQ_into_MFG']
+                
+                carryoverVat = True # TODO: Make this a sim input
 
+                if carryoverVat:    
+                    recycledsurplusEndofSim = 0
+                    for rr in range(0, len(dm)):
+                        recycledsurplus = (dm['mat_Manufacturing_Input'].loc[rr] -
+                                       dm['mat_MFG_Recycled_HQ_into_MFG'].loc[rr] -
+                                       dm['mat_EOL_Recycled_HQ_into_MFG'])
+                        if recycledsurplus < 0:
+                            if rr == len(dm)-1:
+                                recycledsurplusEndofSim = recycledsurplus
+                                print("Recycled surplus End of Sim for Mat ", mat,
+                                      " Scenario ", scen, " = ",
+                                      recycledsurplusEndofSim/1000000, " tonnes")
+                            else:
+                                dm['mat_EOL_Recycled_VAT'].loc[rr+1] += (
+                                            abs(recycledsurplus))
+                                
+                    # Input from Successful Recycling to offset Material
+                    # Manufacturing Virgin Needs:
+                    dm['mat_Virgin_Stock'] = (dm['mat_Manufacturing_Input'] -
+                                              dm['mat_EOL_Recycled_VAT'] -
+                                              dm['mat_MFG_Recycled_HQ_into_MFG'])                                              
+                else:
+                # Input from Successful Recycling to offset Material
+                # Manufacturing Virgin Needs:                   
+                    dm['mat_Virgin_Stock'] = (dm['mat_Manufacturing_Input'] -
+                                          dm['mat_EOL_Recycled_HQ_into_MFG'] -
+                                          dm['mat_MFG_Recycled_HQ_into_MFG'])
+
+                    # TO DO: rename 2 to original one, just using it for the 
+                    # sanity check
+                    dm['mat_MFG_Recycled_HQ_into_OU2'] = dm['mat_MFG_Recycled_HQ_into_OU']
+
+                    dm.loc[dm['mat_Virgin_Stock'] < 0, 'mat_MFG_Recycled_HQ_into_OU2'] = (
+                        dm[dm['mat_Virgin_Stock'] < 0, 'mat_MFG_Recycled_HQ_into_OU2'] -
+                        dm[dm['mat_Virgin_Stock'] < 0]['mat_Virgin_Stock'] )
+                    
+                    dm.loc[dm['mat_Virgin_Stock']<0, 'mat_Virgin_Stock'] = 0
+                    print("Did the thing sanity check")                   
+        
                 # Calculate raw virgin needs before mining and refining efficiency losses
                 dm['mat_Virgin_Stock_Raw'] = (dm['mat_Virgin_Stock'] * 100 /  dm['mat_virgin_eff'])
 
+
+                    
+                    
                 # Add Wastes
 
                 dm['mat_Total_EOL_Landfilled'] = (dm['mat_L0']+  #'mat_modules_NotCollected'] +
