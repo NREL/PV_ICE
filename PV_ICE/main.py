@@ -1119,7 +1119,7 @@ class Simulation:
 
                 # SUBPATH 1: ReMFG to Recycling
                 dm['mat_reMFG_all_unyields'] = dm['mat_reMFG_mod_unyield'] + dm['mat_reMFG_untarget'] + dm['mat_reMFG_unyield']
-                dm['mat_reMFG_2_recycle'] = dm['mat_reMFG_all_unyields'] * df['mod_EOL_sp_reMFG_recycle']
+                dm['mat_reMFG_2_recycle'] = dm['mat_reMFG_all_unyields'] * df['mod_EOL_sp_reMFG_recycle'] * 0.01
                 dm['mat_L2'] = dm['mat_reMFG_all_unyields']-dm['mat_reMFG_2_recycle']
 
 

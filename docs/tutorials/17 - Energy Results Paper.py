@@ -523,7 +523,7 @@ sim1.scenario['SHJ'].material['glass'].matdataIn_e
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[18]:
+# In[17]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -538,7 +538,7 @@ ax2.set_ylabel('Annual Installations [TW]')
 plt.show()
 
 
-# In[19]:
+# In[18]:
 
 
 #deployment projection for all scenarios
@@ -556,25 +556,37 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', value= g
 # # Calculate Mass flow
 # Can just calc mass here (exclude energy) because we're going to immediately do Install Compensation.
 
-# In[20]:
+# In[19]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[21]:
+# In[20]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[22]:
+# In[21]:
 
 
 sim1.plotMetricResults()
 
 
-# In[33]:
+# In[38]:
+
+
+ii_cumu.loc[2100,'WasteAll_Module_sim1_Perovskite_[Tonnes]']
+
+
+# In[41]:
+
+
+ii_cumu.loc[2100,'VirginStock_Module_sim1_Perovskite_[Tonnes]']
+
+
+# In[42]:
 
 
 l0 = sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_L0']
@@ -591,16 +603,39 @@ plt.plot(l4)
 plt.legend(['l2','l3','l4'])
 
 
+# In[43]:
+
+
+plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_all_unyields'], label='unyields')
+plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_2_recycle'], label='remfgtorecycle')
+
+plt.legend()
+
+
+# In[44]:
+
+
+plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_all_unyields'], label='mat_reMFG_all_unyields')
+plt.plot(sim1.scenario['Perovskite'].dataOut_m['mod_EOL_sp_reMFG_recycle'], label='mod_EOL_sp_reMFG_recycle')
+plt.legend()
+
+
 # In[ ]:
 
 
-
+plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_mod_unyield'], label='remfg mat_reMFG_mod_unyield unyield')
+plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_untarget'], label='mat_reMFG_untarget')
+plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_unyield'], label='mat_reMFG_unyield')
+plt.legend()
 
 
 # In[ ]:
 
 
-
+plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_mod_unyield'], label='remfg mat_reMFG_mod_unyield unyield')
+plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_untarget'], label='mat_reMFG_untarget')
+plt.plot(sim1.scenario['Perovskite'].material['glass'].matdataOut_m['mat_reMFG_unyield'], label='mat_reMFG_unyield')
+plt.legend()
 
 
 # In[ ]:
