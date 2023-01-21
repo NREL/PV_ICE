@@ -1155,8 +1155,43 @@ class Simulation:
 
                 # Input from Successful ReMFG to offset Module Manufacturing Material Needs.
                 dm['mat_EnteringModuleManufacturing_virgin'] = dm['mat_EnteringModuleManufacturing_total'] - dm['mat_reMFG_yield']
+                
+                ###################HEATHERS REMFG ATTEMPT
+                
+                dm['mat_EOL_ReMFG_VAT'] = dm['mat_reMFG_yield'] #make a copy of remfged yield to modify
 
-
+                carryoverReMFG = True #todo, make sim input?
+                
+                if carryoverReMFG: #if we are using previous years recovered reMFGing materials
+                    reMFGsurplusEndofSim = 0 #init
+                    
+                    for rn in range(0,len(dm)): #loop over sim years
+                        reMFGsurplus = ( dm['mat_EOL_ReMFG_VAT'].loc[rn]- # vat of prev remfg
+                                        dm['mat_EnteringModuleManufacturing_total'].loc[rn]) #minus mfging needs CHECK THIS
+                        #positive value means surplus
+                        if reMFGsurplus > 0: #if surplus
+                            if rn == len(dm)-1: #end of simulation condition
+                                reMFGsurplusEndofSim = reMFGsurplus
+                                print("ReMFG surplus End of Sim for Mat ", mat,
+                                      " Scenario ", scen, " = ",
+                                      reMFGsurplusEndofSim/1000000, " tonnes.")
+                                dm.loc[rn,'mat_EOL_ReMFG_VAT'] -= reMFGsurplus
+                            else: #during simulation years
+                                dm.loc[rn+1,'mat_EOL_ReMFG_VAT'] += reMFGsurplus #move surplus to next year
+                                dm.loc[rn,'mat_EOL_ReMFG_VAT'] -= reMFGsurplus #remove surplus from current year
+                    #input from REMFG to offset material
+                    dm['mat_EnteringModuleManufacturing_virgin'] = ( 
+                        dm['mat_EnteringModuleManufacturing_total']-
+                        dm['mat_EOL_ReMFG_VAT'])
+                    
+                else:
+                    #input from REMFG to offset material, modify main data frame
+                    dm['mat_EnteringModuleManufacturing_virgin'] = ( 
+                        dm['mat_EnteringModuleManufacturing_total']-
+                        dm['mat_EOL_ReMFG_VAT'])
+                
+                #####################################################
+                    
                 # Material Manufacturing Stage
                 dm['mat_Manufacturing_Input'] = dm['mat_EnteringModuleManufacturing_virgin'] / (dm['mat_MFG_eff'] * 0.01)
 
@@ -1195,7 +1230,7 @@ class Simulation:
                                 recycledsurplusEndofSim = recycledsurplus
                                 print("Recycled surplus End of Sim for Mat ", mat,
                                       " Scenario ", scen, " = ",
-                                      recycledsurplusEndofSim/1000000, " tonnes")
+                                      recycledsurplusEndofSim/1000000, " tonnes.")
                                 
                                 dm.loc[rr,'mat_EOL_Recycled_VAT'] -= recycledsurplus
                                 
