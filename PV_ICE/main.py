@@ -1182,21 +1182,27 @@ class Simulation:
                 
                 carryoverVat = True # TODO: Make this a sim input
 
-                if carryoverVat:    
-                    recycledsurplusEndofSim = 0
-                    for rr in range(0, len(dm)):
-                        recycledsurplus = (dm['mat_Manufacturing_Input'].loc[rr] -
-                                       dm['mat_MFG_Recycled_HQ_into_MFG'].loc[rr] -
-                                       dm['mat_EOL_Recycled_HQ_into_MFG'])
-                        if recycledsurplus < 0:
-                            if rr == len(dm)-1:
+                if carryoverVat:    #if we are using previous years recycled material to closed loop offset
+                    recycledsurplusEndofSim = 0 #init
+                    # calculate the difference between mfging req and recycled material availability
+                    for rr in range(0, len(dm)): #loop over the the years of existing dm 
+                        recycledsurplus = ( dm['mat_MFG_Recycled_HQ_into_MFG'].loc[rr] + #mfg scrap in that year
+                                       dm['mat_EOL_Recycled_VAT'].loc[rr] #plus EOL scrap in that year
+                                       -dm['mat_Manufacturing_Input'].loc[rr] ) #minus mfging needs
+                        # positive value means there is a surplus in that year that needs to be carried to next year
+                        if recycledsurplus > 0: # if surplus
+                            if rr == len(dm)-1: #end of simulation condition
                                 recycledsurplusEndofSim = recycledsurplus
                                 print("Recycled surplus End of Sim for Mat ", mat,
                                       " Scenario ", scen, " = ",
                                       recycledsurplusEndofSim/1000000, " tonnes")
-                            else:
-                                dm['mat_EOL_Recycled_VAT'].loc[rr+1] += (
-                                            abs(recycledsurplus))
+                                
+                                dm.loc[rr,'mat_EOL_Recycled_VAT'] -= recycledsurplus
+                                
+                            else:  #during simulation 
+                                dm.loc[rr+1,'mat_EOL_Recycled_VAT'] += ( #add the surplus to the next year's VAT
+                                            recycledsurplus)
+                                dm.loc[rr, 'mat_EOL_Recycled_VAT'] -= recycledsurplus #remove surplus from current year
                                 
                     # Input from Successful Recycling to offset Material
                     # Manufacturing Virgin Needs:
