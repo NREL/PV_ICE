@@ -14,6 +14,7 @@ import pandas as pd
 import datetime
 import os
 import matplotlib.pyplot as plt
+import itertools
 
 
 def read_baseline_material(scenario, material='None', file=None):
@@ -1814,6 +1815,63 @@ class Simulation:
         self.UScum = UScum
 
         return USyearly, UScum
+    
+    def aggregateEnergyResults(self, scenarios=None, materials=None):
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        if materials is None:
+            materials = list(self.scenario[scenarios[0]].material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+        
+        #module level energy
+        energy_mod=pd.DataFrame()
+        for scen in scenarios:
+            # add the scen name as a prefix 
+            scende = self.scenario[scen].dataOut_e.add_prefix(str(scen+'_'))
+            #concat into one large df
+            energy_mod = pd.concat([energy_mod, scende], axis=1)
+        
+        #material level energy
+        energy_mat = pd.DataFrame()
+        for scen in scenarios:
+            for mat in materials:
+                # add the scen name as a prefix 
+                scenmatde = self.scenario[scen].material[mat].matdataOut_e.add_prefix(str(scen+'_'+mat+'_'))
+                #concat into one large df
+                energy_mat = pd.concat([energy_mat, scenmatde], axis=1)
+        #compile module and material energies into one df
+        allenergy = pd.concat([energy_mod,energy_mat], axis=1) #this will be one of the returned dataframes
+        
+        #categorize the energy in values into lifecycle stages
+        mfg_energies = ['mod_MFG','mat_extraction','mat_MFG_virgin']
+        mfg_recycle_energies_LQ = ['mat_MFGScrap_LQ'] #LQ and HQ are separate becuase LQ is only LQ
+        mfg_recycle_energies_HQ = ['mat_MFGScrap_HQ'] #and HQ material is E_LQ + E_HQ
+        use_energies = ['mod_Install','mod_OandM','mod_Repair']
+        eol_energies = ['mat_Landfill','mod_Demount','mod_Store','mod_Resell_Certify']
+        eol_remfg_energies = ['mod_ReMFG_Disassmbly','mat_EoL_ReMFG_clean']
+        eol_recycle_energies_LQ = ['mod_Recycle_Crush','mat_Recycled_LQ']
+        eol_recycle_energies_HQ = ['mod_Recycle_Crush','mat_Recycled_HQ']
+
+        energy_demands_keys = [mfg_energies,mfg_recycle_energies_LQ,mfg_recycle_energies_HQ,use_energies,eol_energies,eol_remfg_energies,eol_recycle_energies_LQ,eol_recycle_energies_HQ]
+        energy_demands_flat = list(itertools.chain(*energy_demands_keys))
+        
+        #TO DO: organize energy demands into lifecycle stages
+        
+        energyGen = allenergy.filter(like='e_out_annual') #select all columns of energy generation
+        energy_demands = allenergy.loc[:,~allenergy.columns.isin(energyGen.columns)] #select all columns that are NOT energy generation, i.e. demands
+
+        for scen in scenarios: #sum the lifecycle energy demands
+            colname = str(scen+'_e_demand_total')
+            energy_demands[colname] = energy_demands.filter(like=scen).sum(axis=1)
+        
+        return allenergy, energyGen, energy_demands #note, all these are annual
+        
 
     def plotScenariosComparison(self, keyword=None, scenarios=None):
 
