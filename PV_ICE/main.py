@@ -1870,6 +1870,11 @@ class Simulation:
             colname = str(scen+'_e_demand_total')
             energy_demands[colname] = energy_demands.filter(like=scen).sum(axis=1)
         
+        #Fix the index to be years
+        allenergy.index = self.scenario[scen].dataIn_e['year']
+        energyGen.index = self.scenario[scen].dataIn_e['year']
+        energy_demands.index = self.scenario[scen].dataIn_e['year']
+        
         return allenergy, energyGen, energy_demands #note, all these are annual
         
 
