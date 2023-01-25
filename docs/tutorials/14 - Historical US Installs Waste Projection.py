@@ -470,7 +470,7 @@ df_Capacity_all.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historic
 # ### Pull out the 2030 and 2050 Values of interest
 # the request was for 2030 and 2050 values for decommissioning and cumulative c-Si waste, by sector. Create a table of just those results.
 
-# In[41]:
+# In[45]:
 
 
 subset_results_capacity = df_Capacity_all.filter(like='Decommisioned').loc[[2030,2050]]
@@ -483,7 +483,7 @@ round(subset_results_capacity.T,)
 
 cSiwaste_cum = uscumr1.filter(like='WasteAll_Module').filter(like='c-Si')/1e6 #convert to million metric tonnes
 subset_results_waste = cSiwaste_cum.loc[[2030,2050]]
-subset_results_waste.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_cSiWaste20302050_Sectorwise.csv')
+subset_results_waste.T.to_csv(path_or_buf=r'..\baselines\SupportingMaterial\US_Historical_PV_cSiWaste20302050_Sectorwise.csv')
 round(subset_results_waste.T,2)
 
 
