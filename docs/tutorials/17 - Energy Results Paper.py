@@ -12,7 +12,7 @@
 # 
 # We will use a literture-sourced global scale deployment schedule through 2050, then assume that capacity increases at a lower constant rate through 2100.
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np
@@ -32,7 +32,7 @@ if not os.path.exists(testfolder):
     os.makedirs(testfolder)
 
 
-# In[2]:
+# In[3]:
 
 
 #https://www.learnui.design/tools/data-color-picker.html#palette
@@ -48,7 +48,7 @@ plt.rcParams['figure.figsize'] = (8, 6)
 scennames_labels = ['PV_ICE','PERC_50','SHJ','Idealized\nPerovskite\nSi-Tandem','Recycled\nPERC']
 
 
-# In[3]:
+# In[4]:
 
 
 #creating scenarios for identical power of multiple technologies
@@ -60,7 +60,7 @@ moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 # We will be deploying based on power (not area) because each of these have different efficiencies, and those differences should be accounted for in the simulation. Additionally, we will run the installation compensation to simulate the required replacements for each module type.
 
-# In[4]:
+# In[5]:
 
 
 #load in a baseline and materials for modification
@@ -82,20 +82,20 @@ for scen in scennames:
 # 
 # **NOTE: all dynamic values changed with PV ICE modify functions must feed in a Pandas Series**
 
-# In[5]:
+# In[6]:
 
 
 sim1.scenario.keys()
 
 
-# In[6]:
+# In[7]:
 
 
 celltech_modeff = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-modeffimprovements.csv'),index_col=0) #pull in module eff
 celltech_aguse = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-Agusageimprovements.csv'),index_col=0) #pull in Ag use
 
 
-# In[7]:
+# In[8]:
 
 
 #glass-glass package mass per area calculation
@@ -105,13 +105,13 @@ glassperm2 = (2.5/1000)* 2 * density_glass
 print('The mass per module area of glass is '+str(glassperm2)+' g/m^2 for all modules with a glass-glass package')
 
 
-# In[8]:
+# In[9]:
 
 
 #time shift for modifications
 
 
-# In[9]:
+# In[10]:
 
 
 sim_start_year = sim1.scenario['Perovskite'].dataIn_m.iloc[0,0]
@@ -129,14 +129,14 @@ print('Time shift: '+str(timeshift))
 # ### PERC_50
 # This module represents current PERC technology (so good efficiency) if it were to have it's lifetime extended significantly. Glass-glass technology is assumed, expected decreases in silver usage and increases in module efficiency are derived from Zhang et al 2021, Gervais et al 2021 and ITRPV 2022. It is assumed that this module is no more recyclable than current technology (downcycle glass and recycle aluminium frames).
 
-# In[10]:
+# In[11]:
 
 
 #module efficiency modify for PERC
 sim1.modifyScenario('PERC_50', 'mod_eff', celltech_modeff.loc[2022:,'PERC'], start_year=2022) #changing module eff
 
 
-# In[11]:
+# In[12]:
 
 
 #silver modify for PERC
@@ -145,14 +145,14 @@ sim1.scenario['PERC_50'].modifyMaterials('silver', 'mat_massperm2', celltech_agu
 #sim1.scenario['PERC_50'].material['silver'].matdataIn_m.loc[timeshift:,'mat_massperm2'] = celltech_aguse.loc[2022:,'PERC'].values
 
 
-# In[12]:
+# In[13]:
 
 
 #modify package to glass glass
 sim1.scenario['PERC_50'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022) #
 
 
-# In[13]:
+# In[14]:
 
 
 #Lifetime and Degradation
@@ -167,7 +167,7 @@ sim1.modifyScenario('PERC_50', 'mod_reliability_t90', 59.15, start_year=2022)
 sim1.modifyScenario('PERC_50', 'mod_lifetime', 50, start_year=2022) #project lifetime of 50 years
 
 
-# In[14]:
+# In[15]:
 
 
 #Merchant Tail set high
@@ -184,7 +184,7 @@ sim1.modifyScenario('PERC_50', 'mod_MerchantTail', 100, start_year=2022) #all in
 # ### SHJ
 # This is a modern SHJ module with expected silver and module efficiency improvements taken from Zhang et al 2021, Gervais et al 2021, and ITPRV 2022. See PERC vs SHJ vs TOPCon for a more detailed evaluation.
 
-# In[15]:
+# In[16]:
 
 
 #module efficiency modify for PERC
@@ -192,21 +192,21 @@ sim1.modifyScenario('SHJ', 'mod_eff', celltech_modeff.loc[2022:,'SHJ'], start_ye
 #sim1.scenario['SHJ'].dataIn_m.loc[timeshift:,'mod_eff'] = celltech_modeff.loc[2022:,'SHJ'].values
 
 
-# In[16]:
+# In[17]:
 
 
 #modify silver usage for SHJ
 sim1.scenario['SHJ'].modifyMaterials('silver', 'mat_massperm2', celltech_aguse.loc[2022:,'SHJ'], start_year=2022)
 
 
-# In[17]:
+# In[18]:
 
 
 #modify package to glass glass
 sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
 
 
-# In[18]:
+# In[19]:
 
 
 #Lifetime and Degradation
@@ -221,7 +221,7 @@ sim1.modifyScenario('SHJ', 'mod_reliability_t50', 28, start_year=2022)
 sim1.modifyScenario('SHJ', 'mod_reliability_t90', 33, start_year=2022) 
 
 
-# In[19]:
+# In[20]:
 
 
 #Merchant Tail set high
@@ -238,7 +238,7 @@ sim1.modifyScenario('SHJ', 'mod_MerchantTail', 50, start_year=2022) #50% stay fo
 # ### Perovskite
 # This perovskite module uses current best module and cell efficiencies, has a prospective life of 15 years and 1.5% degradation rate, and is highly circular. This is a best case scenario for perovskites given current data.
 
-# In[20]:
+# In[21]:
 
 
 #2022 module eff = 17.9% #https://www.nrel.gov/pv/assets/pdfs/champion-module-efficiencies-rev220401b.pdf
@@ -250,21 +250,21 @@ df_perovskite_eff.loc[2050] = 32.5
 df_perovskite_eff.interpolate(inplace=True)
 
 
-# In[21]:
+# In[22]:
 
 
 #module efficiency modify for PERC
 sim1.modifyScenario('Perovskite', 'mod_eff', df_perovskite_eff['mod_eff_p'], start_year=2022) #changing module eff
 
 
-# In[22]:
+# In[23]:
 
 
 #modify package to glass glass
 sim1.scenario['Perovskite'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
 
 
-# In[23]:
+# In[24]:
 
 
 #Lifetime and Degradation
@@ -279,7 +279,7 @@ sim1.modifyScenario('Perovskite', 'mod_reliability_t50', 14, start_year=2022)
 sim1.modifyScenario('Perovskite', 'mod_reliability_t90', 20, start_year=2022) 
 
 
-# In[24]:
+# In[25]:
 
 
 #As Circular as possible
@@ -359,7 +359,7 @@ sim1.scenario['Perovskite'].modifyMaterials('aluminium_frames', 'mat_ReMFG_yield
 # This module is based on the recent test from Fraunhofer ISE in which an old module was dissassembled, and the silicon wafer cleaned, put into a Cz ingot growth process and made using standard PERC processing, creating a 19% efficient module.
 # https://www.ise.fraunhofer.de/en/press-media/press-releases/2022/solar-cells-from-recycled-silicon.html
 
-# In[25]:
+# In[26]:
 
 
 #https://www.ise.fraunhofer.de/en/press-media/press-releases/2022/solar-cells-from-recycled-silicon.html
@@ -371,14 +371,14 @@ df_RePerc_eff.loc[2050] = 22.2
 df_RePerc_eff.interpolate(inplace=True)
 
 
-# In[26]:
+# In[27]:
 
 
 #module efficiency
 sim1.modifyScenario('RecycledPERC', 'mod_eff', df_RePerc_eff['mod_eff_RePerc'], start_year=2022)
 
 
-# In[27]:
+# In[28]:
 
 
 #Lifetime and Degradation
@@ -399,7 +399,7 @@ sim1.modifyScenario('RecycledPERC', 'mod_reliability_t90', 26, start_year=2022)
 
 
 
-# In[28]:
+# In[29]:
 
 
 #silicon recycled
@@ -429,7 +429,7 @@ sim1.scenario['RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_EOL_Recyc
 sim1.scenario['RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
 
 
-# In[29]:
+# In[30]:
 
 
 #the cool feature of this module was that the wafer was directly put into the Cz process
@@ -438,20 +438,20 @@ sim1.scenario['RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_EOL_Recyc
 altHQRecycle_e = pd.read_csv(os.path.join(supportMatfolder, 'output_energy_silicon_eol_recycleHQ_ALT.csv'), index_col=0)
 
 
-# In[30]:
+# In[31]:
 
 
 altHQRecycle_e
 
 
-# In[31]:
+# In[32]:
 
 
 sim1.scenario['RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_Recycled_HQ', altHQRecycle_e.loc[2022:,'E_MFG_kWhpkg'], start_year=2022)
 sim1.scenario['RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_Recycled_HQ_fuelfraction', altHQRecycle_e.loc[2022:,'E_mfgFuelFraction'], start_year=2022)
 
 
-# In[32]:
+# In[33]:
 
 
 sim1.scenario['RecycledPERC'].material['silicon'].matdataIn_e.iloc[25:30,]
@@ -518,7 +518,7 @@ sim1.scenario['RecycledPERC'].material['silicon'].matdataIn_e.iloc[25:30,]
 # ### Modify Years 2000 to 2100
 # We do this after we modify the baselines to propogate the modified 2050 values forward
 
-# In[33]:
+# In[34]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -526,7 +526,7 @@ sim1.scenario['RecycledPERC'].material['silicon'].matdataIn_e.iloc[25:30,]
 sim1.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[34]:
+# In[35]:
 
 
 #check
@@ -538,7 +538,7 @@ sim1.scenario['SHJ'].material['glass'].matdataIn_e
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[35]:
+# In[36]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -553,7 +553,7 @@ ax2.set_ylabel('Annual Installations [TW]')
 plt.show()
 
 
-# In[36]:
+# In[37]:
 
 
 #deployment projection for all scenarios
@@ -571,26 +571,34 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', value= g
 # # Calculate Mass flow
 # Can just calc mass here (exclude energy) because we're going to immediately do Install Compensation.
 
-# In[37]:
+# In[38]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[38]:
+# In[39]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[39]:
+# In[43]:
+
+
+ii_cumu['newInstalledCapacity_sim1_PV_ICE_[MW]']
+
+
+# In[51]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity')
-plt.plot(effective_capacity/1e6)
-plt.legend(scennames_labels)
+plt.plot(ii_cumu['newInstalledCapacity_sim1_PV_ICE_[MW]']/1e6, label='Capacity Target', color='black', ls='--')
+plt.plot(effective_capacity/1e6, label=scennames_labels)
+plt.legend()
 plt.ylabel('Effective Capacity [TW]')
 plt.title('Effective Capacity: No Replacements')
+plt.ylim(0,)
 
 
 # # Installation Compensation
