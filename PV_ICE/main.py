@@ -721,7 +721,7 @@ class Simulation:
                             # area_notrepaired0 = 0
                             # power_notrepaired0 = 0
 
-                            if deg_nameplate > 0.7: 
+                            if deg_nameplate > 0.5: 
                                 area_collected = (
                                     disposed_projectlifetime *
                                     (df.iloc[age]['mod_EOL_collection_eff'] *
@@ -1217,7 +1217,7 @@ class Simulation:
 
                 dm['mat_EOL_Recycled_VAT'] = dm['mat_EOL_Recycled_HQ_into_MFG']
                 
-                carryoverVat = True # TODO: Make this a sim input
+                carryoverVat = False # TODO: Make this a sim input
 
                 if carryoverVat:    #if we are using previous years recycled material to closed loop offset
                     recycledsurplusEndofSim = 0 #init
@@ -1262,12 +1262,10 @@ class Simulation:
                     # sanity check
                     dm['mat_MFG_Recycled_HQ_into_OU2'] = dm['mat_MFG_Recycled_HQ_into_OU']
 
-                    dm.loc[dm['mat_Virgin_Stock'] < 0, 'mat_MFG_Recycled_HQ_into_OU2'] = (
-                        dm[dm['mat_Virgin_Stock'] < 0, 'mat_MFG_Recycled_HQ_into_OU2'] -
-                        dm[dm['mat_Virgin_Stock'] < 0]['mat_Virgin_Stock'] )
+                    dm.loc[dm['mat_Virgin_Stock'] < 0, 'mat_MFG_Recycled_HQ_into_OU2'] = (dm[dm['mat_Virgin_Stock'] < 0]['mat_MFG_Recycled_HQ_into_OU2'] - dm[dm['mat_Virgin_Stock'] < 0]['mat_Virgin_Stock'] )
                     
                     dm.loc[dm['mat_Virgin_Stock']<0, 'mat_Virgin_Stock'] = 0
-                    print("Did the thing sanity check")                   
+                    print("VAT carryover material is turned OFF")                   
         
                 # Calculate raw virgin needs before mining and refining efficiency losses
                 dm['mat_Virgin_Stock_Raw'] = (dm['mat_Virgin_Stock'] * 100 /  dm['mat_virgin_eff'])
@@ -1800,10 +1798,9 @@ class Simulation:
         # TODO: Rename Installed_CApacity to ActiveCapacity throughout.
         keywd='Installed_Capacity_[W]'
         for scen in scenarios:
-            USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].dataOut_m[keywd]/1e6
-            USyearly['DecommisionedCapacity_'+self.name+'_'+scen+'_[MW]'] = (
-                UScum['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]']-
-                USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'])
+            USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].dataOut_m[keywd]/1e6 #this value is cumulative
+            #decommissions are cumulative
+            USyearly['DecommisionedCapacity_'+self.name+'_'+scen+'_[MW]'] = (UScum['newInstalledCapacity_'+self.name+'_'+scen+'_[MW]'] - USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'])
 
         # Adding Decommissioned Capacity
 
