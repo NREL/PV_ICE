@@ -314,16 +314,34 @@ print('The mass per module area of glass is '+str(glassperm2)+' g/m^2')
 
 # Pull in deployment projection. This deployment is based on the Solar Futures report, but has been modified to be more reasonable annual deployment schedule (i.e. manufacturing ramps up). However, this does not achieve 95% RE by 2035, but it does achieve 100% RE in 2050.
 
-# In[27]:
+# In[2]:
 
 
 sf_reeds_alts = pd.read_excel(os.path.join(supportMatfolder,'SF_reeds_alternates.xlsx'),index_col=0)
 
 
-# In[28]:
+# In[3]:
 
 
 sf_reeds = sf_reeds_alts.loc[2023:2050,['MW']]
+
+
+# In[4]:
+
+
+plt.plot(sf_reeds)
+
+
+# In[6]:
+
+
+sf_reeds['rolling'] = sf_reeds.rolling(window=5).mean()
+
+
+# In[7]:
+
+
+plt.plot(sf_reeds)
 
 
 # In[29]:
