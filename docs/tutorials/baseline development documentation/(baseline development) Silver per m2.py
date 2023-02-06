@@ -11,9 +11,15 @@
 import numpy as np
 import pandas as pd
 import os,sys
+from pathlib import Path
 import matplotlib.pyplot as plt
 plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
+
+cwd = os.getcwd() #grabs current working directory
+
+baselinesfolder = str(Path().resolve().parent.parent.parent /'PV_ICE' / 'baselines')
+supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
 
 density_Ag = 10.49 #g/cm3, source Wikipedia
 
@@ -38,19 +44,19 @@ density_Ag = 10.49 #g/cm3, source Wikipedia
 
 
 #read in the csv of 2009 through 2030 data for silver per cell.
-cwd = os.getcwd() #grabs current working directory
+
 skipcols = ['Source']
-itrpv_ag_gpc = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/ag_g_per_cell.csv", 
+itrpv_ag_gpc = pd.read_csv(os.path.join(supportMatfolder, "ag_g_per_cell.csv"), 
                            index_col='Year', usecols=lambda x: x not in skipcols)
 
 
-# In[5]:
+# In[3]:
 
 
 itrpv_ag_gpc
 
 
-# In[3]:
+# In[4]:
 
 
 #plot the raw data
@@ -61,7 +67,7 @@ plt.ylabel("Silver, grams/cell")
 
 # Based on looking at the plot of original data, it doesn't seem crazy to linearly interpolate for missing data
 
-# In[4]:
+# In[5]:
 
 
 ag_gpc = itrpv_ag_gpc.interpolate()
@@ -72,16 +78,16 @@ plt.ylabel("Silver, grams/cell")
 
 # ## Convert to a per module area basis (not per cell)
 
-# In[5]:
+# In[6]:
 
 
 #import cell per m2 from the silicon baseline
-cpm2 = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/output_cell_per_m2.csv",
+cpm2 = pd.read_csv(os.path.join(supportMatfolder, "output_cell_per_m2.csv"),
                    index_col='Year', usecols=lambda x: x not in skipcols)
 #print(cpm2)
 
 
-# In[6]:
+# In[7]:
 
 
 #convert silver per cell to silver per m^2 of module, based on output from silicon baseline
@@ -95,7 +101,7 @@ plt.ylabel("Silver, grams/module m2")
 # ### Extend projection through 2050
 # It appears that the silver per cell is expected to level out by 2025 or so. We will extend 2030 values through 2050 as a "lower limit" or minimal further improvement.
 
-# In[9]:
+# In[8]:
 
 
 #create an empty df as a place holder
@@ -115,9 +121,15 @@ plt.title("Silver mass per module area over time")
 plt.ylabel("Silver, grams/module m2")
 
 
-# In[8]:
+# In[9]:
 
 
 #print out to csv
-ag_gpm2_full.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_ag_g_per_m2.csv', index=True)
+ag_gpm2_full.to_csv(os.path.join(supportMatfolder, 'output_ag_g_per_m2.csv'), index=True)
+
+
+# In[ ]:
+
+
+
 
