@@ -1217,7 +1217,7 @@ class Simulation:
 
                 dm['mat_EOL_Recycled_VAT'] = dm['mat_EOL_Recycled_HQ_into_MFG']
                 
-                carryoverVat = False # TODO: Make this a sim input
+                carryoverVat = True # TODO: Make this a sim input
 
                 if carryoverVat:    #if we are using previous years recycled material to closed loop offset
                     recycledsurplusEndofSim = 0 #init
