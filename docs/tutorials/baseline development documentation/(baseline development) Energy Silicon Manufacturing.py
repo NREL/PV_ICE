@@ -198,7 +198,7 @@ fig, ax1 = plt.subplots()
 
 ax1.plot(e_reduce['E_reduce_sum_kWhpkg'], label='Total Energy')
 ax1.scatter(e_reducesilica_raw.index,e_reducesilica_raw.iloc[:,0], label='raw energy data')
-
+ax1.set_ylim(0,60)
 ax1.set_ylabel('Electricity and Carboniferous [kWh/kg]')
 
 ax2 = ax1.twinx()
@@ -424,7 +424,7 @@ fig, ax1 = plt.subplots()
 
 ax1.scatter(e_refinesilicon_raw.index,e_refinesilicon_raw.iloc[:,0], color='black')
 ax1.plot(e_siemens_final.index, e_siemens_final.iloc[:,0], color='black')
-
+ax1.set_ylim(0,325)
 plt.title('Electricity: Siemens Process')
 ax1.set_ylabel('[kWh/kg]')
 
@@ -591,22 +591,23 @@ e_ingots_wtd_final = pd.DataFrame(e_ingots_wtd.sum(axis=1)) # sum the annual ene
 e_ingots_wtd_final.columns =['E_Ingot_kWhpkg']
 
 
-# In[54]:
+# In[106]:
 
 
 fig, ax1 = plt.subplots()
 
-ax1.plot(e_ingots_wtd_final, label='Wtd Avg Electricity Demand')
+ax1.plot(e_ingots_wtd_final['E_Ingot_kWhpkg'], label='Wtd Avg Electricity Demand', color='black', lw=2)
 ax1.scatter(e_growczingot_raw.index, e_growczingot_raw['E_Cz_kWhpkg'], color='black', label='CZ, mono-Si, raw data')
-ax1.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'], color='green', 
-            marker='^', label='DS, mc-Si, raw data')
+ax1.scatter(e_casting_raw.index, e_casting_raw['E_mcSiCast_kWhpkg'], color='gray', marker='^', 
+            label='DS, mc-Si, raw data')
 ax1.set_ylabel('Electricity Demand [kWh/kg]')
+ax1.set_ylim(0,)
 
 ax2 = ax1.twinx()
-ax2.plot(pvice_mcSimono_marketshare_trim['monoSi'], color ='orange', label='Mono Si Market Share', ls=':', lw=3)
+ax2.plot(pvice_mcSimono_marketshare_trim['monoSi'], color ='blue', label='Mono Si Market Share', ls=':', lw=2)
 ax2.set_ylim(0,1.0)
-plt.ylabel('Market Share Monocrystalline Si [%]', color='orange')
-ax2.tick_params(axis='y', color='red', labelcolor='orange')
+plt.ylabel('Market Share Monocrystalline Si [%]', color='blue')
+ax2.tick_params(axis='y', color='blue', labelcolor='blue')
 
 plt.xlim(1989,2030)
 plt.title('Electricity: Weighted Average of Si Ingot Growth')
@@ -701,6 +702,7 @@ plt.scatter(e_wafering_raw.index, e_wafering_raw['E_Wafering_kWhpkg'], label='ra
 plt.title('Electricity demand: Wafering')
 plt.ylabel('[kWh/kg]')
 plt.xlim(1989,2023)
+plt.ylim(0,)
 
 
 # ## Cell Production Electricity
@@ -776,6 +778,7 @@ e_cellprocess_final.interpolate(inplace=True)
 plt.plot(e_cellprocess_final['E_cellProcess_kWhpkg'])
 plt.scatter(e_cellprocess_raw.index, e_cellprocess_raw['E_cellProcess_kWhpkg'], color='black')
 plt.xlim(1989,2025)
+plt.ylim(0,)
 plt.ylabel('[kWh/kg Si]')
 plt.title('Electricity Demand: Cell Processing')
 
@@ -868,29 +871,43 @@ plt.title('Energy of Si MFG')
 plt.show()
 
 
-# In[83]:
+# In[85]:
 
 
-plt.plot([],[],color='blue', label='Reduce Si')
-plt.plot([],[],color='orange', label='Refine Si')
-plt.plot([],[],color='brown', label='Ingot')
+df_mfg_energies.head(2)
+
+
+# In[90]:
+
+
+plt.plot([],[],color='brown', label='Reduce Si')
+plt.plot([],[],color='red', label='Refine Si')
+plt.plot([],[],color='orange', label='Ingot')
 plt.plot([],[],color='green', label='Wafer')
-plt.plot([],[],color='red', label='Cell')
+plt.plot([],[],color='blue', label='Cell')
 
-plt.stackplot(df_mfg_energies.index, df_mfg_energies['E_reduceSilicatoMGSi'], 
-              df_mfg_energies['ErefineSiemens kWh/kg'],
+plt.stackplot(df_mfg_energies.index, df_mfg_energies['E_reduce_sum_kWhpkg'], 
+              df_mfg_energies['E_refineSiemens_kWhpkg'],
               df_mfg_energies['E_Ingot_kWhpkg'], 
               df_mfg_energies['E_Wafering_kWhpkg'], 
               df_mfg_energies['E_cellProcess_kWhpkg'],
-             colors = ['blue','orange','brown','green','red'])
-plt.title('Electricity: Silicon Manufacturing')
-plt.ylabel('Electricity Demand [kWh/kg]')
+             colors = ['brown','red','orange','green','blue'])
+plt.title('Energy: Silicon Manufacturing')
+plt.ylabel('Energy Demand [kWh/kg]')
 plt.xlim(1995,2022)
-plt.legend()
+
+handles, labels = plt.gca().get_legend_handles_labels()
+#specify order of items in legend
+#order = [1,2,0]
+#add legend to plot
+#plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
+plt.legend(handles[::-1], labels[::-1])
+
+#plt.legend()
 plt.show()
 
 
-# In[84]:
+# In[ ]:
 
 
 plt.plot(df_mfg_energies.index, df_mfg_energies['e_mfg_kWhpkg'])
@@ -902,7 +919,7 @@ plt.ylim(0,)
 
 # Now to check this overall electricity demand against literature values as a reality check. Doing VERY ROUGH ballpark checks.
 
-# In[85]:
+# In[ ]:
 
 
 #N. Jungbluth, “Life cycle assessment of crystalline photovoltaics in the Swiss ecoinvent database,” 
@@ -922,7 +939,7 @@ wildscholten2013_kWh = (961+73.4+81.4)*0.27777
 phyl_alsema1995_kWh= (511-27) #kWh/m2 to kWh/kg estimating 5 kg/module
 
 
-# In[86]:
+# In[ ]:
 
 
 plt.plot(mfg_energy_final['E_MFG_kWhpkg'])
@@ -940,7 +957,7 @@ plt.xlim(1994,2022)
 plt.ylim(0,)
 
 
-# In[87]:
+# In[ ]:
 
 
 mfg_energy_final_rounded = round(mfg_energy_final,2)
@@ -951,7 +968,7 @@ mfg_energy_final_rounded.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
 # 
 # No literature found recycled EOL silicon to higher than MG-Si. Therefore, we will use the extraction energy at EOL from Latunussa et al 2016 (1.6 kWh/kg) for the FRELP process as the LQ. For HQ recycling, we will use the energy to MFG as calculated here, from Seimens forward. In the Energy flow calculation the LQ energy requirement is inherently added to the HQ energy requirement.
 
-# In[88]:
+# In[ ]:
 
 
 e_eol_recycle = mfg_energy_final['E_MFG_kWhpkg']-(mfg_energy_fuels['E_reduce_sum_kWhpkg']+ mfg_energies['E_reduce_sum_kWhpkg'])#creates a series
@@ -960,7 +977,7 @@ e_eol_recycle_HQ = pd.DataFrame(round(e_eol_recycle,2), columns=['E_RecycleHQ_su
 
 # These steps in MFGing require fuel based energy. Therefore, we need to calculate a fuel fraction for the HQ recycling process.
 
-# In[89]:
+# In[ ]:
 
 
 recycle_hq_fuels = mfg_energy_fuels.iloc[:,[1,2,3,4]].sum(axis=1) #sum all fuel energy excluding e_reduce
@@ -968,7 +985,7 @@ recycle_hq_fuelsfraction = pd.DataFrame(round(recycle_hq_fuels/e_eol_recycle,2),
 e_eol_recycle_HQ_complete = pd.concat([e_eol_recycle_HQ,recycle_hq_fuelsfraction], axis=1)
 
 
-# In[90]:
+# In[ ]:
 
 
 e_eol_recycle_HQ_complete.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv")
@@ -978,7 +995,7 @@ e_eol_recycle_HQ_complete.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMater
 # 
 # Fraunhofer recently attempted recycling a recovered silicon wafer by cleaning, and directly putting into the Cz ingot growth process (i.e. skip Siemens and reduction), and otherwise performing the normal modern PERC process to it. Therefore, we will create an energy profile to reflect this process. It will be studies in tutorial Jupyter Journal "17- Energy Results Paper"
 
-# In[100]:
+# In[ ]:
 
 
 e_ingotcz['E_Cz_FuelFraction']=0.0
@@ -992,7 +1009,7 @@ fuelfracts_alt.columns = altHQ_energies.columns #ish
 altHQ_fuelenergy = altHQ_energies*fuelfracts_alt
 
 
-# In[103]:
+# In[ ]:
 
 
 altHQ_fuelenergy_sum = altHQ_fuelenergy.sum(axis=1)
@@ -1002,7 +1019,7 @@ altHQ_energies_final = pd.concat([altHQ_energies_sum,altHQ_FuelFraction], axis=1
 altHQ_energies_final.columns = ['E_MFG_kWhpkg','E_mfgFuelFraction']
 
 
-# In[105]:
+# In[ ]:
 
 
 altHQ_energies_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ_ALT.csv")
