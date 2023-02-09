@@ -1608,6 +1608,12 @@ class Simulation:
                                   "implemented, it will just clip data to years "+
                                   "selected. Let silvana know this feature is "+
                                   "actually needed so she works on it.")
+
+                        #consistent year check
+                        newStartYear_e = int(self.scenario[scen0].dataIn_e.iloc[0]['year'])
+                        newEndYear_e = int(self.scenario[scen0].dataIn_e.iloc[-1]['year'])
+                        newStartYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[0]['year'])
+                        newEndYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[-1]['year'])
         
                     except:
                         print("No material energy data loaded.")
@@ -1616,10 +1622,6 @@ class Simulation:
             newEndYear_m = int(self.scenario[scen0].dataIn_m.iloc[-1]['year'])
             newStartYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[0]['year'])
             newEndYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[-1]['year'])
-            newStartYear_e = int(self.scenario[scen0].dataIn_e.iloc[0]['year'])
-            newEndYear_e = int(self.scenario[scen0].dataIn_e.iloc[-1]['year'])
-            newStartYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[0]['year'])
-            newEndYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[-1]['year'])
             if (newStartYear_m == newStartYear_mat == newStartYear_e == newStartYear_emat)&(newEndYear_m == newEndYear_mat == newEndYear_e == newEndYear_emat):
                 print("Data trimed, years now encompass ", newStartYear_m, " to ", newEndYear_m) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
             else:
