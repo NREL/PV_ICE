@@ -15,6 +15,8 @@ import datetime
 import os
 import matplotlib.pyplot as plt
 import itertools
+from pathlib import Path
+
 
 
 def read_baseline_material(scenario, material='None', file=None):
@@ -2141,14 +2143,16 @@ class Scenario(Simulation):
     def addMaterials(self, materials, baselinefolder=None, nameformat=None):
 
         if baselinefolder is None:
-            baselinefolder = r'..\..\baselines'
+            baselinefolder = os.path.join(str(Path().resolve().parent.parent, 'baselines'))
+            # TOD: Check if works and remove this comment
+            # baselinefolder = r'..\..\baselines'
 
         if nameformat is None:
-            nameformatMass = r'\baseline_material_mass_{}.csv'
-            nameformatEnergy = r'\baseline_material_energy_{}.csv'
+            nameformatMass = r'baseline_material_mass_{}.csv'
+            nameformatEnergy = r'baseline_material_energy_{}.csv'
         for mat in materials:
-            filematmass = baselinefolder + nameformatMass.format(mat)
-            filematenergy = baselinefolder + nameformatEnergy.format(mat)
+            filematmass = os.path.join(baselinefolder, nameformatMass.format(mat))
+            filematenergy = os.path.join(baselinefolder, nameformatEnergy.format(mat))
             if os.path.isfile(filematenergy):
                 print("Adding Mass AND Energy files for: ", mat )
             else:
