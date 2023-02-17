@@ -41,7 +41,7 @@ print ("Your simulation will be stored in %s" % testfolder)
 # In[3]:
 
 
-reedsFile = str(Path().resolve().parent.parent.parent.parent / 'December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx')
+reedsFile = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial' / 'December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx')
 print ("Input file is stored in %s" % reedsFile)
 
 
@@ -59,7 +59,7 @@ REEDSInput = pd.read_excel(reedsFile,
 
 # #### Create a copy of the REEDS Input and modify structure for PCA focus
 
-# In[5]:
+# In[ ]:
 
 
 rawdf = REEDSInput.copy()
@@ -71,13 +71,14 @@ rawdf.head(21)
 
 # #### Loading Module Baseline. Will be used later to populate all the columsn otehr than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[6]:
+# In[ ]:
 
 
 import PV_ICE
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='US', file=r'..\baselines\SolarFutures_2021\baseline_modules_US_Reeds.csv')
-baseline = r1.scenario['US'].data
+r1.createScenario(name='US', massmodulefile=r'..\baselines\baseline_modules_mass_US.csv')
+r1.scenMod_noCircularity() # Reeds Solar Future Study had circularity paths set to 0
+baseline = r1.scenario['US'].dataIn_m
 baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
 baseline.set_index('year', inplace=True)
 baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
@@ -86,7 +87,40 @@ baseline.head()
 
 # #### For each Scenario and for each PCA, combine with baseline and save as input file
 
-# In[7]:
+# In[ ]:
+
+
+# Set header dynamically
+
+
+# In[ ]:
+
+
+import csv
+
+massmodulefile=r'..\baselines\baseline_modules_mass_US.csv'
+
+with open(massmodulefile, newline='') as f:
+  reader = csv.reader(f)
+  row1 = next(reader)  # gets the first line
+  row2 = next(reader)  # gets the first line
+
+row11 = 'year'
+for x in row1[1:]:
+    row11 = row11 + ',' + x 
+
+row22 = 'year'
+for x in row2[1:]:
+    row22 = row22 + ',' + x 
+
+
+# In[ ]:
+
+
+row11
+
+
+# In[ ]:
 
 
 for ii in range (len(rawdf.unstack(level=1))):
@@ -109,8 +143,8 @@ for ii in range (len(rawdf.unstack(level=1))):
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
    
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repair,mod_MerchantTail,mod_Reuse\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
-
+    header = row11 + '\n' + row22 + '\n'
+    
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
     # the last one if you're letting Pandas produce that for you.
@@ -122,17 +156,11 @@ for ii in range (len(rawdf.unstack(level=1))):
         A.to_csv(ict, header=False)
 
 
-# In[ ]:
-
-
-
-
-
 # ## Save Input Files By States
 
 # #### Reassign data from REEDS Input, as we need one of the columns we dropped.
 
-# In[8]:
+# In[ ]:
 
 
 rawdf = REEDSInput.copy()
@@ -144,7 +172,7 @@ rawdf.head(21)
 
 # #### Group data so we can work with the States instead
 
-# In[9]:
+# In[ ]:
 
 
 #df = rawdf.groupby(['Scenario','State', 'Year'])['Capacity (GW)'].sum(axis=0)
@@ -155,7 +183,7 @@ df.head()
 
 # #### For each Scenario and for each STATE, combine with baseline and save as input file
 
-# In[10]:
+# In[ ]:
 
 
 for ii in range (len(df.unstack(level=2))):   
@@ -181,7 +209,7 @@ for ii in range (len(df.unstack(level=2))):
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
     
     
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repair,mod_MerchantTail,mod_Reuse\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
+    header = row11 + '\n' + row22 + '\n'
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -198,7 +226,7 @@ for ii in range (len(df.unstack(level=2))):
 
 # ### Create a copy of the REEDS Input and modify structure for PCA focus
 
-# In[11]:
+# In[ ]:
 
 
 rawdf = REEDSInput.copy()
@@ -208,7 +236,7 @@ rawdf.set_index(['Scenario','Year'], inplace=True)
 rawdf.head(21)
 
 
-# In[12]:
+# In[ ]:
 
 
 #df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum(axis=0)
@@ -217,13 +245,15 @@ df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum()
 
 # ### Loading Module Baseline. Will be used later to populate all the columsn other than 'new_Installed_Capacity_[MW]' which will be supplied by the REEDS model
 
-# In[13]:
+# In[ ]:
 
 
 import PV_ICE
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='US', file=r'..\baselines\SolarFutures_2021\baseline_modules_US_Reeds.csv')
-baseline = r1.scenario['US'].data
+r1.createScenario(name='US', massmodulefile=r'..\baselines\baseline_modules_mass_US.csv')
+r1.scenMod_noCircularity() # Reeds Solar Future Study had circularity paths set to 0
+r1.scenario['US'].dataIn_m['mod_EOL_collection_eff'] = 0.0
+baseline = r1.scenario['US'].dataIn_m
 baseline = baseline.drop(columns=['new_Installed_Capacity_[MW]'])
 baseline.set_index('year', inplace=True)
 baseline.index = pd.PeriodIndex(baseline.index, freq='A')  # A -- Annual
@@ -232,7 +262,7 @@ baseline.head()
 
 # ### For each Scenario, combine with baseline and save as input file¶
 
-# In[14]:
+# In[ ]:
 
 
 for ii in range (len(df.unstack(level=1))):
@@ -256,7 +286,8 @@ for ii in range (len(df.unstack(level=1))):
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
    
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repair,mod_MerchantTail,mod_Reuse\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
+    header = row11 + '\n' + row22 + '\n'
+
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -267,16 +298,4 @@ for ii in range (len(df.unstack(level=1))):
 
         #    savedata.to_csv(ict, index=False)
         A.to_csv(ict, header=False)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 

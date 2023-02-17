@@ -96,7 +96,7 @@ plt.title('Average Module Efficiency (%)')
 plt.ylabel('Efficiency (%)')
 
 
-# In[10]:
+# In[14]:
 
 
 #graph for paper
@@ -110,6 +110,7 @@ plt.title('Average Module Efficiency [%]')
 plt.ylabel('Efficiency [%]')
 plt.legend()
 plt.xlim([1974, 2050.5])
+plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 
 # # Bifaciality Factor
@@ -126,7 +127,7 @@ bifi_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/baseline_bifaciality_fact
                           index_col='Year')
 
 
-# In[14]:
+# In[12]:
 
 
 bifi = bifi_raw.interpolate()
@@ -134,7 +135,7 @@ plt.plot(bifi)
 plt.ylim(0,1.0)
 
 
-# In[15]:
+# In[13]:
 
 
 bifi.to_csv(cwd+'/../../../PV_ICE/baselines/baseline_bifaciality_factor.csv', index=True)

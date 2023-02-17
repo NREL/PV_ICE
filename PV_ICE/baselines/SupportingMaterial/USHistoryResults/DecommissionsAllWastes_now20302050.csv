@@ -1,0 +1,25 @@
+,2022,2030,2050
+DecommisionedCapacity_sim1_Residential_[MW],824.6400323951966,2349.194737019974,16700.499892177148
+DecommisionedCapacity_sim1_Commercial_[MW],842.569247416046,2518.9911000251086,15209.425795384375
+DecommisionedCapacity_sim1_Utility_[MW],2190.9997290954852,6057.571432221608,50168.99228956372
+DecommisionedCapacity_sim1_All Sector All Tech Installs_[MWdc]_[MW],3858.209008906735,10925.757269266687,82078.91797712524
+DecommisionedCapacity_sim1_Residential c-Si_[MW],824.6400323951966,2349.194737019974,16700.499892177148
+DecommisionedCapacity_sim1_Commercial c-Si_[MW],840.8530800784501,2514.232700806475,15160.597289363524
+DecommisionedCapacity_sim1_Utility c-Si_[MW],1508.8709077046005,4177.878563572558,35044.686404008666
+DecommisionedCapacity_sim1_All Sector c-Si Installs_[MWdc]_[MW],3174.3640201782546,9041.306001399018,66905.78358554935
+Annual_DecommisionedCapacity_sim1_Residential_[MW],156.5580036912761,294.4865296032185,365.81108586330447
+Annual_DecommisionedCapacity_sim1_Commercial_[MW],148.7754858518656,330.5777615311217,272.4108499232825
+Annual_DecommisionedCapacity_sim1_Utility_[MW],443.9797477254833,590.705296965134,1323.347179756449
+Annual_DecommisionedCapacity_sim1_All Sector All Tech Installs_[MWdc]_[MW],749.3132372686523,1215.7695880994725,1961.5691155430395
+Annual_DecommisionedCapacity_sim1_Residential c-Si_[MW],156.5580036912761,294.4865296032185,365.81108586330447
+Annual_DecommisionedCapacity_sim1_Commercial c-Si_[MW],148.3961395725728,330.1738512073953,272.09210312861796
+Annual_DecommisionedCapacity_sim1_Utility c-Si_[MW],310.3828634749225,400.46583097100665,900.3917122290659
+Annual_DecommisionedCapacity_sim1_All Sector c-Si Installs_[MWdc]_[MW],615.3370067387586,1025.1262117816223,1538.2949012209865
+WasteAll_Module_sim1_Residential c-Si_[Tonnes]_[million Tonnes],0.11,0.15,1.17
+WasteAll_Module_sim1_Commercial c-Si_[Tonnes]_[million Tonnes],0.11,0.18,1.09
+WasteAll_Module_sim1_Utility c-Si_[Tonnes]_[million Tonnes],0.22,0.25,2.39
+WasteAll_Module_sim1_All Sector c-Si Installs_[MWdc]_[Tonnes]_[million Tonnes],0.44,0.58,4.65
+Annual_WasteAll_Module_sim1_Residential c-Si_[Tonnes],1735.32,15034.15,26254.01
+Annual_WasteAll_Module_sim1_Commercial c-Si_[Tonnes],2503.16,19940.96,19550.89
+Annual_WasteAll_Module_sim1_Utility c-Si_[Tonnes],410.98,9542.85,63913.32
+Annual_WasteAll_Module_sim1_All Sector c-Si Installs_[MWdc]_[Tonnes],4649.46,44517.95,109718.22

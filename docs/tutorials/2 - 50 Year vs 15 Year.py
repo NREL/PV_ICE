@@ -102,6 +102,7 @@ r1.scenario['50_Year_Module'].data.keys()
 # In[7]:
 
 
+
 r1.scenario['50_Year_Module'].data['mod_reliability_t50'] = 60
 r1.scenario['50_Year_Module'].data['mod_reliability_t90'] = 70
 r1.scenario['50_Year_Module'].data['mod_lifetime'] = 50
@@ -111,7 +112,6 @@ r1.scenario['15_Year_Module'].data['mod_reliability_t50'] = 20
 r1.scenario['15_Year_Module'].data['mod_reliability_t90'] = 25
 r1.scenario['15_Year_Module'].data['mod_lifetime'] = 15
 r1.scenario['15_Year_Module'].data['mod_degradation'] = 1.4
-
 
 
 # ## Change Recyclability Values
@@ -347,7 +347,6 @@ plt.ylabel('Virgin Glass [Million Tonnes]')
 plt.legend()
 plt.title('Annual Virgin Material Input')
 plt.xlim([2000, 2050])
-
 
 
 # In[25]:

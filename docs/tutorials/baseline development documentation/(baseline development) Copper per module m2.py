@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 import numpy as np
@@ -12,7 +12,7 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 cwd = os.getcwd() #grabs current working directory
-skipcols = ['Source']
+skipcols = ['Source','Notes']
 
 density_Cu = 8.96 # g/cm3 from Wikipedia
 
@@ -23,7 +23,7 @@ density_Cu = 8.96 # g/cm3 from Wikipedia
 # 
 # We are working on a per module m^2 basis, therefore, we will assume that the ribbon lengths will be 1 meter, since they tend to stretch to the edges of the modules.
 
-# In[13]:
+# In[2]:
 
 
 ribbon_bus_width = 5.0 # mm
@@ -34,7 +34,7 @@ ribbon_tab_thick = 0.2 # mm
 ribbon_length = 1 #m
 
 
-# In[14]:
+# In[3]:
 
 
 tab_mass = (ribbon_tab_width/1000)*(ribbon_tab_thick/1000)*ribbon_length*(density_Cu*1000000) # g/m^3
@@ -45,14 +45,14 @@ print('The mass of a bus 1 meter long is ',bus_mass, 'g.')
 
 # The number of busbars has increased in recent years (ITRPV data). We will assume 3 busbars (made of 1 mm wide tabs) as the standard prior to ITRPV data (assumption supported by images of old modules). For the years where ITRPV lumps 3 and 4 busbar technology together, the percentage was split evenly between 3 and 4 busbars.
 
-# In[20]:
+# In[4]:
 
 
-itrpv_busbar_mrktshr = pd.read_csv(cwd+"/../../PV_ICE/baselines/SupportingMaterial/MarketShare_Busbars.csv", 
+itrpv_busbar_mrktshr = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/MarketShare_Busbars.csv", 
                            index_col='Year', usecols=lambda x: x not in skipcols)
 
 
-# In[23]:
+# In[5]:
 
 
 busbar_mrktshr = itrpv_busbar_mrktshr.interpolate()
@@ -61,7 +61,7 @@ busbar_pct = busbar_mrktshr/100
 #print(check)
 
 
-# In[25]:
+# In[6]:
 
 
 #multiply each busbar column by the number of busbars to get a weighted average of busbars
@@ -74,14 +74,14 @@ busbar_pct['6busbars'] *= 6
 print(busbar_pct)
 
 
-# In[29]:
+# In[7]:
 
 
 #now sum across the columns and multiply by the mass of the tab in each year
 avg_num_busbars = pd.DataFrame(busbar_pct.agg("sum", axis="columns"))
 mass_busbars = avg_num_busbars*tab_mass
 
-mass_busbars.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_cu_g_per_m2.csv', index=True)
+mass_busbars.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_cu_g_per_m2.csv', index=True)
 
 plt.plot(mass_busbars)
 plt.title('Average mass of Copper busbars')

@@ -1,0 +1,62 @@
+﻿year,E_cellProcess_kWhpkg,E_cell_FuelFraction,Source,Notes
+1990,37,,"G. J. M. Phylipsen and E. A. Alsema, “Environmental life-cycle assessment of multicrystalline silicon solar cell modules,” Netherlands Agency for Energy and the Environment,NOVEM, Netherlands, Sep. 1995.","corrected Hagedorn, worst case, wafer = 100mm sq x 300 um approx 7 grams, 300 um kerf loss and 15% ingot contouring loss"
+1991,,,,
+1992,,,,
+1993,,,,
+1994,72,,"R. Dones and R. Frischknecht, “Life-cycle assessment of photovoltaic systems: results of Swiss studies on energy chains,” Prog. Photovolt: Res. Appl., vol. 6, no. 2, pp. 117–125, Mar. 1998, doi: 10.1002/(SICI)1099-159X(199803/04)6:2<117::AID-PIP209>3.0.CO;2-M.","both mc-Si and monoSi, accounts for Si use per cell"
+1995,,,,
+1996,,,,
+1997,,,,
+1998,,,,
+1999,,,,
+2000,,,,
+2001,,,,
+2002,,,,
+2003,,,,
+2004,23.5,0.1,"M. de Wild-Scholten and E. A. Alsema, “Environmental Life Cycle Inventory of Crystalline Silicon Photovoltaic Module Production,” MRS Proceedings, vol. 895, Dec. 2005, doi: 10.1557/PROC-0895-G03-04.","cell area 156 cm2, and Si demand 1.67 kg/m2"
+2005,15,,"N. Jungbluth, “Life cycle assessment of crystalline photovoltaics in the Swiss ecoinvent database,” Progress in Photovoltaics: Research and Applications, vol. 13, no. 5, pp. 429–446, 2005, doi: 10.1002/pip.614.","average of mono and mc-si, includes si use per wafer"
+2006,,,,
+2007,,,,
+2008,,,,
+2009,,,,
+2010,,,,
+2011,9,,"M. J. (Mariska) de Wild-Scholten, “Energy payback time and carbon footprint of commercial photovoltaic systems,” Solar Energy Materials and Solar Cells, vol. 119, pp. 296–305, Dec. 2013, doi: 10.1016/j.solmat.2013.08.037.","mono and mc-Si, per mass of Silicon input to cell (mono = 0.0385 kg VSi/wafer, mc = 0.0224 kgVSi/wafer"
+2012,,,,
+2013,,,,
+2014,,,,
+2015,9,,"V. Fthenakis and E. Leccisi, “Updated sustainability status of crystalline silicon-based photovoltaic systems: Life-cycle energy and environmental impact reduction trends,” Progress in Photovoltaics: Research and Applications, vol. 29, no. 10, pp. 1068–1077, 2021, doi: 10.1002/pip.3441.","per kg silicon demand for wafering, mono"
+2016,,,,
+2017,,,,
+2018,48.5,,"M. A. Woodhouse, B. Smith, A. Ramdas, and R. M. Margolis, “Crystalline Silicon Photovoltaic Module Manufacturing Costs and Sustainable Pricing: 1H 2018 Benchmark and Cost Reduction Road Map,” NREL/TP-6A20-72134, 1495719, Feb. 2019. doi: 10.2172/1495719.","wafer = 156.75mm x 180 micron, PERC mono or multi, include Si demand"
+2019,29,0.1,"Frischknecht, Rolf, P Stolz, Luana Krebs, Mariska de Wild-Scholten, Parikhit Sinha, Marco Raugei, and Matthias Stucki. 2020. “Life Cycle Inventories and Life Cycle Assessments of Photovoltaic Systems.” NREL/TP-6A20-73853, 1561526. International Energy Agency (IEA) PVPS Task 12. https://doi.org/10.2172/1561526.","17.7 kWh and <1MJ of natural gas, avg mono and multi, table 16 cites Woodhouse 2019 and  de Wild Scholten 2014"
+2020,7.2,14,"A. Müller, L. Friedrich, C. Reichel, S. Herceg, M. Mittag, and D. H. Neuhaus, “A comparative life cycle assessment of silicon PV modules: Impact of module design, manufacturing location and inventory,” Solar Energy Materials and Solar Cells, vol. 230, p. 111277, Sep. 2021, doi: 10.1016/j.solmat.2021.111277.","from Friedrich, M6 170 um, +3.55 MJ thermal, NOTE: supplemental says 6.03, table in papersays 6.24, 1.03 kg of ingot per wafer m2"
+2021,29,,"V. Fthenakis and E. Leccisi, “Updated sustainability status of crystalline silicon-based photovoltaic systems: Life-cycle energy and environmental impact reduction trends,” Progress in Photovoltaics: Research and Applications, vol. 29, no. 10, pp. 1068–1077, 2021, doi: 10.1002/pip.3441.","from PVPS 2020, mono, per kg silicon demand for wafering"
+2022,,,,
+2023,,,,
+2024,,,,
+2025,,,,
+2026,,,,
+2027,,,,
+2028,,,,
+2029,,,,
+2030,,,,
+2031,,,,
+2032,,,,
+2033,,,,
+2034,,,,
+2035,,,,
+2036,,,,
+2037,,,,
+2038,,,,
+2039,,,,
+2040,,,,
+2041,,,,
+2042,,,,
+2043,,,,
+2044,,,,
+2045,,,,
+2046,,,,
+2047,,,,
+2048,,,,
+2049,,,,
+2050,,,,

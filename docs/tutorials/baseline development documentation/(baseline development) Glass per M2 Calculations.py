@@ -201,9 +201,26 @@ plt.plot(mass_glass_pm2_baseline)
 plt.title('Baseline g/m^2 of glass')
 
 
-# # Calculations for increasing fraction of glass-glass to 50% by 2030 (hold through 2050)
+# ### UPDATE: Baseline calculation for CdTe
+# 
+# CdTe is glass-glass, so the marketshare will be 100% for it, which simplifies everything. What i will o is taking the weighted average glass thickness and remake the baseline with the same thickness reduction assumptions.
 
 # In[14]:
+
+
+#eqn = density glass * mm to m * [(mrktshr g-g * 2 * avg glass thickmm )
+mass_glass_pm2_cdte = density_glass*(0.001)*(2*wtd_glass_thick['avg_glass_thickness_mm']) 
+mass_glass_pm2_baseline_cdte = pd.DataFrame(mass_glass_pm2_cdte)
+mass_glass_pm2_baseline_cdte.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_glass_g_per_m2_cdte.csv', index=True)
+
+#print(mass_glass_pm2)
+plt.plot(mass_glass_pm2_baseline_cdte)
+plt.title('Baseline g/m^2 of glass in CdTe')
+
+
+# # Calculations for increasing fraction of glass-glass to 50% by 2030 (hold through 2050)
+
+# In[15]:
 
 
 #We would like to predict 50% glass-glass by 2030, and hold at 50% glass-glass through 2050
@@ -234,7 +251,7 @@ plt.title('marketshares of glass-backsheet and glass-glass')
 
 # Now we have the weighted average thickness of glass annually, as well as the marketshares of glass-backsheet and glass-glass module conformation. These will be combined to determine a glass mass per module m^2 annually for 50% glass-glass by 2030.
 
-# In[15]:
+# In[16]:
 
 
 #convert to % marketshare 
@@ -248,7 +265,7 @@ glass_pm2 = pd.DataFrame(mass_glass)
 glass_pm2.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_glass_g_per_m2_projection.csv', index=True)
 
 
-# In[16]:
+# In[17]:
 
 
 plt.plot(mass_glass)
@@ -256,7 +273,7 @@ plt.title('g of glass per module m^2, 50% glass-glass by 2030')
 plt.ylim([7500,11000])
 
 
-# In[17]:
+# In[18]:
 
 
 #For comparison, here is what we previously had for predictions
@@ -266,7 +283,7 @@ plt.plot(mass_glass_pm2_baseline, label='ITRPV projections of glass pm2')
 plt.legend()
 
 
-# In[18]:
+# In[19]:
 
 
 #For comparison, plot marketshare of glass-glass vs marketshare of 2-3mm, because glass-glass means you can use thinner glass
@@ -280,7 +297,7 @@ plt.legend()
 
 # Creating a baseline as an "upper error bar" of what if all PV tech used 3.2 mm in future, as an absolute upper limit of how much glass that would entail. Keeping historical data, so modifications from 2021 forward.
 
-# In[19]:
+# In[20]:
 
 
 #print(conformation_perc)
@@ -311,7 +328,7 @@ plt.legend(bbox_to_anchor=(0, -0.2, 1, 0), loc=2, mode="expand")
 
 # On the converse side, let's assume everything improves to use 1.8mm glass
 
-# In[20]:
+# In[21]:
 
 
 #print(conformation_perc)

@@ -1,0 +1,77 @@
+﻿year,E_recycleCu_kWhpkg,Source,Notes
+1975,1.255,"Bravard, J. C., H. B. Flora, and Charles Portal. Energy expenditures associated with the production and recycle of metals. Vol. 24. OAK RIDGE NAT. LABORATORY, 1972.","11% of virgin req energy, 98% purity"
+1976,,,
+1977,,,
+1978,5.826388726,"Rankin, John. 2012. “Energy Use in Metal Production.” In , 3. Swinburne University of Technology.","embodied energy of 2ndary production, multiple scrap sources avgd, ~15% of primary production"
+1979,1.231107664,Kusik and Kenahan 1978,No1 or new scrap
+1980,5.58012153,Kusik and Kenahan 1978,No 2 scrap
+1981,13.70690607,Kusik and Kenahan 1978,Low grade copper bearing scrap
+1982,2.29076919,Kusik and Kenahan 1978,Brass and Bronze scrap
+1983,,,
+1984,,,
+1985,,,
+1986,,,
+1987,,,
+1988,,,
+1989,,,
+1990,,,
+1991,,,
+1992,,,
+1993,,,
+1994,,,
+1995,,,
+1996,,,
+1997,,,
+1998,,,
+1999,,,
+2000,,,
+2001,,,
+2002,,,
+2003,,,
+2004,,,
+2005,,,
+2006,,,
+2007,,,
+2008,1.749951,"Elshkaki, Ayman, T. E. Graedel, Luca Ciacci, and Barbara K. Reck. 2016. “Copper Demand, Supply, and Associated Energy Use to 2050.” Global Environmental Change 39 (July): 305–15. https://doi.org/10.1016/j.gloenvcha.2016.06.006.",citing Grimes et al 2008
+2009,4.166655,"Wang, Tong, Peter Berrill, Julie B. Zimmerman, and Edgar G. Hertwich. 2021. “Copper Recycling Flow Model for the United States Economy: Impact of Scrap Quality on Potential Energy Benefit.” Environmental Science & Technology 55 (8): 5485–95. https://doi.org/10.1021/acs.est.0c08227.","Table S6, comparing other sources, have differing scrap qualities"
+2010,0.4999986,"Nuss, Philip, and Matthew J. Eckelman. 2014. “Life Cycle Assessment of Metals: A Scientific Synthesis.” PLOS ONE 9 (7): e101298. https://doi.org/10.1371/journal.pone.0101298.","electronic scrap, Ecoinvent 2.2 data (2010)"
+2011,7.8055337,"Nuss, Philip, and Matthew J. Eckelman. 2014. “Life Cycle Assessment of Metals: A Scientific Synthesis.” PLOS ONE 9 (7): e101298. https://doi.org/10.1371/journal.pone.0101298.","general copper scrap, Ecoinvent 2.2 data (2010)"
+2012,,,
+2013,,,
+2014,4.1110996,"Elshkaki, Ayman, T. E. Graedel, Luca Ciacci, and Barbara K. Reck. 2016. “Copper Demand, Supply, and Associated Energy Use to 2050.” Global Environmental Change 39 (July): 305–15. https://doi.org/10.1016/j.gloenvcha.2016.06.006.",citing Nuss and Eckelman 2014
+2015,,,
+2016,2.333268,"Elshkaki, Ayman, T. E. Graedel, Luca Ciacci, and Barbara K. Reck. 2016. “Copper Demand, Supply, and Associated Energy Use to 2050.” Global Environmental Change 39 (July): 305–15. https://doi.org/10.1016/j.gloenvcha.2016.06.006.","assumption based on ""energy reduction from primary sources"""
+2017,8.29164345,"Dong, Di, Arnold Tukker, Bernhard Steubing, Lauran van Oers, Helmut Rechberger, Glenn Alonso Aguilar-Hernandez, Huajiao Li, and Ester Van der Voet. 2022. “Assessing China’s Potential for Reducing Primary Copper Demand and Associated Environmental Impacts in the Context of Energy Transition and ‘Zero Waste’ Policies.” Waste Management 144 (May): 454–67. https://doi.org/10.1016/j.wasman.2022.04.006.","Figure S7, avg CED of different types of Cu containing waste"
+2018,7.17,"Dong, Di, Arnold Tukker, Bernhard Steubing, Lauran van Oers, Helmut Rechberger, Glenn Alonso Aguilar-Hernandez, Huajiao Li, and Ester Van der Voet. 2022. “Assessing China’s Potential for Reducing Primary Copper Demand and Associated Environmental Impacts in the Context of Energy Transition and ‘Zero Waste’ Policies.” Waste Management 144 (May): 454–67. https://doi.org/10.1016/j.wasman.2022.04.006.","Figure S7, CED of WEEE waste only"
+2019,0.383,"Chen, Jingjing, Zhaohui Wang, Yufeng Wu, Liquan Li, Bin Li, De’an Pan, and Tieyong Zuo. 2019. “Environmental Benefits of Secondary Copper from Primary Copper Based on Life Cycle Assessment in China.” Resources, Conservation and Recycling 146 (July): 35–44. https://doi.org/10.1016/j.resconrec.2019.03.020.","electricity only, add 72.5 kg coal + 44.5 m^3 methane"
+2020,6.686925721,"Dong, Di, Lauran van Oers, Arnold Tukker, and Ester van der Voet. 2020. “Assessing the Future Environmental Impacts of Copper Production in China: Implications of the Energy Transition.” Journal of Cleaner Production 274 (November): 122825. https://doi.org/10.1016/j.jclepro.2020.122825.","CED of secondary copper, primary CED values ran high"
+2021,1.098730737,"Yu, Huiling, Hao Sun, Weixia Liu, Ruiqiu Zhang, Yurong Yan, and Songping Wu. 2021. “A Multidimensional Evaluation Method for the Service Life of Scrapped Copper Wires.” Advanced Sustainable Systems 5 (10): 2100160. https://doi.org/10.1002/adsu.202100160.","electricity only 30 ton recycled copper, only including 12.07 ton yeild, blast furnace, reverberation furnace, electrolytic"
+2022,0.549992453,"Dong, Di, Arnold Tukker, Bernhard Steubing, Lauran van Oers, Helmut Rechberger, Glenn Alonso Aguilar-Hernandez, Huajiao Li, and Ester Van der Voet. 2022. “Assessing China’s Potential for Reducing Primary Copper Demand and Associated Environmental Impacts in the Context of Energy Transition and ‘Zero Waste’ Policies.” Waste Management 144 (May): 454–67. https://doi.org/10.1016/j.wasman.2022.04.006.","Table S10, electricity and diesel only (add coal and fuel oil)"
+2023,,,
+2024,,,
+2025,,,
+2026,,,
+2027,,,
+2028,,,
+2029,,,
+2030,,,
+2031,,,
+2032,,,
+2033,,,
+2034,,,
+2035,,,
+2036,,,
+2037,,,
+2038,,,
+2039,,,
+2040,,,
+2041,,,
+2042,,,
+2043,,,
+2044,,,
+2045,,,
+2046,,,
+2047,,,
+2048,,,
+2049,,,
+2050,,,
