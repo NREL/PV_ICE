@@ -27,7 +27,7 @@ if not os.path.exists(testfolder):
     os.makedirs(testfolder)
 
 
-# In[254]:
+# In[2]:
 
 
 #https://www.learnui.design/tools/data-color-picker.html#palette
@@ -43,7 +43,7 @@ plt.rcParams['figure.figsize'] = (8, 6)
 scennames_labels = ['PV ICE','Immortal','Degradation','Failures','Project Life\nRepowering'] #
 
 
-# In[255]:
+# In[3]:
 
 
 #gradient generator
@@ -70,7 +70,7 @@ color2 = '#F7A11A'
 
 # Scenarios and Materials
 
-# In[3]:
+# In[4]:
 
 
 #creating scenarios
@@ -80,7 +80,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[4]:
+# In[5]:
 
 
 #load in a baseline and materials for modification
@@ -99,7 +99,7 @@ for scen in scennames:
 
 # ### Immortal
 
-# In[5]:
+# In[6]:
 
 
 # Immortal
@@ -118,7 +118,7 @@ sim1.modifyScenario('Immortal', 'mod_reliability_t90', 280, start_year=2022)
 
 # ### Degradation
 
-# In[6]:
+# In[7]:
 
 
 # Degradation
@@ -137,7 +137,7 @@ sim1.modifyScenario('Degradation', 'mod_reliability_t90', 280, start_year=2022)
 
 # ### Failures
 
-# In[7]:
+# In[8]:
 
 
 # Failures
@@ -156,7 +156,7 @@ sim1.modifyScenario('Failures', 'mod_reliability_t90', 36, start_year=2022) #for
 
 # ### Project Lifetime/Repowering
 
-# In[8]:
+# In[9]:
 
 
 # Project Lifetime/Repowering
@@ -175,7 +175,7 @@ sim1.modifyScenario('ProjectLife', 'mod_reliability_t90', 280, start_year=2022) 
 
 # Modify Years
 
-# In[9]:
+# In[10]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -185,7 +185,7 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 
 # Global Deployment Projection
 
-# In[10]:
+# In[11]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -202,7 +202,7 @@ global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInst
 
 # Single Install in time
 
-# In[11]:
+# In[12]:
 
 
 idx_temp = pd.RangeIndex(start=2000,stop=2101,step=1) #create the index
@@ -271,9 +271,7 @@ plt.title('Effective Capacity: No Replacements')
 #currently takes 15 mins to run with 5 mateirals and 5 scenarios
 
 for row in range (0,len(sim1.scenario['PV ICE'].dataIn_m)): #loop over length of years
-    print(row)
     for scen in scennames: #loop over scenarios
-        print(scen)
         Under_Installment = global_projection.iloc[row,0] - ((sim1.scenario[scen].dataOut_m['Installed_Capacity_[W]'][row])/1e6)  # MWATTS
         sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
         #calculate flows for that scenario with it's bifi factor and modified weibull
@@ -301,7 +299,7 @@ plt.title('Effective Capacity: No Replacements')
 
 # ### Cumulative Installs with Replacements
 
-# In[23]:
+# In[20]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -312,13 +310,13 @@ plt.title('Cumulative Installs with Replacements')
 plt.ylim(0,160)
 
 
-# In[25]:
+# In[21]:
 
 
 cumu_installs.loc[2100]/1e6
 
 
-# In[21]:
+# In[22]:
 
 
 e_annual_sumDemands = energy_demands.filter(like='demand_total')
@@ -328,7 +326,7 @@ energyGen_cumu.columns = e_annual_sumDemands_cumu.columns = scennames
 netEnergy_cumu = energyGen_cumu.loc[[2100]] - e_annual_sumDemands_cumu.loc[[2100]]
 
 
-# In[22]:
+# In[23]:
 
 
 plt.bar(netEnergy_cumu.columns, netEnergy_cumu.loc[2100]/1e12, 
@@ -347,7 +345,7 @@ plt.ylim(4e6,5.5e6)
 # # Explore Degradation
 # explore effect of the range of degradation rates as presented in Jordan et al 2022
 
-# In[266]:
+# In[24]:
 
 
 # from Jordan et al 2022: -1.9%/yr is lowest (P90)
@@ -356,7 +354,7 @@ plt.ylim(4e6,5.5e6)
 Degradation_Range = round(pd.Series(np.linspace(0.1,1.9, num=19)), 1)
 
 
-# In[267]:
+# In[25]:
 
 
 sim2 = PV_ICE.Simulation(name='sim2_deg', path=testfolder) #init simulation
@@ -370,14 +368,14 @@ for degs in range(0,len(Degradation_Range)):
             sim2.scenario[scenname].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[268]:
+# In[26]:
 
 
 scennames2 = pd.Series(sim2.scenario.keys())
 scennames2
 
 
-# In[269]:
+# In[28]:
 
 
 # Degradation
@@ -385,14 +383,14 @@ scennames2
 #Lifetime and Degradation
 # use scenarios is none to set all
 #Mod Project Lifetime
-sim2.modifyScenario(scenarios=None, 'mod_lifetime', 200, start_year=2022) #
+sim2.modifyScenario(scenarios=None, stage='mod_lifetime', value=200, start_year=2022) #
 #T50
-sim2.modifyScenario(scenarios=None, 'mod_reliability_t50', 250, start_year=2022)
+sim2.modifyScenario(scenarios=None, stage='mod_reliability_t50', value=250, start_year=2022)
 #t90
-sim2.modifyScenario(scenarios=None, 'mod_reliability_t90', 280, start_year=2022) 
+sim2.modifyScenario(scenarios=None, stage='mod_reliability_t90', value=280, start_year=2022) 
 
 
-# In[ ]:
+# In[29]:
 
 
 #degradation rates:
@@ -402,13 +400,13 @@ for scen in range(0,len(scennames2)):
     sim2.modifyScenario(scennames2[scen], 'mod_degradation', Degradation_Range[scen], start_year=2022) # Jordan et al 2022
 
 
-# In[270]:
+# In[36]:
 
 
-sim2.scenario['deg_1.5%/yr'].dataIn_m.tail(2)
+sim2.scenario['deg_1.6%/yr'].dataIn_m.tail(2)
 
 
-# In[271]:
+# In[31]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -422,20 +420,20 @@ sim2.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
 #global deployment: global_projection['World_annual_[MWdc]']
 
 
-# In[272]:
+# In[32]:
 
 
 sim2.calculateFlows()
 
 
-# In[273]:
+# In[33]:
 
 
 sim2_ii_yearly, sim2_ii_cumu = sim2.aggregateResults() #have to do this to get auto plots
 sim2_ii_allenergy, sim2_ii_energyGen, sim2_ii_energy_demands = sim2.aggregateEnergyResults()
 
 
-# In[274]:
+# In[101]:
 
 
 effective_capacity = sim2_ii_yearly.filter(like='ActiveCapacity')
@@ -448,15 +446,17 @@ plt.title('Effective Capacity: No Replacements')
 #plt.ylim(0,)
 
 
-# In[275]:
+# In[102]:
 
 
 colors = get_color_gradient(color1, color2, len(scennames2)) #generates a list of hex values
 effective_capacity_tw = effective_capacity/1e6
 effective_capacity_tw.plot(color=colors, legend=False, title='Effective Capacity: No Replacements')
+plt.plot(ii_cumu['newInstalledCapacity_sim1_Immortal_[MW]']/1e6, label='Capacity Target', color='black', ls='--') 
+plt.ylim(0,)
 
 
-# In[97]:
+# In[ ]:
 
 
 for row in range (0,len(sim2.scenario['deg_1.5%/yr'].dataIn_m)): #loop over length of years
@@ -467,14 +467,14 @@ for row in range (0,len(sim2.scenario['deg_1.5%/yr'].dataIn_m)): #loop over leng
         sim2.calculateFlows(scenarios=[scen]) # , bifacialityfactors=bifiPathDict[scen]
 
 
-# In[98]:
+# In[ ]:
 
 
 sim2_cc_yearly, sim2_cc_cumu = sim2.aggregateResults() #have to do this to get auto plots
 sim2_allenergy, sim2_energyGen, sim2_energy_demands = sim2.aggregateEnergyResults()
 
 
-# In[261]:
+# In[ ]:
 
 
 cumu_installs = sim2_cc_cumu.filter(like='newInstalled')
@@ -486,13 +486,13 @@ plt.title('Cumulative Installs with Replacements')
 plt.xticks(rotation=90)
 
 
-# In[252]:
+# In[ ]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_1.9%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
 
 
-# In[253]:
+# In[ ]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.1%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
@@ -501,7 +501,7 @@ plt.xticks(rotation=90)
 # # Explore Failures
 # Explore the effect of the range of failures from Heislmair and IRENA
 
-# In[217]:
+# In[37]:
 
 
 weibulls= {'a':[2.810, 100.238], 
@@ -516,7 +516,7 @@ weibullsdf = pd.DataFrame(weibulls, index=['alpha','beta'])
 #weibullist[0]
 
 
-# In[218]:
+# In[38]:
 
 
 sim3 = PV_ICE.Simulation(name='sim3_fail', path=testfolder) #init simulation
@@ -530,20 +530,20 @@ for var in range(0,len(weibulls)):
             sim3.scenario[scenname].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[219]:
+# In[39]:
 
 
 scennames3 = sim3.scenario.keys()
 
 
-# In[223]:
+# In[40]:
 
 
 #Mod Project Lifetime on all 
 sim3.modifyScenario(scenarios=None, stage='mod_lifetime', value=200, start_year=2022) #
 
 
-# In[224]:
+# In[41]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -557,21 +557,21 @@ sim3.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
 #global deployment: global_projection['World_annual_[MWdc]']
 
 
-# In[225]:
+# In[42]:
 
 
 for scen in scennames3:
     sim3.calculateFlows(scenarios=[scen], weibullInputParams=dict(weibullsdf[scen].T))
 
 
-# In[226]:
+# In[43]:
 
 
 sim3_ii_yearly, sim3_ii_cumu = sim3.aggregateResults() #have to do this to get auto plots
 sim3_ii_allenergy, sim3_ii_energyGen, sim3_ii_energy_demands = sim3.aggregateEnergyResults()
 
 
-# In[262]:
+# In[46]:
 
 
 effective_capacity = sim3_ii_yearly.filter(like='ActiveCapacity')
@@ -583,10 +583,10 @@ plt.plot(effective_capacity/1e6, label=scennames3)
 plt.legend()
 plt.ylabel('Effective Capacity [TW]')
 plt.title('Effective Capacity: No Replacements')
-#plt.ylim(0,)
+plt.ylim(0,)
 
 
-# In[230]:
+# In[45]:
 
 
 for row in range (0,len(sim3.scenario['a'].dataIn_m)): #loop over length of years
@@ -597,14 +597,14 @@ for row in range (0,len(sim3.scenario['a'].dataIn_m)): #loop over length of year
         sim3.calculateFlows(scenarios=[scen], weibullInputParams=dict(weibullsdf[scen].T))
 
 
-# In[232]:
+# In[ ]:
 
 
 sim3_cc_yearly, sim3_cc_cumu = sim3.aggregateResults() #have to do this to get auto plots
 sim3_allenergy, sim3_energyGen, sim3_energy_demands = sim3.aggregateEnergyResults()
 
 
-# In[263]:
+# In[ ]:
 
 
 cumu_installs = sim3_cc_cumu.filter(like='newInstalled')
@@ -616,7 +616,7 @@ plt.title('Cumulative Installs with Replacements')
 plt.xticks(rotation=45)
 
 
-# In[249]:
+# In[ ]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim3_fail_a_[MW]'] - cumu_installs.loc[2100,'newInstalledCapacity_sim3_fail_early loss_[MW]'])/1e6
@@ -637,20 +637,20 @@ plt.xticks(rotation=45)
 # # Explore Project Life / Repowering
 # Explore if repowering happens at varying lifetimes
 
-# In[231]:
+# In[75]:
 
 
 # years of project life: 8, 10, 12, 15, 18, 20, 25, 30, 35, 40, 45, 50
-pd.Series([8, 10, 12, 15, 18, 20, 25, 30, 35, 40, 45, 50])
+lifes = pd.Series([8, 10, 12, 15, 18, 20, 25, 30, 35, 40, 45, 50])
 
 
-# In[ ]:
+# In[76]:
 
 
 sim4 = PV_ICE.Simulation(name='sim4_projectlife', path=testfolder) #init simulation
 
-for var in range(0,len(weibulls)):
-        scenname = str(weibullist[var]) #name the scenario
+for var in range(0,len(lifes)):
+        scenname = str(lifes[var])+ ' years' #name the scenario
         sim4.createScenario(name=scenname, massmodulefile=moduleFile_m, energymodulefile=moduleFile_e) #create the scenario with name
         for mat in range (0, len(MATERIALS)):
             matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
@@ -658,42 +658,66 @@ for var in range(0,len(weibulls)):
             sim4.scenario[scenname].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[ ]:
+# In[85]:
+
+
+scennames4 = list(sim4.scenario.keys())
+scennames4[scen]
+
+
+# In[86]:
 
 
 #Mod Project Lifetime on all 
-for scen in scenname4:
-    sim3.modifyScenario(scenarios=None, stage='mod_lifetime', value=lifes[scen], start_year=2022) #
+for scen in range(0,len(scennames4)):
+    sim4.modifyScenario(scenarios=scennames4[scen], stage='mod_lifetime', value=lifes[scen], start_year=2022) #
 
 
-# In[ ]:
+# In[87]:
+
+
+#degradation rate:
+sim4.modifyScenario(scenarios=None, stage='mod_degradation', value=0.0, start_year=2022) 
+#T50
+sim4.modifyScenario(scenarios=None, stage='mod_reliability_t50', value=250, start_year=2022)
+#t90
+sim4.modifyScenario(scenarios=None, stage='mod_reliability_t90', value=280, start_year=2022) 
+
+
+# In[88]:
 
 
 #trim to start in 2000, this trims module and materials
 #had to specify and end year, cannot use to extend
-sim3.trim_Years(startYear=2000, endYear=2100)
+sim4.trim_Years(startYear=2000, endYear=2100)
 
 #deployment projection for all scenarios
-sim3.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
+sim4.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
                     value=global_projection['World_annual_[MWdc]'], start_year=2000) #
 #single deployment: single_deploy_2025['MW']
 #global deployment: global_projection['World_annual_[MWdc]']
 
 
-# In[ ]:
+# In[89]:
+
+
+sim4.scenario['35 years'].dataIn_m.tail(3)
+
+
+# In[90]:
 
 
 sim4.calculateFlows()
 
 
-# In[ ]:
+# In[94]:
 
 
 sim4_ii_yearly, sim4_ii_cumu = sim4.aggregateResults() #have to do this to get auto plots
 sim4_ii_allenergy, sim4_ii_energyGen, sim4_ii_energy_demands = sim4.aggregateEnergyResults()
 
 
-# In[ ]:
+# In[103]:
 
 
 effective_capacity = sim4_ii_yearly.filter(like='ActiveCapacity')
@@ -701,17 +725,28 @@ effective_capacity = sim4_ii_yearly.filter(like='ActiveCapacity')
 #effective_capacity_tw.plot(color=colors, legend=False, title='Effective Capacity: No Replacements')
 
 plt.plot(ii_cumu['newInstalledCapacity_sim1_Immortal_[MW]']/1e6, label='Capacity Target', color='black', ls='--')    
-plt.plot(effective_capacity/1e6, label=scennames3)
+plt.plot(effective_capacity/1e6, label=scennames4)
 plt.legend()
 plt.ylabel('Effective Capacity [TW]')
 plt.title('Effective Capacity: No Replacements')
 #plt.ylim(0,)
 
 
-# In[ ]:
+# In[108]:
 
 
-for row in range (0,len(sim4.scenario['a'].dataIn_m)): #loop over length of years
+colors4 = get_color_gradient(color2, color1, len(scennames4)) #generates a list of hex values
+effective_capacity_tw = effective_capacity/1e6
+effective_capacity_tw.plot(color=colors4, legend=False, title='Effective Capacity: No Replacements')
+plt.plot(ii_cumu['newInstalledCapacity_sim1_Immortal_[MW]']/1e6, label='Capacity Target', color='black', ls='--')
+plt.ylim(0,)
+#plt.legend(scennames4)
+
+
+# In[112]:
+
+
+for row in range (0,len(sim4.scenario['8 years'].dataIn_m)): #loop over length of years
     for scen in scennames4: #loop over scenarios
         Under_Installment = global_projection.iloc[row,0] - ((sim4.scenario[scen].dataOut_m['Installed_Capacity_[W]'][row])/1e6)  # MWATTS
         sim4.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
@@ -719,35 +754,35 @@ for row in range (0,len(sim4.scenario['a'].dataIn_m)): #loop over length of year
     sim4.calculateFlows()
 
 
-# In[ ]:
+# In[113]:
 
 
 sim4_cc_yearly, sim4_cc_cumu = sim4.aggregateResults() #have to do this to get auto plots
 sim4_allenergy, sim4_energyGen, sim4_energy_demands = sim4.aggregateEnergyResults()
 
 
-# In[ ]:
+# In[115]:
 
 
 cumu_installs = sim4_cc_cumu.filter(like='newInstalled')
-plt.bar(scennames4, cumu_installs.loc[2100]/1e6, color=colors)
+plt.bar(scennames4, cumu_installs.loc[2100]/1e6, color=colors4)
 #plt.legend(scennames)
 plt.ylabel('Cumulative installed [TW]')
 plt.title('Cumulative Installs with Replacements')
 #plt.ylim(0,160)
-#plt.xticks(rotation=90)
+plt.xticks(rotation=45)
 
 
-# In[ ]:
+# In[120]:
 
 
+(cumu_installs.loc[2100,'newInstalledCapacity_sim4_projectlife_50 years_[MW]'] - cumu_installs.loc[2100,'newInstalledCapacity_sim4_projectlife_30 years_[MW]'])/1e6
 
 
-
-# In[ ]:
-
+# In[122]:
 
 
+cumu_installs.loc[2100,'newInstalledCapacity_sim4_projectlife_30 years_[MW]']/1e6
 
 
 # # Repowering with Bifi
