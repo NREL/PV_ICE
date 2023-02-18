@@ -1,0 +1,26 @@
+.. _whatsnew_0302:
+
+
+v0.3.2 (02/17/2023)
+=======================
+
+* Improved recycling and remanufacturing pathways by creating a 'Pool' that can be activated to store material.
+
+Baseline Updates
+-----------------
+* CdTe mass baselines added
+* Energy baselines finished for silicon.
+* Modified degradation values to be system degradation values from Jordan 2022 publication.
+
+
+New Documentation and Analysis
+---------------------------------
+16 - PERC vs SHJ vs TOPcon journal presented at the SHJ Workshop 2022 in CEAInes
+17 - Energy Results Paper (still on development but preview)
+18 - PVRW 2023 journal
+
+Contributors
+~~~~~~~~~~~~
+* Silvana Ayala (:ghuser:`shirubana`)
+* Heather Mirletz (:ghuser:`heathermirletz`)
+* Macarena Mendez Ribo (:ghuser:`macmribo`)
