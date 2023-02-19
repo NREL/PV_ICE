@@ -163,6 +163,24 @@ print(r1.scenario['All Sector All Tech Installs_[MWdc]'].dataOut_m.keys())
 #print(r1.scenario['All Sector All Tech Installs_[MWdc]'].material['glass'].materialdata.keys())
 
 
+# In[19]:
+
+
+r1.scenario['All Sector All Tech Installs_[MWdc]'].dataOut_m.to_csv('All Sector All Tech Installs_MWdc.csv')
+
+
+# In[21]:
+
+
+r1.scenario['All Sector All Tech Installs_[MWdc]'].dataIn_m.head()
+
+
+# In[20]:
+
+
+r1.scenario['All Sector All Tech Installs_[MWdc]'].dataOut_m.head()
+
+
 # In[15]:
 
 
@@ -206,7 +224,7 @@ import re
 keys[keys[0].str.contains('area', flags=re.IGNORECASE)]
 
 
-# In[19]:
+# In[ ]:
 
 
 for scen in scennames:
@@ -218,7 +236,7 @@ plt.ylabel('Disposed Area [m2]')
 plt.legend()
 
 
-# In[20]:
+# In[ ]:
 
 
 #extract area disposed from simulation #should be m2
@@ -228,7 +246,7 @@ for scen in scennames:
     yearly_AreaDisposed_Results = pd.concat([yearly_AreaDisposed_Results,temp], axis=1)
 
 
-# In[21]:
+# In[ ]:
 
 
 yearly_AreaDisposed_Results.index = r1.scenario['Residential'].dataIn_m['year']
@@ -236,7 +254,7 @@ yearly_AreaDisposed_Results.columns = scennames
 yearly_AreaDisposed_Results.tail()
 
 
-# In[22]:
+# In[ ]:
 
 
 yearly_AreaDisposed_Results_cum = yearly_AreaDisposed_Results.cumsum()
@@ -245,14 +263,14 @@ yearly_AreaDisposed_Results_cum.tail()
 
 # Now we take the area and divide it by 1.6 m2 or 2 m2 to approximate the # of modules. And Also extract the 2030 and 2050 values for area equivilence estimations.
 
-# In[23]:
+# In[ ]:
 
 
 subset_areaDisposed_yearly = yearly_AreaDisposed_Results.loc[[2030,2050]]
 subset_areaDisposed_cum = yearly_AreaDisposed_Results_cum.loc[[2030,2050]]
 
 
-# In[24]:
+# In[ ]:
 
 
 subset_1pt6m2ModulesDisposed_yearly = subset_areaDisposed_yearly/1.6
@@ -269,7 +287,7 @@ subset_NoModules.to_csv(os.path.join(resultsfolder,'US_Historical_NoModulesDispo
 subset_NoModules
 
 
-# In[25]:
+# In[ ]:
 
 
 AreaDisposed_Eq = pd.concat([subset_areaDisposed_yearly,subset_areaDisposed_cum], keys = ['yearly','cumulative'])
@@ -279,14 +297,14 @@ AreaDisposed_Eq
 
 # ### in 2022
 
-# In[26]:
+# In[ ]:
 
 
 #annual
 round(yearly_AreaDisposed_Results.loc[[2022]]/1.6,0)
 
 
-# In[27]:
+# In[ ]:
 
 
 #cumulative
@@ -300,20 +318,20 @@ round(yearly_AreaDisposed_Results_cum.loc[[2022]]/1.6,0)
 # 
 # Create a table output of installs, active generating capacity annually decommissioned, cumulatively decomissioned, and cumulative decomissioned module mass.
 
-# In[28]:
+# In[ ]:
 
 
 df_Capacity_all = usyearlyr1[usyearlyr1.filter(like='[MW]').columns]
 
 
-# In[29]:
+# In[ ]:
 
 
 capacity_results_alltech = yearlyallPV_agg.filter(like='[MW]')
 capacity_results_cSi = yearlycSi_agg.filter(like='[MW]')
 
 
-# In[30]:
+# In[ ]:
 
 
 #caution, run this only once
@@ -321,7 +339,7 @@ for colname in df_Capacity_all.filter(like='Decommisioned').columns:
     df_Capacity_all[str('Annual_'+colname)] = df_Capacity_all[colname]-df_Capacity_all[colname].shift(1).fillna(0)
 
 
-# In[31]:
+# In[ ]:
 
 
 df_Capacity_all.to_csv(os.path.join(resultsfolder, 'US_Historical_PV_Decomissioning_Sectorwise.csv'))
@@ -330,19 +348,13 @@ df_Capacity_all.to_csv(os.path.join(resultsfolder, 'US_Historical_PV_Decomission
 # In[ ]:
 
 
-
-
-
-# In[32]:
-
-
 df_Capacity_all.filter(like='DecommisionedCapacity_sim1_Residential_[MW]')#.shift(1)#.fillna(0)
 
 
 # ### Pull out the 2030 and 2050 Values of interest
 # the request was for 2030 and 2050 values for decommissioning and cumulative c-Si waste, by sector. Create a table of just those results.
 
-# In[33]:
+# In[ ]:
 
 
 subset_results_capacity = df_Capacity_all.filter(like='Decommisioned').loc[[2022,2030,2050]]
@@ -350,7 +362,7 @@ subset_results_capacity.T.to_csv(os.path.join(resultsfolder, 'US_Historical_PV_D
 round(subset_results_capacity.T,)
 
 
-# In[34]:
+# In[ ]:
 
 
 #cumulative wastes
@@ -365,7 +377,7 @@ cSi_wastes_results = round(cSi_wastes_results,2)
 cSi_wastes_results
 
 
-# In[35]:
+# In[ ]:
 
 
 power_and_allwastes = pd.concat([subset_results_capacity.T,cSi_wastes_results])
@@ -373,7 +385,7 @@ power_and_allwastes.to_csv(os.path.join(resultsfolder, 'DecommissionsAllWastes_n
 power_and_allwastes
 
 
-# In[36]:
+# In[ ]:
 
 
 subset_results_waste.T.to_csv(os.path.join(resultsfolder,'US_Historical_PV_cSiWaste20302050_Sectorwise.csv'))
@@ -382,7 +394,7 @@ round(subset_results_waste.T,2)
 round(subset_results_waste_annual.T,2)
 
 
-# In[37]:
+# In[ ]:
 
 
 annualdecommissioncSi = df_Capacity_all.filter(like='Annual_Decommisioned').filter(like='All Sector c-Si')
@@ -391,13 +403,13 @@ installs = df_Capacity_all.filter(like='newInstalledCapacity').filter(like='All 
 plt.plot(installs)
 
 
-# In[38]:
+# In[ ]:
 
 
 annualdecommissioncSi.sum()
 
 
-# In[39]:
+# In[ ]:
 
 
 installs.iloc[:,1].sum()
@@ -405,7 +417,7 @@ installs.iloc[:,1].sum()
 
 # ## Pretty Plots
 
-# In[40]:
+# In[ ]:
 
 
 #all techs plot
@@ -426,7 +438,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[41]:
+# In[ ]:
 
 
 #cSi plot
@@ -447,13 +459,13 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[42]:
+# In[ ]:
 
 
 yearlyallPV_agg.filter(like='Decommisioned').columns
 
 
-# In[43]:
+# In[ ]:
 
 
 #all techs plot
@@ -474,7 +486,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[44]:
+# In[ ]:
 
 
 #cSi plot
@@ -495,7 +507,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[45]:
+# In[ ]:
 
 
 cSiMatWastes_cum = uscumr1.filter(like='WasteAll').filter(like='c-Si').filter(like='All Sector')/1e6 #convert to million metric tonnes
@@ -503,7 +515,7 @@ cSiMatWastes_cum = cSiMatWastes_cum.add_suffix('_[million Tonnes]')
 cSiMatWastes_cum.columns
 
 
-# In[46]:
+# In[ ]:
 
 
 #cSi plot
@@ -532,7 +544,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[47]:
+# In[ ]:
 
 
 #2050 stacked bar graph of cumulative waste by Material
