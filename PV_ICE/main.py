@@ -433,7 +433,7 @@ class Simulation:
     def calculateFlows(self, scenarios=None, materials=None,
                        weibullInputParams=None, bifacialityfactors=None,
                        reducecapacity=True, debugflag=False,
-                       installByArea=None):
+                       installByArea=None, nameplatedeglimit=None):
         
         # #create a check that the start year on mass and energy files are the same
         # for scen in scenarios:
@@ -457,14 +457,15 @@ class Simulation:
                                bifacialityfactors=bifacialityfactors,
                                reducecapacity=reducecapacity,
                                debugflag=debugflag,
-                               installByArea=installByArea)
+                               installByArea=installByArea,
+                               nameplatedeglimit=nameplatedeglimit)
 
         self.calculateEnergyFlow(scenarios=scenarios, materials=materials)
 
     def calculateMassFlow(self, scenarios=None, materials=None,
                           weibullInputParams=None, bifacialityfactors=None,
                           reducecapacity=True, debugflag=False,
-                          installByArea=None):
+                          installByArea=None, nameplatedeglimit=None):
         '''
         Function takes as input a baseline dataframe already imported,
         with the right number of columns and content.
@@ -493,6 +494,9 @@ class Simulation:
             installs this area instead calculating the installed capacity based
             on the module characteristics (efficiency and bifaciality factor).
             Length must match the years in the loaded dataframes.
+        nameplatedeglimit : float
+            Limit at which if the nameplate power is below they will be
+            trashed. i.e. 0.8 default.
 
         Returns
         --------
@@ -507,6 +511,9 @@ class Simulation:
         else:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
+
+        if nameplatedeglimit is None:
+            nameplatedeglimit = 0.8
 
         print(">>>> Calculating Material Flows <<<<\n")
 
@@ -724,7 +731,7 @@ class Simulation:
                             # power_notrepaired0 = 0
                             
                             #TO DO: Make deg_nameplate variable an input
-                            if deg_nameplate > 0.5: 
+                            if deg_nameplate > nameplatedeglimit: 
                                 area_collected = (
                                     disposed_projectlifetime *
                                     (df.iloc[age]['mod_EOL_collection_eff'] *
