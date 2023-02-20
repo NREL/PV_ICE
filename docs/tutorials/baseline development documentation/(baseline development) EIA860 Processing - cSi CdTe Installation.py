@@ -200,13 +200,13 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Yes, the drop is huge. Therefore I will use the total PV installs from Heather to calculate the market shares since it represents more the total PV, not only utility.
 
-# In[73]:
+# In[21]:
 
 
 us_installs_original['Nameplate Capacity (MW)'][2021]
 
 
-# In[21]:
+# In[22]:
 
 
 # Export to csv
@@ -224,7 +224,7 @@ new_pv_installs['Nameplate Capacity (MW)'].to_csv(os.path.join(supportMatfolder,
 
 # Find cSi data and CdTe from the eia890 dataframe.
 
-# In[22]:
+# In[23]:
 
 
 eia860_raw_cSi = eia860_raw_correct_1[eia860_raw_correct_1['Crystalline Silicon?'] == 'Y']
@@ -236,7 +236,7 @@ eia860_raw_CdTe = eia860_raw_correct_1[eia860_raw_correct_1['Thin-Film (CdTe)?']
 
 # Group by year.
 
-# In[23]:
+# In[24]:
 
 
 eia860_cSi = eia860_raw_cSi.groupby('Operating Year').sum()
@@ -248,13 +248,13 @@ eia860_CdTe = eia860_raw_CdTe.groupby('Operating Year').sum()
 
 # Concatenate cSi data pre-2001 since it was 100% c-Si.
 
-# In[24]:
+# In[25]:
 
 
 eia860_cSi = pd.concat([us_installs_original_before_2001, eia860_cSi])
 
 
-# In[25]:
+# In[26]:
 
 
 eia860_cSi.to_csv(os.path.join(supportMatfolder, 'output_eia860_c-Si_installs_utility.csv'))
@@ -263,7 +263,7 @@ eia860_CdTe.to_csv(os.path.join(supportMatfolder, 'output_eia860_CdTe_installs_u
 
 # Plot.
 
-# In[26]:
+# In[27]:
 
 
 plt.plot(new_pv_installs.index, new_pv_installs['Nameplate Capacity (MW)'], label='All PV')
@@ -282,7 +282,7 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # ### Market share calculations - utility
 
-# In[27]:
+# In[28]:
 
 
 ms_utility = pd.DataFrame()
@@ -298,7 +298,7 @@ ms_utility.to_csv(os.path.join(supportMatfolder, 'output_eia860_market_share_c-S
 
 # Tidy data version
 
-# In[28]:
+# In[29]:
 
 
 ms_utility.reset_index(inplace=True)
@@ -307,7 +307,7 @@ tidy_ms_utility = ms_utility.melt('Year', var_name='Technology', value_name='Mar
 tidy_ms_utility.to_csv(os.path.join(supportMatfolder, 'output_eia860_tidy_cSi_CdTe_market_share_utility.csv'))
 
 
-# In[29]:
+# In[30]:
 
 
 ax = sns.lineplot(x='Year', y='Market share', data=tidy_ms_utility, hue='Technology')
@@ -325,7 +325,7 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # In this version, I use Heather's original data for all PV and c-Si fraction since it comprises residential, commercial and CdTe. CdTe is virtually only utility scale.
 
-# In[30]:
+# In[31]:
 
 
 heather_csi_data = pd.read_csv(os.path.join(supportMatfolder,'output_USA_SiPV_installs.csv'), index_col='Year')
@@ -334,13 +334,13 @@ heather_csi_data.rename(columns={'0': 'Nameplate Capacity (MW)'}, inplace=True)
 
 # Since the addition of cSi and CdTe market share is a bit off, I am double check with the data from LBNL :)
 
-# In[31]:
+# In[32]:
 
 
 lbnl = pd.read_excel(os.path.join(supportMatfolder,'lbnl_thinfilm.xlsx'),index_col=0)
 
 
-# In[32]:
+# In[33]:
 
 
 plt.plot(us_installs_original.index, us_installs_original['Nameplate Capacity (MW)'], label= 'Heather')
@@ -357,14 +357,14 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Let's see the area under the curve for CdTe eiea data and for LBNL data.
 
-# In[33]:
+# In[34]:
 
 
 eia860_CdTe_cut = eia860_CdTe.loc[2011:2021]['Nameplate Capacity (MW)']
 lbnl_cut = lbnl.loc[2011:2021]['Total (MW)']
 
 
-# In[34]:
+# In[35]:
 
 
 area_eia = trapz(eia860_CdTe_cut, dx=5)
@@ -374,7 +374,7 @@ print(" area eia =", area_eia, '\n', "area lbnl =", area_lbnl)
 
 # This one shows a more realistic scenario. Let's now calculate market share.
 
-# In[35]:
+# In[36]:
 
 
 ms_all = pd.DataFrame()
@@ -390,7 +390,7 @@ ms_all = ms_all.round(2)
 ms_all.to_csv(os.path.join(supportMatfolder, 'output_eia860_market_share_c-Si_CdTe_all.csv'))
 
 
-# In[36]:
+# In[37]:
 
 
 ms_all['add cSi + CdTe'] = ms_all['cSi'] + ms_all['CdTe']
@@ -400,16 +400,28 @@ ms_all['add cSi + CdTe LBNL'] = ms_all['cSi'] + ms_all['CdTe LBNL']
 # #### Add projected market share for cSi and CdTe
 # I will be using 16% for CdTe and 84% for cSi
 
-# In[37]:
-
-
-ms_all['cSi'][27:56] = 0.84
-
-
 # In[38]:
 
 
+ms_all
+
+
+# In[39]:
+
+
+ms_all['cSi'][26:56] = 0.84
+
+
+# In[40]:
+
+
 ms_all['CdTe LBNL'][27:56] = 0.16
+
+
+# In[41]:
+
+
+ms_all
 
 
 # ### Decision to use eia or LBNL data
@@ -432,7 +444,7 @@ ms_all['CdTe LBNL'][27:56] = 0.16
 # 
 # Both sources seem reliable. **However**, LBNL seems to have data that passed some filters through Wood Mackenzie, whereas eia's seems more raw data. This have its tradeoffs, where LBNL could be a bit "diluted" so some data might be missing or omitted, on the other hand, eia has proven to have some inconsistencies where some capacity is double counted. In light of this, I decide to use LBNL because: (1) it has already been filtered, and (2) the addition with cSi does not surpass our total install capacity values.
 
-# In[39]:
+# In[42]:
 
 
 ms_all.reset_index(inplace=True)
@@ -441,7 +453,7 @@ tidy_ms_all = ms_all.melt('Year', var_name='Technology', value_name='Market shar
 tidy_ms_all.to_csv(os.path.join(supportMatfolder, 'output_eia860_tidy_cSi_CdTe_market_share_all.csv'))
 
 
-# In[40]:
+# In[43]:
 
 
 ax = sns.lineplot(x='Year', y='Market share', data=tidy_ms_all, hue='Technology')
@@ -461,7 +473,7 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Upload Electrification Futures baseline.
 
-# In[46]:
+# In[44]:
 
 
 sf_reeds_alts = pd.read_excel(os.path.join(supportMatfolder,'SF_reeds_alternates.xlsx'),index_col=0)
@@ -469,7 +481,7 @@ sf_reeds = sf_reeds_alts.loc[2022:2050,['MW']]
 sf_reeds.loc[2022, ['MW']] = 15000
 
 
-# In[47]:
+# In[45]:
 
 
 sf_reeds
@@ -478,19 +490,19 @@ sf_reeds
 # #### Reorder the installed capacity. 
 # Refer to Heather for explanation why. In a nutshell: The Reeds projections have massive drops in capacity in certain years, this is challenging because such drops would significantly affect the solar industry.
 
-# In[48]:
+# In[46]:
 
 
 sf_reeds.index = sf_reeds.index.astype(int)
 
 
-# In[49]:
+# In[47]:
 
 
 sf_reeds
 
 
-# In[50]:
+# In[48]:
 
 
 sf_reeds['MW'].values.sort()
@@ -499,25 +511,25 @@ sf_reeds.rename(columns={'MW':'Nameplate Capacity (MW)'},inplace=True)
 
 # #### Concatenate values withe ore 2023 values and add projected market share
 
-# In[51]:
+# In[49]:
 
 
 us_installs_original_snip = pd.DataFrame(us_installs_original.loc[1995:2021, 'Nameplate Capacity (MW)'])
 
 
-# In[52]:
+# In[50]:
 
 
 full_installs = pd.DataFrame()
 
 
-# In[53]:
+# In[51]:
 
 
 full_installs = pd.concat([us_installs_original_snip, sf_reeds], axis=0)
 
 
-# In[54]:
+# In[52]:
 
 
 full_installs
@@ -525,39 +537,39 @@ full_installs
 
 # Add the value for 2022:
 
-# In[67]:
+# In[53]:
 
 
 ms_all = ms_all.set_index('Year')
 
 
-# In[68]:
+# In[54]:
 
 
 full_installs['cSi Market Share'] = ms_all['cSi']
 full_installs['CdTe Market Share'] = ms_all['CdTe LBNL']
 
 
-# In[69]:
+# In[55]:
 
 
 full_installs['cSi Capacity (MW)'] = full_installs['Nameplate Capacity (MW)']*full_installs['cSi Market Share']
 full_installs['CdTe Capacity (MW)'] = full_installs['Nameplate Capacity (MW)']*full_installs['CdTe Market Share']
 
 
-# In[70]:
+# In[56]:
 
 
 full_installs.to_csv(os.path.join(supportMatfolder, 'output_RELOG_cSi_CdTe_capacity_reeds.csv'))
 
 
-# In[71]:
+# In[57]:
 
 
 len(full_installs)
 
 
-# In[72]:
+# In[58]:
 
 
 full_installs
