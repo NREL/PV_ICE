@@ -610,15 +610,15 @@ sim1.scenario['SHJ'].material['glass'].matdataIn_e
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[41]:
+# In[10]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
 
 fig, ax1 = plt.subplots()
 
-ax1.plot(global_projection['World_cum']/1e6, color='orange')
-ax1.set_ylabel('Cumulative Solar Capacity [TW]', color='orange')
+ax1.stackplot(global_projection.index, global_projection['World_cum']/1e6, color='#F7A11A')
+ax1.set_ylabel('Cumulative Solar Capacity [TW]', color='#F7A11A')
 ax2 = ax1.twinx()
 ax2.plot(global_projection['World_annual_[MWdc]']/1e6)
 ax2.set_ylabel('Annual Installations [TW]')
