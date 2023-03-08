@@ -100,6 +100,12 @@ celltech_modeff = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-mo
 celltech_aguse = pd.read_csv(os.path.join(supportMatfolder, 'output-celltech-Agusageimprovements.csv'),index_col=0) #pull in Ag use
 
 
+# In[10]:
+
+
+celltech_modeff.loc[2020]
+
+
 # In[7]:
 
 
@@ -610,7 +616,7 @@ sim1.scenario['SHJ'].material['glass'].matdataIn_e
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[10]:
+# In[41]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -685,7 +691,7 @@ plt.ylim(0,)
 
 # #### Bifacial Factors
 
-# In[48]:
+# In[43]:
 
 
 bifiFactors = {'PERC_50':0.7, # ITRPV 2022, Fig. 58
@@ -699,7 +705,7 @@ bifiFactors = {'PERC_50':0.7, # ITRPV 2022, Fig. 58
 #MAY NEED TO CHANGE TO BE DYNAMIC
 
 
-# In[49]:
+# In[44]:
 
 
 #PV ICE currently set up to read in a csv of bifi factors, so generate files to read in 
@@ -790,7 +796,7 @@ energyGen.to_csv(os.path.join(testfolder, 'cc_energyGen.csv'))
 energy_demands.to_csv(os.path.join(testfolder, 'cc_energy_demands.csv'))
 
 
-# In[60]:
+# In[45]:
 
 
 #read in saved results files for speed
@@ -888,7 +894,7 @@ plt.title('Replacements Required by Technology')
 
 # # RESULTS: Virgin Material Demands
 
-# In[70]:
+# In[47]:
 
 
 cumu_virgin_module = cc_cumu.filter(like='VirginStock_Module')
@@ -896,6 +902,20 @@ plt.bar(scennames, cumu_virgin_module.loc[2100]/1e9, tick_label=scennames_labels
 #plt.legend(scennames)
 plt.title('Cumulative Virgin Material Demands')
 plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
+
+
+# In[76]:
+
+
+
+
+
+# In[77]:
+
+
+recycledperc_virginstock = cc_cumu.filter(like='VirginStock').filter(like='Recycled')
+recycledperc_virginstock.drop('VirginStock_Module_sim1_RecycledPERC_[Tonnes]',axis=1, inplace=True)
+plt.bar(recycledperc_virginstock.columns, recycledperc_virginstock.loc[2100], tick_label = MATERIALS, color=colorpalette)
 
 
 # In[71]:
@@ -1114,7 +1134,7 @@ eroi_sys_cumu = energyGen_cumu/e_annual_sumDemands_cumu
 plt.bar(eroi_sys_cumu.columns, eroi_sys_cumu.loc[2100], 
         tick_label=(scennames_labels), color=colorpalette)
 plt.title('EROI of all Deployments')
-plt.ylabel('Arbitrary units')
+plt.ylabel('Unitless')
 
 
 # In[ ]:

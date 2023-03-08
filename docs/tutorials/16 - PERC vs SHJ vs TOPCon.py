@@ -302,7 +302,7 @@ celltech_marketshare_scaled['TOPCon'] = celltech_marketshare_scaled.filter(like=
 # - Weibull Failure probabilities are identical between technologies (until we get better data)
 # - No ciruclarity
 
-# In[26]:
+# In[20]:
 
 
 #glass-glass package mass per area calculation
@@ -436,17 +436,17 @@ plt.show()
 
 # # Scenario Creation
 
-# In[38]:
+# In[23]:
 
 
 #creating scenarios for identical power and identical area deployed
 scennames = ['PERC_p','SHJ_p','TOPCon_p', 'PERC_a','SHJ_a','TOPCon_a'] #add later Blend and bifi on/off
-MATERIALS = ['glass','silver','silicon'] #, 'copper', 'encapsulant', 'backsheet', 'aluminum_frames'
+MATERIALS = ['glass','silver','silicon', 'copper', 'aluminium_frames'] #'encapsulant', 'backsheet',
 moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[39]:
+# In[24]:
 
 
 #load in a baseline and materials for modification
@@ -1132,7 +1132,7 @@ plt.show()
 # # Simulation for EROI and EBPT
 # Currently we dont have the ability to do cohort energy tracking. Therefore, we will test discrete points in time to evaluate a single cohort (i.e. install in only 1 year and track the energy in and out over time from that one cohort)
 
-# In[105]:
+# In[26]:
 
 
 single_deploy_2020 = pd.DataFrame(index=idx_temp, columns=['MW'], dtype=float)
@@ -1140,17 +1140,17 @@ single_deploy_2020['MW'] = 0.0
 single_deploy_2020.loc[2020,'MW'] = 100.0
 
 
-# In[106]:
+# In[25]:
 
 
 #creating scenarios for identical power and identical area deployed
 scennames2 = ['PERC','SHJ','TOPCon'] #add later Blend and bifi on/off
-MATERIALS = ['glass','silver','silicon'] #, 'copper', 'encapsulant', 'backsheet', 'aluminum_frames'
+MATERIALS = ['glass','silver','silicon', 'copper', 'aluminium_frames'] #'encapsulant', 'backsheet',
 moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[107]:
+# In[27]:
 
 
 #load in a baseline and materials for modification
@@ -1177,7 +1177,7 @@ for scen in scennames2:
 # - glass per m2
 # - silver per m2
 
-# In[108]:
+# In[32]:
 
 
 
@@ -1203,16 +1203,16 @@ for scen in scennames2:
     sim2.scenario[scen].dataIn_m.loc[25:25+len(single_deploy_2020.index-1),'new_Installed_Capacity_[MW]'] = single_deploy_2020.values   
 
 #trim to 2020-2050, this trims module and materials
-sim2.trim_Years(startYear=2020, endYear=2100)
+sim2.trim_Years(startYear=2020, endYear=2050)
 
 
-# In[109]:
+# In[ ]:
 
 
 sim2.scenario['PERC'].dataIn_e
 
 
-# In[111]:
+# In[ ]:
 
 
 for scen in scennames2:
@@ -1221,7 +1221,7 @@ for scen in scennames2:
 
 # ## 2020 Module
 
-# In[112]:
+# In[ ]:
 
 
 #option 1, install identical power
@@ -1235,13 +1235,13 @@ sim2.calculateFlows(scenarios='TOPCon', bifacialityfactors=bifi_topcon_path)
 #topcon_p_yearly, topcon_p_cum = sim2.aggregateResults(scenarios='TOPCon')
 
 
-# In[113]:
+# In[ ]:
 
 
 plt.plot(sim2.scenario['PERC'].dataOut_m['Installed_Capacity_[W]'])
 
 
-# In[115]:
+# In[ ]:
 
 
 #compile all energy out results
@@ -1255,7 +1255,7 @@ for scen in scennames2:
 #energy_mod2.head()
 
 
-# In[116]:
+# In[ ]:
 
 
 energy_mat2 = pd.DataFrame()
@@ -1269,20 +1269,20 @@ for scen in scennames2:
 #energy_mat2.tail()
 
 
-# In[117]:
+# In[ ]:
 
 
 allenergy2 = pd.concat([energy_mod2,energy_mat2], axis=1)
 allenergy2.index=idx_temp
 
 
-# In[118]:
+# In[ ]:
 
 
 allenergy2
 
 
-# In[119]:
+# In[ ]:
 
 
 perc_e_flows = allenergy2.filter(like='PERC')
@@ -1298,7 +1298,7 @@ topcon_e_out = topcon_e_flows.filter(like='e_out_annual_[Wh]')
 topcon_e_demand = topcon_e_flows.loc[:,~topcon_e_flows.columns.isin(topcon_e_out.columns)] 
 
 
-# In[120]:
+# In[29]:
 
 
 perc_e_demand_total_annual = pd.DataFrame(perc_e_demand.sum(axis=1), columns=['Wh']) #includes module and material
@@ -1306,7 +1306,7 @@ shj_e_demand_total_annual = pd.DataFrame(shj_e_demand.sum(axis=1), columns=['Wh'
 topcon_e_demand_total_annual = pd.DataFrame(topcon_e_demand.sum(axis=1), columns=['Wh']) #includes module and material
 
 
-# In[121]:
+# In[30]:
 
 
 perc_e_out.columns=perc_e_demand_total_annual.columns
@@ -1322,7 +1322,7 @@ topcon_net_energy_annual = topcon_e_out - topcon_e_demand_total_annual
 #perc_net_energy_annual/1e9 # GWh
 
 
-# In[122]:
+# In[31]:
 
 
 width = 0.3
@@ -1980,14 +1980,14 @@ metric_2050mod/metric_2050mod['PERC']
 
 # Assuming a 2.0 m^2 module
 
-# In[ ]:
+# In[33]:
 
 
 scennames_anModule = ['PERC_anModule','SHJ_anModule','TOPCon_anModule']
 bifipaths = [bifi_perc_path,bifi_shj_path,bifi_topcon_path]
 
 
-# In[ ]:
+# In[34]:
 
 
 #create an area dataframe to feed in a module each year
@@ -1997,16 +1997,16 @@ area_deploy_anModule['Area'] = 2.0
 area_deploy_anModule.head()
 
 
-# In[ ]:
+# In[37]:
 
 
 #creating scenarios for identical power and identical area deployed
-MATERIALS = ['glass','silver','silicon'] #, 'copper', 'encapsulant', 'backsheet', 'aluminum_frames'
+MATERIALS = ['glass','silver','silicon', 'copper', 'aluminium_frames'] # 'encapsulant', 'backsheet', 
 moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[ ]:
+# In[38]:
 
 
 #load in a baseline and materials for modification
@@ -2033,7 +2033,13 @@ for scen in scennames_anModule:
 # - glass per m2
 # - silver per m2
 
-# In[ ]:
+# In[41]:
+
+
+len(modeffs)
+
+
+# In[43]:
 
 
 #no circularity
