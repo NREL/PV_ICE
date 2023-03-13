@@ -5,7 +5,7 @@
 # 
 # A simple journal to explore and graph energy contributions
 
-# In[2]:
+# In[1]:
 
 
 import numpy as np
@@ -28,7 +28,7 @@ supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' /
 #    os.makedirs(testfolder)
 
 
-# In[3]:
+# In[2]:
 
 
 #creating scenarios for identical power and identical area deployed
@@ -37,7 +37,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[7]:
+# In[3]:
 
 
 #load in a baseline and materials for modification
@@ -51,14 +51,14 @@ for mat in range (0, len(MATERIALS)):
     sim_anModule.scenario['PVICE'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[8]:
+# In[4]:
 
 
 #no circularity
 sim_anModule.scenMod_noCircularity()
 
 
-# In[10]:
+# In[5]:
 
 
 #create an area dataframe to feed in a module each year
@@ -68,21 +68,21 @@ area_deploy_anModule['Area'] = 2.0
 area_deploy_anModule.head()
 
 
-# In[12]:
+# In[6]:
 
 
 sim_anModule.calculateFlows(scenarios='PVICE', 
                             installByArea=list(area_deploy_anModule['Area']))
 
 
-# In[14]:
+# In[7]:
 
 
 anmodule_yearly, anmodule_cumu = sim_anModule.aggregateResults()
 allenergy, energyGen, energy_demands = sim_anModule.aggregateEnergyResults()
 
 
-# In[24]:
+# In[8]:
 
 
 energy_demands.head(3)
@@ -90,7 +90,7 @@ energy_demands.head(3)
 
 # Sum the Energy demands by material and by module
 
-# In[21]:
+# In[9]:
 
 
 e_module_sum = energy_demands.filter(like='mod').sum(axis=1)
@@ -105,38 +105,38 @@ e_bkdwn_mod_mat = pd.concat([e_module_sum,e_glass_sum,e_silicon_sum,e_silver_sum
                             axis=1, keys=['module','glass','silicon','silver', 'copper','alframes'])
 
 
-# In[23]:
+# In[10]:
 
 
 e_bkdwn_mod_mat.head(3)
 
 
-# In[35]:
+# In[13]:
 
 
 fig, ax = plt.subplots()
 
 #module
-ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['module']/1e6, label='module', color='slategray')
+ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['module']/1e3, label='module', color='slategray')
 #glass
-ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['glass']/1e6, label='glass', color = 'lightskyblue',
-       bottom=e_bkdwn_mod_mat['module']/1e6)
+ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['glass']/1e3, label='glass', color = 'lightskyblue',
+       bottom=e_bkdwn_mod_mat['module']/1e3)
 #silicon
-ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['silicon']/1e6, label='silicon', color='cornflowerblue',
-       bottom=(e_bkdwn_mod_mat['module']+e_bkdwn_mod_mat['glass'])/1e6)
+ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['silicon']/1e3, label='silicon', color='cornflowerblue',
+       bottom=(e_bkdwn_mod_mat['module']+e_bkdwn_mod_mat['glass'])/1e3)
 #silver
-ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['silver']/1e6, label='silver', color = 'blue',
-       bottom=(e_bkdwn_mod_mat['module']+e_bkdwn_mod_mat['glass']+e_bkdwn_mod_mat['silicon'])/1e6)
+ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['silver']/1e3, label='silver', color = 'blue',
+       bottom=(e_bkdwn_mod_mat['module']+e_bkdwn_mod_mat['glass']+e_bkdwn_mod_mat['silicon'])/1e3)
 #copper
-ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['copper']/1e6, label='copper', color = 'white',
-       bottom=(e_bkdwn_mod_mat['module']+e_bkdwn_mod_mat['glass']+e_bkdwn_mod_mat['silicon']+e_bkdwn_mod_mat['silver'])/1e6)
+ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['copper']/1e3, label='copper', color = 'white',
+       bottom=(e_bkdwn_mod_mat['module']+e_bkdwn_mod_mat['glass']+e_bkdwn_mod_mat['silicon']+e_bkdwn_mod_mat['silver'])/1e3)
 #Al frames
-ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['alframes']/1e6, label='alframes', color = 'black',
-       bottom=(e_bkdwn_mod_mat['module']+e_bkdwn_mod_mat['glass']+e_bkdwn_mod_mat['silicon']+e_bkdwn_mod_mat['silver']+e_bkdwn_mod_mat['copper'])/1e6)
+ax.bar(e_bkdwn_mod_mat.index, e_bkdwn_mod_mat['alframes']/1e3, label='alframes', color = 'black',
+       bottom=(e_bkdwn_mod_mat['module']+e_bkdwn_mod_mat['glass']+e_bkdwn_mod_mat['silicon']+e_bkdwn_mod_mat['silver']+e_bkdwn_mod_mat['copper'])/1e3)
 
 
 plt.legend()
-ax.set_ylabel('Energy Demand \n[MWh/module]')
+ax.set_ylabel('Energy Demand \n[kWh/module]')
 plt.title('Change in Manufacturing Energy by Component')
 plt.rc('font', size=14) #controls default text size
 plt.rcParams['figure.figsize'] = (10, 8)
