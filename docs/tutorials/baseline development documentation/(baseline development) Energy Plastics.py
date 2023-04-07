@@ -114,7 +114,7 @@ plt.legend()
 e_peteva_mfging['E_mfg_sum_kWhpkg'] = e_peteva_mfging['E_mfg_kWhpkg']+e_peteva_mfging['E_mfg_FUEL_kWhpkg']
 
 
-# In[22]:
+# In[12]:
 
 
 plt.scatter(e_peteva_mfging_raw.index,e_peteva_mfging['E_mfg_sum_kWhpkg'], marker='P', label='sum')
@@ -135,7 +135,7 @@ e_peteva_mfging_ethylene = e_peteva_mfging[e_peteva_mfging['Notes'].str.contains
 e_peteva_mfging_eva = e_peteva_mfging[e_peteva_mfging['Notes'].str.contains('EVA', na = False)]
 
 
-# In[32]:
+# In[14]:
 
 
 plt.scatter(e_peteva_mfging_eva.index, e_peteva_mfging_eva['E_mfg_sum_kWhpkg'], label='eva', marker='^', s=60)
@@ -147,13 +147,13 @@ plt.ylim(0,)
 plt.legend()
 
 
-# In[33]:
+# In[15]:
 
 
 e_peteva_mfging_eva
 
 
-# In[15]:
+# In[16]:
 
 
 e_peteva_mfging_ethylene
@@ -182,7 +182,7 @@ E_mfg_eva_temp.loc[2019,'E_mfg_eva_fuelfraction'] = e_peteva_mfging_eva.loc[2000
 E_mfg_eva = E_mfg_eva_temp.interpolate(limit_direction='both')
 
 
-# In[44]:
+# In[19]:
 
 
 fig, ax1 = plt.subplots()
@@ -213,7 +213,7 @@ plt.show()
 # # PET
 # All backsheet materials that are not PP based (which is a small marketshare) have a PET interlayer. Therefore, we will include the energy of PET manufacture to add to PVDF for creating backsheet energy flows.
 
-# In[93]:
+# In[20]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -222,13 +222,13 @@ e_backsheetPET_mfg_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingM
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[94]:
+# In[21]:
 
 
 e_backsheetPET_mfg_raw.dropna(how='all')
 
 
-# In[96]:
+# In[22]:
 
 
 plt.scatter(e_backsheetPET_mfg_raw.index, e_backsheetPET_mfg_raw.iloc[:,0], label='electricity', )
@@ -242,7 +242,7 @@ plt.legend()
 
 # The two high points are CEDs. Exclude and replot
 
-# In[103]:
+# In[23]:
 
 
 e_backsheetPET_mfg = e_backsheetPET_mfg_raw.copy()
@@ -253,7 +253,7 @@ e_backsheetPET_mfg['E_sum_kWhpkg'] = e_backsheetPET_mfg['E_mfg_kWhpkg']+e_backsh
 e_backsheetPET_mfg['E_fuelfraction_kWhpkg'] = e_backsheetPET_mfg['E_mfg_FUEL_kWhpkg']/e_backsheetPET_mfg['E_sum_kWhpkg']
 
 
-# In[102]:
+# In[24]:
 
 
 plt.scatter(e_backsheetPET_mfg.index, e_backsheetPET_mfg.iloc[:,0], label='electricity', )
@@ -267,7 +267,7 @@ plt.ylim(0,)
 plt.legend()
 
 
-# In[105]:
+# In[25]:
 
 
 e_backsheetPET_mfg.dropna(how='all')
@@ -275,19 +275,19 @@ e_backsheetPET_mfg.dropna(how='all')
 
 # With this lovely scatter plot, we're going to use 4 kWh/kg for total energy and fuel fraction of 80%
 
-# In[106]:
+# In[26]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
 E_mfg_pet = pd.DataFrame(index=idx_temp)
 E_mfg_pet.loc[:,'E_mfg_pet_kWhpkg'] = 4.0
-E_mfg_pet.loc[:,'E_mfg_petFUEL_kWhpkg'] = 0.8
+E_mfg_pet.loc[:,'E_mfg_pet_fuelfraction'] = 0.8
 
 
 # # PVDF granulate energy
 # PVDF and PVF
 
-# In[73]:
+# In[27]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -296,13 +296,13 @@ e_backsheet_mfg_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMate
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[74]:
+# In[28]:
 
 
 e_backsheet_mfg_raw.dropna(how='all')
 
 
-# In[75]:
+# In[29]:
 
 
 plt.scatter(e_backsheet_mfg_raw.index, e_backsheet_mfg_raw.iloc[:,0], label='electricity', )
@@ -314,7 +314,7 @@ plt.ylim(0,)
 plt.legend()
 
 
-# In[76]:
+# In[30]:
 
 
 e_backsheet_mfg_route1 = e_backsheet_mfg_raw[e_backsheet_mfg_raw['Notes'].str.contains('Route 1', na = False)]
@@ -322,7 +322,7 @@ e_backsheet_mfg_route2 = e_backsheet_mfg_raw[e_backsheet_mfg_raw['Notes'].str.co
 e_backsheet_mfg_raw['E_sum_kWhpkg'] = e_backsheet_mfg_raw['E_mfg_kWhpkg']+e_backsheet_mfg_raw['E_mfg_FUEL_kWhpkg']
 
 
-# In[78]:
+# In[31]:
 
 
 plt.scatter(e_backsheet_mfg_raw.index, e_backsheet_mfg_raw.iloc[:,0], label='electricity', )
@@ -344,33 +344,33 @@ plt.legend()
 # 
 # Therefore, we will use the average of the two routes from Abbasi and apply the higher fuel fraction (there a several heating steps that at industrial scale are likely to be done with natgas.
 
-# In[86]:
+# In[32]:
 
 
 mean_abbasi = (e_backsheet_mfg_raw.loc[2011,'E_mfg_kWhpkg']+e_backsheet_mfg_raw.loc[2012,'E_mfg_kWhpkg'])/2
 print('The average of Abbasi Route 1 and 2 is '+str(mean_abbasi)+' kWh/kg')
 
 
-# In[90]:
+# In[33]:
 
 
 fuelfraction_abbasi = e_backsheet_mfg_raw.loc[2014,'E_mfg_FUEL_kWhpkg']/e_backsheet_mfg_raw.loc[2014,'E_sum_kWhpkg']
 print('The fuel fraction of Abassi from Route 1 is '+str(fuelfraction_abbasi))
 
 
-# In[91]:
+# In[34]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
 E_mfg_pvdf = pd.DataFrame(index=idx_temp)
 E_mfg_pvdf.loc[:,'E_mfg_pvdf_kWhpkg'] = mean_abbasi
-E_mfg_pvdf.loc[:,'E_mfg_pvdfFUEL_kWhpkg'] = fuelfraction_abbasi
+E_mfg_pvdf.loc[:,'E_mfg_pvdfFUEL_fraction'] = fuelfraction_abbasi
 
 
 # # Forming energy
 # Turning granulate polymer into sheets
 
-# In[107]:
+# In[35]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -379,13 +379,13 @@ e_plastic_sheet_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMate
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[108]:
+# In[36]:
 
 
 e_plastic_sheet_raw.dropna(how='all')
 
 
-# In[110]:
+# In[37]:
 
 
 plt.scatter(e_plastic_sheet_raw.index, e_plastic_sheet_raw.iloc[:,0], label='electricity', )
@@ -397,17 +397,114 @@ plt.ylim(0,)
 plt.legend()
 
 
-# In[ ]:
+# Based on the assumption that the energy required to form the film from a granualate is unlikely to be greater than the energy to create the granualte from feedstock, we will remove the high outlier, and average the rest.
+
+# In[38]:
 
 
+e_plastic_sheet = e_plastic_sheet_raw.copy()
+e_plastic_sheet.loc[2005] = np.nan
+e_filmform = e_plastic_sheet.mean()
 
 
-
-# In[ ]:
-
+# In[39]:
 
 
+e_filmform.sum()
 
+
+# In[40]:
+
+
+idx_temp = pd.Series(range(1995,2051,1))
+E_mfg_film = pd.DataFrame(index=idx_temp)
+E_mfg_film.loc[:,'E_mfg_pvdf_kWhpkg'] = e_filmform.sum()
+E_mfg_film.loc[:,'E_mfg_pvdfFUEL_fraction'] = e_filmform['E_mfg_FUEL_kWhpkg']/ e_filmform.sum()
+
+
+# # Sum and Weight manufacturing Energies
+# We need to add the film formation to each of the 3 plastics. Then EVA+film will be multiplied by the encapsulant baseline. 
+# 
+# For the backsheet, the PET core is typically 200 um thick, with two layers of PVF or PVDF of 40 um thick. The mass of the backsheet was weighted by the relative thicknesses of each material. We also have weighting by Kynar, Tedlar, and other - however, we didn't find energy data to support this level of detail for energy weighting - we will assume that PVDF and PVF have similar energy of manufacture. We will use the same weighting factor for fraction of the backsheet attributable to PET vs PVF/PVDF as we did in the mass baseline, i.e.; 80/280 * pvf energy + 200/280 * PET energy = average energy
+# 
+# ### EVA+film = encapsuant energy manufacturing
+
+# In[41]:
+
+
+idx_temp = pd.Series(range(1995,2051,1))
+E_encapsulant = pd.DataFrame(index=idx_temp)
+E_encapsulant['E_mfg_kWhpkg'] = E_mfg_film['E_mfg_pvdf_kWhpkg'] + E_mfg_eva['E_mfg_eva_kWhpkg']
+E_encapsulant['E_mfg_fuel_kWhpkg'] = e_filmform['E_mfg_FUEL_kWhpkg']+E_mfg_eva['E_mfg_eva_fuelfraction']*E_mfg_eva['E_mfg_eva_kWhpkg']
+E_encapsulant['E_mfg_fuelfraction'] = E_encapsulant['E_mfg_fuel_kWhpkg']/E_encapsulant['E_mfg_kWhpkg']
+E_encapsulant_final = E_encapsulant.iloc[:,[0,2]]
+#E_encapsulant_final
+
+
+# In[68]:
+
+
+E_encapsulant_final.head()
+
+
+# In[42]:
+
+
+E_encapsulant_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_encapsulant_MFGing.csv")
+
+
+# ### PVDF+Film and PET+film = backsheet energy manufacturing
+# *note all these values are static with time currently.*
+
+# In[57]:
+
+
+pvf_fraction = 80/280
+pet_fraction = 200/280
+
+
+# In[53]:
+
+
+e_petfilm_kwhpkg = E_mfg_film['E_mfg_pvdf_kWhpkg'] + E_mfg_pet['E_mfg_pet_kWhpkg']
+e_petfilm_fuelfraction = (E_mfg_film['E_mfg_pvdf_kWhpkg']*E_mfg_film['E_mfg_pvdfFUEL_fraction'] + 
+                          E_mfg_pet['E_mfg_pet_kWhpkg']*E_mfg_pet['E_mfg_pet_fuelfraction'])/e_petfilm_kwhpkg
+e_petfilm_fuel_kwhpkg = (E_mfg_film['E_mfg_pvdf_kWhpkg']*E_mfg_film['E_mfg_pvdfFUEL_fraction'] + 
+                          E_mfg_pet['E_mfg_pet_kWhpkg']*E_mfg_pet['E_mfg_pet_fuelfraction'])
+
+
+# In[55]:
+
+
+e_pvdffilm_kwhpkg = E_mfg_film['E_mfg_pvdf_kWhpkg'] + E_mfg_pvdf['E_mfg_pvdf_kWhpkg']
+e_pvdffilm_fuelfraction = (E_mfg_film['E_mfg_pvdf_kWhpkg']*E_mfg_film['E_mfg_pvdfFUEL_fraction'] + 
+                           E_mfg_pvdf['E_mfg_pvdf_kWhpkg']*E_mfg_pvdf['E_mfg_pvdfFUEL_fraction'])/e_pvdffilm_kwhpkg
+e_pvdffilm_fuel_kwhpkg = (E_mfg_film['E_mfg_pvdf_kWhpkg']*E_mfg_film['E_mfg_pvdfFUEL_fraction'] + 
+                           E_mfg_pvdf['E_mfg_pvdf_kWhpkg']*E_mfg_pvdf['E_mfg_pvdfFUEL_fraction'])
+
+
+# In[65]:
+
+
+idx_temp = pd.Series(range(1995,2051,1))
+E_backsheet = pd.DataFrame(index=idx_temp)
+E_backsheet['E_mfg_kWhpkg'] = pvf_fraction * e_pvdffilm_kwhpkg + pet_fraction * e_petfilm_kwhpkg
+E_backsheet['E_mfg_fuelfraction'] = (pet_fraction *e_petfilm_fuel_kwhpkg+pvf_fraction *e_pvdffilm_fuel_kwhpkg)/E_backsheet['E_mfg_kWhpkg']
+
+
+# In[67]:
+
+
+E_backsheet.head()
+
+
+# In[70]:
+
+
+E_backsheet.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_backsheet_MFGing.csv")
+
+
+# # Recycling Energies
 
 # In[ ]:
 
