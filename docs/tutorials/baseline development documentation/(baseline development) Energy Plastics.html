@@ -17101,14 +17101,14 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[75]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">idx_temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span><span class="mi">2051</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">E_encapsulant</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">idx_temp</span><span class="p">)</span>
 <span class="n">E_encapsulant</span><span class="p">[</span><span class="s1">&#39;E_mfg_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">E_mfg_film</span><span class="p">[</span><span class="s1">&#39;E_mfg_pvdf_kWhpkg&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">E_mfg_eva</span><span class="p">[</span><span class="s1">&#39;E_mfg_eva_kWhpkg&#39;</span><span class="p">]</span>
 <span class="n">E_encapsulant</span><span class="p">[</span><span class="s1">&#39;E_mfg_fuel_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e_filmform</span><span class="p">[</span><span class="s1">&#39;E_mfg_FUEL_kWhpkg&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">E_mfg_eva</span><span class="p">[</span><span class="s1">&#39;E_mfg_eva_fuelfraction&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">E_mfg_eva</span><span class="p">[</span><span class="s1">&#39;E_mfg_eva_kWhpkg&#39;</span><span class="p">]</span>
-<span class="n">E_encapsulant</span><span class="p">[</span><span class="s1">&#39;E_mfg_fuelfraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">E_encapsulant</span><span class="p">[</span><span class="s1">&#39;E_mfg_fuel_kWhpkg&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">E_encapsulant</span><span class="p">[</span><span class="s1">&#39;E_mfg_kWhpkg&#39;</span><span class="p">]</span>
+<span class="n">E_encapsulant</span><span class="p">[</span><span class="s1">&#39;E_mfg_fuelfraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">E_encapsulant</span><span class="p">[</span><span class="s1">&#39;E_mfg_fuel_kWhpkg&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">E_encapsulant</span><span class="p">[</span><span class="s1">&#39;E_mfg_kWhpkg&#39;</span><span class="p">])</span>
 <span class="n">E_encapsulant_final</span> <span class="o">=</span> <span class="n">E_encapsulant</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span>
 <span class="c1">#E_encapsulant_final</span>
 </pre></div>
@@ -17123,7 +17123,7 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[76]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">E_encapsulant_final</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -17144,7 +17144,7 @@ class="
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[68]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[76]:</div>
 
 
 
@@ -17175,27 +17175,27 @@ class="
     <tr>
       <th>1995</th>
       <td>2.322378</td>
-      <td>0.519298</td>
+      <td>51.929766</td>
     </tr>
     <tr>
       <th>1996</th>
       <td>2.322378</td>
-      <td>0.519298</td>
+      <td>51.929766</td>
     </tr>
     <tr>
       <th>1997</th>
       <td>2.322378</td>
-      <td>0.519298</td>
+      <td>51.929766</td>
     </tr>
     <tr>
       <th>1998</th>
       <td>2.322378</td>
-      <td>0.519298</td>
+      <td>51.929766</td>
     </tr>
     <tr>
       <th>1999</th>
       <td>2.322378</td>
-      <td>0.519298</td>
+      <td>51.929766</td>
     </tr>
   </tbody>
 </table>
@@ -17213,7 +17213,7 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[77]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">E_encapsulant_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_encapsulant_MFGing.csv&quot;</span><span class="p">)</span>
@@ -17298,13 +17298,13 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[65]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[71]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">idx_temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span><span class="mi">2051</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">E_backsheet</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">idx_temp</span><span class="p">)</span>
 <span class="n">E_backsheet</span><span class="p">[</span><span class="s1">&#39;E_mfg_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvf_fraction</span> <span class="o">*</span> <span class="n">e_pvdffilm_kwhpkg</span> <span class="o">+</span> <span class="n">pet_fraction</span> <span class="o">*</span> <span class="n">e_petfilm_kwhpkg</span>
-<span class="n">E_backsheet</span><span class="p">[</span><span class="s1">&#39;E_mfg_fuelfraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pet_fraction</span> <span class="o">*</span><span class="n">e_petfilm_fuel_kwhpkg</span><span class="o">+</span><span class="n">pvf_fraction</span> <span class="o">*</span><span class="n">e_pvdffilm_fuel_kwhpkg</span><span class="p">)</span><span class="o">/</span><span class="n">E_backsheet</span><span class="p">[</span><span class="s1">&#39;E_mfg_kWhpkg&#39;</span><span class="p">]</span>
+<span class="n">E_backsheet</span><span class="p">[</span><span class="s1">&#39;E_mfg_fuelfraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="p">((</span><span class="n">pet_fraction</span> <span class="o">*</span><span class="n">e_petfilm_fuel_kwhpkg</span><span class="o">+</span><span class="n">pvf_fraction</span> <span class="o">*</span><span class="n">e_pvdffilm_fuel_kwhpkg</span><span class="p">)</span><span class="o">/</span><span class="n">E_backsheet</span><span class="p">[</span><span class="s1">&#39;E_mfg_kWhpkg&#39;</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -17317,7 +17317,7 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[72]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">E_backsheet</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -17338,7 +17338,7 @@ class="
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[67]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[72]:</div>
 
 
 
@@ -17369,27 +17369,27 @@ class="
     <tr>
       <th>1995</th>
       <td>12.015295</td>
-      <td>0.737039</td>
+      <td>73.703917</td>
     </tr>
     <tr>
       <th>1996</th>
       <td>12.015295</td>
-      <td>0.737039</td>
+      <td>73.703917</td>
     </tr>
     <tr>
       <th>1997</th>
       <td>12.015295</td>
-      <td>0.737039</td>
+      <td>73.703917</td>
     </tr>
     <tr>
       <th>1998</th>
       <td>12.015295</td>
-      <td>0.737039</td>
+      <td>73.703917</td>
     </tr>
     <tr>
       <th>1999</th>
       <td>12.015295</td>
-      <td>0.737039</td>
+      <td>73.703917</td>
     </tr>
   </tbody>
 </table>
@@ -17407,7 +17407,7 @@ class="
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[70]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[74]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">E_backsheet</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_backsheet_MFGing.csv&quot;</span><span class="p">)</span>
@@ -17425,7 +17425,10 @@ class="
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Recycling-Energies">Recycling Energies<a class="anchor-link" href="#Recycling-Energies">&#182;</a></h1>
+<h1 id="Recycling-Energies">Recycling Energies<a class="anchor-link" href="#Recycling-Energies">&#182;</a></h1><p>Low Quality = Mechanical Recycling</p>
+<p>High Quality = chemical recycling (pyrolysis or glycolysis)</p>
+<p>There is a potential for incineration with heat/energy recovery...?</p>
+
 </div>
 </div>
 </div>

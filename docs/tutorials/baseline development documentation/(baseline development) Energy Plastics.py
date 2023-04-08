@@ -429,25 +429,25 @@ E_mfg_film.loc[:,'E_mfg_pvdfFUEL_fraction'] = e_filmform['E_mfg_FUEL_kWhpkg']/ e
 # 
 # ### EVA+film = encapsuant energy manufacturing
 
-# In[41]:
+# In[75]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
 E_encapsulant = pd.DataFrame(index=idx_temp)
 E_encapsulant['E_mfg_kWhpkg'] = E_mfg_film['E_mfg_pvdf_kWhpkg'] + E_mfg_eva['E_mfg_eva_kWhpkg']
 E_encapsulant['E_mfg_fuel_kWhpkg'] = e_filmform['E_mfg_FUEL_kWhpkg']+E_mfg_eva['E_mfg_eva_fuelfraction']*E_mfg_eva['E_mfg_eva_kWhpkg']
-E_encapsulant['E_mfg_fuelfraction'] = E_encapsulant['E_mfg_fuel_kWhpkg']/E_encapsulant['E_mfg_kWhpkg']
+E_encapsulant['E_mfg_fuelfraction'] = 100*(E_encapsulant['E_mfg_fuel_kWhpkg']/E_encapsulant['E_mfg_kWhpkg'])
 E_encapsulant_final = E_encapsulant.iloc[:,[0,2]]
 #E_encapsulant_final
 
 
-# In[68]:
+# In[76]:
 
 
 E_encapsulant_final.head()
 
 
-# In[42]:
+# In[77]:
 
 
 E_encapsulant_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_encapsulant_MFGing.csv")
@@ -483,28 +483,33 @@ e_pvdffilm_fuel_kwhpkg = (E_mfg_film['E_mfg_pvdf_kWhpkg']*E_mfg_film['E_mfg_pvdf
                            E_mfg_pvdf['E_mfg_pvdf_kWhpkg']*E_mfg_pvdf['E_mfg_pvdfFUEL_fraction'])
 
 
-# In[65]:
+# In[71]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
 E_backsheet = pd.DataFrame(index=idx_temp)
 E_backsheet['E_mfg_kWhpkg'] = pvf_fraction * e_pvdffilm_kwhpkg + pet_fraction * e_petfilm_kwhpkg
-E_backsheet['E_mfg_fuelfraction'] = (pet_fraction *e_petfilm_fuel_kwhpkg+pvf_fraction *e_pvdffilm_fuel_kwhpkg)/E_backsheet['E_mfg_kWhpkg']
+E_backsheet['E_mfg_fuelfraction'] = 100*((pet_fraction *e_petfilm_fuel_kwhpkg+pvf_fraction *e_pvdffilm_fuel_kwhpkg)/E_backsheet['E_mfg_kWhpkg'])
 
 
-# In[67]:
+# In[72]:
 
 
 E_backsheet.head()
 
 
-# In[70]:
+# In[74]:
 
 
 E_backsheet.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_backsheet_MFGing.csv")
 
 
 # # Recycling Energies
+# Low Quality = Mechanical Recycling
+# 
+# High Quality = chemical recycling (pyrolysis or glycolysis)
+# 
+# There is a potential for incineration with heat/energy recovery...?
 
 # In[ ]:
 
