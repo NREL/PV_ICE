@@ -429,7 +429,7 @@ E_mfg_film.loc[:,'E_mfg_pvdfFUEL_fraction'] = e_filmform['E_mfg_FUEL_kWhpkg']/ e
 # 
 # ### EVA+film = encapsuant energy manufacturing
 
-# In[75]:
+# In[41]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
@@ -441,13 +441,13 @@ E_encapsulant_final = E_encapsulant.iloc[:,[0,2]]
 #E_encapsulant_final
 
 
-# In[76]:
+# In[42]:
 
 
 E_encapsulant_final.head()
 
 
-# In[77]:
+# In[43]:
 
 
 E_encapsulant_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_encapsulant_MFGing.csv")
@@ -456,14 +456,14 @@ E_encapsulant_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/ou
 # ### PVDF+Film and PET+film = backsheet energy manufacturing
 # *note all these values are static with time currently.*
 
-# In[57]:
+# In[44]:
 
 
 pvf_fraction = 80/280
 pet_fraction = 200/280
 
 
-# In[53]:
+# In[45]:
 
 
 e_petfilm_kwhpkg = E_mfg_film['E_mfg_pvdf_kWhpkg'] + E_mfg_pet['E_mfg_pet_kWhpkg']
@@ -473,7 +473,7 @@ e_petfilm_fuel_kwhpkg = (E_mfg_film['E_mfg_pvdf_kWhpkg']*E_mfg_film['E_mfg_pvdfF
                           E_mfg_pet['E_mfg_pet_kWhpkg']*E_mfg_pet['E_mfg_pet_fuelfraction'])
 
 
-# In[55]:
+# In[46]:
 
 
 e_pvdffilm_kwhpkg = E_mfg_film['E_mfg_pvdf_kWhpkg'] + E_mfg_pvdf['E_mfg_pvdf_kWhpkg']
@@ -483,7 +483,7 @@ e_pvdffilm_fuel_kwhpkg = (E_mfg_film['E_mfg_pvdf_kWhpkg']*E_mfg_film['E_mfg_pvdf
                            E_mfg_pvdf['E_mfg_pvdf_kWhpkg']*E_mfg_pvdf['E_mfg_pvdfFUEL_fraction'])
 
 
-# In[71]:
+# In[47]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
@@ -492,27 +492,150 @@ E_backsheet['E_mfg_kWhpkg'] = pvf_fraction * e_pvdffilm_kwhpkg + pet_fraction * 
 E_backsheet['E_mfg_fuelfraction'] = 100*((pet_fraction *e_petfilm_fuel_kwhpkg+pvf_fraction *e_pvdffilm_fuel_kwhpkg)/E_backsheet['E_mfg_kWhpkg'])
 
 
-# In[72]:
+# In[48]:
 
 
 E_backsheet.head()
 
 
-# In[74]:
+# In[49]:
 
 
 E_backsheet.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_backsheet_MFGing.csv")
 
+
+# # Landfill Energy
+# There was really only one plastic specific landfilling energy found; Xayachak, T. et al. (2023) ‘Assessing the environmental footprint of plastic pyrolysis and gasification: A life cycle inventory study’, Process Safety and Environmental Protection, 173, pp. 592–603. Available at: https://doi.org/10.1016/j.psep.2023.03.061.
+# The energy denoted in Table S3 is miniscual: 4e-4 kWh/kg, mostly electricity. Previous material baselines have used 0.09 kWh/kg from Ravikumar 2016. We will maintain consistency, and use the 0.09 value.
+# 
+# There is a potential for incineration with heat/energy recovery, however, we will currently neglect this option and assume things are landfilled without incineration. Potential upgrades could include energy credit or negative energy, but would also require carbon intensity.
 
 # # Recycling Energies
 # Low Quality = Mechanical Recycling
 # 
 # High Quality = chemical recycling (pyrolysis or glycolysis)
 # 
-# There is a potential for incineration with heat/energy recovery...?
+# We will not distingiush between recycling energies of the different plastics as little information was found, and mixed plastic recycling is uncommon (e.g.; backsheet)
 
-# In[ ]:
+# In[81]:
 
 
+cwd = os.getcwd() #grabs current working directory
+#skipcols = ['Source', 'Notes','Country']
+e_plastic_LQrecycle_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-plastic-LQrecycling.csv",
+                                     index_col='year')#, usecols=lambda x: x not in skipcols)
 
+
+# In[85]:
+
+
+e_plastic_LQrecycle_raw['E_sum_kWhpkg'] = e_plastic_LQrecycle_raw['E_LQrecycle_kWhpkg']+e_plastic_LQrecycle_raw['E_LQrecycle_fuel_kWhpkg']
+
+
+# In[86]:
+
+
+e_plastic_LQrecycle_raw.dropna(how='all')
+
+
+# In[87]:
+
+
+plt.scatter(e_plastic_LQrecycle_raw.index, e_plastic_LQrecycle_raw.iloc[:,0], label='electricity', )
+plt.scatter(e_plastic_LQrecycle_raw.index, e_plastic_LQrecycle_raw.iloc[:,3], label='fuel')
+plt.scatter(e_plastic_LQrecycle_raw.index, e_plastic_LQrecycle_raw.iloc[:,6], label='sum', marker='P', color='black')
+
+plt.title('Energy LQ Recycle (mechanical)')
+plt.ylabel('[kWh/kg]')
+plt.xlim(1994,2023)
+plt.ylim(0,)
+plt.legend()
+
+
+# Three of the data sources are in close agreement on the energy requirements. There is also useful data for decreasing fuel fraction from Uekert et al. Therefore, we will interpolate from Joosten, Arena, and Uekert.
+
+# In[89]:
+
+
+e_plastic_LQrecycle_maths = e_plastic_LQrecycle_raw.loc[[1998,2003,2022],['E_LQrecycle_kWhpkg','E_LQrecycle_fuel_kWhpkg']]
+e_plastic_LQrecycle_maths.loc[2022,'E_LQrecycle_fuel_kWhpkg'] = 0.03*8.58*0.277777 #from Uekert supplemental
+e_plastic_LQrecycle_maths['E_LQrecycle_sum_kWhpkg'] = e_plastic_LQrecycle_maths.sum(axis=1)
+e_plastic_LQrecycle_maths['E_LQrecycle_fuelfraction'] = e_plastic_LQrecycle_maths['E_LQrecycle_fuel_kWhpkg']/e_plastic_LQrecycle_maths['E_LQrecycle_sum_kWhpkg'] 
+e_plastic_LQrecycle_maths
+
+
+# In[120]:
+
+
+idx_temp = pd.Series(range(1995,2051,1))
+E_plastic_LQrecycle_temp = e_plastic_LQrecycle_maths.iloc[:,[2,3]]
+E_plastic_LQrecycle_gappy = E_plastic_LQrecycle_temp.reindex(index=idx_temp)
+E_plastic_LQrecycle = E_plastic_LQrecycle_gappy.interpolate(limit_direction='both')
+
+
+# In[121]:
+
+
+E_plastic_LQrecycle.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_plastics_LQrecycle.csv")
+
+
+# ### HQ recycling
+# These numbers will be added to the LQ recycling numbers
+
+# In[126]:
+
+
+cwd = os.getcwd() #grabs current working directory
+#skipcols = ['Source', 'Notes','Country']
+e_plastic_HQrecycle_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-plastic-HQrecycling.csv",
+                                     index_col='year')#, usecols=lambda x: x not in skipcols)
+
+
+# In[127]:
+
+
+e_plastic_HQrecycle_raw['E_sum_kWhpkg'] = e_plastic_HQrecycle_raw['E_HQrecycle_kWhpkg']+e_plastic_HQrecycle_raw['E_HQrecycle_fuel_kWhpkg']
+
+
+# In[128]:
+
+
+e_plastic_HQrecycle_raw.dropna(how='all')
+
+
+# In[131]:
+
+
+plt.scatter(e_plastic_HQrecycle_raw.index, e_plastic_HQrecycle_raw.iloc[:,0], label='electricity', )
+plt.scatter(e_plastic_HQrecycle_raw.index, e_plastic_HQrecycle_raw.iloc[:,3], label='fuel')
+plt.scatter(e_plastic_HQrecycle_raw.index, e_plastic_HQrecycle_raw.iloc[:,6], label='sum', marker='P', color='black')
+
+plt.title('Energy HQ Recycle')
+plt.ylabel('[kWh/kg]')
+plt.xlim(1994,2023)
+plt.ylim(0,)
+plt.legend()
+
+
+# We will select the Uekert methanolysis (of PET) values for HQ closed loop recycling, as it is indicated that this process produces a high material quality with no discoloration.
+
+# In[148]:
+
+
+e_plasticHQrecyle_fuelfraction = e_plastic_HQrecycle_raw.loc[2020,'E_HQrecycle_fuel_kWhpkg']/e_plastic_HQrecycle_raw.loc[2020,'E_sum_kWhpkg']
+
+
+# In[149]:
+
+
+idx_temp = pd.Series(range(1995,2051,1))
+E_plastic_HQrecycle = pd.DataFrame(index=idx_temp)
+E_plastic_HQrecycle['E_HQrecycle_kWhpkg'] = e_plastic_HQrecycle_raw.loc[2020,'E_sum_kWhpkg']
+E_plastic_HQrecycle['E_HQrecycle_fuelfraction'] = e_plasticHQrecyle_fuelfraction
+
+
+# In[150]:
+
+
+E_plastic_HQrecycle.head()
 
