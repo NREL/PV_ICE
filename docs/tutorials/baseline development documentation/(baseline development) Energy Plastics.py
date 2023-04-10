@@ -429,7 +429,7 @@ E_mfg_film.loc[:,'E_mfg_pvdfFUEL_fraction'] = e_filmform['E_mfg_FUEL_kWhpkg']/ e
 # 
 # ### EVA+film = encapsuant energy manufacturing
 
-# In[41]:
+# In[64]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
@@ -437,17 +437,17 @@ E_encapsulant = pd.DataFrame(index=idx_temp)
 E_encapsulant['E_mfg_kWhpkg'] = E_mfg_film['E_mfg_pvdf_kWhpkg'] + E_mfg_eva['E_mfg_eva_kWhpkg']
 E_encapsulant['E_mfg_fuel_kWhpkg'] = e_filmform['E_mfg_FUEL_kWhpkg']+E_mfg_eva['E_mfg_eva_fuelfraction']*E_mfg_eva['E_mfg_eva_kWhpkg']
 E_encapsulant['E_mfg_fuelfraction'] = 100*(E_encapsulant['E_mfg_fuel_kWhpkg']/E_encapsulant['E_mfg_kWhpkg'])
-E_encapsulant_final = E_encapsulant.iloc[:,[0,2]]
+E_encapsulant_final = round(E_encapsulant.iloc[:,[0,2]],2)
 #E_encapsulant_final
 
 
-# In[42]:
+# In[65]:
 
 
 E_encapsulant_final.head()
 
 
-# In[43]:
+# In[66]:
 
 
 E_encapsulant_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_encapsulant_MFGing.csv")
@@ -483,22 +483,23 @@ e_pvdffilm_fuel_kwhpkg = (E_mfg_film['E_mfg_pvdf_kWhpkg']*E_mfg_film['E_mfg_pvdf
                            E_mfg_pvdf['E_mfg_pvdf_kWhpkg']*E_mfg_pvdf['E_mfg_pvdfFUEL_fraction'])
 
 
-# In[47]:
+# In[68]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
 E_backsheet = pd.DataFrame(index=idx_temp)
 E_backsheet['E_mfg_kWhpkg'] = pvf_fraction * e_pvdffilm_kwhpkg + pet_fraction * e_petfilm_kwhpkg
 E_backsheet['E_mfg_fuelfraction'] = 100*((pet_fraction *e_petfilm_fuel_kwhpkg+pvf_fraction *e_pvdffilm_fuel_kwhpkg)/E_backsheet['E_mfg_kWhpkg'])
+E_backsheet = round(E_backsheet,2)
 
 
-# In[48]:
+# In[69]:
 
 
 E_backsheet.head()
 
 
-# In[49]:
+# In[70]:
 
 
 E_backsheet.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_backsheet_MFGing.csv")
@@ -517,7 +518,7 @@ E_backsheet.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_ene
 # 
 # We will not distingiush between recycling energies of the different plastics as little information was found, and mixed plastic recycling is uncommon (e.g.; backsheet)
 
-# In[81]:
+# In[50]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -526,19 +527,19 @@ e_plastic_LQrecycle_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/Supporting
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[85]:
+# In[51]:
 
 
 e_plastic_LQrecycle_raw['E_sum_kWhpkg'] = e_plastic_LQrecycle_raw['E_LQrecycle_kWhpkg']+e_plastic_LQrecycle_raw['E_LQrecycle_fuel_kWhpkg']
 
 
-# In[86]:
+# In[52]:
 
 
 e_plastic_LQrecycle_raw.dropna(how='all')
 
 
-# In[87]:
+# In[53]:
 
 
 plt.scatter(e_plastic_LQrecycle_raw.index, e_plastic_LQrecycle_raw.iloc[:,0], label='electricity', )
@@ -554,17 +555,17 @@ plt.legend()
 
 # Three of the data sources are in close agreement on the energy requirements. There is also useful data for decreasing fuel fraction from Uekert et al. Therefore, we will interpolate from Joosten, Arena, and Uekert.
 
-# In[89]:
+# In[73]:
 
 
 e_plastic_LQrecycle_maths = e_plastic_LQrecycle_raw.loc[[1998,2003,2022],['E_LQrecycle_kWhpkg','E_LQrecycle_fuel_kWhpkg']]
 e_plastic_LQrecycle_maths.loc[2022,'E_LQrecycle_fuel_kWhpkg'] = 0.03*8.58*0.277777 #from Uekert supplemental
 e_plastic_LQrecycle_maths['E_LQrecycle_sum_kWhpkg'] = e_plastic_LQrecycle_maths.sum(axis=1)
-e_plastic_LQrecycle_maths['E_LQrecycle_fuelfraction'] = e_plastic_LQrecycle_maths['E_LQrecycle_fuel_kWhpkg']/e_plastic_LQrecycle_maths['E_LQrecycle_sum_kWhpkg'] 
+e_plastic_LQrecycle_maths['E_LQrecycle_fuelfraction'] = 100*e_plastic_LQrecycle_maths['E_LQrecycle_fuel_kWhpkg']/e_plastic_LQrecycle_maths['E_LQrecycle_sum_kWhpkg'] 
 e_plastic_LQrecycle_maths
 
 
-# In[120]:
+# In[74]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
@@ -573,7 +574,7 @@ E_plastic_LQrecycle_gappy = E_plastic_LQrecycle_temp.reindex(index=idx_temp)
 E_plastic_LQrecycle = E_plastic_LQrecycle_gappy.interpolate(limit_direction='both')
 
 
-# In[121]:
+# In[76]:
 
 
 E_plastic_LQrecycle.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_plastics_LQrecycle.csv")
@@ -582,7 +583,7 @@ E_plastic_LQrecycle.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/ou
 # ### HQ recycling
 # These numbers will be added to the LQ recycling numbers
 
-# In[126]:
+# In[57]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -591,19 +592,19 @@ e_plastic_HQrecycle_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/Supporting
                                      index_col='year')#, usecols=lambda x: x not in skipcols)
 
 
-# In[127]:
+# In[58]:
 
 
 e_plastic_HQrecycle_raw['E_sum_kWhpkg'] = e_plastic_HQrecycle_raw['E_HQrecycle_kWhpkg']+e_plastic_HQrecycle_raw['E_HQrecycle_fuel_kWhpkg']
 
 
-# In[128]:
+# In[59]:
 
 
 e_plastic_HQrecycle_raw.dropna(how='all')
 
 
-# In[131]:
+# In[60]:
 
 
 plt.scatter(e_plastic_HQrecycle_raw.index, e_plastic_HQrecycle_raw.iloc[:,0], label='electricity', )
@@ -619,23 +620,30 @@ plt.legend()
 
 # We will select the Uekert methanolysis (of PET) values for HQ closed loop recycling, as it is indicated that this process produces a high material quality with no discoloration.
 
-# In[148]:
+# In[61]:
 
 
 e_plasticHQrecyle_fuelfraction = e_plastic_HQrecycle_raw.loc[2020,'E_HQrecycle_fuel_kWhpkg']/e_plastic_HQrecycle_raw.loc[2020,'E_sum_kWhpkg']
 
 
-# In[149]:
+# In[71]:
 
 
 idx_temp = pd.Series(range(1995,2051,1))
 E_plastic_HQrecycle = pd.DataFrame(index=idx_temp)
-E_plastic_HQrecycle['E_HQrecycle_kWhpkg'] = e_plastic_HQrecycle_raw.loc[2020,'E_sum_kWhpkg']
-E_plastic_HQrecycle['E_HQrecycle_fuelfraction'] = e_plasticHQrecyle_fuelfraction
+E_plastic_HQrecycle['E_HQrecycle_kWhpkg'] = round(e_plastic_HQrecycle_raw.loc[2020,'E_sum_kWhpkg'],2)
+E_plastic_HQrecycle['E_HQrecycle_fuelfraction'] = round(e_plasticHQrecyle_fuelfraction,2)*100
 
 
-# In[150]:
+# In[72]:
 
 
 E_plastic_HQrecycle.head()
 
+
+# While this is high, higher than some of the manufacturing energies, this is not unreasonable when we consider the energy for extraction (which will be added to the manufacturing energies above.
+
+# # Extraction Energy
+# The above manufacturing energies do not include extraction and processing of natural gas. This will be captured in the e_mat_extraction and will be added to MFGing energies. The electricity and fuel data used for this is from ecoinvent, derived from NETL 2014, which is US centric 2010 conventional extraction.
+# 
+# This energy is 0.05 kWh/kg of electricity and 16.6 kWh/kg of natural gas for nat gas extraction, so a total of 16.65, with a majority being fossil derived.
