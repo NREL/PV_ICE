@@ -1,0 +1,277 @@
+﻿country_or_region,year,variable,share_of_generation_pct
+OECD,2000,Bioenergy,1.33
+OECD,2000,Clean,39.88
+OECD,2000,Coal,37.37
+OECD,2000,Fossil,60.13
+OECD,2000,Gas,15.91
+OECD,2000,Hydro,14.71
+OECD,2000,Nuclear,23.17
+OECD,2000,Other Fossil,6.85
+OECD,2000,Other Renewables,0.36
+OECD,2000,Solar,0.01
+OECD,2000,Wind,0.3
+OECD,2000,Wind and solar,0.31
+OECD,2001,Bioenergy,1.24
+OECD,2001,Clean,39.42
+OECD,2001,Coal,37.06
+OECD,2001,Fossil,60.58
+OECD,2001,Gas,16.71
+OECD,2001,Hydro,13.7
+OECD,2001,Nuclear,23.74
+OECD,2001,Other Fossil,6.81
+OECD,2001,Other Renewables,0.36
+OECD,2001,Solar,0.01
+OECD,2001,Wind,0.37
+OECD,2001,Wind and solar,0.38
+OECD,2002,Bioenergy,1.33
+OECD,2002,Clean,39.09
+OECD,2002,Coal,36.91
+OECD,2002,Fossil,60.91
+OECD,2002,Gas,17.52
+OECD,2002,Hydro,13.59
+OECD,2002,Nuclear,23.28
+OECD,2002,Other Fossil,6.48
+OECD,2002,Other Renewables,0.37
+OECD,2002,Solar,0.02
+OECD,2002,Wind,0.5
+OECD,2002,Wind and solar,0.52
+OECD,2003,Bioenergy,1.4
+OECD,2003,Clean,38.2
+OECD,2003,Coal,37.59
+OECD,2003,Fossil,61.8
+OECD,2003,Gas,17.72
+OECD,2003,Hydro,13.23
+OECD,2003,Nuclear,22.55
+OECD,2003,Other Fossil,6.49
+OECD,2003,Other Renewables,0.39
+OECD,2003,Solar,0.02
+OECD,2003,Wind,0.61
+OECD,2003,Wind and solar,0.63
+OECD,2004,Bioenergy,1.5
+OECD,2004,Clean,38.83
+OECD,2004,Coal,36.6
+OECD,2004,Fossil,61.17
+OECD,2004,Gas,18.55
+OECD,2004,Hydro,13.24
+OECD,2004,Nuclear,22.9
+OECD,2004,Other Fossil,6.02
+OECD,2004,Other Renewables,0.38
+OECD,2004,Solar,0.03
+OECD,2004,Wind,0.78
+OECD,2004,Wind and solar,0.81
+OECD,2005,Bioenergy,1.62
+OECD,2005,Clean,38.55
+OECD,2005,Coal,36.4
+OECD,2005,Fossil,61.45
+OECD,2005,Gas,19.14
+OECD,2005,Hydro,13.06
+OECD,2005,Nuclear,22.52
+OECD,2005,Other Fossil,5.91
+OECD,2005,Other Renewables,0.38
+OECD,2005,Solar,0.04
+OECD,2005,Wind,0.93
+OECD,2005,Wind and solar,0.97
+OECD,2006,Bioenergy,1.69
+OECD,2006,Clean,38.94
+OECD,2006,Coal,35.96
+OECD,2006,Fossil,61.06
+OECD,2006,Gas,20.35
+OECD,2006,Hydro,13.16
+OECD,2006,Nuclear,22.51
+OECD,2006,Other Fossil,4.75
+OECD,2006,Other Renewables,0.38
+OECD,2006,Solar,0.05
+OECD,2006,Wind,1.15
+OECD,2006,Wind and solar,1.2
+OECD,2007,Bioenergy,1.76
+OECD,2007,Clean,37.49
+OECD,2007,Coal,35.77
+OECD,2007,Fossil,62.51
+OECD,2007,Gas,21.77
+OECD,2007,Hydro,12.51
+OECD,2007,Nuclear,21.33
+OECD,2007,Other Fossil,4.97
+OECD,2007,Other Renewables,0.4
+OECD,2007,Solar,0.06
+OECD,2007,Wind,1.43
+OECD,2007,Wind and solar,1.49
+OECD,2008,Bioenergy,1.82
+OECD,2008,Clean,38.5
+OECD,2008,Coal,34.86
+OECD,2008,Fossil,61.52
+OECD,2008,Gas,22.25
+OECD,2008,Hydro,13.11
+OECD,2008,Nuclear,21.24
+OECD,2008,Other Fossil,4.41
+OECD,2008,Other Renewables,0.41
+OECD,2008,Solar,0.11
+OECD,2008,Wind,1.81
+OECD,2008,Wind and solar,1.92
+OECD,2009,Bioenergy,1.97
+OECD,2009,Clean,39.99
+OECD,2009,Coal,33.16
+OECD,2009,Fossil,60.01
+OECD,2009,Gas,23.11
+OECD,2009,Hydro,13.47
+OECD,2009,Nuclear,21.68
+OECD,2009,Other Fossil,3.74
+OECD,2009,Other Renewables,0.44
+OECD,2009,Solar,0.18
+OECD,2009,Wind,2.25
+OECD,2009,Wind and solar,2.43
+OECD,2010,Bioenergy,2.11
+OECD,2010,Clean,39.54
+OECD,2010,Coal,32.93
+OECD,2010,Fossil,60.45
+OECD,2010,Gas,23.96
+OECD,2010,Hydro,13.11
+OECD,2010,Nuclear,21.08
+OECD,2010,Other Fossil,3.56
+OECD,2010,Other Renewables,0.42
+OECD,2010,Solar,0.28
+OECD,2010,Wind,2.54
+OECD,2010,Wind and solar,2.82
+OECD,2011,Bioenergy,2.22
+OECD,2011,Clean,39.66
+OECD,2011,Coal,31.88
+OECD,2011,Fossil,60.34
+OECD,2011,Gas,24.46
+OECD,2011,Hydro,13.54
+OECD,2011,Nuclear,19.79
+OECD,2011,Other Fossil,4
+OECD,2011,Other Renewables,0.43
+OECD,2011,Solar,0.54
+OECD,2011,Wind,3.14
+OECD,2011,Wind and solar,3.68
+OECD,2012,Bioenergy,2.4
+OECD,2012,Clean,38.83
+OECD,2012,Coal,30.71
+OECD,2012,Fossil,61.17
+OECD,2012,Gas,26.02
+OECD,2012,Hydro,13.56
+OECD,2012,Nuclear,18
+OECD,2012,Other Fossil,4.44
+OECD,2012,Other Renewables,0.44
+OECD,2012,Solar,0.82
+OECD,2012,Wind,3.61
+OECD,2012,Wind and solar,4.43
+OECD,2013,Bioenergy,2.55
+OECD,2013,Clean,40.24
+OECD,2013,Coal,31.28
+OECD,2013,Fossil,59.77
+OECD,2013,Gas,24.52
+OECD,2013,Hydro,13.8
+OECD,2013,Nuclear,18.1
+OECD,2013,Other Fossil,3.97
+OECD,2013,Other Renewables,0.46
+OECD,2013,Solar,1.08
+OECD,2013,Wind,4.25
+OECD,2013,Wind and solar,5.33
+OECD,2014,Bioenergy,2.7
+OECD,2014,Clean,41.22
+OECD,2014,Coal,30.83
+OECD,2014,Fossil,58.8
+OECD,2014,Gas,24.55
+OECD,2014,Hydro,13.65
+OECD,2014,Nuclear,18.27
+OECD,2014,Other Fossil,3.42
+OECD,2014,Other Renewables,0.48
+OECD,2014,Solar,1.5
+OECD,2014,Wind,4.62
+OECD,2014,Wind and solar,6.12
+OECD,2015,Bioenergy,2.85
+OECD,2015,Clean,41.95
+OECD,2015,Coal,28.4
+OECD,2015,Fossil,58.05
+OECD,2015,Gas,26.37
+OECD,2015,Hydro,13.44
+OECD,2015,Nuclear,18.07
+OECD,2015,Other Fossil,3.28
+OECD,2015,Other Renewables,0.5
+OECD,2015,Solar,1.83
+OECD,2015,Wind,5.26
+OECD,2015,Wind and solar,7.09
+OECD,2016,Bioenergy,2.83
+OECD,2016,Clean,42.61
+OECD,2016,Coal,26.55
+OECD,2016,Fossil,57.38
+OECD,2016,Gas,27.64
+OECD,2016,Hydro,13.54
+OECD,2016,Nuclear,17.9
+OECD,2016,Other Fossil,3.19
+OECD,2016,Other Renewables,0.5
+OECD,2016,Solar,2.16
+OECD,2016,Wind,5.68
+OECD,2016,Wind and solar,7.84
+OECD,2017,Bioenergy,2.91
+OECD,2017,Clean,43.8
+OECD,2017,Coal,25.88
+OECD,2017,Fossil,56.19
+OECD,2017,Gas,27.46
+OECD,2017,Hydro,13.58
+OECD,2017,Nuclear,17.72
+OECD,2017,Other Fossil,2.85
+OECD,2017,Other Renewables,0.51
+OECD,2017,Solar,2.59
+OECD,2017,Wind,6.49
+OECD,2017,Wind and solar,9.08
+OECD,2018,Bioenergy,2.93
+OECD,2018,Clean,44.28
+OECD,2018,Coal,24.58
+OECD,2018,Fossil,55.75
+OECD,2018,Gas,28.44
+OECD,2018,Hydro,13.57
+OECD,2018,Nuclear,17.54
+OECD,2018,Other Fossil,2.73
+OECD,2018,Other Renewables,0.51
+OECD,2018,Solar,2.93
+OECD,2018,Wind,6.8
+OECD,2018,Wind and solar,9.73
+OECD,2019,Bioenergy,2.99
+OECD,2019,Clean,46.1
+OECD,2019,Coal,21.51
+OECD,2019,Fossil,53.9
+OECD,2019,Gas,30.05
+OECD,2019,Hydro,13.46
+OECD,2019,Nuclear,17.97
+OECD,2019,Other Fossil,2.34
+OECD,2019,Other Renewables,0.53
+OECD,2019,Solar,3.42
+OECD,2019,Wind,7.73
+OECD,2019,Wind and solar,11.15
+OECD,2020,Bioenergy,3.05
+OECD,2020,Clean,48.07
+OECD,2020,Coal,18.66
+OECD,2020,Fossil,51.92
+OECD,2020,Gas,31.03
+OECD,2020,Hydro,14.12
+OECD,2020,Nuclear,17.25
+OECD,2020,Other Fossil,2.23
+OECD,2020,Other Renewables,0.56
+OECD,2020,Solar,4.24
+OECD,2020,Wind,8.85
+OECD,2020,Wind and solar,13.09
+OECD,2021,Bioenergy,3.12
+OECD,2021,Clean,47.95
+OECD,2021,Coal,19.84
+OECD,2021,Fossil,52.06
+OECD,2021,Gas,30.07
+OECD,2021,Hydro,13.28
+OECD,2021,Nuclear,17.16
+OECD,2021,Other Fossil,2.15
+OECD,2021,Other Renewables,0.55
+OECD,2021,Solar,4.89
+OECD,2021,Wind,8.95
+OECD,2021,Wind and solar,13.84
+OECD,2022,Bioenergy,3.11
+OECD,2022,Clean,48.1
+OECD,2022,Coal,19.19
+OECD,2022,Fossil,51.9
+OECD,2022,Gas,30.39
+OECD,2022,Hydro,12.79
+OECD,2022,Nuclear,15.88
+OECD,2022,Other Fossil,2.32
+OECD,2022,Other Renewables,0.56
+OECD,2022,Solar,5.83
+OECD,2022,Wind,9.93
+OECD,2022,Wind and solar,15.76
