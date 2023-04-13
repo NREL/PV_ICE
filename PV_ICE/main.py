@@ -1416,15 +1416,19 @@ class Simulation:
                     demat = pd.DataFrame()
                     demat['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
                     demat['mat_MFG_virgin'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
+                    demat['mat_MFG_virgin_fuel'] = demat['mat_MFG_virgin']*matEnergy['e_mat_MFG_fuelfraction']*0.01 #fuel fraction of the virgin energy demands
                     demat['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
                     demat['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
+                    demat['mat_MFGScrap_HQ_fuel'] = demat['mat_MFGScrap_HQ']*matEnergy['e_mat_Recycled_HQ_fuelfraction']*0.01 #fraction of HQ energy attributable to fuel
     
                     demat['mat_Landfill'] = dm['mat_Total_Landfilled']*matEnergy['e_mat_Landfill']
+                    demat['mat_Landfill_fuel'] = demat['mat_Landfill']*matEnergy['e_mat_Landfill_fuelfraction']*0.01 #fuel fraction of landfilling
                     demat['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*matEnergy['e_mat_EoL_ReMFG_clean']
                     demat['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
                     demat['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
     
                 self.scenario[scen].material[mat].matdataOut_e = demat
+
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
 
@@ -1876,7 +1880,9 @@ class Simulation:
         #TO DO: organize energy demands into lifecycle stages
         
         energyGen = allenergy.filter(like='e_out_annual') #select all columns of energy generation
-        energy_demands = allenergy.loc[:,~allenergy.columns.isin(energyGen.columns)] #select all columns that are NOT energy generation, i.e. demands
+        energyFuel = allenergy.filter(like='_fuel') #select all columns of fuel attributable
+        energy_demands_1 = allenergy.loc[:,~allenergy.columns.isin(energyGen.columns)] #select all columns that are NOT energy generation, i.e. demands
+        energy_demands = energy_demands_1.loc[:,~energy_demands_1.columns.isin(energyFuel.columns)] #select all columns that are NOT fuel (this avoids double counting)
 
         for scen in scenarios: #sum the lifecycle energy demands
             colname = str(scen+'_e_demand_total')
@@ -1885,7 +1891,10 @@ class Simulation:
         #Fix the index to be years
         allenergy.index = self.scenario[scen].dataIn_e['year']
         energyGen.index = self.scenario[scen].dataIn_e['year']
+        energyFuel.index = self.scenario[scen].dataIn_e['year']
         energy_demands.index = self.scenario[scen].dataIn_e['year']
+        
+        energy_demands = pd.concat([energy_demands,energyFuel], axis=1) #append fuel energy columns back onto energy demands
         
         return allenergy, energyGen, energy_demands #note, all these are annual
         
