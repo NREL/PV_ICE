@@ -591,7 +591,7 @@ e_ingots_wtd_final = pd.DataFrame(e_ingots_wtd.sum(axis=1)) # sum the annual ene
 e_ingots_wtd_final.columns =['E_Ingot_kWhpkg']
 
 
-# In[106]:
+# In[54]:
 
 
 fig, ax1 = plt.subplots()
@@ -871,13 +871,14 @@ plt.title('Energy of Si MFG')
 plt.show()
 
 
-# In[85]:
+# In[83]:
 
 
 df_mfg_energies.head(2)
+df_mfg_energies.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg_STEPS.csv")
 
 
-# In[90]:
+# In[84]:
 
 
 plt.plot([],[],color='brown', label='Reduce Si')
@@ -907,7 +908,7 @@ plt.legend(handles[::-1], labels[::-1])
 plt.show()
 
 
-# In[ ]:
+# In[85]:
 
 
 plt.plot(df_mfg_energies.index, df_mfg_energies['e_mfg_kWhpkg'])
