@@ -15073,7 +15073,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[120]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[141]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">energy_wafer_fract</span> <span class="o">=</span> <span class="n">energyShare_silicon_mfg_STEPS_subset</span><span class="p">[</span><span class="s1">&#39;E_Wafering_kWhpkg&#39;</span><span class="p">]</span>
@@ -15090,10 +15090,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[121]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[142]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mrktshare_country_si_wafer_fractbyyear</span> <span class="o">=</span> <span class="n">mrktshare_country_si_wafer</span><span class="o">/</span><span class="mi">100</span> <span class="c1">#turn it into a decimal</span>
+<span class="c1">#mrktshare_country_si_wafer_fractbyyear</span>
 </pre></div>
 
      </div>
@@ -15106,12 +15107,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[122]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[143]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">wafer_by_country</span> <span class="o">=</span> <span class="n">mrktshare_country_si_wafer_fractbyyear</span><span class="o">*</span><span class="n">energy_wafer_fract</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mi">100</span>
 <span class="c1"># sanity check: that all countries each year add to the value from energy_cell_fract or pretty close</span>
 <span class="c1">#wafer_by_country.sum()/100</span>
+<span class="c1">#wafer_by_country</span>
 </pre></div>
 
      </div>
@@ -15126,21 +15128,180 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Ingot">Ingot<a class="anchor-link" href="#Ingot">&#182;</a></h3><p>More complicated due to mono vs multi marketshare</p>
+<h3 id="Ingot">Ingot<a class="anchor-link" href="#Ingot">&#182;</a></h3><p>More complicated due to mono vs multi marketshare. The total ingot energy is already weighted by this marketshare. Math is:</p>
+
+<pre><code>    (mono% * % mono country production + multi% * % multi country production)* Ingot % of energy.</code></pre>
 
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[133]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">marketshare_silicon_monoVmulti_subset</span> <span class="o">=</span> <span class="n">marketshare_silicon_monoVmulti</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2004</span><span class="p">:</span><span class="mi">2022</span><span class="p">]</span> <span class="c1">#in fraction form</span>
+<span class="n">marketshare_silicon_monoVmulti_subset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[133]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>monoSi</th>
+      <th>mcSi</th>
+    </tr>
+    <tr>
+      <th>Year</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2004</th>
+      <td>0.080000</td>
+      <td>0.920000</td>
+    </tr>
+    <tr>
+      <th>2005</th>
+      <td>0.309000</td>
+      <td>0.691000</td>
+    </tr>
+    <tr>
+      <th>2006</th>
+      <td>0.270000</td>
+      <td>0.730000</td>
+    </tr>
+    <tr>
+      <th>2007</th>
+      <td>0.353535</td>
+      <td>0.646465</td>
+    </tr>
+    <tr>
+      <th>2008</th>
+      <td>0.454545</td>
+      <td>0.545455</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[134]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">energy_ingot_fract</span> <span class="o">=</span> <span class="n">energyShare_silicon_mfg_STEPS_subset</span><span class="p">[</span><span class="s1">&#39;E_Ingot_kWhpkg&#39;</span><span class="p">]</span>
+<span class="n">energy_ingot_fract</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[134]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>2004    0.085928
+2005    0.178615
+2006    0.163139
+2007    0.188248
+2008    0.213765
+2009    0.219577
+2010    0.217818
+2011    0.190611
+2012    0.193970
+2013    0.177866
+2014    0.175012
+2015    0.182446
+2016    0.162621
+2017    0.147205
+2018    0.155731
+2019    0.158004
+2020    0.203357
+2021    0.211166
+2022    0.212197
+Name: E_Ingot_kWhpkg, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[120]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[136]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">energy_wafer_fract</span> <span class="o">=</span> <span class="n">energyShare_silicon_mfg_STEPS_subset</span><span class="p">[</span><span class="s1">&#39;E_Wafering_kWhpkg&#39;</span><span class="p">]</span>
-<span class="c1">#energy_wafer_fract</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mrktshare_country_si_ingot_multi_fractbyyear</span> <span class="o">=</span> <span class="n">mrktshare_country_si_ingot_multi</span><span class="o">/</span><span class="mi">100</span> <span class="c1">#turn it into a decimal</span>
+<span class="n">mrktshare_country_si_ingot_mono_fractbyyear</span> <span class="o">=</span> <span class="n">mrktshare_country_si_ingot_mono</span><span class="o">/</span><span class="mi">100</span> <span class="c1">#turn it into a decimal</span>
 </pre></div>
 
      </div>
@@ -15153,10 +15314,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[121]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[152]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mrktshare_country_si_wafer_fractbyyear</span> <span class="o">=</span> <span class="n">mrktshare_country_si_wafer</span><span class="o">/</span><span class="mi">100</span> <span class="c1">#turn it into a decimal</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#mono multi deployment marketshares * the countrywise marketshare of mfging these techs</span>
+<span class="n">country_multi</span> <span class="o">=</span> <span class="n">mrktshare_country_si_ingot_multi_fractbyyear</span><span class="o">*</span><span class="n">marketshare_silicon_monoVmulti_subset</span><span class="p">[</span><span class="s1">&#39;mcSi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">country_mono</span> <span class="o">=</span> <span class="n">mrktshare_country_si_ingot_mono_fractbyyear</span><span class="o">*</span><span class="n">marketshare_silicon_monoVmulti_subset</span><span class="p">[</span><span class="s1">&#39;monoSi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 </pre></div>
 
      </div>
@@ -15169,12 +15332,148 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[122]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wafer_by_country</span> <span class="o">=</span> <span class="n">mrktshare_country_si_wafer_fractbyyear</span><span class="o">*</span><span class="n">energy_wafer_fract</span><span class="o">.</span><span class="n">values</span><span class="o">*</span><span class="mi">100</span>
-<span class="c1"># sanity check: that all countries each year add to the value from energy_cell_fract or pretty close</span>
-<span class="c1">#wafer_by_country.sum()/100</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#So there are not the same countries making these technologies</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[159]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#weight both by the ingot energy</span>
+<span class="n">country_multi_energy</span> <span class="o">=</span> <span class="n">country_multi</span><span class="o">*</span><span class="n">energy_ingot_fract</span><span class="o">.</span><span class="n">values</span>
+<span class="n">country_mono_energy</span> <span class="o">=</span> <span class="n">country_mono</span><span class="o">*</span><span class="n">energy_ingot_fract</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[161]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">country_multi_energy</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[161]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Index([&#39;China (mainland)&#39;, &#39;Germany&#39;, &#39;India&#39;, &#39;Korea (Republic)&#39;, &#39;Taiwan&#39;,
+       &#39;United Kingdom&#39;],
+      dtype=&#39;object&#39;, name=&#39;Country&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[162]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">country_mono_energy</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[162]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Index([&#39;China (mainland)&#39;, &#39;Germany&#39;, &#39;Korea (Republic)&#39;, &#39;Malaysia&#39;, &#39;Norway&#39;,
+       &#39;Qatar&#39;, &#39;Taiwan&#39;, &#39;Ukraine&#39;, &#39;United States&#39;, &#39;Vietnam&#39;],
+      dtype=&#39;object&#39;, name=&#39;Country&#39;)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[180]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">country_wtdenergy_ingot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">country_mono_energy</span><span class="p">,</span> <span class="n">country_multi_energy</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Country&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="c1">#sanity check that sums by year are the same as the ingot energy fraction</span>
+<span class="c1">#country_wtdenergy_ingot.sum(axis=0)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[181]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ingot_by_country</span> <span class="o">=</span> <span class="n">country_wtdenergy_ingot</span><span class="o">*</span><span class="mi">100</span>
 </pre></div>
 
      </div>

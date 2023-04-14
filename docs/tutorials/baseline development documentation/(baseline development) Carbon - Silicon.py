@@ -110,49 +110,101 @@ cell_by_country = mrktshare_country_si_cell_fractbyyear*energy_cell_fract.values
 
 # ### Wafer
 
-# In[120]:
+# In[141]:
 
 
 energy_wafer_fract = energyShare_silicon_mfg_STEPS_subset['E_Wafering_kWhpkg']
 #energy_wafer_fract
 
 
-# In[121]:
+# In[142]:
 
 
 mrktshare_country_si_wafer_fractbyyear = mrktshare_country_si_wafer/100 #turn it into a decimal
+#mrktshare_country_si_wafer_fractbyyear
 
 
-# In[122]:
+# In[143]:
 
 
 wafer_by_country = mrktshare_country_si_wafer_fractbyyear*energy_wafer_fract.values*100
 # sanity check: that all countries each year add to the value from energy_cell_fract or pretty close
 #wafer_by_country.sum()/100
+#wafer_by_country
 
 
 # ### Ingot
-# More complicated due to mono vs multi marketshare
+# More complicated due to mono vs multi marketshare. The total ingot energy is already weighted by this marketshare. Math is:
+#         
+#         (mono% * % mono country production + multi% * % multi country production)* Ingot % of energy.
 
-# In[120]:
-
-
-energy_wafer_fract = energyShare_silicon_mfg_STEPS_subset['E_Wafering_kWhpkg']
-#energy_wafer_fract
+# In[133]:
 
 
-# In[121]:
+marketshare_silicon_monoVmulti_subset = marketshare_silicon_monoVmulti.loc[2004:2022] #in fraction form
+marketshare_silicon_monoVmulti_subset.head()
 
 
-mrktshare_country_si_wafer_fractbyyear = mrktshare_country_si_wafer/100 #turn it into a decimal
+# In[134]:
 
 
-# In[122]:
+energy_ingot_fract = energyShare_silicon_mfg_STEPS_subset['E_Ingot_kWhpkg']
+energy_ingot_fract
 
 
-wafer_by_country = mrktshare_country_si_wafer_fractbyyear*energy_wafer_fract.values*100
-# sanity check: that all countries each year add to the value from energy_cell_fract or pretty close
-#wafer_by_country.sum()/100
+# In[136]:
+
+
+mrktshare_country_si_ingot_multi_fractbyyear = mrktshare_country_si_ingot_multi/100 #turn it into a decimal
+mrktshare_country_si_ingot_mono_fractbyyear = mrktshare_country_si_ingot_mono/100 #turn it into a decimal
+
+
+# In[152]:
+
+
+#mono multi deployment marketshares * the countrywise marketshare of mfging these techs
+country_multi = mrktshare_country_si_ingot_multi_fractbyyear*marketshare_silicon_monoVmulti_subset['mcSi'].values
+country_mono = mrktshare_country_si_ingot_mono_fractbyyear*marketshare_silicon_monoVmulti_subset['monoSi'].values
+
+
+# In[ ]:
+
+
+#So there are not the same countries making these technologies
+
+
+# In[159]:
+
+
+#weight both by the ingot energy
+country_multi_energy = country_multi*energy_ingot_fract.values
+country_mono_energy = country_mono*energy_ingot_fract.values
+
+
+# In[161]:
+
+
+country_multi_energy.index
+
+
+# In[162]:
+
+
+country_mono_energy.index
+
+
+# In[180]:
+
+
+country_wtdenergy_ingot = pd.concat([country_mono_energy, country_multi_energy]).groupby(['Country']).sum()
+#sanity check that sums by year are the same as the ingot energy fraction
+#country_wtdenergy_ingot.sum(axis=0)
+
+
+# In[181]:
+
+
+ingot_by_country = country_wtdenergy_ingot*100
 
 
 # ### Polysilicon
