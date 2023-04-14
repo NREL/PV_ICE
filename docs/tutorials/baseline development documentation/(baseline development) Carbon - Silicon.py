@@ -145,11 +145,11 @@ marketshare_silicon_monoVmulti_subset = marketshare_silicon_monoVmulti.loc[2004:
 marketshare_silicon_monoVmulti_subset.head()
 
 
-# In[134]:
+# In[182]:
 
 
 energy_ingot_fract = energyShare_silicon_mfg_STEPS_subset['E_Ingot_kWhpkg']
-energy_ingot_fract
+#energy_ingot_fract
 
 
 # In[136]:
@@ -165,12 +165,6 @@ mrktshare_country_si_ingot_mono_fractbyyear = mrktshare_country_si_ingot_mono/10
 #mono multi deployment marketshares * the countrywise marketshare of mfging these techs
 country_multi = mrktshare_country_si_ingot_multi_fractbyyear*marketshare_silicon_monoVmulti_subset['mcSi'].values
 country_mono = mrktshare_country_si_ingot_mono_fractbyyear*marketshare_silicon_monoVmulti_subset['monoSi'].values
-
-
-# In[ ]:
-
-
-#So there are not the same countries making these technologies
 
 
 # In[159]:
@@ -231,6 +225,7 @@ polysi_by_country = mrktshare_country_si_polysi_fractbyyear*energy_polysi_fract.
 
 
 # ### Silica
+# NEED TO GET COUNTRY MARKET SHARE DATA - See USGS and Heidari & Anctil
 
 # In[120]:
 
