@@ -472,7 +472,7 @@ sim1.modifyScenario('SHJ', 'mod_reliability_t90', df_shj_t90.loc[2022:,'mod_t90'
 # - 2030: 45% collection, 80% recycled module, 45% closed-loop glass, 40% closed-loop silicon, 60% closed loop Al frames
 # - 2050: 75% collection, 95% recycled module, 75% closed loop glass, 75% closed loop silicon, 100% closed loop al frames
 
-# In[43]:
+# In[61]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -499,28 +499,28 @@ sim1.modifyScenario('SHJ', 'mod_EOL_pg4_recycled', df_shj_modrecycle, start_year
 #EoL
 #recycling target
 df_shj_recycleglass_target = 100.0
-sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_PG4_Recycling_target', df_shj_recycleglass_target, start_year=2022)
+sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100.0, start_year=2022)
 #glass recycling yield
 df_shj_recycleglass_yld = pd.DataFrame(index=idx_temp, columns=['glass_recycle_yield'], dtype=float)
 df_shj_recycleglass_yld.loc[2022] = 40
 df_shj_recycleglass_yld.loc[2030] = 60
 df_shj_recycleglass_yld.loc[2050] = 80
 df_shj_recycleglass_yld.interpolate(inplace=True)
-sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_Recycling_yield', df_shj_recycleglass_yld, start_year=2022)
+sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_Recycling_yield', df_shj_recycleglass_yld.loc[2022:,'glass_recycle_yield'], start_year=2022)
 #glass to HQ
 df_shj_recycleglass_HQ = pd.DataFrame(index=idx_temp, columns=['glass_recycle_HQ'], dtype=float)
 df_shj_recycleglass_HQ.loc[2022] = 0
 df_shj_recycleglass_HQ.loc[2030] = 100
 df_shj_recycleglass_HQ.loc[2050] = 100
 df_shj_recycleglass_HQ.interpolate(inplace=True)
-sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', df_shj_recycleglass_HQ, start_year=2022)
+sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', df_shj_recycleglass_HQ.loc[2022:,'glass_recycle_HQ'], start_year=2022)
 #glass to HQCL
 df_shj_recycleglass_HQCL = pd.DataFrame(index=idx_temp, columns=['glass_recycle_HQCL'], dtype=float)
 df_shj_recycleglass_HQCL.loc[2022] = 0
 df_shj_recycleglass_HQCL.loc[2030] = 45
 df_shj_recycleglass_HQCL.loc[2050] = 75
 df_shj_recycleglass_HQCL.interpolate(inplace=True)
-sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', df_shj_recycleglass_HQCL, start_year=2022)
+sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', df_shj_recycleglass_HQCL.loc[2022:,'glass_recycle_HQCL'], start_year=2022)
 
 #AL frames 
 #aluminium_frames recycle
@@ -536,19 +536,19 @@ sim1.scenario['SHJ'].modifyMaterials('aluminium_frames', 'mat_ReMFG_yield', 0.0,
 
 #recycling target
 df_shj_recyclealframe_target = 100.0
-sim1.scenario['SHJ'].modifyMaterials('aluminium_frames', 'mat_PG4_Recycling_target',df_shj_recyclealframe_target, start_year=2022) #send to recycle
+sim1.scenario['SHJ'].modifyMaterials('aluminium_frames', 'mat_PG4_Recycling_target',100.0, start_year=2022) #send to recycle
 #Al frame yield
 sim1.scenario['SHJ'].modifyMaterials('aluminium_frames', 'mat_Recycling_yield', 98.0, start_year=2022) #
 #al frames to HQ
 df_shj_recyclealframe_HQ = 100.0
-sim1.scenario['SHJ'].modifyMaterials('aluminium_frames', 'mat_EOL_Recycled_into_HQ', df_shj_recyclealframe_HQ, start_year=2022) #all HQ
+sim1.scenario['SHJ'].modifyMaterials('aluminium_frames', 'mat_EOL_Recycled_into_HQ', 100.0, start_year=2022) #all HQ
 #Al frames to closed loop
 df_shj_recyclealframe_HQCL = pd.DataFrame(index=idx_temp, columns=['al_frames_recycle_HQCL'], dtype=float)
 df_shj_recyclealframe_HQCL.loc[2022] = 20
 df_shj_recyclealframe_HQCL.loc[2030] = 60
 df_shj_recyclealframe_HQCL.loc[2050] = 100
 df_shj_recyclealframe_HQCL.interpolate(inplace=True)
-sim1.scenario['SHJ'].modifyMaterials('aluminium_frames', 'mat_EOL_RecycledHQ_Reused4MFG', df_shj_recyclealframe_HQCL, start_year=2022) #closed-loop
+sim1.scenario['SHJ'].modifyMaterials('aluminium_frames', 'mat_EOL_RecycledHQ_Reused4MFG', df_shj_recyclealframe_HQCL.loc[2022:,'al_frames_recycle_HQCL'], start_year=2022) #closed-loop
 
 #silicon 
 #MFGing
@@ -559,7 +559,7 @@ df_shj_recycleSi_target.loc[2022] = 20
 df_shj_recycleSi_target.loc[2030] = 100
 df_shj_recycleSi_target.loc[2050] = 100
 df_shj_recycleSi_target.interpolate(inplace=True)
-sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_PG4_Recycling_target', df_shj_recycleSi_target, start_year=2022)
+sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_PG4_Recycling_target', df_shj_recycleSi_target.loc[2022:,'si_recycled'], start_year=2022)
 #recycling yield
 sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_Recycling_yield', 90.0, start_year=2022) 
 sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_MFG_scrap_Recycling_eff', 90.0, start_year=2022) 
@@ -569,30 +569,40 @@ df_shj_recycleSi_HQ.loc[2022] = 0
 df_shj_recycleSi_HQ.loc[2030] = 40
 df_shj_recycleSi_HQ.loc[2050] = 75
 df_shj_recycleSi_HQ.interpolate(inplace=True)
-sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_EOL_Recycled_into_HQ', df_shj_recycleSi_HQ, start_year=2022) 
-sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_MFG_scrap_Recycled_into_HQ', df_shj_recycleSi_HQ, start_year=2022) 
+sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_EOL_Recycled_into_HQ', df_shj_recycleSi_HQ.loc[2022:,'si_recycled_HQ'], start_year=2022) 
+sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_MFG_scrap_Recycled_into_HQ', df_shj_recycleSi_HQ.loc[2022:,'si_recycled_HQ'], start_year=2022) 
 #silicon recycling to HQCL
 df_shj_recycleSi_HQCL = pd.DataFrame(index=idx_temp, columns=['si_recycled_HQCL'], dtype=float)
 df_shj_recycleSi_HQCL.loc[2022] = 0
 df_shj_recycleSi_HQCL.loc[2030] = 100
 df_shj_recycleSi_HQCL.loc[2050] = 100
 df_shj_recycleSi_HQCL.interpolate(inplace=True)
-sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_EOL_RecycledHQ_Reused4MFG', df_shj_recycleSi_HQCL, start_year=2022) #closed-loop
-sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', df_shj_recycleSi_HQCL, start_year=2022) #closed-loop
+sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_EOL_RecycledHQ_Reused4MFG', df_shj_recycleSi_HQCL.loc[2022:,'si_recycled_HQCL'], start_year=2022) #closed-loop
+sim1.scenario['SHJ'].modifyMaterials('silicon', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', df_shj_recycleSi_HQCL.loc[2022:,'si_recycled_HQCL'], start_year=2022) #closed-loop
 
 
-# In[56]:
+# In[62]:
 
 
 sim1.scenario['SHJ'].material['silicon'].matdataIn_m#.iloc[:,2:]
 
 
-# In[57]:
+# In[71]:
 
 
 plt.plot(sim1.scenario['SHJ'].material['silicon'].matdataIn_m.iloc[:,0],sim1.scenario['SHJ'].material['silicon'].matdataIn_m.iloc[:,3:])
-plt.legend(sim1.scenario['PV_ICE'].material['encapsulant'].matdataIn_m.columns, 
-           bbox_to_anchor=(0, -0.1), loc='upper left', ncol=2)
+plt.legend(sim1.scenario['PV_ICE'].material['silicon'].matdataIn_m.iloc[:,3:].columns, 
+           bbox_to_anchor=(0, -0.1), loc='upper left', ncol=1)
+plt.title('Silicon Management Evolution')
+
+
+# In[69]:
+
+
+plt.plot(sim1.scenario['SHJ'].material['glass'].matdataIn_m.iloc[:,0],sim1.scenario['SHJ'].material['glass'].matdataIn_m.iloc[:,3:])
+plt.legend(sim1.scenario['PV_ICE'].material['glass'].matdataIn_m.iloc[:,3:].columns, 
+           bbox_to_anchor=(0, -0.1), loc='upper left', ncol=1)
+plt.title('Glass Management Ev')
 
 
 # In[ ]:
