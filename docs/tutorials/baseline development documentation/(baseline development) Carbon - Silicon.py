@@ -226,7 +226,7 @@ polysi_by_country = mrktshare_country_si_polysi_fractbyyear*energy_polysi_fract.
 polysi_by_country#.sum()/100
 
 
-# ### Mg-Si
+# ### MG-Si
 # from USGS
 
 # In[26]:
@@ -250,31 +250,56 @@ mrktshare_country_si_silica_fractbyyear = mrktshare_country_si_mgsi/100 #turn it
 #mrktshare_country_si_silica_fractbyyear
 
 
-# In[29]:
+# In[36]:
 
 
 silicareduce_by_country = mrktshare_country_si_silica_fractbyyear*energy_reducesilica_fract.values*100
 # sanity check: that all countries each year add to the value from energy_cell_fract or pretty close
-#wafer_by_country.sum()/100
-
-
-# In[30]:
-
-
 silicareduce_by_country
+
+
+# In[58]:
+
+
+#extend data 2004-2022
+silicareduce_by_country_rotate = silicareduce_by_country.T
+idx_extend = pd.Index(range(2004,2023,1))
+temp = pd.DataFrame(index=idx_extend, columns=silicareduce_by_country_rotate.columns)
 
 
 # # Sum MFGing by country contributions
 
-# In[31]:
+# In[32]:
 
 
-pd.concat([cell_by_country, wafer_by_country, ingot_by_country, 
+mfging_si_bycountry = pd.concat([cell_by_country, wafer_by_country, ingot_by_country, 
            polysi_by_country, silicareduce_by_country]).groupby(['Country']).sum()
 
+
+# In[33]:
+
+
+mfging_si_bycountry.sum()
+
+
+# We're pretty close to 100%, so will renormalize at this point.
 
 # In[ ]:
 
 
 
+
+
+# In[35]:
+
+
+#normalize all marketshares each year to make sure everything adds to 100%
+scaling['Scale'] = 1/mfging_si_bycountry.sum()
+est_mrktshrs['monoSi_scaled']= est_mrktshrs['Scale']*est_mrktshrs['monoSi']
+est_mrktshrs['mcSi_scaled']= est_mrktshrs['Scale']*est_mrktshrs['mcSi']
+
+scaled_marketshares = est_mrktshrs[['monoSi_scaled','mcSi_scaled']]
+scaled_marketshares.columns = ['monoSi','mcSi']
+scaled_marketshares.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv', index=True)
+scaled_marketshares['Total'] = scaled_marketshares['monoSi']+scaled_marketshares['mcSi']
 
