@@ -596,13 +596,22 @@ plt.legend(sim1.scenario['PV_ICE'].material['silicon'].matdataIn_m.iloc[:,3:].co
 plt.title('Silicon Management Evolution')
 
 
-# In[69]:
+# In[72]:
 
 
 plt.plot(sim1.scenario['SHJ'].material['glass'].matdataIn_m.iloc[:,0],sim1.scenario['SHJ'].material['glass'].matdataIn_m.iloc[:,3:])
 plt.legend(sim1.scenario['PV_ICE'].material['glass'].matdataIn_m.iloc[:,3:].columns, 
            bbox_to_anchor=(0, -0.1), loc='upper left', ncol=1)
-plt.title('Glass Management Ev')
+plt.title('Glass Management Evolution')
+
+
+# In[73]:
+
+
+plt.plot(sim1.scenario['SHJ'].material['aluminium_frames'].matdataIn_m.iloc[:,0],sim1.scenario['SHJ'].material['aluminium_frames'].matdataIn_m.iloc[:,3:])
+plt.legend(sim1.scenario['PV_ICE'].material['aluminium_frames'].matdataIn_m.iloc[:,3:].columns, 
+           bbox_to_anchor=(0, -0.1), loc='upper left', ncol=1)
+plt.title('Glass Management Evolution')
 
 
 # In[ ]:
