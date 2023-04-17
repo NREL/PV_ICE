@@ -268,7 +268,7 @@ mrktshare_country_si_silica_fractbyyear = mrktshare_country_si_mgsi/100 #turn it
 #mrktshare_country_si_silica_fractbyyear
 
 
-# In[39]:
+# In[32]:
 
 
 silicareduce_by_country = mrktshare_country_si_silica_fractbyyear*energy_reducesilica_fract.values*100
@@ -290,7 +290,7 @@ silicareduce_by_country_extended = temp.ffill().bfill().T
 
 # # Sum MFGing by country contributions
 
-# In[102]:
+# In[34]:
 
 
 mfging_si_bycountry = pd.concat([cell_by_country, wafer_by_country, ingot_by_country, 
@@ -299,7 +299,7 @@ mfging_si_bycountry = pd.concat([cell_by_country, wafer_by_country, ingot_by_cou
 
 # 2004-2006 and 2022 are summed using extrapolated data, thus the silly numbers. We're pretty close to 100%, so will renormalize at this point.
 
-# In[103]:
+# In[35]:
 
 
 mfging_si_bycountry_rot = mfging_si_bycountry.T#.sum(axis=1)
@@ -307,14 +307,14 @@ mfging_si_bycountry_rot['scale'] = 1/mfging_si_bycountry_rot.sum(axis=1)
 #mfging_si_bycountry_rot
 
 
-# In[104]:
+# In[36]:
 
 
 for cols in mfging_si_bycountry_rot.columns:
     mfging_si_bycountry_rot[str(cols+'_scaled')] = mfging_si_bycountry_rot[cols]*mfging_si_bycountry_rot['scale']
 
 
-# In[112]:
+# In[37]:
 
 
 mfging_si_bycountry_rot.filter(like='_scaled').sum(axis=1) #check that it adds to 1
@@ -323,7 +323,7 @@ del mfging_si_bycountry_finalwting['scale_scaled'] #remove scaling column
 mfging_si_bycountry_finalwting.columns =  mfging_si_bycountry.T.columns.tolist()# remove _scaled from names
 
 
-# In[114]:
+# In[38]:
 
 
 mfging_si_bycountry_finalwting.to_csv(os.path.join(carbonfolder, 'output-silicon-CountryMarketshare-MFGing.csv'))
