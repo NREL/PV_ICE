@@ -108,23 +108,29 @@ cell_by_country = mrktshare_country_si_cell_fractbyyear*energy_cell_fract.values
 #cell_by_country.sum()/100
 
 
+# In[11]:
+
+
+cell_by_country.columns = pd.Index(range(2004,2023,1)) #set index back to type int not obj
+
+
 # ### Wafer
 
-# In[11]:
+# In[12]:
 
 
 energy_wafer_fract = energyShare_silicon_mfg_STEPS_subset['E_Wafering_kWhpkg']
 #energy_wafer_fract
 
 
-# In[12]:
+# In[13]:
 
 
 mrktshare_country_si_wafer_fractbyyear = mrktshare_country_si_wafer/100 #turn it into a decimal
 #mrktshare_country_si_wafer_fractbyyear
 
 
-# In[13]:
+# In[14]:
 
 
 wafer_by_country = mrktshare_country_si_wafer_fractbyyear*energy_wafer_fract.values*100
@@ -133,33 +139,39 @@ wafer_by_country = mrktshare_country_si_wafer_fractbyyear*energy_wafer_fract.val
 #wafer_by_country
 
 
+# In[15]:
+
+
+wafer_by_country.columns = pd.Index(range(2004,2023,1)) #set index back to type int not obj
+
+
 # ### Ingot
 # More complicated due to mono vs multi marketshare. The total ingot energy is already weighted by this marketshare. Math is:
 #         
 #         (mono% * % mono country production + multi% * % multi country production)* Ingot % of energy.
 
-# In[14]:
+# In[16]:
 
 
 marketshare_silicon_monoVmulti_subset = marketshare_silicon_monoVmulti.loc[2004:2022] #in fraction form
 marketshare_silicon_monoVmulti_subset.head()
 
 
-# In[15]:
+# In[17]:
 
 
 energy_ingot_fract = energyShare_silicon_mfg_STEPS_subset['E_Ingot_kWhpkg']
 #energy_ingot_fract
 
 
-# In[16]:
+# In[18]:
 
 
 mrktshare_country_si_ingot_multi_fractbyyear = mrktshare_country_si_ingot_multi/100 #turn it into a decimal
 mrktshare_country_si_ingot_mono_fractbyyear = mrktshare_country_si_ingot_mono/100 #turn it into a decimal
 
 
-# In[17]:
+# In[19]:
 
 
 #mono multi deployment marketshares * the countrywise marketshare of mfging these techs
@@ -167,7 +179,7 @@ country_multi = mrktshare_country_si_ingot_multi_fractbyyear*marketshare_silicon
 country_mono = mrktshare_country_si_ingot_mono_fractbyyear*marketshare_silicon_monoVmulti_subset['monoSi'].values
 
 
-# In[18]:
+# In[20]:
 
 
 #weight both by the ingot energy
@@ -175,19 +187,19 @@ country_multi_energy = country_multi*energy_ingot_fract.values
 country_mono_energy = country_mono*energy_ingot_fract.values
 
 
-# In[19]:
+# In[21]:
 
 
 country_multi_energy.index
 
 
-# In[20]:
+# In[22]:
 
 
 country_mono_energy.index
 
 
-# In[21]:
+# In[23]:
 
 
 #keeps all countries, while grouping and summing any duplicates
@@ -196,29 +208,29 @@ country_wtdenergy_ingot = pd.concat([country_mono_energy, country_multi_energy])
 #country_wtdenergy_ingot.sum(axis=0)
 
 
-# In[22]:
+# In[24]:
 
 
 ingot_by_country = country_wtdenergy_ingot*100
-ingot_by_country
+ingot_by_country.columns = pd.Index(range(2004,2023,1)) #set index back to type int not obj
 
 
 # ### Polysilicon
 
-# In[23]:
+# In[25]:
 
 
 energy_polysi_fract = energyShare_silicon_mfg_STEPS_subset['E_refineSiemens_kWhpkg']
 #energy_polysi_fract
 
 
-# In[24]:
+# In[26]:
 
 
 mrktshare_country_si_polysi_fractbyyear = mrktshare_country_si_polysi/100 #turn it into a decimal
 
 
-# In[25]:
+# In[27]:
 
 
 polysi_by_country = mrktshare_country_si_polysi_fractbyyear*energy_polysi_fract.values*100
@@ -226,63 +238,96 @@ polysi_by_country = mrktshare_country_si_polysi_fractbyyear*energy_polysi_fract.
 polysi_by_country#.sum()/100
 
 
+# In[28]:
+
+
+polysi_by_country.columns = pd.Index(range(2004,2023,1)) #set index back to type int not obj
+
+
 # ### MG-Si
 # from USGS
 
-# In[26]:
+# In[29]:
 
 
 mrktshare_country_si_mgsi = pd.read_csv(os.path.join(carbonfolder, 'input-silicon-CountryMarketshare-mgSi.csv'),
                                      index_col='Country')#, usecols=lambda x: x not in skipcols)
 
 
-# In[27]:
+# In[30]:
 
 
 energy_reducesilica_fract = energyShare_silicon_mfg_STEPS_subset.loc[2007:2021,'E_reduce_sum_kWhpkg']
 #energy_reducesilica_fract
 
 
-# In[28]:
+# In[31]:
 
 
 mrktshare_country_si_silica_fractbyyear = mrktshare_country_si_mgsi/100 #turn it into a decimal
 #mrktshare_country_si_silica_fractbyyear
 
 
-# In[36]:
+# In[39]:
 
 
 silicareduce_by_country = mrktshare_country_si_silica_fractbyyear*energy_reducesilica_fract.values*100
 # sanity check: that all countries each year add to the value from energy_cell_fract or pretty close
-silicareduce_by_country
-
-
-# In[58]:
-
-
-#extend data 2004-2022
-silicareduce_by_country_rotate = silicareduce_by_country.T
-idx_extend = pd.Index(range(2004,2023,1))
-temp = pd.DataFrame(index=idx_extend, columns=silicareduce_by_country_rotate.columns)
-
-
-# # Sum MFGing by country contributions
-
-# In[32]:
-
-
-mfging_si_bycountry = pd.concat([cell_by_country, wafer_by_country, ingot_by_country, 
-           polysi_by_country, silicareduce_by_country]).groupby(['Country']).sum()
+#silicareduce_by_country
 
 
 # In[33]:
 
 
-mfging_si_bycountry.sum()
+#extend data 2004-2022
+silicareduce_by_country_rotate = silicareduce_by_country.T
+silicareduce_by_country_rotate.index = pd.Index(range(2007,2022,1)) #set index back to type int not obj
+idx_extend = pd.Index(range(2004,2023,1))
+temp = pd.DataFrame(index=idx_extend, columns=silicareduce_by_country_rotate.columns)
+temp.loc[2007:2021] = silicareduce_by_country_rotate.loc['2007':'2021']
+silicareduce_by_country_extended = temp.ffill().bfill().T
 
 
-# We're pretty close to 100%, so will renormalize at this point.
+# # Sum MFGing by country contributions
+
+# In[102]:
+
+
+mfging_si_bycountry = pd.concat([cell_by_country, wafer_by_country, ingot_by_country, 
+           polysi_by_country, silicareduce_by_country_extended]).groupby(['Country']).sum()
+
+
+# 2004-2006 and 2022 are summed using extrapolated data, thus the silly numbers. We're pretty close to 100%, so will renormalize at this point.
+
+# In[103]:
+
+
+mfging_si_bycountry_rot = mfging_si_bycountry.T#.sum(axis=1)
+mfging_si_bycountry_rot['scale'] = 1/mfging_si_bycountry_rot.sum(axis=1)
+#mfging_si_bycountry_rot
+
+
+# In[104]:
+
+
+for cols in mfging_si_bycountry_rot.columns:
+    mfging_si_bycountry_rot[str(cols+'_scaled')] = mfging_si_bycountry_rot[cols]*mfging_si_bycountry_rot['scale']
+
+
+# In[112]:
+
+
+mfging_si_bycountry_rot.filter(like='_scaled').sum(axis=1) #check that it adds to 1
+mfging_si_bycountry_finalwting = mfging_si_bycountry_rot.filter(like='_scaled')*100 #turn back into %
+del mfging_si_bycountry_finalwting['scale_scaled'] #remove scaling column
+mfging_si_bycountry_finalwting.columns =  mfging_si_bycountry.T.columns.tolist()# remove _scaled from names
+
+
+# In[114]:
+
+
+mfging_si_bycountry_finalwting.to_csv(os.path.join(carbonfolder, 'output-silicon-CountryMarketshare-MFGing.csv'))
+
 
 # In[ ]:
 
@@ -290,16 +335,8 @@ mfging_si_bycountry.sum()
 
 
 
-# In[35]:
+# In[ ]:
 
 
-#normalize all marketshares each year to make sure everything adds to 100%
-scaling['Scale'] = 1/mfging_si_bycountry.sum()
-est_mrktshrs['monoSi_scaled']= est_mrktshrs['Scale']*est_mrktshrs['monoSi']
-est_mrktshrs['mcSi_scaled']= est_mrktshrs['Scale']*est_mrktshrs['mcSi']
 
-scaled_marketshares = est_mrktshrs[['monoSi_scaled','mcSi_scaled']]
-scaled_marketshares.columns = ['monoSi','mcSi']
-scaled_marketshares.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv', index=True)
-scaled_marketshares['Total'] = scaled_marketshares['monoSi']+scaled_marketshares['mcSi']
 
