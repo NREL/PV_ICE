@@ -1429,6 +1429,57 @@ class Simulation:
     
                 self.scenario[scen].material[mat].matdataOut_e = demat
 
+    def calculateCarbonFlows(self, scenarios=None, materials=None, countrygridmixes = None, gridemissionfactors = None, materialprocesscarbon = None, modulecountrymarketshare = None, materialcountrymarketshare = None):
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        if materials is None:
+            materials = list(self.scenario[scenarios[0]].material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+        print("\n\n>>>> Calculating Carbon Flows <<<<\n")
+        
+        #default files
+        carbonfolder = os.path.join(str(Path().resolve().parent.parent, 'baselines', 'CarbonLayer'))
+        
+        gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
+        materialprocesscarbon = pd.read_csv(os.path.join(carbonfolder,'baseline_materials_processCO2.csv'))
+        countrygridmixes = pd.read_csv(os.path.join(carbonfolder, 'baseline_countrygridmix.csv'))
+
+        for scen in scenarios:
+            print("Working on Scenario: ", scen)
+            print("********************")
+        
+            df = self.scenario[scen].dataOut_m
+            df_in = self.scenario[scen].dataIn_m
+            de = self.scenario[scen].dataOut_e
+            
+            #country grid co2 intensity
+            #list all prefixes, with unique = countries in file
+            countryfuellist = [cols.split('_')[0] for cols in countrygridmixes.columns[1:]]
+            countrylist = (pd.DataFrame(countryfuellist)[0].unique()).tolist()
+            #countrylist = [cols.columns.str.split('_')[0] for cols in countrygridmixes] #grab list of countries
+            
+            countrycarbonintensity = gridemissionfactors * countrygridmixes
+            
+            for mat in materials:
+                
+                if self.scenario[scen].material[mat].matdataIn_e is None:
+                    print("==> No energy material found for Material : ", mat, ". Skipping Energy calculations.")
+                    demat = None
+                else:
+    
+                    print("==> Working on Energy for Material : ", mat)
+                    
+                    de_mat = self.scenario[scen].material[mat].matdataOut_e
+            
+            
+
 
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
 
