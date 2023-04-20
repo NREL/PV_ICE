@@ -288,7 +288,7 @@ temp.loc[2007:2021] = silicareduce_by_country_rotate.loc['2007':'2021']
 silicareduce_by_country_extended = temp.ffill().bfill().T
 
 
-# # Sum MFGing by country contributions
+# ## Sum MFGing by country contributions
 
 # In[34]:
 
@@ -327,12 +327,6 @@ mfging_si_bycountry_finalwting.columns =  mfging_si_bycountry.T.columns.tolist()
 
 
 mfging_si_bycountry_finalwting.to_csv(os.path.join(carbonfolder, 'output-silicon-CountryMarketshare-MFGing.csv'))
-
-
-# In[ ]:
-
-
-
 
 
 # In[ ]:
