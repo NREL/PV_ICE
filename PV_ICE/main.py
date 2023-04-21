@@ -1417,9 +1417,11 @@ class Simulation:
                     demat['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
                     demat['mat_MFG_virgin'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
                     demat['mat_MFG_virgin_fuel'] = demat['mat_MFG_virgin']*matEnergy['e_mat_MFG_fuelfraction']*0.01 #fuel fraction of the virgin energy demands
+                    #demat['mat_MFG_virgin_elec'] = demat['mat_MFG_virgin']*(1-matEnergy['e_mat_MFG_fuelfraction'])*0.01 
                     demat['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
                     demat['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
                     demat['mat_MFGScrap_HQ_fuel'] = demat['mat_MFGScrap_HQ']*matEnergy['e_mat_Recycled_HQ_fuelfraction']*0.01 #fraction of HQ energy attributable to fuel
+                    #demat['mat_MFG_virgin_elec'] = demat['mat_MFG_virgin']*(1-matEnergy['e_mat_MFG_fuelfraction'])*0.01 
     
                     demat['mat_Landfill'] = dm['mat_Total_Landfilled']*matEnergy['e_mat_Landfill']
                     demat['mat_Landfill_fuel'] = demat['mat_Landfill']*matEnergy['e_mat_Landfill_fuelfraction']*0.01 #fuel fraction of landfilling
@@ -1429,7 +1431,7 @@ class Simulation:
     
                 self.scenario[scen].material[mat].matdataOut_e = demat
 
-    def calculateCarbonFlows(self, scenarios=None, materials=None, countrygridmixes = None, gridemissionfactors = None, materialprocesscarbon = None, modulecountrymarketshare = None, materialcountrymarketshare = None):
+    def calculateCarbonFlows(self, scenarios=None, materials=None, countrygridmixes = None, gridemissionfactors = None, materialprocesscarbon = None, modulecountrymarketshare = None, materialcountrymarketshare = None, country_deploy = 'USA'):
         if scenarios is None:
             scenarios = list(self.scenario.keys())
         else:
@@ -1450,6 +1452,13 @@ class Simulation:
         gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
         materialprocesscarbon = pd.read_csv(os.path.join(carbonfolder,'baseline_materials_processCO2.csv'))
         countrygridmixes = pd.read_csv(os.path.join(carbonfolder, 'baseline_countrygridmix.csv'))
+        
+            #country grid co2 intensity
+            #list all prefixes, with unique = countries in file and fuels in file
+        countryfuellist = [cols.split('_')[0] for cols in countrygridmixes.columns[1:]]
+        countrylist = (pd.DataFrame(countryfuellist)[0].unique()).tolist()
+        countryfuellist_fuels = [cols.split('_')[1] for cols in countrygridmixes.columns[1:]]
+        fuellist = (pd.DataFrame(countryfuellist_fuels)[0].unique()).tolist()
 
         for scen in scenarios:
             print("Working on Scenario: ", scen)
@@ -1458,12 +1467,10 @@ class Simulation:
             df = self.scenario[scen].dataOut_m
             df_in = self.scenario[scen].dataIn_m
             de = self.scenario[scen].dataOut_e
+            de_in = self.scenario[scen].dataIn_e
             
-            #country grid co2 intensity
-            #list all prefixes, with unique = countries in file
-            countryfuellist = [cols.split('_')[0] for cols in countrygridmixes.columns[1:]]
-            countrylist = (pd.DataFrame(countryfuellist)[0].unique()).tolist()
-            #countrylist = [cols.columns.str.split('_')[0] for cols in countrygridmixes] #grab list of countries
+
+            
             
             countrycarbonintensity = gridemissionfactors * countrygridmixes
             

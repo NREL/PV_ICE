@@ -236,7 +236,7 @@ sim1.calculateFlows()
 #sim1.calculateFlows(scenarios=['CheapCrap'], weibullInputParams=cheapcrapweibull)
 
 
-# In[20]:
+# In[16]:
 
 
 sim1.scenario['PV ICE'].dataOut_m.to_pickle('dataOut_m.pkl')
@@ -246,6 +246,7 @@ sim1.scenario['PV ICE'].dataIn_e.to_pickle('dataIn_e.pkl')
 sim1.scenario['PV ICE'].material['silicon'].matdataIn_e.to_pickle('matdataIn_e.pkl')
 sim1.scenario['PV ICE'].material['silicon'].matdataIn_m.to_pickle('matdataIn_m.pkl')
 sim1.scenario['PV ICE'].material['silicon'].matdataOut_e.to_pickle('matdataOut_e.pkl')
+sim1.scenario['PV ICE'].material['silicon'].matdataOut_m.to_pickle('matdataOut_m.pkl')
 
 
 # In[16]:
