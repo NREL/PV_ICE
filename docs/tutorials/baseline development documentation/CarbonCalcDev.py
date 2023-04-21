@@ -38,7 +38,7 @@ de_in = pd.read_pickle('dataIn_e.pkl')
 
 
 
-# In[27]:
+# In[3]:
 
 
 gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
@@ -125,7 +125,7 @@ dc.head()
 
 # # Material Level
 
-# In[37]:
+# In[9]:
 
 
 matEnergy = pd.read_pickle('matdataIn_e.pkl')
@@ -148,12 +148,6 @@ mat='silicon'
 # In[11]:
 
 
-country_carbonpkwh.columns
-
-
-# In[12]:
-
-
 #carbon intensity of material manufacturing weighted by country
 #list countries mfging material
 countriesmfgingmat = list(countrymatmfg.columns[1:])
@@ -170,7 +164,7 @@ matmfg_co2eqpkwh_bycountry = pd.DataFrame(countrycarbon_modmfg_co2eqpkwh).T #
 matmfg_co2eqpkwh_bycountry['Global_kgCO2eqpkWh'] = modmfg_co2eqpkwh_bycountry.sum(axis=1) #annual carbon intensity of pv module mfg wtd by country
 
 
-# In[13]:
+# In[12]:
 
 
 #carbon impacts mat mfging wtd by country
@@ -181,38 +175,47 @@ dcmat = dcmat.add_suffix('_vmfg_elec_kgCO2eq')
 
 #fuel CO2 impacts
 steamHeat = list(gridemissionfactors[gridemissionfactors['Energy Source']=='SteamAndHeat']['CO2_kgpkWh_EPA'])[0]
-dcmat['mat_MFG_virgin_fuel_CO2eq'] = demat['mat_MFG_virgin_fuel']*steamHeat #CO2 from mfging fuels
-dcmat['mat_MFGScrap_HQ_fuel_CO2eq'] = demat['mat_MFGScrap_HQ_fuel']*steamHeat #CO2 from recycling fuels
+dcmat['mat_MFG_virgin_fuel_kgCO2eq'] = demat['mat_MFG_virgin_fuel']*steamHeat #CO2 from mfging fuels
+dcmat['mat_MFGScrap_HQ_fuel_kgCO2eq'] = demat['mat_MFGScrap_HQ_fuel']*steamHeat #CO2 from recycling fuels
+
+
+# In[13]:
+
+
+dcmat
 
 
 # In[14]:
 
 
-dcmat
-
-
-# In[45]:
-
-
 #CO2 process emissions from MFGing (v, lq, hq)
 #mass of material being processed in each stream * CO2 intensity of that process
-dcmat['mat_vMFG_CO2eq'] = dm['mat_Virgin_Stock']*materialprocesscarbon.loc[mat,'v_MFG_kgCO2eqpkg']
-dcmat['mat_LQmfg_CO2eq'] = dm['mat_MFG_Scrap_Sentto_Recycling']*materialprocesscarbon.loc[mat,'LQ_Recycle_kgCO2eqpkg']
-dcmat['mat_LQeol_CO2eq'] = dm['mat_recycled_target']*materialprocesscarbon.loc[mat,'LQ_Recycle_kgCO2eqpkg']
-dcmat['mat_LQ_CO2eq'] = dcmat['mat_LQmfg_CO2eq']+dcmat['mat_LQeol_CO2eq']
-dcmat['mat_HQmfg_CO2eq'] = dm['mat_MFG_Recycled_into_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_kgCO2eqpkg']
-dcmat['mat_HQeol_CO2eq'] = dm['mat_EOL_Recycled_2_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_kgCO2eqpkg']
-dcmat['mat_HQ_CO2eq'] = dcmat['mat_HQmfg_CO2eq']+dcmat['mat_HQeol_CO2eq'] 
+dcmat['mat_vMFG_kgCO2eq'] = dm['mat_Virgin_Stock']*materialprocesscarbon.loc[mat,'v_MFG_kgCO2eqpkg']
+dcmat['mat_LQmfg_kgCO2eq'] = dm['mat_MFG_Scrap_Sentto_Recycling']*materialprocesscarbon.loc[mat,'LQ_Recycle_kgCO2eqpkg']
+dcmat['mat_LQeol_kgCO2eq'] = dm['mat_recycled_target']*materialprocesscarbon.loc[mat,'LQ_Recycle_kgCO2eqpkg']
+dcmat['mat_LQ_kgCO2eq'] = dcmat['mat_LQmfg_kgCO2eq']+dcmat['mat_LQeol_kgCO2eq']
+dcmat['mat_HQmfg_kgCO2eq'] = dm['mat_MFG_Recycled_into_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_kgCO2eqpkg']
+dcmat['mat_HQeol_kgCO2eq'] = dm['mat_EOL_Recycled_2_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_kgCO2eqpkg']
+dcmat['mat_HQ_kgCO2eq'] = dcmat['mat_HQmfg_kgCO2eq']+dcmat['mat_HQeol_kgCO2eq'] 
 
 
-# In[46]:
+# In[15]:
 
 
 dcmat
 
 
-# In[ ]:
+# In[18]:
 
 
+#sum carbon stuff
+dcmat['mat_vMFG_energy_kgCO2eq'] = dcmat['Global_vmfg_elec_kgCO2eq']+dcmat['mat_MFG_virgin_fuel_kgCO2eq']
+dcmat['mat_vMFG_total_kgCO2eq'] = dcmat['mat_vMFG_energy_kgCO2eq']+dcmat['mat_vMFG_kgCO2eq']
+dcmat['mat_Recycle_kgCO2eq'] = dcmat['mat_HQ_kgCO2eq'] + dcmat['mat_LQ_kgCO2eq'] + dcmat['mat_MFGScrap_HQ_fuel_kgCO2eq']
 
+
+# In[19]:
+
+
+dcmat
 

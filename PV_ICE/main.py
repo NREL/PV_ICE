@@ -1446,20 +1446,16 @@ class Simulation:
 
         print("\n\n>>>> Calculating Carbon Flows <<<<\n")
         
-        #default files
+        #carbon folder
         carbonfolder = os.path.join(str(Path().resolve().parent.parent, 'baselines', 'CarbonLayer'))
-        
+        #default files
         gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
-        materialprocesscarbon = pd.read_csv(os.path.join(carbonfolder,'baseline_materials_processCO2.csv'))
+        materialprocesscarbon = pd.read_csv(os.path.join(carbonfolder,'baseline_materials_processCO2.csv'), index_col='Material')
         countrygridmixes = pd.read_csv(os.path.join(carbonfolder, 'baseline_countrygridmix.csv'))
+        countrymodmfg = pd.read_csv(os.path.join(carbonfolder, 'baseline_module_countrymarketshare.csv'))
+        countrymatmfg = pd.read_csv(os.path.join(carbonfolder, 'baseline_silicon_MFGing_countrymarketshare.csv'))
         
-            #country grid co2 intensity
-            #list all prefixes, with unique = countries in file and fuels in file
-        countryfuellist = [cols.split('_')[0] for cols in countrygridmixes.columns[1:]]
-        countrylist = (pd.DataFrame(countryfuellist)[0].unique()).tolist()
-        countryfuellist_fuels = [cols.split('_')[1] for cols in countrygridmixes.columns[1:]]
-        fuellist = (pd.DataFrame(countryfuellist_fuels)[0].unique()).tolist()
-
+        
         for scen in scenarios:
             print("Working on Scenario: ", scen)
             print("********************")
@@ -1469,10 +1465,61 @@ class Simulation:
             de = self.scenario[scen].dataOut_e
             de_in = self.scenario[scen].dataIn_e
             
+            #carbon intensity of country grid mixes
+            #extract lists
+            countryfuellist = [cols.split('_')[0] for cols in countrygridmixes.columns[1:]]
+            countrylist = (pd.DataFrame(countryfuellist)[0].unique()).tolist()
+            countryfuellist_fuels = [cols.split('_')[1] for cols in countrygridmixes.columns[1:]]
+            fuellist = (pd.DataFrame(countryfuellist_fuels)[0].unique()).tolist()
+            
+            #create carbon intensity of country grid mix, 
+            #inside scenarios allows for different future grid projections
+            final_country_carbon_int = []
+            for country in countrylist:
+                temp_country_carbon = []
+                for fuel in fuellist: 
+                    fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_kgpkWh_ember']
+                    fuelemitfactor = list(fuelemitfactor)[0]
+                    if str(country+'_'+fuel) in countrygridmixes:
+                        countryfuel = countrygridmixes[str(country+'_'+fuel)]
+                        temp_country_carbon.append(list(0.01*countryfuel*fuelemitfactor)) #multiply country fuel % by fuel factor
+                final_country_carbon_int.append(list(pd.DataFrame(temp_country_carbon).sum())) #sum the carbon int by country
 
+            country_carbonpkwh = pd.DataFrame(final_country_carbon_int).T
+            country_carbonpkwh.columns = countrylist
             
+            #carbon intensity of module manufacturing weighted by country
+            #list countries mfging modules
+            countriesmfgingmodules = list(countrymodmfg.columns[1:])
+
+            #weight carbon intensity of electricity by countries which mfging modules
+            countrycarbon_modmfg_co2eqpkwh = []
+            for country in countriesmfgingmodules:
+                if country in country_carbonpkwh:
+                    currentcountry = country_carbonpkwh[country]*countrymodmfg[country]*.01
+                    countrycarbon_modmfg_co2eqpkwh.append(currentcountry)
+                else: print(country)
+        
+            modmfg_co2eqpkwh_bycountry = pd.DataFrame(countrycarbon_modmfg_co2eqpkwh).T #
+            modmfg_co2eqpkwh_bycountry['Global_kgCO2eqpkWh'] = modmfg_co2eqpkwh_bycountry.sum(axis=1) #annual carbon intensity of pv module mfg wtd by country
+
+            #carbon impacts module mfging wtd by country
+            dc = modmfg_co2eqpkwh_bycountry.mul(de['mod_MFG'], axis=0)
+            dc.rename(columns={'Global_kgCO2eqpkWh':'Global'}, inplace=True)
+            dc = dc.add_suffix('_mod_MFG_kgCO2eq')
             
-            countrycarbonintensity = gridemissionfactors * countrygridmixes
+            #carbon impacts other module level steps
+            #assumption: all CO2 after mfg is attributable to target deployment country
+            country_deploy = 'USA' #user input in calc carbon function, default USA
+            dc['mod_Install_kgCO2eq'] = de['mod_Install']*country_carbonpkwh[country_deploy]
+            dc['mod_OandM_kgCO2eq'] = de['mod_OandM']*country_carbonpkwh[country_deploy]
+            dc['mod_Repair_kgCO2eq'] = de['mod_Repair']*country_carbonpkwh[country_deploy]
+            dc['mod_Demount_kgCO2eq'] = de['mod_Demount']*country_carbonpkwh[country_deploy]
+            dc['mod_Store_kgCO2eq'] = de['mod_Store']*country_carbonpkwh[country_deploy]
+            dc['mod_Resell_Certify_kgCO2eq'] = de['mod_Resell_Certify']*country_carbonpkwh[country_deploy]
+            dc['mod_ReMFG_Disassembly_kgCO2eq'] = de['mod_ReMFG_Disassembly']*country_carbonpkwh[country_deploy]
+            dc['mod_Recycle_Crush_kgCO2eq'] = de['mod_Recycle_Crush']*country_carbonpkwh[country_deploy]
+            
             
             for mat in materials:
                 
