@@ -461,6 +461,8 @@ class Simulation:
                                nameplatedeglimit=nameplatedeglimit)
 
         self.calculateEnergyFlow(scenarios=scenarios, materials=materials)
+        
+        #self.calculateCarbonFlows(scenarios=scenarios,materials=materials)
 
     def calculateMassFlow(self, scenarios=None, materials=None,
                           weibullInputParams=None, bifacialityfactors=None,
@@ -1431,7 +1433,10 @@ class Simulation:
     
                 self.scenario[scen].material[mat].matdataOut_e = demat
 
-    def calculateCarbonFlows(self, scenarios=None, materials=None, countrygridmixes = None, gridemissionfactors = None, materialprocesscarbon = None, modulecountrymarketshare = None, materialcountrymarketshare = None, country_deploy = 'USA'):
+    def calculateCarbonFlows(self, scenarios=None, materials=None, 
+                             countrygridmixes = None, gridemissionfactors = None, 
+                             materialprocesscarbon = None, modulecountrymarketshare = None, 
+                             materialcountrymarketshare = None, country_deploy = 'USA'):
         if scenarios is None:
             scenarios = list(self.scenario.keys())
         else:
