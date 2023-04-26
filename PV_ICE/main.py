@@ -1401,8 +1401,8 @@ class Simulation:
             #Energy Generation, Energy_out = Insolation (adjusted for bifi) * ActivePower/Irradience * time * PR
             de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Installed_Capacity_[W]']/1000) * 365 * PR
             
-            self.scenario[scen].dataOut_e = de
-
+            self.scenario[scen].dataOut_e = de #Wh
+            
             for mat in materials:
                 
                 if self.scenario[scen].material[mat].matdataIn_e is None:
@@ -1431,7 +1431,7 @@ class Simulation:
                     demat['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
                     demat['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
     
-                self.scenario[scen].material[mat].matdataOut_e = demat
+                self.scenario[scen].material[mat].matdataOut_e = demat #Wh
 
     def calculateCarbonFlows(self, scenarios=None, materials=None, 
                              countrygridmixes = None, gridemissionfactors = None, 
@@ -1452,12 +1452,12 @@ class Simulation:
         print("\n\n>>>> Calculating Carbon Flows <<<<\n")
         
         #carbon folder
-        carbonfolder = os.path.join(str(Path().resolve().parent.parent, 'baselines', 'CarbonLayer'))
+        carbonfolder = os.path.join(str(Path().resolve().parent.parent/ 'PV_ICE'/ 'baselines'/ 'CarbonLayer'))
         #default files
         gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
         materialprocesscarbon = pd.read_csv(os.path.join(carbonfolder,'baseline_materials_processCO2.csv'), index_col='Material')
-        countrygridmixes = pd.read_csv(os.path.join(carbonfolder, 'baseline_countrygridmix.csv'))
-        countrymodmfg = pd.read_csv(os.path.join(carbonfolder, 'baseline_module_countrymarketshare.csv'))
+        countrygridmixes = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'))
+        countrymodmfg = pd.read_csv(os.path.join(carbonfolder,'baseline_module_countrymarketshare.csv'))
         
         
         
@@ -1483,47 +1483,46 @@ class Simulation:
             for country in countrylist:
                 temp_country_carbon = []
                 for fuel in fuellist: 
-                    fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_kgpkWh_ember']
+                    fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_gpWh_ember']
                     fuelemitfactor = list(fuelemitfactor)[0]
                     if str(country+'_'+fuel) in countrygridmixes:
                         countryfuel = countrygridmixes[str(country+'_'+fuel)]
                         temp_country_carbon.append(list(0.01*countryfuel*fuelemitfactor)) #multiply country fuel % by fuel factor
                 final_country_carbon_int.append(list(pd.DataFrame(temp_country_carbon).sum())) #sum the carbon int by country
 
-            country_carbonpkwh = pd.DataFrame(final_country_carbon_int).T
-            country_carbonpkwh.columns = countrylist
+            country_carbonpwh = pd.DataFrame(final_country_carbon_int).T
+            country_carbonpwh.columns = countrylist
             
             #carbon intensity of module manufacturing weighted by country
             #list countries mfging modules
             countriesmfgingmodules = list(countrymodmfg.columns[1:])
 
             #weight carbon intensity of electricity by countries which mfging modules
-            countrycarbon_modmfg_co2eqpkwh = []
+            countrycarbon_modmfg_gco2eqpwh = []
             for country in countriesmfgingmodules:
-                if country in country_carbonpkwh:
-                    currentcountry = country_carbonpkwh[country]*countrymodmfg[country]*.01
-                    countrycarbon_modmfg_co2eqpkwh.append(currentcountry)
+                if country in country_carbonpwh:
+                    currentcountry = country_carbonpwh[country]*countrymodmfg[country]*.01
+                    countrycarbon_modmfg_gco2eqpwh.append(currentcountry)
                 else: print(country)
         
-            modmfg_co2eqpkwh_bycountry = pd.DataFrame(countrycarbon_modmfg_co2eqpkwh).T #
-            modmfg_co2eqpkwh_bycountry['Global_kgCO2eqpkWh'] = modmfg_co2eqpkwh_bycountry.sum(axis=1) #annual carbon intensity of pv module mfg wtd by country
-
+            modmfg_gco2eqpwh_bycountry = pd.DataFrame(countrycarbon_modmfg_gco2eqpwh).T #
+            modmfg_gco2eqpwh_bycountry['Global_gCO2eqpwh'] = modmfg_gco2eqpwh_bycountry.sum(axis=1) #annual carbon intensity of pv module mfg wtd by country
             #carbon impacts module mfging wtd by country
-            dc = modmfg_co2eqpkwh_bycountry.mul(de['mod_MFG'], axis=0)
-            dc.rename(columns={'Global_kgCO2eqpkWh':'Global'}, inplace=True)
-            dc = dc.add_suffix('_mod_MFG_kgCO2eq')
+            dc = modmfg_gco2eqpwh_bycountry.mul(de['mod_MFG'], axis=0)
+            dc.rename(columns={'Global_gCO2eqpWh':'Global'}, inplace=True)
+            dc = dc.add_suffix('_mod_MFG_gCO2eq')
             
             #carbon impacts other module level steps
             #assumption: all CO2 after mfg is attributable to target deployment country
             country_deploy = 'USA' #user input in calc carbon function, default USA
-            dc['mod_Install_kgCO2eq'] = de['mod_Install']*country_carbonpkwh[country_deploy]
-            dc['mod_OandM_kgCO2eq'] = de['mod_OandM']*country_carbonpkwh[country_deploy]
-            dc['mod_Repair_kgCO2eq'] = de['mod_Repair']*country_carbonpkwh[country_deploy]
-            dc['mod_Demount_kgCO2eq'] = de['mod_Demount']*country_carbonpkwh[country_deploy]
-            dc['mod_Store_kgCO2eq'] = de['mod_Store']*country_carbonpkwh[country_deploy]
-            dc['mod_Resell_Certify_kgCO2eq'] = de['mod_Resell_Certify']*country_carbonpkwh[country_deploy]
-            dc['mod_ReMFG_Disassembly_kgCO2eq'] = de['mod_ReMFG_Disassembly']*country_carbonpkwh[country_deploy]
-            dc['mod_Recycle_Crush_kgCO2eq'] = de['mod_Recycle_Crush']*country_carbonpkwh[country_deploy]
+            dc['mod_Install_gCO2eq'] = de['mod_Install']*country_carbonpwh[country_deploy]
+            dc['mod_OandM_gCO2eq'] = de['mod_OandM']*country_carbonpwh[country_deploy]
+            dc['mod_Repair_gCO2eq'] = de['mod_Repair']*country_carbonpwh[country_deploy]
+            dc['mod_Demount_gCO2eq'] = de['mod_Demount']*country_carbonpwh[country_deploy]
+            dc['mod_Store_gCO2eq'] = de['mod_Store']*country_carbonpwh[country_deploy]
+            dc['mod_Resell_Certify_gCO2eq'] = de['mod_Resell_Certify']*country_carbonpwh[country_deploy]
+            dc['mod_ReMFG_Disassembly_gCO2eq'] = de['mod_ReMFG_Disassembly']*country_carbonpwh[country_deploy]
+            dc['mod_Recycle_Crush_gCO2eq'] = de['mod_Recycle_Crush']*country_carbonpwh[country_deploy]
             
             self.scenario[scen].dataOut_c = dc
             
@@ -1539,50 +1538,50 @@ class Simulation:
                     demat = self.scenario[scen].material[mat].matdataOut_e
                     dm = self.scenario[scen].material[mat].matdataOut_m               
                     
-                    
-                    countrymatmfg = pd.read_csv(os.path.join(carbonfolder, 'baseline_',mat,'_MFGing_countrymarketshare.csv'))
+                    matfilename = 'baseline_'+str(mat)+'_MFGing_countrymarketshare.csv'
+                    countrymatmfg = pd.read_csv(os.path.join(carbonfolder, matfilename))
                 
                     #carbon intensity of material manufacturing weighted by country
                     #list countries mfging material
                     countriesmfgingmat = list(countrymatmfg.columns[1:])
 
                     #weight carbon intensity of electricity by countries which mfging modules
-                    countrycarbon_matmfg_co2eqpkwh = []
+                    countrycarbon_matmfg_gco2eqpwh = []
                     for country in countriesmfgingmat:
-                        if country in country_carbonpkwh:
-                            currentcountry = country_carbonpkwh[country]*countrymatmfg[country]*.01
-                            countrycarbon_matmfg_co2eqpkwh.append(currentcountry)
+                        if country in country_carbonpwh:
+                            currentcountry = country_carbonpwh[country]*countrymatmfg[country]*.01
+                            countrycarbon_matmfg_gco2eqpwh.append(currentcountry)
                         else: print(country)
         
-                    matmfg_co2eqpkwh_bycountry = pd.DataFrame(countrycarbon_modmfg_co2eqpkwh).T #
-                    matmfg_co2eqpkwh_bycountry['Global_kgCO2eqpkWh'] = modmfg_co2eqpkwh_bycountry.sum(axis=1) #annual carbon intensity of elec country wtd 
+                    matmfg_gco2eqpwh_bycountry = pd.DataFrame(countrycarbon_matmfg_gco2eqpwh).T #
+                    matmfg_gco2eqpwh_bycountry['Global_gCO2eqpwh'] = matmfg_gco2eqpwh_bycountry.sum(axis=1) #annual carbon intensity of elec country wtd 
 
             
                     #carbon impacts mat mfging wtd by country
                     #electric
-                    dcmat = matmfg_co2eqpkwh_bycountry.mul((demat['mat_MFG_virgin']-demat['mat_MFG_virgin_fuel']),axis=0)
-                    dcmat.rename(columns={'Global_kgCO2eqpkWh':'Global'}, inplace=True)
-                    dcmat = dcmat.add_suffix('_vmfg_elec_kgCO2eq')
+                    dcmat = matmfg_gco2eqpwh_bycountry.mul((demat['mat_MFG_virgin']-demat['mat_MFG_virgin_fuel']),axis=0)
+                    dcmat.rename(columns={'Global_gCO2eqpwh':'Global'}, inplace=True)
+                    dcmat = dcmat.add_suffix('_vmfg_elec_gCO2eq')
 
                     #fuel CO2 impacts
-                    steamHeat = list(gridemissionfactors[gridemissionfactors['Energy Source']=='SteamAndHeat']['CO2_kgpkWh_EPA'])[0]
-                    dcmat['mat_MFG_virgin_fuel_kgCO2eq'] = demat['mat_MFG_virgin_fuel']*steamHeat #CO2 from mfging fuels
-                    dcmat['mat_MFGScrap_HQ_fuel_kgCO2eq'] = demat['mat_MFGScrap_HQ_fuel']*steamHeat #CO2 from recycling fuels
+                    steamHeat = list(gridemissionfactors[gridemissionfactors['Energy Source']=='SteamAndHeat']['CO2_gpWh_EPA'])[0]
+                    dcmat['mat_MFG_virgin_fuel_gCO2eq'] = demat['mat_MFG_virgin_fuel']*steamHeat #CO2 from mfging fuels
+                    dcmat['mat_MFGScrap_HQ_fuel_gCO2eq'] = demat['mat_MFGScrap_HQ_fuel']*steamHeat #CO2 from recycling fuels
 
                     #CO2 process emissions from MFGing (v, lq, hq)
                     #mass of material being processed in each stream * CO2 intensity of that process
-                    dcmat['mat_vMFG_kgCO2eq'] = dm['mat_Virgin_Stock']*materialprocesscarbon.loc[mat,'v_MFG_kgCO2eqpkg']
-                    dcmat['mat_LQmfg_kgCO2eq'] = dm['mat_MFG_Scrap_Sentto_Recycling']*materialprocesscarbon.loc[mat,'LQ_Recycle_kgCO2eqpkg']
-                    dcmat['mat_LQeol_kgCO2eq'] = dm['mat_recycled_target']*materialprocesscarbon.loc[mat,'LQ_Recycle_kgCO2eqpkg']
-                    dcmat['mat_LQ_kgCO2eq'] = dcmat['mat_LQmfg_kgCO2eq']+dcmat['mat_LQeol_kgCO2eq']
-                    dcmat['mat_HQmfg_kgCO2eq'] = dm['mat_MFG_Recycled_into_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_kgCO2eqpkg']
-                    dcmat['mat_HQeol_kgCO2eq'] = dm['mat_EOL_Recycled_2_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_kgCO2eqpkg']
-                    dcmat['mat_HQ_kgCO2eq'] = dcmat['mat_HQmfg_kgCO2eq']+dcmat['mat_HQeol_kgCO2eq'] 
+                    dcmat['mat_vMFG_gCO2eq'] = dm['mat_Virgin_Stock']*materialprocesscarbon.loc[mat,'v_MFG_gCO2eqpg']
+                    dcmat['mat_LQmfg_gCO2eq'] = dm['mat_MFG_Scrap_Sentto_Recycling']*materialprocesscarbon.loc[mat,'LQ_Recycle_gCO2eqpg']
+                    dcmat['mat_LQeol_gCO2eq'] = dm['mat_recycled_target']*materialprocesscarbon.loc[mat,'LQ_Recycle_gCO2eqpg']
+                    dcmat['mat_LQ_gCO2eq'] = dcmat['mat_LQmfg_gCO2eq']+dcmat['mat_LQeol_gCO2eq']
+                    dcmat['mat_HQmfg_gCO2eq'] = dm['mat_MFG_Recycled_into_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_gCO2eqpg']
+                    dcmat['mat_HQeol_gCO2eq'] = dm['mat_EOL_Recycled_2_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_gCO2eqpg']
+                    dcmat['mat_HQ_gCO2eq'] = dcmat['mat_HQmfg_gCO2eq']+dcmat['mat_HQeol_gCO2eq'] 
                 
                     #sum carbon stuff
-                    dcmat['mat_vMFG_energy_kgCO2eq'] = dcmat['Global_vmfg_elec_kgCO2eq']+dcmat['mat_MFG_virgin_fuel_kgCO2eq']
-                    dcmat['mat_vMFG_total_kgCO2eq'] = dcmat['mat_vMFG_energy_kgCO2eq']+dcmat['mat_vMFG_kgCO2eq']
-                    dcmat['mat_Recycle_kgCO2eq'] = dcmat['mat_HQ_kgCO2eq'] + dcmat['mat_LQ_kgCO2eq'] + dcmat['mat_MFGScrap_HQ_fuel_kgCO2eq']
+                    dcmat['mat_vMFG_energy_gCO2eq'] = dcmat['Global_vmfg_elec_gCO2eq']+dcmat['mat_MFG_virgin_fuel_gCO2eq']
+                    dcmat['mat_vMFG_total_gCO2eq'] = dcmat['mat_vMFG_energy_gCO2eq']+dcmat['mat_vMFG_gCO2eq']
+                    dcmat['mat_Recycle_gCO2eq'] = dcmat['mat_HQ_gCO2eq'] + dcmat['mat_LQ_gCO2eq'] + dcmat['mat_MFGScrap_HQ_fuel_gCO2eq']
                 
                     self.scenario[scen].material[mat].matdataOut_c = dcmat
                 
@@ -2722,7 +2721,7 @@ def calculateLCA(PVarea, modified_impacts=None, printflag = False):
 
     impacts = {'Acidification':{'UUID':  '75d0c8a2-e466-3bd7-813b-5beef2209330',
                                 'Result':  1.29374135667815,
-                                'Unit': 'kg SO2' },
+                                'Unit': 'g SO2' },
                 'Carcinogenics':{'UUID':  'a6e5e5d8-a1e5-3c77-8170-586c4fe37514',
                                             'Result':  0.0000231966690476102,
                                             'Unit': 'CTUh' },

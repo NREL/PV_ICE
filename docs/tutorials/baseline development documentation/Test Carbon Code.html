@@ -14592,6 +14592,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="n">supportMatfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span> <span class="o">/</span> <span class="s1">&#39;SupportingMaterial&#39;</span><span class="p">)</span>
 <span class="n">baselinesFolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="p">)</span>
 <span class="n">carbonfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span><span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="o">/</span> <span class="s1">&#39;CarbonLayer&#39;</span><span class="p">)</span>
+<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span><span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14604,14 +14605,14 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#creating scenarios for identical power of multiple technologies</span>
 <span class="n">scennames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">,</span> <span class="s1">&#39;test1&#39;</span><span class="p">]</span>
 <span class="n">MATERIALS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;silicon&#39;</span><span class="p">]</span> <span class="c1">#&#39;glass&#39;,&#39;silver&#39;,, &#39;copper&#39;, &#39;aluminium_frames&#39;,&#39;encapsulant&#39;, &#39;backsheet&#39;</span>
-<span class="n">moduleFile_m</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesfolder</span><span class="p">,</span> <span class="s1">&#39;baseline_modules_mass_US.csv&#39;</span><span class="p">)</span>
-<span class="n">moduleFile_e</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesfolder</span><span class="p">,</span> <span class="s1">&#39;baseline_modules_energy.csv&#39;</span><span class="p">)</span>
+<span class="n">moduleFile_m</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesFolder</span><span class="p">,</span> <span class="s1">&#39;baseline_modules_mass_US.csv&#39;</span><span class="p">)</span>
+<span class="n">moduleFile_e</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesFolder</span><span class="p">,</span> <span class="s1">&#39;baseline_modules_energy.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14619,12 +14620,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#load in a baseline and materials for modification</span>
@@ -14634,8 +14635,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="k">for</span> <span class="n">scen</span> <span class="ow">in</span> <span class="n">scennames</span><span class="p">:</span>
     <span class="n">sim1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">scen</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="n">moduleFile_m</span><span class="p">,</span> <span class="n">energymodulefile</span><span class="o">=</span><span class="n">moduleFile_e</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">)):</span>
-        <span class="n">matbaseline_m</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesfolder</span><span class="p">,</span><span class="s1">&#39;baseline_material_mass_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
-        <span class="n">matbaseline_e</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesfolder</span><span class="p">,</span><span class="s1">&#39;baseline_material_energy_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+        <span class="n">matbaseline_m</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesFolder</span><span class="p">,</span><span class="s1">&#39;baseline_material_mass_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+        <span class="n">matbaseline_e</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesFolder</span><span class="p">,</span><span class="s1">&#39;baseline_material_energy_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
         <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">],</span> <span class="n">massmatfile</span><span class="o">=</span><span class="n">matbaseline_m</span><span class="p">,</span> <span class="n">energymatfile</span><span class="o">=</span><span class="n">matbaseline_e</span><span class="p">)</span>
 </pre></div>
 
@@ -14644,12 +14645,35 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>path = C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#sim1.modifyScenario(&#39;test1&#39;, &#39;mod_EOL_collection_eff&#39;, 100.0, start_year=2022) #100% collection</span>
@@ -14663,34 +14687,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#default files</span>
-<span class="n">gridemissionfactors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span><span class="s1">&#39;baseline_electricityemissionfactors.csv&#39;</span><span class="p">))</span>
-<span class="n">materialprocesscarbon</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span><span class="s1">&#39;baseline_materials_processCO2.csv&#39;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Material&#39;</span><span class="p">)</span>
-<span class="n">countrygridmixes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span> <span class="s1">&#39;baseline_countrygridmix.csv&#39;</span><span class="p">))</span>
-<span class="n">countrymodmfg</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span> <span class="s1">&#39;baseline_module_countrymarketshare.csv&#39;</span><span class="p">))</span>
-
-<span class="n">countrymatmfg</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span> <span class="s1">&#39;baseline_silicon_MFGing_countrymarketshare.csv&#39;</span><span class="p">))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">calculateFlows</span><span class="p">()</span>
@@ -14701,12 +14703,54 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>&gt;&gt;&gt;&gt; Calculating Material Flows &lt;&lt;&lt;&lt;
+
+Working on Scenario:  PV_ICE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  silicon
+Working on Scenario:  test1
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  silicon
+
+
+&gt;&gt;&gt;&gt; Calculating Energy Flows &lt;&lt;&lt;&lt;
+
+Working on Scenario:  PV_ICE
+********************
+==&gt; Working on Energy for Material :  silicon
+Working on Scenario:  test1
+********************
+==&gt; Working on Energy for Material :  silicon
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">calculateCarbonFlows</span><span class="p">()</span>
@@ -14715,6 +14759,3745 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>
+
+&gt;&gt;&gt;&gt; Calculating Carbon Flows &lt;&lt;&lt;&lt;
+
+Working on Scenario:  PV_ICE
+********************
+==&gt; Working on Carbon for Material :  silicon
+Working on Scenario:  test1
+********************
+==&gt; Working on Carbon for Material :  silicon
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;silicon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataOut_c</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Australia_vmfg_elec_gCO2eq</th>
+      <th>Bosnia_vmfg_elec_gCO2eq</th>
+      <th>Brazil_vmfg_elec_gCO2eq</th>
+      <th>Canada_vmfg_elec_gCO2eq</th>
+      <th>China_vmfg_elec_gCO2eq</th>
+      <th>France_vmfg_elec_gCO2eq</th>
+      <th>Germany_vmfg_elec_gCO2eq</th>
+      <th>Iceland_vmfg_elec_gCO2eq</th>
+      <th>India_vmfg_elec_gCO2eq</th>
+      <th>Japan_vmfg_elec_gCO2eq</th>
+      <th>...</th>
+      <th>mat_vMFG_gCO2eq</th>
+      <th>mat_LQmfg_gCO2eq</th>
+      <th>mat_LQeol_gCO2eq</th>
+      <th>mat_LQ_gCO2eq</th>
+      <th>mat_HQmfg_gCO2eq</th>
+      <th>mat_HQeol_gCO2eq</th>
+      <th>mat_HQ_gCO2eq</th>
+      <th>mat_vMFG_energy_gCO2eq</th>
+      <th>mat_vMFG_total_gCO2eq</th>
+      <th>mat_Recycle_gCO2eq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3.403292e+08</td>
+      <td>6.540662e+07</td>
+      <td>1.542833e+08</td>
+      <td>8.624332e+07</td>
+      <td>1.544701e+10</td>
+      <td>1.307439e+08</td>
+      <td>2.354073e+08</td>
+      <td>0.000000e+00</td>
+      <td>8.617156e+09</td>
+      <td>6.389154e+09</td>
+      <td>...</td>
+      <td>9.682778e+08</td>
+      <td>1.075437e+08</td>
+      <td>0.000000e+00</td>
+      <td>1.075437e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6.896534e+10</td>
+      <td>6.993362e+10</td>
+      <td>1.075437e+08</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.328615e+08</td>
+      <td>4.475280e+07</td>
+      <td>1.055644e+08</td>
+      <td>5.900978e+07</td>
+      <td>1.056922e+10</td>
+      <td>8.945815e+07</td>
+      <td>1.610714e+08</td>
+      <td>0.000000e+00</td>
+      <td>5.896068e+09</td>
+      <td>4.371615e+09</td>
+      <td>...</td>
+      <td>7.226329e+08</td>
+      <td>8.026064e+07</td>
+      <td>3.408896e+00</td>
+      <td>8.026064e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.718988e+10</td>
+      <td>4.791251e+10</td>
+      <td>8.026064e+07</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.544779e+08</td>
+      <td>4.890717e+07</td>
+      <td>1.153638e+08</td>
+      <td>6.448761e+07</td>
+      <td>1.155035e+10</td>
+      <td>9.776249e+07</td>
+      <td>1.760236e+08</td>
+      <td>0.000000e+00</td>
+      <td>6.443396e+09</td>
+      <td>4.777429e+09</td>
+      <td>...</td>
+      <td>8.394424e+08</td>
+      <td>9.323431e+07</td>
+      <td>7.184616e+01</td>
+      <td>9.323438e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.157048e+10</td>
+      <td>5.240992e+10</td>
+      <td>9.323438e+07</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2.322820e+08</td>
+      <td>4.464143e+07</td>
+      <td>1.053017e+08</td>
+      <td>5.886293e+07</td>
+      <td>1.054292e+10</td>
+      <td>8.923553e+07</td>
+      <td>1.606706e+08</td>
+      <td>0.000000e+00</td>
+      <td>5.881396e+09</td>
+      <td>4.360736e+09</td>
+      <td>...</td>
+      <td>8.220723e+08</td>
+      <td>9.130507e+07</td>
+      <td>4.144653e+02</td>
+      <td>9.130548e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.707455e+10</td>
+      <td>4.789662e+10</td>
+      <td>9.130548e+07</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2.998081e+08</td>
+      <td>5.761901e+07</td>
+      <td>1.359136e+08</td>
+      <td>7.597480e+07</td>
+      <td>1.360782e+10</td>
+      <td>1.151769e+08</td>
+      <td>2.073786e+08</td>
+      <td>0.000000e+00</td>
+      <td>7.591159e+09</td>
+      <td>5.628432e+09</td>
+      <td>...</td>
+      <td>1.137974e+09</td>
+      <td>1.263913e+08</td>
+      <td>1.385540e+03</td>
+      <td>1.263926e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6.076217e+10</td>
+      <td>6.190014e+10</td>
+      <td>1.263926e+08</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2.730936e+08</td>
+      <td>5.248485e+07</td>
+      <td>1.238030e+08</td>
+      <td>6.920504e+07</td>
+      <td>1.239529e+10</td>
+      <td>1.049141e+08</td>
+      <td>1.889001e+08</td>
+      <td>0.000000e+00</td>
+      <td>6.914747e+09</td>
+      <td>5.126909e+09</td>
+      <td>...</td>
+      <td>1.361868e+09</td>
+      <td>1.512586e+08</td>
+      <td>3.432914e+03</td>
+      <td>1.512620e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.535290e+10</td>
+      <td>5.671477e+10</td>
+      <td>1.512620e+08</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>3.176818e+08</td>
+      <td>6.186754e+07</td>
+      <td>1.688387e+08</td>
+      <td>8.420290e+07</td>
+      <td>1.419013e+10</td>
+      <td>1.096778e+08</td>
+      <td>2.201982e+08</td>
+      <td>0.000000e+00</td>
+      <td>8.205540e+09</td>
+      <td>6.023188e+09</td>
+      <td>...</td>
+      <td>1.758040e+09</td>
+      <td>1.952601e+08</td>
+      <td>7.074046e+03</td>
+      <td>1.952672e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6.504502e+10</td>
+      <td>6.680306e+10</td>
+      <td>1.952672e+08</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>3.878722e+08</td>
+      <td>7.616813e+07</td>
+      <td>1.905485e+08</td>
+      <td>1.000507e+08</td>
+      <td>1.774088e+10</td>
+      <td>1.467013e+08</td>
+      <td>2.733156e+08</td>
+      <td>0.000000e+00</td>
+      <td>1.022637e+10</td>
+      <td>7.866308e+09</td>
+      <td>...</td>
+      <td>2.585840e+09</td>
+      <td>2.872014e+08</td>
+      <td>1.288446e+04</td>
+      <td>2.872143e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.063409e+10</td>
+      <td>8.321993e+10</td>
+      <td>2.872143e+08</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>4.297899e+08</td>
+      <td>9.902673e+07</td>
+      <td>1.970716e+08</td>
+      <td>1.144228e+08</td>
+      <td>2.017281e+10</td>
+      <td>1.736856e+08</td>
+      <td>3.058767e+08</td>
+      <td>0.000000e+00</td>
+      <td>1.139027e+10</td>
+      <td>9.265993e+09</td>
+      <td>...</td>
+      <td>3.523094e+09</td>
+      <td>3.912994e+08</td>
+      <td>2.148625e+04</td>
+      <td>3.913209e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>9.180986e+10</td>
+      <td>9.533295e+10</td>
+      <td>3.913209e+08</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>5.600239e+08</td>
+      <td>1.134625e+08</td>
+      <td>2.819266e+08</td>
+      <td>1.373278e+08</td>
+      <td>2.571040e+10</td>
+      <td>2.168340e+08</td>
+      <td>3.854556e+08</td>
+      <td>0.000000e+00</td>
+      <td>1.405735e+10</td>
+      <td>1.150792e+10</td>
+      <td>...</td>
+      <td>4.931310e+09</td>
+      <td>5.057865e+08</td>
+      <td>3.353259e+04</td>
+      <td>5.058201e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.173437e+11</td>
+      <td>1.222750e+11</td>
+      <td>5.058201e+08</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>5.704263e+08</td>
+      <td>1.138172e+08</td>
+      <td>2.780242e+08</td>
+      <td>1.370818e+08</td>
+      <td>3.335946e+10</td>
+      <td>2.409245e+08</td>
+      <td>1.270027e+10</td>
+      <td>0.000000e+00</td>
+      <td>9.589769e+08</td>
+      <td>1.471297e+10</td>
+      <td>...</td>
+      <td>4.928984e+09</td>
+      <td>5.801933e+08</td>
+      <td>9.829363e+05</td>
+      <td>5.811763e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.187607e+11</td>
+      <td>1.236896e+11</td>
+      <td>5.811763e+08</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>5.329853e+08</td>
+      <td>1.146978e+08</td>
+      <td>2.565129e+08</td>
+      <td>1.222240e+08</td>
+      <td>3.515157e+10</td>
+      <td>2.072076e+08</td>
+      <td>1.301961e+10</td>
+      <td>0.000000e+00</td>
+      <td>2.914924e+08</td>
+      <td>1.294888e+10</td>
+      <td>...</td>
+      <td>4.914802e+09</td>
+      <td>6.546008e+08</td>
+      <td>7.255795e+05</td>
+      <td>6.553264e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.136680e+11</td>
+      <td>1.185828e+11</td>
+      <td>6.553264e+08</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1.696680e+09</td>
+      <td>4.316722e+08</td>
+      <td>3.586539e+09</td>
+      <td>5.151613e+08</td>
+      <td>1.246339e+11</td>
+      <td>6.847610e+08</td>
+      <td>4.607627e+10</td>
+      <td>0.000000e+00</td>
+      <td>1.257353e+09</td>
+      <td>3.622047e+10</td>
+      <td>...</td>
+      <td>1.590906e+10</td>
+      <td>2.159952e+09</td>
+      <td>1.238906e+04</td>
+      <td>2.159964e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.587908e+11</td>
+      <td>3.746999e+11</td>
+      <td>2.159964e+09</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1.434075e+09</td>
+      <td>3.943683e+08</td>
+      <td>2.947034e+09</td>
+      <td>2.421323e+09</td>
+      <td>1.446752e+11</td>
+      <td>5.394384e+08</td>
+      <td>2.899732e+10</td>
+      <td>0.000000e+00</td>
+      <td>6.251229e+08</td>
+      <td>2.231657e+10</td>
+      <td>...</td>
+      <td>1.513400e+10</td>
+      <td>2.094638e+09</td>
+      <td>2.349738e+04</td>
+      <td>2.094662e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.437079e+11</td>
+      <td>3.588419e+11</td>
+      <td>2.094662e+09</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1.834417e+09</td>
+      <td>4.714955e+08</td>
+      <td>1.959887e+09</td>
+      <td>1.486713e+09</td>
+      <td>2.561650e+11</td>
+      <td>5.476185e+08</td>
+      <td>3.759268e+10</td>
+      <td>0.000000e+00</td>
+      <td>1.026292e+09</td>
+      <td>1.675115e+10</td>
+      <td>...</td>
+      <td>2.033963e+10</td>
+      <td>2.801102e+09</td>
+      <td>4.251869e+04</td>
+      <td>2.801145e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.558158e+11</td>
+      <td>4.761555e+11</td>
+      <td>2.801145e+09</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1.545543e+09</td>
+      <td>5.702410e+08</td>
+      <td>1.968501e+09</td>
+      <td>3.950863e+08</td>
+      <td>2.709309e+11</td>
+      <td>6.865481e+08</td>
+      <td>3.483133e+10</td>
+      <td>0.000000e+00</td>
+      <td>7.482965e+08</td>
+      <td>1.363516e+10</td>
+      <td>...</td>
+      <td>2.137007e+10</td>
+      <td>2.193111e+09</td>
+      <td>7.377709e+04</td>
+      <td>2.193184e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.685740e+11</td>
+      <td>4.899440e+11</td>
+      <td>2.193184e+09</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>3.097775e+09</td>
+      <td>1.397379e+09</td>
+      <td>3.225813e+09</td>
+      <td>7.970478e+08</td>
+      <td>7.366838e+11</td>
+      <td>1.277805e+09</td>
+      <td>5.759984e+10</td>
+      <td>0.000000e+00</td>
+      <td>9.460899e+08</td>
+      <td>2.900403e+10</td>
+      <td>...</td>
+      <td>5.114452e+10</td>
+      <td>5.216215e+09</td>
+      <td>1.230854e+05</td>
+      <td>5.216338e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.105417e+12</td>
+      <td>1.156562e+12</td>
+      <td>5.216338e+09</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>5.978415e+09</td>
+      <td>2.732724e+09</td>
+      <td>7.130632e+09</td>
+      <td>1.439495e+09</td>
+      <td>1.162415e+12</td>
+      <td>2.290185e+09</td>
+      <td>1.357525e+11</td>
+      <td>0.000000e+00</td>
+      <td>1.639504e+09</td>
+      <td>5.103898e+10</td>
+      <td>...</td>
+      <td>8.807773e+10</td>
+      <td>9.158759e+09</td>
+      <td>9.521434e+05</td>
+      <td>9.159711e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.817969e+12</td>
+      <td>1.906047e+12</td>
+      <td>9.159711e+09</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>5.944978e+09</td>
+      <td>2.508680e+09</td>
+      <td>9.875498e+09</td>
+      <td>2.316776e+09</td>
+      <td>1.446875e+12</td>
+      <td>2.442954e+09</td>
+      <td>1.519180e+11</td>
+      <td>0.000000e+00</td>
+      <td>2.104305e+09</td>
+      <td>5.731706e+10</td>
+      <td>...</td>
+      <td>1.088306e+11</td>
+      <td>1.104478e+10</td>
+      <td>9.878246e+05</td>
+      <td>1.104577e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.159556e+12</td>
+      <td>2.268386e+12</td>
+      <td>1.104577e+10</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>7.300336e+09</td>
+      <td>2.290590e+09</td>
+      <td>3.904593e+09</td>
+      <td>2.470651e+09</td>
+      <td>1.248464e+12</td>
+      <td>1.372791e+09</td>
+      <td>1.233416e+11</td>
+      <td>0.000000e+00</td>
+      <td>2.174760e+09</td>
+      <td>4.599247e+10</td>
+      <td>...</td>
+      <td>9.806853e+10</td>
+      <td>9.911973e+09</td>
+      <td>1.351292e+06</td>
+      <td>9.913324e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.865839e+12</td>
+      <td>1.963908e+12</td>
+      <td>9.913324e+09</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1.121015e+10</td>
+      <td>3.589894e+09</td>
+      <td>6.453452e+09</td>
+      <td>3.914598e+09</td>
+      <td>2.150905e+12</td>
+      <td>2.881762e+09</td>
+      <td>1.965268e+11</td>
+      <td>0.000000e+00</td>
+      <td>4.385432e+09</td>
+      <td>7.304229e+10</td>
+      <td>...</td>
+      <td>1.712582e+11</td>
+      <td>1.717362e+10</td>
+      <td>4.226269e+05</td>
+      <td>1.717404e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.135330e+12</td>
+      <td>3.306588e+12</td>
+      <td>1.717404e+10</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>1.697701e+10</td>
+      <td>8.730243e+09</td>
+      <td>1.443481e+10</td>
+      <td>2.181922e+09</td>
+      <td>3.500519e+12</td>
+      <td>6.347387e+09</td>
+      <td>3.322794e+11</td>
+      <td>0.000000e+00</td>
+      <td>7.153115e+09</td>
+      <td>1.057445e+11</td>
+      <td>...</td>
+      <td>2.970547e+11</td>
+      <td>2.812449e+10</td>
+      <td>6.330095e+05</td>
+      <td>2.812512e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.094829e+12</td>
+      <td>5.391884e+12</td>
+      <td>2.812512e+10</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1.089236e+10</td>
+      <td>6.673152e+09</td>
+      <td>8.145278e+09</td>
+      <td>1.356808e+09</td>
+      <td>2.405767e+12</td>
+      <td>4.424976e+09</td>
+      <td>1.849849e+11</td>
+      <td>2.126364e+08</td>
+      <td>5.855935e+09</td>
+      <td>6.080078e+10</td>
+      <td>...</td>
+      <td>2.006240e+11</td>
+      <td>1.668736e+10</td>
+      <td>9.112795e+05</td>
+      <td>1.668827e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.326511e+12</td>
+      <td>3.527135e+12</td>
+      <td>1.668827e+10</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>6.274295e+09</td>
+      <td>4.282071e+09</td>
+      <td>6.466487e+09</td>
+      <td>1.144556e+09</td>
+      <td>2.137453e+12</td>
+      <td>2.333510e+09</td>
+      <td>1.293523e+11</td>
+      <td>1.189752e+08</td>
+      <td>6.015699e+09</td>
+      <td>4.411381e+10</td>
+      <td>...</td>
+      <td>1.686319e+11</td>
+      <td>1.262192e+10</td>
+      <td>1.262980e+06</td>
+      <td>1.262318e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.798517e+12</td>
+      <td>2.967149e+12</td>
+      <td>1.262318e+10</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>7.930658e+09</td>
+      <td>4.594599e+09</td>
+      <td>6.925556e+09</td>
+      <td>1.238387e+09</td>
+      <td>2.448683e+12</td>
+      <td>1.999610e+09</td>
+      <td>9.074509e+10</td>
+      <td>5.407708e+08</td>
+      <td>9.176024e+09</td>
+      <td>3.571280e+10</td>
+      <td>...</td>
+      <td>1.810267e+11</td>
+      <td>1.303383e+10</td>
+      <td>1.686824e+06</td>
+      <td>1.303552e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.998613e+12</td>
+      <td>3.179640e+12</td>
+      <td>1.303552e+10</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>8.155674e+09</td>
+      <td>4.889730e+09</td>
+      <td>7.645945e+09</td>
+      <td>1.024766e+09</td>
+      <td>3.395219e+12</td>
+      <td>2.008772e+09</td>
+      <td>1.115763e+11</td>
+      <td>6.442615e+08</td>
+      <td>9.438934e+09</td>
+      <td>4.393009e+10</td>
+      <td>...</td>
+      <td>2.268611e+11</td>
+      <td>1.559936e+10</td>
+      <td>2.722805e+06</td>
+      <td>1.560208e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.914347e+12</td>
+      <td>4.141208e+12</td>
+      <td>1.560208e+10</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>7.515037e+09</td>
+      <td>4.758456e+09</td>
+      <td>8.713560e+09</td>
+      <td>1.068638e+09</td>
+      <td>3.681815e+12</td>
+      <td>1.868584e+09</td>
+      <td>1.025941e+11</td>
+      <td>5.232035e+08</td>
+      <td>8.057044e+09</td>
+      <td>3.410162e+10</td>
+      <td>...</td>
+      <td>2.376407e+11</td>
+      <td>1.659319e+10</td>
+      <td>3.252603e+06</td>
+      <td>1.659645e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.153209e+12</td>
+      <td>4.390849e+12</td>
+      <td>1.659645e+10</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>6.277486e+09</td>
+      <td>4.430578e+09</td>
+      <td>4.959849e+09</td>
+      <td>9.208109e+08</td>
+      <td>3.272851e+12</td>
+      <td>2.076053e+09</td>
+      <td>9.628056e+10</td>
+      <td>5.812949e+08</td>
+      <td>6.895270e+09</td>
+      <td>3.059064e+10</td>
+      <td>...</td>
+      <td>2.133094e+11</td>
+      <td>1.514064e+10</td>
+      <td>3.952308e+06</td>
+      <td>1.514459e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.683820e+12</td>
+      <td>3.897129e+12</td>
+      <td>1.514459e+10</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>5.876589e+09</td>
+      <td>4.147630e+09</td>
+      <td>4.643100e+09</td>
+      <td>8.620055e+08</td>
+      <td>3.063838e+12</td>
+      <td>1.943471e+09</td>
+      <td>9.013183e+10</td>
+      <td>5.441719e+08</td>
+      <td>6.454920e+09</td>
+      <td>2.863704e+10</td>
+      <td>...</td>
+      <td>1.999827e+11</td>
+      <td>1.365110e+10</td>
+      <td>4.641436e+06</td>
+      <td>1.365574e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.426741e+12</td>
+      <td>3.626724e+12</td>
+      <td>1.365574e+10</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>6.020047e+09</td>
+      <td>4.248881e+09</td>
+      <td>4.756446e+09</td>
+      <td>8.830486e+08</td>
+      <td>3.138632e+12</td>
+      <td>1.990915e+09</td>
+      <td>9.233211e+10</td>
+      <td>5.574561e+08</td>
+      <td>6.612496e+09</td>
+      <td>2.933612e+10</td>
+      <td>...</td>
+      <td>2.045133e+11</td>
+      <td>1.324308e+10</td>
+      <td>5.667453e+06</td>
+      <td>1.324875e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.510394e+12</td>
+      <td>3.714907e+12</td>
+      <td>1.324875e+10</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>6.331618e+09</td>
+      <td>4.468784e+09</td>
+      <td>5.002619e+09</td>
+      <td>9.287513e+08</td>
+      <td>3.301074e+12</td>
+      <td>2.093956e+09</td>
+      <td>9.711081e+10</td>
+      <td>5.863076e+08</td>
+      <td>6.954730e+09</td>
+      <td>3.085443e+10</td>
+      <td>...</td>
+      <td>2.147297e+11</td>
+      <td>1.365595e+10</td>
+      <td>5.581103e+06</td>
+      <td>1.366153e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.692076e+12</td>
+      <td>3.906806e+12</td>
+      <td>1.366153e+10</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>6.673629e+09</td>
+      <td>4.710172e+09</td>
+      <td>5.272842e+09</td>
+      <td>9.789191e+08</td>
+      <td>3.479386e+12</td>
+      <td>2.207063e+09</td>
+      <td>1.023564e+11</td>
+      <td>6.179777e+08</td>
+      <td>7.330399e+09</td>
+      <td>3.252107e+10</td>
+      <td>...</td>
+      <td>2.262351e+11</td>
+      <td>1.418121e+10</td>
+      <td>6.128406e+06</td>
+      <td>1.418734e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>3.891509e+12</td>
+      <td>4.117744e+12</td>
+      <td>1.418734e+10</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>7.062089e+09</td>
+      <td>4.984342e+09</td>
+      <td>5.579765e+09</td>
+      <td>1.035900e+09</td>
+      <td>3.681915e+12</td>
+      <td>2.335533e+09</td>
+      <td>1.083144e+11</td>
+      <td>6.539491e+08</td>
+      <td>7.757088e+09</td>
+      <td>3.441406e+10</td>
+      <td>...</td>
+      <td>2.393191e+11</td>
+      <td>1.484190e+10</td>
+      <td>5.101296e+06</td>
+      <td>1.484700e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.118027e+12</td>
+      <td>4.357346e+12</td>
+      <td>1.484700e+10</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>7.466601e+09</td>
+      <td>5.269842e+09</td>
+      <td>5.899370e+09</td>
+      <td>1.095236e+09</td>
+      <td>3.892812e+12</td>
+      <td>2.469310e+09</td>
+      <td>1.145185e+11</td>
+      <td>6.914069e+08</td>
+      <td>8.201409e+09</td>
+      <td>3.638528e+10</td>
+      <td>...</td>
+      <td>2.529227e+11</td>
+      <td>1.545649e+10</td>
+      <td>1.157345e+07</td>
+      <td>1.546806e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.353904e+12</td>
+      <td>4.606827e+12</td>
+      <td>1.546806e+10</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>7.890112e+09</td>
+      <td>5.568751e+09</td>
+      <td>6.233987e+09</td>
+      <td>1.157358e+09</td>
+      <td>4.113616e+12</td>
+      <td>2.609372e+09</td>
+      <td>1.210141e+11</td>
+      <td>7.306240e+08</td>
+      <td>8.666599e+09</td>
+      <td>3.844908e+10</td>
+      <td>...</td>
+      <td>2.674422e+11</td>
+      <td>1.609910e+10</td>
+      <td>1.308391e+07</td>
+      <td>1.611219e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.600861e+12</td>
+      <td>4.868303e+12</td>
+      <td>1.611219e+10</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>8.418190e+09</td>
+      <td>5.941463e+09</td>
+      <td>6.651222e+09</td>
+      <td>1.234819e+09</td>
+      <td>4.388936e+12</td>
+      <td>2.784014e+09</td>
+      <td>1.291135e+11</td>
+      <td>7.795240e+08</td>
+      <td>9.246646e+09</td>
+      <td>4.102244e+10</td>
+      <td>...</td>
+      <td>2.855440e+11</td>
+      <td>1.692486e+10</td>
+      <td>2.027739e+07</td>
+      <td>1.694514e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.908792e+12</td>
+      <td>5.194336e+12</td>
+      <td>1.694514e+10</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>9.052403e+09</td>
+      <td>6.389083e+09</td>
+      <td>7.152314e+09</td>
+      <td>1.327849e+09</td>
+      <td>4.719592e+12</td>
+      <td>2.993758e+09</td>
+      <td>1.388407e+11</td>
+      <td>8.382521e+08</td>
+      <td>9.943274e+09</td>
+      <td>4.411301e+10</td>
+      <td>...</td>
+      <td>3.070565e+11</td>
+      <td>1.819995e+10</td>
+      <td>1.151752e+07</td>
+      <td>1.821147e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.278613e+12</td>
+      <td>5.585670e+12</td>
+      <td>1.821147e+10</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>9.806911e+09</td>
+      <td>6.921606e+09</td>
+      <td>7.748452e+09</td>
+      <td>1.438523e+09</td>
+      <td>5.112964e+12</td>
+      <td>3.243284e+09</td>
+      <td>1.504129e+11</td>
+      <td>9.081195e+08</td>
+      <td>1.077204e+10</td>
+      <td>4.778978e+10</td>
+      <td>...</td>
+      <td>3.326493e+11</td>
+      <td>1.971690e+10</td>
+      <td>3.391338e+07</td>
+      <td>1.975081e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.718580e+12</td>
+      <td>6.051229e+12</td>
+      <td>1.975081e+10</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>1.062841e+10</td>
+      <td>7.501408e+09</td>
+      <td>8.397516e+09</td>
+      <td>1.559024e+09</td>
+      <td>5.541261e+12</td>
+      <td>3.514964e+09</td>
+      <td>1.630125e+11</td>
+      <td>9.841898e+08</td>
+      <td>1.167437e+10</td>
+      <td>5.179298e+10</td>
+      <td>...</td>
+      <td>3.605143e+11</td>
+      <td>2.136852e+10</td>
+      <td>1.905468e+07</td>
+      <td>2.138758e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6.197607e+12</td>
+      <td>6.558122e+12</td>
+      <td>2.138758e+10</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>1.152254e+10</td>
+      <td>8.132481e+09</td>
+      <td>9.103976e+09</td>
+      <td>1.690181e+09</td>
+      <td>6.007433e+12</td>
+      <td>3.810668e+09</td>
+      <td>1.767263e+11</td>
+      <td>1.066987e+09</td>
+      <td>1.265651e+10</td>
+      <td>5.615018e+10</td>
+      <td>...</td>
+      <td>3.908433e+11</td>
+      <td>2.316620e+10</td>
+      <td>6.494217e+07</td>
+      <td>2.323114e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>6.718995e+12</td>
+      <td>7.109838e+12</td>
+      <td>2.323114e+10</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>1.249552e+10</td>
+      <td>8.819197e+09</td>
+      <td>9.872726e+09</td>
+      <td>1.832901e+09</td>
+      <td>6.514707e+12</td>
+      <td>4.132445e+09</td>
+      <td>1.916493e+11</td>
+      <td>1.157085e+09</td>
+      <td>1.372524e+10</td>
+      <td>6.089157e+10</td>
+      <td>...</td>
+      <td>4.238466e+11</td>
+      <td>2.512238e+10</td>
+      <td>9.485936e+07</td>
+      <td>2.521724e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>7.286355e+12</td>
+      <td>7.710202e+12</td>
+      <td>2.521724e+10</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>1.355411e+10</td>
+      <td>9.566334e+09</td>
+      <td>1.070912e+10</td>
+      <td>1.988180e+09</td>
+      <td>7.066615e+12</td>
+      <td>4.482534e+09</td>
+      <td>2.078853e+11</td>
+      <td>1.255110e+09</td>
+      <td>1.488800e+10</td>
+      <td>6.605013e+10</td>
+      <td>...</td>
+      <td>4.597537e+11</td>
+      <td>2.725068e+10</td>
+      <td>2.804056e+07</td>
+      <td>2.727872e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>7.903634e+12</td>
+      <td>8.363388e+12</td>
+      <td>2.727872e+10</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>1.470568e+10</td>
+      <td>1.037910e+10</td>
+      <td>1.161898e+10</td>
+      <td>2.157098e+09</td>
+      <td>7.667005e+12</td>
+      <td>4.863377e+09</td>
+      <td>2.255475e+11</td>
+      <td>1.361746e+09</td>
+      <td>1.615291e+10</td>
+      <td>7.166185e+10</td>
+      <td>...</td>
+      <td>4.988151e+11</td>
+      <td>2.956594e+10</td>
+      <td>1.387425e+08</td>
+      <td>2.970468e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.575139e+12</td>
+      <td>9.073954e+12</td>
+      <td>2.970468e+10</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>1.595831e+10</td>
+      <td>1.126319e+10</td>
+      <td>1.260868e+10</td>
+      <td>2.340839e+09</td>
+      <td>8.320077e+12</td>
+      <td>5.277638e+09</td>
+      <td>2.447596e+11</td>
+      <td>1.477739e+09</td>
+      <td>1.752881e+10</td>
+      <td>7.776597e+10</td>
+      <td>...</td>
+      <td>5.413039e+11</td>
+      <td>3.208435e+10</td>
+      <td>4.107218e+07</td>
+      <td>3.212542e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>9.305566e+12</td>
+      <td>9.846870e+12</td>
+      <td>3.212542e+10</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>1.732075e+10</td>
+      <td>1.222479e+10</td>
+      <td>1.368515e+10</td>
+      <td>2.540689e+09</td>
+      <td>9.030406e+12</td>
+      <td>5.728217e+09</td>
+      <td>2.656560e+11</td>
+      <td>1.603901e+09</td>
+      <td>1.902533e+10</td>
+      <td>8.440526e+10</td>
+      <td>...</td>
+      <td>5.875179e+11</td>
+      <td>3.482356e+10</td>
+      <td>5.311975e+07</td>
+      <td>3.487668e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.010003e+13</td>
+      <td>1.068755e+13</td>
+      <td>3.487668e+10</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>1.880258e+10</td>
+      <td>1.327064e+10</td>
+      <td>1.485594e+10</td>
+      <td>2.758050e+09</td>
+      <td>9.802974e+12</td>
+      <td>6.218277e+09</td>
+      <td>2.883834e+11</td>
+      <td>1.741118e+09</td>
+      <td>2.065299e+10</td>
+      <td>9.162629e+10</td>
+      <td>...</td>
+      <td>6.377811e+11</td>
+      <td>3.780278e+10</td>
+      <td>1.439082e+08</td>
+      <td>3.794669e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.096411e+13</td>
+      <td>1.160189e+13</td>
+      <td>3.794669e+10</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>2.041418e+10</td>
+      <td>1.440810e+10</td>
+      <td>1.612927e+10</td>
+      <td>2.994448e+09</td>
+      <td>1.064321e+13</td>
+      <td>6.751258e+09</td>
+      <td>3.131013e+11</td>
+      <td>1.890352e+09</td>
+      <td>2.242320e+10</td>
+      <td>9.947977e+10</td>
+      <td>...</td>
+      <td>6.924467e+11</td>
+      <td>4.104293e+10</td>
+      <td>7.367197e+07</td>
+      <td>4.111661e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.190386e+13</td>
+      <td>1.259631e+13</td>
+      <td>4.111661e+10</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>2.216690e+10</td>
+      <td>1.564515e+10</td>
+      <td>1.751410e+10</td>
+      <td>3.251545e+09</td>
+      <td>1.155701e+13</td>
+      <td>7.330908e+09</td>
+      <td>3.399835e+11</td>
+      <td>2.052654e+09</td>
+      <td>2.434841e+10</td>
+      <td>1.080209e+11</td>
+      <td>...</td>
+      <td>7.518988e+11</td>
+      <td>4.456680e+10</td>
+      <td>8.966078e+07</td>
+      <td>4.465646e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.292591e+13</td>
+      <td>1.367780e+13</td>
+      <td>4.465646e+10</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>2.407307e+10</td>
+      <td>1.699050e+10</td>
+      <td>1.902016e+10</td>
+      <td>3.531150e+09</td>
+      <td>1.255082e+13</td>
+      <td>7.961305e+09</td>
+      <td>3.692193e+11</td>
+      <td>2.229165e+09</td>
+      <td>2.644217e+10</td>
+      <td>1.173098e+11</td>
+      <td>...</td>
+      <td>8.165557e+11</td>
+      <td>4.839917e+10</td>
+      <td>2.073735e+08</td>
+      <td>4.860654e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.403742e+13</td>
+      <td>1.485398e+13</td>
+      <td>4.860654e+10</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>2.614611e+10</td>
+      <td>1.845362e+10</td>
+      <td>2.065807e+10</td>
+      <td>3.835233e+09</td>
+      <td>1.363162e+13</td>
+      <td>8.646886e+09</td>
+      <td>4.010143e+11</td>
+      <td>2.421128e+09</td>
+      <td>2.871921e+10</td>
+      <td>1.274118e+11</td>
+      <td>...</td>
+      <td>8.868728e+11</td>
+      <td>5.256703e+10</td>
+      <td>2.892295e+08</td>
+      <td>5.285626e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.524625e+13</td>
+      <td>1.613312e+13</td>
+      <td>5.285626e+10</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>2.840061e+10</td>
+      <td>2.004483e+10</td>
+      <td>2.243936e+10</td>
+      <td>4.165935e+09</td>
+      <td>1.480704e+13</td>
+      <td>9.392484e+09</td>
+      <td>4.355927e+11</td>
+      <td>2.629895e+09</td>
+      <td>3.119559e+10</td>
+      <td>1.383982e+11</td>
+      <td>...</td>
+      <td>9.633455e+11</td>
+      <td>5.709974e+10</td>
+      <td>8.446008e+07</td>
+      <td>5.718420e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.656089e+13</td>
+      <td>1.752424e+13</td>
+      <td>5.718420e+10</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>3.085249e+10</td>
+      <td>2.177534e+10</td>
+      <td>2.437659e+10</td>
+      <td>4.525587e+09</td>
+      <td>1.608536e+13</td>
+      <td>1.020335e+10</td>
+      <td>4.731982e+11</td>
+      <td>2.856939e+09</td>
+      <td>3.388877e+10</td>
+      <td>1.503464e+11</td>
+      <td>...</td>
+      <td>1.046513e+12</td>
+      <td>6.202926e+10</td>
+      <td>2.110928e+08</td>
+      <td>6.224036e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.799062e+13</td>
+      <td>1.903713e+13</td>
+      <td>6.224036e+10</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>3.351903e+10</td>
+      <td>2.365735e+10</td>
+      <td>2.648343e+10</td>
+      <td>4.916728e+09</td>
+      <td>1.747560e+13</td>
+      <td>1.108522e+10</td>
+      <td>5.140961e+11</td>
+      <td>3.103861e+09</td>
+      <td>3.681773e+10</td>
+      <td>1.633406e+11</td>
+      <td>...</td>
+      <td>1.136962e+12</td>
+      <td>6.739038e+10</td>
+      <td>8.459852e+07</td>
+      <td>6.747497e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.954553e+13</td>
+      <td>2.068249e+13</td>
+      <td>6.747497e+10</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>3.641906e+10</td>
+      <td>2.570416e+10</td>
+      <td>2.877474e+10</td>
+      <td>5.342118e+09</td>
+      <td>1.898757e+13</td>
+      <td>1.204430e+10</td>
+      <td>5.585752e+11</td>
+      <td>3.372403e+09</td>
+      <td>4.000316e+10</td>
+      <td>1.774727e+11</td>
+      <td>...</td>
+      <td>1.235330e+12</td>
+      <td>7.322092e+10</td>
+      <td>9.733218e+07</td>
+      <td>7.331825e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.123659e+13</td>
+      <td>2.247192e+13</td>
+      <td>7.331825e+10</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>3.957306e+10</td>
+      <td>2.793022e+10</td>
+      <td>3.126672e+10</td>
+      <td>5.804761e+09</td>
+      <td>2.063194e+13</td>
+      <td>1.308737e+10</td>
+      <td>6.069494e+11</td>
+      <td>3.664463e+09</td>
+      <td>4.346755e+10</td>
+      <td>1.928423e+11</td>
+      <td>...</td>
+      <td>1.342314e+12</td>
+      <td>7.956206e+10</td>
+      <td>1.682904e+08</td>
+      <td>7.973035e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.307574e+13</td>
+      <td>2.441805e+13</td>
+      <td>7.973035e+10</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>4.300331e+10</td>
+      <td>3.035125e+10</td>
+      <td>3.397697e+10</td>
+      <td>6.307926e+09</td>
+      <td>2.242035e+13</td>
+      <td>1.422180e+10</td>
+      <td>6.595606e+11</td>
+      <td>3.982104e+09</td>
+      <td>4.723538e+10</td>
+      <td>2.095582e+11</td>
+      <td>...</td>
+      <td>1.458667e+12</td>
+      <td>8.645862e+10</td>
+      <td>1.623685e+08</td>
+      <td>8.662098e+10</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.507597e+13</td>
+      <td>2.653464e+13</td>
+      <td>8.662098e+10</td>
+    </tr>
+  </tbody>
+</table>
+<p>56 rows × 43 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="DUMMY-TEST">DUMMY TEST<a class="anchor-link" href="#DUMMY-TEST">&#182;</a></h1>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
+
+<span class="n">supportMatfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span> <span class="o">/</span> <span class="s1">&#39;SupportingMaterial&#39;</span><span class="p">)</span>
+<span class="n">baselinesFolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="p">)</span>
+<span class="n">carbonfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span><span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span><span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="o">/</span> <span class="s1">&#39;CarbonLayer&#39;</span><span class="p">)</span>
+<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span><span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span><span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#creating scenarios for identical power of multiple technologies</span>
+<span class="n">scennames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">,</span> <span class="s1">&#39;test1&#39;</span><span class="p">]</span>
+<span class="n">MATERIALS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;silicon&#39;</span><span class="p">]</span> <span class="c1">#&#39;glass&#39;,&#39;silver&#39;,, &#39;copper&#39;, &#39;aluminium_frames&#39;,&#39;encapsulant&#39;, &#39;backsheet&#39;</span>
+<span class="n">moduleFile_m</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span> <span class="s1">&#39;dummy_baseline_modules_mass_US.csv&#39;</span><span class="p">)</span>
+<span class="n">moduleFile_e</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span> <span class="s1">&#39;dummy_baseline_modules_energy.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">carbonfolder</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&#39;C:\\Users\\hmirletz\\Documents\\GitHub\\PV_ICE\\PV_ICE\\baselines\\CarbonLayer&#39;</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#load in a baseline and materials for modification</span>
+<span class="kn">import</span> <span class="nn">PV_ICE</span>
+
+<span class="n">sim1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;sim1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">scen</span> <span class="ow">in</span> <span class="n">scennames</span><span class="p">:</span>
+    <span class="n">sim1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">scen</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="n">moduleFile_m</span><span class="p">,</span> <span class="n">energymodulefile</span><span class="o">=</span><span class="n">moduleFile_e</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">)):</span>
+        <span class="n">matbaseline_m</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span><span class="s1">&#39;dummy_baseline_material_mass_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+        <span class="n">matbaseline_e</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span><span class="s1">&#39;dummy_baseline_material_energy_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+        <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">],</span> <span class="n">massmatfile</span><span class="o">=</span><span class="n">matbaseline_m</span><span class="p">,</span> <span class="n">energymatfile</span><span class="o">=</span><span class="n">matbaseline_e</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>path = C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#sim1.modifyScenario(&#39;test1&#39;, &#39;mod_EOL_collection_eff&#39;, 100.0, start_year=2022) #100% collection</span>
+<span class="c1">#sim1.scenario[&#39;test1&#39;].modifyMaterials(&#39;glass&#39;, &#39;mat_MFG_scrap_Recycled&#39;, 100.0, start_year=2022)</span>
+<span class="c1">#sim1.trim_Years(startYear=2000, endYear=2100)</span>
+<span class="c1">#sim1.modifyScenario(scenarios=None,stage=&#39;new_Installed_Capacity_[MW]&#39;, value= global_projection[&#39;World_annual_[MWdc]&#39;], start_year=2000)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">calculateFlows</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>&gt;&gt;&gt;&gt; Calculating Material Flows &lt;&lt;&lt;&lt;
+
+Working on Scenario:  PV_ICE
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  silicon
+Working on Scenario:  test1
+********************
+Finished Area+Power Generation Calculations
+==&gt; Working on Material :  silicon
+
+
+&gt;&gt;&gt;&gt; Calculating Energy Flows &lt;&lt;&lt;&lt;
+
+Working on Scenario:  PV_ICE
+********************
+==&gt; Working on Energy for Material :  silicon
+Working on Scenario:  test1
+********************
+==&gt; Working on Energy for Material :  silicon
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">calculateCarbonFlows</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>
+
+&gt;&gt;&gt;&gt; Calculating Carbon Flows &lt;&lt;&lt;&lt;
+
+Working on Scenario:  PV_ICE
+********************
+==&gt; Working on Carbon for Material :  silicon
+Working on Scenario:  test1
+********************
+==&gt; Working on Carbon for Material :  silicon
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;silicon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataOut_c</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;Global&#39;</span><span class="p">)</span><span class="c1">#.iloc[55].values</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[52]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Global_vmfg_elec_gCO2eq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.269319e+07</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.269319e+07</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.269319e+07</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.269319e+07</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.269319e+07</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1.269319e+07</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1.268897e+07</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1.274194e+07</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.303965e+07</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1.288136e+07</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1.272870e+07</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1.297024e+07</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1.277310e+07</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1.294548e+07</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1.315006e+07</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1.335145e+07</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1.406706e+07</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1.377631e+07</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>1.386782e+07</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1.364667e+07</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1.326925e+07</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>1.293121e+07</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1.293539e+07</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>1.295656e+07</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1.300020e+07</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>1.285761e+07</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>1.289531e+07</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>1.286846e+07</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>1.278696e+07</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>1.278696e+07</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dataOut_c</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;China&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[44]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>China_mod_MFG_gCO2eq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.332086e+07</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.332086e+07</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.332086e+07</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.332086e+07</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.332086e+07</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1.332086e+07</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1.297370e+07</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1.313994e+07</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.343100e+07</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1.323072e+07</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1.414324e+07</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1.954051e+07</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>2.004684e+07</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1.953278e+07</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>2.104191e+07</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>2.281614e+07</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>2.379997e+07</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>2.353237e+07</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>2.376523e+07</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>2.318952e+07</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>2.224013e+07</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>2.158061e+07</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>2.080234e+07</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>2.101502e+07</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>2.059658e+07</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>2.149475e+07</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>2.173544e+07</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>2.183297e+07</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>2.183297e+07</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dataOut_m</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[45]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Area</th>
+      <th>Area_for_EOL_pathsG</th>
+      <th>Cumulative_Active_Area</th>
+      <th>EOL_BS_Year0</th>
+      <th>EOL_BS_Year1</th>
+      <th>EOL_BS_Year10</th>
+      <th>EOL_BS_Year11</th>
+      <th>EOL_BS_Year12</th>
+      <th>EOL_BS_Year13</th>
+      <th>EOL_BS_Year14</th>
+      <th>...</th>
+      <th>Status_BAD_[W]</th>
+      <th>WeibullParams</th>
+      <th>Yearly_Sum_Area_disposed</th>
+      <th>Yearly_Sum_Area_disposedby_Failure</th>
+      <th>Yearly_Sum_Area_disposedby_ProjectLifetime</th>
+      <th>Yearly_Sum_Power_disposed</th>
+      <th>Yearly_Sum_Power_disposedby_Failure</th>
+      <th>Yearly_Sum_Power_disposedby_ProjectLifetime</th>
+      <th>irradiance_stc</th>
+      <th>landfilled_noncollected</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>5.000000e+05</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.000000e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>0.000216</td>
+      <td>0.000216</td>
+      <td>0.0</td>
+      <td>4.289865e-02</td>
+      <td>4.289865e-02</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.500000e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>0.020744</td>
+      <td>0.020744</td>
+      <td>0.0</td>
+      <td>4.087158e+00</td>
+      <td>4.087158e+00</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>2.000000e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>0.299513</td>
+      <td>0.299513</td>
+      <td>0.0</td>
+      <td>5.859594e+01</td>
+      <td>5.859594e+01</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>2.499998e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>1.991170</td>
+      <td>1.991170</td>
+      <td>0.0</td>
+      <td>3.868910e+02</td>
+      <td>3.868910e+02</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>2.999989e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>8.654372</td>
+      <td>8.654372</td>
+      <td>0.0</td>
+      <td>1.670301e+03</td>
+      <td>1.670301e+03</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>3.499960e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>28.748625</td>
+      <td>28.748625</td>
+      <td>0.0</td>
+      <td>5.511661e+03</td>
+      <td>5.511661e+03</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>3.999881e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>79.327590</td>
+      <td>79.327590</td>
+      <td>0.0</td>
+      <td>1.510818e+04</td>
+      <td>1.510818e+04</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>4.499690e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>191.090588</td>
+      <td>191.090588</td>
+      <td>0.0</td>
+      <td>3.615430e+04</td>
+      <td>3.615430e+04</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>4.999275e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>414.924988</td>
+      <td>414.924988</td>
+      <td>0.0</td>
+      <td>7.798850e+04</td>
+      <td>7.798850e+04</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>5.498445e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>830.025893</td>
+      <td>830.025893</td>
+      <td>0.0</td>
+      <td>1.549882e+05</td>
+      <td>1.549882e+05</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>5.996891e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>1553.595839</td>
+      <td>1553.595839</td>
+      <td>0.0</td>
+      <td>2.882010e+05</td>
+      <td>2.882010e+05</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>6.494139e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>2751.976210</td>
+      <td>2751.976210</td>
+      <td>0.0</td>
+      <td>5.071742e+05</td>
+      <td>5.071742e+05</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>6.989487e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>4652.800956</td>
+      <td>4652.800956</td>
+      <td>0.0</td>
+      <td>8.518960e+05</td>
+      <td>8.518960e+05</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>7.481929e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>7557.336851</td>
+      <td>7557.336851</td>
+      <td>0.0</td>
+      <td>1.374694e+06</td>
+      <td>1.374694e+06</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>7.970078e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>11851.519642</td>
+      <td>11851.519642</td>
+      <td>0.0</td>
+      <td>2.141823e+06</td>
+      <td>2.141823e+06</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>8.452064e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>18013.256768</td>
+      <td>18013.256768</td>
+      <td>0.0</td>
+      <td>3.234323e+06</td>
+      <td>3.234323e+06</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>8.925452e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>26612.330946</td>
+      <td>26612.330946</td>
+      <td>0.0</td>
+      <td>4.747537e+06</td>
+      <td>4.747537e+06</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>9.387154e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>38297.794393</td>
+      <td>38297.794393</td>
+      <td>0.0</td>
+      <td>6.788453e+06</td>
+      <td>6.788453e+06</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>9.833388e+06</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>53766.380666</td>
+      <td>53766.380666</td>
+      <td>0.0</td>
+      <td>9.469846e+06</td>
+      <td>9.469846e+06</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.025968e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>73704.794925</td>
+      <td>73704.794925</td>
+      <td>0.0</td>
+      <td>1.290014e+07</td>
+      <td>1.290014e+07</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.066098e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>98699.824719</td>
+      <td>98699.824719</td>
+      <td>0.0</td>
+      <td>1.716814e+07</td>
+      <td>1.716814e+07</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.103187e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>129114.516437</td>
+      <td>129114.516437</td>
+      <td>0.0</td>
+      <td>2.232262e+07</td>
+      <td>2.232262e+07</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.136693e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>164937.752958</td>
+      <td>164937.752958</td>
+      <td>0.0</td>
+      <td>2.834817e+07</td>
+      <td>2.834817e+07</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>205629.193608</td>
+      <td>205629.193608</td>
+      <td>0.0</td>
+      <td>3.514123e+07</td>
+      <td>3.514123e+07</td>
+      <td>0.000000e+00</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>8.391514e+07</td>
+      <td>4.249297e+07</td>
+      <td>4.142217e+07</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.253373e+08</td>
+      <td>4.249297e+07</td>
+      <td>8.284435e+07</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.667595e+08</td>
+      <td>4.249297e+07</td>
+      <td>1.242665e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>2.081817e+08</td>
+      <td>4.249297e+07</td>
+      <td>1.656887e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>2.496038e+08</td>
+      <td>4.249297e+07</td>
+      <td>2.071109e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>2.910260e+08</td>
+      <td>4.249297e+07</td>
+      <td>2.485330e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>3.324482e+08</td>
+      <td>4.249297e+07</td>
+      <td>2.899552e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>3.738704e+08</td>
+      <td>4.249297e+07</td>
+      <td>3.313774e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>4.152925e+08</td>
+      <td>4.249297e+07</td>
+      <td>3.727996e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>4.567147e+08</td>
+      <td>4.249297e+07</td>
+      <td>4.142217e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>4.981369e+08</td>
+      <td>4.249297e+07</td>
+      <td>4.556439e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>5.395591e+08</td>
+      <td>4.249297e+07</td>
+      <td>4.970661e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>5.809812e+08</td>
+      <td>4.249297e+07</td>
+      <td>5.384883e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>6.224034e+08</td>
+      <td>4.249297e+07</td>
+      <td>5.799104e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>6.638256e+08</td>
+      <td>4.249297e+07</td>
+      <td>6.213326e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>7.052478e+08</td>
+      <td>4.249297e+07</td>
+      <td>6.627548e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>7.466699e+08</td>
+      <td>4.249297e+07</td>
+      <td>7.041770e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>7.880921e+08</td>
+      <td>4.249297e+07</td>
+      <td>7.455991e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>8.295143e+08</td>
+      <td>4.249297e+07</td>
+      <td>7.870213e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>8.709364e+08</td>
+      <td>4.249297e+07</td>
+      <td>8.284435e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>9.123586e+08</td>
+      <td>4.249297e+07</td>
+      <td>8.698657e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>9.537808e+08</td>
+      <td>4.249297e+07</td>
+      <td>9.112878e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>9.952030e+08</td>
+      <td>4.249297e+07</td>
+      <td>9.527100e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.036625e+09</td>
+      <td>4.249297e+07</td>
+      <td>9.941322e+08</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.078047e+09</td>
+      <td>4.249297e+07</td>
+      <td>1.035554e+09</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.119469e+09</td>
+      <td>4.249297e+07</td>
+      <td>1.076977e+09</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.160892e+09</td>
+      <td>4.249297e+07</td>
+      <td>1.118399e+09</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.202314e+09</td>
+      <td>4.249297e+07</td>
+      <td>1.159821e+09</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.243736e+09</td>
+      <td>4.249297e+07</td>
+      <td>1.201243e+09</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.285158e+09</td>
+      <td>4.249297e+07</td>
+      <td>1.242665e+09</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>500000.0</td>
+      <td>0.0</td>
+      <td>1.166130e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>{'alpha': 6.584769167950776, 'beta': 26.430972...</td>
+      <td>500000.000000</td>
+      <td>250000.000000</td>
+      <td>250000.0</td>
+      <td>1.326580e+09</td>
+      <td>4.249297e+07</td>
+      <td>1.284087e+09</td>
+      <td>1000.0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>56 rows × 209 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>

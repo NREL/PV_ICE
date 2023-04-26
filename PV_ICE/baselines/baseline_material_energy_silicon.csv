@@ -1,5 +1,5 @@
 ﻿year,e_mat_extraction,e_mat_MFG,e_mat_MFG_fuelfraction,e_mat_MFGScrap_LQ,e_mat_MFGScrap_HQ,e_mat_Landfill,e_mat_Landfill_fuelfraction,e_mat_EoL_ReMFG_clean,e_mat_Recycled_LQ,e_mat_Recycled_HQ,e_mat_Recycled_HQ_fuelfraction
-year,kWh/kg,kWh/kg,%,kWh/kg,kWh/kg,kWh/kg,%,kWh/kg,kWh/kg,kWh/kg,%
+year,Wh/g,Wh/g,%,Wh/g,Wh/g,Wh/g,%,Wh/g,Wh/g,Wh/g,%
 1995,0.0062,706.78,0.19,24.5,600,0.09,0,0.4,1.6,625.19,0.16
 1996,0.0062,648.05,0.2,24.5,600,0.09,0,0.4,1.6,568.57,0.17
 1997,0.0062,609.66,0.2,24.5,600,0.09,0,0.4,1.6,532.3,0.17

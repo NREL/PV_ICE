@@ -1,4 +1,4 @@
-﻿Energy Source,CO2eq_kgpkWh_IPCC2006,CO2eq_kgpkWh_ember,CO2_kgpkWh_EIA,CO2_kgpkWh_EPA
+﻿Energy Source,CO2eq_gpWh_IPCC2006,CO2eq_gpWh_ember,CO2_gpWh_EIA,CO2_gpWh_EPA
 Bioenergy,0.3005,0.23,0,0.317
 Coal,0.3487,0.82,0.3215,0.338
 Gas,0.2291,0.49,0.1805,0.181
