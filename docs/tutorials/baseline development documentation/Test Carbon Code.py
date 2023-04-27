@@ -65,7 +65,7 @@ sim1.calculateFlows()
 sim1.calculateCarbonFlows()
 
 
-# In[9]:
+# In[7]:
 
 
 sim1.scenario['PV_ICE'].material['silicon'].matdataOut_c
@@ -73,7 +73,7 @@ sim1.scenario['PV_ICE'].material['silicon'].matdataOut_c
 
 # # DUMMY TEST
 
-# In[28]:
+# In[8]:
 
 
 import numpy as np
@@ -91,7 +91,7 @@ carbonfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE'/ 'PV_ICE'/ '
 testfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE'/ 'PV_ICE'/ 'TEMP')
 
 
-# In[29]:
+# In[9]:
 
 
 #creating scenarios for identical power of multiple technologies
@@ -101,13 +101,13 @@ moduleFile_m = os.path.join(carbonfolder, 'dummy_baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(carbonfolder, 'dummy_baseline_modules_energy.csv')
 
 
-# In[30]:
+# In[10]:
 
 
 carbonfolder
 
 
-# In[31]:
+# In[11]:
 
 
 #load in a baseline and materials for modification
@@ -122,7 +122,7 @@ for scen in scennames:
         sim1.scenario[scen].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[32]:
+# In[12]:
 
 
 #sim1.modifyScenario('test1', 'mod_EOL_collection_eff', 100.0, start_year=2022) #100% collection
@@ -131,32 +131,38 @@ for scen in scennames:
 #sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', value= global_projection['World_annual_[MWdc]'], start_year=2000)
 
 
-# In[33]:
+# In[13]:
 
 
 sim1.calculateFlows()
 
 
-# In[34]:
+# In[14]:
 
 
 sim1.calculateCarbonFlows()
 
 
-# In[52]:
+# In[16]:
 
 
-sim1.scenario['PV_ICE'].material['silicon'].matdataOut_c.filter(like='Global')#.iloc[55].values
+sim1.scenario['PV_ICE'].material['silicon'].matdataOut_c['mat_Recycled_HQ_elec_gCO2eq']
 
 
-# In[44]:
+# In[ ]:
 
 
-sim1.scenario['PV_ICE'].dataOut_c.filter(like='China')
+sim1.scenario['PV_ICE'].material['silicon'].matdataOut_m#['mat_L0']#.filter(like='China')#.iloc[55].values
 
 
-# In[45]:
+# In[ ]:
 
 
-sim1.scenario['PV_ICE'].dataOut_m
+sim1.scenario['PV_ICE'].material['silicon'].matdataIn_e#.filter(like='China').iloc[55].values
+
+
+# In[ ]:
+
+
+sim1.scenario['PV_ICE'].material['silicon'].matdataIn_m
 
