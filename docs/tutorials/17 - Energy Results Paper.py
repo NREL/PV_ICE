@@ -49,7 +49,7 @@ plt.rcParams.update({'font.size': 14})
 plt.rcParams['figure.figsize'] = (8, 6)
 
 scennames_labels = ['PV_ICE','PERC_50','High Eff','Idealized\nPerovskite\nSi-Tandem','Lightweight'
-                    'SHJ','TOPCon','Recycled\nPERC','Cheap\nCrap'] #
+                    'SHJ','TOPCon','Recycled\nPERC','IRENA\nreg.loss'] #
 
 
 # Scenarios and materials
@@ -58,8 +58,8 @@ scennames_labels = ['PV_ICE','PERC_50','High Eff','Idealized\nPerovskite\nSi-Tan
 
 
 #creating scenarios for identical power of multiple technologies
-scennames = ['PV_ICE','PERC_50','High_eff', 'Perovskite','Lightweight', #extreme cases
-            'SHJ', 'TOPCon','RecycledPERC','CheapCrap'] #realistic cases
+scennames = ['ex_PV_ICE','ex_PERC_50','ex_High_eff', 'ex_Perovskite','ex_Lightweight', #extreme cases
+            'r_SHJ', 'r_TOPCon','r_Perovskite', 'r_RecycledPERC','r_IRENA'] #realistic cases
 MATERIALS = ['glass','silver','silicon', 'copper', 'aluminium_frames','encapsulant', 'backsheet']
 moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
@@ -428,7 +428,7 @@ sim1.scenario['SHJ'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start
 #median annual power degradation Jordan et al 2022, Table 6
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
 df_shj_deg = pd.DataFrame(index=idx_temp, columns=['mod_deg'], dtype=float)
-df_shj_deg.loc[2022] = 0.7
+df_shj_deg.loc[2022] = 0.75
 df_shj_deg.loc[2030] = 0.6
 df_shj_deg.loc[2050] = 0.5
 df_shj_deg.interpolate(inplace=True)
