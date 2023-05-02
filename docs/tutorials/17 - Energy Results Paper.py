@@ -59,7 +59,7 @@ scennames_labels = ['PV_ICE','PERC_50','High Eff','Idealized\nPerovskite\nSi-Tan
 
 #creating scenarios for identical power of multiple technologies
 scennames = ['ex_PV_ICE','ex_PERC_50','ex_High_eff', 'ex_Perovskite','ex_Lightweight', #extreme cases
-            'r_SHJ', 'r_TOPCon','r_Perovskite', 'r_RecycledPERC','r_IRENA'] #realistic cases
+            'r_PERC','r_SHJ', 'r_TOPCon','r_Perovskite', 'r_RecycledPERC','r_IRENA'] #realistic cases
 MATERIALS = ['glass','silver','silicon', 'copper', 'aluminium_frames','encapsulant', 'backsheet']
 moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
