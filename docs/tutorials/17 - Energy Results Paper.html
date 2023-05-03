@@ -14581,13 +14581,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Energy-Analysis">Energy Analysis<a class="anchor-link" href="#Energy-Analysis">&#182;</a></h1><p>We will be using the new energy layer to analyze the following future PV options</p>
 <ul>
-<li>SHJ</li>
-<li>TOPCon</li>
-<li>Perovskite Tandem c-Si</li>
-<li>50-year PERC module </li>
-<li>Recycled Si PERC (Fraunhofer)</li>
-<li>Cheap crap module</li>
-<li>CdTe?</li>
+<li>modules..</li>
 </ul>
 <p>We will use a literture-sourced global scale deployment schedule through 2050, then assume that capacity increases at a lower constant rate through 2100.</p>
 
@@ -14625,6 +14619,46 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">platform</span> <span class="kn">import</span> <span class="n">python_version</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">python_version</span><span class="p">())</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>3.8.8
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -14642,7 +14676,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#https://www.learnui.design/tools/data-color-picker.html#palette</span>
@@ -14681,7 +14715,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#creating scenarios for identical power of multiple technologies</span>
@@ -14715,7 +14749,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#load in a baseline and materials for modification</span>
@@ -14758,6 +14792,47 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 </div>
 
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">PV_ICE</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&#39;v0.2.0+407.gcebad8a.dirty&#39;</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -14777,68 +14852,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>dict_keys([&#39;PV_ICE&#39;, &#39;ex_PERC_50&#39;, &#39;ex_High_eff&#39;, &#39;ex_Perovskite&#39;, &#39;ex_Lightweight&#39;])</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">celltech_modeff</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span> <span class="s1">&#39;output-celltech-modeffimprovements.csv&#39;</span><span class="p">),</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#pull in module eff</span>
-<span class="n">celltech_aguse</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span> <span class="s1">&#39;output-celltech-Agusageimprovements.csv&#39;</span><span class="p">),</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#pull in Ag use</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">celltech_modeff</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2020</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14862,6 +14879,64 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>dict_keys([&#39;PV_ICE&#39;, &#39;ex_PERC_50&#39;, &#39;ex_High_eff&#39;, &#39;ex_Perovskite&#39;, &#39;ex_Lightweight&#39;])</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">celltech_modeff</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span> <span class="s1">&#39;output-celltech-modeffimprovements.csv&#39;</span><span class="p">),</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#pull in module eff</span>
+<span class="n">celltech_aguse</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span> <span class="s1">&#39;output-celltech-Agusageimprovements.csv&#39;</span><span class="p">),</span><span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#pull in Ag use</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">celltech_modeff</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2020</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
 <pre>PERC      22.8
 SHJ       23.5
 TOPCon    23.2
@@ -14879,7 +14954,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#glass-glass package mass per area calculation</span>
@@ -14922,7 +14997,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">timeshift</span> <span class="o">=</span> <span class="mi">2022</span><span class="o">-</span><span class="mi">1995</span>
@@ -14961,7 +15036,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#module efficiency modify for PERC</span>
@@ -14978,7 +15053,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#silver modify for PERC</span>
@@ -14997,7 +15072,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify package to glass glass</span>
@@ -15014,7 +15089,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Lifetime and Degradation</span>
@@ -15039,7 +15114,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Merchant Tail set high</span>
@@ -15069,7 +15144,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">idx_temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">RangeIndex</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">2022</span><span class="p">,</span><span class="n">stop</span><span class="o">=</span><span class="mi">2051</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#create the index</span>
@@ -15092,7 +15167,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Lifetime and Degradation</span>
@@ -15161,7 +15236,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2022 module eff = 17.9% #https://www.nrel.gov/pv/assets/pdfs/champion-module-efficiencies-rev220401b.pdf</span>
@@ -15184,7 +15259,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#module efficiency modify for PERC</span>
@@ -15201,7 +15276,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify package to glass glass</span>
@@ -15218,7 +15293,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Lifetime and Degradation</span>
@@ -15243,7 +15318,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#As Circular as possible</span>
@@ -15343,7 +15418,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#module efficiency modify for PERC</span>
@@ -15360,7 +15435,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2mm glass calculation</span>
@@ -15389,7 +15464,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Lifetime and Degradation</span>
@@ -15414,10 +15489,10 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;ex_Lightweight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataIn_m</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;ex_Lightweight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;silicon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataIn_m</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15435,13 +15510,13 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[39]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
 
 
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>pandas.core.frame.DataFrame</pre>
+<pre>56</pre>
 </div>
 
 </div>
@@ -15478,7 +15553,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">altBaselinesfolder</span>
@@ -15499,7 +15574,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
 
 
 
@@ -15530,7 +15605,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modified module</span>
@@ -15548,7 +15623,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#module efficiency modify for PERC</span>
@@ -15566,7 +15641,7 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modified materials</span>
@@ -15605,10 +15680,10 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;r_PERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">celltech_aguse</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2021</span><span class="p">:,</span><span class="s1">&#39;PERC&#39;</span><span class="p">]</span>
 </pre></div>
 
      </div>
@@ -15626,13 +15701,43 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[44]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
 
 
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>dict_keys([&#39;glass&#39;, &#39;silicon&#39;, &#39;silver&#39;, &#39;aluminium_frames&#39;, &#39;copper&#39;, &#39;encapsulant&#39;, &#39;backsheet&#39;])</pre>
+<pre>2021    3.342285
+2022    3.200755
+2023    3.059225
+2024    2.917695
+2025    2.776165
+2026    2.634635
+2027    2.493105
+2028    2.351575
+2029    2.210045
+2030    2.068515
+2031    2.037669
+2032    2.006822
+2033    1.975976
+2034    1.945130
+2035    1.914284
+2036    1.883437
+2037    1.852591
+2038    1.821745
+2039    1.790899
+2040    1.760052
+2041    1.729206
+2042    1.698360
+2043    1.667513
+2044    1.636667
+2045    1.605821
+2046    1.574975
+2047    1.544128
+2048    1.513282
+2049    1.482436
+2050    1.451589
+Name: PERC, dtype: float64</pre>
 </div>
 
 </div>
@@ -15646,11 +15751,11 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify silver usage for PERC</span>
-<span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;r_PERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">modifyMaterials</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_massperm2&#39;</span><span class="p">,</span> <span class="n">celltech_aguse</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">:,</span><span class="s1">&#39;PERC&#39;</span><span class="p">],</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2023</span><span class="p">)</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;r_PERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">modifyMaterials</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_massperm2&#39;</span><span class="p">,</span> <span class="n">celltech_aguse</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">:,</span><span class="s1">&#39;PERC&#39;</span><span class="p">],</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15658,1082 +15763,12 @@ Name: 2020, dtype: float64</pre>
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;r_PERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;copper&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataIn_m</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[46]:</div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>year</th>
-      <th>mat_virgin_eff</th>
-      <th>mat_massperm2</th>
-      <th>mat_MFG_eff</th>
-      <th>mat_MFG_scrap_Recycled</th>
-      <th>mat_MFG_scrap_Recycling_eff</th>
-      <th>mat_MFG_scrap_Recycled_into_HQ</th>
-      <th>mat_MFG_scrap_Recycled_into_HQ_Reused4MFG</th>
-      <th>mat_PG3_ReMFG_target</th>
-      <th>mat_ReMFG_yield</th>
-      <th>mat_PG4_Recycling_target</th>
-      <th>mat_Recycling_yield</th>
-      <th>mat_EOL_Recycled_into_HQ</th>
-      <th>mat_EOL_RecycledHQ_Reused4MFG</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1995</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>27.13</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>27.13</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1996</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>27.13</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>27.13</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>1997</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>27.41</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>27.41</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>1998</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>27.11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>27.11</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>1999</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>26.95</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>26.95</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>2000</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>26.74</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>26.74</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>2001</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>27.15</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>27.15</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>2002</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>28.84</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>28.84</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>2003</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>28.17</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>28.17</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>2004</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>27.62</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>27.62</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>2005</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>28.64</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>28.64</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>2006</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>30.62</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>30.62</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>2007</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>29.33</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>29.33</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>2008</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>28.54</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>28.54</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>2009</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>30.90</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>30.90</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>2010</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>29.70</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>29.70</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>2011</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>30.32</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>30.32</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>2012</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>30.42</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>30.42</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>2013</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>29.47</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>29.47</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>2014</td>
-      <td>76.0</td>
-      <td>5.376000</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>30.69</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>30.69</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>2015</td>
-      <td>76.0</td>
-      <td>5.788160</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>29.26</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>29.26</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>2016</td>
-      <td>76.0</td>
-      <td>6.200320</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>30.91</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>30.91</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>2017</td>
-      <td>76.0</td>
-      <td>7.203840</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.12</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>2018</td>
-      <td>76.0</td>
-      <td>7.454720</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>2019</td>
-      <td>76.0</td>
-      <td>8.261120</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>2020</td>
-      <td>76.0</td>
-      <td>8.225280</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>2021</td>
-      <td>76.0</td>
-      <td>8.270080</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>2022</td>
-      <td>76.0</td>
-      <td>8.314880</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>2023</td>
-      <td>76.0</td>
-      <td>8.386560</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>2024</td>
-      <td>76.0</td>
-      <td>8.458240</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>2025</td>
-      <td>76.0</td>
-      <td>8.195413</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>2026</td>
-      <td>76.0</td>
-      <td>7.932587</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>2027</td>
-      <td>76.0</td>
-      <td>7.669760</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>2028</td>
-      <td>76.0</td>
-      <td>7.394987</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>2029</td>
-      <td>76.0</td>
-      <td>7.120213</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>2030</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>2031</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>2032</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>2033</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>2034</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>2035</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>2036</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>2037</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>2038</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>2039</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>2040</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>2041</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>2042</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>2043</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>2044</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>2045</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>51</th>
-      <td>2046</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>52</th>
-      <td>2047</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>53</th>
-      <td>2048</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>54</th>
-      <td>2049</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-    <tr>
-      <th>55</th>
-      <td>2050</td>
-      <td>76.0</td>
-      <td>6.845440</td>
-      <td>90.0</td>
-      <td>98.0</td>
-      <td>98.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>95.0</td>
-      <td>100.0</td>
-      <td>31.23</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;r_PERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataIn_m</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[40]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>pandas.core.frame.DataFrame</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify package to glass glass</span>
@@ -16743,117 +15778,6 @@ Name: 2020, dtype: float64</pre>
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>C:\Users\hmirletz\Anaconda3\lib\site-packages\pandas\core\common.py:241: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray.
-  result = np.asarray(values, dtype=dtype)
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">TypeError</span>                                 Traceback (most recent call last)
-Input <span class="ansi-green-intense-fg ansi-bold">In [47]</span>, in <span class="ansi-cyan-fg">&lt;cell line: 2&gt;</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
-<span class="ansi-green-fg">      1</span> <span style="color: rgb(95,135,135)">#modify package to glass glass</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 2</span> <span class="ansi-yellow-bg">sim1</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">scenario</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">r_PERC</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">modifyMaterials</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">glass</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">mat_massperm2</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">glassperm2</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">start_year</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">2022</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Documents\GitHub\PV_ICE\PV_ICE\main.py:2373</span>, in <span class="ansi-cyan-fg">Scenario.modifyMaterials</span><span class="ansi-blue-intense-fg ansi-bold">(self, materials, stage, value, start_year)</span>
-<span class="ansi-green-fg">   2371</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">   2372</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> mat <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> materials:
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 2373</span>         <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>material[mat]<span style="color: rgb(98,98,98)">.</span>matdataIn_m<span style="color: rgb(98,98,98)">.</span>loc[selectyears, stage] <span style="color: rgb(98,98,98)">=</span> value
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\indexing.py:712</span>, in <span class="ansi-cyan-fg">_LocationIndexer.__setitem__</span><span class="ansi-blue-intense-fg ansi-bold">(self, key, value)</span>
-<span class="ansi-green-fg">    710</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">    711</span>     key <span style="color: rgb(98,98,98)">=</span> com<span style="color: rgb(98,98,98)">.</span>apply_if_callable(key, <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>obj)
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 712</span> indexer <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_get_setitem_indexer</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">key</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">    713</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_has_valid_setitem_indexer(key)
-<span class="ansi-green-fg">    715</span> iloc <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>name <span style="color: rgb(98,98,98)">==</span> <span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">iloc</span><span style="color: rgb(175,0,0)">&#34;</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>obj<span style="color: rgb(98,98,98)">.</span>iloc
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\indexing.py:666</span>, in <span class="ansi-cyan-fg">_LocationIndexer._get_setitem_indexer</span><span class="ansi-blue-intense-fg ansi-bold">(self, key)</span>
-<span class="ansi-green-fg">    663</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">isinstance</span>(key, <span style="color: rgb(0,135,0)">range</span>):
-<span class="ansi-green-fg">    664</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span style="color: rgb(0,135,0)">list</span>(key)
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 666</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_convert_to_indexer</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">key</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">axis</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">0</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\indexing.py:1294</span>, in <span class="ansi-cyan-fg">_LocIndexer._convert_to_indexer</span><span class="ansi-blue-intense-fg ansi-bold">(self, key, axis)</span>
-<span class="ansi-green-fg">   1292</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> inds
-<span class="ansi-green-fg">   1293</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 1294</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_get_listlike_indexer</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">key</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">axis</span><span class="ansi-yellow-bg">)</span>[<span style="color: rgb(98,98,98)">1</span>]
-<span class="ansi-green-fg">   1295</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">   1296</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">try</span>:
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\indexing.py:1330</span>, in <span class="ansi-cyan-fg">_LocIndexer._get_listlike_indexer</span><span class="ansi-blue-intense-fg ansi-bold">(self, key, axis)</span>
-<span class="ansi-green-fg">   1327</span> ax <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>obj<span style="color: rgb(98,98,98)">.</span>_get_axis(axis)
-<span class="ansi-green-fg">   1328</span> axis_name <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>obj<span style="color: rgb(98,98,98)">.</span>_get_axis_name(axis)
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 1330</span> keyarr, indexer <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">ax</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_get_indexer_strict</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">key</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">axis_name</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">   1332</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> keyarr, indexer
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\indexes\base.py:5791</span>, in <span class="ansi-cyan-fg">Index._get_indexer_strict</span><span class="ansi-blue-intense-fg ansi-bold">(self, key, axis_name)</span>
-<span class="ansi-green-fg">   5788</span>     keyarr <span style="color: rgb(98,98,98)">=</span> com<span style="color: rgb(98,98,98)">.</span>asarray_tuplesafe(keyarr)
-<span class="ansi-green-fg">   5790</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_index_as_unique:
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 5791</span>     indexer <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">get_indexer_for</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">keyarr</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">   5792</span>     keyarr <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>reindex(keyarr)[<span style="color: rgb(98,98,98)">0</span>]
-<span class="ansi-green-fg">   5793</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\indexes\base.py:5778</span>, in <span class="ansi-cyan-fg">Index.get_indexer_for</span><span class="ansi-blue-intense-fg ansi-bold">(self, target)</span>
-<span class="ansi-green-fg">   5760</span> <span style="color: rgb(175,0,0)">&#34;&#34;&#34;</span>
-<span class="ansi-green-fg">   5761</span> <span style="color: rgb(175,0,0)">Guaranteed return of an indexer even when non-unique.</span>
-<span class="ansi-green-fg">   5762</span> 
-<span class="ansi-green-intense-fg ansi-bold">   (...)</span>
-<span class="ansi-green-fg">   5775</span> <span style="color: rgb(175,0,0)">array([0, 2])</span>
-<span class="ansi-green-fg">   5776</span> <span style="color: rgb(175,0,0)">&#34;&#34;&#34;</span>
-<span class="ansi-green-fg">   5777</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_index_as_unique:
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 5778</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">get_indexer</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">target</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">   5779</span> indexer, _ <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>get_indexer_non_unique(target)
-<span class="ansi-green-fg">   5780</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> indexer
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\indexes\base.py:3788</span>, in <span class="ansi-cyan-fg">Index.get_indexer</span><span class="ansi-blue-intense-fg ansi-bold">(self, target, method, limit, tolerance)</span>
-<span class="ansi-green-fg">   3786</span>     this <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>astype(dtype, copy<span style="color: rgb(98,98,98)">=</span><span class="ansi-bold" style="color: rgb(0,135,0)">False</span>)
-<span class="ansi-green-fg">   3787</span>     target <span style="color: rgb(98,98,98)">=</span> target<span style="color: rgb(98,98,98)">.</span>astype(dtype, copy<span style="color: rgb(98,98,98)">=</span><span class="ansi-bold" style="color: rgb(0,135,0)">False</span>)
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 3788</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">this</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_get_indexer</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg">   3789</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">target</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">method</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">limit</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">limit</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">tolerance</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">tolerance</span>
-<span class="ansi-green-fg">   3790</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">   3792</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_get_indexer(target, method, limit, tolerance)
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\core\indexes\base.py:3817</span>, in <span class="ansi-cyan-fg">Index._get_indexer</span><span class="ansi-blue-intense-fg ansi-bold">(self, target, method, limit, tolerance)</span>
-<span class="ansi-green-fg">   3812</span>         <span style="color: rgb(95,135,135)"># error: &#34;IndexEngine&#34; has no attribute &#34;_extract_level_codes&#34;</span>
-<span class="ansi-green-fg">   3813</span>         tgt_values <span style="color: rgb(98,98,98)">=</span> engine<span style="color: rgb(98,98,98)">.</span>_extract_level_codes(  <span style="color: rgb(95,135,135)"># type: ignore[attr-defined]</span>
-<span class="ansi-green-fg">   3814</span>             target
-<span class="ansi-green-fg">   3815</span>         )
-<span class="ansi-green-intense-fg ansi-bold">-&gt; 3817</span>     indexer <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_engine</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">get_indexer</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">tgt_values</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">   3819</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> ensure_platform_int(indexer)
-
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\lib\site-packages\pandas\_libs\index.pyx:305</span>, in <span class="ansi-cyan-fg">pandas._libs.index.IndexEngine.get_indexer</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
-
-File <span class="ansi-green-intense-fg ansi-bold">pandas\_libs\hashtable_class_helper.pxi:5247</span>, in <span class="ansi-cyan-fg">pandas._libs.hashtable.PyObjectHashTable.lookup</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
-
-<span class="ansi-red-intense-fg ansi-bold">TypeError</span>: unhashable type: &#39;Series&#39;</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
