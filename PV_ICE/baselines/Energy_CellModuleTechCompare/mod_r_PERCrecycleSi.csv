@@ -1,4 +1,9 @@
 year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,mod_degradation,mod_lifetime,mod_MFG_eff,mod_Repair,mod_MerchantTail,mod_EOL_collection_eff,mod_EOL_pg0_resell,mod_EOL_pg1_landfill,mod_EOL_pg2_stored,mod_EOL_pg3_reMFG,mod_EOL_pg4_recycled,mod_EOL_reMFG_yield,mod_EOL_sp_reMFG_recycle,mod_EOL_pb1_landfill,mod_EOL_pb2_stored,mod_EOL_pb3_reMFG,mod_EOL_pb4_recycled
+1995,12.5,12.5,16,21,0.75,10,98,0,0,15,0,60,0,0,40,0,100,60,0,0,40
+1996,9.667666667,12.7,16,21,0.75,10,98,0,0,15,0,60,0,0,40,0,100,60,0,0,40
+1997,11.622,12.88,19,23,0.75,15,98,0,0,15,0,60,0,0,40,0,100,60,0,0,40
+1998,11.781,13.06,19,23,0.75,15,98,0,0,15,0,60,0,0,40,0,100,60,0,0,40
+1999,16.88466667,13.24,19,23,0.75,15,98,0,0,15,0,60,0,0,40,0,100,60,0,0,40
 2000,20.92666667,13.42,19,23,0.75,20,98,0,0,15,0,60,0,0,40,0,100,60,0,0,40
 2001,27.985,13.6,19,23,0.75,20,98,0,0,15,0,60,0,0,40,0,100,60,0,0,40
 2002,42.476,13.72222222,19,23,0.75,20,98,0,0,15,0,60,0,0,40,0,100,60,0,0,40
