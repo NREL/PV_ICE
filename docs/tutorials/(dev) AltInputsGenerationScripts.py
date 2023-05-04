@@ -107,7 +107,7 @@ pd.concat([df_shj_merchanttail,df_shj_modcollect,df_shj_modremfg,df_shj_modrecyc
 
 
 
-# In[28]:
+# In[2]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -129,25 +129,26 @@ glassimprovedrecycle['mat_MFG_scrap_Recycled_into_HQ'].loc[2022] = 0
 glassimprovedrecycle['mat_MFG_scrap_Recycled_into_HQ'].loc[2030] = 30
 glassimprovedrecycle['mat_MFG_scrap_Recycled_into_HQ'].loc[2050] = 75
 
-glassimprovedrecycle['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'].loc[2022] = 100
+glassimprovedrecycle['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'].loc[2022] = 0
 glassimprovedrecycle['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'].loc[2030] = 100
 glassimprovedrecycle['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'].loc[2050] = 100
 
 #REMFG
 
 glassimprovedrecycle['mat_PG3_ReMFG_target'].loc[2022] = 0
-glassimprovedrecycle['mat_PG3_ReMFG_target'].loc[2030] = 0
-glassimprovedrecycle['mat_PG3_ReMFG_target'].loc[2050] = 0
+glassimprovedrecycle['mat_PG3_ReMFG_target'].loc[2030] = 50
+glassimprovedrecycle['mat_PG3_ReMFG_target'].loc[2050] = 100
 
 
-glassimprovedrecycle['mat_ReMFG_yield'].loc[2022] = 0
-glassimprovedrecycle['mat_ReMFG_yield'].loc[2030] = 0
-glassimprovedrecycle['mat_ReMFG_yield'].loc[2050] = 0
+glassimprovedrecycle['mat_ReMFG_yield'].loc[2022] = 60
+glassimprovedrecycle['mat_ReMFG_yield'].loc[2030] = 80
+glassimprovedrecycle['mat_ReMFG_yield'].loc[2050] = 98
 
 #EoL Recycling
-glassimprovedrecycle['mat_PG4_Recycling_target'].loc[2022] = 90
-glassimprovedrecycle['mat_PG4_Recycling_target'].loc[2030] = 100
-glassimprovedrecycle['mat_PG4_Recycling_target'].loc[2050] = 100
+#glassimprovedrecycle['mat_PG4_Recycling_target'].loc[2022] = 90
+#glassimprovedrecycle['mat_PG4_Recycling_target'].loc[2030] = 100
+#glassimprovedrecycle['mat_PG4_Recycling_target'].loc[2050] = 100
+glassimprovedrecycle['mat_PG4_Recycling_target'] = 100-glassimprovedrecycle['mat_PG3_ReMFG_target']
 
 glassimprovedrecycle['mat_Recycling_yield'].loc[2022] = 40
 glassimprovedrecycle['mat_Recycling_yield'].loc[2030] = 60
@@ -165,7 +166,7 @@ glassimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 100
 glassimprovedrecycle.interpolate()
 
 
-# In[29]:
+# In[3]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -194,25 +195,25 @@ Siimprovedrecycle['mat_MFG_scrap_Recycled_into_HQ_Reused4MFG'].loc[2050] = 100
 #REMFG
 
 Siimprovedrecycle['mat_PG3_ReMFG_target'].loc[2022] = 0
-Siimprovedrecycle['mat_PG3_ReMFG_target'].loc[2030] = 0
-Siimprovedrecycle['mat_PG3_ReMFG_target'].loc[2050] = 0
+Siimprovedrecycle['mat_PG3_ReMFG_target'].loc[2030] = 30
+Siimprovedrecycle['mat_PG3_ReMFG_target'].loc[2050] = 80
 
 Siimprovedrecycle['mat_ReMFG_yield'].loc[2022] = 0
-Siimprovedrecycle['mat_ReMFG_yield'].loc[2030] = 0
-Siimprovedrecycle['mat_ReMFG_yield'].loc[2050] = 0
+Siimprovedrecycle['mat_ReMFG_yield'].loc[2030] = 50
+Siimprovedrecycle['mat_ReMFG_yield'].loc[2050] = 90
 
 #EoL Recycling
-Siimprovedrecycle['mat_PG4_Recycling_target'].loc[2022] = 0
-Siimprovedrecycle['mat_PG4_Recycling_target'].loc[2030] = 100
-Siimprovedrecycle['mat_PG4_Recycling_target'].loc[2050] = 100
+Siimprovedrecycle['mat_PG4_Recycling_target'].loc[2022] = 100
+Siimprovedrecycle['mat_PG4_Recycling_target'].loc[2030] = 50
+Siimprovedrecycle['mat_PG4_Recycling_target'].loc[2050] = 10
 
-Siimprovedrecycle['mat_Recycling_yield'].loc[2022] = 80
-Siimprovedrecycle['mat_Recycling_yield'].loc[2030] = 90
-Siimprovedrecycle['mat_Recycling_yield'].loc[2050] = 98
+Siimprovedrecycle['mat_Recycling_yield'].loc[2022] = 20
+Siimprovedrecycle['mat_Recycling_yield'].loc[2030] = 30
+Siimprovedrecycle['mat_Recycling_yield'].loc[2050] = 75
 
 Siimprovedrecycle['mat_EOL_Recycled_into_HQ'].loc[2022] = 0
-Siimprovedrecycle['mat_EOL_Recycled_into_HQ'].loc[2030] = 30
-Siimprovedrecycle['mat_EOL_Recycled_into_HQ'].loc[2050] = 75
+Siimprovedrecycle['mat_EOL_Recycled_into_HQ'].loc[2030] = 50
+Siimprovedrecycle['mat_EOL_Recycled_into_HQ'].loc[2050] = 90
 
 Siimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2022] = 0
 Siimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2030] = 100
