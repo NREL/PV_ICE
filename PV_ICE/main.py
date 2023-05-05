@@ -1652,12 +1652,13 @@ class Simulation:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
 
-        scen0 = scenarios[0]
+        scen0 = scenarios[0] #static scenario of the first in the list
         dataStartYear = int(self.scenario[scen0].dataIn_m.iloc[0]['year'])
         dataEndYear = int(self.scenario[scen0].dataIn_m.iloc[-1]['year'])
 
-        tryenergy = True
+        tryenergy = True #see below, default to try trimming energy dfs
         for scen in scenarios:
+            print('Trimming and extending ',scen)
             baseline = self.scenario[scen].dataIn_m
             # Add check if data does not need to be reduced to not do these.
             reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
@@ -1793,7 +1794,7 @@ class Simulation:
                         newStartYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[0]['year'])
                         newEndYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[-1]['year'])
                         if (newStartYear_e == newStartYear_emat) & (newEndYear_e == newEndYear_emat):
-                            print("Data trimmed for Energy, years now encompass ", newStartYear_e, " to ", newEndYear_e) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
+                            print(scen,": Data trimmed for Energy, years now encompass ", newStartYear_e, " to ", newEndYear_e) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
                         else:
                             print('There is an issue with year modification for Energy!!')
                     except:
@@ -1804,7 +1805,7 @@ class Simulation:
             newStartYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[0]['year'])
             newEndYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[-1]['year'])
             if (newStartYear_m == newStartYear_mat) & (newEndYear_m == newEndYear_mat):
-                print("Data trimmed for Mass, years now encompass ", newStartYear_m, " to ", newEndYear_m) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
+                print(scen,": Data trimmed for Mass, years now encompass ", newStartYear_m, " to ", newEndYear_m) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
             else:
                 print('There is an issue with year modification for Mass!!')
             
