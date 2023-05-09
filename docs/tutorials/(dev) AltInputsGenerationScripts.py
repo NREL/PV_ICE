@@ -336,3 +336,23 @@ Agimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 75
 
 Agimprovedrecycle.interpolate()
 
+
+# In[6]:
+
+
+import PV_ICE
+
+
+# In[47]:
+
+
+cdf = PV_ICE.weibull_cdf(12.596192434998898, 41.18098)
+
+year = range(0,50,1)
+cdfs = pd.DataFrame(index=year, columns=['cdf'], dtype=float)
+for yr in year:
+    cdfs.loc[yr] = cdf(yr)
+    
+#round(cdfs,2)
+plt.plot(cdfs)
+
