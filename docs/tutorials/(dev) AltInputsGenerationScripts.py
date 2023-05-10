@@ -12,13 +12,8 @@ import matplotlib.pyplot as plt
 
 cwd = os.getcwd() #grabs current working directory
 
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'EnergyAnalysis')
-inputfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
-baselinesfolder = str(Path().resolve().parent.parent /'PV_ICE' / 'baselines')
-supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
 
-
-# In[18]:
+# In[ ]:
 
 
 #Lifetime and Degradation
@@ -66,7 +61,7 @@ df_shj_t90.interpolate(inplace=True)
 pd.concat([df_shj_eff,df_shj_t50,df_shj_t90,df_shj_deg,df_shj_life], axis=1)
 
 
-# In[23]:
+# In[ ]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -101,13 +96,13 @@ df_modrecycle_alt = 100-df_shj_modremfg
 pd.concat([df_shj_merchanttail,df_shj_modcollect,df_shj_modremfg,df_shj_modrecycle, df_modrecycle_alt], axis=1)
 
 
-# In[20]:
+# In[ ]:
 
 
 
 
 
-# In[2]:
+# In[ ]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -166,7 +161,7 @@ glassimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 100
 glassimprovedrecycle.interpolate()
 
 
-# In[3]:
+# In[ ]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -223,7 +218,7 @@ Siimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 100
 Siimprovedrecycle.interpolate()
 
 
-# In[30]:
+# In[ ]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -280,7 +275,7 @@ Alimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 100
 Alimprovedrecycle.interpolate()
 
 
-# In[31]:
+# In[ ]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -337,13 +332,13 @@ Agimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 75
 Agimprovedrecycle.interpolate()
 
 
-# In[6]:
+# In[2]:
 
 
 import PV_ICE
 
 
-# In[47]:
+# In[ ]:
 
 
 cdf = PV_ICE.weibull_cdf(12.596192434998898, 41.18098)
@@ -355,4 +350,136 @@ for yr in year:
     
 #round(cdfs,2)
 plt.plot(cdfs)
+
+
+# In[ ]:
+
+
+alpha = 12.596192434998898
+beta = 41.18098
+
+
+# In[ ]:
+
+
+cdf = PV_ICE.weibull_cdf(12.596192434998898, 41.18098)
+
+year = range(0,50,1)
+cdfs = pd.DataFrame(index=year, columns=['cdf'], dtype=float)
+for yr in year:
+    cdfs.loc[yr] = cdf(yr)
+
+
+# In[ ]:
+
+
+def alphabeta2T50T90(alpha,beta):
+    T10 = round(-beta*-np.abs(np.log(0.9))**(1/alpha),2)
+    T50 = round(-beta*-np.abs(np.log(0.5))**(1/alpha),2)
+    T90 = round(-beta*-np.abs(np.log(0.1))**(1/alpha),2)
+    return T10,T50,T90
+
+
+# In[ ]:
+
+
+alphabeta2T50T90(alpha,beta)
+
+
+# In[ ]:
+
+
+alpha = pd.Series([x / 10.0 for x in range(1, 500,1)])
+beta = pd.Series([x / 10.0 for x in range(1, 1000,1)])
+
+
+# In[ ]:
+
+
+ts = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
+for a in alpha:
+    for b in beta:
+        tstemp = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
+        tstemp['alpha'] = a
+        tstemp['beta'] = b
+        tstemp['T10'],tstemp['T50'],tstemp['T90'] = alphabeta2T50T90(a,b)
+        ts = pd.concat([ts,tstemp])
+
+
+# In[ ]:
+
+
+tstemp
+
+
+# In[3]:
+
+
+def alphabeta2T10(alpha,beta):
+    T10 = round(-beta*-np.abs(np.log(0.9))**(1/alpha),2)
+    return T10
+
+
+# In[8]:
+
+
+PV_ICE.weibull_params({10:0.5,20:0.9})
+
+
+# In[14]:
+
+
+t5
+
+
+# In[13]:
+
+
+T50 = pd.Series(range(10,20,1))
+T90 = pd.Series(range(11,21,1))
+ts2 = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
+for t5 in T50:
+    for t9 in T90:
+        params = PV_ICE.weibull_params({t5:0.5,t9:0.9})
+        T10 = alphabeta2T10(params['alpha'],params['beta'])
+        tstemp2 = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
+        tstemp2['alpha'] = params['alpha']
+        tstemp2['beta'] = params['beta']
+        tstemp2['T50'] = t5
+        tstemp2['T90'] = t9
+        tstemp2['T10'] = T10
+        ts2 = pd.concat([ts2,tstemp2])
+
+
+# In[20]:
+
+
+ts2
+
+
+# In[16]:
+
+
+params = PV_ICE.weibull_params({T50:0.5,T90:0.9})
+T10 = alphabeta2T10(params['alpha'],params['beta'])
+tstemp2 = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
+tstemp2['alpha'] = params['alpha']
+tstemp2['beta'] = params['beta']
+tstemp2['T50'] = t5
+tstemp2['T90'] = t9
+tstemp2['T10'] = T10
+ts2 = pd.concat([ts2,tstemp2])
+
+
+# In[ ]:
+
+
+alphabeta2T10(1,5)
+
+
+# In[ ]:
+
+
+params = PV_ICE.weibull_params({t5:0.5,t9:0.9})
+params['beta']
 

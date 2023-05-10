@@ -1141,12 +1141,6 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[78]:
-
-
-sim1.scenario['r_PERC'].dataIn_m['year'].values+sim1.scenario['r_PERC'].dataIn_m['mod_lifetime'].values
-
-
 # In[79]:
 
 
