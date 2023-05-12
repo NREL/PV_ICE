@@ -1012,7 +1012,7 @@ sim1.scenario['r_Perovskite'].dataIn_m
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[79]:
+# In[66]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -1021,10 +1021,13 @@ fig, ax1 = plt.subplots()
 
 ax1.stackplot(global_projection.index, global_projection['World_cum']/1e6, color='#F7A11A')
 ax1.set_ylabel('Cumulative Solar Capacity [TW]', color='#F7A11A')
+ax1.ylim(0,90)
 ax2 = ax1.twinx()
 ax2.plot(global_projection['World_annual_[MWdc]']/1e6)
 ax2.set_ylabel('Annual Installations [TW]')
+ax2.ylim(0,5)
 plt.show()
+plt.xlim(2000,2100)
 
 
 # In[67]:
@@ -1111,13 +1114,13 @@ sim1.calculateMassFlow(scenarios=['ex_Lightweight','r_IRENA'], weibullInputParam
 ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[ ]:
+# In[75]:
 
 
 sim1.scenario['r_IRENA'].dataOut_m['WeibullParams']
 
 
-# In[75]:
+# In[76]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity')
@@ -1129,7 +1132,7 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[76]:
+# In[77]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity').filter(like='r_')
@@ -1141,13 +1144,13 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[77]:
+# In[78]:
 
 
 plt.plot(ii_yearly.filter(like='Decommisioned'))
 
 
-# In[78]:
+# In[79]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity').filter(like='ex_')
@@ -1170,7 +1173,7 @@ plt.ylim(0,)
 
 # #### Bifacial Factors
 
-# In[ ]:
+# In[80]:
 
 
 bifiFactors = {'ex_PERC_50':0.7, # ITRPV 2022, Fig. 58
@@ -1189,7 +1192,7 @@ bifiFactors = {'ex_PERC_50':0.7, # ITRPV 2022, Fig. 58
 #MAY NEED TO CHANGE TO BE DYNAMIC
 
 
-# In[ ]:
+# In[81]:
 
 
 #PV ICE currently set up to read in a csv of bifi factors, so generate files to read in 

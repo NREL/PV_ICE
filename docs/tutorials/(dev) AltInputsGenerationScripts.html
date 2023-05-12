@@ -14577,7 +14577,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14599,7 +14599,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[92]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Lifetime and Degradation</span>
@@ -14623,24 +14623,24 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <span class="c1">#Mod Project Lifetime</span>
 <span class="n">df_shj_life</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">idx_temp</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mod_lifetime&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">]</span> <span class="o">=</span> <span class="mi">30</span>
-<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">]</span> <span class="o">=</span> <span class="mi">35</span>
-<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">]</span> <span class="o">=</span> <span class="mi">38</span>
+<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">]</span> <span class="o">=</span> <span class="mi">35</span>
+<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">df_shj_life</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1">#sim1.modifyScenario(&#39;SHJ&#39;, &#39;mod_lifetime&#39;, df_shj_life.loc[2022:,&#39;mod_lifetime&#39;], start_year=2022) #</span>
 
 <span class="c1">#T50</span>
 <span class="n">df_shj_t50</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">idx_temp</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mod_t50&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">df_shj_t50</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">]</span> <span class="o">=</span> <span class="mi">34</span>
-<span class="n">df_shj_t50</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">]</span> <span class="o">=</span> <span class="mi">39</span>
-<span class="n">df_shj_t50</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">df_shj_t50</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">]</span> <span class="o">=</span> <span class="mi">39</span>
+<span class="n">df_shj_t50</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">]</span> <span class="o">=</span> <span class="mi">46</span>
+<span class="n">df_shj_t50</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">]</span> <span class="o">=</span> <span class="mf">54.5</span>
 <span class="n">df_shj_t50</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1">#sim1.modifyScenario(&#39;SHJ&#39;, &#39;mod_reliability_t50&#39;, df_shj_t50.loc[2022:,&#39;mod_t50&#39;], start_year=2022)</span>
 <span class="c1">#t90</span>
 <span class="n">df_shj_t90</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">idx_temp</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mod_t90&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">df_shj_t90</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">]</span> <span class="o">=</span> <span class="mi">37</span>
-<span class="n">df_shj_t90</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="n">df_shj_t90</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">]</span> <span class="o">=</span> <span class="mi">45</span>
+<span class="n">df_shj_t90</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">df_shj_t90</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">]</span> <span class="o">=</span> <span class="mi">49</span>
+<span class="n">df_shj_t90</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">]</span> <span class="o">=</span> <span class="mf">57.5</span>
 <span class="n">df_shj_t90</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1">#sim1.modifyScenario(&#39;SHJ&#39;, &#39;mod_reliability_t90&#39;, df_shj_t90.loc[2022:,&#39;mod_t90&#39;], start_year=2022) </span>
 
@@ -14662,7 +14662,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[92]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
 
 
 
@@ -14696,234 +14696,234 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     <tr>
       <th>2022</th>
       <td>19.0000</td>
-      <td>34.000</td>
-      <td>37.000</td>
+      <td>39.000</td>
+      <td>42.000</td>
       <td>0.7000</td>
-      <td>30.000</td>
+      <td>35.000</td>
     </tr>
     <tr>
       <th>2023</th>
       <td>19.1875</td>
-      <td>34.625</td>
-      <td>37.625</td>
+      <td>39.875</td>
+      <td>42.875</td>
       <td>0.6875</td>
-      <td>30.625</td>
+      <td>35.875</td>
     </tr>
     <tr>
       <th>2024</th>
       <td>19.3750</td>
-      <td>35.250</td>
-      <td>38.250</td>
+      <td>40.750</td>
+      <td>43.750</td>
       <td>0.6750</td>
-      <td>31.250</td>
+      <td>36.750</td>
     </tr>
     <tr>
       <th>2025</th>
       <td>19.5625</td>
-      <td>35.875</td>
-      <td>38.875</td>
+      <td>41.625</td>
+      <td>44.625</td>
       <td>0.6625</td>
-      <td>31.875</td>
+      <td>37.625</td>
     </tr>
     <tr>
       <th>2026</th>
       <td>19.7500</td>
-      <td>36.500</td>
-      <td>39.500</td>
+      <td>42.500</td>
+      <td>45.500</td>
       <td>0.6500</td>
-      <td>32.500</td>
+      <td>38.500</td>
     </tr>
     <tr>
       <th>2027</th>
       <td>19.9375</td>
-      <td>37.125</td>
-      <td>40.125</td>
+      <td>43.375</td>
+      <td>46.375</td>
       <td>0.6375</td>
-      <td>33.125</td>
+      <td>39.375</td>
     </tr>
     <tr>
       <th>2028</th>
       <td>20.1250</td>
-      <td>37.750</td>
-      <td>40.750</td>
+      <td>44.250</td>
+      <td>47.250</td>
       <td>0.6250</td>
-      <td>33.750</td>
+      <td>40.250</td>
     </tr>
     <tr>
       <th>2029</th>
       <td>20.3125</td>
-      <td>38.375</td>
-      <td>41.375</td>
+      <td>45.125</td>
+      <td>48.125</td>
       <td>0.6125</td>
-      <td>34.375</td>
+      <td>41.125</td>
     </tr>
     <tr>
       <th>2030</th>
       <td>20.5000</td>
-      <td>39.000</td>
-      <td>42.000</td>
+      <td>46.000</td>
+      <td>49.000</td>
       <td>0.6000</td>
-      <td>35.000</td>
+      <td>42.000</td>
     </tr>
     <tr>
       <th>2031</th>
       <td>20.5750</td>
-      <td>39.150</td>
-      <td>42.150</td>
+      <td>46.425</td>
+      <td>49.425</td>
       <td>0.5950</td>
-      <td>35.150</td>
+      <td>42.400</td>
     </tr>
     <tr>
       <th>2032</th>
       <td>20.6500</td>
-      <td>39.300</td>
-      <td>42.300</td>
+      <td>46.850</td>
+      <td>49.850</td>
       <td>0.5900</td>
-      <td>35.300</td>
+      <td>42.800</td>
     </tr>
     <tr>
       <th>2033</th>
       <td>20.7250</td>
-      <td>39.450</td>
-      <td>42.450</td>
+      <td>47.275</td>
+      <td>50.275</td>
       <td>0.5850</td>
-      <td>35.450</td>
+      <td>43.200</td>
     </tr>
     <tr>
       <th>2034</th>
       <td>20.8000</td>
-      <td>39.600</td>
-      <td>42.600</td>
+      <td>47.700</td>
+      <td>50.700</td>
       <td>0.5800</td>
-      <td>35.600</td>
+      <td>43.600</td>
     </tr>
     <tr>
       <th>2035</th>
       <td>20.8750</td>
-      <td>39.750</td>
-      <td>42.750</td>
+      <td>48.125</td>
+      <td>51.125</td>
       <td>0.5750</td>
-      <td>35.750</td>
+      <td>44.000</td>
     </tr>
     <tr>
       <th>2036</th>
       <td>20.9500</td>
-      <td>39.900</td>
-      <td>42.900</td>
+      <td>48.550</td>
+      <td>51.550</td>
       <td>0.5700</td>
-      <td>35.900</td>
+      <td>44.400</td>
     </tr>
     <tr>
       <th>2037</th>
       <td>21.0250</td>
-      <td>40.050</td>
-      <td>43.050</td>
+      <td>48.975</td>
+      <td>51.975</td>
       <td>0.5650</td>
-      <td>36.050</td>
+      <td>44.800</td>
     </tr>
     <tr>
       <th>2038</th>
       <td>21.1000</td>
-      <td>40.200</td>
-      <td>43.200</td>
+      <td>49.400</td>
+      <td>52.400</td>
       <td>0.5600</td>
-      <td>36.200</td>
+      <td>45.200</td>
     </tr>
     <tr>
       <th>2039</th>
       <td>21.1750</td>
-      <td>40.350</td>
-      <td>43.350</td>
+      <td>49.825</td>
+      <td>52.825</td>
       <td>0.5550</td>
-      <td>36.350</td>
+      <td>45.600</td>
     </tr>
     <tr>
       <th>2040</th>
       <td>21.2500</td>
-      <td>40.500</td>
-      <td>43.500</td>
+      <td>50.250</td>
+      <td>53.250</td>
       <td>0.5500</td>
-      <td>36.500</td>
+      <td>46.000</td>
     </tr>
     <tr>
       <th>2041</th>
       <td>21.3250</td>
-      <td>40.650</td>
-      <td>43.650</td>
+      <td>50.675</td>
+      <td>53.675</td>
       <td>0.5450</td>
-      <td>36.650</td>
+      <td>46.400</td>
     </tr>
     <tr>
       <th>2042</th>
       <td>21.4000</td>
-      <td>40.800</td>
-      <td>43.800</td>
+      <td>51.100</td>
+      <td>54.100</td>
       <td>0.5400</td>
-      <td>36.800</td>
+      <td>46.800</td>
     </tr>
     <tr>
       <th>2043</th>
       <td>21.4750</td>
-      <td>40.950</td>
-      <td>43.950</td>
+      <td>51.525</td>
+      <td>54.525</td>
       <td>0.5350</td>
-      <td>36.950</td>
+      <td>47.200</td>
     </tr>
     <tr>
       <th>2044</th>
       <td>21.5500</td>
-      <td>41.100</td>
-      <td>44.100</td>
+      <td>51.950</td>
+      <td>54.950</td>
       <td>0.5300</td>
-      <td>37.100</td>
+      <td>47.600</td>
     </tr>
     <tr>
       <th>2045</th>
       <td>21.6250</td>
-      <td>41.250</td>
-      <td>44.250</td>
+      <td>52.375</td>
+      <td>55.375</td>
       <td>0.5250</td>
-      <td>37.250</td>
+      <td>48.000</td>
     </tr>
     <tr>
       <th>2046</th>
       <td>21.7000</td>
-      <td>41.400</td>
-      <td>44.400</td>
+      <td>52.800</td>
+      <td>55.800</td>
       <td>0.5200</td>
-      <td>37.400</td>
+      <td>48.400</td>
     </tr>
     <tr>
       <th>2047</th>
       <td>21.7750</td>
-      <td>41.550</td>
-      <td>44.550</td>
+      <td>53.225</td>
+      <td>56.225</td>
       <td>0.5150</td>
-      <td>37.550</td>
+      <td>48.800</td>
     </tr>
     <tr>
       <th>2048</th>
       <td>21.8500</td>
-      <td>41.700</td>
-      <td>44.700</td>
+      <td>53.650</td>
+      <td>56.650</td>
       <td>0.5100</td>
-      <td>37.700</td>
+      <td>49.200</td>
     </tr>
     <tr>
       <th>2049</th>
       <td>21.9250</td>
-      <td>41.850</td>
-      <td>44.850</td>
+      <td>54.075</td>
+      <td>57.075</td>
       <td>0.5050</td>
-      <td>37.850</td>
+      <td>49.600</td>
     </tr>
     <tr>
       <th>2050</th>
       <td>22.0000</td>
-      <td>42.000</td>
-      <td>45.000</td>
+      <td>54.500</td>
+      <td>57.500</td>
       <td>0.5000</td>
-      <td>38.000</td>
+      <td>50.000</td>
     </tr>
   </tbody>
 </table>

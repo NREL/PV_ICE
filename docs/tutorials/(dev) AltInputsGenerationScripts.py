@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[92]:
+# In[5]:
 
 
 #Lifetime and Degradation
@@ -37,24 +37,24 @@ df_shj_deg.interpolate(inplace=True)
 
 #Mod Project Lifetime
 df_shj_life = pd.DataFrame(index=idx_temp, columns=['mod_lifetime'], dtype=float)
-df_shj_life.loc[2022] = 30
-df_shj_life.loc[2030] = 35
-df_shj_life.loc[2050] = 38
+df_shj_life.loc[2022] = 35
+df_shj_life.loc[2030] = 42
+df_shj_life.loc[2050] = 50
 df_shj_life.interpolate(inplace=True)
 #sim1.modifyScenario('SHJ', 'mod_lifetime', df_shj_life.loc[2022:,'mod_lifetime'], start_year=2022) #
 
 #T50
 df_shj_t50 = pd.DataFrame(index=idx_temp, columns=['mod_t50'], dtype=float)
-df_shj_t50.loc[2022] = 34
-df_shj_t50.loc[2030] = 39
-df_shj_t50.loc[2050] = 42
+df_shj_t50.loc[2022] = 39
+df_shj_t50.loc[2030] = 46
+df_shj_t50.loc[2050] = 54.5
 df_shj_t50.interpolate(inplace=True)
 #sim1.modifyScenario('SHJ', 'mod_reliability_t50', df_shj_t50.loc[2022:,'mod_t50'], start_year=2022)
 #t90
 df_shj_t90 = pd.DataFrame(index=idx_temp, columns=['mod_t90'], dtype=float)
-df_shj_t90.loc[2022] = 37
-df_shj_t90.loc[2030] = 42
-df_shj_t90.loc[2050] = 45
+df_shj_t90.loc[2022] = 42
+df_shj_t90.loc[2030] = 49
+df_shj_t90.loc[2050] = 57.5
 df_shj_t90.interpolate(inplace=True)
 #sim1.modifyScenario('SHJ', 'mod_reliability_t90', df_shj_t90.loc[2022:,'mod_t90'], start_year=2022) 
 
