@@ -148,7 +148,7 @@ timeshift = 2022-1995
 
 
 #module efficiency modify for PERC
-sim1.modifyScenario('ex_PERC_50', 'mod_eff', celltech_modeff.loc[2022:,'PERC'], start_year=2022) #changing module eff
+sim1.modifyScenario('ex_PERC_50', 'mod_eff', 24.5, start_year=2022) #PERC 2030 module eff
 
 
 # In[13]:
@@ -196,14 +196,14 @@ sim1.modifyScenario('ex_PERC_50', 'mod_MerchantTail', 100, start_year=2022) #all
 # In[17]:
 
 
-idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
-df_higheff = pd.DataFrame(index=idx_temp, columns=['mod_eff_p'], dtype=float)
-df_higheff.loc[2022] = 22.0
-df_higheff.loc[2030] = 25.0
-df_higheff.loc[2050] = 30.0
-df_higheff.interpolate(inplace=True)
+#idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
+#df_higheff = pd.DataFrame(index=idx_temp, columns=['mod_eff_p'], dtype=float)
+#df_higheff.loc[2022] = 22.0
+#df_higheff.loc[2030] = 25.0
+#df_higheff.loc[2050] = 30.0
+#df_higheff.interpolate(inplace=True)
 #module efficiency modify for PERC
-sim1.modifyScenario('ex_High_eff', 'mod_eff', df_higheff.loc[2022:,], start_year=2022) #changing module eff
+sim1.modifyScenario('ex_High_eff', 'mod_eff', 30.0, start_year=2022) #changing module eff
 
 
 # In[18]:
@@ -214,9 +214,9 @@ sim1.modifyScenario('ex_High_eff', 'mod_eff', df_higheff.loc[2022:,], start_year
 #degradation rate:
 sim1.modifyScenario('ex_High_eff', 'mod_degradation', 0.7, start_year=2022) #standard current degrdation
 #T50
-sim1.modifyScenario('ex_High_eff', 'mod_reliability_t50', 25, start_year=2022)
+sim1.modifyScenario('ex_High_eff', 'mod_reliability_t50', 29, start_year=2022)
 #t90
-sim1.modifyScenario('ex_High_eff', 'mod_reliability_t90', 31, start_year=2022) 
+sim1.modifyScenario('ex_High_eff', 'mod_reliability_t90', 32, start_year=2022) 
 #Mod Project Lifetime
 sim1.modifyScenario('ex_High_eff', 'mod_lifetime', 25, start_year=2022) #project lifetime of 25 years
 
@@ -253,7 +253,7 @@ df_perovskite_eff.interpolate(inplace=True)
 
 
 #module efficiency modify for PERC
-sim1.modifyScenario('ex_Perovskite', 'mod_eff', df_perovskite_eff['mod_eff_p'], start_year=2022) #changing module eff
+sim1.modifyScenario('ex_Perovskite', 'mod_eff', 27.3, start_year=2022) #changing module eff
 
 
 # In[21]:
@@ -273,9 +273,9 @@ sim1.modifyScenario('ex_Perovskite', 'mod_degradation', 1.47, start_year=2022) #
 #Mod Project Lifetime
 sim1.modifyScenario('ex_Perovskite', 'mod_lifetime', 15, start_year=2022) #project lifetime of 15 years
 #T50
-sim1.modifyScenario('ex_Perovskite', 'mod_reliability_t50', 14, start_year=2022)
+sim1.modifyScenario('ex_Perovskite', 'mod_reliability_t50', 19, start_year=2022)
 #t90
-sim1.modifyScenario('ex_Perovskite', 'mod_reliability_t90', 20, start_year=2022) 
+sim1.modifyScenario('ex_Perovskite', 'mod_reliability_t90', 22, start_year=2022) 
 
 
 # In[23]:
@@ -394,9 +394,9 @@ sim1.modifyScenario('ex_Lightweight', 'mod_degradation', 0.7, start_year=2022) #
 #Mod Project Lifetime
 sim1.modifyScenario('ex_Lightweight', 'mod_lifetime', 25, start_year=2022) #project lifetime of 15 years
 #T50
-sim1.modifyScenario('ex_Lightweight', 'mod_reliability_t50', 25, start_year=2022) #this will get changed with IRENA alpha/b
+sim1.modifyScenario('ex_Lightweight', 'mod_reliability_t50', 29, start_year=2022) #this will get changed with IRENA alpha/b
 #t90
-sim1.modifyScenario('ex_Lightweight', 'mod_reliability_t90', 31, start_year=2022) #this will get changed with IRENA alpha/b
+sim1.modifyScenario('ex_Lightweight', 'mod_reliability_t90', 32, start_year=2022) #this will get changed with IRENA alpha/b
 
 
 # In[27]:
@@ -487,26 +487,8 @@ sim1.scenario['r_PERC'].modifyMaterials('glass', 'mat_massperm2', glassperm2, st
 
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # ### SHJ
 # This is a modern SHJ module with expected silver and module efficiency improvements taken from Zhang et al 2021, Gervais et al 2021, and ITPRV 2022. See PERC vs SHJ vs TOPCon for a more detailed evaluation.
-
-# In[ ]:
-
-
-
-
 
 # In[34]:
 
@@ -571,20 +553,13 @@ sim1.scenario['r_SHJ'].modifyMaterials('glass', 'mat_massperm2', glassperm2, sta
 # In[39]:
 
 
-#Merchant Tail set high
-#sim1.modifyScenario('SHJ', 'mod_MerchantTail', 50, start_year=2022) #50% stay for merchant tail, possibly change to DYNAMIC
-
-
-# In[40]:
-
-
 plt.plot(sim1.scenario['r_SHJ'].material['silicon'].matdataIn_m.iloc[:,0],sim1.scenario['r_SHJ'].material['silicon'].matdataIn_m.iloc[:,3:])
 plt.legend(sim1.scenario['PV_ICE'].material['silicon'].matdataIn_m.iloc[:,3:].columns, 
            bbox_to_anchor=(0, -0.1), loc='upper left', ncol=1)
 plt.title('Silicon Management Evolution')
 
 
-# In[41]:
+# In[40]:
 
 
 plt.plot(sim1.scenario['r_SHJ'].material['glass'].matdataIn_m.iloc[:,0],sim1.scenario['r_SHJ'].material['glass'].matdataIn_m.iloc[:,3:])
@@ -593,7 +568,7 @@ plt.legend(sim1.scenario['PV_ICE'].material['glass'].matdataIn_m.iloc[:,3:].colu
 plt.title('Glass Management Evolution')
 
 
-# In[42]:
+# In[41]:
 
 
 plt.plot(sim1.scenario['r_SHJ'].material['aluminium_frames'].matdataIn_m.iloc[:,0],sim1.scenario['r_SHJ'].material['aluminium_frames'].matdataIn_m.iloc[:,3:])
@@ -602,7 +577,7 @@ plt.legend(sim1.scenario['PV_ICE'].material['aluminium_frames'].matdataIn_m.iloc
 plt.title('Glass Management Evolution')
 
 
-# In[43]:
+# In[42]:
 
 
 plt.plot(sim1.scenario['r_SHJ'].material['silver'].matdataIn_m.iloc[:,0],sim1.scenario['r_SHJ'].material['silver'].matdataIn_m.iloc[:,3:])
@@ -619,7 +594,7 @@ plt.title('Glass Management Evolution')
 
 # ### TOPCon
 
-# In[44]:
+# In[43]:
 
 
 #modified module
@@ -627,7 +602,7 @@ moduleinput_m_r_TOPCon = os.path.join(altBaselinesfolder, 'mod_r_TOPCon.csv')
 sim1.createScenario(name='r_TOPCon', massmodulefile=moduleinput_m_r_TOPCon, energymodulefile=moduleFile_e) 
 
 
-# In[45]:
+# In[44]:
 
 
 #module efficiency modify
@@ -635,7 +610,7 @@ sim1.modifyScenario('r_TOPCon', 'mod_eff', celltech_modeff.loc[2022:,'TOPCon'], 
 #sim1.scenario['SHJ'].dataIn_m.loc[timeshift:,'mod_eff'] = celltech_modeff.loc[2022:,'SHJ'].values
 
 
-# In[46]:
+# In[45]:
 
 
 #modified materials
@@ -664,14 +639,14 @@ for mats in range (0, len(baselineMats)):
     sim1.scenario['r_TOPCon'].addMaterial(baselineMats[mats], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[47]:
+# In[46]:
 
 
 #modify silver usage for PERC
 sim1.scenario['r_TOPCon'].modifyMaterials('silver', 'mat_massperm2', celltech_aguse.loc[2022:,'TOPCon'], start_year=2022)
 
 
-# In[48]:
+# In[47]:
 
 
 #modify package to glass glass
@@ -687,7 +662,7 @@ sim1.scenario['r_TOPCon'].modifyMaterials('glass', 'mat_massperm2', glassperm2, 
 # ### IRENA Reg. Loss with improved recycling
 # This scenario uses the IRENA 2016 regular loss scenario results, or a low quality module, and assumes the same EoL recycling improvement as the previous three scenarios
 
-# In[49]:
+# In[48]:
 
 
 #modified module
@@ -695,7 +670,7 @@ moduleinput_m_r_IRENA = os.path.join(altBaselinesfolder, 'mod_r_IRENAregloss.csv
 sim1.createScenario(name='r_IRENA', massmodulefile=moduleinput_m_r_IRENA, energymodulefile=moduleFile_e) 
 
 
-# In[50]:
+# In[49]:
 
 
 #modified materials
@@ -734,7 +709,7 @@ for mats in range (0, len(baselineMats)):
 # This module is based on the recent test from Fraunhofer ISE in which an old module was dissassembled, and the silicon wafer cleaned, put into a Cz ingot growth process and made using standard PERC processing, creating a 19% efficient module.
 # https://www.ise.fraunhofer.de/en/press-media/press-releases/2022/solar-cells-from-recycled-silicon.html
 
-# In[51]:
+# In[50]:
 
 
 #modified module
@@ -747,7 +722,7 @@ for mat in range (0, len(MATERIALS)):
     sim1.scenario['r_RecycledPERC'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[52]:
+# In[51]:
 
 
 #glass recycling
@@ -802,7 +777,7 @@ sim1.scenario['r_RecycledPERC'].modifyMaterials('silver', 'mat_EOL_Recycled_into
 sim1.scenario['r_RecycledPERC'].modifyMaterials('silver', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
 
 
-# In[53]:
+# In[52]:
 
 
 #the cool feature of this module was that the wafer was directly put into the Cz process
@@ -812,7 +787,7 @@ altHQRecycle_e = pd.read_csv(os.path.join(supportMatfolder, 'output_energy_silic
 altHQRecycle_e
 
 
-# In[54]:
+# In[53]:
 
 
 #modify silicon recycling energy
@@ -820,7 +795,7 @@ sim1.scenario['r_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_Recycled_
 sim1.scenario['r_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_Recycled_HQ_fuelfraction', altHQRecycle_e.loc[2022:,'E_mfgFuelFraction'], start_year=2022)
 
 
-# In[55]:
+# In[54]:
 
 
 sim1.scenario['r_RecycledPERC'].material['silicon'].matdataIn_e.iloc[25:30,]
@@ -828,7 +803,7 @@ sim1.scenario['r_RecycledPERC'].material['silicon'].matdataIn_e.iloc[25:30,]
 
 # ### 50-year PERC gradual improvement
 
-# In[56]:
+# In[55]:
 
 
 #modified module
@@ -842,7 +817,7 @@ for mat in range (0, len(MATERIALS)):
     sim1.scenario['r_50PERC'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[57]:
+# In[56]:
 
 
 #glass recycling
@@ -870,7 +845,7 @@ sim1.scenario['r_50PERC'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ',
 sim1.scenario['r_50PERC'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
 
 
-# In[58]:
+# In[57]:
 
 
 #silicon recycled
@@ -891,13 +866,13 @@ sim1.scenario['r_50PERC'].modifyMaterials('silicon', 'mat_EOL_Recycled_into_HQ',
 sim1.scenario['r_50PERC'].modifyMaterials('silicon', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
 
 
-# In[59]:
+# In[58]:
 
 
 #sim1.scenario['r_50PERC'].material['silicon'].matdataIn_m
 
 
-# In[60]:
+# In[59]:
 
 
 #aluminium_frames recycle
@@ -931,7 +906,7 @@ sim1.scenario['r_50PERC'].modifyMaterials('aluminium_frames', 'mat_EOL_RecycledH
                                           df_al_lowCL.loc[2022:,'mat_EOL_RecycledHQ_Reused4MFG'], start_year=2022) #closed-loop
 
 
-# In[61]:
+# In[60]:
 
 
 #sim1.scenario['r_50PERC'].material['aluminium_frames'].matdataIn_m
@@ -939,7 +914,7 @@ sim1.scenario['r_50PERC'].modifyMaterials('aluminium_frames', 'mat_EOL_RecycledH
 
 # ### Hopeful Perovskite, Gradually increasing circularity
 
-# In[62]:
+# In[61]:
 
 
 #modified module
@@ -965,7 +940,7 @@ for mat in range (0, len(subMats)):
     sim1.scenario['r_Perovskite'].addMaterial(subMats[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[63]:
+# In[62]:
 
 
 #aluminium_frames recycle
@@ -992,7 +967,7 @@ sim1.scenario['r_Perovskite'].modifyMaterials('aluminium_frames', 'mat_EOL_Recyc
 # ### Modify Years 2000 to 2100
 # We do this after we modify the baselines to propogate the modified 2050 values forward
 
-# In[64]:
+# In[63]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -1000,7 +975,7 @@ sim1.scenario['r_Perovskite'].modifyMaterials('aluminium_frames', 'mat_EOL_Recyc
 sim1.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[65]:
+# In[64]:
 
 
 #check
@@ -1012,7 +987,7 @@ sim1.scenario['r_Perovskite'].dataIn_m
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[66]:
+# In[65]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -1021,16 +996,16 @@ fig, ax1 = plt.subplots()
 
 ax1.stackplot(global_projection.index, global_projection['World_cum']/1e6, color='#F7A11A')
 ax1.set_ylabel('Cumulative Solar Capacity [TW]', color='#F7A11A')
-ax1.ylim(0,90)
+ax1.set_ylim(0,90)
+ax1.set_xlim(2000,2100)
 ax2 = ax1.twinx()
 ax2.plot(global_projection['World_annual_[MWdc]']/1e6)
 ax2.set_ylabel('Annual Installations [TW]')
-ax2.ylim(0,5)
+ax2.set_ylim(0,5)
 plt.show()
-plt.xlim(2000,2100)
 
 
-# In[67]:
+# In[66]:
 
 
 #deployment projection for all scenarios
@@ -1049,13 +1024,13 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
 # # Calculate Mass flow
 # Can just calc mass here (exclude energy) because we're going to immediately do Install Compensation.
 
-# In[68]:
+# In[67]:
 
 
 sim1.scenario.keys()
 
 
-# In[69]:
+# In[68]:
 
 
 scennames_ex = ['ex_PERC_50', 'ex_High_eff', 'ex_Perovskite', 'ex_Lightweight'] #extreme cases
@@ -1064,14 +1039,14 @@ scennames_all = ['ex_PERC_50', 'ex_High_eff', 'ex_Perovskite', 'ex_Lightweight',
                  'r_PERC', 'r_SHJ', 'r_TOPCon', 'r_IRENA', 'r_RecycledPERC', 'r_50PERC', 'r_Perovskite']
 
 
-# In[70]:
+# In[69]:
 
 
 for scen in sim1.scenario.keys():
     print(sim1.scenario[scen].material.keys())
 
 
-# In[71]:
+# In[70]:
 
 
 IRENAregloss = {'alpha':5.692,
@@ -1093,13 +1068,13 @@ dict_weibull = {'alpha':evolve_weibull['alpha'].tolist(),
 evolve_weibull.to_csv(os.path.join(altBaselinesfolder,'evolve_weibull.csv'))
 
 
-# In[72]:
+# In[71]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[73]:
+# In[72]:
 
 
 sim1.calculateMassFlow(scenarios=['ex_Lightweight','r_IRENA'], weibullInputParams=IRENAregloss)
@@ -1108,19 +1083,19 @@ sim1.calculateMassFlow(scenarios=['ex_Lightweight','r_IRENA'], weibullInputParam
 #sim1.calculateMassFlow(scenarios=['r_IRENA'])
 
 
-# In[74]:
+# In[73]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[75]:
+# In[74]:
 
 
 sim1.scenario['r_IRENA'].dataOut_m['WeibullParams']
 
 
-# In[76]:
+# In[75]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity')
@@ -1132,7 +1107,7 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[77]:
+# In[76]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity').filter(like='r_')
@@ -1144,13 +1119,13 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[78]:
+# In[77]:
 
 
 plt.plot(ii_yearly.filter(like='Decommisioned'))
 
 
-# In[79]:
+# In[78]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity').filter(like='ex_')
@@ -1173,7 +1148,7 @@ plt.ylim(0,)
 
 # #### Bifacial Factors
 
-# In[80]:
+# In[79]:
 
 
 bifiFactors = {'ex_PERC_50':0.7, # ITRPV 2022, Fig. 58
@@ -1192,7 +1167,7 @@ bifiFactors = {'ex_PERC_50':0.7, # ITRPV 2022, Fig. 58
 #MAY NEED TO CHANGE TO BE DYNAMIC
 
 
-# In[81]:
+# In[80]:
 
 
 #PV ICE currently set up to read in a csv of bifi factors, so generate files to read in 
@@ -1209,7 +1184,7 @@ for f in bifiFactors.keys(): #loop over module types
     #append bifi path to dict? or list?
 
 
-# In[ ]:
+# In[81]:
 
 
 #currently takes ~40 mins to run with 7 materials and 12 scenarios
@@ -1227,13 +1202,46 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
             sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen]) 
 
 
-# In[ ]:
+# In[82]:
 
 
 Under_Installment
 
 
-# In[ ]:
+# In[83]:
+
+
+#test with one scenario
+#scen='r_Perovskite'
+#df_compensate = pd.DataFrame(columns=['underinstalls[W]'],dtype=float)
+
+#for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of years
+#    print(row)
+#    Under_Installment = global_projection.iloc[row,0] - ((sim1.scenario[scen].dataOut_m['Installed_Capacity_[W]'][row])/1e6)  # MWATTS
+#    if row==0:
+#        df_compensate.loc[row,'underinstalls[W]'] = Under_Installment
+#    else:
+#        if Under_Installment < 0.7*df_compensate.iloc[row-1,0]:
+#            Under_Installment = df_compensate.iloc[row-1,0]
+#    df_compensate.loc[row,'underinstalls[W]'] = Under_Installment
+#    sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
+    #calculate flows for that scenario with it's bifi factor and modified weibull
+#    sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen])
+
+
+# In[84]:
+
+
+#plt.plot(df_compensate)
+
+
+# In[85]:
+
+
+#Under_Installment
+
+
+# In[86]:
 
 
 #aggregate results - mass
@@ -1242,7 +1250,7 @@ cc_yearly.to_csv(os.path.join(testfolder, 'cc_12scen_yearly.csv'))
 cc_cumu.to_csv(os.path.join(testfolder, 'cc_12scen_cumu.csv'))
 
 
-# In[ ]:
+# In[87]:
 
 
 #aggregate results - energy
@@ -1252,7 +1260,7 @@ energyGen.to_csv(os.path.join(testfolder, 'cc_12scen_energyGen.csv'))
 energy_demands.to_csv(os.path.join(testfolder, 'cc_12scen_energy_demands.csv'))
 
 
-# In[ ]:
+# In[88]:
 
 
 #read in saved results files for speed
@@ -1263,13 +1271,13 @@ energyGen = pd.read_csv(os.path.join(testfolder, 'cc_12scen_energyGen.csv'), ind
 energy_demands = pd.read_csv(os.path.join(testfolder, 'cc_12scen_energy_demands.csv'), index_col='year')
 
 
-# In[ ]:
+# In[89]:
 
 
 plt.plot(sim1.scenario['r_PERC'].dataOut_m['Installed_Capacity_[W]'])
 
 
-# In[ ]:
+# In[90]:
 
 
 #sim1.scenario['PV_ICE'].dataOut_m['irradiance_stc'].head(2)
@@ -1278,13 +1286,13 @@ sim1.scenario.keys()
 
 # # RESULTS: Effective Capacity and Replacements
 
-# In[ ]:
+# In[91]:
 
 
 sim1.scenario['r_RecycledPERC'].dataOut_m['WeibullParams'].tail(4)
 
 
-# In[ ]:
+# In[92]:
 
 
 effective_capacity = cc_yearly.filter(like='ActiveCapacity')
@@ -1295,7 +1303,7 @@ plt.title('Effective Capacity: With Replacements')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[93]:
 
 
 annual_EoL = cc_yearly.filter(like='DecommisionedCapacity')
@@ -1306,7 +1314,7 @@ plt.title('Annual Decommissions [TW]')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[94]:
 
 
 annual_installs = cc_yearly.filter(like='newInstalled')
@@ -1317,7 +1325,7 @@ plt.title('Annual Installs with Replacements')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[95]:
 
 
 cumu_installs_annually = cc_cumu.filter(like='newInstalled')
@@ -1328,13 +1336,7 @@ plt.title('Replacements Adjusted Deployment Curve \n Cumulative Installs with Re
 plt.ylim(0,)
 
 
-# In[ ]:
-
-
-cumu_installs
-
-
-# In[ ]:
+# In[117]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -1343,22 +1345,23 @@ plt.bar(scennames_labels, cumu_installs.loc[2100]/1e6, tick_label=scennames_labe
 plt.xticks(rotation=90)
 plt.ylabel('Cumulative installed [TW]')
 plt.title('Cumulative Installs with Replacements')
+plt.ylim(0,410)
 
 
-# In[ ]:
+# In[97]:
 
 
 cumulative_nameplate_installs = global_projection.loc[2100,'World_cum'] #MW
 print('The nameplate installations for energy transition and through 2100 are '+str(cumulative_nameplate_installs/1e6)+' TW.')
 
 
-# In[ ]:
+# In[98]:
 
 
 global_projection['World_annual_[MWdc]'].sum()
 
 
-# In[ ]:
+# In[118]:
 
 
 Additional_installs = cumu_installs.loc[2100]-global_projection.loc[2100,'World_cum']
@@ -1367,11 +1370,12 @@ plt.bar(scennames_labels, Additional_installs/1e6, tick_label=scennames_labels, 
 plt.ylabel('Cumulative Replacements [TW]')
 plt.title('Replacements Required by Technology')
 plt.xticks(rotation=90)
+plt.ylim(0,410)
 
 
 # # RESULTS: Virgin Material Demands
 
-# In[ ]:
+# In[100]:
 
 
 cumu_virgin_module = cc_cumu.filter(like='VirginStock_Module')
@@ -1382,7 +1386,7 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 plt.xticks(rotation=90)
 
 
-# In[ ]:
+# In[101]:
 
 
 recycledperc_virginstock = cc_cumu.filter(like='VirginStock').filter(like='Recycled')
@@ -1391,7 +1395,7 @@ plt.bar(recycledperc_virginstock.columns, recycledperc_virginstock.loc[2100]/1e6
 plt.ylabel('Million Metric tonnes')
 
 
-# In[ ]:
+# In[102]:
 
 
 cumu_virgin_module = cc_cumu.filter(like='VirginStock_Module')
@@ -1402,7 +1406,7 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[103]:
 
 
 annual_virgin_module = cc_yearly.filter(like='VirginStock_Module')
@@ -1413,7 +1417,7 @@ plt.ylabel('Virgin Material Requirements\n[million tonnes]')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[104]:
 
 
 #print out masses for stacked bar charts
@@ -1424,13 +1428,7 @@ mass_cumu = pd.concat([mass_cumu_virgin,mass_cumu_wasteall])
 mass_cumu.to_csv(os.path.join(testfolder, 'cc_cumu_mass_2100results.csv'))
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
+# In[105]:
 
 
 cc_cumu.to_csv(os.path.join(testfolder, 'cc_cumu_mass_results.csv'))
@@ -1438,7 +1436,7 @@ cc_cumu.to_csv(os.path.join(testfolder, 'cc_cumu_mass_results.csv'))
 
 # # RESULTS: Lifecycle Wastes
 
-# In[ ]:
+# In[106]:
 
 
 cumu_lifecycle_wastes = cc_cumu.filter(like='WasteAll_Module')
@@ -1451,9 +1449,26 @@ plt.ylabel('Lifecycle Wastes\n[million tonnes]')
 plt.xticks(rotation=90)
 
 
+# In[129]:
+
+
+annual_waste_module = cc_yearly.filter(like='WasteAll_Module')
+plt.plot(annual_waste_module/1e6)
+plt.legend(scennames_labels)
+plt.title('Annual Waste: Module')
+plt.ylabel('Lifecycle Wastes\n[million tonnes]')
+plt.ylim(0,)
+
+
+# In[137]:
+
+
+sim1.scenario['r_IRENA'].dataOut_m.loc[45:,]
+
+
 # # RESULTS: Energy
 
-# In[ ]:
+# In[107]:
 
 
 sim1.scenario['r_SHJ'].dataOut_e
@@ -1462,7 +1477,7 @@ sim1.scenario['r_SHJ'].dataOut_e
 # ## Energy Generation
 # Because of different bifi factors, they do NOT produce the same energy
 
-# In[ ]:
+# In[108]:
 
 
 #energyGen = allenergy.filter(like='e_out_annual')
@@ -1475,13 +1490,13 @@ plt.ylim(0,)
 
 # ## Net Energy
 
-# In[ ]:
+# In[109]:
 
 
 e_annual_sumDemands = energy_demands.filter(like='demand_total')
 
 
-# In[ ]:
+# In[110]:
 
 
 plt.plot(e_annual_sumDemands/1e12)
@@ -1491,13 +1506,13 @@ plt.ylabel('Energy Demands\n[TWh]')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[111]:
 
 
 e_annual_sumDemands_cumu = e_annual_sumDemands.cumsum()
 
 
-# In[ ]:
+# In[112]:
 
 
 plt.bar(e_annual_sumDemands_cumu.columns, e_annual_sumDemands_cumu.loc[2100]/1e12, 
@@ -1507,7 +1522,7 @@ plt.ylabel('Cumulative Energy Demands\n[TWh]')
 plt.xticks(rotation=90)
 
 
-# In[ ]:
+# In[113]:
 
 
 e_fuels = energy_demands.filter(like='_fuel')
@@ -1519,14 +1534,14 @@ for scen in sim1.scenario.keys():
     e_mfging_bymat = pd.concat([e_mfging_bymat,e_energy_mfg_scen,e_energy_mod_mfg_scen], axis=1)
 
 
-# In[ ]:
+# In[114]:
 
 
 cum_e_mfging_bymat = e_mfging_bymat.cumsum().loc[2100]
 cum_e_mfging_bymat
 
 
-# In[ ]:
+# In[115]:
 
 
 cume_mfg_glass.values+cume_mfg_silicon.values

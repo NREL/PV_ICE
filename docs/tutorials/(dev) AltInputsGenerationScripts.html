@@ -14577,7 +14577,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14599,7 +14599,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Lifetime and Degradation</span>
@@ -14623,9 +14623,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <span class="c1">#Mod Project Lifetime</span>
 <span class="n">df_shj_life</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">idx_temp</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mod_lifetime&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">]</span> <span class="o">=</span> <span class="mi">35</span>
-<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">]</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">]</span> <span class="o">=</span> <span class="mi">19</span>
+<span class="n">df_shj_life</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">]</span> <span class="o">=</span> <span class="mi">24</span>
 <span class="n">df_shj_life</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1">#sim1.modifyScenario(&#39;SHJ&#39;, &#39;mod_lifetime&#39;, df_shj_life.loc[2022:,&#39;mod_lifetime&#39;], start_year=2022) #</span>
 
@@ -14662,7 +14662,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
 
 
 
@@ -14699,7 +14699,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>39.000</td>
       <td>42.000</td>
       <td>0.7000</td>
-      <td>35.000</td>
+      <td>14.000</td>
     </tr>
     <tr>
       <th>2023</th>
@@ -14707,7 +14707,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>39.875</td>
       <td>42.875</td>
       <td>0.6875</td>
-      <td>35.875</td>
+      <td>14.625</td>
     </tr>
     <tr>
       <th>2024</th>
@@ -14715,7 +14715,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>40.750</td>
       <td>43.750</td>
       <td>0.6750</td>
-      <td>36.750</td>
+      <td>15.250</td>
     </tr>
     <tr>
       <th>2025</th>
@@ -14723,7 +14723,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>41.625</td>
       <td>44.625</td>
       <td>0.6625</td>
-      <td>37.625</td>
+      <td>15.875</td>
     </tr>
     <tr>
       <th>2026</th>
@@ -14731,7 +14731,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>42.500</td>
       <td>45.500</td>
       <td>0.6500</td>
-      <td>38.500</td>
+      <td>16.500</td>
     </tr>
     <tr>
       <th>2027</th>
@@ -14739,7 +14739,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>43.375</td>
       <td>46.375</td>
       <td>0.6375</td>
-      <td>39.375</td>
+      <td>17.125</td>
     </tr>
     <tr>
       <th>2028</th>
@@ -14747,7 +14747,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>44.250</td>
       <td>47.250</td>
       <td>0.6250</td>
-      <td>40.250</td>
+      <td>17.750</td>
     </tr>
     <tr>
       <th>2029</th>
@@ -14755,7 +14755,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>45.125</td>
       <td>48.125</td>
       <td>0.6125</td>
-      <td>41.125</td>
+      <td>18.375</td>
     </tr>
     <tr>
       <th>2030</th>
@@ -14763,7 +14763,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>46.000</td>
       <td>49.000</td>
       <td>0.6000</td>
-      <td>42.000</td>
+      <td>19.000</td>
     </tr>
     <tr>
       <th>2031</th>
@@ -14771,7 +14771,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>46.425</td>
       <td>49.425</td>
       <td>0.5950</td>
-      <td>42.400</td>
+      <td>19.250</td>
     </tr>
     <tr>
       <th>2032</th>
@@ -14779,7 +14779,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>46.850</td>
       <td>49.850</td>
       <td>0.5900</td>
-      <td>42.800</td>
+      <td>19.500</td>
     </tr>
     <tr>
       <th>2033</th>
@@ -14787,7 +14787,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>47.275</td>
       <td>50.275</td>
       <td>0.5850</td>
-      <td>43.200</td>
+      <td>19.750</td>
     </tr>
     <tr>
       <th>2034</th>
@@ -14795,7 +14795,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>47.700</td>
       <td>50.700</td>
       <td>0.5800</td>
-      <td>43.600</td>
+      <td>20.000</td>
     </tr>
     <tr>
       <th>2035</th>
@@ -14803,7 +14803,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>48.125</td>
       <td>51.125</td>
       <td>0.5750</td>
-      <td>44.000</td>
+      <td>20.250</td>
     </tr>
     <tr>
       <th>2036</th>
@@ -14811,7 +14811,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>48.550</td>
       <td>51.550</td>
       <td>0.5700</td>
-      <td>44.400</td>
+      <td>20.500</td>
     </tr>
     <tr>
       <th>2037</th>
@@ -14819,7 +14819,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>48.975</td>
       <td>51.975</td>
       <td>0.5650</td>
-      <td>44.800</td>
+      <td>20.750</td>
     </tr>
     <tr>
       <th>2038</th>
@@ -14827,7 +14827,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>49.400</td>
       <td>52.400</td>
       <td>0.5600</td>
-      <td>45.200</td>
+      <td>21.000</td>
     </tr>
     <tr>
       <th>2039</th>
@@ -14835,7 +14835,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>49.825</td>
       <td>52.825</td>
       <td>0.5550</td>
-      <td>45.600</td>
+      <td>21.250</td>
     </tr>
     <tr>
       <th>2040</th>
@@ -14843,7 +14843,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>50.250</td>
       <td>53.250</td>
       <td>0.5500</td>
-      <td>46.000</td>
+      <td>21.500</td>
     </tr>
     <tr>
       <th>2041</th>
@@ -14851,7 +14851,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>50.675</td>
       <td>53.675</td>
       <td>0.5450</td>
-      <td>46.400</td>
+      <td>21.750</td>
     </tr>
     <tr>
       <th>2042</th>
@@ -14859,7 +14859,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>51.100</td>
       <td>54.100</td>
       <td>0.5400</td>
-      <td>46.800</td>
+      <td>22.000</td>
     </tr>
     <tr>
       <th>2043</th>
@@ -14867,7 +14867,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>51.525</td>
       <td>54.525</td>
       <td>0.5350</td>
-      <td>47.200</td>
+      <td>22.250</td>
     </tr>
     <tr>
       <th>2044</th>
@@ -14875,7 +14875,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>51.950</td>
       <td>54.950</td>
       <td>0.5300</td>
-      <td>47.600</td>
+      <td>22.500</td>
     </tr>
     <tr>
       <th>2045</th>
@@ -14883,7 +14883,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>52.375</td>
       <td>55.375</td>
       <td>0.5250</td>
-      <td>48.000</td>
+      <td>22.750</td>
     </tr>
     <tr>
       <th>2046</th>
@@ -14891,7 +14891,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>52.800</td>
       <td>55.800</td>
       <td>0.5200</td>
-      <td>48.400</td>
+      <td>23.000</td>
     </tr>
     <tr>
       <th>2047</th>
@@ -14899,7 +14899,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>53.225</td>
       <td>56.225</td>
       <td>0.5150</td>
-      <td>48.800</td>
+      <td>23.250</td>
     </tr>
     <tr>
       <th>2048</th>
@@ -14907,7 +14907,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>53.650</td>
       <td>56.650</td>
       <td>0.5100</td>
-      <td>49.200</td>
+      <td>23.500</td>
     </tr>
     <tr>
       <th>2049</th>
@@ -14915,7 +14915,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>54.075</td>
       <td>57.075</td>
       <td>0.5050</td>
-      <td>49.600</td>
+      <td>23.750</td>
     </tr>
     <tr>
       <th>2050</th>
@@ -14923,7 +14923,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>54.500</td>
       <td>57.500</td>
       <td>0.5000</td>
-      <td>50.000</td>
+      <td>24.000</td>
     </tr>
   </tbody>
 </table>

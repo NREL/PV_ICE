@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[6]:
 
 
 import numpy as np
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[5]:
+# In[7]:
 
 
 #Lifetime and Degradation
@@ -37,9 +37,9 @@ df_shj_deg.interpolate(inplace=True)
 
 #Mod Project Lifetime
 df_shj_life = pd.DataFrame(index=idx_temp, columns=['mod_lifetime'], dtype=float)
-df_shj_life.loc[2022] = 35
-df_shj_life.loc[2030] = 42
-df_shj_life.loc[2050] = 50
+df_shj_life.loc[2022] = 14
+df_shj_life.loc[2030] = 19
+df_shj_life.loc[2050] = 24
 df_shj_life.interpolate(inplace=True)
 #sim1.modifyScenario('SHJ', 'mod_lifetime', df_shj_life.loc[2022:,'mod_lifetime'], start_year=2022) #
 
