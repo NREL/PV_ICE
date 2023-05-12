@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[ ]:
+# In[92]:
 
 
 #Lifetime and Degradation
@@ -27,9 +27,9 @@ df_shj_eff.loc[2050] = 22
 df_shj_eff.interpolate(inplace=True)
 
 df_shj_deg = pd.DataFrame(index=idx_temp, columns=['mod_deg'], dtype=float)
-df_shj_deg.loc[2022] = 1.6
-df_shj_deg.loc[2030] = 1.4
-df_shj_deg.loc[2050] = 1.2
+df_shj_deg.loc[2022] = 0.7
+df_shj_deg.loc[2030] = 0.6
+df_shj_deg.loc[2050] = 0.5
 df_shj_deg.interpolate(inplace=True)
 
 #degradation rate:
@@ -37,24 +37,24 @@ df_shj_deg.interpolate(inplace=True)
 
 #Mod Project Lifetime
 df_shj_life = pd.DataFrame(index=idx_temp, columns=['mod_lifetime'], dtype=float)
-df_shj_life.loc[2022] = 25
-df_shj_life.loc[2030] = 25
-df_shj_life.loc[2050] = 25
+df_shj_life.loc[2022] = 30
+df_shj_life.loc[2030] = 35
+df_shj_life.loc[2050] = 38
 df_shj_life.interpolate(inplace=True)
 #sim1.modifyScenario('SHJ', 'mod_lifetime', df_shj_life.loc[2022:,'mod_lifetime'], start_year=2022) #
 
 #T50
 df_shj_t50 = pd.DataFrame(index=idx_temp, columns=['mod_t50'], dtype=float)
-df_shj_t50.loc[2022] = 25
-df_shj_t50.loc[2030] = 28
-df_shj_t50.loc[2050] = 40
+df_shj_t50.loc[2022] = 34
+df_shj_t50.loc[2030] = 39
+df_shj_t50.loc[2050] = 42
 df_shj_t50.interpolate(inplace=True)
 #sim1.modifyScenario('SHJ', 'mod_reliability_t50', df_shj_t50.loc[2022:,'mod_t50'], start_year=2022)
 #t90
 df_shj_t90 = pd.DataFrame(index=idx_temp, columns=['mod_t90'], dtype=float)
-df_shj_t90.loc[2022] = 30
-df_shj_t90.loc[2030] = 33
-df_shj_t90.loc[2050] = 44
+df_shj_t90.loc[2022] = 37
+df_shj_t90.loc[2030] = 42
+df_shj_t90.loc[2050] = 45
 df_shj_t90.interpolate(inplace=True)
 #sim1.modifyScenario('SHJ', 'mod_reliability_t90', df_shj_t90.loc[2022:,'mod_t90'], start_year=2022) 
 
@@ -338,52 +338,18 @@ Agimprovedrecycle.interpolate()
 import PV_ICE
 
 
-# In[ ]:
+# In[7]:
 
 
-cdf = PV_ICE.weibull_cdf(12.596192434998898, 41.18098)
-
-year = range(0,50,1)
-cdfs = pd.DataFrame(index=year, columns=['cdf'], dtype=float)
-for yr in year:
-    cdfs.loc[yr] = cdf(yr)
-    
-#round(cdfs,2)
-plt.plot(cdfs)
-
-
-# In[ ]:
-
-
-alpha = 12.596192434998898
-beta = 41.18098
-
-
-# In[ ]:
-
-
-cdf = PV_ICE.weibull_cdf(12.596192434998898, 41.18098)
-
-year = range(0,50,1)
-cdfs = pd.DataFrame(index=year, columns=['cdf'], dtype=float)
-for yr in year:
-    cdfs.loc[yr] = cdf(yr)
-
-
-# In[ ]:
-
-
-def alphabeta2T50T90(alpha,beta):
+def alphabeta2T10T50T90(alpha,beta):
     T10 = round(-beta*-np.abs(np.log(0.9))**(1/alpha),2)
     T50 = round(-beta*-np.abs(np.log(0.5))**(1/alpha),2)
     T90 = round(-beta*-np.abs(np.log(0.1))**(1/alpha),2)
     return T10,T50,T90
 
-
-# In[ ]:
-
-
-alphabeta2T50T90(alpha,beta)
+def alphabeta2T10(alpha,beta):
+    T10 = round(-beta*-np.abs(np.log(0.9))**(1/alpha),2)
+    return T10
 
 
 # In[ ]:
@@ -393,93 +359,68 @@ alpha = pd.Series([x / 10.0 for x in range(1, 500,1)])
 beta = pd.Series([x / 10.0 for x in range(1, 1000,1)])
 
 
+# In[41]:
+
+
+T50 = pd.Series(range(15,66,1))
+T90 = pd.Series(range(18,69,1))
+inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
+inputsdf
+
+
+# In[42]:
+
+
+for row in inputsdf.index:
+    t50, t90 = inputsdf.loc[row,'T50'], inputsdf.loc[row,'T90']
+    params = PV_ICE.weibull_params({t50: 0.50, t90: 0.90})
+    T10 = alphabeta2T10(params['alpha'],params['beta'])
+    inputsdf.loc[row,'T10'] = T10
+inputsdf
+
+
 # In[ ]:
 
 
-ts = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
-for a in alpha:
-    for b in beta:
-        tstemp = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
-        tstemp['alpha'] = a
-        tstemp['beta'] = b
-        tstemp['T10'],tstemp['T50'],tstemp['T90'] = alphabeta2T50T90(a,b)
-        ts = pd.concat([ts,tstemp])
 
 
-# In[ ]:
+
+# In[46]:
 
 
-tstemp
+T50 = pd.Series([16,19,20,21,24,25,28,33,40])
+T90 = pd.Series([21,23,25,26,29,30,33,38,44])
+inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
+inputsdf
 
 
-# In[3]:
+# In[47]:
 
 
-def alphabeta2T10(alpha,beta):
-    T10 = round(-beta*-np.abs(np.log(0.9))**(1/alpha),2)
-    return T10
+for row in inputsdf.index:
+    t50, t90 = inputsdf.loc[row,'T50'], inputsdf.loc[row,'T90']
+    params = PV_ICE.weibull_params({t50: 0.50, t90: 0.90})
+    T10 = alphabeta2T10(params['alpha'],params['beta'])
+    inputsdf.loc[row,'T10'] = T10
+inputsdf
 
 
-# In[8]:
+# In[90]:
 
 
-PV_ICE.weibull_params({10:0.5,20:0.9})
-
-
-# In[14]:
-
-
-t5
-
-
-# In[13]:
-
-
-T50 = pd.Series(range(10,20,1))
-T90 = pd.Series(range(11,21,1))
-ts2 = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
-for t5 in T50:
-    for t9 in T90:
-        params = PV_ICE.weibull_params({t5:0.5,t9:0.9})
-        T10 = alphabeta2T10(params['alpha'],params['beta'])
-        tstemp2 = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
-        tstemp2['alpha'] = params['alpha']
-        tstemp2['beta'] = params['beta']
-        tstemp2['T50'] = t5
-        tstemp2['T90'] = t9
-        tstemp2['T10'] = T10
-        ts2 = pd.concat([ts2,tstemp2])
-
-
-# In[20]:
-
-
-ts2
-
-
-# In[16]:
-
-
-params = PV_ICE.weibull_params({T50:0.5,T90:0.9})
+params = PV_ICE.weibull_params({35: 0.50, 37: 0.90})
 T10 = alphabeta2T10(params['alpha'],params['beta'])
-tstemp2 = pd.DataFrame(columns=['alpha','beta','T10','T50','T90'], dtype=float)
-tstemp2['alpha'] = params['alpha']
-tstemp2['beta'] = params['beta']
-tstemp2['T50'] = t5
-tstemp2['T90'] = t9
-tstemp2['T10'] = T10
-ts2 = pd.concat([ts2,tstemp2])
+T10
+
+
+# In[91]:
+
+
+alphabeta2T10(5.692,29.697)
 
 
 # In[ ]:
 
 
-alphabeta2T10(1,5)
-
-
-# In[ ]:
-
-
-params = PV_ICE.weibull_params({t5:0.5,t9:0.9})
-params['beta']
+#input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
 

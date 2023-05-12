@@ -5,7 +5,7 @@
 
 # This journal documents the manipulation of PV installation data for Global installs. This covers selection of data, and weighting by marketshare.
 
-# In[1]:
+# In[ ]:
 
 
 import numpy as np
@@ -21,7 +21,7 @@ cwd = os.getcwd() #grabs current working directory
 supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
 
 
-# In[2]:
+# In[ ]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -30,13 +30,13 @@ sources = df_installs_raw.columns
 print(len(sources))
 
 
-# In[3]:
+# In[ ]:
 
 
 df_installs_raw
 
 
-# In[4]:
+# In[ ]:
 
 
 plt.plot(df_installs_raw.index,df_installs_raw[sources[0]],lw=4,marker='*',label=sources[0])
@@ -54,7 +54,7 @@ plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
 
 # Based on the above graph, we will utilize Goetzberger data through 2000, then IRENA online query tool after 2000.
 
-# In[5]:
+# In[ ]:
 
 
 #Before 2000 = Goetz
@@ -71,7 +71,7 @@ installs_recent_IRENA.columns = ['installed_pv_MW']
 
 # ### Collect the installation data together into a single df
 
-# In[6]:
+# In[ ]:
 
 
 installs = pd.concat([installs_old_Goetz,installs_recent_IRENA])
@@ -86,7 +86,7 @@ plt.title('Installations of PV Globally (MW) since 1995')
 
 
 
-# In[7]:
+# In[ ]:
 
 
 installs.to_csv(os.path.join(supportMatfolder, 'output_Global_allPV_installs.csv'))
@@ -96,7 +96,7 @@ installs.to_csv(os.path.join(supportMatfolder, 'output_Global_allPV_installs.csv
 
 # In addition to compiling a single installation record for 1995 through the present, this data is total cumulative, but the tool it currently considering crystalline silicon technology only (i.e. mono and multi, but not ribbon or amorphous).
 
-# In[8]:
+# In[ ]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -105,7 +105,7 @@ refs = df_raw_mrktshr_siVtf.columns
 print(len(refs))
 
 
-# In[9]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 14})
@@ -120,13 +120,13 @@ plt.ylim(50,100)
 
 # The 2020 Fraunhofer and 2014 Fraunhofer appear to agree reasonably closely, and Mints agrees closely for the amount of time there is overlap. The unknown sourced wikipedia figure doesn't agree until 2010, but given the unknown source, it will be discarded. We will use the Fraunhofer ISE 2020 market share data for the entire time period.
 
-# In[10]:
+# In[ ]:
 
 
 refs
 
 
-# In[11]:
+# In[ ]:
 
 
 df_mrktshr_global =  pd.DataFrame(df_raw_mrktshr_siVtf[refs[2]]) #select Fraunhofer for historical 1995-2020
@@ -136,7 +136,7 @@ mrktshr_global.columns = ['Global_MarketShare']
 #print(mrktshr_global)
 
 
-# In[12]:
+# In[ ]:
 
 
 #convert to decimal
@@ -157,7 +157,7 @@ plt.ylim(0,1.1)
 
 
 
-# In[13]:
+# In[ ]:
 
 
 #put the two dataframes together, joining for available data (excludes NANs)
@@ -177,14 +177,14 @@ plt.title('Silicon PV Installations (MW) Globally, 1995 through 2019')
 plt.legend()
 
 
-# In[14]:
+# In[ ]:
 
 
 cwd = os.getcwd() #grabs current working directory
 cwd
 
 
-# In[15]:
+# In[ ]:
 
 
 #world_si_installs.to_csv(cwd+'/../../PV_ICE/baselines/SupportingMaterial/output_Global_SiPV_installs.csv', index=True)
@@ -197,7 +197,7 @@ world_si_installs.to_csv(os.path.join(supportMatfolder, 'output_Global_allPV_ins
 # 
 # This section documents and munges the IRENA world historical PV install data by country. We can then modify it by the world marketshare of silicon.
 
-# In[16]:
+# In[1]:
 
 
 import numpy as np
@@ -210,7 +210,7 @@ cwd = os.getcwd() #grabs current working directory
 supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
 
 
-# In[17]:
+# In[2]:
 
 
 IRENA_raw_file = os.path.join(supportMatfolder, 'HistoricalCapacityWorld-QueryResult-PVCumCap.xlsx') #THIS IS CUMULATIVE
@@ -220,7 +220,7 @@ IRENA_global_raw.drop(columns=list(IRENA_global_raw.filter(like='Unnamed')), inp
 IRENA_global_raw.drop(columns=['Technology','Indicator'], inplace=True) #drop these columns
 
 
-# In[18]:
+# In[3]:
 
 
 IRENA_locs = list(IRENA_global_raw.index)
@@ -228,32 +228,32 @@ regions = ['Africa','Asia','C America + Carib','Eurasia','Europe','EU 27','Middl
 countries = [i for i in IRENA_locs if i not in regions] #leaves in world
 
 
-# In[19]:
+# In[4]:
 
 
 IRENA_global = IRENA_global_raw.T
 
 
-# In[20]:
+# In[5]:
 
 
 shiftpos = IRENA_global.shift(1).fillna(0)
 
 
-# In[21]:
+# In[6]:
 
 
 IRENA_global_annual = IRENA_global-shiftpos
 
 
-# In[22]:
+# In[7]:
 
 
 IRENA_regions = IRENA_global_annual.loc[:,regions]
 IRENA_countries = IRENA_global_annual.loc[:,countries]
 
 
-# In[23]:
+# In[8]:
 
 
 IRENA_regions.to_csv(path_or_buf=os.path.join(supportMatfolder, 'output-RegionInstalls-alltech.csv'))
@@ -262,33 +262,33 @@ IRENA_countries.to_csv(path_or_buf=os.path.join(supportMatfolder, 'output-Countr
 
 # ## Market Share Weight Global installs by Silicon
 
-# In[24]:
+# In[9]:
 
 
 mrktshr_global.index[-1] #what is the last year we have data for?
 
 
-# In[25]:
+# In[ ]:
 
 
 #trim the c-Si marketshare to match index of IRENA installs
 mrktshr_cSiglobal_IRENA = mrktshr_global.loc[mrktshr_global.index>1999]/100 #turn into decimal
 
 
-# In[26]:
+# In[ ]:
 
 
 mrktshr_cSiglobal_IRENA.columns
 
 
-# In[27]:
+# In[ ]:
 
 
 IRENA_regions_cSi = IRENA_regions.multiply(mrktshr_cSiglobal_IRENA["Global_MarketShare"], axis="index")
 IRENA_countries_cSi = IRENA_countries.multiply(mrktshr_cSiglobal_IRENA["Global_MarketShare"], axis="index")
 
 
-# In[28]:
+# In[ ]:
 
 
 IRENA_regions_cSi.to_csv(path_or_buf=os.path.join(supportMatfolder, 'output-RegionInstalls-cSi.csv'))
@@ -301,20 +301,20 @@ IRENA_countries_cSi.to_csv(path_or_buf=os.path.join(supportMatfolder, 'output-Co
 
 
 
-# In[29]:
+# In[ ]:
 
 
 #access the global historical install and create projection
 IRENA_hist_cSi = pd.read_csv(os.path.join(supportMatfolder,'output-CountryInstalls-cSi.csv'), index_col=0)
 
 
-# In[30]:
+# In[ ]:
 
 
 IRENA_hist_cSi_world = pd.DataFrame(IRENA_hist_cSi['World']) #extract just the global historical installs (this is a series)
 
 
-# In[31]:
+# In[ ]:
 
 
 #create a full historical deployment + projection 
@@ -326,7 +326,7 @@ IRENA_world_cSi_project.loc[2018]=481*1000 #MW in 2018
 IRENA_world_cSi_project.loc[2050]=14036*1000 #MW in 2050
 
 
-# In[32]:
+# In[ ]:
 
 
 # exponential interpolation option - not great
@@ -343,21 +343,21 @@ plt.plot(y_dummy)
 #plt.plot(IRENA_world_cSi_project['World_cum'][2050], marker='o')
 
 
-# In[33]:
+# In[ ]:
 
 
 IRENA_world_cSi_project['World_cum_fill']=y_dummy
 IRENA_world_cSi_project.loc[2050]
 
 
-# In[34]:
+# In[ ]:
 
 
 #IRENA_world_cSi_project.interpolate(inplace=True) #create the cumulative global deployed pv each year (linear also not great)
 IRENA_world_cSi_project['World'] = IRENA_world_cSi_project['World_cum_fill']-IRENA_world_cSi_project['World_cum_fill'].shift(1).fillna(0)
 
 
-# In[35]:
+# In[ ]:
 
 
 IRENA_world_cSi_project_annual_torev = IRENA_world_cSi_project.loc[2022:2050,['World']]
@@ -365,14 +365,14 @@ IRENA_world_cSi_project_annual = IRENA_world_cSi_project_annual_torev.iloc[::-1]
 IRENA_world_cSi_project_annual.index = IRENA_world_cSi_project_annual_torev.index #reset index related to above
 
 
-# In[36]:
+# In[ ]:
 
 
 IRENA_cSi_world = pd.concat([IRENA_hist_cSi_world,IRENA_world_cSi_project_annual])
 #IRENA_cSi_world
 
 
-# In[37]:
+# In[ ]:
 
 
 plt.rcParams.update({'font.size': 14})
@@ -404,8 +404,9 @@ plt.ylabel('Annually Deployed PV [MWdc]')
 #     - Electricity Scenario, 2050: 22.0 TW cumulative, 1.4 TW annual
 #     
 # So lets say cumulative of 50 TW in 2050.
+# Updating to Haegel et al 75 TW in 2050.
 
-# In[38]:
+# In[ ]:
 
 
 #2021:
@@ -413,21 +414,21 @@ cumPV_2021 = IRENA_global.loc[2021,'World']
 print('In 2021, there is a cumulative of '+str(round(cumPV_2021,2))+' MWdc installed globally.')
 
 
-# In[39]:
+# In[ ]:
 
 
-cumPV2050_MWdc = 50*1000000 #MW or 50 TW
+cumPV2050_MWdc = 75*1000000 #MW or 75 TW
 req_additions = cumPV2050_MWdc-cumPV_2021
 print('A total of '+str(round(req_additions,0))+' MWdc need to be added between 2022 and 2050')
 
 
-# In[40]:
+# In[ ]:
 
 
 req_additions/(2050-2022)
 
 
-# In[41]:
+# In[ ]:
 
 
 idx_fullrange = pd.RangeIndex(start=2000,stop=2051,step=1) #create the index
@@ -442,7 +443,7 @@ altproj_50TW_cum_shift = altproj_50TW_cum.shift(1).fillna(0)
 altproj_50TW_cum['World_annual_[MWdc]'] = altproj_50TW_cum-altproj_50TW_cum_shift
 
 
-# In[42]:
+# In[ ]:
 
 
 fig, ax1 = plt.subplots()
@@ -456,7 +457,7 @@ ax2.set_ylabel('Annual Installations [MW]')
 plt.show()
 
 
-# In[43]:
+# In[ ]:
 
 
 altproj_50TW_annual_TW = altproj_50TW_cum['World_annual_[MWdc]']/1e6
@@ -469,7 +470,7 @@ altproj_50TW_annual_TW.loc[2040]
 altproj_50TW_annual_TW.loc[2050]
 
 
-# In[44]:
+# In[ ]:
 
 
 altproj_50TW_cum.loc[2030,'World_cum']/1e6
@@ -479,7 +480,7 @@ altproj_50TW_cum.loc[2030,'World_cum']/1e6
 # 
 # There is also a smooth transitition of increasing deployments, as opposed to a step change.
 
-# In[45]:
+# In[ ]:
 
 
 altproj_50TW_cum.to_csv(os.path.join(supportMatfolder,'output-installationProjection-World-50TW.csv'))
@@ -491,17 +492,17 @@ altproj_50TW_cum.to_csv(os.path.join(supportMatfolder,'output-installationProjec
 # - small amount of growth, possibly based on historical average increasing energy demands
 # 
 # **For Small growth through 2100:**
-# From https://ember-climate.org/data/data-explorer/historical there is a linear increase in cumulative installed capacity. The slope of the increase is 219.32 GW/yr (see LiteratureIntallationProjections.xlsx in SupportingMaterials folder). If we assume that PV maintains a constant marketshare, then we can apply the increasing capacity slope to 2050 through 2100 as a steady increase in PV installation starting at the 50 TW in 2050.
+# From https://ember-climate.org/data/data-explorer/historical there is a linear increase in cumulative installed capacity. The slope of the increase is 219.32 GW/yr (see LiteratureIntallationProjections.xlsx in SupportingMaterials folder). If we assume that PV maintains a constant marketshare, then we can apply the increasing capacity slope to 2050 through 2100 as a steady increase in PV installation starting at the 75 TW in 2050 (Haegel et al 2023).
 
-# In[75]:
+# In[ ]:
 
 
 #calculate the cumulative installed capacity in 2100 using 2000-2021 historical increase in global electrical capacity
 #y=219.32 GW/yr * t + 50 TW
 idx_late = pd.RangeIndex(start=2050,stop=2101,step=1) #create the index
 proj_2050_2100_energyIncrease = pd.DataFrame(index=idx_late, columns=['World_cum'], dtype=float) #turn into df 
-proj_2050_2100_energyIncrease.loc[2050,'World_cum'] = 50*1e6 #set 2050 in MW
-proj_2050_2100_energyIncrease.loc[2100,'World_cum'] = 219.32*1e3*(2100-2050)+50*1e6 #calculate 2100 in MW
+proj_2050_2100_energyIncrease.loc[2050,'World_cum'] = 75*1e6 #set 2050 in MW
+proj_2050_2100_energyIncrease.loc[2100,'World_cum'] = 219.32*1e3*(2100-2050)+75*1e6 #calculate 2100 in MW
 #interpolate for each year cumulative
 proj_2050_2100_energyIncrease.interpolate(inplace=True)
 
@@ -510,7 +511,7 @@ proj_2050_2100_energyIncrease.interpolate(inplace=True)
 proj_2050_2100_energyIncrease['World_annual_[MWdc]'] = 219.32*1e3
 
 
-# In[76]:
+# In[ ]:
 
 
 #combine with through 2050 projection
@@ -519,7 +520,7 @@ global_projection_full.to_csv(os.path.join(supportMatfolder, 'output-globalInsta
 global_projection_full.loc[2021]
 
 
-# In[77]:
+# In[ ]:
 
 
 fig, ax1 = plt.subplots()
@@ -550,4 +551,10 @@ histinstalls_country_alltech = pd.read_csv(os.path.join(supportMatfolder, 'outpu
 #fix Nan to 0.0
 histinstalls_country_alltech = histinstalls_country_alltech.fillna(0.0)
 histinstalls_country_alltech.tail()
+
+
+# In[ ]:
+
+
+
 
