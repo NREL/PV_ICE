@@ -706,8 +706,7 @@ class Simulation:
 
                         if failures > activearea:
                             # TODO: make this code comment pr re,pve
-                            # print("More failures than active area, reducing
-                            # failures to possibilities now.")
+                            #print("More failures than active area, reducing failures to possibilities now.")
                             failures = activearea
 
                         area_repaired0 = (failures *
@@ -1794,7 +1793,7 @@ class Simulation:
                         newStartYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[0]['year'])
                         newEndYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[-1]['year'])
                         if (newStartYear_e == newStartYear_emat) & (newEndYear_e == newEndYear_emat):
-                            print(scen,": Data trimmed for Energy, years now encompass ", newStartYear_e, " to ", newEndYear_e) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
+                            print(scen,mat,": Data trimmed for Energy, years now encompass ", newStartYear_e, " to ", newEndYear_e) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
                         else:
                             print('There is an issue with year modification for Energy!!')
                     except:
@@ -1805,7 +1804,7 @@ class Simulation:
             newStartYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[0]['year'])
             newEndYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[-1]['year'])
             if (newStartYear_m == newStartYear_mat) & (newEndYear_m == newEndYear_mat):
-                print(scen,": Data trimmed for Mass, years now encompass ", newStartYear_m, " to ", newEndYear_m) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
+                print(scen,mat,": Data trimmed for Mass, years now encompass ", newStartYear_m, " to ", newEndYear_m) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
             else:
                 print('There is an issue with year modification for Mass!!')
             

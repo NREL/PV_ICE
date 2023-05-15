@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 import numpy as np
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[7]:
+# In[5]:
 
 
 #Lifetime and Degradation
@@ -61,7 +61,7 @@ df_shj_t90.interpolate(inplace=True)
 pd.concat([df_shj_eff,df_shj_t50,df_shj_t90,df_shj_deg,df_shj_life], axis=1)
 
 
-# In[ ]:
+# In[3]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -91,7 +91,7 @@ df_shj_modrecycle.loc[2030] = 80
 df_shj_modrecycle.loc[2050] = 95
 df_shj_modrecycle.interpolate(inplace=True)
 
-df_modrecycle_alt = 100-df_shj_modremfg
+df_modrecycle_alt = 100-df_shj_modrecycle
 
 pd.concat([df_shj_merchanttail,df_shj_modcollect,df_shj_modremfg,df_shj_modrecycle, df_modrecycle_alt], axis=1)
 
@@ -391,6 +391,15 @@ inputsdf
 T50 = pd.Series([16,19,20,21,24,25,28,33,40])
 T90 = pd.Series([21,23,25,26,29,30,33,38,44])
 inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
+inputsdf
+
+
+# In[4]:
+
+
+al = pd.Series([np.nan, np.nan, 2.56, 5.56])
+be = pd.Series([np.nan, np.nan, 25, 30])
+inputsdf = pd.concat([al,be],axis=1, keys=['alpha','beta'])
 inputsdf
 
 

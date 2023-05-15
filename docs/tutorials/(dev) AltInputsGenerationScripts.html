@@ -14577,7 +14577,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -14599,7 +14599,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Lifetime and Degradation</span>
@@ -14662,7 +14662,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
 
 
 
@@ -14936,12 +14936,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">idx_temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">RangeIndex</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">2022</span><span class="p">,</span><span class="n">stop</span><span class="o">=</span><span class="mi">2051</span><span class="p">,</span><span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#create the index</span>
@@ -14971,7 +14971,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="n">df_shj_modrecycle</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">]</span> <span class="o">=</span> <span class="mi">95</span>
 <span class="n">df_shj_modrecycle</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">df_modrecycle_alt</span> <span class="o">=</span> <span class="mi">100</span><span class="o">-</span><span class="n">df_shj_modremfg</span>
+<span class="n">df_modrecycle_alt</span> <span class="o">=</span> <span class="mi">100</span><span class="o">-</span><span class="n">df_shj_modrecycle</span>
 
 <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_shj_merchanttail</span><span class="p">,</span><span class="n">df_shj_modcollect</span><span class="p">,</span><span class="n">df_shj_modremfg</span><span class="p">,</span><span class="n">df_shj_modrecycle</span><span class="p">,</span> <span class="n">df_modrecycle_alt</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -14979,6 +14979,290 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mod_merchanttail</th>
+      <th>mod_collect</th>
+      <th>mod_remfg</th>
+      <th>mod_recycle</th>
+      <th>mod_recycle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2022</th>
+      <td>0.0</td>
+      <td>15.000</td>
+      <td>0.0</td>
+      <td>75.000</td>
+      <td>25.000</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>0.0</td>
+      <td>16.875</td>
+      <td>0.0</td>
+      <td>75.625</td>
+      <td>24.375</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>0.0</td>
+      <td>18.750</td>
+      <td>0.0</td>
+      <td>76.250</td>
+      <td>23.750</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>0.0</td>
+      <td>20.625</td>
+      <td>0.0</td>
+      <td>76.875</td>
+      <td>23.125</td>
+    </tr>
+    <tr>
+      <th>2026</th>
+      <td>0.0</td>
+      <td>22.500</td>
+      <td>0.0</td>
+      <td>77.500</td>
+      <td>22.500</td>
+    </tr>
+    <tr>
+      <th>2027</th>
+      <td>0.0</td>
+      <td>24.375</td>
+      <td>0.0</td>
+      <td>78.125</td>
+      <td>21.875</td>
+    </tr>
+    <tr>
+      <th>2028</th>
+      <td>0.0</td>
+      <td>26.250</td>
+      <td>0.0</td>
+      <td>78.750</td>
+      <td>21.250</td>
+    </tr>
+    <tr>
+      <th>2029</th>
+      <td>0.0</td>
+      <td>28.125</td>
+      <td>0.0</td>
+      <td>79.375</td>
+      <td>20.625</td>
+    </tr>
+    <tr>
+      <th>2030</th>
+      <td>0.0</td>
+      <td>30.000</td>
+      <td>0.0</td>
+      <td>80.000</td>
+      <td>20.000</td>
+    </tr>
+    <tr>
+      <th>2031</th>
+      <td>0.0</td>
+      <td>32.250</td>
+      <td>0.0</td>
+      <td>80.750</td>
+      <td>19.250</td>
+    </tr>
+    <tr>
+      <th>2032</th>
+      <td>0.0</td>
+      <td>34.500</td>
+      <td>0.0</td>
+      <td>81.500</td>
+      <td>18.500</td>
+    </tr>
+    <tr>
+      <th>2033</th>
+      <td>0.0</td>
+      <td>36.750</td>
+      <td>0.0</td>
+      <td>82.250</td>
+      <td>17.750</td>
+    </tr>
+    <tr>
+      <th>2034</th>
+      <td>0.0</td>
+      <td>39.000</td>
+      <td>0.0</td>
+      <td>83.000</td>
+      <td>17.000</td>
+    </tr>
+    <tr>
+      <th>2035</th>
+      <td>0.0</td>
+      <td>41.250</td>
+      <td>0.0</td>
+      <td>83.750</td>
+      <td>16.250</td>
+    </tr>
+    <tr>
+      <th>2036</th>
+      <td>0.0</td>
+      <td>43.500</td>
+      <td>0.0</td>
+      <td>84.500</td>
+      <td>15.500</td>
+    </tr>
+    <tr>
+      <th>2037</th>
+      <td>0.0</td>
+      <td>45.750</td>
+      <td>0.0</td>
+      <td>85.250</td>
+      <td>14.750</td>
+    </tr>
+    <tr>
+      <th>2038</th>
+      <td>0.0</td>
+      <td>48.000</td>
+      <td>0.0</td>
+      <td>86.000</td>
+      <td>14.000</td>
+    </tr>
+    <tr>
+      <th>2039</th>
+      <td>0.0</td>
+      <td>50.250</td>
+      <td>0.0</td>
+      <td>86.750</td>
+      <td>13.250</td>
+    </tr>
+    <tr>
+      <th>2040</th>
+      <td>0.0</td>
+      <td>52.500</td>
+      <td>0.0</td>
+      <td>87.500</td>
+      <td>12.500</td>
+    </tr>
+    <tr>
+      <th>2041</th>
+      <td>0.0</td>
+      <td>54.750</td>
+      <td>0.0</td>
+      <td>88.250</td>
+      <td>11.750</td>
+    </tr>
+    <tr>
+      <th>2042</th>
+      <td>0.0</td>
+      <td>57.000</td>
+      <td>0.0</td>
+      <td>89.000</td>
+      <td>11.000</td>
+    </tr>
+    <tr>
+      <th>2043</th>
+      <td>0.0</td>
+      <td>59.250</td>
+      <td>0.0</td>
+      <td>89.750</td>
+      <td>10.250</td>
+    </tr>
+    <tr>
+      <th>2044</th>
+      <td>0.0</td>
+      <td>61.500</td>
+      <td>0.0</td>
+      <td>90.500</td>
+      <td>9.500</td>
+    </tr>
+    <tr>
+      <th>2045</th>
+      <td>0.0</td>
+      <td>63.750</td>
+      <td>0.0</td>
+      <td>91.250</td>
+      <td>8.750</td>
+    </tr>
+    <tr>
+      <th>2046</th>
+      <td>0.0</td>
+      <td>66.000</td>
+      <td>0.0</td>
+      <td>92.000</td>
+      <td>8.000</td>
+    </tr>
+    <tr>
+      <th>2047</th>
+      <td>0.0</td>
+      <td>68.250</td>
+      <td>0.0</td>
+      <td>92.750</td>
+      <td>7.250</td>
+    </tr>
+    <tr>
+      <th>2048</th>
+      <td>0.0</td>
+      <td>70.500</td>
+      <td>0.0</td>
+      <td>93.500</td>
+      <td>6.500</td>
+    </tr>
+    <tr>
+      <th>2049</th>
+      <td>0.0</td>
+      <td>72.750</td>
+      <td>0.0</td>
+      <td>94.250</td>
+      <td>5.750</td>
+    </tr>
+    <tr>
+      <th>2050</th>
+      <td>0.0</td>
+      <td>75.000</td>
+      <td>0.0</td>
+      <td>95.000</td>
+      <td>5.000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -16141,6 +16425,94 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <th>8</th>
       <td>40</td>
       <td>44</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">al</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">2.56</span><span class="p">,</span> <span class="mf">5.56</span><span class="p">])</span>
+<span class="n">be</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="n">inputsdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">al</span><span class="p">,</span><span class="n">be</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span><span class="s1">&#39;beta&#39;</span><span class="p">])</span>
+<span class="n">inputsdf</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>alpha</th>
+      <th>beta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.56</td>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.56</td>
+      <td>30.0</td>
     </tr>
   </tbody>
 </table>
