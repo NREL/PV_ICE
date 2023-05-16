@@ -429,7 +429,7 @@ class Simulation:
             if isinstance(materials, str):
                 materials = [materials]
 
-        def _existsandSavequestionmark(attribute, savefolder, customname, overwrite, scen, mat=None):
+        def _existsandSavequestionmark(attribute, savefolder, customname, overwrite, scen, mat=None, metattribute=None):
             if mat is None:
                 titlecsv = scen + '_' + attribute + customname + '.csv'
                 pviceobj = self.scenario[scen]
@@ -442,18 +442,26 @@ class Simulation:
                 print(filefullpath + " exists and set to not overwrite, skipping.")
             else:
                 if hasattr(pviceobj, attribute):
-                    getattr(pviceobj, attribute).to_csv(os.path.join(savefolder, titlecsv))
+                    dffoo = getattr(pviceobj, attribute)
+                    if metattribute is not None:
+                        if hasattr(pviceobj, metattribute):
+                            mydict = getattr(pviceobj, metattribute)
+                            metdata = pd.DataFrame(mydict, index=[0])
+                            metdata = pd.DataFrame(mydict, index=[0])
+                            dffoo = pd.concat([metdata, dffoo], axis=0)
+                    dffoo.to_csv(os.path.join(savefolder, titlecsv))
+#                    dffoo.to_csv(os.path.join(savefolder, titlecsv), index_col=False)
 
         for scen in scenarios:
 
-            _existsandSavequestionmark('dataIn_m', 'input', customname, overwrite, scen)
-            _existsandSavequestionmark('dataIn_e', 'input', customname, overwrite, scen)
+            _existsandSavequestionmark('dataIn_m', 'input', customname, overwrite, scen, mat=None, metattribute='metdataIn_m')
+            _existsandSavequestionmark('dataIn_e', 'input', customname, overwrite, scen, mat=None, metattribute='metdataIn_e')
             _existsandSavequestionmark('dataOut_m', 'output', customname, overwrite, scen)
             _existsandSavequestionmark('dataOut_e', 'output', customname, overwrite, scen)
                         
             for mat in materials:
-                _existsandSavequestionmark('matdataIn_m', 'input', customname, overwrite, scen, mat)
-                _existsandSavequestionmark('matdataIn_e', 'input', customname, overwrite, scen, mat)
+                _existsandSavequestionmark('matdataIn_m', 'input', customname, overwrite, scen, mat, metattribute='matmetdataIn_m')
+                _existsandSavequestionmark('matdataIn_e', 'input', customname, overwrite, scen, mat, metattribute='matmetdataIn_e')
                 _existsandSavequestionmark('matdataOut_m', 'output', customname, overwrite, scen, mat)
                 _existsandSavequestionmark('matdataOut_e', 'output', customname, overwrite, scen, mat)
         
