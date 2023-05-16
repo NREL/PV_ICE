@@ -966,12 +966,6 @@ sim1.createScenario(name='r_IRENA', massmodulefile=moduleinput_m_r_IRENA, energy
 # In[ ]:
 
 
-
-
-
-# In[ ]:
-
-
 #modified materials
 #glass
 matinput_glass_m_improvedRecycle = os.path.join(altBaselinesfolder,'material_mass_glass_improvedRecycle.csv')
@@ -1050,7 +1044,7 @@ plt.show()
 
 #deployment projection for all scenarios
 sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
-                    value= global_projection['World_cum'], start_year=2000)
+                    value= global_projection['World_annual_[MWdc]'], start_year=2000)
 #for scen in scennames:
 #    sim1.scenario[scen].dataIn_m.loc[0:len(global_projection.index-1),'new_Installed_Capacity_[MW]'] = global_projection['World_annual_[MWdc]'].values
 
@@ -1288,7 +1282,7 @@ plt.plot(uncumwaste/1e6)
 plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Power_disposed'])
 
 
-# In[ ]:
+# In[25]:
 
 
 plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='irena_fail')
