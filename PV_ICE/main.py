@@ -411,7 +411,8 @@ class Simulation:
                 self.scenario[scen].dataIn_m.loc[selectyears, stage] = value
                 
                 
-    def saveSimulation(self, scenarios=None, materials=None, customname=None):
+    def saveSimulation(self, scenarios=None, materials=None, customname=None,
+                       overwrite=True):
         
         if customname is None:
             customname = ''
@@ -428,40 +429,36 @@ class Simulation:
             if isinstance(materials, str):
                 materials = [materials]
 
+        def _existsandSavequestionmark(attribute, savefolder, customname, overwrite, scen, mat=None):
+            if mat is None:
+                titlecsv = scen + '_' + attribute + customname + '.csv'
+                pviceobj = self.scenario[scen]
+            else:
+                titlecsv = scen + '_' + mat + '_' + attribute + customname + '.csv'
+                pviceobj = self.scenario[scen].material[mat]
+            
+            filefullpath = os.path.join(savefolder, titlecsv)
+            if (os.path.isfile(filefullpath)) and (overwrite is False):
+                print(filefullpath + " exists and set to not overwrite, skipping.")
+            else:
+                if hasattr(pviceobj, attribute):
+                    getattr(pviceobj, attribute).to_csv(os.path.join(savefolder, titlecsv))
+
         for scen in scenarios:
 
-            print("Saving Scenario: ", scen)
-            if hasattr(self.scenario[scen], 'dataIn_m'):
-                titlecsv = scen + '_dataIn_m' + customname + '.csv'
-                self.scenario[scen].dataIn_m.to_csv(os.path.join('input', titlecsv))
-
-            if hasattr(self.scenario[scen], 'dataIn_e'):
-                titlecsv = scen + '_dataIn_e' + customname + '.csv'
-                self.scenario[scen].dataIn_e.to_csv(os.path.join('input', titlecsv))
-                                              
-            if hasattr(self.scenario[scen], 'dataOut_m'):
-                titlecsv = scen + '_dataOut_m' + customname + '.csv'
-                self.scenario[scen].dataOut_m.to_csv(os.path.join('output', titlecsv))
-
-            if hasattr(self.scenario[scen], 'dataOut_e'):
-                titlecsv = scen + '_dataOut_e' + customname + '.csv'
-                self.scenario[scen].dataOut_e.to_csv(os.path.join('output', titlecsv))
+            _existsandSavequestionmark('dataIn_m', 'input', customname, overwrite, scen)
+            _existsandSavequestionmark('dataIn_e', 'input', customname, overwrite, scen)
+            _existsandSavequestionmark('dataOut_m', 'output', customname, overwrite, scen)
+            _existsandSavequestionmark('dataOut_e', 'output', customname, overwrite, scen)
                         
             for mat in materials:
-                print("= Saving Material : ", mat)
-                if hasattr(self.scenario[scen].material[mat], 'matdataIn_m'):
-                    titlecsv = scen + '_' + mat + '_matdataIn_m' + customname + '.csv'
-                    self.scenario[scen].material[mat].matdataIn_m.to_csv(os.path.join('input', titlecsv))
-                if hasattr(self.scenario[scen].material[mat], 'matdataIn_e'):
-                    titlecsv = scen + '_' + mat + '_matdataIn_e' + customname + '.csv'
-                    self.scenario[scen].material[mat].matdataIn_e.to_csv(os.path.join('input', titlecsv))
-                if hasattr(self.scenario[scen].material[mat], 'matdataOut_m'):
-                    titlecsv = scen + '_' + mat + '_matdataOut_m' + customname + '.csv'
-                    self.scenario[scen].material[mat].matdataOut_m.to_csv(os.path.join('output', titlecsv))               
-                if hasattr(self.scenario[scen].material[mat], 'matdataOut_e'):
-                    titlecsv = scen + '_' + mat + '_matdataOut_e' + customname + '.csv'
-                    self.scenario[scen].material[mat].matdataOut_e.to_csv(os.path.join('output', titlecsv))
-                                                                          
+                _existsandSavequestionmark('matdataIn_m', 'input', customname, overwrite, scen, mat)
+                _existsandSavequestionmark('matdataIn_e', 'input', customname, overwrite, scen, mat)
+                _existsandSavequestionmark('matdataOut_m', 'output', customname, overwrite, scen, mat)
+                _existsandSavequestionmark('matdataOut_e', 'output', customname, overwrite, scen, mat)
+        
+        print(":) Saved Input and Output Dataframes")
+
     def modifyScenarioEnergy(self, scenarios, stage, value, start_year=None):
 
         if start_year is None:
