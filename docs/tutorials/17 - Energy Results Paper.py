@@ -959,7 +959,7 @@ sim1.scenario['r_TOPCon'].modifyMaterials('glass', 'mat_massperm2', glassperm2, 
 
 
 #modified module
-moduleinput_m_r_IRENA = os.path.join(altBaselinesfolder, 'mod_r_IRENAregloss_t2.csv')
+moduleinput_m_r_IRENA = os.path.join(altBaselinesfolder, 'mod_r_IRENAregloss.csv')
 sim1.createScenario(name='r_IRENA', massmodulefile=moduleinput_m_r_IRENA, energymodulefile=moduleFile_e) 
 
 
@@ -1050,15 +1050,15 @@ plt.show()
 
 #deployment projection for all scenarios
 sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
-                    value= global_projection['World_annual_[MWdc]'], start_year=2000)
+                    value= global_projection['World_cum'], start_year=2000)
 #for scen in scennames:
 #    sim1.scenario[scen].dataIn_m.loc[0:len(global_projection.index-1),'new_Installed_Capacity_[MW]'] = global_projection['World_annual_[MWdc]'].values
 
 
-# In[31]:
+# In[ ]:
 
 
-global_projection.loc[2050,'World_annual_[MWdc]']
+global_projection['World_cum']
 
 
 # # Calculate Mass flow
@@ -1208,14 +1208,14 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[16]:
+# In[17]:
 
 
 plt.plot(ii_yearly.filter(like='Decommisioned'))
 plt.legend(sim1.scenario.keys())
 
 
-# In[17]:
+# In[18]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity').filter(like='ex_')
@@ -1227,45 +1227,68 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[18]:
+# In[23]:
 
 
-shiftedwaste = ii_yearly['WasteAll_Module_sim1_IRENA_[Tonnes]'].shift(1).fillna(0)
-uncumwaste = ii_yearly['WasteAll_Module_sim1_IRENA_[Tonnes]']-shiftedwaste
+plt.plot(ii_yearly['WasteAll_Module_sim1_IRENA_[Tonnes]'], label='waste')
+plt.plot(ii_yearly['VirginStock_Module_sim1_IRENA_[Tonnes]'], label='virgin')
+plt.legend()
+
+
+# In[24]:
+
+
+plt.plot(ii_yearly['WasteAll_Module_sim1_PV_ICE_[Tonnes]'], label='waste')
+plt.plot(ii_yearly['VirginStock_Module_sim1_PV_ICE_[Tonnes]'], label='virgin')
+plt.legend()
+
+
+# In[ ]:
+
+
+shiftedwaste = ii_yearly['WasteAll_Module_sim1_r_IRENA_[Tonnes]'].shift(1).fillna(0)
+uncumwaste = ii_yearly['WasteAll_Module_sim1_r_IRENA_[Tonnes]']-shiftedwaste
 plt.plot(uncumwaste/1e6)
 
 
-# In[19]:
+# In[16]:
+
+
+plt.plot(ii_yearly.filter(like='WasteAll_Module'))
+plt.plot(ii_yearly.filter(like='VirginStock_Module'))
+
+
+# In[ ]:
 
 
 irenarawmat = ii_yearly.filter(like='VirginStock_Module')
 
-plt.plot(ii_yearly.filter(like='WasteAll_Module')/1e6)
-plt.plot(irenarawmat/1e6)
-plt.plot(uncumwaste/1e6)
+plt.plot(ii_yearly.filter(like='WasteAll_Module')/1e6, )
+#plt.plot(irenarawmat/1e6)
+#plt.plot(uncumwaste/1e6)
 
 
-# In[20]:
+# In[ ]:
 
 
 plt.plot(ii_yearly.filter(like='Capacity')/1e6)
 ii_yearly.filter(like='Capacity').columns
 
 
-# In[21]:
+# In[ ]:
 
 
 plt.plot(ii_yearly.filter(like='WasteAll_Module')/1e6)
 plt.plot(uncumwaste/1e6)
 
 
-# In[22]:
+# In[ ]:
 
 
 plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Power_disposed'])
 
 
-# In[23]:
+# In[ ]:
 
 
 plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='irena_fail')
@@ -1277,25 +1300,25 @@ plt.legend()
 #sim1.scenario['r_IRENA'].dataOut_m.filter(like='disposed').columns.values
 
 
-# In[25]:
+# In[ ]:
 
 
 sim1.scenario['PV_ICE'].dataOut_m.loc[100,'Yearly_Sum_Area_disposed'].cumsum()
 
 
-# In[26]:
+# In[ ]:
 
 
 sim1.scenario['PV_ICE'].dataOut_m.loc[100,'Area'].cumsum()
 
 
-# In[27]:
+# In[ ]:
 
 
 sim1.scenario['PV_ICE'].dataOut_m.loc[100,'Yearly_Sum_Power_disposed'].cumsum()
 
 
-# In[28]:
+# In[ ]:
 
 
 sim1.scenario['PV_ICE'].dataIn_m.loc[100,'new_Installed_Capacity_[MW]'].cumsum()*1e6
@@ -1307,7 +1330,7 @@ sim1.scenario['PV_ICE'].dataIn_m.loc[100,'new_Installed_Capacity_[MW]'].cumsum()
 
 
 
-# In[29]:
+# In[ ]:
 
 
 plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Power_disposedby_Failure'], label='irena_fail')
