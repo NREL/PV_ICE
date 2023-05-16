@@ -192,7 +192,7 @@ plt.plot(ii_yearly['VirginStock_Module_sim1_PV_ICE_[Tonnes]'], label='PVICE_virg
 plt.legend()
 
 
-# In[19]:
+# In[18]:
 
 
 plt.plot(ii_yearly['VirginStock_Module_sim1_IRENA_[Tonnes]'], label='IRENA_virgin')
@@ -208,7 +208,7 @@ plt.legend()
 
 
 
-# In[20]:
+# In[19]:
 
 
 plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='irena_fail')
@@ -223,13 +223,7 @@ plt.legend()
 plt.ylim(0,)
 
 
-# In[ ]:
-
-
-
-
-
-# In[40]:
+# In[36]:
 
 
 L0 = sim1.scenario['IRENA'].dataOut_m['EOL_Landfill0']
@@ -240,9 +234,10 @@ IRENA_EOLpaths = pd.concat([EOLpaths,PG,PB,L0], axis=1)
 
 plt.plot(IRENA_EOLpaths, label=IRENA_EOLpaths.columns)
 plt.legend()
+plt.title('IRENA')
 
 
-# In[42]:
+# In[21]:
 
 
 L0 = sim1.scenario['PV_ICE'].dataOut_m['EOL_Landfill0']
@@ -259,7 +254,7 @@ plt.title('PVICE')
 # In[ ]:
 
 
-
+sim1.scenario['IRENA'].dataOut_m['']
 
 
 # In[ ]:
@@ -270,13 +265,13 @@ plt.title('PVICE')
 
 # # Remove Trim Years
 
-# In[21]:
+# In[22]:
 
 
 sim2 = PV_ICE.Simulation(name='sim2', path=testfolder)
 
 
-# In[22]:
+# In[23]:
 
 
 sim2.createScenario(name='PV_ICE', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -286,7 +281,7 @@ for mat in range (0, len(MATERIALS)):
     sim2.scenario['PV_ICE'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[23]:
+# In[24]:
 
 
 moduleinput_m_r_IRENA = os.path.join(altBaselinesfolder, 'mod_r_IRENAregloss_t2.csv')
@@ -330,7 +325,7 @@ for mat in range (0, len(MATERIALS)):
 # #had to specify and end year, cannot use to extend
 # sim2.trim_Years(startYear=2000, endYear=2100)
 
-# In[24]:
+# In[25]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -347,7 +342,7 @@ ax2.set_ylim(0,5)
 plt.show()
 
 
-# In[25]:
+# In[26]:
 
 
 #deployment projection for all scenarios
@@ -355,32 +350,32 @@ sim2.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
                     value= global_projection.loc[:2050,'World_annual_[MWdc]'], start_year=2000)
 
 
-# In[26]:
+# In[27]:
 
 
 IRENAregloss = {'alpha':5.692,
                    'beta':29.697}
 
 
-# In[27]:
+# In[28]:
 
 
 sim2.calculateMassFlow() #weibullInputParams=IRENAregloss
 
 
-# In[28]:
+# In[29]:
 
 
 sim2.saveSimulation(customname='_debugirena2a')
 
 
-# In[29]:
+# In[30]:
 
 
 ii_yearly2, ii_cumu2 = sim2.aggregateResults() #have to do this to get auto plots
 
 
-# In[30]:
+# In[31]:
 
 
 effective_capacity = ii_yearly2.filter(like='ActiveCapacity')
@@ -392,14 +387,14 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[31]:
+# In[32]:
 
 
 plt.plot(ii_yearly2.filter(like='Decommisioned'))
 plt.legend(sim1.scenario.keys())
 
 
-# In[32]:
+# In[33]:
 
 
 plt.plot(ii_yearly2['WasteAll_Module_sim2_IRENA_[Tonnes]'], label='IRENA_waste')
@@ -414,7 +409,7 @@ plt.plot(ii_yearly2['VirginStock_Module_sim2_PV_ICE_[Tonnes]'], label='PVICE_vir
 plt.legend()
 
 
-# In[33]:
+# In[34]:
 
 
 plt.plot(ii_yearly2['VirginStock_Module_sim2_IRENA_[Tonnes]'], label='IRENA_virgin')
@@ -430,7 +425,7 @@ plt.legend()
 
 
 
-# In[34]:
+# In[35]:
 
 
 plt.plot(sim2.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='irena_fail')
