@@ -376,6 +376,11 @@ class Simulation:
                 os.makedirs(path)
                 print('Making path: '+path)
 
+        _checkPath('raw')
+        _checkPath('input')
+        _checkPath('output')
+        _checkPath('figures')
+
     def createScenario(self, name, massmodulefile=None, energymodulefile=None,
                        file=None):
 
@@ -406,7 +411,57 @@ class Simulation:
                 self.scenario[scen].dataIn_m.loc[selectyears, stage] = value
                 
                 
-                
+    def saveSimulation(self, scenarios=None, materials=None, customname=None):
+        
+        if customname is None:
+            customname = ''
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+    
+        if materials is None:
+            materials = list(self.scenario[scenarios[0]].material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+        for scen in scenarios:
+
+            print("Saving Scenario: ", scen)
+            if hasattr(self.scenario[scen], 'dataIn_m'):
+                titlecsv = scen + '_dataIn_m' + customname + '.csv'
+                self.scenario[scen].dataIn_m.to_csv(os.path.join('input', titlecsv))
+
+            if hasattr(self.scenario[scen], 'dataIn_e'):
+                titlecsv = scen + '_dataIn_e' + customname + '.csv'
+                self.scenario[scen].dataIn_e.to_csv(os.path.join('input', titlecsv))
+                                              
+            if hasattr(self.scenario[scen], 'dataOut_m'):
+                titlecsv = scen + '_dataOut_m' + customname + '.csv'
+                self.scenario[scen].dataOut_m.to_csv(os.path.join('output', titlecsv))
+
+            if hasattr(self.scenario[scen], 'dataOut_e'):
+                titlecsv = scen + '_dataOut_e' + customname + '.csv'
+                self.scenario[scen].dataOut_e.to_csv(os.path.join('output', titlecsv))
+                        
+            for mat in materials:
+                print("= Saving Material : ", mat)
+                if hasattr(self.scenario[scen].material[mat], 'matdataIn_m'):
+                    titlecsv = scen + '_' + mat + '_matdataIn_m' + customname + '.csv'
+                    self.scenario[scen].material[mat].matdataIn_m.to_csv(os.path.join('input', titlecsv))
+                if hasattr(self.scenario[scen].material[mat], 'matdataIn_e'):
+                    titlecsv = scen + '_' + mat + '_matdataIn_e' + customname + '.csv'
+                    self.scenario[scen].material[mat].matdataIn_e.to_csv(os.path.join('input', titlecsv))
+                if hasattr(self.scenario[scen].material[mat], 'matdataOut_m'):
+                    titlecsv = scen + '_' + mat + '_matdataOut_m' + customname + '.csv'
+                    self.scenario[scen].material[mat].matdataOut_m.to_csv(os.path.join('output', titlecsv))               
+                if hasattr(self.scenario[scen].material[mat], 'matdataOut_e'):
+                    titlecsv = scen + '_' + mat + '_matdataOut_e' + customname + '.csv'
+                    self.scenario[scen].material[mat].matdataOut_e.to_csv(os.path.join('output', titlecsv))
+                                                                          
     def modifyScenarioEnergy(self, scenarios, stage, value, start_year=None):
 
         if start_year is None:
