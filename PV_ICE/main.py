@@ -790,9 +790,13 @@ class Simulation:
                             # I don't think these should be here.
                             # area_notrepaired0 = 0
                             # power_notrepaired0 = 0
-                            
-                            #TO DO: Make deg_nameplate variable an input
-                            if deg_nameplate > nameplatedeglimit: 
+
+                            #  TO DO: Make deg_nameplate variable an input
+                            if nameplatedeglimit > 0.7:
+                                print("WARNING! nameplatedeglimit has a bug" +
+                                      "waste duplication, need to check ASAP" +
+                                      "note from 5/17/2023")
+                            if deg_nameplate > nameplatedeglimit:
                                 area_collected = (
                                     disposed_projectlifetime *
                                     (df.iloc[age]['mod_EOL_collection_eff'] *
