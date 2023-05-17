@@ -575,7 +575,7 @@ class Simulation:
                 scenarios = [scenarios]
 
         if nameplatedeglimit is None:
-            nameplatedeglimit = 0.8
+            nameplatedeglimit = 0.3
 
         print(">>>> Calculating Material Flows <<<<\n")
 

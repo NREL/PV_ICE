@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[6]:
 
 
 import numpy as np
@@ -332,13 +332,20 @@ Agimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 75
 Agimprovedrecycle.interpolate()
 
 
-# In[2]:
+# # Calculations for Project Life, T10, T50, T90
+# 
+# If we assert that ~10% of modules fail before the project lifetime, then this corresponds roughly to the T10 value of a Weibull curve (assuming use of only 1). Additionally, if we assume at End of Life wearout phase that n% of modules will fail within x years, then we have a system of equations that we can solve to create T50 and T90 values for a given project lifetime and End of Life wearout spread.
+# 
+#      (ex) TN0 - x years = TM0
+#      and TN0 = -beta*-np.abs(np.log(1-TN0))^(1/alpha)
+
+# In[7]:
 
 
 import PV_ICE
 
 
-# In[7]:
+# In[8]:
 
 
 def alphabeta2T10T50T90(alpha,beta):
@@ -359,7 +366,7 @@ alpha = pd.Series([x / 10.0 for x in range(1, 500,1)])
 beta = pd.Series([x / 10.0 for x in range(1, 1000,1)])
 
 
-# In[41]:
+# In[9]:
 
 
 T50 = pd.Series(range(15,66,1))
@@ -368,7 +375,7 @@ inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 inputsdf
 
 
-# In[42]:
+# In[10]:
 
 
 for row in inputsdf.index:
@@ -432,4 +439,43 @@ alphabeta2T10(5.692,29.697)
 
 
 #input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
+
+
+# In[24]:
+
+
+def projlife2T50T90(projlife, N, plot=True):
+    T10 = projlife
+    T90 = T10+N
+    params = PV_ICE.weibull_params({T10: 0.10, T90: 0.90})
+    T50 = round(-params['beta']*-np.abs(np.log(0.5))**(1/params['alpha']),2)
+    if plot==True:
+        plt.plot(PV_ICE.weibull_cdf_vis(params['alpha'],params['beta']))
+    return T50,T90
+
+
+# In[25]:
+
+
+projlife2T50T90(30,10)
+
+
+# In[22]:
+
+
+plt.plot(PV_ICE.weibull_cdf_vis(params['alpha'],params['beta']))
+
+
+# In[11]:
+
+
+PV_ICE.weibull_params({30: 0.10, 39: 0.90})
+
+
+# In[12]:
+
+
+params = PV_ICE.weibull_params({30: 0.10, 39: 0.90})
+T10 = alphabeta2T10(params['alpha'],params['beta'])
+T10
 
