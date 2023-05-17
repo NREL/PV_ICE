@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[5]:
+# In[38]:
 
 
 #Lifetime and Degradation
@@ -345,7 +345,7 @@ Agimprovedrecycle.interpolate()
 import PV_ICE
 
 
-# In[8]:
+# In[29]:
 
 
 def alphabeta2T10T50T90(alpha,beta):
@@ -357,6 +357,10 @@ def alphabeta2T10T50T90(alpha,beta):
 def alphabeta2T10(alpha,beta):
     T10 = round(-beta*-np.abs(np.log(0.9))**(1/alpha),2)
     return T10
+
+def alphabeta2T90(alpha,beta):
+    T90 = round(-beta*-np.abs(np.log(0.1))**(1/alpha),2)
+    return T90
 
 
 # In[ ]:
@@ -421,10 +425,10 @@ for row in inputsdf.index:
 inputsdf
 
 
-# In[90]:
+# In[70]:
 
 
-params = PV_ICE.weibull_params({35: 0.50, 37: 0.90})
+params = PV_ICE.weibull_params({43.68: 0.50, 47.85: 0.90})
 T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
@@ -441,11 +445,12 @@ alphabeta2T10(5.692,29.697)
 #input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
 
 
-# In[24]:
+# In[26]:
 
 
-def projlife2T50T90(projlife, N, plot=True):
-    T10 = projlife
+def projectlife2T50T90(projectlife, N=10, plot=True):
+    #defaulting the T10 to T90 span to 10 based on Abenante 2018
+    T10 = projectlife
     T90 = T10+N
     params = PV_ICE.weibull_params({T10: 0.10, T90: 0.90})
     T50 = round(-params['beta']*-np.abs(np.log(0.5))**(1/params['alpha']),2)
@@ -454,28 +459,40 @@ def projlife2T50T90(projlife, N, plot=True):
     return T50,T90
 
 
-# In[25]:
+# In[59]:
 
 
-projlife2T50T90(30,10)
+projectlife2T50T90(25)
 
 
-# In[22]:
+# In[65]:
 
 
-plt.plot(PV_ICE.weibull_cdf_vis(params['alpha'],params['beta']))
+#Mod Project Lifetime
+idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
+life = pd.DataFrame(index=idx_temp, columns=['mod_lifetime'], dtype=float)
+life.loc[2022] = 30
+life.loc[2030] = 35
+life.loc[2050] = 38
+life.interpolate(inplace=True)
 
 
-# In[11]:
+# In[66]:
 
 
-PV_ICE.weibull_params({30: 0.10, 39: 0.90})
+df_t50t90 = pd.DataFrame()
+for row in range(0,len(life)):
+    T50,T90 = projectlife2T50T90(life.iloc[row,0])
+    df_t50t90.loc[row,'T50'] = T50
+    df_t50t90.loc[row,'T90'] = T90
+    
+df_t50t90
 
 
-# In[12]:
+# In[30]:
 
 
-params = PV_ICE.weibull_params({30: 0.10, 39: 0.90})
-T10 = alphabeta2T10(params['alpha'],params['beta'])
-T10
+#checking T90 from Ab et al 2018
+params = PV_ICE.weibull_params({29: 0.10, 38.5: 0.80})
+alphabeta2T90(params['alpha'],params['beta'])
 

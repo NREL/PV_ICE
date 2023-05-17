@@ -45,7 +45,7 @@ print(python_version())
 colorpalette=['#000000', #PV ICE baseline
               '#0079C1','#7030A0','#F6A01A', #extreme cases (3) long life, high eff, circular
                 '#41B8FF','#EF5675','#FFC425', #hypothetical modules (3) 50 yr, recycleSi, perovskite
-                '#2F4B19','#467126','#6EB33B','#AAD888'] #realistic cases (4) greens, perc, shj, topcon, irena
+                '#067872','#0aa39e','#09d0cd','#00ffff'] #realistic cases (4) teals, perc, shj, topcon, irena
 
 colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B'] #colors for material plots       
 
@@ -664,7 +664,7 @@ altBaselinesfolder
 
 # ### 1.3.1 PERC
 
-# In[41]:
+# In[98]:
 
 
 #modified module
@@ -672,7 +672,7 @@ moduleinput_m_r_PERC = os.path.join(altBaselinesfolder, 'mod_r_PERC.csv')
 sim1.createScenario(name='r_PERC', massmodulefile=moduleinput_m_r_PERC, energymodulefile=moduleFile_e) 
 
 
-# In[42]:
+# In[99]:
 
 
 #module efficiency modify for PERC
@@ -680,7 +680,7 @@ sim1.modifyScenario('r_PERC', 'mod_eff', celltech_modeff.loc[2022:,'PERC'], star
 #sim1.scenario['SHJ'].dataIn_m.loc[timeshift:,'mod_eff'] = celltech_modeff.loc[2022:,'SHJ'].values
 
 
-# In[43]:
+# In[ ]:
 
 
 #modified materials
@@ -784,42 +784,6 @@ sim1.scenario['r_SHJ'].modifyMaterials('silver', 'mat_massperm2', celltech_aguse
 
 #modify package to glass glass
 sim1.scenario['r_SHJ'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
-
-
-# In[51]:
-
-
-plt.plot(sim1.scenario['r_SHJ'].material['silicon'].matdataIn_m.iloc[:,0],sim1.scenario['r_SHJ'].material['silicon'].matdataIn_m.iloc[:,3:])
-plt.legend(sim1.scenario['PV_ICE'].material['silicon'].matdataIn_m.iloc[:,3:].columns, 
-           bbox_to_anchor=(0, -0.1), loc='upper left', ncol=1)
-plt.title('Silicon Management Evolution')
-
-
-# In[52]:
-
-
-plt.plot(sim1.scenario['r_SHJ'].material['glass'].matdataIn_m.iloc[:,0],sim1.scenario['r_SHJ'].material['glass'].matdataIn_m.iloc[:,3:])
-plt.legend(sim1.scenario['PV_ICE'].material['glass'].matdataIn_m.iloc[:,3:].columns, 
-           bbox_to_anchor=(0, -0.1), loc='upper left', ncol=1)
-plt.title('Glass Management Evolution')
-
-
-# In[53]:
-
-
-plt.plot(sim1.scenario['r_SHJ'].material['aluminium_frames'].matdataIn_m.iloc[:,0],sim1.scenario['r_SHJ'].material['aluminium_frames'].matdataIn_m.iloc[:,3:])
-plt.legend(sim1.scenario['PV_ICE'].material['aluminium_frames'].matdataIn_m.iloc[:,3:].columns, 
-           bbox_to_anchor=(0, -0.1), loc='upper left', ncol=1)
-plt.title('Glass Management Evolution')
-
-
-# In[54]:
-
-
-plt.plot(sim1.scenario['r_SHJ'].material['silver'].matdataIn_m.iloc[:,0],sim1.scenario['r_SHJ'].material['silver'].matdataIn_m.iloc[:,3:])
-plt.legend(sim1.scenario['PV_ICE'].material['aluminium_frames'].matdataIn_m.iloc[:,3:].columns, 
-           bbox_to_anchor=(0, -0.1), loc='upper left', ncol=1)
-plt.title('Glass Management Evolution')
 
 
 # ### 1.3.3 TOPCon
@@ -1116,56 +1080,33 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[78]:
+# In[107]:
 
 
-effective_capacity = ii_yearly.filter(like='ActiveCapacity').filter(like='r_')
+effective_capacity
+
+
+# In[77]:
+
+
+effective_capacity = ii_yearly.filter(like='ActiveCapacity')
+
+plt.figure(figsize=(15,5))
+
+plt.subplot(1, 3, 1)
 plt.plot(ii_cumu['newInstalledCapacity_sim1_PV_ICE_[MW]']/1e6, label='Capacity Target', color='black', ls='--')
-plt.plot(effective_capacity/1e6, label=effective_capacity.columns)
+plt.plot(effective_capacity/1e6, label=sim1.scenario.keys())
+
+plt.subplot(1, 3, 2)
+
+
+plt.subplot(1, 3, 3)
+
+
 plt.legend()
 plt.ylabel('Effective Capacity [TW]')
 plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
-
-
-# In[79]:
-
-
-plt.plot(ii_yearly.filter(like='Decommisioned'))
-plt.legend(sim1.scenario.keys())
-
-
-# In[80]:
-
-
-effective_capacity = ii_yearly.filter(like='ActiveCapacity').filter(like='ex_')
-plt.plot(ii_cumu['newInstalledCapacity_sim1_PV_ICE_[MW]']/1e6, label='Capacity Target', color='black', ls='--')
-plt.plot(effective_capacity/1e6, label=effective_capacity.columns)
-plt.legend()
-plt.ylabel('Effective Capacity [TW]')
-plt.title('Effective Capacity: No Replacements')
-plt.ylim(0,)
-
-
-# In[81]:
-
-
-plt.plot(ii_yearly['WasteAll_Module_sim1_r_IRENA_[Tonnes]'], label='waste')
-plt.plot(ii_yearly['VirginStock_Module_sim1_r_IRENA_[Tonnes]'], label='virgin')
-plt.legend()
-
-
-# In[83]:
-
-
-plt.plot(sim1.scenario['r_IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='irena_fail')
-plt.plot(sim1.scenario['r_IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='irena_life')
-#plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Power_disposed'])
-
-plt.plot(sim1.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='pvice_fail')
-plt.plot(sim1.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='pvice_life')
-plt.legend()
-#sim1.scenario['r_IRENA'].dataOut_m.filter(like='disposed').columns.values
 
 
 # # 3. Calculate Mass and Energy Flow: Installation Compensation
@@ -1329,7 +1270,7 @@ plt.title('Replacements Adjusted Deployment Curve \n Cumulative Installs with Re
 plt.ylim(0,)
 
 
-# In[99]:
+# In[143]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -1339,6 +1280,52 @@ plt.xticks(rotation=90)
 plt.ylabel('Cumulative installed [TW]')
 plt.title('Cumulative Installs with Replacements')
 plt.ylim(0,410)
+
+
+# In[174]:
+
+
+cumu_installs = cc_cumu.filter(like='newInstalled')
+
+plt.figure(figsize=(15,5))
+
+plt.subplot(1, 3, 1)
+plt.bar(scennames_labels[0:4], cumu_installs.iloc[-1,0:4]/1e6, tick_label=scennames_labels[0:4], color=colorpalette[0:4])
+plt.xticks(rotation=90)
+plt.ylim(0,410)
+plt.ylabel('Cumulative installed [TW]')
+
+plt.subplot(1, 3, 2)
+plt.bar(scennames_labels[4:7], cumu_installs.iloc[-1,4:7]/1e6, tick_label=scennames_labels[4:7], color=colorpalette[4:7])
+plt.xticks(rotation=90)
+plt.ylim(0,410)
+plt.title('Cumulative Installs with Replacements')
+
+plt.subplot(1, 3, 3)
+plt.bar(scennames_labels[7:11], cumu_installs.iloc[-1,7:11]/1e6, tick_label=scennames_labels[7:11], color=colorpalette[7:11])
+
+plt.xticks(rotation=90)
+plt.ylim(0,410)
+
+
+
+# In[179]:
+
+
+cumu_installs = cc_cumu.filter(like='newInstalled')
+
+x = np.arange(len(scennames_labels))  # the label locations
+
+plt.bar(x[0:4]-1, cumu_installs.iloc[-1,0:4]/1e6, tick_label=scennames_labels[0:4], color=colorpalette[0:4])
+
+plt.bar(x[4:7], cumu_installs.iloc[-1,4:7]/1e6, tick_label=scennames_labels[4:7], color=colorpalette[4:7])
+
+plt.bar(x[7:11]+1, cumu_installs.iloc[-1,7:11]/1e6, tick_label=scennames_labels[7:11], color=colorpalette[7:11])
+
+plt.ylim(0,410)
+plt.ylabel('Cumulative installed [TW]')
+plt.title('Cumulative Installs with Replacements')
+plt.xticks(rotation=90)
 
 
 # In[100]:
@@ -1593,7 +1580,7 @@ e_annual_sumDemands_cumu.loc[[2100]]
 netEnergy_cumu
 
 
-# In[124]:
+# In[142]:
 
 
 plt.bar(netEnergy_cumu.columns, netEnergy_cumu.loc[2100]/1e12, 
