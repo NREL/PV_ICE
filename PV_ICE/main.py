@@ -100,13 +100,13 @@ def _unitReferences(keyword):
                       'source': 'input'},
         'Area': {'unit': 'm$^2$',
                  'source': 'generated'},
-        'Cumulative_Area_disposedby_Failure': {'unit': 'm$^2$',
+        'Cumulative_Area_EOLby_Failure': {'unit': 'm$^2$',
                                                'source': 'generated'},
-        'Cumulative_Area_disposedby_ProjectLifetime': {'unit': 'm$^2$',
+        'Cumulative_Area_EOLby_ProjectLifetime': {'unit': 'm$^2$',
                                                        'source': 'generated'},
-        'Cumulative_Area_disposed': {'unit': 'm$^2$', 'source': 'generated'},
+        'Cumulative_Area_atEOL': {'unit': 'm$^2$', 'source': 'generated'},
         'Cumulative_Active_Area': {'unit': 'm$^2$', 'source': 'generated'},
-        'Installed_Capacity_[W]': {'unit': 'Power [W]', 'source': 'generated'},
+        'Effective_Capacity_[W]': {'unit': 'Power [W]', 'source': 'generated'},
         'EOL_on_Year_0': {'unit': 'm$^2$', 'source': 'generated'},
         'EOL_on_Year_1': {'unit': 'm$^2$', 'source': 'generated'},
         'EOL_on_Year_2': {'unit': 'm$^2$', 'source': 'generated'},
@@ -233,7 +233,7 @@ def _unitReferences(keyword):
                                      'source': 'generated'},
         'mat_Total_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
         'mat_Total_Recycled_OU': {'unit': 'Mass [g]', 'source': 'generated'},
-        'Yearly_Sum_Area_disposedby_Failure': {'unit': 'Area [m$^2$]',
+        'Yearly_Sum_Area_EOLby_Failure': {'unit': 'Area [m$^2$]',
                                                'source': 'generated'}
         }
 
@@ -458,6 +458,7 @@ class Simulation:
             _existsandSavequestionmark('dataIn_e', 'input', customname, overwrite, scen, mat=None, metattribute='metdataIn_e')
             _existsandSavequestionmark('dataOut_m', 'output', customname, overwrite, scen)
             _existsandSavequestionmark('dataOut_e', 'output', customname, overwrite, scen)
+            _existsandSavequestionmark('dataDebug_m', 'output', customname, overwrite, scen)
                         
             for mat in materials:
                 _existsandSavequestionmark('matdataIn_m', 'input', customname, overwrite, scen, mat, metattribute='matmetdataIn_m')
@@ -575,7 +576,7 @@ class Simulation:
                 scenarios = [scenarios]
 
         if nameplatedeglimit is None:
-            nameplatedeglimit = 0.3
+            nameplatedeglimit = 0.8
 
         print(">>>> Calculating Material Flows <<<<\n")
 
@@ -635,40 +636,44 @@ class Simulation:
             # Calculating Wast by Generation by Year, and Cum. Waste by Year.
             Generation_EOL_pathsG = []
             Matrix_Landfilled_noncollected = []
-            Matrix_area_bad_status = []
+            Matrix_areaEOL_degradation_all = []
             Matrix_Failures = []
             weibullParamList = []
-            # Not used at the moment. legacy. REMOVE?
-            # Generation_Disposed_byYear = []
-            # Generation_Active_byYear= []
-            # Generation_Power_byYear = []
 
-            df['Yearly_Sum_Area_disposedby_Failure'] = 0
-            df['Yearly_Sum_Power_disposedby_Failure'] = 0
-            df['Yearly_Sum_Area_disposedby_ProjectLifetime'] = 0
-            df['Yearly_Sum_Power_disposedby_ProjectLifetime'] = 0
-            df['Yearly_Sum_Area_disposed'] = 0  # Failure + ProjectLifetime
-            df['Yearly_Sum_Power_disposed'] = 0
 
-            df['landfilled_noncollected'] = 0
+            df['Yearly_Sum_Area_EOLby_Failure'] = 0
+            df['Yearly_Sum_Power_EOLby_Failure'] = 0
+            df['Yearly_Sum_Area_EOLby_Degradation'] = 0
+            df['Yearly_Sum_Power_EOLby_Degradation'] = 0
+            df['Yearly_Sum_Area_EOLby_ProjectLifetime'] = 0
+            df['Yearly_Sum_Power_EOLby_ProjectLifetime'] = 0
 
-            df['Repaired_[W]'] = 0
+            df['Yearly_Sum_Area_atEOL'] = 0  # Failure + Degradation + ProjcLife
+            df['Yearly_Sum_Power_atEOL'] = 0
+            df['Yearly_Sum_Area_PathsBad'] = 0 # should be degradation, failures not fixed
+            df['Yearly_Sum_Power_PathsBad'] = 0
+            df['Yearly_Sum_Area_PathsGood'] = 0  # should be proj lifetimes
+            df['Yearly_Sum_Power_PathsGood'] = 0
+
+            df['Landfill_0_ProjLife'] = 0 # non collected
+
             df['Repaired_Area'] = 0
+            df['Repaired_[W]'] = 0
 
             df['Resold_Area'] = 0
             df['Resold_[W]'] = 0
 
-            df['Cumulative_Active_Area'] = 0
-            df['Installed_Capacity_[W]'] = 0
+            df['MerchantTail_Area'] = 0
+            df['MerchantTail_[W]'] = 0
 
-            df['Status_BAD_Area'] = 0
-            df['Status_BAD_[W]'] = 0
+            df['Cumulative_Active_Area'] = 0 # Effective installed area
+            df['Effective_Capacity_[W]'] = 0 # Effective installed capacity 
+            # i.e  installed - degrad - fails - eol PL ..
 
-            df['Area_for_EOL_pathsG'] = 0
-            df['Power_for_EOL_pathsG'] = 0
-
-            df['Landfill_0'] = 0
-
+            df['Power_Degraded_[W]'] = 0   # The way it is calculated it is 
+                                           # 'cumulative' or relative from the nameplate
+                                           # to each year. 
+            
             for generation, row in df.iterrows():
                 # generation is an int 0,1,2,.... etc.
                 # generation=4
@@ -694,179 +699,220 @@ class Simulation:
                 cdf = list(map(f, x))
                 # TODO: Check this line, does it need commas or remove space
                 # for linting?
-                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
+                pdf = [0] + [j - i for i, j in zip(cdf[:-1], cdf[1:])]
 
                 activearea = row['Area']
                 if np.isnan(activearea):
                     activearea = 0
 
                 activeareacount = []
-                area_landfill_noncollected = []
+                activepowercount = []  # Active area production.
 
-                areadisposed_failure = []
-                powerdisposed_failure = []
+                areaEOL_failure_notrepaired_all = []
+                powerEOL_failure_notrepaired_all = []
 
-                areadisposed_projectlifetime = []
-                powerdisposed_projectlifetime = []
+                areaEOL_ProjLife_all = []
+                powerEOL_ProjLife_all = []
 
-                area_repaired = []
-                power_repaired = []
+                area_repaired_all = []
+                power_repaired_all = []
 
-                power_resold = []
-                area_resold = []
+                area_resold_all = []
+                power_resold_all = []
+                
+                area_merchantTail_all = []
+                power_merchantTail_all = []
+                
+                areaEOL_degradation_all = []
+                powerEOL_degradation_all = []
+                
+                areaEOL_ProjLife_collected_PG_3to5_all = []
+                powerEOL_ProjLife_collected_PG_3to5_all = []
 
-                area_powergen = []  # Active area production.
+                areaEOL_ProjLife_notcollected_L0_all = []
+                powerEOL_ProjLife_notcollected_L0_all = []
 
-                area_bad_status = []
-                power_bad_status = []
-                area_otherpaths = []
-                power_otherpaths = []
+                power_degraded_all = []
+                # Age 0, nothing dies <3
+                activeareacount.append(0)
+                activepowercount.append(0)
 
-                active = 0
-                disposed_projectlifetime = 0
-                powerdisposed_projectlifetime0 = 0
-                landfilled_noncollected = 0
-                area_resold0 = 0
-                power_resold0 = 0
-                area_otherpaths0 = 0
-                power_otherpaths0 = 0
-                area_bad_status0 = 0
-                power_bad_status0 = 0
-                for age in range(len(cdf)):
-                    disposed_projectlifetime = 0
+                areaEOL_failure_notrepaired_all.append(0)
+                powerEOL_failure_notrepaired_all.append(0)
+                areaEOL_ProjLife_all.append(0)
+                powerEOL_ProjLife_all.append(0)
+                area_resold_all.append(0)
+                power_resold_all.append(0)
+                area_merchantTail_all.append(0)
+                power_merchantTail_all.append(0)
+                areaEOL_degradation_all.append(0)
+                powerEOL_degradation_all.append(0)
+                area_repaired_all.append(0)
+                power_repaired_all.append(0)
+                areaEOL_ProjLife_collected_PG_3to5_all.append(0)
+                powerEOL_ProjLife_collected_PG_3to5_all.append(0)             
+                areaEOL_ProjLife_notcollected_L0_all.append(0)
+                powerEOL_ProjLife_notcollected_L0_all.append(0)
+                
+                power_degraded_all.append(0)
+
+                for age in range(1, len(cdf)):
+                    removed_projectlifetime = 0
                     landfilled_noncollected = 0
-                    area_otherpaths0 = 0
+                    
+                    deg_nameplate = (1-row['mod_degradation']*0.01)**age
+                    poweragegen = (row['mod_eff'] * 0.01 *
+                                   row['irradiance_stc']*deg_nameplate)
+                    powerinitgen = row['mod_eff'] * 0.01 * row['irradiance_stc']
+                    
+                    
+                    # 1. Check if remaining cohort has degraded
 
-                    if x[age] == 0.0:
-                        activeareacount.append(0)
-                        areadisposed_failure.append(0)
-                        powerdisposed_failure.append(0)
-                        areadisposed_projectlifetime.append(0)
-                        powerdisposed_projectlifetime.append(0)
-                        area_resold.append(0)
-                        power_resold.append(0)
-                        area_bad_status.append(0)
-                        power_bad_status.append(0)
-                        area_powergen.append(0)
-                        area_repaired.append(0)
-                        power_repaired.append(0)
-                        area_otherpaths.append(0)
-                        power_otherpaths.append(0)
-                        area_landfill_noncollected.append(0)
+                    power_degradaded = activearea * (powerinitgen - poweragegen) 
+
+                    if deg_nameplate < nameplatedeglimit:
+                        # TODO check this! killing and not sending
+                        # to EOL collection paths,
+                        areaEOL_degradation = activearea
+                        powerEOL_degradation = (
+                            areaEOL_degradation * poweragegen)
+                        
+                        # Reduntant as it is performed in the MATRIX later on PBD
+                        '''
+                        areaEOL_degradation_collected = (
+                            areaEOL_degradation *
+                            (df.iloc[age]['mod_EOL_collection_eff'] *
+                             0.01))
+                        powerEOL_degradation_collected = areaEOL_degradation_collected * poweragegen
+                        areaEOL_Deg_notcollected_L0 = areaEOL_degradation - areaEOL_degradation_collected
+                        powerEOL_Deg_notcollected_L0 = areaEOL_Deg_notcollected_L0*poweragegen
+                        '''
+                        activearea = 0
                     else:
-                        active += 1
-                        deg_nameplate = (1-row['mod_degradation']*0.01)**active
-                        poweragegen = (row['mod_eff'] * 0.01 *
-                                       row['irradiance_stc']*deg_nameplate)
+                        areaEOL_degradation = 0
+                        powerEOL_degradation = 0
+                        
+                        #areaEOL_degradation_collected = 0
+                        #powerEOL_degradation_collected = 0
+                        #areaEOL_Deg_notcollected_L0 = 0
+                        #powerEOL_Deg_notcollected_L0 = 0
 
-                        # FAILURES HERE!
-                        activeareaprev = activearea
+                    # 3. EoL Project Lifetime 
+                    if age != int(row['mod_lifetime']+generation):
+                        #removed_projectlifetime = 0
+                        #landfilled_noncollected = 0
+                        area_merchantTail = 0
+                        power_merchantTail = 0
+                        area_resold = 0
+                        power_resold = 0
+                        areaEOL_ProjLife_notcollected_L0 = 0
+                        powerEOL_ProjLife_notcollected_L0 = 0
+                        areaEOL_ProjLife_collected_PG_3to5 = 0
+                        powerEOL_ProjLife_collected_PG_3to5 = 0
+                        areaEOL_ProjLife = 0
+                        powerEOL_ProjLife = 0
+                    else:
+                        # activearea_temp = activearea
+                        area_merchantTail = (
+                                activearea *
+                                (df.iloc[age]['mod_MerchantTail']*0.01))
+                        power_merchantTail = area_merchantTail*poweragegen
 
-                        failures = row['Area']*pdf[age]
+                        # internal - removed_projectlifetime
+                        area_removed_projectlifetime = (activearea -
+                                                    area_merchantTail)
 
-                        if failures > activearea:
-                            # TODO: make this code comment pr re,pve
-                            #print("More failures than active area, reducing failures to possibilities now.")
-                            failures = activearea
+                        # internal - area_removed_collected (pre-resold)
+                        area_ProjLife_collected = (
+                            area_removed_projectlifetime *
+                            (df.iloc[age]['mod_EOL_collection_eff'] *
+                             0.01))
+                        areaEOL_ProjLife_notcollected_L0 = (
+                            area_removed_projectlifetime-area_ProjLife_collected)
 
-                        area_repaired0 = (failures *
-                                          df.iloc[age]['mod_Repair']*0.01)
-                        power_repaired0 = area_repaired0*poweragegen
+                        powerEOL_ProjLife_notcollected_L0 = areaEOL_ProjLife_notcollected_L0 * poweragegen
+                        area_resold = (
+                            area_ProjLife_collected *
+                            (df.iloc[age]['mod_EOL_pg0_resell']*0.01))
+                        power_resold = area_resold*poweragegen
 
-                        area_notrepaired0 = failures-area_repaired0
-                        power_notrepaired0 = area_notrepaired0*poweragegen
+                        areaEOL_ProjLife_collected_PG_3to5 = (
+                            area_ProjLife_collected - area_resold)
 
-                        activearea = activeareaprev-area_notrepaired0
+                        powerEOL_ProjLife_collected_PG_3to5 = (
+                            areaEOL_ProjLife_collected_PG_3to5 * poweragegen)
 
-                        if age == int(row['mod_lifetime']+generation):
-                            # activearea_temp = activearea
-                            merchantTail_area = (
-                                    0+activearea *
-                                    (df.iloc[age]['mod_MerchantTail']*0.01))
-                            disposed_projectlifetime = (activearea -
-                                                        merchantTail_area)
-                            activearea = merchantTail_area
+                        activearea = area_merchantTail + area_resold
 
-                            # I don't think these should be here.
-                            # area_notrepaired0 = 0
-                            # power_notrepaired0 = 0
+                        # removed_projectlifetime does not include
+                        # Merchant Tail & Resold as they went back to
+                        # active
+                        areaEOL_ProjLife = (areaEOL_ProjLife_collected_PG_3to5 +
+                                           areaEOL_ProjLife_notcollected_L0)
+                                # Same as removed_ProjLife - area_Resold
+                        powerEOL_ProjLife = (
+                            areaEOL_ProjLife*poweragegen)
 
-                            #  TO DO: Make deg_nameplate variable an input
-                            if nameplatedeglimit > 0.7:
-                                print("WARNING! nameplatedeglimit has a bug" +
-                                      "waste duplication, need to check ASAP" +
-                                      "note from 5/17/2023")
-                            if deg_nameplate > nameplatedeglimit:
-                                area_collected = (
-                                    disposed_projectlifetime *
-                                    (df.iloc[age]['mod_EOL_collection_eff'] *
-                                     0.01))
-                                landfilled_noncollected = (
-                                    disposed_projectlifetime-area_collected)
+                    # 2. Calculate failures
+                    activeareaprev = activearea
+                    failures = row['Area']*pdf[age]
 
-                                area_resold0 = (
-                                    area_collected *
-                                    (df.iloc[age]['mod_EOL_pg0_resell']*0.01))
-                                power_resold0 = area_resold0*poweragegen
+                    if failures > activearea:
+                        failures = activearea
 
-                                area_otherpaths0 = (
-                                    area_collected - area_resold0)
 
-                                power_otherpaths0 = (
-                                    area_otherpaths0 * poweragegen)
+                    area_repaired = (failures *
+                                      df.iloc[age]['mod_Repair']*0.01)
+                    power_repaired = area_repaired*poweragegen
 
-                                activearea = activearea + area_resold0
+                    areaEOL_Failures_notrepaired = failures-area_repaired
+                    powerEOL_Failures_notrepaired = areaEOL_Failures_notrepaired*poweragegen
 
-                                # disposed_projectlifetime does not include
-                                # Merchant Tail & Resold as they went back to
-                                # active
-                                disposed_projectlifetime = (
-                                    disposed_projectlifetime - area_resold0)
-                                powerdisposed_projectlifetime0 = (
-                                    disposed_projectlifetime*poweragegen)
-                            else: 
-                                # TODO check this! killing and not sending 
-                                # to EOL collection paths,
-                                area_bad_status0 = disposed_projectlifetime
-                                power_bad_status0 = (
-                                    area_bad_status0 * poweragegen)
-                                # powerdisposed_projectlifetime0 = 0 # CHECK?
+                    activearea = activeareaprev-areaEOL_Failures_notrepaired
 
-                            # activearea = (0+disposed_projectlifetime*
-                            #              (df.iloc[age]['mod_Reuse']*0.01))
-                            # disposed_projectlifetime = ( activearea_temp -
-                            #                             activearea)
 
-                        areadisposed_failure.append(area_notrepaired0)
-                        powerdisposed_failure.append(power_notrepaired0)
+                    # Start appending the yearly age values
 
-                        # TODO IMPORTANT: Add Failures matrices to EoL Matrix.
+                    power_degraded_all.append(power_degradaded)
+                    
+                    areaEOL_degradation_all.append(areaEOL_degradation)
+                    powerEOL_degradation_all.append(powerEOL_degradation)
 
-#                        areadisposed_failure_collected.append(area_notrepaired0*df.iloc[age]['mod_EOL_collection_eff']*0.01)
-                        areadisposed_projectlifetime.append(
-                            disposed_projectlifetime)
-                        powerdisposed_projectlifetime.append(
-                            powerdisposed_projectlifetime0)
+                    area_repaired_all.append(area_repaired)
+                    power_repaired_all.append(power_repaired)
+                    
+                    areaEOL_failure_notrepaired_all.append(areaEOL_Failures_notrepaired)
+                    powerEOL_failure_notrepaired_all.append(powerEOL_Failures_notrepaired)
 
-                        area_landfill_noncollected.append(
-                            landfilled_noncollected)
+                    area_merchantTail_all.append(area_merchantTail)
+                    power_merchantTail_all.append(power_merchantTail)
 
-                        area_repaired.append(area_repaired0)
-                        power_repaired.append(power_repaired0)
+                    area_resold_all.append(area_resold)
+                    power_resold_all.append(power_resold)
+                    
+                    # has collected and non collected
+                    # but not merchant tailed and resold
+                    areaEOL_ProjLife_all.append(areaEOL_ProjLife)
+                    powerEOL_ProjLife_all.append(powerEOL_ProjLife)
 
-                        area_resold.append(area_resold0)
-                        power_resold.append(power_resold0)
+                    # noncollected from project lifetime ((only one that had to be
+                    # collected internally for calculating the resold. 
+                    # Failures and degradation collection get calculated
+                    # later on the matrixes directly))
+                    areaEOL_ProjLife_notcollected_L0_all.append(areaEOL_ProjLife_notcollected_L0)
+                    powerEOL_ProjLife_notcollected_L0_all.append(powerEOL_ProjLife_notcollected_L0)
+                    
+                    # Collected for Path Goods
+                    areaEOL_ProjLife_collected_PG_3to5_all.append(areaEOL_ProjLife_collected_PG_3to5)
+                    powerEOL_ProjLife_collected_PG_3to5_all.append(powerEOL_ProjLife_collected_PG_3to5)
 
-                        area_bad_status.append(area_bad_status0)
-                        power_bad_status.append(power_bad_status0)
+                    activeareacount.append(activearea)
+                    activepowercount.append(activearea*poweragegen)
 
-                        area_otherpaths.append(area_otherpaths0)
-                        power_otherpaths.append(power_otherpaths0)
+                    # Generation age loop ends
 
-                        activeareacount.append(activearea)
-                        area_powergen.append(activearea*poweragegen)
-                        # print('PowerAgeGen: '+str(poweragegen))
-
+                
+                # !! Unelegantly Correcting Initial Years 
                 try:
                     # becuase the clip starts with 0 for the installation year,
                     # dentifying installation year and adding initial area
@@ -874,8 +920,8 @@ class Simulation:
                                                 if e), None) - 1
                     activeareacount[fixinitialareacount] = (
                         activeareacount[fixinitialareacount]+row['Area'])
-                    area_powergen[fixinitialareacount] = (
-                        area_powergen[fixinitialareacount] +
+                    activepowercount[fixinitialareacount] = (
+                        activepowercount[fixinitialareacount] +
                         row['Area'] * row['mod_eff'] * 0.01 *
                         row['irradiance_stc'])
                     # TODO: note mentioned 'this addition seems to do nothing.'
@@ -888,8 +934,8 @@ class Simulation:
                     fixinitialareacount = len(cdf)-1
                     activeareacount[fixinitialareacount] = (
                         activeareacount[fixinitialareacount]+row['Area'])
-                    area_powergen[fixinitialareacount] = (
-                        area_powergen[fixinitialareacount] + row['Area'] *
+                    activepowercount[fixinitialareacount] = (
+                        activepowercount[fixinitialareacount] + row['Area'] *
                         row['mod_eff'] * 0.01 * row['irradiance_stc'])
                     print("Finished Area+Power Generation Calculations")
 
@@ -897,63 +943,63 @@ class Simulation:
                 #                                           for element in pdf]
                 # This used to be labeled as cumulative; but in the sense that
                 # they cumulate yearly deaths for all cohorts that die.
-                df['Yearly_Sum_Area_disposedby_Failure'] += (
-                    areadisposed_failure)
-                df['Yearly_Sum_Power_disposedby_Failure'] += (
-                    powerdisposed_failure)
 
-                df['Yearly_Sum_Area_disposedby_ProjectLifetime'] += (
-                    areadisposed_projectlifetime)
-                df['Yearly_Sum_Power_disposedby_ProjectLifetime'] += (
-                    powerdisposed_projectlifetime)
+                df['Yearly_Sum_Area_EOLby_Degradation'] += (
+                    areaEOL_degradation_all)
+                df['Yearly_Sum_Power_EOLby_Degradation'] += (
+                    powerEOL_degradation_all)
+                
+                df['Power_Degraded_[W]'] += power_degraded_all
+                
+                df['Yearly_Sum_Area_EOLby_Failure'] += (
+                    areaEOL_failure_notrepaired_all)
+                df['Yearly_Sum_Power_EOLby_Failure'] += (
+                    powerEOL_failure_notrepaired_all)
 
-                df['Yearly_Sum_Area_disposed'] += areadisposed_failure
-                df['Yearly_Sum_Area_disposed'] += areadisposed_projectlifetime
+                df['Yearly_Sum_Area_EOLby_ProjectLifetime'] += (
+                    areaEOL_ProjLife_all)
+                df['Yearly_Sum_Power_EOLby_ProjectLifetime'] += (
+                    powerEOL_ProjLife_all)
 
-                df['Yearly_Sum_Power_disposed'] += powerdisposed_failure
-                df['Yearly_Sum_Power_disposed'] += (
-                    powerdisposed_projectlifetime)
+                df['Yearly_Sum_Area_atEOL'] += areaEOL_failure_notrepaired_all
+                df['Yearly_Sum_Area_atEOL'] += areaEOL_ProjLife_all
+                df['Yearly_Sum_Area_atEOL'] += areaEOL_degradation_all
 
-                df['Repaired_Area'] += area_repaired
-                df['Repaired_[W]'] += power_repaired
-                df['Resold_Area'] += area_resold
-                df['Resold_[W]'] += power_resold
+                df['Yearly_Sum_Power_atEOL'] += powerEOL_failure_notrepaired_all
+                df['Yearly_Sum_Power_atEOL'] += (
+                    powerEOL_ProjLife_all)
 
-                df['Status_BAD_Area'] += area_bad_status
-                df['Status_BAD_[W]'] += power_bad_status
+                df['Repaired_Area'] += area_repaired_all
+                df['Repaired_[W]'] += power_repaired_all
+                df['Resold_Area'] += area_resold_all
+                df['Resold_[W]'] += power_resold_all
+                df['MerchantTail_Area'] += area_merchantTail_all
+                df['MerchantTail_[W]'] += power_merchantTail_all
 
-                df['Area_for_EOL_pathsG'] += area_otherpaths
-                df['Power_for_EOL_pathsG'] += power_otherpaths
+                df['Yearly_Sum_Area_PathsBad'] += areaEOL_degradation_all
+                df['Yearly_Sum_Power_PathsBad'] += powerEOL_degradation_all
+                
+                df['Yearly_Sum_Area_PathsBad'] += areaEOL_failure_notrepaired_all
+                df['Yearly_Sum_Power_PathsBad'] += powerEOL_failure_notrepaired_all
 
-                df['Installed_Capacity_[W]'] += area_powergen
+                df['Yearly_Sum_Area_PathsGood'] += areaEOL_ProjLife_collected_PG_3to5_all
+                df['Yearly_Sum_Power_PathsGood'] += powerEOL_ProjLife_collected_PG_3to5_all
+
                 df['Cumulative_Active_Area'] += activeareacount
+                df['Effective_Capacity_[W]'] += activepowercount
 
-                df['Landfill_0'] += area_landfill_noncollected
+                df['Landfill_0_ProjLife'] += areaEOL_ProjLife_notcollected_L0_all
 
-                Generation_EOL_pathsG.append(area_otherpaths)
+
+                # MATRIXES:
+                Generation_EOL_pathsG.append(areaEOL_ProjLife_collected_PG_3to5_all)
                 Matrix_Landfilled_noncollected.append(
-                    area_landfill_noncollected)
-                Matrix_area_bad_status.append(area_bad_status)
-                Matrix_Failures.append(areadisposed_failure)
+                    areaEOL_ProjLife_notcollected_L0_all)
+                Matrix_areaEOL_degradation_all.append(areaEOL_degradation_all)
+                Matrix_Failures.append(areaEOL_failure_notrepaired_all)
 
-                # Generation_Disposed_byYear.append([x + y for x, y in
-                #   zip(areadisposed_failure, areadisposed_projectlifetime)])
-
-                # Not using at the moment:
-                # Generation_Active_byYear.append(activeareacount)
-                # Generation_Power_byYear.append(area_powergen)
 
             df['WeibullParams'] = weibullParamList
-
-            # TODO: remove this?
-            # We don't need this Disposed by year because we already collected,
-            # merchaint tailed and resold.
-            # Just need Landfil matrix, and Paths Good Matrix (and Paths Bad
-            # Eventually)
-            # MatrixDisposalbyYear = pd.DataFrame(Generation_Disposed_byYear,
-            #                       columns = df.index, index = df.index)
-            # MatrixDisposalbyYear = MatrixDisposalbyYear.add_prefix(
-            #                                                   "EOL_on_Year_")
 
             # Cleanup of old calculations. Needed when you run twice function.
             try:
@@ -968,15 +1014,15 @@ class Simulation:
             L0 = pd.DataFrame(Matrix_Landfilled_noncollected,
                               columns=df.index, index=df.index)
 
-            PB = pd.DataFrame(Matrix_area_bad_status, columns=df.index,
+            PBD = pd.DataFrame(Matrix_areaEOL_degradation_all, columns=df.index,
                               index=df.index)
 
-            PF = pd.DataFrame(Matrix_Failures, columns=df.index,
+            PBF = pd.DataFrame(Matrix_Failures, columns=df.index,
                               index=df.index)
 
             # Path Bad includes Path Bad from Project Lifetime and adding now
-            #  the path bads from Failures disposed (not repaired)
-            PB = PB + PF
+            #  the path bads from Failures atEOL (not repaired)
+            PB = PBD + PBF
 
             # Updating Path Bad for collection efficiency.
             PBC = PB.mul(df['mod_EOL_collection_eff'].values*0.01)
@@ -1372,11 +1418,17 @@ class Simulation:
 
 
             # CLEANUP MATRICES HERE:
-            #try:
-            #    df = df[df.columns.drop(list(df.filter(regex='EOL_PG_Year_')))]
-            #except:
-            #    print("Warning: Issue dropping EOL_PG columns generated by " \
-            #          "calculateMFC routine to overwrite")
+            if debugflag:
+                debugdf = df[(list(df.filter(regex='EOL_PG_Year_')))]
+                debugdfB = df[(list(df.filter(regex='EOL_L0_Year_')))]
+                debugdfC = df[(list(df.filter(regex='EOL_BS_Year')))]
+                debugdf = debugdf.join(debugdfB) 
+                debugdf = debugdf.join(debugdfC) 
+                self.scenario[scen].dataDebug_m = debugdf                        
+
+            df = df[df.columns.drop(list(df.filter(regex='EOL_PG_Year_')))]
+            df = df[df.columns.drop(list(df.filter(regex='EOL_L0_Year_')))]
+            df = df[df.columns.drop(list(df.filter(regex='EOL_BS_Year')))]
 
             self.scenario[scen].dataOut_m = df[df.columns.difference(initialCols)]
 
@@ -1454,15 +1506,15 @@ class Simulation:
             de['mod_Install'] = df['Area']*modEnergy['e_mod_Install']
             de['mod_OandM'] = df['Cumulative_Active_Area']*modEnergy['e_mod_OandM']
             de['mod_Repair'] = df['Repaired_Area']*modEnergy['e_mod_Repair']
-            de['mod_Demount'] = (df['Resold_Area']+df['Status_BAD_Area']+df['Landfill_0']
-                               +df['Area_for_EOL_pathsG'])*modEnergy['e_mod_Demount']
+            de['mod_Demount'] = (df['Resold_Area']+df['Yearly_Sum_Area_PathsBad']+df['Landfill_0_ProjLife']
+                               +df['Yearly_Sum_Area_PathsGood'])*modEnergy['e_mod_Demount']
             de['mod_Store'] = df['P2_stored']*modEnergy['e_mod_Store']
             de['mod_Resell_Certify'] = df['Resold_Area']*modEnergy['e_mod_Resell_Certify']
             de['mod_ReMFG_Disassembly'] = df['P3_reMFG']*modEnergy['e_mod_ReMFG_Disassembly']
             de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
 
             #Energy Generation, Energy_out = Insolation (adjusted for bifi) * ActivePower/Irradience * time * PR
-            de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Installed_Capacity_[W]']/1000) * 365 * PR
+            de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Effective_Capacity_[W]']/1000) * 365 * PR
             
             self.scenario[scen].dataOut_e = de #Wh
             
@@ -2045,7 +2097,7 @@ class Simulation:
         # Adding Installed Capacity to US (This is already 'Cumulative') so not including it in UScum
         # We are also renaming it to 'ActiveCapacity' and calculating Decommisioned Capacity.
         # TODO: Rename Installed_CApacity to ActiveCapacity throughout.
-        keywd='Installed_Capacity_[W]'
+        keywd='Effective_Capacity_[W]'
         for scen in scenarios:
             USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].dataOut_m[keywd]/1e6 #this value is cumulative
             #decommissions are cumulative
