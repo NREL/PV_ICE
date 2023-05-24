@@ -734,183 +734,189 @@ class Simulation:
 
                 power_degraded_all = []
                 # Age 0, nothing dies <3
-                activeareacount.append(0)
-                activepowercount.append(0)
 
-                areaEOL_failure_notrepaired_all.append(0)
-                powerEOL_failure_notrepaired_all.append(0)
-                areaEOL_ProjLife_all.append(0)
-                powerEOL_ProjLife_all.append(0)
-                area_resold_all.append(0)
-                power_resold_all.append(0)
-                area_merchantTail_all.append(0)
-                power_merchantTail_all.append(0)
-                areaEOL_degradation_all.append(0)
-                powerEOL_degradation_all.append(0)
-                area_repaired_all.append(0)
-                power_repaired_all.append(0)
-                areaEOL_ProjLife_collected_PG_3to5_all.append(0)
-                powerEOL_ProjLife_collected_PG_3to5_all.append(0)             
-                areaEOL_ProjLife_notcollected_L0_all.append(0)
-                powerEOL_ProjLife_notcollected_L0_all.append(0)
+                active = 0
                 
-                power_degraded_all.append(0)
-
-                for age in range(1, len(cdf)):
-                    removed_projectlifetime = 0
-                    landfilled_noncollected = 0
+                for age in range(len(cdf)):
                     
-                    deg_nameplate = (1-row['mod_degradation']*0.01)**age
-                    poweragegen = (row['mod_eff'] * 0.01 *
-                                   row['irradiance_stc']*deg_nameplate)
-                    powerinitgen = row['mod_eff'] * 0.01 * row['irradiance_stc']
-                    
-                    
-                    # 1. Check if remaining cohort has degraded
+                    if x[age] == 0.0:
+                        activeareacount.append(0)
+                        activepowercount.append(0)
 
-                    power_degradaded = activearea * (powerinitgen - poweragegen) 
-
-                    if deg_nameplate < nameplatedeglimit:
-                        # TODO check this! killing and not sending
-                        # to EOL collection paths,
-                        areaEOL_degradation = activearea
-                        powerEOL_degradation = (
-                            areaEOL_degradation * poweragegen)
+                        areaEOL_failure_notrepaired_all.append(0)
+                        powerEOL_failure_notrepaired_all.append(0)
+                        areaEOL_ProjLife_all.append(0)
+                        powerEOL_ProjLife_all.append(0)
+                        area_resold_all.append(0)
+                        power_resold_all.append(0)
+                        area_merchantTail_all.append(0)
+                        power_merchantTail_all.append(0)
+                        areaEOL_degradation_all.append(0)
+                        powerEOL_degradation_all.append(0)
+                        area_repaired_all.append(0)
+                        power_repaired_all.append(0)
+                        areaEOL_ProjLife_collected_PG_3to5_all.append(0)
+                        powerEOL_ProjLife_collected_PG_3to5_all.append(0)             
+                        areaEOL_ProjLife_notcollected_L0_all.append(0)
+                        powerEOL_ProjLife_notcollected_L0_all.append(0)
+                        power_degraded_all.append(0)
                         
-                        # Reduntant as it is performed in the MATRIX later on PBD
-                        '''
-                        areaEOL_degradation_collected = (
-                            areaEOL_degradation *
-                            (df.iloc[age]['mod_EOL_collection_eff'] *
-                             0.01))
-                        powerEOL_degradation_collected = areaEOL_degradation_collected * poweragegen
-                        areaEOL_Deg_notcollected_L0 = areaEOL_degradation - areaEOL_degradation_collected
-                        powerEOL_Deg_notcollected_L0 = areaEOL_Deg_notcollected_L0*poweragegen
-                        '''
-                        activearea = 0
                     else:
-                        areaEOL_degradation = 0
-                        powerEOL_degradation = 0
+                        active += 1
+                        removed_projectlifetime = 0
+                        landfilled_noncollected = 0
                         
-                        #areaEOL_degradation_collected = 0
-                        #powerEOL_degradation_collected = 0
-                        #areaEOL_Deg_notcollected_L0 = 0
-                        #powerEOL_Deg_notcollected_L0 = 0
-
-                    # 3. EoL Project Lifetime 
-                    if age != int(row['mod_lifetime']+generation):
-                        #removed_projectlifetime = 0
-                        #landfilled_noncollected = 0
-                        area_merchantTail = 0
-                        power_merchantTail = 0
-                        area_resold = 0
-                        power_resold = 0
-                        areaEOL_ProjLife_notcollected_L0 = 0
-                        powerEOL_ProjLife_notcollected_L0 = 0
-                        areaEOL_ProjLife_collected_PG_3to5 = 0
-                        powerEOL_ProjLife_collected_PG_3to5 = 0
-                        areaEOL_ProjLife = 0
-                        powerEOL_ProjLife = 0
-                    else:
-                        # activearea_temp = activearea
-                        area_merchantTail = (
-                                activearea *
-                                (df.iloc[age]['mod_MerchantTail']*0.01))
-                        power_merchantTail = area_merchantTail*poweragegen
-
-                        # internal - removed_projectlifetime
-                        area_removed_projectlifetime = (activearea -
-                                                    area_merchantTail)
-
-                        # internal - area_removed_collected (pre-resold)
-                        area_ProjLife_collected = (
-                            area_removed_projectlifetime *
-                            (df.iloc[age]['mod_EOL_collection_eff'] *
-                             0.01))
-                        areaEOL_ProjLife_notcollected_L0 = (
-                            area_removed_projectlifetime-area_ProjLife_collected)
-
-                        powerEOL_ProjLife_notcollected_L0 = areaEOL_ProjLife_notcollected_L0 * poweragegen
-                        area_resold = (
-                            area_ProjLife_collected *
-                            (df.iloc[age]['mod_EOL_pg0_resell']*0.01))
-                        power_resold = area_resold*poweragegen
-
-                        areaEOL_ProjLife_collected_PG_3to5 = (
-                            area_ProjLife_collected - area_resold)
-
-                        powerEOL_ProjLife_collected_PG_3to5 = (
-                            areaEOL_ProjLife_collected_PG_3to5 * poweragegen)
-
-                        activearea = area_merchantTail + area_resold
-
-                        # removed_projectlifetime does not include
-                        # Merchant Tail & Resold as they went back to
-                        # active
-                        areaEOL_ProjLife = (areaEOL_ProjLife_collected_PG_3to5 +
-                                           areaEOL_ProjLife_notcollected_L0)
-                                # Same as removed_ProjLife - area_Resold
-                        powerEOL_ProjLife = (
-                            areaEOL_ProjLife*poweragegen)
-
-                    # 2. Calculate failures
-                    activeareaprev = activearea
-                    failures = row['Area']*pdf[age]
-
-                    if failures > activearea:
-                        failures = activearea
-
-
-                    area_repaired = (failures *
-                                      df.iloc[age]['mod_Repair']*0.01)
-                    power_repaired = area_repaired*poweragegen
-
-                    areaEOL_Failures_notrepaired = failures-area_repaired
-                    powerEOL_Failures_notrepaired = areaEOL_Failures_notrepaired*poweragegen
-
-                    activearea = activeareaprev-areaEOL_Failures_notrepaired
-
-
-                    # Start appending the yearly age values
-
-                    power_degraded_all.append(power_degradaded)
-                    
-                    areaEOL_degradation_all.append(areaEOL_degradation)
-                    powerEOL_degradation_all.append(powerEOL_degradation)
-
-                    area_repaired_all.append(area_repaired)
-                    power_repaired_all.append(power_repaired)
-                    
-                    areaEOL_failure_notrepaired_all.append(areaEOL_Failures_notrepaired)
-                    powerEOL_failure_notrepaired_all.append(powerEOL_Failures_notrepaired)
-
-                    area_merchantTail_all.append(area_merchantTail)
-                    power_merchantTail_all.append(power_merchantTail)
-
-                    area_resold_all.append(area_resold)
-                    power_resold_all.append(power_resold)
-                    
-                    # has collected and non collected
-                    # but not merchant tailed and resold
-                    areaEOL_ProjLife_all.append(areaEOL_ProjLife)
-                    powerEOL_ProjLife_all.append(powerEOL_ProjLife)
-
-                    # noncollected from project lifetime ((only one that had to be
-                    # collected internally for calculating the resold. 
-                    # Failures and degradation collection get calculated
-                    # later on the matrixes directly))
-                    areaEOL_ProjLife_notcollected_L0_all.append(areaEOL_ProjLife_notcollected_L0)
-                    powerEOL_ProjLife_notcollected_L0_all.append(powerEOL_ProjLife_notcollected_L0)
-                    
-                    # Collected for Path Goods
-                    areaEOL_ProjLife_collected_PG_3to5_all.append(areaEOL_ProjLife_collected_PG_3to5)
-                    powerEOL_ProjLife_collected_PG_3to5_all.append(powerEOL_ProjLife_collected_PG_3to5)
-
-                    activeareacount.append(activearea)
-                    activepowercount.append(activearea*poweragegen)
-
-                    # Generation age loop ends
-
+                        deg_nameplate = (1-row['mod_degradation']*0.01)**active
+                        poweragegen = (row['mod_eff'] * 0.01 *
+                                       row['irradiance_stc']*deg_nameplate)
+                        powerinitgen = row['mod_eff'] * 0.01 * row['irradiance_stc']
+                        
+                        
+                        # 1. Check if remaining cohort has degraded
+    
+                        power_degradaded = activearea * (powerinitgen - poweragegen) 
+    
+                        if deg_nameplate < nameplatedeglimit:
+                            # TODO check this! killing and not sending
+                            # to EOL collection paths,
+                            areaEOL_degradation = activearea
+                            powerEOL_degradation = (
+                                areaEOL_degradation * poweragegen)
+                            
+                            # Reduntant as it is performed in the MATRIX later on PBD
+                            '''
+                            areaEOL_degradation_collected = (
+                                areaEOL_degradation *
+                                (df.iloc[age]['mod_EOL_collection_eff'] *
+                                 0.01))
+                            powerEOL_degradation_collected = areaEOL_degradation_collected * poweragegen
+                            areaEOL_Deg_notcollected_L0 = areaEOL_degradation - areaEOL_degradation_collected
+                            powerEOL_Deg_notcollected_L0 = areaEOL_Deg_notcollected_L0*poweragegen
+                            '''
+                            activearea = 0
+                        else:
+                            areaEOL_degradation = 0
+                            powerEOL_degradation = 0
+                            
+                            #areaEOL_degradation_collected = 0
+                            #powerEOL_degradation_collected = 0
+                            #areaEOL_Deg_notcollected_L0 = 0
+                            #powerEOL_Deg_notcollected_L0 = 0
+    
+                        # 3. EoL Project Lifetime 
+                        if age != int(row['mod_lifetime']+generation):
+                            #removed_projectlifetime = 0
+                            #landfilled_noncollected = 0
+                            area_merchantTail = 0
+                            power_merchantTail = 0
+                            area_resold = 0
+                            power_resold = 0
+                            areaEOL_ProjLife_notcollected_L0 = 0
+                            powerEOL_ProjLife_notcollected_L0 = 0
+                            areaEOL_ProjLife_collected_PG_3to5 = 0
+                            powerEOL_ProjLife_collected_PG_3to5 = 0
+                            areaEOL_ProjLife = 0
+                            powerEOL_ProjLife = 0
+                        else:
+                            # activearea_temp = activearea
+                            area_merchantTail = (
+                                    activearea *
+                                    (df.iloc[age]['mod_MerchantTail']*0.01))
+                            power_merchantTail = area_merchantTail*poweragegen
+    
+                            # internal - removed_projectlifetime
+                            area_removed_projectlifetime = (activearea -
+                                                        area_merchantTail)
+    
+                            # internal - area_removed_collected (pre-resold)
+                            area_ProjLife_collected = (
+                                area_removed_projectlifetime *
+                                (df.iloc[age]['mod_EOL_collection_eff'] *
+                                 0.01))
+                            areaEOL_ProjLife_notcollected_L0 = (
+                                area_removed_projectlifetime-area_ProjLife_collected)
+    
+                            powerEOL_ProjLife_notcollected_L0 = areaEOL_ProjLife_notcollected_L0 * poweragegen
+                            area_resold = (
+                                area_ProjLife_collected *
+                                (df.iloc[age]['mod_EOL_pg0_resell']*0.01))
+                            power_resold = area_resold*poweragegen
+    
+                            areaEOL_ProjLife_collected_PG_3to5 = (
+                                area_ProjLife_collected - area_resold)
+    
+                            powerEOL_ProjLife_collected_PG_3to5 = (
+                                areaEOL_ProjLife_collected_PG_3to5 * poweragegen)
+    
+                            activearea = area_merchantTail + area_resold
+    
+                            # removed_projectlifetime does not include
+                            # Merchant Tail & Resold as they went back to
+                            # active
+                            areaEOL_ProjLife = (areaEOL_ProjLife_collected_PG_3to5 +
+                                               areaEOL_ProjLife_notcollected_L0)
+                                    # Same as removed_ProjLife - area_Resold
+                            powerEOL_ProjLife = (
+                                areaEOL_ProjLife*poweragegen)
+    
+                        # 2. Calculate failures
+                        activeareaprev = activearea
+                        failures = row['Area']*pdf[age]
+    
+                        if failures > activearea:
+                            failures = activearea
+    
+    
+                        area_repaired = (failures *
+                                          df.iloc[age]['mod_Repair']*0.01)
+                        power_repaired = area_repaired*poweragegen
+    
+                        areaEOL_Failures_notrepaired = failures-area_repaired
+                        powerEOL_Failures_notrepaired = areaEOL_Failures_notrepaired*poweragegen
+    
+                        activearea = activeareaprev-areaEOL_Failures_notrepaired
+    
+    
+                        # Start appending the yearly age values
+    
+                        power_degraded_all.append(power_degradaded)
+                        
+                        areaEOL_degradation_all.append(areaEOL_degradation)
+                        powerEOL_degradation_all.append(powerEOL_degradation)
+    
+                        area_repaired_all.append(area_repaired)
+                        power_repaired_all.append(power_repaired)
+                        
+                        areaEOL_failure_notrepaired_all.append(areaEOL_Failures_notrepaired)
+                        powerEOL_failure_notrepaired_all.append(powerEOL_Failures_notrepaired)
+    
+                        area_merchantTail_all.append(area_merchantTail)
+                        power_merchantTail_all.append(power_merchantTail)
+    
+                        area_resold_all.append(area_resold)
+                        power_resold_all.append(power_resold)
+                        
+                        # has collected and non collected
+                        # but not merchant tailed and resold
+                        areaEOL_ProjLife_all.append(areaEOL_ProjLife)
+                        powerEOL_ProjLife_all.append(powerEOL_ProjLife)
+    
+                        # noncollected from project lifetime ((only one that had to be
+                        # collected internally for calculating the resold. 
+                        # Failures and degradation collection get calculated
+                        # later on the matrixes directly))
+                        areaEOL_ProjLife_notcollected_L0_all.append(areaEOL_ProjLife_notcollected_L0)
+                        powerEOL_ProjLife_notcollected_L0_all.append(powerEOL_ProjLife_notcollected_L0)
+                        
+                        # Collected for Path Goods
+                        areaEOL_ProjLife_collected_PG_3to5_all.append(areaEOL_ProjLife_collected_PG_3to5)
+                        powerEOL_ProjLife_collected_PG_3to5_all.append(powerEOL_ProjLife_collected_PG_3to5)
+    
+                        activeareacount.append(activearea)
+                        activepowercount.append(activearea*poweragegen)
+    
+                        # Generation age loop ends
+    
                 
                 # !! Unelegantly Correcting Initial Years 
                 try:
