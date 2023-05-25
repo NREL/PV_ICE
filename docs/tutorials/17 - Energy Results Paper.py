@@ -1088,12 +1088,12 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[248]:
+# In[252]:
 
 
 effective_capacity_tw = ii_yearly.filter(like='ActiveCapacity')/1e6
 
-plt.rcParams['figure.figsize'] = (8, 6)
+plt.rcParams['figure.figsize'] = (10, 6)
 
 plt.plot(ii_cumu['newInstalledCapacity_sim1_PV_ICE_[MW]']/1e6, 
          label='Capacity Target', color='black', ls='dashdot')
@@ -1125,7 +1125,7 @@ plt.plot(effective_capacity_tw.iloc[:,4:7], label=scennames_labels_flat[4:7],  l
 plt.plot(effective_capacity_tw.iloc[:,7:], label=scennames_labels_flat[7:])#, color=colorpalette[7:])
 
 #plt.plot(effective_capacity/1e6, label=sim1.scenario.keys())
-plt.legend(bbox_to_anchor=(1,1.02), prop={'size': 11})
+plt.legend(prop={'size': 11}) #bbox_to_anchor=(1,1.02), 
 plt.ylabel('Effective Capacity [TW]')
 plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
@@ -1408,6 +1408,13 @@ plt.title('Cumulative Installs with Replacements')
 plt.ylim(0,410)
 
 
+# In[266]:
+
+
+replacements = cumu_installs.iloc[-1,]/1e6
+replacements.index = scennames_labels
+
+
 # In[237]:
 
 
@@ -1527,6 +1534,13 @@ fig.suptitle('Cumulative Virgin Material Demands', fontsize=24)
 plt.show()
 
 fig.savefig('energyresults-cumuMatDemand.png', dpi=300)
+
+
+# In[271]:
+
+
+virgin = cumu_virgin_module_bt.iloc[-1,:]
+virgin.index=scennames_labels
 
 
 # In[101]:
@@ -1656,6 +1670,13 @@ plt.show()
 fig.savefig('energyresults-cumuWaste.png', dpi=300)
 
 
+# In[273]:
+
+
+wastes = cumu_lifecycle_wastes_bt.iloc[-1,:]
+wastes.index=scennames_labels
+
+
 # In[149]:
 
 
@@ -1729,10 +1750,10 @@ plt.ylabel('Cumulative Energy Demands\n[TWh]')
 plt.xticks(rotation=90)
 
 
-# In[156]:
+# In[268]:
 
 
-cumu_e_demands_twh.iloc[1:4]
+cumu_e_demands_twh
 
 
 # In[240]:
@@ -1954,6 +1975,12 @@ plt.show()
 fig.savefig('energyresults-cumuNetEnergyNorm.png', dpi=300)
 
 
+# In[261]:
+
+
+netenergy_final = netEnergy_cumu.loc[2100]/1e12
+
+
 # In[195]:
 
 
@@ -2031,6 +2058,23 @@ fig.suptitle('Energy Balance', fontsize=24)
 plt.show()
 
 fig.savefig('energyresults-energyBalance.png', dpi=300)
+
+
+# ### Discussion summary table
+
+# In[276]:
+
+
+discussTable = pd.concat([replacements,virgin,wastes, cumu_e_demands_twh,netenergy_final,energyBalance], axis=1,
+         keys=['replacements','virgin','wastes','energydemand','netenergy','energybalance']).T
+discussTable.to_csv(os.path.join(testfolder,'discussiontable.csv'))
+discussTable
+
+
+# In[272]:
+
+
+cumu_lifecycle_wastes_bt
 
 
 # In[ ]:
