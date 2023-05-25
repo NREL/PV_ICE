@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 import numpy as np
@@ -339,13 +339,13 @@ Agimprovedrecycle.interpolate()
 #      (ex) TN0 - x years = TM0
 #      and TN0 = -beta*-np.abs(np.log(1-TN0))^(1/alpha)
 
-# In[7]:
+# In[2]:
 
 
 import PV_ICE
 
 
-# In[29]:
+# In[3]:
 
 
 def alphabeta2T10T50T90(alpha,beta):
@@ -408,8 +408,8 @@ inputsdf
 # In[4]:
 
 
-al = pd.Series([np.nan, np.nan, 2.56, 5.56])
-be = pd.Series([np.nan, np.nan, 25, 30])
+al = pd.Series([44.83, np.nan, 2.56, 5.56])
+be = pd.Series([, np.nan, 25, 30])
 inputsdf = pd.concat([al,be],axis=1, keys=['alpha','beta'])
 inputsdf
 
@@ -425,10 +425,10 @@ for row in inputsdf.index:
 inputsdf
 
 
-# In[70]:
+# In[24]:
 
 
-params = PV_ICE.weibull_params({43.68: 0.50, 47.85: 0.90})
+params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
 T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
@@ -445,7 +445,7 @@ alphabeta2T10(5.692,29.697)
 #input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
 
 
-# In[26]:
+# In[4]:
 
 
 def projectlife2T50T90(projectlife, N=10, plot=True):
@@ -465,7 +465,7 @@ def projectlife2T50T90(projectlife, N=10, plot=True):
 projectlife2T50T90(25)
 
 
-# In[65]:
+# In[23]:
 
 
 #Mod Project Lifetime
@@ -475,24 +475,26 @@ life.loc[2022] = 30
 life.loc[2030] = 35
 life.loc[2050] = 38
 life.interpolate(inplace=True)
+life2 = round(life,0)+1
+pd.concat([life,life2], axis=1)
 
 
-# In[66]:
+# In[14]:
 
 
 df_t50t90 = pd.DataFrame()
-for row in range(0,len(life)):
-    T50,T90 = projectlife2T50T90(life.iloc[row,0])
+for row in range(0,len(life2)):
+    T50,T90 = projectlife2T50T90(life2.iloc[row,0])
     df_t50t90.loc[row,'T50'] = T50
     df_t50t90.loc[row,'T90'] = T90
     
 df_t50t90
 
 
-# In[30]:
+# In[27]:
 
 
 #checking T90 from Ab et al 2018
-params = PV_ICE.weibull_params({29: 0.10, 38.5: 0.80})
-alphabeta2T90(params['alpha'],params['beta'])
+params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
+alphabeta2T10(params['alpha'],params['beta'])
 

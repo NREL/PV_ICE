@@ -44,7 +44,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[ ]:
+# In[5]:
 
 
 test2 = True # IRENA with weibull params, PV _ICE with t50 t90
@@ -53,13 +53,13 @@ test3 = True
 
 # # 1. Run PV ICE and IRENA files with standard baselines
 
-# In[ ]:
+# In[6]:
 
 
 sim1 = PV_ICE.Simulation(name='sim1', path=testfolder)
 
 
-# In[ ]:
+# In[7]:
 
 
 sim1.createScenario(name='PV_ICE', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -69,10 +69,10 @@ for mat in range (0, len(MATERIALS)):
     sim1.scenario['PV_ICE'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[ ]:
+# In[8]:
 
 
-moduleinput_m_r_IRENA = os.path.join(altBaselinesfolder, 'mod_r_IRENAregloss_t2.csv')
+moduleinput_m_r_IRENA = os.path.join(altBaselinesfolder, 'mod_r_IRENAregloss.csv')
 sim1.createScenario(name='IRENA', massmodulefile=moduleinput_m_r_IRENA, energymodulefile=moduleFile_e)
 for mat in range (0, len(MATERIALS)):
     matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
@@ -109,7 +109,7 @@ for mat in range (0, len(MATERIALS)):
 #     matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+baselineMats[mats]+'.csv')
 #     sim1.scenario['r_IRENA'].addMaterial(baselineMats[mats], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
-# In[ ]:
+# In[9]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -117,7 +117,7 @@ for mat in range (0, len(MATERIALS)):
 sim1.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[ ]:
+# In[10]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -134,7 +134,7 @@ ax2.set_ylim(0,5)
 plt.show()
 
 
-# In[ ]:
+# In[11]:
 
 
 #Loaded new installed capacity, will be modified in next cell...
@@ -144,7 +144,7 @@ plt.title("Loaded 'new_Installed_Capacity_[MW]'")
 plt.legend()
 
 
-# In[ ]:
+# In[12]:
 
 
 #deployment projection for all scenarios
@@ -152,7 +152,7 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
                     value= global_projection['World_annual_[MWdc]'], start_year=2000)
 
 
-# In[ ]:
+# In[13]:
 
 
 # RE-plot after modifying scenarios
@@ -162,14 +162,14 @@ plt.title("Modified 'new_Installed_Capacity_[MW]' with World annual values")
 plt.legend()
 
 
-# In[ ]:
+# In[14]:
 
 
 IRENAregloss = {'alpha':5.692,
                    'beta':29.697}
 
 
-# In[ ]:
+# In[15]:
 
 
 if test3: 
@@ -185,7 +185,7 @@ else:
     sim1.calculateMassFlow(nameplatedeglimit=nameplatedeglimit) #weibullInputParams=IRENAregloss
 
 
-# In[ ]:
+# In[16]:
 
 
 if test3 and test2:
@@ -198,13 +198,47 @@ else:
 sim1.saveSimulation(customname=customname)
 
 
-# In[ ]:
+# In[17]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[ ]:
+# In[18]:
+
+
+sim1.scenario['IRENA'].dataOut_m
+
+
+# In[19]:
+
+
+plt.figure(figsize=(10,5))
+
+plt.subplot(1, 2,1)
+plt.plot(sim1.scenario['IRENA'].dataOut_m['Effective_Capacity_[W]'],label='EffectiveCapacity')
+plt.legend()
+#plt.ylim([0, 2.5e11])
+#plt.ylim([0, 2.0e10])
+plt.title('IRENA')
+
+plt.subplot(1,2,2)
+plt.plot(sim1.scenario['IRENA'].dataOut_m['Cumulative_Active_Area'], label='Cumulative_ActiveArea')
+#plt.ylim([0, 2.0e10])
+plt.legend()
+plt.title('IRENA')
+
+#plt.plot(sim1.scenario['IRENA'].dataOut_m['Effective_Capacity_[W]'])
+#plt.plot(sim1.scenario['IRENA'].dataOut_m['Cumulative_Active_Area'])
+
+
+# In[20]:
+
+
+plt.plot(sim1.scenario['IRENA'].dataOut_m['Cumulative_Active_Area'])
+
+
+# In[21]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity')
@@ -216,13 +250,13 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[22]:
 
 
 ii_yearly.filter(like='Decommisioned')
 
 
-# In[ ]:
+# In[23]:
 
 
 # MW. #Sil are this already cumulative? I think this was one of the bugs Garvin found we haven't fixed?
@@ -230,7 +264,7 @@ plt.plot(ii_yearly.filter(like='Decommisioned'))
 plt.legend(sim1.scenario.keys())
 
 
-# In[ ]:
+# In[24]:
 
 
 #plt.plot(ii_yearly['WasteAll_Module_sim1_r_IRENA_[Tonnes]'], label='r_waste')
@@ -245,14 +279,14 @@ plt.plot(ii_yearly['WasteAll_Module_sim1_IRENA_[Tonnes]'], label='IRENA waste')
 plt.legend()
 
 
-# In[ ]:
+# In[25]:
 
 
 # WHere does aggregateREsults "'WasteAll_Module_sim1_IRENA_[Tonnes]" comes from?
 # --> Grabs each materials df matdataOut_m column 'mat_Total_Landfilled'; then aggregates into module
 
 
-# In[ ]:
+# In[26]:
 
 
 plt.plot(ii_yearly['WasteAll_glass_sim1_IRENA_[Tonnes]'], label='glass waste')
@@ -262,7 +296,7 @@ plt.legend()
 # Math looks correctly (still cumulative but correct)
 
 
-# In[ ]:
+# In[27]:
 
 
 plt.plot(sim1.scenario['PV_ICE'].material['glass'].matdataOut_m['mat_Total_Landfilled'], label='PV ICE glass')
@@ -271,13 +305,13 @@ plt.legend()
 plt.ylabel('GRAMS')
 
 
-# In[ ]:
+# In[28]:
 
 
 # mat_Total_Landfilled
 
 
-# In[ ]:
+# In[29]:
 
 
 plt.plot(ii_yearly['VirginStock_Module_sim1_PV_ICE_[Tonnes]'], label='PVICE_virgin')
@@ -289,14 +323,20 @@ plt.ylim(0,)
 plt.legend()
 
 
-# In[ ]:
+# In[30]:
 
 
-plt.plot(sim1.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='pvice_life')
-plt.plot(sim1.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='pvice_fail')
+sim1.scenario['PV_ICE'].dataOut_m.columns
 
-plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='irena_life')
-plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='irena_fail')
+
+# In[31]:
+
+
+plt.plot(sim1.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='pvice_life')
+plt.plot(sim1.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='pvice_fail')
+
+plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='irena_life')
+plt.plot(sim1.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='irena_fail')
 
 #plt.plot(sim1.scenario['r_IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='r_irena_fail')
 #plt.plot(sim1.scenario['r_IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='r_irena_life')
@@ -305,7 +345,7 @@ plt.legend()
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[32]:
 
 
 L0 = sim1.scenario['PV_ICE'].dataOut_m['EOL_Landfill0']
@@ -336,14 +376,14 @@ plt.legend()
 plt.title('PVICE')
 
 
-# In[ ]:
+# In[33]:
 
 
 PVICE_EOLpaths_norm = PVICE_EOLpaths.divide(PVICE_EOLpaths.sum(axis=1), axis=0)
 IRENA_EOLpaths_norm = IRENA_EOLpaths.divide(IRENA_EOLpaths.sum(axis=1), axis=0)
 
 
-# In[ ]:
+# In[34]:
 
 
 plt.figure(figsize=(15,5))
@@ -362,13 +402,13 @@ plt.title('IRENA')
 
 # # 2. Remove Trim Years
 
-# In[ ]:
+# In[35]:
 
 
 sim2 = PV_ICE.Simulation(name='sim2', path=testfolder)
 
 
-# In[ ]:
+# In[36]:
 
 
 sim2.createScenario(name='PV_ICE', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -378,10 +418,10 @@ for mat in range (0, len(MATERIALS)):
     sim2.scenario['PV_ICE'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[ ]:
+# In[37]:
 
 
-moduleinput_m_r_IRENA = os.path.join(altBaselinesfolder, 'mod_r_IRENAregloss_t2.csv')
+moduleinput_m_r_IRENA = os.path.join(altBaselinesfolder, 'mod_r_IRENAregloss.csv')
 sim2.createScenario(name='IRENA', massmodulefile=moduleinput_m_r_IRENA, energymodulefile=moduleFile_e)
 for mat in range (0, len(MATERIALS)):
     matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
@@ -422,7 +462,7 @@ for mat in range (0, len(MATERIALS)):
 # #had to specify and end year, cannot use to extend
 # sim2.trim_Years(startYear=2000, endYear=2100)
 
-# In[ ]:
+# In[38]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -439,7 +479,7 @@ ax2.set_ylim(0,5)
 plt.show()
 
 
-# In[ ]:
+# In[39]:
 
 
 #deployment projection for all scenarios
@@ -447,32 +487,32 @@ sim2.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
                     value= global_projection.loc[:2050,'World_annual_[MWdc]'], start_year=2000)
 
 
-# In[ ]:
+# In[40]:
 
 
 IRENAregloss = {'alpha':5.692,
                    'beta':29.697}
 
 
-# In[ ]:
+# In[41]:
 
 
 sim2.calculateMassFlow() #weibullInputParams=IRENAregloss
 
 
-# In[ ]:
+# In[42]:
 
 
 sim2.saveSimulation(customname='_debugirena2a')
 
 
-# In[ ]:
+# In[43]:
 
 
 ii_yearly2, ii_cumu2 = sim2.aggregateResults() #have to do this to get auto plots
 
 
-# In[ ]:
+# In[44]:
 
 
 effective_capacity = ii_yearly2.filter(like='ActiveCapacity')
@@ -484,14 +524,14 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[45]:
 
 
 plt.plot(ii_yearly2.filter(like='Decommisioned'))
 plt.legend(sim2.scenario.keys())
 
 
-# In[ ]:
+# In[46]:
 
 
 plt.plot(ii_yearly2['WasteAll_Module_sim2_IRENA_[Tonnes]'], label='IRENA_waste')
@@ -506,7 +546,7 @@ plt.plot(ii_yearly2['VirginStock_Module_sim2_PV_ICE_[Tonnes]'], label='PVICE_vir
 plt.legend()
 
 
-# In[ ]:
+# In[47]:
 
 
 plt.plot(ii_yearly2['VirginStock_Module_sim2_IRENA_[Tonnes]'], label='IRENA_virgin')
@@ -522,17 +562,17 @@ plt.legend()
 
 
 
-# In[ ]:
+# In[48]:
 
 
-plt.plot(sim2.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='irena_fail')
-plt.plot(sim2.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='irena_life')
+plt.plot(sim2.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='irena_fail')
+plt.plot(sim2.scenario['IRENA'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='irena_life')
 
 #plt.plot(sim2.scenario['r_IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='r_irena_fail')
 #plt.plot(sim2.scenario['r_IRENA'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='r_irena_life')
 
-plt.plot(sim2.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='pvice_fail')
-plt.plot(sim2.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='pvice_life')
+plt.plot(sim2.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='pvice_fail')
+plt.plot(sim2.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='pvice_life')
 plt.legend()
 plt.ylim(0,)
 
@@ -545,13 +585,13 @@ plt.ylim(0,)
 
 # # 3. Check Non IRENA files
 
-# In[104]:
+# In[49]:
 
 
 sim3 = PV_ICE.Simulation(name='sim3', path=testfolder)
 
 
-# In[105]:
+# In[50]:
 
 
 sim3.createScenario(name='PV_ICE', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -561,7 +601,7 @@ for mat in range (0, len(MATERIALS)):
     sim3.scenario['PV_ICE'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[106]:
+# In[51]:
 
 
 moduleinput_m_r_PERC = os.path.join(altBaselinesfolder, 'mod_r_PERC.csv')
@@ -574,7 +614,7 @@ for mat in range (0, len(MATERIALS)):
 
 # sim3.modifyScenario('r_PERC', 'mod_lifetime', 30.0, start_year=2022) #changing module 
 
-# In[107]:
+# In[52]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -582,7 +622,7 @@ for mat in range (0, len(MATERIALS)):
 sim3.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[108]:
+# In[53]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -599,40 +639,41 @@ ax2.set_ylim(0,5)
 plt.show()
 
 
-# In[109]:
+# In[54]:
 
 
 #deployment projection for all scenarios
 sim3.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
-                    value= global_projection['World_annual_[MWdc]'], start_year=2000)
+                    value= 100.0 , start_year=2000)
+#global_projection['World_annual_[MWdc]']
 
 
-# In[110]:
+# In[55]:
 
 
 IRENAregloss = {'alpha':5.692,
                    'beta':29.697}
 
 
-# In[111]:
+# In[56]:
 
 
 sim3.calculateMassFlow() #weibullInputParams=IRENAregloss
 
 
-# In[112]:
+# In[57]:
 
 
 sim3.saveSimulation(customname='_debugirena3')
 
 
-# In[113]:
+# In[58]:
 
 
 ii_yearly3, ii_cumu3 = sim3.aggregateResults() #have to do this to get auto plots
 
 
-# In[114]:
+# In[59]:
 
 
 effective_capacity = ii_yearly3.filter(like='ActiveCapacity')
@@ -644,14 +685,14 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[115]:
+# In[60]:
 
 
 plt.plot(ii_yearly3.filter(like='Decommisioned'))
 plt.legend(sim3.scenario.keys())
 
 
-# In[116]:
+# In[61]:
 
 
 
@@ -665,61 +706,75 @@ plt.ylim(0,)
 plt.legend()
 
 
-# In[117]:
+# In[62]:
 
 
 
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Degradation'], label='r_perc_deg')
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='r_perc_fail')
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='r_perc_life')
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='r_perc_fail')
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='r_perc_life')
+#plt.plot(sim3.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='pvice_fail')
+#plt.plot(sim3.scenario['r_PERC'].dataIn_m['mod_lifetime']*1e8, label='pvice_life')
 
-plt.plot(sim3.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='pvice_fail')
-plt.plot(sim3.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='pvice_life')
 plt.legend()
 plt.ylim(0,)
 
 
-# In[131]:
+# In[63]:
 
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Area_for_EOL_pathsG'])
-plt.title('Area_for_EOL_pathsG')
+sim3.scenario['r_PERC'].dataOut_m.columns
 
 
-# In[132]:
+# In[70]:
 
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Status_BAD_Area'])
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_atEOL'])
+plt.title('Yearly_Sum_Area_atEOL')
+plt.ylim(0,)
+
+
+# In[65]:
+
+
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_PathsBad'])
 plt.title('Status_BAD_Area')
 
 
-# In[138]:
+# In[66]:
 
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['PB4_recycled'], label = 'PB4_recycled')
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Area_for_EOL_pathsG'], label='Area_for_EOL_pathsG')
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['P4_recycled'], label = 'P4_recycled')
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='Yearly_Sum_Area_EOLby_Failure')
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='Yearly_Sum_Area_EOLby_ProjectLifetime')
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Degradation'], label='Yearly_Sum_Area_EOLby_Degradation')
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'], label='r_perc_fail_area')
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime'], label='r_perc_life_area')
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_PathsGood'], 
+         label='Yearly_Sum_Area_PathsGood', ls='--', color='black')
 
-plt.legend()
+plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_PathsBad'], 
+         label='Yearly_Sum_Area_PathsBad', ls='--', color='grey', lw=3)
 
-
-# In[120]:
-
-
-kills = pd.concat([sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_disposedby_Failure'],
-           sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_disposedby_ProjectLifetime']], axis=1)
-
-
-# In[122]:
+plt.ylim(0,700000)
+plt.legend(loc='upper left')
 
 
-kills.loc[40:60]
+# In[67]:
 
 
-# In[ ]:
+kills = pd.concat([sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'],
+           sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime']], axis=1)
 
 
+# In[68]:
 
+
+kills.tail(30)
+
+
+# In[71]:
+
+
+sim3.saveSimulation(customname='jagged')
 
