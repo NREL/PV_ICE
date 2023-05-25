@@ -921,7 +921,7 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[60]:
+# In[244]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -937,6 +937,8 @@ ax2.plot(global_projection['World_annual_[MWdc]']/1e6)
 ax2.set_ylabel('Annual Installations [TW]')
 ax2.set_ylim(0,5)
 plt.show()
+
+fig.savefig('energyresults-deployment.png', dpi=300)
 
 
 # In[61]:
@@ -1086,10 +1088,13 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[136]:
+# In[248]:
 
 
 effective_capacity_tw = ii_yearly.filter(like='ActiveCapacity')/1e6
+
+plt.rcParams['figure.figsize'] = (8, 6)
+
 plt.plot(ii_cumu['newInstalledCapacity_sim1_PV_ICE_[MW]']/1e6, 
          label='Capacity Target', color='black', ls='dashdot')
 
@@ -1120,17 +1125,19 @@ plt.plot(effective_capacity_tw.iloc[:,4:7], label=scennames_labels_flat[4:7],  l
 plt.plot(effective_capacity_tw.iloc[:,7:], label=scennames_labels_flat[7:])#, color=colorpalette[7:])
 
 #plt.plot(effective_capacity/1e6, label=sim1.scenario.keys())
-plt.legend(bbox_to_anchor=(1,1.02))
+plt.legend(bbox_to_anchor=(1,1.02), prop={'size': 11})
 plt.ylabel('Effective Capacity [TW]')
 plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 plt.xlim(2000,2100)
 
+plt.savefig('energyresults-effectivecapacity.png', dpi=300)
+
 
 # In[75]:
 
 
-effective_capacity
+plt.rcParams['figure.figsize'] = (8, 6)
 
 
 # effective_capacity = ii_yearly.filter(like='ActiveCapacity')
@@ -1308,7 +1315,7 @@ plt.title('Annual Installs with Replacements')
 plt.ylim(0,)
 
 
-# In[144]:
+# In[228]:
 
 
 annual_installs = cc_yearly.filter(like='newInstalled')/1e6
@@ -1342,6 +1349,8 @@ plt.ylabel('Annual installed [TW]')
 plt.title('Annual Installs with Replacements')
 plt.ylim(0,)
 plt.xlim(2000,2100)
+
+plt.savefig('energyresults-annualdeployment.png', dpi=300)
 
 
 # In[92]:
@@ -1399,7 +1408,7 @@ plt.title('Cumulative Installs with Replacements')
 plt.ylim(0,410)
 
 
-# In[95]:
+# In[237]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -1427,6 +1436,8 @@ ax3.set_title('Commercialized', fontsize=14)
 
 fig.suptitle('Cumulative Installs with Replacements', fontsize=24)
 plt.show()
+
+fig.savefig('energyresults-cumulativedeploy.png', dpi=300)
 
 
 # cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -1486,7 +1497,7 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 plt.xticks(rotation=90)
 
 
-# In[100]:
+# In[238]:
 
 
 cumu_virgin_module_bt = cc_cumu.filter(like='VirginStock_Module')/1e9
@@ -1514,6 +1525,8 @@ ax3.set_title('Commercialized', fontsize=14)
 
 fig.suptitle('Cumulative Virgin Material Demands', fontsize=24)
 plt.show()
+
+fig.savefig('energyresults-cumuMatDemand.png', dpi=300)
 
 
 # In[101]:
@@ -1611,7 +1624,7 @@ plt.ylabel('Lifecycle Wastes\n[billion tonnes]')
 plt.xticks(rotation=90)
 
 
-# In[148]:
+# In[239]:
 
 
 cumu_lifecycle_wastes_bt = cc_cumu.filter(like='WasteAll_Module')/1e9
@@ -1639,6 +1652,8 @@ ax3.set_title('Commercialized', fontsize=14)
 
 fig.suptitle('Cumulative Lifecycle Wastes', fontsize=24)
 plt.show()
+
+fig.savefig('energyresults-cumuWaste.png', dpi=300)
 
 
 # In[149]:
@@ -1720,7 +1735,7 @@ plt.xticks(rotation=90)
 cumu_e_demands_twh.iloc[1:4]
 
 
-# In[167]:
+# In[240]:
 
 
 cumu_e_demands_twh = e_annual_sumDemands_cumu.loc[2100]/1e12
@@ -1748,6 +1763,8 @@ ax3.set_title('Commercialized', fontsize=14)
 
 fig.suptitle('Cumulative Lifecycle Energy Demands', fontsize=24)
 plt.show()
+
+fig.savefig('energyresults-energyDemands.png', dpi=300)
 
 
 # In[168]:
@@ -1839,7 +1856,7 @@ plt.ylabel('Cumulative Net Energy [TWh]')
 plt.xticks(rotation=90)
 
 
-# In[191]:
+# In[241]:
 
 
 cumu_netEnergy_twh = netEnergy_cumu.loc[2100]/1e15
@@ -1867,6 +1884,8 @@ ax3.set_title('Commercialized', fontsize=14)
 
 fig.suptitle('Net Energy Cumulatively', fontsize=24)
 plt.show()
+
+fig.savefig('energyresults-cumuNetEnergy.png', dpi=300)
 
 
 # In[192]:
@@ -1901,7 +1920,7 @@ plt.plot(0.0, lw=2)
 plt.xticks(rotation=90)
 
 
-# In[225]:
+# In[242]:
 
 
 fig, (ax1,ax2,ax3) = plt.subplots(1,3,figsize=(14,6), sharey=True, 
@@ -1931,6 +1950,8 @@ ax3.axhline(0, lw=1, color='black')
 
 fig.suptitle('Normalized Net Energy', fontsize=24)
 plt.show()
+
+fig.savefig('energyresults-cumuNetEnergyNorm.png', dpi=300)
 
 
 # In[195]:
@@ -1980,7 +2001,7 @@ plt.ylabel('Unitless')
 plt.xticks(rotation=90)
 
 
-# In[207]:
+# In[243]:
 
 
 energyBalance = energyBalance_allyears.loc[2100]
@@ -2008,6 +2029,8 @@ ax3.set_title('Commercialized', fontsize=14)
 
 fig.suptitle('Energy Balance', fontsize=24)
 plt.show()
+
+fig.savefig('energyresults-energyBalance.png', dpi=300)
 
 
 # In[ ]:
