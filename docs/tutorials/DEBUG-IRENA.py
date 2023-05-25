@@ -585,13 +585,13 @@ plt.ylim(0,)
 
 # # 3. Check Non IRENA files
 
-# In[49]:
+# In[148]:
 
 
 sim3 = PV_ICE.Simulation(name='sim3', path=testfolder)
 
 
-# In[50]:
+# In[149]:
 
 
 sim3.createScenario(name='PV_ICE', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -601,20 +601,20 @@ for mat in range (0, len(MATERIALS)):
     sim3.scenario['PV_ICE'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[51]:
+# In[150]:
 
 
-moduleinput_m_r_PERC = os.path.join(altBaselinesfolder, 'mod_r_PERC.csv')
-sim3.createScenario(name='r_PERC', massmodulefile=moduleinput_m_r_PERC, energymodulefile=moduleFile_e)
+moduleinput_m_r_PERC = os.path.join(altBaselinesfolder, 'mod_r_50PERC.csv')
+sim3.createScenario(name='r_50PERC', massmodulefile=moduleinput_m_r_PERC, energymodulefile=moduleFile_e)
 for mat in range (0, len(MATERIALS)):
     matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
     matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
-    sim3.scenario['r_PERC'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    sim3.scenario['r_50PERC'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
 # sim3.modifyScenario('r_PERC', 'mod_lifetime', 30.0, start_year=2022) #changing module 
 
-# In[52]:
+# In[151]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -622,7 +622,7 @@ for mat in range (0, len(MATERIALS)):
 sim3.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[53]:
+# In[152]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -639,41 +639,37 @@ ax2.set_ylim(0,5)
 plt.show()
 
 
-# In[54]:
+# In[153]:
 
 
 #deployment projection for all scenarios
 sim3.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
-                    value= 100.0 , start_year=2000)
+                    value= global_projection['World_annual_[MWdc]'], start_year=2000)
 #global_projection['World_annual_[MWdc]']
 
 
-# In[55]:
+# In[154]:
 
 
 IRENAregloss = {'alpha':5.692,
                    'beta':29.697}
 
 
-# In[56]:
+# In[155]:
 
 
 sim3.calculateMassFlow() #weibullInputParams=IRENAregloss
 
 
-# In[57]:
+# sim3.saveSimulation(customname='_debugirena3')
 
-
-sim3.saveSimulation(customname='_debugirena3')
-
-
-# In[58]:
+# In[156]:
 
 
 ii_yearly3, ii_cumu3 = sim3.aggregateResults() #have to do this to get auto plots
 
 
-# In[59]:
+# In[157]:
 
 
 effective_capacity = ii_yearly3.filter(like='ActiveCapacity')
@@ -685,20 +681,20 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[60]:
+# In[158]:
 
 
 plt.plot(ii_yearly3.filter(like='Decommisioned'))
 plt.legend(sim3.scenario.keys())
 
 
-# In[61]:
+# In[159]:
 
 
 
 
-plt.plot(ii_yearly3['WasteAll_Module_sim3_r_PERC_[Tonnes]'], label='PERC_waste')
-plt.plot(ii_yearly3['VirginStock_Module_sim3_r_PERC_[Tonnes]'], label='PERC_virgin')
+plt.plot(ii_yearly3['WasteAll_Module_sim3_r_50PERC_[Tonnes]'], label='PERC_waste')
+plt.plot(ii_yearly3['VirginStock_Module_sim3_r_50PERC_[Tonnes]'], label='PERC_virgin')
 
 plt.plot(ii_yearly3['WasteAll_Module_sim3_PV_ICE_[Tonnes]'], label='PVICE_waste')
 plt.plot(ii_yearly3['VirginStock_Module_sim3_PV_ICE_[Tonnes]'], label='PVICE_virgin')
@@ -706,13 +702,13 @@ plt.ylim(0,)
 plt.legend()
 
 
-# In[62]:
+# In[160]:
 
 
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Degradation'], label='r_perc_deg')
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='r_perc_fail')
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='r_perc_life')
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Degradation'], label='r_perc_deg')
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='r_perc_life')
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='r_perc_fail')
 
 #plt.plot(sim3.scenario['PV_ICE'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='pvice_fail')
 #plt.plot(sim3.scenario['r_PERC'].dataIn_m['mod_lifetime']*1e8, label='pvice_life')
@@ -721,60 +717,62 @@ plt.legend()
 plt.ylim(0,)
 
 
-# In[63]:
+# In[161]:
 
 
-sim3.scenario['r_PERC'].dataOut_m.columns
+sim3.scenario['r_50PERC'].dataOut_m.columns
 
 
-# In[70]:
+# In[162]:
 
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_atEOL'])
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_atEOL'])
 plt.title('Yearly_Sum_Area_atEOL')
 plt.ylim(0,)
 
 
-# In[65]:
+# In[163]:
 
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_PathsBad'])
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_PathsBad'])
 plt.title('Status_BAD_Area')
 
 
-# In[66]:
+# In[164]:
 
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['P4_recycled'], label = 'P4_recycled')
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='Yearly_Sum_Area_EOLby_Failure')
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='Yearly_Sum_Area_EOLby_ProjectLifetime')
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Degradation'], label='Yearly_Sum_Area_EOLby_Degradation')
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['P4_recycled'], label = 'P4_recycled')
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'], label='Yearly_Sum_Area_EOLby_Failure')
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime'], label='Yearly_Sum_Area_EOLby_ProjectLifetime')
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Degradation'], label='Yearly_Sum_Area_EOLby_Degradation')
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_PathsGood'], 
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_PathsGood'], 
          label='Yearly_Sum_Area_PathsGood', ls='--', color='black')
 
-plt.plot(sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_PathsBad'], 
+plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_PathsBad'], 
          label='Yearly_Sum_Area_PathsBad', ls='--', color='grey', lw=3)
 
-plt.ylim(0,700000)
+plt.ylim(0,)
 plt.legend(loc='upper left')
 
 
-# In[67]:
+# In[145]:
 
 
-kills = pd.concat([sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'],
-           sim3.scenario['r_PERC'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime']], axis=1)
+kills = pd.concat([sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Failure'],
+           sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_EOLby_ProjectLifetime']], axis=1)
 
 
-# In[68]:
+# In[146]:
 
 
 kills.tail(30)
 
 
-# In[71]:
+# sim3.saveSimulation(customname='jagged')
+
+# In[ ]:
 
 
-sim3.saveSimulation(customname='jagged')
+
 

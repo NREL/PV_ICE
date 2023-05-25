@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[28]:
 
 
 import numpy as np
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[38]:
+# In[65]:
 
 
 #Lifetime and Degradation
@@ -27,9 +27,9 @@ df_shj_eff.loc[2050] = 22
 df_shj_eff.interpolate(inplace=True)
 
 df_shj_deg = pd.DataFrame(index=idx_temp, columns=['mod_deg'], dtype=float)
-df_shj_deg.loc[2022] = 0.7
-df_shj_deg.loc[2030] = 0.6
-df_shj_deg.loc[2050] = 0.5
+df_shj_deg.loc[2022] = 0.8
+df_shj_deg.loc[2030] = 0.7
+df_shj_deg.loc[2050] = 0.63
 df_shj_deg.interpolate(inplace=True)
 
 #degradation rate:
@@ -339,13 +339,13 @@ Agimprovedrecycle.interpolate()
 #      (ex) TN0 - x years = TM0
 #      and TN0 = -beta*-np.abs(np.log(1-TN0))^(1/alpha)
 
-# In[2]:
+# In[29]:
 
 
 import PV_ICE
 
 
-# In[3]:
+# In[30]:
 
 
 def alphabeta2T10T50T90(alpha,beta):
@@ -363,14 +363,14 @@ def alphabeta2T90(alpha,beta):
     return T90
 
 
-# In[ ]:
+# In[31]:
 
 
 alpha = pd.Series([x / 10.0 for x in range(1, 500,1)])
 beta = pd.Series([x / 10.0 for x in range(1, 1000,1)])
 
 
-# In[9]:
+# In[32]:
 
 
 T50 = pd.Series(range(15,66,1))
@@ -379,7 +379,7 @@ inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 inputsdf
 
 
-# In[10]:
+# In[33]:
 
 
 for row in inputsdf.index:
@@ -396,7 +396,7 @@ inputsdf
 
 
 
-# In[46]:
+# In[34]:
 
 
 T50 = pd.Series([16,19,20,21,24,25,28,33,40])
@@ -405,7 +405,7 @@ inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 inputsdf
 
 
-# In[4]:
+# In[35]:
 
 
 al = pd.Series([44.83, np.nan, 2.56, 5.56])
@@ -414,7 +414,7 @@ inputsdf = pd.concat([al,be],axis=1, keys=['alpha','beta'])
 inputsdf
 
 
-# In[47]:
+# In[36]:
 
 
 for row in inputsdf.index:
@@ -425,7 +425,7 @@ for row in inputsdf.index:
 inputsdf
 
 
-# In[24]:
+# In[37]:
 
 
 params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
@@ -433,19 +433,19 @@ T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
 
-# In[91]:
+# In[38]:
 
 
 alphabeta2T10(5.692,29.697)
 
 
-# In[ ]:
+# In[39]:
 
 
 #input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
 
 
-# In[4]:
+# In[40]:
 
 
 def projectlife2T50T90(projectlife, N=10, plot=True):
@@ -459,42 +459,48 @@ def projectlife2T50T90(projectlife, N=10, plot=True):
     return T50,T90
 
 
-# In[59]:
+# In[41]:
 
 
 projectlife2T50T90(25)
 
 
-# In[23]:
+# In[60]:
 
 
 #Mod Project Lifetime
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
 life = pd.DataFrame(index=idx_temp, columns=['mod_lifetime'], dtype=float)
-life.loc[2022] = 30
-life.loc[2030] = 35
-life.loc[2050] = 38
+life.loc[2022] = 15
+life.loc[2030] = 20
+life.loc[2050] = 25
 life.interpolate(inplace=True)
-life2 = round(life,0)+1
-pd.concat([life,life2], axis=1)
+#life2 = round(life,0)+1
+#pd.concat([life,life2], axis=1)
 
 
-# In[14]:
+# In[61]:
 
 
 df_t50t90 = pd.DataFrame()
-for row in range(0,len(life2)):
-    T50,T90 = projectlife2T50T90(life2.iloc[row,0])
+for row in range(0,len(life)):
+    T50,T90 = projectlife2T50T90(life.iloc[row,0])
     df_t50t90.loc[row,'T50'] = T50
     df_t50t90.loc[row,'T90'] = T90
     
 df_t50t90
 
 
-# In[27]:
+# In[53]:
 
 
 #checking T90 from Ab et al 2018
 params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
 alphabeta2T10(params['alpha'],params['beta'])
+
+
+# In[ ]:
+
+
+
 
