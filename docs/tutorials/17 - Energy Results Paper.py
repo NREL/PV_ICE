@@ -1046,6 +1046,8 @@ for f in bifiFactors.keys(): #loop over module types
 for scen in sim1.scenario.keys(): #loop over scenarios
     if scen in ['r_IRENA']: #,'ex_Lightweight'
         sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], weibullInputParams=IRENAregloss)
+    elif scen in ['ex_PERC_50','h_50PERC']:
+        sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], nameplatedeglimit=0.0) 
     else:
         sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen]) 
 
@@ -1183,6 +1185,8 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
         #calculate flows for that scenario with it's bifi factor and modified weibull
         if scen in ['r_IRENA']: #,'ex_Lightweight'
             sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], weibullInputParams=IRENAregloss)
+        elif scen in ['ex_PERC_50','h_50PERC']:
+            sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], nameplatedeglimit=0.0) 
         else:
             sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen]) 
 
