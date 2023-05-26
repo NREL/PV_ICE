@@ -181,9 +181,10 @@ sim1.scenario['ex_PERC_50'].modifyMaterials('glass', 'mat_massperm2', glassperm2
 
 
 #Lifetime and Degradation
-#values taken from lifetime vs recycling paper
+#degradation rate from Theristis et al 2022
+#failure is T10 at 50 years
 #degradation rate:
-sim1.modifyScenario('ex_PERC_50', 'mod_degradation', 0.445, start_year=2022) #annual power degradation to reach 80% at 50 yrs
+sim1.modifyScenario('ex_PERC_50', 'mod_degradation', 0.4, start_year=2022) #annual power degradation to reach 80% at 55 yrs
 #T50
 sim1.modifyScenario('ex_PERC_50', 'mod_reliability_t50', 56.07, start_year=2022)
 #t90

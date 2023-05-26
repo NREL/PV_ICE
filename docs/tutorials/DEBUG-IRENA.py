@@ -585,13 +585,13 @@ plt.ylim(0,)
 
 # # 3. Check Non IRENA files
 
-# In[148]:
+# In[22]:
 
 
 sim3 = PV_ICE.Simulation(name='sim3', path=testfolder)
 
 
-# In[149]:
+# In[23]:
 
 
 sim3.createScenario(name='PV_ICE', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -601,7 +601,7 @@ for mat in range (0, len(MATERIALS)):
     sim3.scenario['PV_ICE'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[150]:
+# In[24]:
 
 
 moduleinput_m_r_PERC = os.path.join(altBaselinesfolder, 'mod_r_50PERC.csv')
@@ -614,7 +614,7 @@ for mat in range (0, len(MATERIALS)):
 
 # sim3.modifyScenario('r_PERC', 'mod_lifetime', 30.0, start_year=2022) #changing module 
 
-# In[151]:
+# In[25]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -622,7 +622,7 @@ for mat in range (0, len(MATERIALS)):
 sim3.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[152]:
+# In[26]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -639,7 +639,7 @@ ax2.set_ylim(0,5)
 plt.show()
 
 
-# In[153]:
+# In[27]:
 
 
 #deployment projection for all scenarios
@@ -648,14 +648,14 @@ sim3.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
 #global_projection['World_annual_[MWdc]']
 
 
-# In[154]:
+# In[28]:
 
 
 IRENAregloss = {'alpha':5.692,
                    'beta':29.697}
 
 
-# In[155]:
+# In[29]:
 
 
 sim3.calculateMassFlow() #weibullInputParams=IRENAregloss
@@ -663,13 +663,13 @@ sim3.calculateMassFlow() #weibullInputParams=IRENAregloss
 
 # sim3.saveSimulation(customname='_debugirena3')
 
-# In[156]:
+# In[30]:
 
 
 ii_yearly3, ii_cumu3 = sim3.aggregateResults() #have to do this to get auto plots
 
 
-# In[157]:
+# In[31]:
 
 
 effective_capacity = ii_yearly3.filter(like='ActiveCapacity')
@@ -681,14 +681,14 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[158]:
+# In[32]:
 
 
 plt.plot(ii_yearly3.filter(like='Decommisioned'))
 plt.legend(sim3.scenario.keys())
 
 
-# In[159]:
+# In[33]:
 
 
 
@@ -702,7 +702,7 @@ plt.ylim(0,)
 plt.legend()
 
 
-# In[160]:
+# In[34]:
 
 
 
@@ -717,13 +717,13 @@ plt.legend()
 plt.ylim(0,)
 
 
-# In[161]:
+# In[35]:
 
 
 sim3.scenario['r_50PERC'].dataOut_m.columns
 
 
-# In[162]:
+# In[36]:
 
 
 plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_atEOL'])
@@ -731,14 +731,14 @@ plt.title('Yearly_Sum_Area_atEOL')
 plt.ylim(0,)
 
 
-# In[163]:
+# In[37]:
 
 
 plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_PathsBad'])
 plt.title('Status_BAD_Area')
 
 
-# In[164]:
+# In[38]:
 
 
 plt.plot(sim3.scenario['r_50PERC'].dataOut_m['P4_recycled'], label = 'P4_recycled')
