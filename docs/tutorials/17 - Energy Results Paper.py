@@ -56,11 +56,11 @@ mpl.rcParams['axes.prop_cycle'] = cycler(color=colorpalette) #reset the default 
 plt.rcParams.update({'font.size': 14})
 plt.rcParams['figure.figsize'] = (8, 6)
 
-scennames_labels = ['PV_ICE','Ideal\nLong-Lived','Ideal\nHigh Eff','Ideal\nCircular',
+scennames_labels = ['PV_ICE','Extreme\nLong-Lived','Extreme\nHigh Eff','Extreme\nCircular',
                     'Ambitious\n50-year\nPERC','Ambitious\nRecycled Si','Ambitious\nCircular\nPerovskite',
                     'PERC','SHJ','TOPCon','IRENA\nreg. loss'] 
 
-scennames_labels_flat = ['PV_ICE','Ideal Long-Lived','Ideal High Eff','Ideal Circular',
+scennames_labels_flat = ['PV_ICE','Extreme Long-Lived','Extreme High Eff','Extreme Circular',
                     'Ambitious 50-year PERC','Ambitious Recycled Si','Ambitious Circular Perovskite',
                     'PERC','SHJ','TOPCon','IRENA reg. loss'] 
 #,'Lightweight'
@@ -221,32 +221,34 @@ sim1.modifyScenario('ex_High_eff', 'mod_eff', 30.0, start_year=2022) #changing m
 
 
 #Lifetime and Degradation
-#values taken from lifetime vs recycling paper
 #degradation rate:
 sim1.modifyScenario('ex_High_eff', 'mod_degradation', 0.7, start_year=2022) #standard current degrdation
 #T50
-sim1.modifyScenario('ex_High_eff', 'mod_reliability_t50', 29, start_year=2022)
+sim1.modifyScenario('ex_High_eff', 'mod_reliability_t50', 30.7, start_year=2022)
 #t90
-sim1.modifyScenario('ex_High_eff', 'mod_reliability_t90', 32, start_year=2022) 
+sim1.modifyScenario('ex_High_eff', 'mod_reliability_t90', 35, start_year=2022) 
 #Mod Project Lifetime
 sim1.modifyScenario('ex_High_eff', 'mod_lifetime', 25, start_year=2022) #project lifetime of 25 years
+
+
+# In[20]:
+
+
+#modify package to glass glass
+sim1.scenario['ex_High_eff'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
 
 
 # ### 1.1.3 Ideal Circular - Tandem Perovskite
 # This perovskite module uses current best module and cell efficiencies, has a prospective life of 15 years and 1.5% degradation rate, and is highly circular. This is a best case scenario for perovskites given current data.
 
-# In[20]:
-
-
-#2022 module eff = 17.9% #https://www.nrel.gov/pv/assets/pdfs/champion-module-efficiencies-rev220401b.pdf
-#2050 module eff = 27.3% # Sofia et al 2019 4T future
-idx_perovskite_eff = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
-df_perovskite_eff = pd.DataFrame(index=idx_perovskite_eff, columns=['mod_eff_p'], dtype=float)
-df_perovskite_eff.loc[2022] = 17.9
-df_perovskite_eff.loc[2030] = 27.3
-df_perovskite_eff.loc[2050] = 27.3
-df_perovskite_eff.interpolate(inplace=True)
-
+# #2022 module eff = 17.9% #https://www.nrel.gov/pv/assets/pdfs/champion-module-efficiencies-rev220401b.pdf
+# #2050 module eff = 27.3% # Sofia et al 2019 4T future
+# idx_perovskite_eff = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
+# df_perovskite_eff = pd.DataFrame(index=idx_perovskite_eff, columns=['mod_eff_p'], dtype=float)
+# df_perovskite_eff.loc[2022] = 17.9
+# df_perovskite_eff.loc[2030] = 27.3
+# df_perovskite_eff.loc[2050] = 27.3
+# df_perovskite_eff.interpolate(inplace=True)
 
 # In[21]:
 
@@ -922,7 +924,7 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[244]:
+# In[60]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -1055,31 +1057,16 @@ for scen in sim1.scenario.keys(): #loop over scenarios
 # In[69]:
 
 
-#sim1.calculateMassFlow()
+ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
 # In[70]:
 
 
-#sim1.calculateMassFlow(scenarios=['ex_Lightweight','r_IRENA'], weibullInputParams=IRENAregloss)
-#need to create an upgrade to weibull params to account for evolving params
-#dict_weibull # evolve_weibull
-#sim1.calculateMassFlow(scenarios=['r_IRENA'])
-
-
-# In[71]:
-
-
-ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
-
-
-# In[72]:
-
-
 sim1.saveSimulation(customname='_EnergyAnalysis_identicalinstalls')
 
 
-# In[73]:
+# In[71]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity')
@@ -1091,7 +1078,7 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[252]:
+# In[72]:
 
 
 effective_capacity_tw = ii_yearly.filter(like='ActiveCapacity')/1e6
@@ -1137,7 +1124,7 @@ plt.xlim(2000,2100)
 plt.savefig('energyresults-effectivecapacity.png', dpi=300)
 
 
-# In[75]:
+# In[73]:
 
 
 plt.rcParams['figure.figsize'] = (8, 6)
@@ -1171,10 +1158,12 @@ plt.rcParams['figure.figsize'] = (8, 6)
 
 
 
-# In[76]:
+# In[74]:
 
 
 #currently takes ~40 mins to run with 7 materials and 12 scenarios
+UnderInstall_df = pd.DataFrame()
+
 
 for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of years
     print(row)
@@ -1182,6 +1171,7 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
         print(scen)
         Under_Installment = global_projection.iloc[row,0] - ((sim1.scenario[scen].dataOut_m['Effective_Capacity_[W]'][row])/1e6)  # MWATTS
         sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
+        UnderInstall_df.loc[row,scen] = Under_Installment
         #calculate flows for that scenario with it's bifi factor and modified weibull
         if scen in ['r_IRENA']: #,'ex_Lightweight'
             sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], weibullInputParams=IRENAregloss)
@@ -1189,12 +1179,6 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
             sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], nameplatedeglimit=0.0) 
         else:
             sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen]) 
-
-
-# In[77]:
-
-
-Under_Installment
 
 
 # In[78]:
@@ -1218,18 +1202,6 @@ Under_Installment
 #    sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen])
 
 
-# In[79]:
-
-
-#plt.plot(df_compensate)
-
-
-# In[80]:
-
-
-#Under_Installment
-
-
 # In[81]:
 
 
@@ -1249,13 +1221,13 @@ energyGen.to_csv(os.path.join(testfolder, 'cc_10scen_energyGen.csv'))
 energy_demands.to_csv(os.path.join(testfolder, 'cc_10scen_energy_demands.csv'))
 
 
-# In[83]:
+# In[75]:
 
 
 sim1.saveSimulation(customname='_EnergyAnalysis_withreplacements')
 
 
-# In[84]:
+# In[76]:
 
 
 #read in saved results files for speed
@@ -1266,17 +1238,44 @@ energyGen = pd.read_csv(os.path.join(testfolder, 'cc_10scen_energyGen.csv'), ind
 energy_demands = pd.read_csv(os.path.join(testfolder, 'cc_10scen_energy_demands.csv'), index_col='year')
 
 
-# In[85]:
+# In[77]:
 
 
 plt.plot(sim1.scenario['r_PERC'].dataOut_m['Effective_Capacity_[W]'])
 
 
-# In[86]:
+# In[78]:
 
 
 #sim1.scenario['PV_ICE'].dataOut_m['irradiance_stc'].head(2)
 sim1.scenario.keys()
+
+
+# In[79]:
+
+
+UnderInstall_df
+
+
+# In[80]:
+
+
+plt.plot(UnderInstall_df)
+
+
+# In[118]:
+
+
+UnderInstall_df_cumu = UnderInstall_df.cumsum()
+
+flatinstall = UnderInstall_df_cumu.iloc[-1,:]/(2100-2022)
+flatinstall
+
+
+# In[ ]:
+
+
+
 
 
 # # RESULTS: Effective Capacity and Replacements

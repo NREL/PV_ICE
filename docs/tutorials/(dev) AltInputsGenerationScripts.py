@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[28]:
+# In[1]:
 
 
 import numpy as np
@@ -339,13 +339,13 @@ Agimprovedrecycle.interpolate()
 #      (ex) TN0 - x years = TM0
 #      and TN0 = -beta*-np.abs(np.log(1-TN0))^(1/alpha)
 
-# In[29]:
+# In[2]:
 
 
 import PV_ICE
 
 
-# In[30]:
+# In[3]:
 
 
 def alphabeta2T10T50T90(alpha,beta):
@@ -363,14 +363,14 @@ def alphabeta2T90(alpha,beta):
     return T90
 
 
-# In[31]:
+# In[4]:
 
 
 alpha = pd.Series([x / 10.0 for x in range(1, 500,1)])
 beta = pd.Series([x / 10.0 for x in range(1, 1000,1)])
 
 
-# In[32]:
+# In[5]:
 
 
 T50 = pd.Series(range(15,66,1))
@@ -379,7 +379,7 @@ inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 inputsdf
 
 
-# In[33]:
+# In[6]:
 
 
 for row in inputsdf.index:
@@ -396,7 +396,7 @@ inputsdf
 
 
 
-# In[34]:
+# In[7]:
 
 
 T50 = pd.Series([16,19,20,21,24,25,28,33,40])
@@ -405,7 +405,7 @@ inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 inputsdf
 
 
-# In[35]:
+# In[8]:
 
 
 al = pd.Series([44.83, np.nan, 2.56, 5.56])
@@ -414,7 +414,7 @@ inputsdf = pd.concat([al,be],axis=1, keys=['alpha','beta'])
 inputsdf
 
 
-# In[36]:
+# In[9]:
 
 
 for row in inputsdf.index:
@@ -425,7 +425,7 @@ for row in inputsdf.index:
 inputsdf
 
 
-# In[37]:
+# In[10]:
 
 
 params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
@@ -433,19 +433,19 @@ T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
 
-# In[38]:
+# In[11]:
 
 
 alphabeta2T10(5.692,29.697)
 
 
-# In[39]:
+# In[12]:
 
 
 #input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
 
 
-# In[40]:
+# In[13]:
 
 
 def projectlife2T50T90(projectlife, N=10, plot=True):
@@ -459,13 +459,13 @@ def projectlife2T50T90(projectlife, N=10, plot=True):
     return T50,T90
 
 
-# In[41]:
+# In[14]:
 
 
 projectlife2T50T90(25)
 
 
-# In[60]:
+# In[15]:
 
 
 #Mod Project Lifetime
@@ -479,7 +479,7 @@ life.interpolate(inplace=True)
 #pd.concat([life,life2], axis=1)
 
 
-# In[61]:
+# In[16]:
 
 
 df_t50t90 = pd.DataFrame()
@@ -491,7 +491,7 @@ for row in range(0,len(life)):
 df_t50t90
 
 
-# In[53]:
+# In[17]:
 
 
 #checking T90 from Ab et al 2018
