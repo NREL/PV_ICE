@@ -528,7 +528,8 @@ class Simulation:
     def calculateMassFlow(self, scenarios=None, materials=None,
                           weibullInputParams=None, bifacialityfactors=None,
                           reducecapacity=True, debugflag=False,
-                          installByArea=None, nameplatedeglimit=None):
+                          installByArea=None, nameplatedeglimit=None,
+                          secondlifenameplatedeglimit = None):
         '''
         Function takes as input a baseline dataframe already imported,
         with the right number of columns and content.
@@ -560,6 +561,9 @@ class Simulation:
         nameplatedeglimit : float
             Limit at which if the nameplate power is below they will be
             trashed. i.e. 0.8 default.
+        secondlifenameplatedeglimit : float
+            Limit at which if the nameplate power is below at their second life,
+            the modules will be trashed. i.e. 0.5 default. 
 
         Returns
         --------
@@ -577,6 +581,9 @@ class Simulation:
 
         if nameplatedeglimit is None:
             nameplatedeglimit = 0.8
+
+        if secondlifenameplatedeglimit is None:
+            secondlifenameplatedeglimit = 0.5
 
         print(">>>> Calculating Material Flows <<<<\n")
 
@@ -736,7 +743,8 @@ class Simulation:
                 # Age 0, nothing dies <3
 
                 active = 0
-                
+                secondlife = False
+
                 for age in range(len(cdf)):
                     
                     if x[age] == 0.0:
@@ -776,7 +784,12 @@ class Simulation:
     
                         power_degradaded = activearea * (powerinitgen - poweragegen) 
     
-                        if deg_nameplate < nameplatedeglimit:
+                        if secondlife:
+                            nameplatedeglimiteval = secondlifenameplatedeglimit
+                        else:
+                            nameplatedeglimiteval = nameplatedeglimit
+    
+                        if deg_nameplate < nameplatedeglimiteval:
                             # TODO check this! killing and not sending
                             # to EOL collection paths,
                             areaEOL_degradation = activearea
@@ -824,6 +837,9 @@ class Simulation:
                                     (df.iloc[age]['mod_MerchantTail']*0.01))
                             power_merchantTail = area_merchantTail*poweragegen
     
+                            if area_merchantTail > 0:
+                                secondlife = True
+                                
                             # internal - removed_projectlifetime
                             area_removed_projectlifetime = (activearea -
                                                         area_merchantTail)
