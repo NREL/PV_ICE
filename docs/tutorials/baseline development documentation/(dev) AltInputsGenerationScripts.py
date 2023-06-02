@@ -439,6 +439,12 @@ T10
 alphabeta2T10(5.692,29.697)
 
 
+# In[18]:
+
+
+alphabeta2T10T50T90(5.692,29.697)
+
+
 # In[12]:
 
 
@@ -497,6 +503,12 @@ df_t50t90
 #checking T90 from Ab et al 2018
 params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
 alphabeta2T10(params['alpha'],params['beta'])
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
