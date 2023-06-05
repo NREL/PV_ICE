@@ -175,6 +175,7 @@ sim1.scenario['ex_PERC_50'].modifyMaterials('silver', 'mat_massperm2', celltech_
 
 #modify package to glass glass
 sim1.scenario['ex_PERC_50'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022) #
+sim1.scenario['ex_PERC_50'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
 
 
 # In[16]:
@@ -236,6 +237,7 @@ sim1.modifyScenario('ex_High_eff', 'mod_lifetime', 25, start_year=2022) #project
 
 #modify package to glass glass
 sim1.scenario['ex_High_eff'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
+sim1.scenario['ex_High_eff'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
 
 
 # ### 1.1.3 Ideal Circular - Tandem Perovskite
@@ -262,6 +264,7 @@ sim1.modifyScenario('ex_Perovskite', 'mod_eff', 27.3, start_year=2022) #changing
 
 #modify package to glass glass
 sim1.scenario['ex_Perovskite'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
+sim1.scenario['ex_Perovskite'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
 
 
 # In[23]:
@@ -433,6 +436,14 @@ for mat in range (0, len(MATERIALS)):
     matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
     matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
     sim1.scenario['h_50PERC'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+
+
+# In[ ]:
+
+
+#modify package to glass glass
+sim1.scenario['h_50PERC'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
+sim1.scenario['h_50PERC'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
 
 
 # In[30]:
@@ -642,6 +653,13 @@ for mat in range (0, len(subMats)):
     sim1.scenario['h_Perovskite'].addMaterial(subMats[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
+# In[ ]:
+
+
+sim1.scenario['h_Perovskite'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
+sim1.scenario['h_Perovskite'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
+
+
 # In[39]:
 
 
@@ -728,6 +746,7 @@ sim1.scenario['r_PERC'].modifyMaterials('silver', 'mat_massperm2', celltech_agus
 
 #modify package to glass glass
 sim1.scenario['r_PERC'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
+sim1.scenario['r_PERC'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
 
 
 # ### 1.3.2 SHJ
@@ -791,6 +810,7 @@ sim1.scenario['r_SHJ'].modifyMaterials('silver', 'mat_massperm2', celltech_aguse
 
 #modify package to glass glass
 sim1.scenario['r_SHJ'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
+sim1.scenario['r_SHJ'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
 
 
 # ### 1.3.3 TOPCon
@@ -852,6 +872,7 @@ sim1.scenario['r_TOPCon'].modifyMaterials('silver', 'mat_massperm2', celltech_ag
 
 #modify package to glass glass
 sim1.scenario['r_TOPCon'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022)
+sim1.scenario['r_TOPCon'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
 
 
 # ### 1.3.4 IRENA Reg. Loss with improved recycling
@@ -1014,7 +1035,7 @@ bifiFactors = {'PV_ICE':0.0,
                'ex_High_eff': 0.9,
                'ex_Perovskite': 0.0,
                'h_50PERC':0.7,
-               'h_RecycledPERC': 0.6,
+               'h_RecycledPERC': 0.0,
                'h_Perovskite': 0.0,
                'r_PERC':0.7,
                'r_SHJ':0.9, # ITRPV 2022, Fig. 58
