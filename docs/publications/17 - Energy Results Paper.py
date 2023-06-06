@@ -2144,8 +2144,10 @@ fig.savefig('energyresults-energyDemands.png', dpi=300, bbox_inches='tight')
 # In[130]:
 
 
+#select material demands that are not fuel
 e_fuels = energy_demands.filter(like='_fuel')
 e_energydemands = energy_demands.loc[:,~energy_demands.columns.isin(e_fuels.columns)]
+#sum energy demands by material
 e_mfging_bymat = pd.DataFrame()
 for scen in sim1.scenario.keys():
     e_energy_mfg_scen = e_energydemands.filter(like=scen).filter(like='_MFG_')
