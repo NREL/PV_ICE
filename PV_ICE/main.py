@@ -449,7 +449,6 @@ class Simulation:
                         if hasattr(pviceobj, metattribute):
                             mydict = getattr(pviceobj, metattribute)
                             metdata = pd.DataFrame(mydict, index=[0])
-                            metdata = pd.DataFrame(mydict, index=[0])
                             dffoo = pd.concat([metdata, dffoo], axis=0)
                     dffoo.to_csv(os.path.join(savefolder, titlecsv))
 #                    dffoo.to_csv(os.path.join(savefolder, titlecsv), index_col=False)
@@ -2483,6 +2482,8 @@ class Scenario(Simulation):
 
         self.material[materialname] = Material(materialname, massmatfile, energymatfile)
             
+
+
     def addMaterials(self, materials, baselinefolder=None, matnameformatMass=None,
                      matnameformatEnergy=None):
         '''
@@ -2573,7 +2574,6 @@ class Scenario(Simulation):
             for mat in materials:
                 self.material[mat].matdataIn_e.loc[selectyears, stage] = value
 
-
     def __getitem__(self, key):
         return getattr(self, key)
 
@@ -2585,34 +2585,48 @@ class Material:
 
     def __init__(self, materialname, massmatfile, energymatfile=None):
         self.materialname = materialname
-            
+
         if massmatfile is None:
             try:
-                massmatfile = _interactive_load('Select material baseline file')
+                massmatfile = _interactive_load('Select material baseline ' +
+                                                'file')
             except:
-                raise Exception('Interactive load failed. Tkinter not supported'+
-                                'on this system. Try installing X-Quartz and reloading')
+                raise Exception('Interactive load failed. Tkinter not ' +
+                                'supported on this system. Try installing ' +
+                                'X-Quartz and reloading')
 
         data, meta = _readPVICEFile(massmatfile)
-         
+
         self.massmatfile = massmatfile
         self.matmetdataIn_m = meta
         self.matdataIn_m = data
 
+        # SAVING A COPY TO RAW
+        # Joining the metdata back in
+        foometa = pd.DataFrame(meta, index=[0])
+        foodata = pd.concat([foometa, data], axis=0)
+        # Removing the path to just get the filename
+        # TODO - find fancy python way, this will probably break on a mac
+        try:
+            foomassmatfile = massmatfile.split('\\')[-1]
+            foodata.to_csv(os.path.join('raw', materialname + '_' +
+                                        foomassmatfile))
+        except:
+            print("Can't save raw files on macs yet.")
         if energymatfile is not None:
             self.addEnergytoMaterial(energymatfile)
         else:
             self.energymatfile = None
             self.matmetdataIn_e = None
             self.matdataIn_e = None
-    
+
     def addEnergytoMaterial(self, energymatfile):
 
         data, meta = _readPVICEFile(energymatfile)
-        
+
         self.energymatfile = energymatfile
         self.matmetdataIn_e = meta
-        self.matdataIn_e = data 
+        self.matdataIn_e = data
 
 
 def weibull_params(keypoints):
