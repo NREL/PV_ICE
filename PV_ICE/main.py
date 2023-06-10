@@ -17,6 +17,8 @@ import matplotlib.pyplot as plt
 import itertools
 from pathlib import Path
 
+global DATA_PATH # path to data files including module.json.  Global context
+DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'baselines'))
 
 
 def read_baseline_material(scenario, material='None', file=None):
@@ -2454,10 +2456,25 @@ class Scenario(Simulation):
         self.energyfile = energymodulefile
         self.metdataIn_e = meta
         self.dataIn_e = data
-        
-        
-    def addMaterial(self, materialname, massmatfile=None, file=None, energymatfile=None):
-        
+
+    def addMaterial(self, materialname, massmatfile=None, energymatfile=None,
+                    file=None):
+        '''
+        Adds a material object, assigning its name and loading mass and energy
+        data.
+
+        Inputs
+        --------
+        materialname : string
+            String of the material to import, assigned to the material object.  
+        massmatfile : file
+            Path including filename to the material file to load
+        energymatfile : str
+            Path including filename to the material file to load
+
+            
+        '''
+
         if massmatfile is None and file is not None:
             print("Deprecation warning: file has been deprecated as of v 0.3 as",
                   "an input to class Material and will be fully removed for v 0.4;",
@@ -2466,26 +2483,49 @@ class Scenario(Simulation):
 
         self.material[materialname] = Material(materialname, massmatfile, energymatfile)
             
-    def addMaterials(self, materials, baselinefolder=None, nameformat=None):
-
+    def addMaterials(self, materials, baselinefolder=None, matnameformatMass=None,
+                     matnameformatEnergy=None):
+        '''
+        Inputs
+        --------
+        materialname : list of strings(preferred)
+            List of materials to loop over and add to the simulation.
+            Single material string (i.e. 'glass') can be passed but converted to
+            list. Examples: materials = ['glass', 'silver']  
+        baselinefolder : path
+            Path to where the material folders are stored
+        matnameformatMass : str
+            Format of the material baseline files mass names, including a bracket for 
+            formatting in the materialname. i.e.
+            'baseline_material_mass_{}.csv'
+        matnameformatEnergy : str
+            Format of the material baseline files energy names, including a bracket for 
+            formatting in the materialname. i.e.
+            'baseline_material_energy_{}.csv'
+        matnameformatEnergy : str
+        '''
         if baselinefolder is None:
-            baselinefolder = os.path.join(str(Path().resolve().parent.parent, 'baselines'))
-            # TOD: Check if works and remove this comment
-            # baselinefolder = r'..\..\baselines'
+            baselinefolder = DATA_PATH
 
-        if nameformat is None:
-            nameformatMass = r'baseline_material_mass_{}.csv'
-            nameformatEnergy = r'baseline_material_energy_{}.csv'
+        # Checking if string passed for a single material, converting it to list
+        if type(materials) == str:
+            materials = [materials]
+    
+        if matnameformatMass is None:
+            matnameformatMass = r'baseline_material_mass_{}.csv'
+        if matnameformatEnergy is None:
+            matnameformatEnergy = r'baseline_material_energy_{}.csv'
         for mat in materials:
-            filematmass = os.path.join(baselinefolder, nameformatMass.format(mat))
-            filematenergy = os.path.join(baselinefolder, nameformatEnergy.format(mat))
-            if os.path.isfile(filematenergy):
+            massmatfile = os.path.join(baselinefolder, matnameformatMass.format(mat))
+            energymatfile = os.path.join(baselinefolder, matnameformatEnergy.format(mat))
+            if os.path.isfile(energymatfile):
                 print("Adding Mass AND Energy files for: ", mat )
             else:
-                filematenergy = None
+                energymatfile = None
+                print("Adding Mass files for: ", mat )
                 
-            self.material[mat] = Material(mat, massmatfile = filematmass, 
-                                          energymatfile = filematenergy)
+            self.material[mat] = Material(mat, massmatfile = massmatfile, 
+                                          energymatfile = energymatfile)
 
 
     def modifyMaterials(self, materials, stage, value, start_year=None):
