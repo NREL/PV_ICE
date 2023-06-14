@@ -908,19 +908,9 @@ plt.legend(handles[::-1], labels[::-1])
 plt.show()
 
 
-# In[85]:
-
-
-plt.plot(df_mfg_energies.index, df_mfg_energies['e_mfg_kWhpkg'])
-plt.title('Electricity: Silicon Manufacturing')
-plt.ylabel('Electricity Demand [kWh/kg]')
-plt.xlim(1995,2022)
-plt.ylim(0,)
-
-
 # Now to check this overall electricity demand against literature values as a reality check. Doing VERY ROUGH ballpark checks.
 
-# In[ ]:
+# In[86]:
 
 
 #N. Jungbluth, “Life cycle assessment of crystalline photovoltaics in the Swiss ecoinvent database,” 
@@ -940,7 +930,7 @@ wildscholten2013_kWh = (961+73.4+81.4)*0.27777
 phyl_alsema1995_kWh= (511-27) #kWh/m2 to kWh/kg estimating 5 kg/module
 
 
-# In[ ]:
+# In[87]:
 
 
 plt.plot(mfg_energy_final['E_MFG_kWhpkg'])
@@ -958,7 +948,7 @@ plt.xlim(1994,2022)
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[88]:
 
 
 mfg_energy_final_rounded = round(mfg_energy_final,2)
@@ -969,7 +959,7 @@ mfg_energy_final_rounded.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMateri
 # 
 # No literature found recycled EOL silicon to higher than MG-Si. Therefore, we will use the extraction energy at EOL from Latunussa et al 2016 (1.6 kWh/kg) for the FRELP process as the LQ. For HQ recycling, we will use the energy to MFG as calculated here, from Seimens forward. In the Energy flow calculation the LQ energy requirement is inherently added to the HQ energy requirement.
 
-# In[ ]:
+# In[89]:
 
 
 e_eol_recycle = mfg_energy_final['E_MFG_kWhpkg']-(mfg_energy_fuels['E_reduce_sum_kWhpkg']+ mfg_energies['E_reduce_sum_kWhpkg'])#creates a series
@@ -978,7 +968,7 @@ e_eol_recycle_HQ = pd.DataFrame(round(e_eol_recycle,2), columns=['E_RecycleHQ_su
 
 # These steps in MFGing require fuel based energy. Therefore, we need to calculate a fuel fraction for the HQ recycling process.
 
-# In[ ]:
+# In[90]:
 
 
 recycle_hq_fuels = mfg_energy_fuels.iloc[:,[1,2,3,4]].sum(axis=1) #sum all fuel energy excluding e_reduce
@@ -986,7 +976,7 @@ recycle_hq_fuelsfraction = pd.DataFrame(round(recycle_hq_fuels/e_eol_recycle,2),
 e_eol_recycle_HQ_complete = pd.concat([e_eol_recycle_HQ,recycle_hq_fuelsfraction], axis=1)
 
 
-# In[ ]:
+# In[91]:
 
 
 e_eol_recycle_HQ_complete.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv")
@@ -996,7 +986,7 @@ e_eol_recycle_HQ_complete.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMater
 # 
 # Fraunhofer recently attempted recycling a recovered silicon wafer by cleaning, and directly putting into the Cz ingot growth process (i.e. skip Siemens and reduction), and otherwise performing the normal modern PERC process to it. Therefore, we will create an energy profile to reflect this process. It will be studies in tutorial Jupyter Journal "17- Energy Results Paper"
 
-# In[ ]:
+# In[92]:
 
 
 e_ingotcz['E_Cz_FuelFraction']=0.0
@@ -1010,7 +1000,7 @@ fuelfracts_alt.columns = altHQ_energies.columns #ish
 altHQ_fuelenergy = altHQ_energies*fuelfracts_alt
 
 
-# In[ ]:
+# In[93]:
 
 
 altHQ_fuelenergy_sum = altHQ_fuelenergy.sum(axis=1)
@@ -1020,16 +1010,49 @@ altHQ_energies_final = pd.concat([altHQ_energies_sum,altHQ_FuelFraction], axis=1
 altHQ_energies_final.columns = ['E_MFG_kWhpkg','E_mfgFuelFraction']
 
 
-# In[ ]:
+# In[94]:
 
 
 altHQ_energies_final.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ_ALT.csv")
 
 
-# In[ ]:
+# # Alternate - MFGing energy of mc-Si
+# using for low quality IRENA in Energy Analysis, assuming the module is a mc-Si, therefore, using an energy of MFGing reflecting only mc-Si (no mono) for ingoting. Assuming all other energies are same.
+
+# In[97]:
 
 
+mfg_energies_mcSi = [e_reduce_silica, e_siemens_final, e_ingots['E_DS_kWhpkg'], e_wafering_filled, e_cellprocess_final]
+df_mfg_energies_mcSi = pd.concat(mfg_energies_mcSi, axis=1, join='inner')
 
+df_mfg_energies_mcSi.head()
+
+
+# In[100]:
+
+
+#ingoting energy appears to be electricity only
+
+df_mfg_energies_mcSi_elec = df_mfg_energies_mcSi.filter(like='_kWhpkg')
+mfg_energies_sum_mcSi = df_mfg_energies_mcSi_elec.sum(axis=1)
+
+mfg_FuelFraction_mcSi = mfg_energy_fuels_sum/mfg_energies_sum_mcSi
+
+mfg_energy_final_mcSi = pd.concat([mfg_energies_sum_mcSi,mfg_FuelFraction_mcSi], axis=1)
+mfg_energy_final_mcSi.columns = ['E_MFG_kWhpkg','E_mfgFuelFraction']
+
+
+# In[103]:
+
+
+mfg_energy_final_mcSi.to_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_MFG_mcSi.csv")
+
+
+# In[102]:
+
+
+#check against original energy that includes mono, looks good.
+mfg_energy_final_mcSi/mfg_energy_final
 
 
 # In[ ]:

@@ -549,6 +549,7 @@ sim1.scenario['h_50PERC'].modifyMaterials('aluminium_frames', 'mat_EOL_RecycledH
 # ### 1.2.2 Recycled Silicon PERC
 # This module is based on the recent test from Fraunhofer ISE in which an old module was dissassembled, and the silicon wafer cleaned, put into a Cz ingot growth process and made using standard PERC processing, creating a 19% efficient module.
 # https://www.ise.fraunhofer.de/en/press-media/press-releases/2022/solar-cells-from-recycled-silicon.html
+# We will assume this is a low quality module, like a mc-Si module, thus changing the mfging energy, and that the module efficiency improves slightly slower than mc-Si expectations (22% by 2050, ITRPV 2023).
 
 # In[ ]:
 
@@ -616,6 +617,23 @@ sim1.scenario['h_RecycledPERC'].modifyMaterials('silver', 'mat_PG4_Recycling_tar
 sim1.scenario['h_RecycledPERC'].modifyMaterials('silver', 'mat_Recycling_yield', 98.0, start_year=2022) #99% yeild
 sim1.scenario['h_RecycledPERC'].modifyMaterials('silver', 'mat_EOL_Recycled_into_HQ', 100.0, start_year=2022) #all HQ
 sim1.scenario['h_RecycledPERC'].modifyMaterials('silver', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
+
+
+# In[ ]:
+
+
+#modify silicon mfging energy to be mc-Si only for the virgin manufacturing
+altmfgSi_mcSi = pd.read_csv(os.path.join(supportMatfolder, 'output_energy_silicon_MFG_mcSi.csv'), index_col=0)
+
+
+# In[ ]:
+
+
+#modify silicon recycling energy
+sim1.scenario['h_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_MFG', 
+                                              altmfgSi_mcSi.loc[2022:,'E_MFG_kWhpkg'], start_year=2022)
+sim1.scenario['h_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_MFG_fuelfraction', 
+                                              altmfgSi_mcSi.loc[2022:,'E_mfgFuelFraction'], start_year=2022)
 
 
 # In[ ]:
@@ -893,7 +911,7 @@ sim1.scenario['r_TOPCon'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, sta
 
 
 # ### 1.3.4 IRENA Reg. Loss with improved recycling
-# This scenario uses the IRENA 2016 regular loss scenario results, or a low quality module, and assumes the same EoL recycling improvement as the previous three scenarios
+# This scenario uses the IRENA 2016 regular loss scenario results, or a low quality module, and assumes the same EoL recycling improvement as the previous three scenarios. We're assuming this is a mc-Si, therefore, changing the ingot energy to reflect the lower energy intensity.
 
 # In[ ]:
 
@@ -935,7 +953,24 @@ for mats in range (0, len(baselineMats)):
 # In[ ]:
 
 
+#modify silicon mfging energy to be mc-Si only
+altmfgSi_mcSi = pd.read_csv(os.path.join(supportMatfolder, 'output_energy_silicon_MFG_mcSi.csv'), index_col=0)
 
+
+# In[ ]:
+
+
+#modify silicon recycling energy
+sim1.scenario['r_IRENA'].modifyMaterialEnergy('silicon', 'e_mat_MFG', 
+                                              altmfgSi_mcSi.loc[2022:,'E_MFG_kWhpkg'], start_year=2022)
+sim1.scenario['r_IRENA'].modifyMaterialEnergy('silicon', 'e_mat_MFG_fuelfraction', 
+                                              altmfgSi_mcSi.loc[2022:,'E_mfgFuelFraction'], start_year=2022)
+
+
+# In[ ]:
+
+
+sim1.scenario['r_IRENA'].material['silicon'].matdataIn_e.iloc[25:30,]
 
 
 # ## 1.4 Modify Scenarios 

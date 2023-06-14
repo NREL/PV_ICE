@@ -15754,7 +15754,8 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="1.2.2-Recycled-Silicon-PERC">1.2.2 Recycled Silicon PERC<a class="anchor-link" href="#1.2.2-Recycled-Silicon-PERC">&#182;</a></h3><p>This module is based on the recent test from Fraunhofer ISE in which an old module was dissassembled, and the silicon wafer cleaned, put into a Cz ingot growth process and made using standard PERC processing, creating a 19% efficient module.
-<a href="https://www.ise.fraunhofer.de/en/press-media/press-releases/2022/solar-cells-from-recycled-silicon.html">https://www.ise.fraunhofer.de/en/press-media/press-releases/2022/solar-cells-from-recycled-silicon.html</a></p>
+<a href="https://www.ise.fraunhofer.de/en/press-media/press-releases/2022/solar-cells-from-recycled-silicon.html">https://www.ise.fraunhofer.de/en/press-media/press-releases/2022/solar-cells-from-recycled-silicon.html</a>
+We will assume this is a low quality module, like a mc-Si module, thus changing the mfging energy, and that the module efficiency improves slightly slower than mc-Si expectations (22% by 2050, ITRPV 2023).</p>
 
 </div>
 </div>
@@ -15840,6 +15841,43 @@ Name: 2020, dtype: float64</pre>
 <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;h_RecycledPERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">modifyMaterials</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_Recycling_yield&#39;</span><span class="p">,</span> <span class="mf">98.0</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span> <span class="c1">#99% yeild</span>
 <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;h_RecycledPERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">modifyMaterials</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_EOL_Recycled_into_HQ&#39;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span> <span class="c1">#all HQ</span>
 <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;h_RecycledPERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">modifyMaterials</span><span class="p">(</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="s1">&#39;mat_EOL_RecycledHQ_Reused4MFG&#39;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span> <span class="c1">#closed-loop</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify silicon mfging energy to be mc-Si only for the virgin manufacturing</span>
+<span class="n">altmfgSi_mcSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span> <span class="s1">&#39;output_energy_silicon_MFG_mcSi.csv&#39;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify silicon recycling energy</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;h_RecycledPERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">modifyMaterialEnergy</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;e_mat_MFG&#39;</span><span class="p">,</span> 
+                                              <span class="n">altmfgSi_mcSi</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">:,</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">],</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;h_RecycledPERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">modifyMaterialEnergy</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;e_mat_MFG_fuelfraction&#39;</span><span class="p">,</span> 
+                                              <span class="n">altmfgSi_mcSi</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">:,</span><span class="s1">&#39;E_mfgFuelFraction&#39;</span><span class="p">],</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16415,7 +16453,7 @@ Name: 2020, dtype: float64</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="1.3.4-IRENA-Reg.-Loss-with-improved-recycling">1.3.4 IRENA Reg. Loss with improved recycling<a class="anchor-link" href="#1.3.4-IRENA-Reg.-Loss-with-improved-recycling">&#182;</a></h3><p>This scenario uses the IRENA 2016 regular loss scenario results, or a low quality module, and assumes the same EoL recycling improvement as the previous three scenarios</p>
+<h3 id="1.3.4-IRENA-Reg.-Loss-with-improved-recycling">1.3.4 IRENA Reg. Loss with improved recycling<a class="anchor-link" href="#1.3.4-IRENA-Reg.-Loss-with-improved-recycling">&#182;</a></h3><p>This scenario uses the IRENA 2016 regular loss scenario results, or a low quality module, and assumes the same EoL recycling improvement as the previous three scenarios. We're assuming this is a mc-Si, therefore, changing the ingot energy to reflect the lower energy intensity.</p>
 
 </div>
 </div>
@@ -16485,7 +16523,44 @@ Name: 2020, dtype: float64</pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify silicon mfging energy to be mc-Si only</span>
+<span class="n">altmfgSi_mcSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="p">,</span> <span class="s1">&#39;output_energy_silicon_MFG_mcSi.csv&#39;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#modify silicon recycling energy</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;r_IRENA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">modifyMaterialEnergy</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;e_mat_MFG&#39;</span><span class="p">,</span> 
+                                              <span class="n">altmfgSi_mcSi</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">:,</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">],</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
+<span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;r_IRENA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">modifyMaterialEnergy</span><span class="p">(</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> <span class="s1">&#39;e_mat_MFG_fuelfraction&#39;</span><span class="p">,</span> 
+                                              <span class="n">altmfgSi_mcSi</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">:,</span><span class="s1">&#39;E_mfgFuelFraction&#39;</span><span class="p">],</span> <span class="n">start_year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;r_IRENA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;silicon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataIn_e</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">25</span><span class="p">:</span><span class="mi">30</span><span class="p">,]</span>
 </pre></div>
 
      </div>
