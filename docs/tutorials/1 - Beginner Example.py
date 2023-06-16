@@ -112,46 +112,41 @@ r1.saveSimulation()
 
 # ### Step 5: Use internal plotting functions to plot results
 
-# Pull out the keywords by printing the keys to the module data or the material data
+# From this list, select the one that fits your study and select the type of plotting method. There are various plotting options:
+# * `plotScenariosComparison`
+# * `plotMaterialComparisonAcrossScenarios`
+# * `plotMetricResults`: You can select the following keyword options: 'VirginStock', 'WasteALL', 'WasteEOL', 'WasteMFG'
+# * `plotMaterialResults`
+# * `plotInstalledCapacityResults`
+
+# You can also view all the keywords you can use by calling the function without argumnets, or by printing the keys to the module data or the material data
 
 # In[13]:
-
-
-print(r1.scenario['standard'].material['silicon'].matdataIn_m.keys())
-
-
-# In[14]:
 
 
 r1.plotScenariosComparison()
 
 
-# In[15]:
+# In[14]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_virgin_eff')
 
 
-# In[16]:
+# In[15]:
 
 
 r1.plotMaterialResults(keyword='VirginStock')
 
 
-# In[17]:
+# In[16]:
 
 
 r1.plotMetricResults()
 
 
-# In[18]:
+# In[17]:
 
 
 r1.plotInstalledCapacityResults()
-
-
-# In[ ]:
-
-
-
 

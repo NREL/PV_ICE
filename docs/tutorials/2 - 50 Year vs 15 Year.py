@@ -3,7 +3,7 @@
 
 # # 2 - 15 vs 50 Year Module
 # 
-# Comparison case using the functions in CE-MFC to compare 15 year module reliability vs 50 year module reliability.
+# Comparison of a 15-year module lifetime vs 50-year module lifetime from a material circularity standpoint. 
 # 
 # 
 # 
@@ -26,27 +26,27 @@
 # Thus, if the intent is to avoid landfilled material, a 95% recyclable module is the best technology evolution.
 # 
 
-# In[1]:
+# In[2]:
 
 
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / '')
 
-# Another option using relative address; for some operative systems you might need '/' instead of '\'
-# testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
-
+if not os.path.exists(testfolder):
+    os.makedirs(testfolder)
+    
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[2]:
+# In[3]:
 
 
 import PV_ICE
 
 
-# In[3]:
+# In[4]:
 
 
 import matplotlib.pyplot as plt
@@ -56,39 +56,28 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 5)
 
 
-# In[4]:
+# In[5]:
 
 
 moduleFile = r'..\baselines\baseline_modules_US.csv'
 
 
-# In[5]:
+# In[6]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='50_Year_Module', file=moduleFile)
-r1.scenario['50_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['50_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
-r1.scenario['50_Year_Module'].addMaterial('silver', file=r'..\baselines\baseline_material_silver.csv')
-r1.scenario['50_Year_Module'].addMaterial('copper', file=r'..\baselines\baseline_material_copper.csv')
-r1.scenario['50_Year_Module'].addMaterial('aluminium_frames', file=r'..\baselines\baseline_material_aluminium_frames.csv')
-r1.scenario['50_Year_Module'].addMaterial('encapsulant', file=r'..\baselines\baseline_material_encapsulant.csv')
+r1.scenario['50_Year_Module'].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant'])
+
+
+# In[5]:
+
 
 r1.createScenario(name='15_Year_Module', file=moduleFile)
-r1.scenario['15_Year_Module'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['15_Year_Module'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
-r1.scenario['15_Year_Module'].addMaterial('silver', file=r'..\baselines\baseline_material_silver.csv')
-r1.scenario['15_Year_Module'].addMaterial('copper', file=r'..\baselines\baseline_material_copper.csv')
-r1.scenario['15_Year_Module'].addMaterial('aluminium_frames', file=r'..\baselines\baseline_material_aluminium_frames.csv')
-r1.scenario['15_Year_Module'].addMaterial('encapsulant', file=r'..\baselines\baseline_material_encapsulant.csv')
+r1.scenario['15_Year_Module'].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant'])
 
 r1.createScenario(name='base', file=moduleFile)
-r1.scenario['base'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['base'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
-r1.scenario['base'].addMaterial('silver', file=r'..\baselines\baseline_material_silver.csv')
-r1.scenario['base'].addMaterial('copper', file=r'..\baselines\baseline_material_copper.csv')
-r1.scenario['base'].addMaterial('aluminium_frames', file=r'..\baselines\baseline_material_aluminium_frames.csv')
-r1.scenario['base'].addMaterial('encapsulant', file=r'..\baselines\baseline_material_encapsulant.csv')
+r1.scenario['base'].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant'])
 
 
 # In[6]:
