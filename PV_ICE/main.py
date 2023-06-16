@@ -358,7 +358,6 @@ class Simulation:
         if baselinepath is None:
             self.baselinepath = DATA_PATH
             print("Baseline folder directed to default: ", DATA_PATH)
-            print(type(DATA_PATH))
         else:
             self.baselinepath = baselinepath
 
@@ -394,6 +393,12 @@ class Simulation:
                        file=None):
 
         import re
+        
+        if file is not None:
+            print("Please use massmodulefile or energymodulefile as inputs " +
+                  " to this function.")
+            return
+        
         if massmodulefile is None:
             files = [f for f in os.listdir(DATA_PATH) if re.match(
                 r'baseline_modules_mass', f)]
@@ -2282,13 +2287,13 @@ class Simulation:
             if keyword in self.scenario[scen].dataIn_m:                
                 plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataIn_m[keyword], label=scen)
             elif keyword in self.scenario[scen].dataOut_m: 
-                plt.plot(self.scenario[scen].datOut_m['year'],self.scenario[scen].dataOut_m[keyword], label=scen)
+                plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataOut_m[keyword], label=scen)
             elif dataIn_e:
                 if keyword in self.scenario[scen].dataIn_e: 
-                    plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataIn_e[keyword], label=scen) 
+                    plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataIn_e[keyword], label=scen) 
                 # the year column is not getting added to the dataOut DFs   
                 elif keyword in self.scenario[scen].dataOut_e: 
-                    plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataOut_e[keyword], label=scen)
+                    plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataOut_e[keyword], label=scen)
                 else:
                     print("No data for ", keyword, "for Scenario ", scen)
             plt.legend()
