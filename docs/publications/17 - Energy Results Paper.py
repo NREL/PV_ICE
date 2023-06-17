@@ -37,15 +37,17 @@ print(python_version())
 
 # Graphing settings
 
-# In[3]:
+# In[1]:
 
 
 #https://www.learnui.design/tools/data-color-picker.html#palette
 #color pallette - modify here for all graphs below
 colorpalette=['#000000', #PV ICE baseline
-              '#0079C1','#7030A0','#F6A01A', #extreme cases (3) long life, high eff, circular
-                '#41B8FF','#EF5675','#FFC425', #hypothetical modules (3) 50 yr, recycleSi, perovskite
-                '#067872','#0aa39e','#09d0cd','#00ffff'] #realistic cases (4) teals, perc, shj, topcon, irena
+              '#067872','#0aa39e','#09d0cd','#00ffff', #realistic cases (4) teals, perc, shj, topcon, irena
+              '#0579C1','#C00000','#FFC000', #extreme cases (3) long life, high eff, circular
+                '#6E30A0','#00B3B5','#10C483', #ambitious modules (5) high eff+ long life, 50 yr perc, recycleSi, 
+               '#97CB3F','#FF7E00' #circular perovskite+life, circular perovkiste+ high eff
+                ] 
 
 colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B'] #colors for material plots       
 
@@ -56,13 +58,19 @@ mpl.rcParams['axes.prop_cycle'] = cycler(color=colorpalette) #reset the default 
 plt.rcParams.update({'font.size': 14})
 plt.rcParams['figure.figsize'] = (8, 6)
 
-scennames_labels = ['PV_ICE','Extreme\nLong-Lived','Extreme\nHigh Eff','Extreme\nCircular',
-                    'Ambitious\n50-year\nPERC','Ambitious\nRecycled Si','Ambitious\nCircular\nPerovskite',
-                    'PERC','SHJ','TOPCon','IRENA\nreg. loss'] 
+scennames_labels = ['PV_ICE','PERC','SHJ','TOPCon','IRENA reg. loss',
+                         'Extreme\nLong-Lived','Extreme\nHigh Eff','Extreme\nCircular',
+                        'Ambitious\nHigh Eff\n+ Long-life','Ambitious\n50-year PERC',
+                         'Ambitious Circular\n+ Long-life','Ambitious Recycled-Si\n+ Long-life',
+                        'Ambitious Circular\n+ High Eff'
+                    ]  
 
-scennames_labels_flat = ['PV_ICE','Extreme Long-Lived','Extreme High Eff','Extreme Circular',
-                    'Ambitious 50-year PERC','Ambitious Recycled Si','Ambitious Circular Perovskite',
-                    'PERC','SHJ','TOPCon','IRENA reg. loss'] 
+scennames_labels_flat = ['PV_ICE','PERC','SHJ','TOPCon','IRENA reg. loss',
+                         'Extreme Long-Lived','Extreme High Eff','Extreme Circular',
+                        'Ambitious High Eff + Long-life','Ambitious 50-year PERC',
+                         'Ambitious Circular + Long-life','Ambitious Recycled-Si + Long-life',
+                        'Ambitious Circular + High Eff'
+                    ] 
 #,'Lightweight'
 
 
@@ -72,7 +80,7 @@ scennames_labels_flat = ['PV_ICE','Extreme Long-Lived','Extreme High Eff','Extre
 
 
 #creating scenarios for identical power of multiple technologies, moved to below due to reordering
-scennames_ex = ['PV_ICE', 'ex_PERC_50', 'ex_High_eff', 'ex_Perovskite'] #extreme boundaries
+scennames_ex = ['PV_ICE', 'ex_Life', 'ex_High_eff', 'ex_Circular'] #extreme boundaries
 scennames_r = ['PV_ICE','r_PERC', 'r_SHJ', 'r_TOPCon', 'r_IRENA'] #realistic cases
 scennames_hyp = ['PV_ICE', 'h_50PERC','h_RecycledPERC', 'h_Perovskite'] #hypothetical modules
 
@@ -165,14 +173,14 @@ idx_temp = pd.RangeIndex(start=2000,stop=2051,step=1)
 
 #module efficiency modify for PERC
 #evolves at the same rate as the baseline comparison
-sim1.modifyScenario('ex_PERC_50', 'mod_eff', celltech_modeff.loc[2022:,'PERC'], start_year=2022) #PERC 2030 module eff
+sim1.modifyScenario('ex_Life', 'mod_eff', celltech_modeff.loc[2022:,'PERC'], start_year=2022) #PERC 2030 module eff
 
 
 # In[ ]:
 
 
 #silver modify for PERC
-sim1.scenario['ex_PERC_50'].modifyMaterials('silver', 'mat_massperm2', celltech_aguse.loc[2022:,'PERC'], start_year=2022)
+sim1.scenario['ex_Life'].modifyMaterials('silver', 'mat_massperm2', celltech_aguse.loc[2022:,'PERC'], start_year=2022)
 #old way
 #sim1.scenario['PERC_50'].material['silver'].matdataIn_m.loc[timeshift:,'mat_massperm2'] = celltech_aguse.loc[2022:,'PERC'].values
 
@@ -181,8 +189,8 @@ sim1.scenario['ex_PERC_50'].modifyMaterials('silver', 'mat_massperm2', celltech_
 
 
 #modify package to glass glass
-sim1.scenario['ex_PERC_50'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022) #
-sim1.scenario['ex_PERC_50'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
+sim1.scenario['ex_Life'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2022) #
+sim1.scenario['ex_Life'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, start_year=2022) #
 
 
 # In[ ]:
@@ -192,25 +200,25 @@ sim1.scenario['ex_PERC_50'].modifyMaterials('backsheet', 'mat_massperm2', 0.0, s
 #degradation rate from Theristis et al 2022
 #failure is T10 at 50 years
 #degradation rate:
-sim1.modifyScenario('ex_PERC_50', 'mod_degradation', 0.4, start_year=2022) #annual power degradation to reach 80% at 55 yrs
+sim1.modifyScenario('ex_Life', 'mod_degradation', 0.4, start_year=2022) #annual power degradation to reach 80% at 55 yrs
 #T50
-sim1.modifyScenario('ex_PERC_50', 'mod_reliability_t50', 56.07, start_year=2022)
+sim1.modifyScenario('ex_Life', 'mod_reliability_t50', 56.07, start_year=2022)
 #t90
-sim1.modifyScenario('ex_PERC_50', 'mod_reliability_t90', 59.15, start_year=2022) 
+sim1.modifyScenario('ex_Life', 'mod_reliability_t90', 59.15, start_year=2022) 
 #Mod Project Lifetime
-sim1.modifyScenario('ex_PERC_50', 'mod_lifetime', 50, start_year=2022) #project lifetime of 50 years
+sim1.modifyScenario('ex_Life', 'mod_lifetime', 50, start_year=2022) #project lifetime of 50 years
 
 
 # In[ ]:
 
 
 #Merchant Tail set high
-sim1.modifyScenario('ex_PERC_50', 'mod_MerchantTail', 100, start_year=2022) #all installations stay for merchant tail
+sim1.modifyScenario('ex_Life', 'mod_MerchantTail', 100, start_year=2022) #all installations stay for merchant tail
 
 #Set to no material circularity after 2022
-sim1.modifyScenario(scen='ex_PERC_50', 'mod_EOL_collection_eff', 0.0, start_year=2022)
-for mat in self.scenario['ex_PERC_50'].material:
-        sim1.scenario['ex_PERC_50'].modifyMaterials(mat, 'mat_MFG_scrap_Recycled', 0.0, start_year=2022) #        
+sim1.modifyScenario(scen='ex_Life', 'mod_EOL_collection_eff', 0.0, start_year=2022)
+for mat in self.scenario['ex_Life'].material:
+        sim1.scenario['ex_Life'].modifyMaterials(mat, 'mat_MFG_scrap_Recycled', 0.0, start_year=2022) #        
 
 
 # ### 1.1.2 Extreme High Efficiency
@@ -227,7 +235,7 @@ sim1.modifyScenario('ex_High_eff', 'mod_eff', 30.0, start_year=2022) #changing m
 
 #Lifetime and Degradation
 #degradation rate:
-sim1.modifyScenario('ex_High_eff', 'mod_degradation', 0.7, start_year=2022) #standard current degrdation
+sim1.modifyScenario('ex_High_eff', 'mod_degradation', 0.75, start_year=2022) #standard current degrdation
 #T50
 sim1.modifyScenario('ex_High_eff', 'mod_reliability_t50', 30.7, start_year=2022)
 #t90
@@ -264,8 +272,8 @@ for mat in self.scenario['ex_High_eff'].material:
 idx_perovskite_eff = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
 df_perovskite_eff = pd.DataFrame(index=idx_perovskite_eff, columns=['mod_eff_p'], dtype=float)
 df_perovskite_eff.loc[2022] = 17.9
-df_perovskite_eff.loc[2030] = 27.3
-df_perovskite_eff.loc[2050] = 27.3
+df_perovskite_eff.loc[2030] = 19.1
+df_perovskite_eff.loc[2050] = 19.1
 df_perovskite_eff.interpolate(inplace=True)
 
 
@@ -558,24 +566,45 @@ sim1.scenario['h_50PERC'].modifyMaterials('aluminium_frames', 'mat_EOL_RecycledH
 moduleinput_m_r_RecyclePERC = os.path.join(altBaselinesfolder, 'mod_r_PERCrecycleSi.csv')
 sim1.createScenario(name='h_RecycledPERC', massmodulefile=moduleinput_m_r_RecyclePERC, energymodulefile=moduleFile_e) 
 
-for mat in range (0, len(MATERIALS)):
-    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
-    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
-    sim1.scenario['h_RecycledPERC'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+#for mat in range (0, len(MATERIALS)):
+#    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+#    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+#    sim1.scenario['h_RecycledPERC'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
 # In[ ]:
 
 
-#glass recycling
-#eol
-sim1.scenario['h_RecycledPERC'].modifyMaterials('glass', 'mat_PG3_ReMFG_target', 0.0, start_year=2022) #send to recycle
-sim1.scenario['h_RecycledPERC'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100.0, start_year=2022) #send to recycle
-#sim1.scenario['h_RecycledPERC'].modifyMaterials('glass', 'mat_Recycling_yield', 98.0, start_year=2022) #99% yeild
-sim1.scenario['h_RecycledPERC'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', 0.0, start_year=2022) #all HQ
-sim1.scenario['h_RecycledPERC'].modifyMaterials('glass', 'mat_EOL_RecycledHQ_Reused4MFG', 0.0, start_year=2022) #closed-loop
+#modified materials for 71% closed loop recycling in 2050 
+#glass
+matinput_glass_m_improvedRecycle = os.path.join(altBaselinesfolder,'material_mass_glass_improvedRecycle.csv')
+matbaseline_e_glass = os.path.join(baselinesfolder,'baseline_material_energy_glass.csv')
+sim1.scenario['h_RecycledPERC'].addMaterial('glass', massmatfile=matinput_glass_m_improvedRecycle, energymatfile=matbaseline_e_glass)
+#silicon
+matinput_silicon_m_improvedRecycle = os.path.join(altBaselinesfolder,'material_mass_silicon_improvedRecycle.csv')
+matbaseline_e_si = os.path.join(baselinesfolder,'baseline_material_energy_silicon.csv')
+sim1.scenario['h_RecycledPERC'].addMaterial('silicon', massmatfile=matinput_silicon_m_improvedRecycle, energymatfile=matbaseline_e_si)
+#silver
+matinput_silver_m_improvedRecycle = os.path.join(altBaselinesfolder,'material_mass_silver_improvedRecycle.csv')
+matbaseline_e_ag = os.path.join(baselinesfolder,'baseline_material_energy_silver.csv')
+sim1.scenario['h_RecycledPERC'].addMaterial('silver', massmatfile=matinput_silver_m_improvedRecycle, energymatfile=matbaseline_e_ag)
+#aluminium frames
+matinput_Al_m_improvedRecycle = os.path.join(altBaselinesfolder,'material_mass_aluminium_frames_improvedRecycle.csv')
+matbaseline_e_al = os.path.join(baselinesfolder,'baseline_material_energy_aluminium_frames.csv')
+sim1.scenario['h_RecycledPERC'].addMaterial('aluminium_frames', massmatfile=matinput_Al_m_improvedRecycle, energymatfile=matbaseline_e_al)
 
-#silicon recycled
+#standard materials
+baselineMats=['copper', 'encapsulant', 'backsheet']
+for mats in range (0, len(baselineMats)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+baselineMats[mats]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+baselineMats[mats]+'.csv')
+    sim1.scenario['h_RecycledPERC'].addMaterial(baselineMats[mats], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+
+
+# In[ ]:
+
+
+#silicon Fraunhofer style recycled
 #mfg scrap
 sim1.scenario['h_RecycledPERC'].modifyMaterials('silicon', 'mat_MFG_scrap_Recycled', 100.0, start_year=2022) #send mfg scrap to recycle
 sim1.scenario['h_RecycledPERC'].modifyMaterials('silicon', 'mat_MFG_scrap_Recycling_eff', 98.0, start_year=2022) #98% yield
@@ -588,36 +617,6 @@ sim1.scenario['h_RecycledPERC'].modifyMaterials('silicon', 'mat_Recycling_yield'
 sim1.scenario['h_RecycledPERC'].modifyMaterials('silicon', 'mat_EOL_Recycled_into_HQ', 100.0, start_year=2022) #all HQ
 sim1.scenario['h_RecycledPERC'].modifyMaterials('silicon', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
 
-#aluminium_frames recycle
-#mfg scrap
-sim1.scenario['h_RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_MFG_scrap_Recycled', 100.0, start_year=2022) #send mfg scrap to recycle
-sim1.scenario['h_RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_MFG_scrap_Recycling_eff', 98.0, start_year=2022) #98% yield
-sim1.scenario['h_RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_MFG_scrap_Recycled_into_HQ', 100.0, start_year=2022) #all HQ
-sim1.scenario['h_RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
-#eol
-sim1.scenario['h_RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_PG3_ReMFG_target', 0.0, start_year=2022) #send to recycle
-sim1.scenario['h_RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_PG4_Recycling_target', 100.0, start_year=2022) #send to recycle
-sim1.scenario['h_RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_Recycling_yield', 98.0, start_year=2022) #99% yeild
-sim1.scenario['h_RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_EOL_Recycled_into_HQ', 100.0, start_year=2022) #all HQ
-sim1.scenario['h_RecycledPERC'].modifyMaterials('aluminium_frames', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
-
-#silver recycling improvement
-#create improvement series
-idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
-df_silver_recycleimprove = pd.DataFrame(index=idx_temp, columns=['mat_PG4_Recycling_target'], dtype=float)
-df_silver_recycleimprove.loc[2022] = 0
-df_silver_recycleimprove.loc[2030] = 40
-df_silver_recycleimprove.loc[2050] = 100
-df_silver_recycleimprove.interpolate(inplace=True)
-
-#eol
-sim1.scenario['h_RecycledPERC'].modifyMaterials('silver', 'mat_PG3_ReMFG_target', 0.0, start_year=2022) #send to recycle
-sim1.scenario['h_RecycledPERC'].modifyMaterials('silver', 'mat_PG4_Recycling_target',
-                                        df_silver_recycleimprove.loc[2022:,'mat_PG4_Recycling_target'], start_year=2022) 
-sim1.scenario['h_RecycledPERC'].modifyMaterials('silver', 'mat_Recycling_yield', 98.0, start_year=2022) #99% yeild
-sim1.scenario['h_RecycledPERC'].modifyMaterials('silver', 'mat_EOL_Recycled_into_HQ', 100.0, start_year=2022) #all HQ
-sim1.scenario['h_RecycledPERC'].modifyMaterials('silver', 'mat_EOL_RecycledHQ_Reused4MFG', 100.0, start_year=2022) #closed-loop
-
 
 # In[ ]:
 
@@ -629,7 +628,7 @@ altmfgSi_mcSi = pd.read_csv(os.path.join(supportMatfolder, 'output_energy_silico
 # In[ ]:
 
 
-#modify silicon recycling energy
+#modify silicon MFGing energy to be mc-Si
 sim1.scenario['h_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_MFG', 
                                               altmfgSi_mcSi.loc[2022:,'E_MFG_kWhpkg'], start_year=2022)
 sim1.scenario['h_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_MFG_fuelfraction', 
@@ -649,9 +648,11 @@ altHQRecycle_e
 # In[ ]:
 
 
-#modify silicon recycling energy
-sim1.scenario['h_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_Recycled_HQ', altHQRecycle_e.loc[2022:,'E_MFG_kWhpkg'], start_year=2022)
-sim1.scenario['h_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_Recycled_HQ_fuelfraction', altHQRecycle_e.loc[2022:,'E_mfgFuelFraction'], start_year=2022)
+#modify silicon recycling energy to match Fraunhofer ISE CZ process
+sim1.scenario['h_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_Recycled_HQ', 
+                                                     altHQRecycle_e.loc[2022:,'E_MFG_kWhpkg'], start_year=2022)
+sim1.scenario['h_RecycledPERC'].modifyMaterialEnergy('silicon', 'e_mat_Recycled_HQ_fuelfraction', 
+                                                     altHQRecycle_e.loc[2022:,'E_mfgFuelFraction'], start_year=2022)
 
 
 # In[ ]:
@@ -1039,11 +1040,11 @@ sim1.scenario.keys()
 # In[ ]:
 
 
-scennames_ex = ['PV_ICE', 'ex_PERC_50', 'ex_High_eff', 'ex_Perovskite'] #extreme boundaries
+scennames_ex = ['PV_ICE', 'ex_Life', 'ex_High_eff', 'ex_Perovskite'] #extreme boundaries
 scennames_r = ['PV_ICE','r_PERC', 'r_SHJ', 'r_TOPCon', 'r_IRENA'] #realistic cases
 scennames_hyp = ['PV_ICE', 'h_50PERC','h_RecycledPERC', 'h_Perovskite'] #hypothetical modules
 
-scennames_all = ['PV_ICE', 'ex_PERC_50', 'ex_High_eff', 'ex_Perovskite',
+scennames_all = ['PV_ICE', 'ex_Life', 'ex_High_eff', 'ex_Perovskite',
                  'h_50PERC','h_RecycledPERC', 'h_Perovskite',
                 'r_PERC', 'r_SHJ', 'r_TOPCon', 'r_IRENA']
 
@@ -1083,8 +1084,8 @@ IRENAregloss = {'alpha':5.3759,
 
 
 bifiFactors = {'PV_ICE':0.0,
-               'ex_PERC_50':0.35, # ITRPV 2022, Fig. 58, 0.7 but only 50% of market share is bifi 
-               'ex_High_eff': 0.9,
+               'ex_Life':0.35, # ITRPV 2022, Fig. 58, 0.7 but only 50% of market share is bifi 
+               'ex_High_eff': 0.92,
                'ex_Perovskite': 0.0,
                'h_50PERC':0.7,
                'h_RecycledPERC': 0.0,
@@ -1121,7 +1122,7 @@ for f in bifiFactors.keys(): #loop over module types
 for scen in sim1.scenario.keys(): #loop over scenarios
     if scen in ['r_IRENA']: #,'ex_Lightweight'
         sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], weibullInputParams=IRENAregloss)
-    #elif scen in ['ex_PERC_50','h_50PERC']:
+    #elif scen in ['ex_Life','h_50PERC']:
     #    sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], nameplatedeglimit=0.0) 
     else:
         sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen]) 
@@ -1248,7 +1249,7 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
         #calculate flows for that scenario with it's bifi factor and modified weibull
         if scen in ['r_IRENA']: #,'ex_Lightweight'
             sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], weibullInputParams=IRENAregloss)
-        #elif scen in ['ex_PERC_50','h_50PERC']:
+        #elif scen in ['ex_Life','h_50PERC']:
         #    sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen], nameplatedeglimit=0.0) 
         else:
             sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen]) 

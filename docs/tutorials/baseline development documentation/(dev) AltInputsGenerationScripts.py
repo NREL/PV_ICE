@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[65]:
+# In[36]:
 
 
 #Lifetime and Degradation
@@ -21,9 +21,9 @@ cwd = os.getcwd() #grabs current working directory
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
 
 df_shj_eff = pd.DataFrame(index=idx_temp, columns=['mod_eff'], dtype=float)
-df_shj_eff.loc[2022] = 19.0
-df_shj_eff.loc[2030] = 20.5
-df_shj_eff.loc[2050] = 22
+df_shj_eff.loc[2022] = 17.9
+df_shj_eff.loc[2030] = 19.1
+df_shj_eff.loc[2050] = 19.1
 df_shj_eff.interpolate(inplace=True)
 
 df_shj_deg = pd.DataFrame(index=idx_temp, columns=['mod_deg'], dtype=float)
@@ -102,7 +102,7 @@ pd.concat([df_shj_merchanttail,df_shj_modcollect,df_shj_modremfg,df_shj_modrecyc
 
 
 
-# In[ ]:
+# In[4]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -161,7 +161,7 @@ glassimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 100
 glassimprovedrecycle.interpolate()
 
 
-# In[ ]:
+# In[5]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -218,7 +218,7 @@ Siimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 100
 Siimprovedrecycle.interpolate()
 
 
-# In[ ]:
+# In[6]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -275,7 +275,7 @@ Alimprovedrecycle['mat_EOL_RecycledHQ_Reused4MFG'].loc[2050] = 100
 Alimprovedrecycle.interpolate()
 
 
-# In[ ]:
+# In[7]:
 
 
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
@@ -339,13 +339,13 @@ Agimprovedrecycle.interpolate()
 #      (ex) TN0 - x years = TM0
 #      and TN0 = -beta*-np.abs(np.log(1-TN0))^(1/alpha)
 
-# In[2]:
+# In[8]:
 
 
 import PV_ICE
 
 
-# In[3]:
+# In[9]:
 
 
 def alphabeta2T10T50T90(alpha,beta):
@@ -363,14 +363,14 @@ def alphabeta2T90(alpha,beta):
     return T90
 
 
-# In[4]:
+# In[10]:
 
 
 alpha = pd.Series([x / 10.0 for x in range(1, 500,1)])
 beta = pd.Series([x / 10.0 for x in range(1, 1000,1)])
 
 
-# In[5]:
+# In[11]:
 
 
 T50 = pd.Series(range(15,66,1))
@@ -379,7 +379,7 @@ inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 inputsdf
 
 
-# In[6]:
+# In[12]:
 
 
 for row in inputsdf.index:
@@ -396,7 +396,7 @@ inputsdf
 
 
 
-# In[7]:
+# In[13]:
 
 
 T50 = pd.Series([16,19,20,21,24,25,28,33,40])
@@ -405,7 +405,7 @@ inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 inputsdf
 
 
-# In[8]:
+# In[14]:
 
 
 al = pd.Series([44.83, np.nan, 2.56, 5.56])
@@ -414,7 +414,7 @@ inputsdf = pd.concat([al,be],axis=1, keys=['alpha','beta'])
 inputsdf
 
 
-# In[9]:
+# In[18]:
 
 
 for row in inputsdf.index:
@@ -425,7 +425,7 @@ for row in inputsdf.index:
 inputsdf
 
 
-# In[10]:
+# In[19]:
 
 
 params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
@@ -433,25 +433,25 @@ T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
 
-# In[11]:
+# In[20]:
 
 
 alphabeta2T10(5.692,29.697)
 
 
-# In[18]:
+# In[21]:
 
 
 alphabeta2T10T50T90(5.692,29.697)
 
 
-# In[12]:
+# In[22]:
 
 
 #input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
 
 
-# In[13]:
+# In[23]:
 
 
 def projectlife2T50T90(projectlife, N=10, plot=True):
@@ -465,39 +465,39 @@ def projectlife2T50T90(projectlife, N=10, plot=True):
     return T50,T90
 
 
-# In[14]:
+# In[28]:
 
 
-projectlife2T50T90(25)
+projectlife2T50T90(20)
 
 
-# In[15]:
+# In[25]:
 
 
 #Mod Project Lifetime
 idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
 life = pd.DataFrame(index=idx_temp, columns=['mod_lifetime'], dtype=float)
-life.loc[2022] = 15
-life.loc[2030] = 20
-life.loc[2050] = 25
+life.loc[2022] = 20
+#life.loc[2030] = 
+life.loc[2050] = 32
 life.interpolate(inplace=True)
 #life2 = round(life,0)+1
 #pd.concat([life,life2], axis=1)
 
 
-# In[16]:
+# In[35]:
 
 
 df_t50t90 = pd.DataFrame()
-for row in range(0,len(life)):
-    T50,T90 = projectlife2T50T90(life.iloc[row,0])
+for row in life.index:
+    T50,T90 = projectlife2T50T90(life.loc[row,'mod_lifetime'])
     df_t50t90.loc[row,'T50'] = T50
     df_t50t90.loc[row,'T90'] = T90
     
-df_t50t90
+pd.concat([round(life,0),df_t50t90],axis=1)
 
 
-# In[17]:
+# In[27]:
 
 
 #checking T90 from Ab et al 2018
