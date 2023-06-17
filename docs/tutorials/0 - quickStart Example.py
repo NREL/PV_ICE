@@ -41,15 +41,18 @@ print("Successfully imported PV_ICE, version ", PV_ICE.__version__)
 # In[2]:
 
 
-testfolder = str(Path().resolve() / 'TEMP') # Path to the simulation folder.
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'Tutorial0') # Path to the simulation folder.
 
-baselinesfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines')  # Path to baselines and data.
+baselinesfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines')  # Path to baselines and data.
 
 # Another option using relative address; for some operative systems you might need '/' instead of '\'
 # testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
 
 print ("Your simulation will be stored in %s" % testfolder)
 print ("Your baselines are stored in %s" % baselinesfolder)
+
+if not os.path.exists(testfolder):
+    os.makedirs(testfolder)
 
 
 # ## 0.2.  Create Simulation Object <a id='0.2'></a>
@@ -62,28 +65,45 @@ print ("Your baselines are stored in %s" % baselinesfolder)
 # In[3]:
 
 
-wr0 = PV_ICE.Simulation(name='Simulation_1', path=testfolder); # Is it possible to define more than one simulation here?
-print(r0.name) # Shows the name of the simulation object
-print(r0.path) # Shows the path of the simulation object
-
-
-# In[ ]:
-
-
-r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
+r1 = PV_ICE.Simulation(name='Simulation_1', path=testfolder); # Is it possible to define more than one simulation here?
+print(r1.name) # Shows the name of the simulation object
+print(r1.path) # Shows the path of the simulation object
 
 
 # ### 3. Specify your baseline Scenario 
 # 
 # We have put together scenarios representing the average module for various situations, for example throughout the US history. We will load this baseline scenario now, and it will be named ``standard``:
 
-# In[ ]:
+# In[4]:
 
 
-r1.createScenario(name='standard', file=r'..\baselines\baseline_modules_US.csv')
+r1.createScenario(name='standard')
 
 
-# If a file is not provided, the automatic file loader will pop-up.
+# If no massmodulefile baseline is passed, it will print out all of the options as above. 
+
+# In[5]:
+
+
+r1.createScenario(name='standard', massmodulefile='baseline_modules_mass_US.csv')
+
+
+# Other ways of passing the file include passing the whole path as below:
+
+# In[6]:
+
+
+r1.createScenario(name='standard', massmodulefile=os.path.join(baselinesfolder,'baseline_modules_mass_US.csv'))
+
+
+# In[7]:
+
+
+##  Alternative method
+# modulefile = r'C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\baselines\baseline_modules_mass_US.csv'
+# r1.createScenario(name='standard', massmodulefile=modulefile)
+
+
 # 
 # 
 # 
@@ -91,31 +111,74 @@ r1.createScenario(name='standard', file=r'..\baselines\baseline_modules_US.csv')
 # 
 # We will add the material 'glass' to our simulation. Years of data must match, and they do if using the provided baselines.
 
-# In[ ]:
+# In[8]:
 
 
-r1.scenario['standard'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
+r1.scenario['standard'].addMaterials(['glass'])
+
+
+# In[9]:
+
+
+r1.scenario['standard'].material['glass'].__dict__
 
 
 # ### 5. Run the Mass Flow with Circular Pathways Calculations
 
-# In[ ]:
+# In[10]:
 
 
 r1.calculateMassFlow()
 
 
-# In[ ]:
+# In[11]:
 
 
-r1.scenario['standard'].data.head()
+r1.scenario['standard'].dataOut_m.head()
+
+
+# In[12]:
+
+
+USyearly, UScum = r1.aggregateResults()
+
+
+# In[13]:
+
+
+r1.saveSimulation()
 
 
 # ###  6. Plot Mass Flow Results
 
-# In[ ]:
+# PV_ICE can also plot the massflow simulation results so you can visualize and interpret the results of your simulation. To see the plotting options, run the plotting method with no inputs:
+
+# From this list, select the one that fits your study and select the type of plotting method. There are various plotting options:
+# * `plotScenariosComparison`:
+# * `plotMaterialComparisonAcrossScenarios`:
+# * `plotMetricResults`: You can select the following keyword options: 'VirginStock', 'WasteALL', 'WasteEOL', 'WasteMFG'
+# * `plotMaterialResults`:
+# * `plotInstalledCapacityResults`:
+# 
+
+# In[14]:
 
 
-r1.plotScenariosComparison(keyword='Cumulative_Area_disposedby_Failure')
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_EOL_Recycled_2_HQ')
+
+
+# You can also view all the keywords you can use by calling the function without argumnets:
+
+# In[15]:
+
+
+r1.plotScenariosComparison()
+
+
+# Or you can print the dataframe keys
+
+# In[16]:
+
+
+list(r1.scenario[list(r1.scenario.keys())[0]].dataIn_m.keys())
 

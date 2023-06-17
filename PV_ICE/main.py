@@ -323,7 +323,7 @@ class Simulation:
 
     """
 
-    def __init__(self, name=None, path=None):
+    def __init__(self, name=None, path=None, baselinepath=None):
         '''
         initialize ScenarioObj with path of Scenario's baseline of module and
         materials as well as a basename to append to
@@ -355,6 +355,12 @@ class Simulation:
         else:
             self.name = name
 
+        if baselinepath is None:
+            self.baselinepath = DATA_PATH
+            print("Baseline folder directed to default: ", DATA_PATH)
+        else:
+            self.baselinepath = baselinepath
+
         self.scenario = {}
 
     def _setPath(self, path):
@@ -385,6 +391,44 @@ class Simulation:
 
     def createScenario(self, name, massmodulefile=None, energymodulefile=None,
                        file=None):
+
+        import re
+        
+        if file is not None:
+            print("Please use massmodulefile or energymodulefile as inputs " +
+                  " to this function.")
+            return
+        
+        if massmodulefile is None:
+            files = [f for f in os.listdir(DATA_PATH) if re.match(
+                r'baseline_modules_mass', f)]
+            print("Please pass one of the following options: ", files)
+            return
+        elif os.path.isfile(massmodulefile) is False:
+            if os.path.isfile(os.path.join(self.baselinepath, massmodulefile)):
+                massmodulefile = os.path.join(self.baselinepath,
+                                              massmodulefile)
+            else:
+                print('File not found, check path to folder if passed is ' +
+                      'correct or that baseline folder is correct',
+                      massmodulefile)
+                return
+
+        if energymodulefile is None:
+            files = [f for f in os.listdir(DATA_PATH) if re.match(
+                r'baseline_modules_energy', f)]
+            print("No energy module file passed. If desired, pass one of the" +
+                  " following options: ", files)
+        elif os.path.isfile(energymodulefile) is False:
+            if os.path.isfile(os.path.join(self.baselinepath,
+                                           energymodulefile)):
+                energymodulefile = os.path.join(self.baselinepath,
+                                                energymodulefile)
+            else:
+                print('File not found, check path to folder if passed is ' +
+                      'correct or that baseline folder is correct',
+                      energymodulefile)
+                return
 
         self.scenario[name] = Scenario(name, file=file,
                                        massmodulefile=massmodulefile,
@@ -2214,16 +2258,17 @@ class Simulation:
 
         if keyword is None:
             # TODO: Not ideal way to provide this info, but will have to work for this release.
-            scens = list(self.scenario.keys())[0]
-            try:
-                print("Choose one of the keywords: ", 
-                  "\n ** Scenario Data In Mass ", list(self.scenario[scens].dataIn_m.keys()),
-                  "\n ** Scenario Data In Energy ", list(self.scenario[scens].dataIn_e.keys()),
-                  "\n ** Scenario Data Out Mass ", list(self.scenario[scens].dataOut_m.keys()),
-                  "\n ** Scenario Data Out Mass ", list(self.scenario[scens].dataOut_e.keys())
-                  )
-            except:
-                print("Please pass a keyword.")
+            scen = list(self.scenario.keys())[0]
+            print("Please pass a keyword:")
+            if hasattr(self.scenario[scen], 'dataIn_m'):
+              print("\n ** Scenario Data In Mass ", list(self.scenario[scen].dataIn_m.keys()))
+            if hasattr(self.scenario[scen], 'dataOut_m'):
+              print("\n ** Scenario Data Out Mass ", list(self.scenario[scen].dataOut_m.keys()))
+            if hasattr(self.scenario[scen], 'dataIn_e'):
+              print("\n ** Scenario Data In Energy ", list(self.scenario[scen].dataIn_e.keys()))
+            if hasattr(self.scenario[scen], 'dataOut_e'):
+              print("\n ** Scenario Data Out Energy ", list(self.scenario[scen].dataOut_e.keys()))
+                  
             return
 
         
@@ -2232,20 +2277,26 @@ class Simulation:
         plt.figure()
 
         
-        for scen in scenarios:       
+        for scen in scenarios:      
+            if hasattr(self.scenario[scen], 'dataIn_e'):
+                dataIn_e = True
+            else:
+                dataIn_e = False
+                
             # Not very elegant but works?
             if keyword in self.scenario[scen].dataIn_m:                
                 plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataIn_m[keyword], label=scen)
-            elif keyword in self.scenario[scen].dataIn_e: 
-                plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataIn_e[keyword], label=scen) 
-                # the year column is not getting added to the dataOut DFs
-            elif keyword in self.scenario[scen].dataIn_m: 
+            elif keyword in self.scenario[scen].dataOut_m: 
                 plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataOut_m[keyword], label=scen)
-            elif keyword in self.scenario[scen].dataIn_e: 
-                plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataOut_e[keyword], label=scen)
-            else:
-                print("No data for ", keyword, "for Scenario ", scen)
-        plt.legend()
+            elif dataIn_e:
+                if keyword in self.scenario[scen].dataIn_e: 
+                    plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataIn_e[keyword], label=scen) 
+                # the year column is not getting added to the dataOut DFs   
+                elif keyword in self.scenario[scen].dataOut_e: 
+                    plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataOut_e[keyword], label=scen)
+                else:
+                    print("No data for ", keyword, "for Scenario ", scen)
+            plt.legend()
         plt.xlabel('Year')
         plt.title(keyword.replace('_', " "))
         plt.ylabel(yunits)
