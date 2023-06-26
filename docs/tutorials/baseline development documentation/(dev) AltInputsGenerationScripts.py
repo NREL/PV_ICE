@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[36]:
+# In[37]:
 
 
 #Lifetime and Degradation
@@ -22,14 +22,14 @@ idx_temp = pd.RangeIndex(start=2022,stop=2051,step=1) #create the index
 
 df_shj_eff = pd.DataFrame(index=idx_temp, columns=['mod_eff'], dtype=float)
 df_shj_eff.loc[2022] = 17.9
-df_shj_eff.loc[2030] = 19.1
-df_shj_eff.loc[2050] = 19.1
+#df_shj_eff.loc[2040] = 22
+df_shj_eff.loc[2050] = 27.3
 df_shj_eff.interpolate(inplace=True)
 
 df_shj_deg = pd.DataFrame(index=idx_temp, columns=['mod_deg'], dtype=float)
-df_shj_deg.loc[2022] = 0.8
-df_shj_deg.loc[2030] = 0.7
-df_shj_deg.loc[2050] = 0.63
+df_shj_deg.loc[2022] = 1.1
+#df_shj_deg.loc[2030] = 0.7
+df_shj_deg.loc[2050] = 0.73
 df_shj_deg.interpolate(inplace=True)
 
 #degradation rate:
@@ -37,9 +37,9 @@ df_shj_deg.interpolate(inplace=True)
 
 #Mod Project Lifetime
 df_shj_life = pd.DataFrame(index=idx_temp, columns=['mod_lifetime'], dtype=float)
-df_shj_life.loc[2022] = 14
-df_shj_life.loc[2030] = 19
-df_shj_life.loc[2050] = 24
+df_shj_life.loc[2022] = 25
+#df_shj_life.loc[2030] = 19
+df_shj_life.loc[2050] = 40
 df_shj_life.interpolate(inplace=True)
 #sim1.modifyScenario('SHJ', 'mod_lifetime', df_shj_life.loc[2022:,'mod_lifetime'], start_year=2022) #
 
@@ -414,7 +414,7 @@ inputsdf = pd.concat([al,be],axis=1, keys=['alpha','beta'])
 inputsdf
 
 
-# In[18]:
+# In[15]:
 
 
 for row in inputsdf.index:
@@ -425,7 +425,7 @@ for row in inputsdf.index:
 inputsdf
 
 
-# In[19]:
+# In[16]:
 
 
 params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
@@ -433,25 +433,25 @@ T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
 
-# In[20]:
+# In[17]:
 
 
 alphabeta2T10(5.692,29.697)
 
 
-# In[21]:
+# In[18]:
 
 
 alphabeta2T10T50T90(5.692,29.697)
 
 
-# In[22]:
+# In[19]:
 
 
 #input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
 
 
-# In[23]:
+# In[20]:
 
 
 def projectlife2T50T90(projectlife, N=10, plot=True):
@@ -465,13 +465,13 @@ def projectlife2T50T90(projectlife, N=10, plot=True):
     return T50,T90
 
 
-# In[28]:
+# In[21]:
 
 
 projectlife2T50T90(20)
 
 
-# In[25]:
+# In[33]:
 
 
 #Mod Project Lifetime
@@ -485,7 +485,7 @@ life.interpolate(inplace=True)
 #pd.concat([life,life2], axis=1)
 
 
-# In[35]:
+# In[34]:
 
 
 df_t50t90 = pd.DataFrame()
@@ -497,7 +497,7 @@ for row in life.index:
 pd.concat([round(life,0),df_t50t90],axis=1)
 
 
-# In[27]:
+# In[24]:
 
 
 #checking T90 from Ab et al 2018
