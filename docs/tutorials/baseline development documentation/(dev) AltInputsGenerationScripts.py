@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[37]:
+# In[2]:
 
 
 #Lifetime and Degradation
@@ -405,16 +405,12 @@ inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 inputsdf
 
 
+# al = pd.Series([44.83, np.nan, 2.56, 5.56])
+# be = pd.Series([, np.nan, 25, 30])
+# inputsdf = pd.concat([al,be],axis=1, keys=['alpha','beta'])
+# inputsdf
+
 # In[14]:
-
-
-al = pd.Series([44.83, np.nan, 2.56, 5.56])
-be = pd.Series([, np.nan, 25, 30])
-inputsdf = pd.concat([al,be],axis=1, keys=['alpha','beta'])
-inputsdf
-
-
-# In[15]:
 
 
 for row in inputsdf.index:
@@ -425,7 +421,7 @@ for row in inputsdf.index:
 inputsdf
 
 
-# In[16]:
+# In[15]:
 
 
 params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
@@ -433,25 +429,25 @@ T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
 
-# In[17]:
+# In[16]:
 
 
 alphabeta2T10(5.692,29.697)
 
 
-# In[18]:
+# In[17]:
 
 
 alphabeta2T10T50T90(5.692,29.697)
 
 
-# In[19]:
+# In[18]:
 
 
 #input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
 
 
-# In[20]:
+# In[19]:
 
 
 def projectlife2T50T90(projectlife, N=10, plot=True):
@@ -465,13 +461,13 @@ def projectlife2T50T90(projectlife, N=10, plot=True):
     return T50,T90
 
 
-# In[21]:
+# In[20]:
 
 
 projectlife2T50T90(20)
 
 
-# In[33]:
+# In[21]:
 
 
 #Mod Project Lifetime
@@ -485,7 +481,7 @@ life.interpolate(inplace=True)
 #pd.concat([life,life2], axis=1)
 
 
-# In[34]:
+# In[22]:
 
 
 df_t50t90 = pd.DataFrame()
@@ -497,7 +493,7 @@ for row in life.index:
 pd.concat([round(life,0),df_t50t90],axis=1)
 
 
-# In[24]:
+# In[23]:
 
 
 #checking T90 from Ab et al 2018
