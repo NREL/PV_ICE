@@ -572,7 +572,7 @@ class Simulation:
 
     def calculateMassFlow(self, scenarios=None, materials=None,
                           weibullInputParams=None, bifacialityfactors=None,
-                          reducecapacity=True, debugflag=False,
+                          reducecapacity=False, debugflag=False,
                           installByArea=None, nameplatedeglimit=None,
                           secondlifenameplatedeglimit = None):
         '''
