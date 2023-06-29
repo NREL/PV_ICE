@@ -1485,45 +1485,41 @@ plt.title('Annual Installs with Replacements')
 plt.ylim(0,)
 
 
-# In[102]:
-
-
-annual_installs_TW = cc_yearly.filter(like='newInstalled')/1e6
-
-plt.plot(global_projection['World_annual_[MWdc]']/1e6, label='Min. Deployment', ls='dashdot')
-
-#extremes
-plt.plot(annual_installs_TW.iloc[:,5:8], label = scennames_labels_flat[5:8]) #, color=colorpalette[5:8])
-#create glowlines for idealized scens
-n_lines = 10
-diff_linewidth = 1.05
-alpha_value = 0.05
-for n in range(1, n_lines+1):    
-    plt.plot(annual_installs_TW.iloc[:,5],
-            linewidth=2+(diff_linewidth*n),
-            alpha=alpha_value,
-            color=colorpalette[5])
-
-for n in range(1, n_lines+1):    
-    plt.plot(annual_installs_TW.iloc[:,6],
-            linewidth=2+(diff_linewidth*n),
-            alpha=alpha_value,
-            color=colorpalette[6])
-
-for n in range(1, n_lines+1):    
-    plt.plot(annual_installs_TW.iloc[:,7],
-            linewidth=2+(diff_linewidth*n),
-            alpha=alpha_value,
-            color=colorpalette[7])
-
-plt.legend()
-plt.ylabel('Annual installed [TW]')
-plt.title('Annual Installs with Replacements')
-plt.ylim(0,)
-plt.xlim(2000,2100)
-
-plt.savefig('energyresults-annualdeployment.png', dpi=300, bbox_inches='tight')
-
+# annual_installs_TW = cc_yearly.filter(like='newInstalled')/1e6
+# 
+# plt.plot(global_projection['World_annual_[MWdc]']/1e6, label='Min. Deployment', ls='dashdot')
+# 
+# #extremes
+# plt.plot(annual_installs_TW.iloc[:,5:8], label = scennames_labels_flat[5:8]) #, color=colorpalette[5:8])
+# #create glowlines for idealized scens
+# n_lines = 10
+# diff_linewidth = 1.05
+# alpha_value = 0.05
+# for n in range(1, n_lines+1):    
+#     plt.plot(annual_installs_TW.iloc[:,5],
+#             linewidth=2+(diff_linewidth*n),
+#             alpha=alpha_value,
+#             color=colorpalette[5])
+# 
+# for n in range(1, n_lines+1):    
+#     plt.plot(annual_installs_TW.iloc[:,6],
+#             linewidth=2+(diff_linewidth*n),
+#             alpha=alpha_value,
+#             color=colorpalette[6])
+# 
+# for n in range(1, n_lines+1):    
+#     plt.plot(annual_installs_TW.iloc[:,7],
+#             linewidth=2+(diff_linewidth*n),
+#             alpha=alpha_value,
+#             color=colorpalette[7])
+# 
+# plt.legend()
+# plt.ylabel('Annual installed [TW]')
+# plt.title('Annual Installs with Replacements')
+# plt.ylim(0,)
+# plt.xlim(2000,2100)
+# 
+# plt.savefig('energyresults-annualdeployment.png', dpi=300, bbox_inches='tight')
 
 # #### Fixing Jagged Lines
 
