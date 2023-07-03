@@ -2194,26 +2194,7 @@ class Simulation:
             if isinstance(materials, str):
                 materials = [materials]
         
-        #module level energy
-        energy_mod=pd.DataFrame()
-        for scen in scenarios:
-            # add the scen name as a prefix 
-            scende = self.scenario[scen].dataOut_e.add_prefix(str(scen+'_'))
-            #concat into one large df
-            energy_mod = pd.concat([energy_mod, scende], axis=1)
-        
-        #material level energy
-        energy_mat = pd.DataFrame()
-        for scen in scenarios:
-            for mat in materials:
-                # add the scen name as a prefix 
-                scenmatde = self.scenario[scen].material[mat].matdataOut_e.add_prefix(str(scen+'_'+mat+'_'))
-                #concat into one large df
-                energy_mat = pd.concat([energy_mat, scenmatde], axis=1)
-        #compile module and material energies into one df
-        allenergy = pd.concat([energy_mod,energy_mat], axis=1) #this will be one of the returned dataframes
-        
-        #categorize the energy in values into lifecycle stages
+        #TODO: categorize the energy in values into lifecycle stages
         mfg_energies = ['mod_MFG','mat_extraction','mat_MFG_virgin']
         mfg_recycle_energies_LQ = ['mat_MFGScrap_LQ'] #LQ and HQ are separate becuase LQ is only LQ
         mfg_recycle_energies_HQ = ['mat_MFGScrap_HQ'] #and HQ material is E_LQ + E_HQ
@@ -2226,25 +2207,52 @@ class Simulation:
         energy_demands_keys = [mfg_energies,mfg_recycle_energies_LQ,mfg_recycle_energies_HQ,use_energies,eol_energies,eol_remfg_energies,eol_recycle_energies_LQ,eol_recycle_energies_HQ]
         energy_demands_flat = list(itertools.chain(*energy_demands_keys))
         
-        #TO DO: organize energy demands into lifecycle stages
         
-        energyGen = allenergy.filter(like='e_out_annual') #select all columns of energy generation
-        energyFuel = allenergy.filter(like='_fuel') #select all columns of fuel attributable
-        energy_demands_1 = allenergy.loc[:,~allenergy.columns.isin(energyGen.columns)] #select all columns that are NOT energy generation, i.e. demands
-        energy_demands = energy_demands_1.loc[:,~energy_demands_1.columns.isin(energyFuel.columns)] #select all columns that are NOT fuel (this avoids double counting)
+        allenergy = pd.DataFrame()
+        energyGen = pd.DataFrame()
+        energyFuel = pd.DataFrame()
+        energy_mod=pd.DataFrame()
+        energy_mat = pd.DataFrame()
+        energy_demands = pd.DataFrame()
 
-        for scen in scenarios: #sum the lifecycle energy demands
+        for scen in scenarios:
+            # add the scen name as a prefix 
+            scende = self.scenario[scen].dataOut_e.add_prefix(str(scen+'_'))
+            #concat into one large df
+            #energy_mod = pd.concat([energy_mod, scende], axis=1)
+            
+            #material level energy
+            for mat in materials:
+                # add the scen name as a prefix 
+                scenmatde = self.scenario[scen].material[mat].matdataOut_e.add_prefix(str(scen+'_'+mat+'_'))
+                #concat into one large df
+                #energy_mat = pd.concat([energy_mat, scenmatde], axis=1)
+            
+            #compile module and material energies into one df
+            allenergy_scen = pd.concat([scende,scenmatde], axis=1) #df of mod and mat energy for scenario
+            
+            #select df to sum the total demand
+            energyGen_scen = allenergy_scen.filter(like='e_out_annual') #select all columns of energy generation
+            energyFuel_scen = allenergy_scen.filter(like='_fuel') #select all columns of fuel attributable
+            energy_demands_1 = allenergy_scen.loc[:,~allenergy_scen.columns.isin(energyGen_scen.columns)] #select all columns that are NOT energy generation, i.e. demands
+            energy_demands_scen = energy_demands_1.loc[:,~energy_demands_1.columns.isin(energyFuel_scen.columns)] #select all columns that are NOT fuel (this avoids double counting)
             colname = str(scen+'_e_demand_total')
-            energy_demands[colname] = energy_demands.filter(like=scen).sum(axis=1)
+            energy_demands_scen.loc[:,colname] = energy_demands_scen.sum(axis=1)
+            
+            allenergy = pd.concat([allenergy,allenergy_scen], axis=1)
+            energyGen = pd.concat([energyGen,energyGen_scen], axis=1)
+            energyFuel = pd.concat([energyFuel,energyFuel_scen], axis=1)
+            energy_demands = pd.concat([energy_demands,energy_demands_scen], axis=1)
+        
         
         #Fix the index to be years
         allenergy.index = self.scenario[scen].dataIn_e['year']
         energyGen.index = self.scenario[scen].dataIn_e['year']
         energyFuel.index = self.scenario[scen].dataIn_e['year']
         energy_demands.index = self.scenario[scen].dataIn_e['year']
-        
+                
         energy_demands = pd.concat([energy_demands,energyFuel], axis=1) #append fuel energy columns back onto energy demands
-        
+                
         return allenergy, energyGen, energy_demands #note, all these are annual
         
 
