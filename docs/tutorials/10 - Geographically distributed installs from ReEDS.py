@@ -21,7 +21,7 @@
 # o	95-by-35+Elec.Adv+DR ones
 # 
 
-# In[ ]:
+# In[1]:
 
 
 import PV_ICE
@@ -34,19 +34,19 @@ plt.rcParams.update({'font.size': 22})
 plt.rcParams['figure.figsize'] = (12, 8)
 
 
-# In[ ]:
+# In[2]:
 
 
 PV_ICE.__version__
 
 
-# In[ ]:
+# In[3]:
 
 
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'TEMP' / 'PCA')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'PCA')
 
 if not os.path.exists(testfolder):
     os.makedirs(testfolder)
