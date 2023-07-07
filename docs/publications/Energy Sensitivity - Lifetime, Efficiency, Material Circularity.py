@@ -182,7 +182,7 @@ sim1.modifyScenario('eff_low', 'mod_eff',
 
 
 # ### Material Circularity
-# Here, we will use recycling as a stand in for the forms of material circularity. We set to 0 or 100%.
+# Here, we will use recycling as a stand in for the forms of material circularity. We set to 0 or 25% closed loop (through yield). The other variables are being changed by ~25% as well.
 
 # In[9]:
 
@@ -208,6 +208,7 @@ for var in range(0,len(mod_circ_vars)):
 for mat in range (0, len(MATERIALS)):
     for mvar in range(0,len(mat_circ_vars)):
         sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
+        sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], 'mat_Recycling_yield',25.0, start_year=2022) #
 
 #-----------------------------------------------------------------------------------------------------------
 
@@ -1089,9 +1090,9 @@ discussTable_norm
 
 
 # # Sensitivity of Energy to Circularity
-# Above it appears that both increasing and decreasing circularity reduce energy demands, which would imply there might be a bell curve or threshold situation.
+# Above it appears that both increasing and decreasing circularity reduce energy demands, which would imply there might be a bell curve or threshold situation. OR more likely, open vs closed loop matters a lot.
 
-# In[ ]:
+# In[37]:
 
 
 #load in a baseline and materials for modification
@@ -1110,7 +1111,7 @@ for mat in range (0, len(MATERIALS)):
 
 
 
-# In[9]:
+# In[38]:
 
 
 mod_circ_vars = ['mod_EOL_collection_eff', 'mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
@@ -1119,59 +1120,67 @@ mat_circ_vars = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_M
                  'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG']
 
 
-# In[ ]:
+# In[39]:
 
 
-#range of circularity / closed loop vs downcycled
+#range of circularity / closed loop vs downcycling
+rrates = pd.Series(range(0,101,10))
+for r in range(0,len(rrates)): print(rrates[r])
 
 
-# In[10]:
+# In[40]:
 
 
-sim3.createScenario(name='circ_high', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
-for mat in range (0, len(MATERIALS)):
-    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
-    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
-    sim3.scenario['circ_high'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+#closed loop at various rates
+for r in range(0,len(rrates)):
+    scenname = 'circ_CL_'+str(rrates[r])
+    sim3.createScenario(name=scenname, massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+    for mat in range (0, len(MATERIALS)):
+        matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+        matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+        sim3.scenario[scenname].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
     
-for var in range(0,len(mod_circ_vars)):
-    sim3.modifyScenario('circ_high', mod_circ_vars[var], 100.0, start_year=2022) #
+    for var in range(0,len(mod_circ_vars)):
+        sim3.modifyScenario(scenname, mod_circ_vars[var], 100.0, start_year=2022) #
 
-for mat in range (0, len(MATERIALS)):
-    for mvar in range(0,len(mat_circ_vars)):
-        sim3.scenario['circ_high'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
+    for mat in range (0, len(MATERIALS)):
+        for mvar in range(0,len(mat_circ_vars)):
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar], 100.0, start_year=2022) #
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_Recycling_yield', rrates[r], start_year=2022) #
 
-#-----------------------------------------------------------------------------------------------------------
 
-sim1.createScenario(name='circ_low', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
-for mat in range (0, len(MATERIALS)):
-    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
-    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
-    sim1.scenario['circ_low'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+# In[41]:
+
+
+#open loop at various rates
+for r in range(0,len(rrates)):
+    scenname = 'circ_OL_'+str(rrates[r])
+    sim3.createScenario(name=scenname, massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+    for mat in range (0, len(MATERIALS)):
+        matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+        matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+        sim3.scenario[scenname].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
     
-for var in range(0,len(mod_circ_vars)):
-    sim1.modifyScenario('circ_low', mod_circ_vars[var],0.0, start_year=2022) #
+    for var in range(0,len(mod_circ_vars)):
+        sim3.modifyScenario(scenname, mod_circ_vars[var], 100.0, start_year=2022) #
 
-for mat in range (0, len(MATERIALS)):
-    for mvar in range(0,len(mat_circ_vars)):
-        sim1.scenario['circ_low'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],0.0, start_year=2022) #
-
-
-# In[ ]:
-
-
+    for mat in range (0, len(MATERIALS)):
+        for mvar in range(0,len(mat_circ_vars)):
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar], 100.0, start_year=2022) #
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_Recycling_yield', rrates[r], start_year=2022) #
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_MFG_scrap_Recycled_into_HQ', 0.0, start_year=2022) #
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_EOL_RecycledHQ_Reused4MFG', 0.0, start_year=2022) #
 
 
-
-# In[11]:
+# In[42]:
 
 
 #trim to start in 2000, this trims module and materials
 #had to specify and end year, cannot use to extend
-sim1.trim_Years(startYear=2000, endYear=2100)
+sim3.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[12]:
+# In[43]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -1192,37 +1201,37 @@ global_projection.iloc[-1,:]
 #fig.savefig('energyresults-deployment.png', dpi=300, bbox_inches='tight')
 
 
-# In[13]:
+# In[44]:
 
 
 #deployment projection for all scenarios
-sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
+sim3.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
                     value= global_projection['World_annual_[MWdc]'], start_year=2000)
 
 
-# In[ ]:
+# In[45]:
 
 
+sim3.calculateMassFlow()
 
 
-
-# In[22]:
+# In[47]:
 
 
 UnderInstall_df = pd.DataFrame()
 
 
-for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of years
+for row in range (0,len(sim3.scenario['PV_ICE'].dataIn_m)): #loop over length of years
     print(row)
-    for scen in sim1.scenario.keys(): #loop over scenarios
+    for scen in sim3.scenario.keys(): #loop over scenarios
         print(scen)
-        Under_Installment = global_projection.iloc[row,0] - ((sim1.scenario[scen].dataOut_m['Effective_Capacity_[W]'][row])/1e6)  # MWATTS
-        sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
+        Under_Installment = global_projection.iloc[row,0] - ((sim3.scenario[scen].dataOut_m['Effective_Capacity_[W]'][row])/1e6)  # MWATTS
+        sim3.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
         UnderInstall_df.loc[row,scen] = Under_Installment #save the underinstallment as df
         #calculate flows for that scenario with it's bifi factor and modified weibull
-        sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen])
+        sim3.calculateMassFlow(scenarios=[scen])
 
-sim1.calculateEnergyFlow()
+sim3.calculateEnergyFlow()
 
 
 # In[ ]:
