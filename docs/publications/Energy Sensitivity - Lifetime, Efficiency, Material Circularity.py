@@ -70,7 +70,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[5]:
+# In[17]:
 
 
 #load in a baseline and materials for modification
@@ -86,7 +86,7 @@ for mat in range (0, len(MATERIALS)):
 # ## Create Sensitivity Scenarios
 # First, examine only the effect of one set of parameters (life, eff, material circularity) at a time. Possibly get to interactions.
 
-# In[6]:
+# In[18]:
 
 
 timeshift = 2022-1995
@@ -94,7 +94,7 @@ timeshift = 2022-1995
 
 # ### Life
 
-# In[7]:
+# In[19]:
 
 
 #life sensitivity
@@ -146,7 +146,7 @@ sim1.modifyScenario('life_low', 'mod_lifetime',
 
 # ### Efficiency
 
-# In[8]:
+# In[52]:
 
 
 sim1.createScenario(name='eff_high', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -181,10 +181,16 @@ sim1.modifyScenario('eff_low', 'mod_eff',
                     sim1.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_eff']-5, start_year=2022) #
 
 
+# In[53]:
+
+
+sim1.scenario['eff_low'].dataIn_m.loc[24:31]
+
+
 # ### Material Circularity
 # Here, we will use recycling as a stand in for the forms of material circularity. We set to 0 or 25% closed loop (through yield). The other variables are being changed by ~25% as well.
 
-# In[9]:
+# In[25]:
 
 
 mod_circ_vars = ['mod_EOL_collection_eff', 'mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
@@ -193,7 +199,7 @@ mat_circ_vars = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_M
                  'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG']
 
 
-# In[10]:
+# In[30]:
 
 
 sim1.createScenario(name='circ_high', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -218,18 +224,23 @@ for mat in range (0, len(MATERIALS)):
     matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
     sim1.scenario['circ_low'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
     
+#sim1.scenMod_noCircularity(scenarios='circ_low') #sets all years to 0
+    
 for var in range(0,len(mod_circ_vars)):
     sim1.modifyScenario('circ_low', mod_circ_vars[var],0.0, start_year=2022) #
+
+sim1.modifyScenario('circ_low','mod_EOL_pb1_landfill',100.0,start_year=2022)
+sim1.modifyScenario('circ_low','mod_EOL_pg1_landfill',100.0,start_year=2022)
 
 for mat in range (0, len(MATERIALS)):
     for mvar in range(0,len(mat_circ_vars)):
         sim1.scenario['circ_low'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],0.0, start_year=2022) #
 
 
-# In[ ]:
+# In[31]:
 
 
-
+sim1.scenario['circ_low'].dataIn_m
 
 
 # In[11]:
@@ -636,7 +647,7 @@ discussTable_norm
 # # Best Combos and Worst Combos
 # Now, what happens when we combine these?
 
-# In[36]:
+# In[7]:
 
 
 #load in a baseline and materials for modification
@@ -649,7 +660,7 @@ for mat in range (0, len(MATERIALS)):
     sim2.scenario['PV_ICE'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[37]:
+# In[8]:
 
 
 mod_circ_vars = ['mod_EOL_collection_eff', 'mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
@@ -660,7 +671,7 @@ mat_circ_vars = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_M
 
 # ### Good Combos
 
-# In[38]:
+# In[9]:
 
 
 #Life+Eff
@@ -690,7 +701,7 @@ sim2.modifyScenario('good_eff_life', 'mod_eff',
 
 
 
-# In[39]:
+# In[10]:
 
 
 #Eff+Circ
@@ -712,7 +723,7 @@ sim2.modifyScenario('good_eff_circ', 'mod_eff',
                     sim2.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_eff']+5, start_year=2022) #
 
 
-# In[40]:
+# In[11]:
 
 
 #Life+Circ
@@ -748,7 +759,7 @@ for mat in range (0, len(MATERIALS)):
 
 # ### Bad Combos
 
-# In[41]:
+# In[12]:
 
 
 #life eff
@@ -776,7 +787,7 @@ sim2.modifyScenario('bad_life_eff', 'mod_eff',
                     sim2.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_eff']-5, start_year=2022) #
 
 
-# In[42]:
+# In[56]:
 
 
 #eff circ
@@ -786,18 +797,23 @@ for mat in range (0, len(MATERIALS)):
     matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
     sim2.scenario['bad_eff_circ'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
-sim2.modifyScenario('bad_life_eff', 'mod_eff', 
-                    sim2.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_eff']-5, start_year=2022) #    
+sim2.modifyScenario('bad_eff_circ', 'mod_eff', 
+                    sim2.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_eff']-5, start_year=2022) #
+
+#sim2.scenMod_noCircularity(scenarios='bad_life_eff')
 
 for var in range(0,len(mod_circ_vars)):
     sim2.modifyScenario('bad_eff_circ', mod_circ_vars[var],0.0, start_year=2022) #
 
+sim2.modifyScenario('bad_eff_circ','mod_EOL_pb1_landfill',100.0,start_year=2022)
+sim2.modifyScenario('bad_eff_circ','mod_EOL_pg1_landfill',100.0,start_year=2022)
+    
 for mat in range (0, len(MATERIALS)):
     for mvar in range(0,len(mat_circ_vars)):
         sim2.scenario['bad_eff_circ'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],0.0, start_year=2022) #
 
 
-# In[43]:
+# In[35]:
 
 
 #life circ
@@ -821,12 +837,23 @@ sim2.modifyScenario('bad_life_circ', 'mod_lifetime',
                     sim2.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_lifetime']-10, start_year=2022)
     
 #0 circ
+#sim2.scenMod_noCircularity(scenarios='bad_life_circ') #sets all years to 0.0
+
 for var in range(0,len(mod_circ_vars)):
     sim2.modifyScenario('bad_life_circ', mod_circ_vars[var],0.0, start_year=2022) #
+
+sim2.modifyScenario('bad_life_circ','mod_EOL_pb1_landfill',100.0,start_year=2022)
+sim2.modifyScenario('bad_life_circ','mod_EOL_pg1_landfill',100.0,start_year=2022)
 
 for mat in range (0, len(MATERIALS)):
     for mvar in range(0,len(mat_circ_vars)):
         sim2.scenario['bad_life_circ'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],0.0, start_year=2022) #
+
+
+# In[ ]:
+
+
+
 
 
 # In[44]:
@@ -1007,7 +1034,7 @@ total_installed2 = cumu_installs2.loc[2100]
 total_installed2.index= scennames_labels2
 
 plt.bar(scennames_labels2, total_installed2/1e6)
-#plt.xticks(rotation=90)
+plt.xticks(rotation=45)
 plt.ylabel('Cumulative installed [TW]')
 plt.title('Cumulative Installs with Replacements')
 #plt.ylim(0,410)
@@ -1044,7 +1071,7 @@ plt.bar(scennames_labels2, virgin2/1e9)
 #plt.legend(scennames)
 plt.title('Cumulative Virgin Material Demands')
 plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
-#plt.xticks(rotation=90)
+plt.xticks(rotation=45)
 
 
 # In[60]:
@@ -1058,6 +1085,7 @@ plt.bar(scennames_labels2, wastes2/1e9)
 #plt.legend(scennames)
 plt.title('Cumulative Lifecycle Wastes')
 plt.ylabel('Lifecycle Wastes\n[billion tonnes]')
+plt.xticks(rotation=45)
 
 
 # In[61]:
