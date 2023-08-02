@@ -1116,7 +1116,7 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[74]:
+# In[91]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -1127,10 +1127,12 @@ ax1.stackplot(global_projection.index, global_projection['World_cum']/1e6, color
 ax1.set_ylabel('Cumulative Solar Capacity [TW]', color='#F7A11A')
 ax1.set_ylim(0,90)
 ax1.set_xlim(2000,2100)
+
 ax2 = ax1.twinx()
 ax2.plot(global_projection['World_annual_[MWdc]']/1e6)
 ax2.set_ylabel('Annual Installations [TW]')
 ax2.set_ylim(0,5)
+
 plt.show()
 
 fig.savefig('energyresults-deployment.png', dpi=300, bbox_inches='tight')
