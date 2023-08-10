@@ -4,7 +4,7 @@
 # # Copper Energy Demands
 # This journal documents the energy demands of mining, refining, drawing and recycling of copper for use inside the PV cell. Probably also applies to copper in wiring (not yet considered)
 
-# In[1]:
+# In[11]:
 
 
 import numpy as np
@@ -22,131 +22,147 @@ baselinesFolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baseli
 
 # ### Mining Energy
 
-# In[2]:
+# In[14]:
 
 
 cu_mining_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-mining.csv"), index_col='year')
 cu_mining_raw.dropna(how='all')
 
 
-# In[3]:
+# In[38]:
 
 
-plt.scatter(cu_mining_raw.index, cu_mining_raw['E_CuMining_kWhpkg'], marker='o')
-plt.title('CED_Cu_kWhpkg')
-plt.ylabel('kWh/kg')
+fig, ax1 = plt.subplots()
+
+ax1.scatter(cu_mining_raw.index, cu_mining_raw['E_CuMining_kWhpkg'], marker='o')
+ax1.set_ylabel('kWh/kg')
+
+ax2 = ax1.twinx()
+ax2.scatter(cu_mining_raw.index, cu_mining_raw['PrctFuel'], marker='^', color='red')
+ax2.set_ylabel('Percent Fuel [%]', color='red')
+ax2.set_ylim(0,100)
+
+plt.title('Cu_Mining_kWhpkg')
+plt.show()
 
 
-# In[4]:
+# The two highest pre-1990 data points include milling and floation, which start getting into processing of the material (pyro vs hydro). The Marsden data points in 2007-2008 have two mining options, and Lagos et al in 2015 has open pit and underground mining. Both sources may include transportation energies.
+# 
+# To reconcile all the nuanced data points, we will take the average of post-1990 energy data.
+# 
+# The percent fuel differs in Lagos et al between openpit and underground. This is likely due to the inclusion of transportation energy (i.e. openpit which involves more driving is higher fuel). Farjana which excludes transportation is 20% fuels, therefore we will use this.
+
+# In[30]:
 
 
-#drop ones that include more than just mining and concentration.
-cu_mining_raw.loc[1975] = np.nan
-cu_mining_raw.loc[2010] = np.nan
-cu_mining_raw.loc[2011] = np.nan
+cu_mining_data = cu_mining_raw.loc[1995:,'E_CuMining_kWhpkg']
+cu_mining_avg = cu_mining_data.mean()
+cu_minig_prctfuel = 20.0
 
 
-# In[5]:
+# ## PYRO
+# Pyrometallurgy is the dominant technology for copper mining, although hydrometallurgy market share is growing. Pyro metallurgy is also known as/includes grinding, froth floatation, converting, Smelting, and electrolysis. This final electrorefining step is not to be confused with the hydrometallurgical electrowinning.
+# 
+# This data includes grinding and milling, floatation, smelting, and electrolysis refining.
+
+# In[42]:
 
 
-plt.scatter(cu_mining_raw.index, cu_mining_raw['E_CuMining_kWhpkg'], marker='o')
-plt.xlim(1995,2020)
-plt.title('CED_Cu_kWhpkg')
-plt.ylabel('kWh/kg')
+cu_pyro_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-pyro.csv"), index_col='year')
+cu_pyro_raw.dropna(how='all')
 
 
-# This is a scatter plot. We're going to use Farjana et al 2019 because of the detail provided in the datapoint. 
-
-# ### CED
-# CED would include mining, so we might subtract the mining energy from the final CED trend.
-
-# In[6]:
+# In[43]:
 
 
-cu_CED_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-CED.csv"), index_col='year')
-cu_CED_raw.dropna(how='all')
+fig, ax1 = plt.subplots()
+
+ax1.scatter(cu_pyro_raw.index, cu_pyro_raw['E_Pyro_Cu_kWhpkg'], marker='o')
+ax1.set_ylabel('kWh/kg')
+
+ax2 = ax1.twinx()
+ax2.scatter(cu_pyro_raw.index, cu_pyro_raw['PrctFuel'], marker='^', color='red')
+ax2.set_ylabel('Percent Fuel [%]', color='red')
+ax2.set_ylim(0,100)
+
+plt.title('Cu Pyrometallurgy kWhpkg')
+plt.show()
 
 
-# In[7]:
+# The final two datapoints from Marsden are two different process pathways and therefore represent a range of potential energies for pyrometallurgy. The Alvarado data may not include grinding, and therfore may be low. We will take the average of the Marsden data, and do a linear interpolation from the Pitt 1980.
+# 
+# Fuel fractions are fairly consistent across all data, therefore we will take the average.
+
+# In[59]:
 
 
-plt.scatter(cu_CED_raw.index, cu_CED_raw['CED_Cu_kWhpkg'], marker='o')
-plt.title('CED_Cu_kWhpkg')
-plt.ylabel('kWh/kg')
+cu_pyro = cu_pyro_raw.copy()
+cu_pyro.loc[2002] = np.nan
+cu_pyro_avg_2007 = cu_pyro.loc[2007:2008,'E_Pyro_Cu_kWhpkg'].mean()
+cu_pyro.loc[2007:2008,'E_Pyro_Cu_kWhpkg'] = cu_pyro_avg_2007
+
+cu_pyro_filled = cu_pyro.interpolate()
+cu_pyro_final = cu_pyro_filled.loc[1995:,'E_Pyro_Cu_kWhpkg':'PrctFuel']
 
 
-# In[8]:
+# In[61]:
 
 
-#drop the low outlier
-cu_CED_raw.loc[1999] = np.nan
-#drop the 2009 Nuss datapoint because it includes recycled content
-cu_CED_raw.loc[2009] = np.nan
-#drop 2012 EU survey, includes scrap content
-cu_CED_raw.loc[2012] = np.nan
+#cu_pyro_final
+fig, ax1 = plt.subplots()
+
+ax1.plot(cu_pyro_final.index, cu_pyro_final['E_Pyro_Cu_kWhpkg'])
+ax1.set_ylabel('kWh/kg')
+ax1.set_xlim(1995,2030)
+
+ax2 = ax1.twinx()
+ax2.plot(cu_pyro_final.index, cu_pyro_final['PrctFuel'], color='red')
+ax2.set_ylabel('Percent Fuel [%]', color='red')
+ax2.set_ylim(0,100)
+
+plt.title('Cu Pyrometallurgy kWhpkg')
+plt.show()
 
 
-# The remaining lower energy points are associated with the difference between Hydro and Pyro metallurgy. 
+# ## HYDRO
 
-# In[9]:
-
-
-cu_CED_raw.loc[2000:2001,['Notes']]
+# In[66]:
 
 
-# In[10]:
+cu_hydro_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-hydro.csv"), index_col='year')
+cu_hydro_raw.dropna(how='all')
 
 
-cu_CED_raw.loc[2006:2007,['Notes']]
+# In[67]:
 
 
-# In[11]:
+fig, ax1 = plt.subplots()
+
+ax1.scatter(cu_hydro_raw.index, cu_hydro_raw['E_hydro_Cu_kWhpkg'], marker='o')
+ax1.set_ylabel('kWh/kg')
+
+ax2 = ax1.twinx()
+ax2.scatter(cu_hydro_raw.index, cu_hydro_raw['PrctFuel'], marker='^', color='red')
+ax2.set_ylabel('Percent Fuel [%]', color='red')
+ax2.set_ylim(0,100)
+
+plt.title('Cu Hydrometallurgy kWhpkg')
+plt.show()
 
 
-#find pyro data
-cu_CED_trim = cu_CED_raw.dropna(how='all')
-cu_CED_trim_pyro = cu_CED_trim[cu_CED_trim['Notes'].str.contains('pyro')]
-cu_CED_trim_pyro#.index
+# In[ ]:
 
 
-# In[12]:
 
 
-#find hydro data
-cu_CED_trim_hydro = cu_CED_trim[cu_CED_trim['Notes'].str.contains('hydro')]
-cu_CED_trim_hydro#.index
+
+# In[ ]:
 
 
-# In[13]:
 
 
-plt.scatter(cu_CED_raw.index, cu_CED_raw['CED_Cu_kWhpkg'], marker='o', label='alldata', color='black', s=40)
-plt.scatter(cu_CED_trim_pyro.index, cu_CED_trim_pyro['CED_Cu_kWhpkg'], marker='^', label='pyro', color='orange', s=30)
-plt.scatter(cu_CED_trim_hydro.index, cu_CED_trim_hydro['CED_Cu_kWhpkg'], marker='o', label='hydro', color='skyblue', s=20)
 
-plt.ylim(0,)
-plt.title('CED_Cu_kWhpkg')
-plt.ylabel('kWh/kg')
-plt.legend()
-
-
-# Our method will be to take the average of the hydro and average of the pyro CEDs, then use marketshare of each technology over time for 1995 through 2050. Then we will use the projected energy from Rotzer for 2050 and interpolate. This neglects the detail of increasing energy demands for decreasing ore grade - however, the correlation from Northey is <0.4 for the full process and average global ore grade over time has been hard to find and is not fully representative of energy demands.
-
-# In[14]:
-
-
-#hydro
-CED_hydro = cu_CED_trim_hydro['CED_Cu_kWhpkg'].mean()
-
-
-# In[15]:
-
-
-#pyro
-cu_CED_trim_pyro.loc[2050]=np.nan #drop the 2050 value (will use to interpolate later)
-CED_pyro = cu_CED_trim_pyro['CED_Cu_kWhpkg'].mean()
-CED_pyro
-
+# ## Import Market share of Pyro vs Hydro Metallurgy
 
 # In[16]:
 
