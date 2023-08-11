@@ -2211,25 +2211,29 @@ class Simulation:
         allenergy = pd.DataFrame()
         energyGen = pd.DataFrame()
         energyFuel = pd.DataFrame()
-        energy_mod=pd.DataFrame()
         energy_mat = pd.DataFrame()
         energy_demands = pd.DataFrame()
+        energy_mod = pd.DataFrame()
+        scenmatde = pd.DataFrame()
 
         for scen in scenarios:
-            # add the scen name as a prefix 
-            scende = self.scenario[scen].dataOut_e.add_prefix(str(scen+'_'))
+            # add the scen name as a prefix \
+            
+            energy_mod = self.scenario[scen].dataOut_e.add_prefix(str(scen+'_'))
             #concat into one large df
             #energy_mod = pd.concat([energy_mod, scende], axis=1)
             
             #material level energy
             for mat in materials:
                 # add the scen name as a prefix 
-                scenmatde = self.scenario[scen].material[mat].matdataOut_e.add_prefix(str(scen+'_'+mat+'_'))
+                
+                energy_mat = self.scenario[scen].material[mat].matdataOut_e.add_prefix(str(scen+'_'+mat+'_'))
+                scenmatde = pd.concat([scenmatde,energy_mat], axis=1)
                 #concat into one large df
                 #energy_mat = pd.concat([energy_mat, scenmatde], axis=1)
             
             #compile module and material energies into one df
-            allenergy_scen = pd.concat([scende,scenmatde], axis=1) #df of mod and mat energy for scenario
+            allenergy_scen = pd.concat([energy_mod,scenmatde], axis=1) #df of mod and mat energy for scenario
             
             #select df to sum the total demand
             energyGen_scen = allenergy_scen.filter(like='e_out_annual') #select all columns of energy generation
