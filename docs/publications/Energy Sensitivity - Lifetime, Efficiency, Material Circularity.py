@@ -32,7 +32,7 @@ from platform import python_version
 print(python_version())
 
 
-# In[3]:
+# In[99]:
 
 
 import PV_ICE
@@ -62,7 +62,7 @@ PV_ICE.__version__
 # 
 # scennames_labels_flat = [] 
 
-# In[4]:
+# In[100]:
 
 
 MATERIALS = ['glass', 'silicon', 'silver', 'aluminium_frames', 'copper', 'encapsulant', 'backsheet']
@@ -70,7 +70,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[5]:
+# In[101]:
 
 
 #load in a baseline and materials for modification
@@ -86,7 +86,7 @@ for mat in range (0, len(MATERIALS)):
 # ## Create Sensitivity Scenarios
 # First, examine only the effect of one set of parameters (life, eff, material circularity) at a time. Possibly get to interactions.
 
-# In[6]:
+# In[102]:
 
 
 timeshift = 2022-1995
@@ -94,7 +94,7 @@ timeshift = 2022-1995
 
 # ### Life
 
-# In[7]:
+# In[103]:
 
 
 #life sensitivity
@@ -146,7 +146,7 @@ sim1.modifyScenario('life_low', 'mod_lifetime',
 
 # ### Efficiency
 
-# In[8]:
+# In[104]:
 
 
 sim1.createScenario(name='eff_high', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -184,7 +184,7 @@ sim1.modifyScenario('eff_low', 'mod_eff',
 # ### Material Circularity
 # Here, we will use recycling as a stand in for the forms of material circularity. We set to 0 or 25% closed loop (through yield). The other variables are being changed by ~25% as well.
 
-# In[9]:
+# In[105]:
 
 
 mod_circ_vars = ['mod_EOL_collection_eff', 'mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
@@ -193,7 +193,7 @@ mat_circ_vars = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_M
                  'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG']
 
 
-# In[10]:
+# In[106]:
 
 
 sim1.createScenario(name='circ_high', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -208,8 +208,23 @@ for var in range(0,len(mod_circ_vars)):
 for mat in range (0, len(MATERIALS)):
     for mvar in range(0,len(mat_circ_vars)):
         sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
-        sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], 'mat_Recycling_yield',25.0, start_year=2022) #
+        sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], 'mat_Recycling_yield',100.0, start_year=2022) #
 
+#--------------------------------------------------------------------------------------------------------
+        
+sim1.createScenario(name='circ_mid', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+for mat in range (0, len(MATERIALS)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+    sim1.scenario['circ_mid'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    
+for var in range(0,len(mod_circ_vars)):
+    sim1.modifyScenario('circ_mid', mod_circ_vars[var], 100.0, start_year=2022) #
+
+for mat in range (0, len(MATERIALS)):
+    for mvar in range(0,len(mat_circ_vars)):
+        sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
+        sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], 'mat_Recycling_yield',25.0, start_year=2022) #
 #-----------------------------------------------------------------------------------------------------------
 
 sim1.createScenario(name='circ_low', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -237,7 +252,7 @@ for mat in range (0, len(MATERIALS)):
 
 
 
-# In[11]:
+# In[107]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -245,7 +260,7 @@ for mat in range (0, len(MATERIALS)):
 sim1.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[12]:
+# In[108]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -266,7 +281,7 @@ global_projection.iloc[-1,:]
 #fig.savefig('energyresults-deployment.png', dpi=300, bbox_inches='tight')
 
 
-# In[13]:
+# In[109]:
 
 
 #deployment projection for all scenarios
@@ -274,14 +289,14 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
                     value= global_projection['World_annual_[MWdc]'], start_year=2000)
 
 
-# In[14]:
+# In[110]:
 
 
 scennames_labels = sim1.scenario.keys()
 scennames_labels
 
 
-# In[15]:
+# In[111]:
 
 
 bifiFactors = {'PV_ICE':0.0,
@@ -291,6 +306,7 @@ bifiFactors = {'PV_ICE':0.0,
                'eff_high_bifi': 0.9,
                'eff_low': 0.0,
                'circ_high':0.0,
+               'circ_mid':0.0,
                'circ_low': 0.0
               } 
 
@@ -310,7 +326,7 @@ for f in bifiFactors.keys(): #loop over module types
 
 # ## Calculate Mass Flow: Identical Installs
 
-# In[16]:
+# In[112]:
 
 
 #CALCULATE MASS FLOWs
@@ -320,20 +336,20 @@ for scen in sim1.scenario.keys(): #loop over scenarios
     sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen])
 
 
-# In[17]:
+# In[113]:
 
 
 #sim1.calculateMassFlow()
 
 
-# In[18]:
+# In[114]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 sim1.saveSimulation(customname='_EnergySensitivity_identicalinstalls')
 
 
-# In[19]:
+# In[115]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity')
@@ -345,7 +361,7 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[20]:
+# In[116]:
 
 
 cumu_installs = ii_cumu.filter(like='newInstalled')
@@ -359,7 +375,7 @@ plt.title('Cumulative Installs with Replacements')
 #plt.ylim(0,410)
 
 
-# In[21]:
+# In[117]:
 
 
 cumu_virgin_module = ii_cumu.filter(like='VirginStock_Module')
@@ -379,13 +395,13 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 
 
 
-# In[22]:
+# In[118]:
 
 
 sim1.scenario['eff_high'].dataIn_m
 
 
-# In[23]:
+# In[119]:
 
 
 #plt.plot(sim1.scenario['eff_high'].dataOut_m['Yearly_Sum_Area_PathsBad'])
@@ -406,7 +422,7 @@ plt.legend()
 
 # ## Calculate Flows: Capacity Compensation
 
-# In[24]:
+# In[120]:
 
 
 UnderInstall_df = pd.DataFrame()
@@ -425,7 +441,7 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
 sim1.calculateEnergyFlow()
 
 
-# In[25]:
+# In[121]:
 
 
 scenarios = sim1.scenario.keys()
@@ -457,7 +473,7 @@ for scen in scenarios:
     allenergy_scen_t = pd.concat([energy_mod_scen,scenmatde], axis=1) #df of mod and mat energy for scenario
 
 
-# In[26]:
+# In[122]:
 
 
 for scen in scenarios:
@@ -494,19 +510,19 @@ for scen in scenarios:
     energy_demands = pd.concat([energy_demands,energy_demands_scen], axis=1)
 
 
-# In[27]:
+# In[123]:
 
 
 allenergy_scen.to_csv('hatethis.csv')
 
 
-# In[28]:
+# In[124]:
 
 
 allenergy
 
 
-# In[29]:
+# In[125]:
 
 
 sim1.saveSimulation(customname='_EnergySensitivity_withreplacements')
@@ -525,13 +541,13 @@ energy_demands.to_csv(os.path.join(testfolder, 'cc_10scen_energy_demands.csv'))
 UnderInstall_df.to_csv(os.path.join(testfolder, 'cc_10scen_underInstalls.csv'))
 
 
-# In[30]:
+# In[126]:
 
 
 scennames_labels
 
 
-# In[31]:
+# In[127]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -545,7 +561,7 @@ plt.title('Cumulative Installs with Replacements')
 #plt.ylim(0,410)
 
 
-# In[32]:
+# In[128]:
 
 
 cumu_area_deployed = pd.DataFrame()
@@ -565,7 +581,7 @@ plt.title('Cumulative Area Deployed with Replacements')
 #plt.ylim(0,410)
 
 
-# In[33]:
+# In[129]:
 
 
 cumu_virgin_module = cc_cumu.filter(like='VirginStock_Module')
@@ -579,7 +595,7 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 #plt.xticks(rotation=90)
 
 
-# In[34]:
+# In[130]:
 
 
 cumu_lifecycle_wastes = cc_cumu.filter(like='WasteAll_Module')
@@ -639,7 +655,7 @@ plt.ylabel('Lifecycle Wastes\n[billion tonnes]')
 #         
 # return allenergy, energyGen, energy_demands #note, all these are annual
 
-# In[35]:
+# In[131]:
 
 
 e_annual_sumDemands = energy_demands.filter(like='demand_total')
@@ -652,7 +668,7 @@ plt.title('Cumulative Lifecycle Energy Demands')
 plt.ylabel('Cumulative Energy Demands\n[TWh]')
 
 
-# In[36]:
+# In[132]:
 
 
 e_demands_eff_high = energy_demands.filter(like='eff_high')
@@ -663,7 +679,7 @@ e_demands_eff_high_cumu
 #plt.bar(e_demands_eff_high_cumu.columns, e_demands_eff_high_cumu.iloc[-1,:])
 
 
-# In[37]:
+# In[133]:
 
 
 energyGen_cumu = energyGen.cumsum()
@@ -676,7 +692,7 @@ plt.title('Net Energy Cumulatively')
 plt.ylabel('Cumulative Net Energy [TWh]')
 
 
-# In[38]:
+# In[134]:
 
 
 netEnergy_cumu_norm = netEnergy_cumu/netEnergy_cumu.loc[2100,'PV_ICE']
@@ -690,7 +706,7 @@ plt.plot(0.0, lw=2)
 plt.xticks(rotation=90)
 
 
-# In[39]:
+# In[135]:
 
 
 energyBalance_allyears = energyGen_cumu/e_annual_sumDemands_cumu
@@ -702,7 +718,7 @@ plt.title('Energy Balance')
 plt.ylabel('Unitless')
 
 
-# In[40]:
+# In[136]:
 
 
 discussTable = pd.concat([total_installed,cumu_area_deployed_total,virgin,wastes,
@@ -712,7 +728,7 @@ discussTable = pd.concat([total_installed,cumu_area_deployed_total,virgin,wastes
 discussTable
 
 
-# In[41]:
+# In[137]:
 
 
 discussTable_norm = (discussTable/discussTable.loc['PV_ICE'])*100-100
@@ -1215,7 +1231,7 @@ plt.title('Energy Balance')
 plt.ylabel('Unitless')
 
 
-# In[71]:
+# In[138]:
 
 
 discussTable2 = pd.concat([total_installed2,cumu_area_deployed2_total,virgin2,wastes2,
@@ -1225,14 +1241,14 @@ discussTable2 = pd.concat([total_installed2,cumu_area_deployed2_total,virgin2,wa
 discussTable2
 
 
-# In[72]:
+# In[139]:
 
 
 discussTable_all = pd.concat([discussTable,discussTable2], axis=0)
 discussTable_all
 
 
-# In[73]:
+# In[140]:
 
 
 discussTable_norm = (discussTable_all/discussTable.loc['PV_ICE'])*100-100
