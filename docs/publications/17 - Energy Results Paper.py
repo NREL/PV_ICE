@@ -2343,7 +2343,7 @@ plt.ylabel('Cumulative Energy Demands\n[TWh]')
 plt.xticks(rotation=90)
 
 
-# In[144]:
+# In[174]:
 
 
 cumu_e_demands_twh = e_annual_sumDemands_cumu.loc[2100]/1e12
