@@ -66,60 +66,110 @@ for mat in range (0, len(MATERIALS)):
 # In[7]:
 
 
-sim1.createScenario(name='eff_high', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
-for mat in range (0, len(MATERIALS)):
-    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
-    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
-    sim1.scenario['eff_high'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
-    
-sim1.modifyScenario('eff_high', 'mod_eff', 
-                    sim1.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_eff']+5, start_year=2022) #
+mod_circ_vars = ['mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
 
-#-------------------------------------------------------------------------------------------------------
+mod_alt_paths = ['mod_EOL_pg0_resell','mod_EOL_pg1_landfill','mod_EOL_pg2_stored','mod_EOL_pg3_reMFG',
+                 'mod_EOL_reMFG_yield','mod_EOL_sp_reMFG_recycle',
+                 'mod_EOL_pb1_landfill','mod_EOL_pb2_stored','mod_EOL_pb3_reMFG']
 
-sim1.createScenario(name='eff_high_bifi', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
-for mat in range (0, len(MATERIALS)):
-    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
-    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
-    sim1.scenario['eff_high_bifi'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
-    
-sim1.modifyScenario('eff_high_bifi', 'mod_eff', 
-                    sim1.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_eff']+5, start_year=2022) #
-
-#------------------------------------------------------------------------------------------------------
-
-sim1.createScenario(name='eff_low', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
-for mat in range (0, len(MATERIALS)):
-    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
-    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
-    sim1.scenario['eff_low'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
-    
-sim1.modifyScenario('eff_low', 'mod_eff', 
-                    sim1.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_eff']-5, start_year=2022) #
-
-
-# In[ ]:
-
-
-
+mat_circ_vars = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_MFG_scrap_Recycled_into_HQ',
+                 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 'mat_PG4_Recycling_target', 'mat_Recycling_yield',
+                 'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG']
 
 
 # In[8]:
 
 
-sim1.calculateFlows()
+sim1.createScenario(name='circ_high', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+for mat in range (0, len(MATERIALS)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+    sim1.scenario['circ_high'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    
+for var in range(0,len(mod_alt_paths)):
+    sim1.modifyScenario('circ_high', mod_alt_paths[var], 0.0, start_year=2022) #set non recycle to 0   
 
+sim1.modifyScenario('circ_high', 'mod_EOL_collection_eff',100.0, start_year=2022) #collect everything
+    
+for var in range(0,len(mod_circ_vars)):
+    sim1.modifyScenario('circ_high', mod_circ_vars[var], 100.0, start_year=2022) #set recycle paths to 100%
 
-# In[ ]:
-
-
-
+for mat in range (0, len(MATERIALS)):
+    for mvar in range(0,len(mat_circ_vars)):
+        sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
+        #sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target',100.0, start_year=2022) #
 
 
 # In[9]:
 
 
-allenergy, energyGen, energy_demands = sim1.aggregateEnergyResults()
+sim1.createScenario(name='circ_mid', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+for mat in range (0, len(MATERIALS)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+    sim1.scenario['circ_mid'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    
+for var in range(0,len(mod_alt_paths)):
+    sim1.modifyScenario('circ_mid', mod_alt_paths[var], 0.0, start_year=2022) #set non recycle to 0   
+
+sim1.modifyScenario('circ_mid', 'mod_EOL_collection_eff',100.0, start_year=2022) #collect everything
+    
+for var in range(0,len(mod_circ_vars)):
+    sim1.modifyScenario('circ_mid', mod_circ_vars[var], 25.0, start_year=2022) #set recycle paths to 25%
+
+for mat in range (0, len(MATERIALS)):
+    for mvar in range(0,len(mat_circ_vars)):
+        sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
+        #sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target',25.0, start_year=2022) #
+
+
+# In[10]:
+
+
+sim1.createScenario(name='circ_low', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+for mat in range (0, len(MATERIALS)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+    sim1.scenario['circ_low'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    
+#sim1.scenMod_noCircularity(scenarios='circ_low') #sets all years to 0
+    
+for var in range(0,len(mod_circ_vars)):
+    sim1.modifyScenario('circ_low', mod_circ_vars[var],0.0, start_year=2022) #set recycle to 0
+    
+for var in range(0,len(mod_alt_paths)):
+    sim1.modifyScenario('circ_low', mod_alt_paths[var], 0.0, start_year=2022) #set non recycle to 0   
+
+sim1.modifyScenario('circ_low', 'mod_EOL_collection_eff',0.0, start_year=2022) #collect nothing
+
+sim1.modifyScenario('circ_low','mod_EOL_pb1_landfill',100.0,start_year=2022) #landfill up just in case
+sim1.modifyScenario('circ_low','mod_EOL_pg1_landfill',100.0,start_year=2022)
+
+for mat in range (0, len(MATERIALS)):
+    for mvar in range(0,len(mat_circ_vars)):
+        sim1.scenario['circ_low'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],0.0, start_year=2022) #
+
+
+# In[13]:
+
+
+global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
+
+
+# In[14]:
+
+
+#trim to start in 2000, this trims module and materials
+#had to specify and end year, cannot use to extend
+sim1.trim_Years(startYear=2000, endYear=2100)
+
+
+# In[15]:
+
+
+#deployment projection for all scenarios
+sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
+                    value= global_projection['World_annual_[MWdc]'], start_year=2000)
 
 
 # In[ ]:
@@ -128,146 +178,116 @@ allenergy, energyGen, energy_demands = sim1.aggregateEnergyResults()
 
 
 
-# In[ ]:
+# In[16]:
 
 
-
-
-
-# scenarios = sim1.scenario.keys()
-
-# allenergy = pd.DataFrame()
-# energyGen = pd.DataFrame()
-# energyFuel = pd.DataFrame()
-# energyDemands = pd.DataFrame()
-# energyDemands_all = pd.DataFrame()
-# 
-# for scen in scenarios:
-#     energy_mod_scen = sim1.scenario[scen].dataOut_e.add_prefix(str(scen+'_')) #extract and label de module (10)
-#     print(energy_mod_scen.columns)
-#     
-#     scenmatde = pd.DataFrame() #wipe and initialize material energy df
-#     
-#     for mat in MATERIALS:
-#         energy_mat_scen = sim1.scenario[scen].material[mat].matdataOut_e.add_prefix(str(scen+'_'+mat+'_')) #extract and label de material
-#         print(energy_mat_scen.columns)
-#         scenmatde = pd.concat([scenmatde,energy_mat_scen], axis=1) #group all material de (84)
-#     scende = pd.concat([energy_mod_scen,scenmatde], axis=1) #group single scenario de (module and materials) (94)
-#     
-#     scende_gen = scende.filter(like='e_out_annual')# create df of energy generation
-#     scende_fuels = scende.filter(like='_fuel')# create df of fuel
-#     
-#     scende_filter1 = scende.loc[:,~scende.columns.isin(scende_gen.columns)] #select all columns that are NOT energy generation
-#     scende_demands = scende_filter1.loc[:,~scende_filter1.columns.isin(scende_fuels.columns)] #select all columns that are NOT fuel (this avoids double counting)
-#     colname = str(scen+'_e_demand_total') #create column name
-#     scende_demands.loc[:,colname] = scende_demands.sum(axis=1) #sums module and material energy demands
-#     
-#     allenergy = pd.concat([allenergy, scende], axis=1) #collect all scenarios de (excludes demand sum)
-#     energyDemands = pd.concat([energyDemands,scende_demands], axis=1) #collect energy demands (includes demand sum column)
-#     energyGen = pd.concat([energyGen, scende_gen], axis=1) #collect all scenarios energy generation
-#     energyFuel = pd.concat([energyFuel, scende_fuels], axis=1) #collect all scenarios fuel energy demands
-#     energyDemands_all = pd.concat([energyDemands_all, scende_demands, scende_fuels])
-# 
-# #Fix the index to be years
-# allenergy.index = sim1.scenario[scen].dataIn_e['year']
-
-# In[20]:
-
-
-allenergy.filter(like='demand_total')
-
-
-# In[12]:
-
-
-energyGen
+sim1.calculateFlows()
 
 
 # In[17]:
 
 
-energy_demands.columns#.filter(like='demand_total')
+
+for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of years
+    print(row)
+    for scen in sim1.scenario.keys(): #loop over scenarios
+        print(scen)
+        Under_Installment = global_projection.iloc[row,0] - ((sim1.scenario[scen].dataOut_m['Effective_Capacity_[W]'][row])/1e6)  # MWATTS
+        sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
+        #UnderInstall_df.loc[row,scen] = Under_Installment #save the underinstallment as df
+        #calculate flows for that scenario with it's bifi factor and modified weibull
+        sim1.calculateMassFlow(scenarios=[scen])#, bifacialityfactors=bifiPathDict[scen])
+
+sim1.calculateEnergyFlow()
+
+
+# In[28]:
+
+
+cc_yearly, cc_cumu = sim1.aggregateResults() #have to do this to get auto plots
+
+
+# In[18]:
+
+
+allenergy, energyGen, energy_demands = sim1.aggregateEnergyResults()
+
+
+# In[21]:
+
+
+scennames_labels = sim1.scenario.keys()
+
+
+# In[56]:
+
+
+circ_high_p4 = sim1.scenario['circ_high'].dataOut_m['P4_recycled']
+circ_mid_p4 = sim1.scenario['circ_mid'].dataOut_m['P4_recycled']
+circ_low_p4 = sim1.scenario['circ_low'].dataOut_m['P4_recycled']
+circ_low_p0 = sim1.scenario['circ_low'].dataOut_m['EOL_Landfill0']
+
+
+plt.plot(circ_high_p4)
+plt.plot(circ_mid_p4)
+plt.plot(circ_low_p4)
+plt.plot(circ_low_p0, ls='--')
+
+
+# In[36]:
+
+
+circ_high_modcrushe = sim1.scenario['circ_high'].dataOut_e['mod_Recycle_Crush']
+circ_mid_modcrushe = sim1.scenario['circ_mid'].dataOut_e['mod_Recycle_Crush']
+circ_low_modcrushe = sim1.scenario['circ_low'].dataOut_e['mod_Recycle_Crush']
+
+
+plt.plot(circ_high_modcrushe)
+plt.plot(circ_mid_modcrushe)
+plt.plot(circ_low_modcrushe)
+
+
+# In[53]:
+
+
+circ_high_matRHQ_e = sim1.scenario['circ_high'].material['glass'].matdataOut_e['mat_Recycled_HQ']
+circ_mid_matRHQ_e = sim1.scenario['circ_mid'].material['glass'].matdataOut_e['mat_Recycled_HQ']
+circ_low_matRHQ_e = sim1.scenario['circ_low'].material['glass'].matdataOut_e['mat_Recycled_HQ']
+
+plt.plot(circ_high_matRHQ_e)
+plt.plot(circ_mid_matRHQ_e)
+plt.plot(circ_low_matRHQ_e)
 
 
 # In[ ]:
 
 
-scenarios
 
 
-#     def aggregateEnergyResults(self, scenarios=None, materials=None):
-#         if scenarios is None:
-#             scenarios = list(self.scenario.keys())
-#         else:
-#             if isinstance(scenarios, str):
-#                 scenarios = [scenarios]
-# 
-#         if materials is None:
-#             materials = list(self.scenario[scenarios[0]].material.keys())
-#         else:
-#             if isinstance(materials, str):
-#                 materials = [materials]
-# 
-# 
-#         energy_demands_keys = [mfg_energies,mfg_recycle_energies_LQ,mfg_recycle_energies_HQ,use_energies,eol_energies,eol_remfg_energies,eol_recycle_energies_LQ,eol_recycle_energies_HQ]
-#         energy_demands_flat = list(itertools.chain(*energy_demands_keys))
-#         
-#         
-#         allenergy = pd.DataFrame()
-#         energyGen = pd.DataFrame()
-#         energyFuel = pd.DataFrame()
-#         energy_mat = pd.DataFrame()
-#         energy_demands = pd.DataFrame()
-#         energy_mod = pd.DataFrame()
-#         scenmatde = pd.DataFrame()
-# 
-#         for scen in scenarios:
-#             # add the scen name as a prefix \
-#             
-#             energy_mod = self.scenario[scen].dataOut_e.add_prefix(str(scen+'_'))
-#             #concat into one large df
-#             #energy_mod = pd.concat([energy_mod, scende], axis=1)
-#             
-#             #material level energy
-#             for mat in materials:
-#                 # add the scen name as a prefix 
-#                 
-#                 energy_mat = self.scenario[scen].material[mat].matdataOut_e.add_prefix(str(scen+'_'+mat+'_'))
-#                 scenmatde = pd.concat([scenmatde,energy_mat], axis=1)
-#                 #concat into one large df
-#                 #energy_mat = pd.concat([energy_mat, scenmatde], axis=1)
-#             
-#             #compile module and material energies into one df
-#             allenergy_scen = pd.concat([energy_mod,scenmatde], axis=1) #df of mod and mat energy for scenario
-#             
-#             #select df to sum the total demand
-#             energyGen_scen = allenergy_scen.filter(like='e_out_annual') #select all columns of energy generation
-#             energyFuel_scen = allenergy_scen.filter(like='_fuel') #select all columns of fuel attributable
-#             energy_demands_1 = allenergy_scen.loc[:,~allenergy_scen.columns.isin(energyGen_scen.columns)] #select all columns that are NOT energy generation, i.e. demands
-#             energy_demands_scen = energy_demands_1.loc[:,~energy_demands_1.columns.isin(energyFuel_scen.columns)] #select all columns that are NOT fuel (this avoids double counting)
-#             colname = str(scen+'_e_demand_total')
-#             energy_demands_scen.loc[:,colname] = energy_demands_scen.sum(axis=1) 
-#             
-#             allenergy = pd.concat([allenergy,allenergy_scen], axis=1)
-#             energyGen = pd.concat([energyGen,energyGen_scen], axis=1)
-#             energyFuel = pd.concat([energyFuel,energyFuel_scen], axis=1)
-#             energy_demands = pd.concat([energy_demands,energy_demands_scen], axis=1)
-#         
-#         
-#         #Fix the index to be years
-#         allenergy.index = self.scenario[scen].dataIn_e['year']
-#         energyGen.index = self.scenario[scen].dataIn_e['year']
-#         energyFuel.index = self.scenario[scen].dataIn_e['year']
-#         energy_demands.index = self.scenario[scen].dataIn_e['year']
-#                 
-#         energy_demands = pd.concat([energy_demands,energyFuel], axis=1) #append fuel energy columns back onto energy demands
-#                 
-#         return allenergy, energyGen, energy_demands #note, all these are annual
 
 # In[ ]:
 
 
 
+
+
+# In[25]:
+
+
+e_annual_sumDemands = energy_demands.filter(like='demand_total')
+e_annual_sumDemands_cumu = e_annual_sumDemands.cumsum()
+cumu_e_demands = e_annual_sumDemands_cumu.loc[2100]
+cumu_e_demands.index= scennames_labels
+
+plt.bar(scennames_labels, cumu_e_demands/1e12)
+plt.title('Cumulative Lifecycle Energy Demands')
+plt.ylabel('Cumulative Energy Demands\n[TWh]')
+
+
+# In[26]:
+
+
+cumu_e_demands
 
 
 # In[ ]:

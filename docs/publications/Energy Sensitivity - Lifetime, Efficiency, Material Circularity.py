@@ -188,6 +188,11 @@ sim1.modifyScenario('eff_low', 'mod_eff',
 
 
 mod_circ_vars = ['mod_EOL_collection_eff', 'mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
+
+mod_alt_paths = ['mod_EOL_pg0_resell','mod_EOL_pg1_landfill','mod_EOL_pg2_stored','mod_EOL_pg3_reMFG',
+                 'mod_EOL_reMFG_yield','mod_EOL_sp_reMFG_recycle',
+                 'mod_EOL_pb1_landfill','mod_EOL_pb2_stored','mod_EOL_pb3_reMFG']
+
 mat_circ_vars = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_MFG_scrap_Recycled_into_HQ',
                  'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 'mat_PG4_Recycling_target', 'mat_Recycling_yield',
                  'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG']
@@ -202,13 +207,18 @@ for mat in range (0, len(MATERIALS)):
     matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
     sim1.scenario['circ_high'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
     
+for var in range(0,len(mod_alt_paths)):
+    sim1.modifyScenario('circ_high', mod_alt_paths[var], 0.0, start_year=2022) #set non recycle to 0   
+
+sim1.modifyScenario('circ_high', 'mod_EOL_collection_eff',100.0, start_year=2022) #collect everything
+    
 for var in range(0,len(mod_circ_vars)):
-    sim1.modifyScenario('circ_high', mod_circ_vars[var], 100.0, start_year=2022) #
+    sim1.modifyScenario('circ_high', mod_circ_vars[var], 100.0, start_year=2022) #set recycle paths to 100%
 
 for mat in range (0, len(MATERIALS)):
     for mvar in range(0,len(mat_circ_vars)):
         sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
-        sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target',100.0, start_year=2022) #
+        #sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target',100.0, start_year=2022) #
 
 #--------------------------------------------------------------------------------------------------------
         
@@ -218,13 +228,18 @@ for mat in range (0, len(MATERIALS)):
     matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
     sim1.scenario['circ_mid'].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
     
+for var in range(0,len(mod_alt_paths)):
+    sim1.modifyScenario('circ_mid', mod_alt_paths[var], 0.0, start_year=2022) #set non recycle to 0   
+
+sim1.modifyScenario('circ_mid', 'mod_EOL_collection_eff',100.0, start_year=2022) #collect everything
+    
 for var in range(0,len(mod_circ_vars)):
-    sim1.modifyScenario('circ_mid', mod_circ_vars[var], 100.0, start_year=2022) #
+    sim1.modifyScenario('circ_mid', mod_circ_vars[var], 25.0, start_year=2022) #set recycle paths to 25%
 
 for mat in range (0, len(MATERIALS)):
     for mvar in range(0,len(mat_circ_vars)):
         sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
-        sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target',25.0, start_year=2022) #
+        #sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target',25.0, start_year=2022) #
 #-----------------------------------------------------------------------------------------------------------
 
 sim1.createScenario(name='circ_low', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -236,9 +251,14 @@ for mat in range (0, len(MATERIALS)):
 #sim1.scenMod_noCircularity(scenarios='circ_low') #sets all years to 0
     
 for var in range(0,len(mod_circ_vars)):
-    sim1.modifyScenario('circ_low', mod_circ_vars[var],0.0, start_year=2022) #
+    sim1.modifyScenario('circ_low', mod_circ_vars[var],0.0, start_year=2022) #set recycle to 0
+    
+for var in range(0,len(mod_alt_paths)):
+    sim1.modifyScenario('circ_low', mod_alt_paths[var], 0.0, start_year=2022) #set non recycle to 0   
 
-sim1.modifyScenario('circ_low','mod_EOL_pb1_landfill',100.0,start_year=2022)
+sim1.modifyScenario('circ_low', 'mod_EOL_collection_eff',0.0, start_year=2022) #collect nothing
+
+sim1.modifyScenario('circ_low','mod_EOL_pb1_landfill',100.0,start_year=2022) #landfill up just in case
 sim1.modifyScenario('circ_low','mod_EOL_pg1_landfill',100.0,start_year=2022)
 
 for mat in range (0, len(MATERIALS)):
@@ -508,18 +528,6 @@ for scen in scenarios:
     energyGen = pd.concat([energyGen,energyGen_scen], axis=1)
     energyFuel = pd.concat([energyFuel,energyFuel_scen], axis=1)
     energy_demands = pd.concat([energy_demands,energy_demands_scen], axis=1)
-
-
-# In[27]:
-
-
-allenergy_scen.to_csv('hatethis.csv')
-
-
-# In[28]:
-
-
-allenergy
 
 
 # In[29]:
@@ -1283,7 +1291,7 @@ graph_order = ['life_high','life_low','good_eff_life','bad_life_eff','eff_high',
 # # Sensitivity of Energy to Circularity
 # Above it appears that both increasing and decreasing circularity reduce energy demands, which would imply there might be a bell curve or threshold situation. OR more likely, open vs closed loop matters a lot.
 
-# In[75]:
+# In[16]:
 
 
 #load in a baseline and materials for modification
@@ -1302,16 +1310,21 @@ for mat in range (0, len(MATERIALS)):
 
 
 
-# In[76]:
+# In[17]:
 
 
-mod_circ_vars = ['mod_EOL_collection_eff', 'mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
+mod_circ_vars = ['mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
+
+mod_alt_paths = ['mod_EOL_pg0_resell','mod_EOL_pg1_landfill','mod_EOL_pg2_stored','mod_EOL_pg3_reMFG',
+                 'mod_EOL_reMFG_yield','mod_EOL_sp_reMFG_recycle',
+                 'mod_EOL_pb1_landfill','mod_EOL_pb2_stored','mod_EOL_pb3_reMFG']
+
 mat_circ_vars = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_MFG_scrap_Recycled_into_HQ',
                  'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 'mat_PG4_Recycling_target', 'mat_Recycling_yield',
                  'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG']
 
 
-# In[77]:
+# In[18]:
 
 
 #range of circularity / closed loop vs downcycling
@@ -1319,7 +1332,19 @@ rrates = pd.Series(range(0,101,10))
 for r in range(0,len(rrates)): print(rrates[r])
 
 
-# In[78]:
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[19]:
 
 
 #closed loop at various rates
@@ -1331,16 +1356,21 @@ for r in range(0,len(rrates)):
         matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
         sim3.scenario[scenname].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
     
+    for var in range(0,len(mod_alt_paths)):
+        sim3.modifyScenario(scenname, mod_alt_paths[var], 0.0, start_year=2022) #set non recycle to 0
+    
+    sim3.modifyScenario(scenname, 'mod_EOL_collection_eff',100.0, start_year=2022) #collect everything
+    
     for var in range(0,len(mod_circ_vars)):
-        sim3.modifyScenario(scenname, mod_circ_vars[var], 100.0, start_year=2022) #
+        sim3.modifyScenario(scenname, mod_circ_vars[var], rrates[r], start_year=2022) #recycle modules at the rate
 
     for mat in range (0, len(MATERIALS)):
         for mvar in range(0,len(mat_circ_vars)):
-            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar], 100.0, start_year=2022) #
-            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target', rrates[r], start_year=2022) #
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar], 100.0, start_year=2022) #100% recycle HQ path and yield
+            #sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target', rrates[r], start_year=2022) #
 
 
-# In[79]:
+# In[20]:
 
 
 #open loop at various rates
@@ -1352,18 +1382,23 @@ for r in range(0,len(rrates)):
         matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
         sim3.scenario[scenname].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
     
+    for var in range(0,len(mod_alt_paths)):
+        sim3.modifyScenario(scenname, mod_alt_paths[var], 0.0, start_year=2022) #set non recycle to 0
+        
+    sim3.modifyScenario(scenname, 'mod_EOL_collection_eff',100.0, start_year=2022) #collect everything
+    
     for var in range(0,len(mod_circ_vars)):
-        sim3.modifyScenario(scenname, mod_circ_vars[var], 100.0, start_year=2022) #
+        sim3.modifyScenario(scenname, mod_circ_vars[var], rrates[r], start_year=2022) #recycle modules at the rate
 
     for mat in range (0, len(MATERIALS)):
         for mvar in range(0,len(mat_circ_vars)):
-            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar], 100.0, start_year=2022) #
-            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target', rrates[r], start_year=2022) #
-            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_MFG_scrap_Recycled_into_HQ', 0.0, start_year=2022) #
-            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_EOL_RecycledHQ_Reused4MFG', 0.0, start_year=2022) #
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar], 100.0, start_year=2022) # 100% recycle HQ path and yield
+            #sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target', rrates[r], start_year=2022) #
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_MFG_scrap_Recycled_into_HQ', 0.0, start_year=2022) #Open loop
+            sim3.scenario[scenname].modifyMaterials(MATERIALS[mat], 'mat_EOL_RecycledHQ_Reused4MFG', 0.0, start_year=2022) #Open loop
 
 
-# In[80]:
+# In[21]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -1371,7 +1406,7 @@ for r in range(0,len(rrates)):
 sim3.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[81]:
+# In[22]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -1392,7 +1427,7 @@ global_projection.iloc[-1,:]
 #fig.savefig('energyresults-deployment.png', dpi=300, bbox_inches='tight')
 
 
-# In[82]:
+# In[23]:
 
 
 #deployment projection for all scenarios
@@ -1400,13 +1435,13 @@ sim3.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
                     value= global_projection['World_annual_[MWdc]'], start_year=2000)
 
 
-# In[83]:
+# In[24]:
 
 
 sim3.calculateMassFlow()
 
 
-# In[84]:
+# In[25]:
 
 
 UnderInstall_df = pd.DataFrame()
@@ -1431,7 +1466,7 @@ sim3.calculateEnergyFlow()
 
 
 
-# In[85]:
+# In[28]:
 
 
 sim3.saveSimulation(customname='_EnergySensitivity_withreplacements')
@@ -1450,13 +1485,13 @@ energy_demands3.to_csv(os.path.join(testfolder, 'cc_10scen_energy_demands3.csv')
 #UnderInstall_df.to_csv(os.path.join(testfolder, 'cc_10scen_underInstalls.csv'))
 
 
-# In[86]:
+# In[29]:
 
 
 scennames_labels3=sim3.scenario.keys()
 
 
-# In[87]:
+# In[30]:
 
 
 cumu_installs3 = cc_cumu3.filter(like='newInstalled')
@@ -1470,7 +1505,7 @@ plt.title('Cumulative Installs with Replacements')
 #plt.ylim(0,410)
 
 
-# In[88]:
+# In[31]:
 
 
 cumu_area_deployed3 = pd.DataFrame()
@@ -1490,7 +1525,7 @@ plt.title('Cumulative Area Deployed with Replacements')
 #plt.ylim(0,410)
 
 
-# In[89]:
+# In[32]:
 
 
 cumu_virgin_module3 = cc_cumu3.filter(like='VirginStock_Module')
@@ -1504,7 +1539,7 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 #plt.xticks(rotation=90)
 
 
-# In[90]:
+# In[33]:
 
 
 cumu_lifecycle_wastes3 = cc_cumu3.filter(like='WasteAll_Module')
@@ -1517,7 +1552,7 @@ plt.title('Cumulative Lifecycle Wastes')
 plt.ylabel('Lifecycle Wastes\n[billion tonnes]')
 
 
-# In[91]:
+# In[34]:
 
 
 e_annual_sumDemands3 = energy_demands3.filter(like='demand_total')
@@ -1530,7 +1565,7 @@ plt.title('Cumulative Lifecycle Energy Demands')
 plt.ylabel('Cumulative Energy Demands\n[TWh]')
 
 
-# In[92]:
+# In[35]:
 
 
 cumu_e_demands3_norm = cumu_e_demands3/cumu_e_demands3.loc['PV_ICE']-1
