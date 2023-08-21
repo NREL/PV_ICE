@@ -73,8 +73,18 @@ mod_alt_paths = ['mod_EOL_pg0_resell','mod_EOL_pg1_landfill','mod_EOL_pg2_stored
                  'mod_EOL_pb1_landfill','mod_EOL_pb2_stored','mod_EOL_pb3_reMFG']
 
 mat_circ_vars = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_MFG_scrap_Recycled_into_HQ',
-                 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 'mat_PG4_Recycling_target', 'mat_Recycling_yield',
+                 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG',
+                 
+                 'mat_PG4_Recycling_target', 'mat_Recycling_yield',
                  'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG']
+
+#mat_mfgscrap = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_MFG_scrap_Recycled_into_HQ',
+#                 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG']
+
+#path control variables are:
+# 'mat_PG4_Recycling_target'
+# 'mat_MFG_scrap_Recycled'
+# 'mod_EOL_pg4_recycled'
 
 
 # In[8]:
@@ -97,7 +107,7 @@ for var in range(0,len(mod_circ_vars)):
 for mat in range (0, len(MATERIALS)):
     for mvar in range(0,len(mat_circ_vars)):
         sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
-        #sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target',100.0, start_year=2022) #
+        sim1.scenario['circ_high'].modifyMaterials(MATERIALS[mat], 'mat_MFG_scrap_Recycled',100.0, start_year=2022) #
 
 
 # In[9]:
@@ -113,6 +123,8 @@ for var in range(0,len(mod_alt_paths)):
     sim1.modifyScenario('circ_mid', mod_alt_paths[var], 0.0, start_year=2022) #set non recycle to 0   
 
 sim1.modifyScenario('circ_mid', 'mod_EOL_collection_eff',100.0, start_year=2022) #collect everything
+sim1.modifyScenario('circ_mid','mod_EOL_pb1_landfill',100.0,start_year=2022) #landfill up just in case
+sim1.modifyScenario('circ_mid','mod_EOL_pg1_landfill',100.0,start_year=2022)
     
 for var in range(0,len(mod_circ_vars)):
     sim1.modifyScenario('circ_mid', mod_circ_vars[var], 25.0, start_year=2022) #set recycle paths to 25%
@@ -120,7 +132,7 @@ for var in range(0,len(mod_circ_vars)):
 for mat in range (0, len(MATERIALS)):
     for mvar in range(0,len(mat_circ_vars)):
         sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],100.0, start_year=2022) #
-        #sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], 'mat_PG4_Recycling_target',25.0, start_year=2022) #
+        sim1.scenario['circ_mid'].modifyMaterials(MATERIALS[mat], 'mat_MFG_scrap_Recycled',25.0, start_year=2022) #
 
 
 # In[10]:
@@ -150,13 +162,13 @@ for mat in range (0, len(MATERIALS)):
         sim1.scenario['circ_low'].modifyMaterials(MATERIALS[mat], mat_circ_vars[mvar],0.0, start_year=2022) #
 
 
-# In[13]:
+# In[11]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
 
 
-# In[14]:
+# In[12]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -164,7 +176,7 @@ global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInst
 sim1.trim_Years(startYear=2000, endYear=2100)
 
 
-# In[15]:
+# In[13]:
 
 
 #deployment projection for all scenarios
@@ -178,13 +190,13 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
 
 
 
-# In[16]:
+# In[14]:
 
 
 sim1.calculateFlows()
 
 
-# In[17]:
+# In[15]:
 
 
 
@@ -201,40 +213,49 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
 sim1.calculateEnergyFlow()
 
 
-# In[28]:
+# In[16]:
 
 
 cc_yearly, cc_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[18]:
+# In[17]:
 
 
 allenergy, energyGen, energy_demands = sim1.aggregateEnergyResults()
 
 
-# In[21]:
+# In[18]:
 
 
 scennames_labels = sim1.scenario.keys()
 
 
-# In[56]:
+# In[95]:
 
 
 circ_high_p4 = sim1.scenario['circ_high'].dataOut_m['P4_recycled']
 circ_mid_p4 = sim1.scenario['circ_mid'].dataOut_m['P4_recycled']
+circ_mid_L0 = sim1.scenario['circ_mid'].dataOut_m['EOL_Landfill0']
 circ_low_p4 = sim1.scenario['circ_low'].dataOut_m['P4_recycled']
 circ_low_p0 = sim1.scenario['circ_low'].dataOut_m['EOL_Landfill0']
 
 
-plt.plot(circ_high_p4)
-plt.plot(circ_mid_p4)
-plt.plot(circ_low_p4)
-plt.plot(circ_low_p0, ls='--')
+#plt.plot(circ_high_p4, label='high')
+plt.plot(circ_mid_p4, label='mid')
+plt.plot(circ_mid_L0, label='mid,Landfill0')
+#plt.plot(circ_low_p4, label='low,P4')
+#plt.plot(circ_low_p0, ls='--', label='low,Landfill0')
+plt.legend()
 
 
-# In[36]:
+# In[99]:
+
+
+sim1.scenario['circ_mid'].dataOut_m.filter(like='Landfill')
+
+
+# In[20]:
 
 
 circ_high_modcrushe = sim1.scenario['circ_high'].dataOut_e['mod_Recycle_Crush']
@@ -247,7 +268,7 @@ plt.plot(circ_mid_modcrushe)
 plt.plot(circ_low_modcrushe)
 
 
-# In[53]:
+# In[21]:
 
 
 circ_high_matRHQ_e = sim1.scenario['circ_high'].material['glass'].matdataOut_e['mat_Recycled_HQ']
@@ -259,6 +280,46 @@ plt.plot(circ_mid_matRHQ_e)
 plt.plot(circ_low_matRHQ_e)
 
 
+# In[44]:
+
+
+plt.rcParams['figure.figsize'] = (12, 6)
+
+
+# In[46]:
+
+
+glass_mfgscrap_e = allenergy.filter(like='glass').filter(regex='MFGScrap_HQ$')
+glass_mfgscrap_e.plot.bar()
+
+
+# In[36]:
+
+
+glass_virgin_e = allenergy.filter(like='glass').filter(regex='MFG_virgin$')
+
+
+# In[45]:
+
+
+glass_virgin_e.plot.bar()
+
+
+# In[ ]:
+
+
+
+
+
+# In[40]:
+
+
+for scens in glass_virgin_e:
+    plt.bar(glass_virgin_e.index, glass_virgin_e.loc[:,scens], label=scens)
+
+plt.legend()
+
+
 # In[ ]:
 
 
@@ -271,7 +332,7 @@ plt.plot(circ_low_matRHQ_e)
 
 
 
-# In[25]:
+# In[24]:
 
 
 e_annual_sumDemands = energy_demands.filter(like='demand_total')
@@ -284,10 +345,273 @@ plt.title('Cumulative Lifecycle Energy Demands')
 plt.ylabel('Cumulative Energy Demands\n[TWh]')
 
 
-# In[26]:
+# In[25]:
 
 
 cumu_e_demands
+
+
+# # SIMPLE GLASS ENERGY TEST
+
+# In[77]:
+
+
+MATERIAL = ['glass']#, 'silicon', 'silver', 'aluminium_frames', 'copper', 'encapsulant', 'backsheet']
+moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
+moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
+
+
+# In[78]:
+
+
+density_glass = 2500*1000 # g/m^3 
+glassperm2 = (2.5/1000)* 2 * density_glass
+
+
+# In[79]:
+
+
+#load in a baseline and materials for modification
+sim2 = PV_ICE.Simulation(name='sim2', path=testfolder)
+
+sim2.createScenario(name='PV_ICE', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+for mat in range (0, len(MATERIAL)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+    sim2.scenario['PV_ICE'].addMaterial(MATERIAL[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    
+sim2.scenario['PV_ICE'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2020)
+
+
+# In[ ]:
+
+
+
+
+
+# In[80]:
+
+
+mod_circ_vars = ['mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
+
+mod_alt_paths = ['mod_EOL_pg0_resell','mod_EOL_pg1_landfill','mod_EOL_pg2_stored','mod_EOL_pg3_reMFG',
+                 'mod_EOL_reMFG_yield','mod_EOL_sp_reMFG_recycle',
+                 'mod_EOL_pb1_landfill','mod_EOL_pb2_stored','mod_EOL_pb3_reMFG']
+
+mat_circ_vars = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_MFG_scrap_Recycled_into_HQ',
+                 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG',
+                 
+                 'mat_PG4_Recycling_target', 'mat_Recycling_yield',
+                 'mat_EOL_Recycled_into_HQ', 'mat_EOL_RecycledHQ_Reused4MFG']
+
+mat_mfgscrap = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_MFG_scrap_Recycled_into_HQ',
+                 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG']
+
+#path control variables are:
+# 'mat_PG4_Recycling_target'
+# 'mat_MFG_scrap_Recycled'
+# 'mod_EOL_pg4_recycled'
+
+
+# In[81]:
+
+
+sim2.createScenario(name='nomfgscrap', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+for mat in range (0, len(MATERIAL)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+    sim2.scenario['nomfgscrap'].addMaterial(MATERIAL[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    
+sim2.scenario['nomfgscrap'].modifyMaterials('glass', 'mat_massperm2', glassperm2, start_year=2020)
+
+#sim2.modifyScenario(scenname, 'mod_EOL_collection_eff',100.0, start_year=2022) #
+
+for var in range(0,len(mod_circ_vars)):
+    sim2.modifyScenario('nomfgscrap', mod_circ_vars[var], 0.0, start_year=2020) #set EoL recycle to 0
+    
+for var in range(0,len(mod_alt_paths)):
+    sim2.modifyScenario('nomfgscrap', mod_alt_paths[var], 0.0, start_year=2020) #set non recycle to 0
+    
+for var in range(0,len(mat_circ_vars)):
+    sim2.modifyScenario('nomfgscrap', mat_circ_vars[var], 0.0, start_year=2020) #set mat recycle to 0
+
+
+# In[82]:
+
+
+sim2.createScenario(name='lqmfgscrap', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+for mat in range (0, len(MATERIAL)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+    sim2.scenario['lqmfgscrap'].addMaterial(MATERIAL[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    
+sim2.scenario['lqmfgscrap'].modifyMaterials('glass', 'mat_massperm2', glassperm2)
+
+#sim2.modifyScenario(scenname, 'mod_EOL_collection_eff',100.0, start_year=2022) #
+
+for var in range(0,len(mod_circ_vars)):
+    sim2.modifyScenario('lqmfgscrap', mod_circ_vars[var], 0.0, start_year=2020) #set EoL recycle to 0
+    
+for var in range(0,len(mod_alt_paths)):
+    sim2.modifyScenario('lqmfgscrap', mod_alt_paths[var], 0.0, start_year=2020) #set non recycle EoL to 0
+    
+for var in range(0,len(mat_circ_vars)):
+    sim2.modifyScenario('lqmfgscrap', mat_circ_vars[var], 0.0, start_year=2020) #set mat recycle to 0
+
+sim2.modifyScenario('lqmfgscrap', 'mat_MFG_scrap_Recycled', 100.0, start_year=2020) # recycle all mfgscrap
+sim2.modifyScenario('lqmfgscrap', 'mat_MFG_scrap_Recycling_eff', 100.0, start_year=2020) # 100 yield
+sim2.modifyScenario('lqmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ', 0.0, start_year=2020) # all LQ
+sim2.modifyScenario('lqmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 0.0, start_year=2020) # all LQ
+
+
+# In[83]:
+
+
+sim2.createScenario(name='CLHQmfgscrap', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+for mat in range (0, len(MATERIAL)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+    sim2.scenario['CLHQmfgscrap'].addMaterial(MATERIAL[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    
+sim2.scenario['CLHQmfgscrap'].modifyMaterials('glass', 'mat_massperm2', glassperm2)
+
+#sim2.modifyScenario(scenname, 'mod_EOL_collection_eff',100.0, start_year=2022) #
+
+for var in range(0,len(mod_circ_vars)):
+    sim2.modifyScenario('CLHQmfgscrap', mod_circ_vars[var], 0.0, start_year=2020) #set EoL recycle to 0
+    
+for var in range(0,len(mod_alt_paths)):
+    sim2.modifyScenario('CLHQmfgscrap', mod_alt_paths[var], 0.0, start_year=2020) #set non recycle EoL to 0
+    
+for var in range(0,len(mat_circ_vars)):
+    sim2.modifyScenario('CLHQmfgscrap', mat_circ_vars[var], 0.0, start_year=2020) #set mat recycle to 0
+
+sim2.modifyScenario('CLHQmfgscrap', 'mat_MFG_scrap_Recycled', 100.0, start_year=2020) # recycle all mfgscrap
+sim2.modifyScenario('CLHQmfgscrap', 'mat_MFG_scrap_Recycling_eff', 100.0, start_year=2020) # 100 yield
+sim2.modifyScenario('CLHQmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ', 100.0, start_year=2020) # all HQ
+sim2.modifyScenario('CLHQmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 100.0, start_year=2020) # all CL
+
+
+# In[84]:
+
+
+sim2.createScenario(name='OLHQmfgscrap', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
+for mat in range (0, len(MATERIAL)):
+    matbaseline_m = os.path.join(baselinesfolder,'baseline_material_mass_'+MATERIALS[mat]+'.csv')
+    matbaseline_e = os.path.join(baselinesfolder,'baseline_material_energy_'+MATERIALS[mat]+'.csv')
+    sim2.scenario['OLHQmfgscrap'].addMaterial(MATERIAL[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
+    
+sim2.scenario['OLHQmfgscrap'].modifyMaterials('glass', 'mat_massperm2', glassperm2)
+
+#sim2.modifyScenario(scenname, 'mod_EOL_collection_eff',100.0, start_year=2022) #
+
+for var in range(0,len(mod_circ_vars)):
+    sim2.modifyScenario('OLHQmfgscrap', mod_circ_vars[var], 0.0, start_year=2020) #set EoL recycle to 0
+    
+for var in range(0,len(mod_alt_paths)):
+    sim2.modifyScenario('OLHQmfgscrap', mod_alt_paths[var], 0.0, start_year=2020) #set non recycle EoL to 0
+    
+for var in range(0,len(mat_circ_vars)):
+    sim2.modifyScenario('OLHQmfgscrap', mat_circ_vars[var], 0.0, start_year=2020) #set mat recycle to 0
+
+sim2.modifyScenario('OLHQmfgscrap', 'mat_MFG_scrap_Recycled', 100.0, start_year=2020) # recycle all mfgscrap
+sim2.modifyScenario('OLHQmfgscrap', 'mat_MFG_scrap_Recycling_eff', 100.0, start_year=2020) # 100 yield
+sim2.modifyScenario('OLHQmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ', 100.0, start_year=2020) # all HQ
+sim2.modifyScenario('OLHQmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 0.0, start_year=2020) # all OL
+
+
+# In[85]:
+
+
+sim2.trim_Years(startYear=2020, endYear=2050)
+
+
+# In[86]:
+
+
+#identical deploy 10 MW
+sim2.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', value= 10.0, start_year=2020)
+
+
+# In[87]:
+
+
+sim2.calculateFlows()
+
+
+# In[88]:
+
+
+cc_yearly2, cc_cumu2 = sim2.aggregateResults()
+allenergy2, energyGen2, energy_demands2 = sim2.aggregateEnergyResults()
+
+
+# In[89]:
+
+
+sim2.scenario['lqmfgscrap'].dataIn_m
+
+
+# In[91]:
+
+
+glass_mfgvirgin_e = allenergy2.filter(like='glass').filter(regex='MFG_virgin$')
+plt.plot(glass_mfgvirgin_e)
+plt.legend(glass_mfgvirgin_e.columns)
+
+
+# In[93]:
+
+
+allenergy2.filter(like='glass').filter(regex='MFGScrap')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:

@@ -1135,6 +1135,7 @@ class Simulation:
             # Paths GOOD Check for 100% sum.
             # If P1-P5 over 100% will reduce landfill.
             # If P2-P5 over 100% it will shut down with Warning and Exit.
+            #TODO: add check for less than 100%, adjust landfill
             SUMS1 = (df['mod_EOL_pg1_landfill'] + df['mod_EOL_pg0_resell'] +
                      df['mod_EOL_pg2_stored'] + df['mod_EOL_pg3_reMFG'] +
                      df['mod_EOL_pg4_recycled'])
