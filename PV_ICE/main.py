@@ -1602,8 +1602,8 @@ class Simulation:
                     demat['mat_MFG_virgin'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
                     demat['mat_MFG_virgin_fuel'] = demat['mat_MFG_virgin']*matEnergy['e_mat_MFG_fuelfraction']*0.01 #fuel fraction of the virgin energy demands
                     #demat['mat_MFG_virgin_elec'] = demat['mat_MFG_virgin']*(1-matEnergy['e_mat_MFG_fuelfraction'])*0.01 
-                    demat['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
-                    demat['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
+                    demat['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only - everything that goes into mfgscrap recycle
+                    demat['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']) #the additional energy required for HQ
                     demat['mat_MFGScrap_HQ_fuel'] = demat['mat_MFGScrap_HQ']*matEnergy['e_mat_Recycled_HQ_fuelfraction']*0.01 #fraction of HQ energy attributable to fuel
                     #demat['mat_MFG_virgin_elec'] = demat['mat_MFG_virgin']*(1-matEnergy['e_mat_MFG_fuelfraction'])*0.01 
     
