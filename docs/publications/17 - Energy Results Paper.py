@@ -1279,7 +1279,7 @@ plt.rcParams['figure.figsize'] = (8, 6)
 
 
 
-# In[ ]:
+# In[84]:
 
 
 #13 scenarios with 7 materials
@@ -1303,7 +1303,7 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
             sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen]) 
 
 
-# In[ ]:
+# In[85]:
 
 
 #test with one scenario
@@ -1324,7 +1324,7 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
 #    sim1.calculateFlows(scenarios=[scen], bifacialityfactors=bifiPathDict[scen])
 
 
-# In[ ]:
+# In[86]:
 
 
 #aggregate results - mass
@@ -1341,13 +1341,13 @@ energy_demands.to_csv(os.path.join(testfolder, 'cc_13scen_energy_demands.csv'))
 UnderInstall_df.to_csv(os.path.join(testfolder, 'cc_13scen_underInstalls.csv'))
 
 
-# In[ ]:
+# In[87]:
 
 
 sim1.saveSimulation(customname='_EnergyAnalysis_withreplacements')
 
 
-# In[ ]:
+# In[88]:
 
 
 #read in saved results files for speed
@@ -1358,26 +1358,26 @@ energyGen = pd.read_csv(os.path.join(testfolder, 'cc_13scen_energyGen.csv'), ind
 energy_demands = pd.read_csv(os.path.join(testfolder, 'cc_13scen_energy_demands.csv'), index_col='year')
 
 
-# In[ ]:
+# In[89]:
 
 
 plt.plot(sim1.scenario['r_PERC'].dataOut_m['Effective_Capacity_[W]'])
 
 
-# In[ ]:
+# In[90]:
 
 
 #sim1.scenario['PV_ICE'].dataOut_m['irradiance_stc'].head(2)
 sim1.scenario.keys()
 
 
-# In[ ]:
+# In[91]:
 
 
 UnderInstall_df_temp = cc_yearly.filter(like='newInstalledCapacity_').subtract(global_projection[['World_annual_[MWdc]']].values)
 
 
-# In[ ]:
+# In[92]:
 
 
 #Attempt to make the deployment less dumb
@@ -1390,13 +1390,13 @@ flatinstall
 
 # # RESULTS: Effective Capacity and Replacements
 
-# In[ ]:
+# In[93]:
 
 
 sim1.scenario['h_RecycledPERC'].dataOut_m['WeibullParams'].tail(4)
 
 
-# In[ ]:
+# In[94]:
 
 
 effective_capacity = cc_yearly.filter(like='ActiveCapacity')
@@ -1407,7 +1407,7 @@ plt.title('Effective Capacity: With Replacements')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[95]:
 
 
 annual_EoL = cc_yearly.filter(like='DecommisionedCapacity')
@@ -1418,7 +1418,7 @@ plt.title('Annual Decommissions [TW]')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[96]:
 
 
 annual_installs = cc_yearly.filter(like='newInstalled')
@@ -1467,7 +1467,7 @@ plt.ylim(0,)
 
 # #### Fixing Jagged Lines
 
-# In[ ]:
+# In[97]:
 
 
 posttransinstalls = annual_installs.loc[2051:,].cumsum()
@@ -1475,7 +1475,7 @@ flatinstallslate = posttransinstalls.loc[2100]/(2100-2050)
 flatinstallslate
 
 
-# In[ ]:
+# In[98]:
 
 
 annual_installs_modify = annual_installs.copy()
@@ -1486,7 +1486,7 @@ for col in annual_installs_modify:
 #plt.plot(annual_installs_modify)
 
 
-# In[ ]:
+# In[99]:
 
 
 #decade binning of post 2050 installs by decade
@@ -1497,7 +1497,7 @@ posttransinstalls_decades
 #this is the sum each decade, still need to divide by 10 for annual
 
 
-# In[ ]:
+# In[100]:
 
 
 annual_installs_decademod = annual_installs.copy()
@@ -1511,7 +1511,7 @@ for col in annual_installs_decademod:
 #plt.plot(annual_installs_decademod)
 
 
-# In[ ]:
+# In[101]:
 
 
 #annual_installs_TW = cc_yearly.filter(like='newInstalled')
@@ -1575,7 +1575,7 @@ plt.show()
 fig.savefig('energyresults-annualInstalls-decade.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[102]:
 
 
 cumu_installs_annually = cc_cumu.filter(like='newInstalled')
@@ -1586,7 +1586,7 @@ plt.title('Replacements Adjusted Deployment Curve \n Cumulative Installs with Re
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[103]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -1598,14 +1598,14 @@ plt.title('Cumulative Installs with Replacements')
 plt.ylim(0,410)
 
 
-# In[ ]:
+# In[104]:
 
 
 total_deploy = cumu_installs.iloc[-1,]/1e6
 total_deploy.index = scennames_labels_flat
 
 
-# In[ ]:
+# In[105]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -1640,20 +1640,20 @@ plt.show()
 fig.savefig('energyresults-cumulativedeploy.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[106]:
 
 
 cumulative_nameplate_installs = global_projection.loc[2100,'World_cum'] #MW
 print('The nameplate installations for energy transition and through 2100 are '+str(cumulative_nameplate_installs/1e6)+' TW.')
 
 
-# In[ ]:
+# In[107]:
 
 
 global_projection['World_annual_[MWdc]'].sum()
 
 
-# In[ ]:
+# In[108]:
 
 
 Additional_installs = cumu_installs.loc[2100]-global_projection.loc[2100,'World_cum']
@@ -1667,7 +1667,7 @@ plt.ylim(0,410)
 
 # # RESULTS: Virgin Material Demands
 
-# In[ ]:
+# In[109]:
 
 
 cumu_virgin_module = cc_cumu.filter(like='VirginStock_Module')
@@ -1678,7 +1678,7 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 plt.xticks(rotation=90)
 
 
-# In[ ]:
+# In[110]:
 
 
 cumu_virgin_module_bt = cc_cumu.filter(like='VirginStock_Module')/1e9
@@ -1712,14 +1712,14 @@ plt.show()
 fig.savefig('energyresults-cumuMatDemand.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[111]:
 
 
 virgin = cumu_virgin_module_bt.iloc[-1,:]
 virgin.index=scennames_labels_flat
 
 
-# In[ ]:
+# In[112]:
 
 
 recycledperc_virginstock = cc_cumu.filter(like='VirginStock').filter(like='Recycled')
@@ -1728,7 +1728,7 @@ plt.bar(recycledperc_virginstock.columns, recycledperc_virginstock.loc[2100]/1e6
 plt.ylabel('Million Metric tonnes')
 
 
-# In[ ]:
+# In[113]:
 
 
 cumu_virgin_module = cc_cumu.filter(like='VirginStock_Module')
@@ -1739,7 +1739,7 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[114]:
 
 
 annual_virgin_module = cc_yearly.filter(like='VirginStock_Module')
@@ -1750,7 +1750,7 @@ plt.ylabel('Virgin Material Requirements\n[million tonnes]')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[115]:
 
 
 annual_virgin_module_mt = annual_virgin_module/1e6
@@ -1811,7 +1811,7 @@ plt.show()
 fig.savefig('energyresults-annualMatDemands.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[116]:
 
 
 #do it by decade to match up with annual installs graphs
@@ -1822,7 +1822,7 @@ virgin_module_decades
 #this is the sum each decade, still need to divide by 10 for annual
 
 
-# In[ ]:
+# In[117]:
 
 
 annual_virgin_module_decademod = annual_virgin_module.copy()
@@ -1836,7 +1836,7 @@ for col in annual_virgin_module_decademod:
 #plt.plot(annual_virgin_module_decademod)
 
 
-# In[ ]:
+# In[118]:
 
 
 annual_virgin_module_decademod_mt = annual_virgin_module_decademod/1e6
@@ -1898,7 +1898,7 @@ plt.show()
 fig.savefig('energyresults-annualMatDemands-decade.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[119]:
 
 
 #print out masses for stacked bar charts
@@ -1909,7 +1909,7 @@ mass_cumu = pd.concat([mass_cumu_virgin,mass_cumu_wasteall])
 mass_cumu.to_csv(os.path.join(testfolder, 'cc_cumu_mass_2100results.csv'))
 
 
-# In[ ]:
+# In[120]:
 
 
 cc_cumu.to_csv(os.path.join(testfolder, 'cc_cumu_mass_results.csv'))
@@ -1917,7 +1917,7 @@ cc_cumu.to_csv(os.path.join(testfolder, 'cc_cumu_mass_results.csv'))
 
 # # RESULTS: Lifecycle Wastes
 
-# In[ ]:
+# In[121]:
 
 
 cumu_lifecycle_wastes = cc_cumu.filter(like='WasteAll_Module')
@@ -1930,7 +1930,7 @@ plt.ylabel('Lifecycle Wastes\n[billion tonnes]')
 plt.xticks(rotation=90)
 
 
-# In[ ]:
+# In[122]:
 
 
 cumu_lifecycle_wastes_bt = cc_cumu.filter(like='WasteAll_Module')/1e9
@@ -1965,14 +1965,14 @@ plt.show()
 fig.savefig('energyresults-cumuWaste.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[123]:
 
 
 wastes = cumu_lifecycle_wastes_bt.iloc[-1,:]
 wastes.index=scennames_labels_flat
 
 
-# In[ ]:
+# In[124]:
 
 
 annual_waste_module = cc_yearly.filter(like='WasteAll_Module')
@@ -1989,7 +1989,7 @@ plt.ylim(0,)
 
 
 
-# In[ ]:
+# In[125]:
 
 
 #do it by decade to match up with annual installs graphs
@@ -2000,7 +2000,7 @@ waste_module_decades
 #this is the sum each decade, still need to divide by 10 for annual
 
 
-# In[ ]:
+# In[126]:
 
 
 annual_waste_module_decademod = annual_waste_module.copy()
@@ -2014,7 +2014,7 @@ for col in annual_waste_module_decademod:
 #plt.plot(annual_virgin_module_decademod)
 
 
-# In[ ]:
+# In[127]:
 
 
 annual_waste_module_decademod_mt = annual_waste_module_decademod/1e6
@@ -2074,7 +2074,7 @@ plt.show()
 fig.savefig('energyresults-annualwaste.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[128]:
 
 
 sim1.scenario['r_IRENA'].dataOut_m.loc[45:,]
@@ -2085,7 +2085,7 @@ sim1.scenario['r_IRENA'].dataOut_m.loc[45:,]
 # ## Energy Generation
 # Because of different bifi factors, they do NOT produce the same energy
 
-# In[ ]:
+# In[129]:
 
 
 #energyGen = allenergy.filter(like='e_out_annual')
@@ -2099,13 +2099,13 @@ plt.ylim(0,)
 # ## Annual Energy Demands through 2050
 # Increasing the steepness of the curve
 
-# In[ ]:
+# In[130]:
 
 
 e_annual_sumDemands = energy_demands.filter(like='demand_total')
 
 
-# In[ ]:
+# In[131]:
 
 
 plt.plot(e_annual_sumDemands/1e12)
@@ -2116,7 +2116,7 @@ plt.ylim(0,)
 plt.xlim(2000,2050)
 
 
-# In[ ]:
+# In[132]:
 
 
 #ember electricity demand
@@ -2127,7 +2127,7 @@ elec_2050 = pd.DataFrame({2050:[58000],2050:[103400],2050:[105000],2050:[85300],
 elec_2050
 
 
-# In[ ]:
+# In[133]:
 
 
 #calculate percentage of world electricity demands
@@ -2141,7 +2141,7 @@ elec_demand_goal = pd.DataFrame(pd.concat([world_elec_demand.loc[:2022,'Electric
 elec_demand = elec_demand_goal.interpolate()
 
 
-# In[ ]:
+# In[134]:
 
 
 e_annual_sumDemands_TWh = e_annual_sumDemands/1e12
@@ -2149,13 +2149,13 @@ prct_elec_demand_2050 = e_annual_sumDemands_TWh.loc[:2050]/elec_demand.values*10
 prct_elec_demand_2050.loc[2050]
 
 
-# In[ ]:
+# In[135]:
 
 
 sim1.scenario['r_IRENA'].material['glass'].matdataOut_e
 
 
-# In[ ]:
+# In[136]:
 
 
 e_annual_sumDemands_TWh = e_annual_sumDemands/1e12
@@ -2204,7 +2204,7 @@ plt.xlim(2000,2050)
 plt.show()
 
 
-# In[ ]:
+# In[137]:
 
 
 e_annual_demands_TWh = e_annual_sumDemands/1e12
@@ -2269,13 +2269,13 @@ fig.savefig('energyresults-annualEnergyDemands2050.png', dpi=300, bbox_inches='t
 
 # ## Energy Demands
 
-# In[ ]:
+# In[138]:
 
 
 e_annual_sumDemands_cumu = e_annual_sumDemands.cumsum()
 
 
-# In[ ]:
+# In[139]:
 
 
 plt.bar(e_annual_sumDemands_cumu.columns, e_annual_sumDemands_cumu.loc[2100]/1e12, 
@@ -2285,7 +2285,7 @@ plt.ylabel('Cumulative Energy Demands\n[TWh]')
 plt.xticks(rotation=90)
 
 
-# In[ ]:
+# In[140]:
 
 
 cumu_e_demands_twh = e_annual_sumDemands_cumu.loc[2100]/1e12
@@ -2321,7 +2321,7 @@ plt.show()
 fig.savefig('energyresults-energyDemands.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[141]:
 
 
 #select material demands that are not fuel
@@ -2335,14 +2335,14 @@ for scen in sim1.scenario.keys():
     e_mfging_bymat = pd.concat([e_mfging_bymat,e_energy_mfg_scen,e_energy_mod_mfg_scen], axis=1)
 
 
-# In[ ]:
+# In[142]:
 
 
 cum_e_mfging_bymat = e_mfging_bymat.cumsum().loc[2100]
 cum_e_mfging_bymat
 
 
-# In[ ]:
+# In[143]:
 
 
 #run 2x rn??
@@ -2383,7 +2383,7 @@ plt.legend(MATERIALS)
 
 # ## Net Energy
 
-# In[ ]:
+# In[144]:
 
 
 energyGen_cumu = energyGen.cumsum()
@@ -2391,19 +2391,19 @@ energyGen_cumu.columns = e_annual_sumDemands_cumu.columns = scennames_labels_fla
 netEnergy_cumu = energyGen_cumu.loc[[2100]] - e_annual_sumDemands_cumu.loc[[2100]]
 
 
-# In[ ]:
+# In[145]:
 
 
 e_annual_sumDemands_cumu.loc[[2100]]
 
 
-# In[ ]:
+# In[146]:
 
 
 netEnergy_cumu
 
 
-# In[ ]:
+# In[147]:
 
 
 plt.bar(netEnergy_cumu.columns, netEnergy_cumu.loc[2100]/1e12, 
@@ -2414,7 +2414,7 @@ plt.ylabel('Cumulative Net Energy [TWh]')
 plt.xticks(rotation=90)
 
 
-# In[ ]:
+# In[148]:
 
 
 cumu_netEnergy_twh = netEnergy_cumu.loc[2100]/1e15
@@ -2449,7 +2449,7 @@ plt.show()
 fig.savefig('energyresults-cumuNetEnergy.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[149]:
 
 
 netEnergy_relative = netEnergy_cumu - netEnergy_cumu.loc[2100,'PV_ICE']
@@ -2461,7 +2461,7 @@ plt.ylabel('Relative Cumulative Net Energy [TWh]')
 plt.xticks(rotation=90)
 
 
-# In[ ]:
+# In[150]:
 
 
 netEnergy_cumu_norm = netEnergy_cumu/netEnergy_cumu.loc[2100,'PV_ICE']
@@ -2469,7 +2469,7 @@ netEnergy_cumu_norm_waterfall = netEnergy_cumu_norm-1
 netEnergy_cumu_norm
 
 
-# In[ ]:
+# In[151]:
 
 
 plt.bar(netEnergy_cumu.columns, netEnergy_cumu_norm_waterfall.loc[2100], 
@@ -2481,13 +2481,13 @@ plt.plot(0.0, lw=2)
 plt.xticks(rotation=90)
 
 
-# In[ ]:
+# In[152]:
 
 
 netEnergy_cumu_norm_waterfall
 
 
-# In[ ]:
+# In[153]:
 
 
 
@@ -2524,20 +2524,20 @@ plt.show()
 fig.savefig('energyresults-cumuNetEnergyNorm.png', dpi=300, bbox_inches='tight')
 
 
-# In[ ]:
+# In[154]:
 
 
 netenergy_final = netEnergy_cumu.loc[2100]/1e12
 
 
-# In[ ]:
+# In[155]:
 
 
 energyGen.columns = e_annual_sumDemands.columns = scennames_labels_flat
 annual_net_energy = energyGen - e_annual_sumDemands
 
 
-# In[ ]:
+# In[156]:
 
 
 plt.plot(annual_net_energy/1e12)
@@ -2551,13 +2551,13 @@ plt.xlim(2000,2100)
 # ## Energy Balance
 # Inspired by EROI, this is all the energy generation divided by all the energy demanded for all systems deployed in energy transition. This is giving us an idea of our energy bang for energy buck
 
-# In[ ]:
+# In[157]:
 
 
 energyBalance_allyears = energyGen_cumu/e_annual_sumDemands_cumu
 
 
-# In[ ]:
+# In[158]:
 
 
 plt.bar(energyBalance_allyears.columns, energyBalance_allyears.loc[2100], 
@@ -2567,7 +2567,7 @@ plt.ylabel('Unitless')
 plt.xticks(rotation=90)
 
 
-# In[ ]:
+# In[159]:
 
 
 energyBalance = energyBalance_allyears.loc[2100]
@@ -2604,7 +2604,7 @@ fig.savefig('energyresults-energyBalance.png', dpi=300, bbox_inches='tight')
 
 # ### Discussion summary table
 
-# In[ ]:
+# In[160]:
 
 
 discussTable = pd.concat([total_deploy,virgin,wastes, cumu_e_demands_twh,netenergy_final,energyBalance], axis=1,
