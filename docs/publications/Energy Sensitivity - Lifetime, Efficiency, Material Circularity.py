@@ -39,29 +39,6 @@ import PV_ICE
 PV_ICE.__version__
 
 
-# #https://www.learnui.design/tools/data-color-picker.html#palette
-# #color pallette - modify here for all graphs below
-# colorpalette=['#000000', #PV ICE baseline
-#               '#595959', '#7F7F7F', '#A6A6A6', '#D9D9D9', # greys
-#               #'#067872','#0aa39e','#09d0cd','#00ffff', # teals
-#               '#0579C1','#C00000','#FFC000', #b,r,y
-#                 '#6E30A0','#00B3B5','#10C483', #
-#                '#97CB3F','#FF7E00' #
-#                 ] 
-# 
-# colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B'] #colors for material plots       
-# 
-# import matplotlib as mpl #import matplotlib
-# from cycler import cycler #import cycler
-# mpl.rcParams['axes.prop_cycle'] = cycler(color=colorpalette) #reset the default color palette of mpl
-# 
-# plt.rcParams.update({'font.size': 14})
-# plt.rcParams['figure.figsize'] = (8, 6)
-# 
-# scennames_labels = []  
-# 
-# scennames_labels_flat = [] 
-
 # In[4]:
 
 
@@ -493,13 +470,24 @@ energy_demands.to_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_energy_de
 UnderInstall_df.to_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_underInstalls.csv'))
 
 
-# In[26]:
+# In[8]:
 
 
-scennames_labels
+cc_yearly = pd.read_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_yearly.csv'), index_col='year')
+cc_cumu = pd.read_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_cumu.csv'), index_col='year')
+
+allenergy=pd.read_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_allenergy.csv'), index_col='year')
+energyGen=pd.read_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_energyGen.csv'), index_col='year')
+energy_demands=pd.read_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_energy_demands.csv'), index_col='year')
 
 
-# In[27]:
+# In[9]:
+
+
+scennames_labels = ['PV_ICE', 'life_high', 'life_low', 'eff_high', 'eff_high_bifi', 'eff_low', 'circ_high', 'circ_mid', 'circ_low']
+
+
+# In[10]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -513,7 +501,7 @@ plt.title('Cumulative Installs with Replacements')
 #plt.ylim(0,410)
 
 
-# In[28]:
+# In[11]:
 
 
 cumu_area_deployed = pd.DataFrame()
@@ -533,7 +521,7 @@ plt.title('Cumulative Area Deployed with Replacements')
 #plt.ylim(0,410)
 
 
-# In[29]:
+# In[12]:
 
 
 cumu_virgin_module = cc_cumu.filter(like='VirginStock_Module')
@@ -547,7 +535,7 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 #plt.xticks(rotation=90)
 
 
-# In[30]:
+# In[13]:
 
 
 cumu_lifecycle_wastes = cc_cumu.filter(like='WasteAll_Module')
@@ -560,7 +548,7 @@ plt.title('Cumulative Lifecycle Wastes')
 plt.ylabel('Lifecycle Wastes\n[billion tonnes]')
 
 
-# In[31]:
+# In[14]:
 
 
 e_annual_sumDemands = energy_demands.filter(like='demand_total')
@@ -573,7 +561,7 @@ plt.title('Cumulative Lifecycle Energy Demands')
 plt.ylabel('Cumulative Energy Demands\n[TWh]')
 
 
-# In[32]:
+# In[15]:
 
 
 e_demands_eff_high = energy_demands.filter(like='eff_high')
@@ -584,7 +572,7 @@ e_demands_eff_high_cumu
 #plt.bar(e_demands_eff_high_cumu.columns, e_demands_eff_high_cumu.iloc[-1,:])
 
 
-# In[33]:
+# In[16]:
 
 
 energyGen_cumu = energyGen.cumsum()
@@ -597,7 +585,7 @@ plt.title('Net Energy Cumulatively')
 plt.ylabel('Cumulative Net Energy [TWh]')
 
 
-# In[34]:
+# In[17]:
 
 
 netEnergy_cumu_norm = netEnergy_cumu/netEnergy_cumu.loc[2100,'PV_ICE']
@@ -611,7 +599,7 @@ plt.plot(0.0, lw=2)
 plt.xticks(rotation=90)
 
 
-# In[35]:
+# In[18]:
 
 
 energyBalance_allyears = energyGen_cumu/e_annual_sumDemands_cumu
@@ -623,7 +611,7 @@ plt.title('Energy Balance')
 plt.ylabel('Unitless')
 
 
-# In[36]:
+# In[19]:
 
 
 discussTable = pd.concat([total_installed,cumu_area_deployed_total,virgin,wastes,
@@ -633,11 +621,105 @@ discussTable = pd.concat([total_installed,cumu_area_deployed_total,virgin,wastes
 discussTable
 
 
-# In[37]:
+# In[20]:
+
+
+discussTable = pd.concat([total_installed,virgin,wastes,
+                          cumu_e_demands, netEnergy_cumu.loc[2100].T, energyBalance],
+                         axis=1, keys=['replacements','virgin','wastes','energydemand','netenergy','energybalance'])
+#discussTable.to_csv(os.path.join(testfolder,'discussiontable.csv'))
+discussTable
+
+
+# In[21]:
 
 
 discussTable_norm = (discussTable/discussTable.loc['PV_ICE'])*100-100
 discussTable_norm
+
+
+# In[56]:
+
+
+sense_table.loc[:,cols]
+
+
+# In[128]:
+
+
+sense_table = discussTable_norm.T.drop(columns=['PV_ICE'])
+sense_table.loc[['replacements','virgin','wastes','energydemand'],:]*=-1
+
+colors=['#0579C1','#9DC3E6', #life_high, life_low 
+        '#FF0000', '#C00000','#FF9B9B',#eff_high, eff_high_bifi, eff_low
+        '#CC9B00','#FFC000','#FFE699'#circular_high, circ_mid, circ_low
+            ] 
+
+metric_labels = ['Total\nDeployment','Virgin\nMaterial\nDemands','Lifecycle\nWastes',
+                 'Energy\nDemands','Net\nEnergy','Energy\nBalance']
+
+sens_scenarios = ['Life+10 years','Life-10 years',
+                  'Efficiency+5%','Efficiency+5% & 0.9','Efficiency-5%',
+                  'Recycling 100%','Recycling 25%','Recycling 0%']
+
+plt.rcParams.update({'font.size': 14})
+
+sensitivitybars, ax = plt.subplots(figsize=(8,5))
+
+x=np.arange(len(metric_labels)) #label locations
+bwidth = 0.25 # bar width
+
+#lifes = ax.bar(x, sense_table.iloc[:,0:1], color=colors[0:1], label=sens_scenarios[0:1],
+#              width=bwidth)
+
+#effs = ax.bar(x+bwidth, sense_table.iloc[:,2:5], color=colors[2:5], label=sens_scenarios[2:5],
+#              width=bwidth)
+
+#circs = ax.bar(x+2*bwidth, sense_table.iloc[:,5:], color=colors[5:], label=sens_scenarios[5:],
+#              width=bwidth)
+
+ax.axhline(0, lw=1, color='black')
+ax.grid(axis='y', color='0.7', ls='--')
+ax.set_axisbelow(True) 
+ax.axhspan(0,-100, facecolor='0.2', alpha=0.1)
+
+plt.bar(x, sense_table.iloc[:,0], color=colors[0], label=sens_scenarios[0],width=bwidth)
+plt.bar(x, sense_table.iloc[:,1], color=colors[1], label=sens_scenarios[1],width=bwidth)
+plt.bar(x+bwidth, sense_table.iloc[:,3], color=colors[3], label=sens_scenarios[3],width=bwidth)
+plt.bar(x+bwidth, sense_table.iloc[:,2], color=colors[2], label=sens_scenarios[2],width=bwidth)
+plt.bar(x+bwidth, sense_table.iloc[:,4], color=colors[4], label=sens_scenarios[4],width=bwidth)
+plt.bar(x+2*bwidth, sense_table.iloc[:,5], color=colors[5], label=sens_scenarios[5],width=bwidth)
+plt.bar(x+2*bwidth, sense_table.iloc[:,6], color=colors[6], label=sens_scenarios[6],width=bwidth)
+plt.bar(x+2*bwidth, sense_table.iloc[:,7], color=colors[7], label=sens_scenarios[7],width=bwidth)
+
+plt.ylim(-80,100)
+ax.set_xticks(x+2*bwidth / 2)
+ax.set_xticklabels(metric_labels, fontsize=12)
+
+plt.ylabel('% Worsening        % Improvement     ')
+plt.title('Sensitivity of Design Aspects')
+
+ax.legend(bbox_to_anchor=(1,1.02), fontsize=12)
+
+sensitivitybars.savefig('energyresults-sensitivity-3aspects.png', dpi=300, bbox_inches='tight')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # # Best Combos and Worst Combos

@@ -2414,40 +2414,44 @@ cum_e_mfging_bymat = e_mfging_bymat.cumsum().loc[2100]
 cum_e_mfging_bymat
 
 
-# #run 2x rn??
-# #energy demands by material mfging
-# plt.bar(e_annual_sumDemands_cumu.columns, e_annual_sumDemands_cumu.loc[2100], 
-#         tick_label=(scennames_labels), color=colorpalette)
-# 
-# #Materials
-# cume_mfg_glass = cum_e_mfging_bymat.filter(like='glass')
-# cume_mfg_silicon = cum_e_mfging_bymat.filter(like='silicon')
-# cume_mfg_silver = cum_e_mfging_bymat.filter(like='silver')
-# cume_mfg_aluminium_frames = cum_e_mfging_bymat.filter(like='aluminium_frames')
-# cume_mfg_copper = cum_e_mfging_bymat.filter(like='copper')
-# cume_mfg_encapsulant = cum_e_mfging_bymat.filter(like='encapsulant')
-# cume_mfg_backsheet = cum_e_mfging_bymat.filter(like='backsheet')
-# cume_mfg_mod = cum_e_mfging_bymat.filter(like='mod')
-# 
-# bot_ag = cume_mfg_glass.values+cume_mfg_silicon.values
-# bot_al = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values
-# bot_cu = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values+cume_mfg_aluminium_frames.values
-# bot_encap = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values+cume_mfg_aluminium_frames.values+cume_mfg_copper.values
-# bot_back = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values+cume_mfg_aluminium_frames.values+cume_mfg_copper.values+cume_mfg_encapsulant.values
-# bot_mod = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values+cume_mfg_aluminium_frames.values+cume_mfg_copper.values+cume_mfg_encapsulant.values+cume_mfg_backsheet.values
-# 
-# plt.bar(scennames_labels, cume_mfg_glass, color = colormats[0], hatch='.')
-# plt.bar(scennames_labels, cume_mfg_silicon, bottom = cume_mfg_glass, color=colormats[1], hatch='.')
-# plt.bar(scennames_labels, cume_mfg_silver, bottom = bot_ag, color=colormats[2], hatch='.')
-# plt.bar(scennames_labels, cume_mfg_aluminium_frames, bottom = bot_al, color=colormats[3], hatch='.')
-# plt.bar(scennames_labels, cume_mfg_copper, bottom = bot_cu , color=colormats[4], hatch='.')
-# plt.bar(scennames_labels, cume_mfg_encapsulant, bottom = bot_encap ,color=colormats[5], hatch='.')
-# plt.bar(scennames_labels, cume_mfg_backsheet, bottom = bot_back, color=colormats[6], hatch='.')
-# plt.bar(scennames_labels, cume_mfg_mod, bottom = bot_back, color='white', hatch='.')
-# 
-# plt.xticks(rotation=90)
-# 
-# plt.legend(MATERIALS)
+# In[ ]:
+
+
+#run 2x rn??
+#energy demands by material mfging
+plt.bar(e_annual_sumDemands_cumu.columns, e_annual_sumDemands_cumu.loc[2100], 
+        tick_label=(scennames_labels), color=colorpalette)
+
+#Materials
+cume_mfg_glass = cum_e_mfging_bymat.filter(like='glass')
+cume_mfg_silicon = cum_e_mfging_bymat.filter(like='silicon')
+cume_mfg_silver = cum_e_mfging_bymat.filter(like='silver')
+cume_mfg_aluminium_frames = cum_e_mfging_bymat.filter(like='aluminium_frames')
+cume_mfg_copper = cum_e_mfging_bymat.filter(like='copper')
+cume_mfg_encapsulant = cum_e_mfging_bymat.filter(like='encapsulant')
+cume_mfg_backsheet = cum_e_mfging_bymat.filter(like='backsheet')
+cume_mfg_mod = cum_e_mfging_bymat.filter(like='mod')
+
+bot_ag = cume_mfg_glass.values+cume_mfg_silicon.values
+bot_al = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values
+bot_cu = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values+cume_mfg_aluminium_frames.values
+bot_encap = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values+cume_mfg_aluminium_frames.values+cume_mfg_copper.values
+bot_back = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values+cume_mfg_aluminium_frames.values+cume_mfg_copper.values+cume_mfg_encapsulant.values
+bot_mod = cume_mfg_glass.values+cume_mfg_silicon.values+cume_mfg_silver.values+cume_mfg_aluminium_frames.values+cume_mfg_copper.values+cume_mfg_encapsulant.values+cume_mfg_backsheet.values
+
+plt.bar(scennames_labels, cume_mfg_glass, color = colormats[0], hatch='.')
+plt.bar(scennames_labels, cume_mfg_silicon, bottom = cume_mfg_glass, color=colormats[1], hatch='.')
+plt.bar(scennames_labels, cume_mfg_silver, bottom = bot_ag, color=colormats[2], hatch='.')
+plt.bar(scennames_labels, cume_mfg_aluminium_frames, bottom = bot_al, color=colormats[3], hatch='.')
+plt.bar(scennames_labels, cume_mfg_copper, bottom = bot_cu , color=colormats[4], hatch='.')
+plt.bar(scennames_labels, cume_mfg_encapsulant, bottom = bot_encap ,color=colormats[5], hatch='.')
+plt.bar(scennames_labels, cume_mfg_backsheet, bottom = bot_back, color=colormats[6], hatch='.')
+plt.bar(scennames_labels, cume_mfg_mod, bottom = bot_back, color='white', hatch='.')
+
+plt.xticks(rotation=90)
+
+plt.legend(MATERIALS)
+
 
 # ## Net Energy
 
