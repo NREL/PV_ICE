@@ -11,7 +11,7 @@
 <tr>
   <td>License</td>
   <td>
-    <a href="https://github.com/NREL/PV_ICE/blob/master/LICENSE.md">
+    <a href="https://github.com/NREL/PV_ICE/blob/main/LICENSE.md">
     <img src="https://img.shields.io/pypi/l/pvlib.svg" alt="license" />
     </a>
 </td>
