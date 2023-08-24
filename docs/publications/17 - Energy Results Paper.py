@@ -1058,22 +1058,30 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[69]:
+# In[18]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
 
-fig, ax1 = plt.subplots()
+fig, ax1 = plt.subplots(figsize=(8,5))
 
-ax1.stackplot(global_projection.index, global_projection['World_cum']/1e6, color='#F7A11A')
-ax1.set_ylabel('Cumulative Solar Capacity [TW]', color='#F7A11A')
-ax1.set_ylim(0,90)
-ax1.set_xlim(2000,2100)
+ax1.plot(global_projection['World_annual_[MWdc]']/1e6)
+ax1.set_ylabel('Annual Installations [TWdc]')
+ax1.set_ylim(0,5)
+ax1.axvspan(2000,2022, facecolor='0.2', alpha=0.1) #grey shading
+ax1.text(2005,0.5,'Global\nHistorical\nDeployment', fontsize=10)
+ax1.text(2060,0.3,'+ Replacements')
 
 ax2 = ax1.twinx()
-ax2.plot(global_projection['World_annual_[MWdc]']/1e6)
-ax2.set_ylabel('Annual Installations [TW]')
-ax2.set_ylim(0,5)
+ax2.stackplot(global_projection.index, global_projection['World_cum']/1e6, color='#F7A11A')
+ax2.set_ylabel('Cumulative Solar Capacity [TW]', color='#F7A11A')
+ax2.set_ylim(0,90)
+ax2.set_xlim(2000,2100)
+ax2.text(2051,70,'75 TW', color='#954712')
+ax2.text(2090,80,'86 TW', color='#954712')
+
+ax1.set_zorder(10) #send orange to back
+ax1.patch.set_visible(False) #send orange to back
 
 plt.show()
 
