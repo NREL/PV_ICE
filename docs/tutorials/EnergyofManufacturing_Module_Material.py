@@ -121,13 +121,13 @@ annual_e_demand_mat_mod = pd.concat([annual_mfg_glass,annual_mfg_silicon,annual_
 annual_e_demand_mat_mod_MW = annual_e_demand_mat_mod/1e6
 
 
-# In[18]:
+# In[12]:
 
 
 annual_e_demand_mat_mod_MW.iloc[:,0:2]#.sum(axis=1)
 
 
-# In[19]:
+# In[13]:
 
 
 

@@ -60,14 +60,14 @@ mpl.rcParams['axes.prop_cycle'] = cycler(color=colorpalette) #reset the default 
 plt.rcParams.update({'font.size': 14})
 plt.rcParams['figure.figsize'] = (8, 6)
 
-scennames_labels = ['PV_ICE','PERC','SHJ','TOPCon','IRENA\nreg. loss',
+scennames_labels = ['PV_ICE','PERC','SHJ','TOPCon','Low\nQuality',
                          'Long-Lived','High Eff','Circular',
                         'High Eff\n+ Long-life','Long-Life\n+ Recycling',
                          'Recycled-Si\n+ Long-life','Circular\n+ Long-life',
                         'Circular\n+ High Eff'
                     ]  
 
-scennames_labels_flat = ['PV_ICE','PERC','SHJ','TOPCon','IRENA reg. loss',
+scennames_labels_flat = ['PV_ICE','PERC','SHJ','TOPCon','Low Quality',
                          'Long-Lived','High Eff','Circular',
                         'High Eff + Long-life','Long-Life + Recycling',
                          'Recycled-Si + Long-life','Circular + Long-life',
