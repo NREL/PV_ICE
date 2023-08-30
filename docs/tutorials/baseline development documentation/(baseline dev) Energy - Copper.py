@@ -4,7 +4,7 @@
 # # Copper Energy Demands
 # This journal documents the energy demands of mining, refining, drawing and recycling of copper for use inside the PV cell. Probably also applies to copper in wiring (not yet considered)
 
-# In[1]:
+# In[20]:
 
 
 import numpy as np
@@ -22,14 +22,14 @@ baselinesFolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baseli
 
 # ### Mining Energy
 
-# In[2]:
+# In[21]:
 
 
 cu_mining_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-mining.csv"), index_col='year')
 cu_mining_raw.dropna(how='all')
 
 
-# In[3]:
+# In[22]:
 
 
 fig, ax1 = plt.subplots()
@@ -52,12 +52,21 @@ plt.show()
 # 
 # The percent fuel differs in Lagos et al between openpit and underground. This is likely due to the inclusion of transportation energy (i.e. openpit which involves more driving is higher fuel). Farjana which excludes transportation is 20% fuels, therefore we will use this.
 
-# In[4]:
+# In[53]:
 
 
 cu_mining_data = cu_mining_raw.loc[1995:,'E_CuMining_kWhpkg']
 cu_mining_avg = cu_mining_data.mean()
-cu_minig_prctfuel = 20.0
+cu_mining_prctfuel = 20.0
+indx_temp = pd.Series(range(1995,2051,1))
+cu_mining_energy = pd.DataFrame({'E_Cu_Mining_kWhpkg':cu_mining_avg, 'PrctFuel':cu_mining_prctfuel}, index=indx_temp)
+#cu_mining_energy
+
+
+# In[ ]:
+
+
+
 
 
 # ## PYRO
@@ -65,14 +74,14 @@ cu_minig_prctfuel = 20.0
 # 
 # This data includes grinding and milling, floatation, smelting, and electrolysis refining.
 
-# In[5]:
+# In[24]:
 
 
 cu_pyro_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-pyro.csv"), index_col='year')
 cu_pyro_raw.dropna(how='all')
 
 
-# In[6]:
+# In[25]:
 
 
 fig, ax1 = plt.subplots()
@@ -93,7 +102,7 @@ plt.show()
 # 
 # Fuel fractions are fairly consistent across all data, therefore we will take the average.
 
-# In[7]:
+# In[26]:
 
 
 cu_pyro = cu_pyro_raw.copy()
@@ -105,7 +114,7 @@ cu_pyro_filled = cu_pyro.interpolate()
 cu_pyro_final = cu_pyro_filled.loc[1995:,'E_Pyro_Cu_kWhpkg':'PrctFuel']
 
 
-# In[8]:
+# In[27]:
 
 
 #cu_pyro_final
@@ -127,14 +136,14 @@ plt.show()
 
 # ## HYDRO
 
-# In[9]:
+# In[28]:
 
 
 cu_hydro_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-hydro.csv"), index_col='year')
 cu_hydro_raw.dropna(how='all')
 
 
-# In[10]:
+# In[29]:
 
 
 fig, ax1 = plt.subplots()
@@ -156,7 +165,7 @@ plt.show()
 # 
 # the 1980 data point is quite high, but this might be real. Will interpolate between 1980 and 2002.
 
-# In[11]:
+# In[30]:
 
 
 cu_hydro_post_2002 = cu_hydro_raw.loc[2002:,'E_hydro_Cu_kWhpkg'].mean()
@@ -170,7 +179,7 @@ cu_hydro_filled = cu_hydro.interpolate()
 cu_hydro_final = cu_hydro_filled.loc[1995:,['E_hydro_Cu_kWhpkg','PrctFuel']]
 
 
-# In[12]:
+# In[31]:
 
 
 #cu_hydro_final
@@ -198,7 +207,7 @@ plt.show()
 
 # ## Import Market share of Pyro vs Hydro Metallurgy
 
-# In[13]:
+# In[32]:
 
 
 #import marketshare
@@ -206,7 +215,7 @@ mrktshr_pyrohydro_raw = pd.read_excel(os.path.join(supportMatfolder+"\energy-inp
               sheet_name='pyrovshydro', index_col=0, header=[0])
 
 
-# In[14]:
+# In[33]:
 
 
 mrktshr_pyrohydro = mrktshr_pyrohydro_raw[['% PYRO','% HYDRO']]
@@ -217,7 +226,7 @@ plt.legend(mrktshr_pyrohydro.columns, loc='lower right')
 
 # Now we multiply the energies by their percentages, and re-calculate fuel percentage
 
-# In[15]:
+# In[34]:
 
 
 #calculate fuel energy
@@ -225,13 +234,13 @@ cu_hydro_final['E_hydro_Cu_fuel_kWhpkg'] = cu_hydro_final['E_hydro_Cu_kWhpkg']*(
 cu_pyro_final['E_Pyro_Cu_fuel_kWhpkg'] = cu_pyro_final['E_Pyro_Cu_kWhpkg']*(cu_pyro_final['PrctFuel']/100)
 
 
-# In[16]:
+# In[35]:
 
 
 cu_hydro_final.head(5)
 
 
-# In[17]:
+# In[36]:
 
 
 cu_pyro_final.head(5)
@@ -240,7 +249,7 @@ cu_pyro_final.head(5)
 # hydro_e*hydroprct + pyro_e*pyroprct
 # same for fuel
 
-# In[22]:
+# In[37]:
 
 
 mrktshr_pyrohydro_filled = mrktshr_pyrohydro.loc[1995:].ffill() #create through 2050 (just maintained marketshare)
@@ -250,50 +259,108 @@ Cu_metallurgy_e_prctfuel = Cu_metallurgy_e_fuel/Cu_metallurgy_e*100 #back into p
 Cu_metallurgy_energy = pd.concat([Cu_metallurgy_e,Cu_metallurgy_e_prctfuel], axis=1, keys=['E_Cu_metallurgy_kWhpkg','PrctFuel'])
 
 
+# In[38]:
+
+
+Cu_metallurgy_energy.head(5)
+
+
 # In[ ]:
 
 
 
 
 
-# ### Add the Energy to turn Cu cathode in to Cu wire
+# ### Energy Drawing Cu wire
 
-# In[26]:
+# In[39]:
 
 
 cu_wireDraw_raw = pd.read_csv(os.path.join(supportMatfolder+"\energy-input-copper-wireDraw.csv"), index_col='year')
 cu_wireDraw_raw.dropna(how='all')
 
 
-# In[24]:
+# In[42]:
 
 
-#subtract the average historical CED of Cu from the 2012 data to get just wire pulling part
-adj_wire = cu_wireDraw_raw.loc[2012,'E_wireDraw_kWhpkg']-CED_mrktshr.mean() #using the historical with marketshare hydro/pyro wtd
-cu_wireDraw_raw.loc[2012,'E_wireDraw_kWhpkg'] = adj_wire[0]
-adj_wire
+fig, ax1 = plt.subplots()
+
+ax1.scatter(cu_wireDraw_raw.index, cu_wireDraw_raw['E_wireDraw_kWhpkg'], marker='o')
+ax1.set_ylabel('kWh/kg')
+ax1.set_ylim(0,5)
+
+ax2 = ax1.twinx()
+ax2.scatter(cu_wireDraw_raw.index, cu_wireDraw_raw['PrctFuel'], marker='^', color='red')
+ax2.set_ylabel('Percent Fuel [%]', color='red')
+ax2.set_ylim(0,100)
+
+plt.title('Cu_WireDraw_kWhpkg')
+plt.show()
 
 
-# In[ ]:
+# Not a huge range. The lowest point is likely too low, paper is demonstrating software optimization. Dropping two low points and interpolate the rest.
+
+# In[48]:
 
 
-cu_wireDraw_raw.dropna(how='all')
+cu_wireDraw_mod = cu_wireDraw_raw.copy()
+cu_wireDraw_mod.loc[2009:2018] = np.nan
+cu_wireDraw_mod.interpolate(inplace=True)
+cu_wireDraw_mod['PrctFuel'] = 0.0
+cu_wireDraw_final = cu_wireDraw_mod.iloc[:,[0,1]]
 
 
-# None of these are very large. We will average these values to estimate the wire drawing requirements, then add it to the CED to get a MFGing of virgin Cu. This value will also be added to the recycling processing requirements below.
+# ## Sum the virgin copper energies
 
-# In[ ]:
-
-
-e_wireDraw = cu_wireDraw_raw['E_wireDraw_kWhpkg'].mean()
-e_wireDraw
+# In[68]:
 
 
-# In[ ]:
+Cu_MFGing_e_final = pd.DataFrame(index=indx_temp, columns=['E_Cu_mfging_kWhpkg','PrctFuel'])
 
 
-CED_Cu_virgin = round(CED_Cu_filled+e_wireDraw,2)
-CED_Cu_virgin.to_csv(os.path.join(supportMatfolder+'\output_energy_Cu_Mfging.csv'))
+# In[65]:
+
+
+#percent fuel to fuel energy for each
+cu_mining_energy['E_Cu_mining_fuel_kWhpkg'] = cu_mining_energy['E_Cu_Mining_kWhpkg']*cu_mining_energy['PrctFuel']/100
+Cu_metallurgy_energy['E_Cu_metallurgy_fuel_kWhpkg'] = Cu_metallurgy_energy['E_Cu_metallurgy_kWhpkg']*Cu_metallurgy_energy['PrctFuel']/100
+cu_wireDraw_final['E_wireDraw_fuel_kWhpkg'] = cu_wireDraw_final['E_wireDraw_kWhpkg']*cu_wireDraw_final['PrctFuel']/100
+
+
+# In[70]:
+
+
+Cu_mfging_fuel_e = cu_mining_energy['E_Cu_mining_fuel_kWhpkg']+Cu_metallurgy_energy['E_Cu_metallurgy_fuel_kWhpkg']+cu_wireDraw_final['E_wireDraw_fuel_kWhpkg']
+Cu_mfging_e = cu_mining_energy['E_Cu_Mining_kWhpkg']+Cu_metallurgy_energy['E_Cu_metallurgy_kWhpkg']+cu_wireDraw_final['E_wireDraw_kWhpkg']
+
+Cu_MFGing_e_final['PrctFuel']=Cu_mfging_fuel_e/Cu_mfging_e*100
+Cu_MFGing_e_final['E_Cu_mfging_kWhpkg'] = Cu_mfging_e
+
+
+# In[74]:
+
+
+#Cu_MFGing_e_final
+fig, ax1 = plt.subplots()
+
+ax1.scatter(Cu_MFGing_e_final.index, Cu_MFGing_e_final['E_Cu_mfging_kWhpkg'], marker='o')
+ax1.set_ylabel('kWh/kg')
+ax1.set_ylim(0,20)
+
+ax2 = ax1.twinx()
+ax2.scatter(Cu_MFGing_e_final.index, Cu_MFGing_e_final['PrctFuel'], marker='^', color='red')
+ax2.set_ylabel('Percent Fuel [%]', color='red')
+ax2.set_ylim(0,100)
+
+plt.title('Cu_MFGing_Energy_kWhpkg')
+plt.show()
+
+
+# In[76]:
+
+
+Cu_MFGing_e_final = round(Cu_MFGing_e_final,2)
+Cu_MFGing_e_final.to_csv(os.path.join(supportMatfolder+'\output_energy_Cu_Mfging.csv'))
 
 
 # # Cu Recycling
