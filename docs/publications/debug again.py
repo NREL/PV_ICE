@@ -196,7 +196,7 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
 sim1.calculateFlows()
 
 
-# In[15]:
+# In[ ]:
 
 
 
@@ -213,25 +213,25 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
 sim1.calculateEnergyFlow()
 
 
-# In[16]:
+# In[ ]:
 
 
 cc_yearly, cc_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[17]:
+# In[ ]:
 
 
 allenergy, energyGen, energy_demands = sim1.aggregateEnergyResults()
 
 
-# In[18]:
+# In[ ]:
 
 
 scennames_labels = sim1.scenario.keys()
 
 
-# In[95]:
+# In[ ]:
 
 
 circ_high_p4 = sim1.scenario['circ_high'].dataOut_m['P4_recycled']
@@ -249,13 +249,13 @@ plt.plot(circ_mid_L0, label='mid,Landfill0')
 plt.legend()
 
 
-# In[99]:
+# In[ ]:
 
 
 sim1.scenario['circ_mid'].dataOut_m.filter(like='Landfill')
 
 
-# In[20]:
+# In[ ]:
 
 
 circ_high_modcrushe = sim1.scenario['circ_high'].dataOut_e['mod_Recycle_Crush']
@@ -268,7 +268,7 @@ plt.plot(circ_mid_modcrushe)
 plt.plot(circ_low_modcrushe)
 
 
-# In[21]:
+# In[ ]:
 
 
 circ_high_matRHQ_e = sim1.scenario['circ_high'].material['glass'].matdataOut_e['mat_Recycled_HQ']
@@ -280,26 +280,26 @@ plt.plot(circ_mid_matRHQ_e)
 plt.plot(circ_low_matRHQ_e)
 
 
-# In[44]:
+# In[ ]:
 
 
 plt.rcParams['figure.figsize'] = (12, 6)
 
 
-# In[46]:
+# In[ ]:
 
 
 glass_mfgscrap_e = allenergy.filter(like='glass').filter(regex='MFGScrap_HQ$')
 glass_mfgscrap_e.plot.bar()
 
 
-# In[36]:
+# In[ ]:
 
 
 glass_virgin_e = allenergy.filter(like='glass').filter(regex='MFG_virgin$')
 
 
-# In[45]:
+# In[ ]:
 
 
 glass_virgin_e.plot.bar()
