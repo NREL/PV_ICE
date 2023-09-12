@@ -196,7 +196,7 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
 sim1.calculateFlows()
 
 
-# In[ ]:
+# In[15]:
 
 
 
@@ -213,25 +213,25 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
 sim1.calculateEnergyFlow()
 
 
-# In[ ]:
+# In[16]:
 
 
 cc_yearly, cc_cumu = sim1.aggregateResults() #have to do this to get auto plots
 
 
-# In[ ]:
+# In[17]:
 
 
 allenergy, energyGen, energy_demands = sim1.aggregateEnergyResults()
 
 
-# In[ ]:
+# In[18]:
 
 
 scennames_labels = sim1.scenario.keys()
 
 
-# In[ ]:
+# In[46]:
 
 
 circ_high_p4 = sim1.scenario['circ_high'].dataOut_m['P4_recycled']
@@ -247,15 +247,16 @@ plt.plot(circ_mid_L0, label='mid,Landfill0')
 #plt.plot(circ_low_p4, label='low,P4')
 #plt.plot(circ_low_p0, ls='--', label='low,Landfill0')
 plt.legend()
+plt.ylabel('Mass')
 
 
-# In[ ]:
+# In[20]:
 
 
 sim1.scenario['circ_mid'].dataOut_m.filter(like='Landfill')
 
 
-# In[ ]:
+# In[21]:
 
 
 circ_high_modcrushe = sim1.scenario['circ_high'].dataOut_e['mod_Recycle_Crush']
@@ -268,38 +269,40 @@ plt.plot(circ_mid_modcrushe)
 plt.plot(circ_low_modcrushe)
 
 
-# In[ ]:
+# In[45]:
 
 
 circ_high_matRHQ_e = sim1.scenario['circ_high'].material['glass'].matdataOut_e['mat_Recycled_HQ']
 circ_mid_matRHQ_e = sim1.scenario['circ_mid'].material['glass'].matdataOut_e['mat_Recycled_HQ']
 circ_low_matRHQ_e = sim1.scenario['circ_low'].material['glass'].matdataOut_e['mat_Recycled_HQ']
 
-plt.plot(circ_high_matRHQ_e)
-plt.plot(circ_mid_matRHQ_e)
-plt.plot(circ_low_matRHQ_e)
+plt.plot(circ_high_matRHQ_e, label='high')
+plt.plot(circ_mid_matRHQ_e, label='mid')
+plt.plot(circ_low_matRHQ_e, label='low')
+plt.legend()
+plt.ylabel('HQ Recycling Energy [Wh]')
 
 
-# In[ ]:
+# In[23]:
 
 
 plt.rcParams['figure.figsize'] = (12, 6)
 
 
-# In[ ]:
+# In[24]:
 
 
 glass_mfgscrap_e = allenergy.filter(like='glass').filter(regex='MFGScrap_HQ$')
 glass_mfgscrap_e.plot.bar()
 
 
-# In[ ]:
+# In[25]:
 
 
 glass_virgin_e = allenergy.filter(like='glass').filter(regex='MFG_virgin$')
 
 
-# In[ ]:
+# In[26]:
 
 
 glass_virgin_e.plot.bar()
@@ -353,7 +356,7 @@ cumu_e_demands
 
 # # SIMPLE GLASS ENERGY TEST
 
-# In[77]:
+# In[27]:
 
 
 MATERIAL = ['glass']#, 'silicon', 'silver', 'aluminium_frames', 'copper', 'encapsulant', 'backsheet']
@@ -361,14 +364,14 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[78]:
+# In[28]:
 
 
 density_glass = 2500*1000 # g/m^3 
 glassperm2 = (2.5/1000)* 2 * density_glass
 
 
-# In[79]:
+# In[29]:
 
 
 #load in a baseline and materials for modification
@@ -389,7 +392,7 @@ sim2.scenario['PV_ICE'].modifyMaterials('glass', 'mat_massperm2', glassperm2, st
 
 
 
-# In[80]:
+# In[30]:
 
 
 mod_circ_vars = ['mod_EOL_pg4_recycled', 'mod_EOL_pb4_recycled']
@@ -413,7 +416,7 @@ mat_mfgscrap = ['mat_MFG_scrap_Recycled', 'mat_MFG_scrap_Recycling_eff', 'mat_MF
 # 'mod_EOL_pg4_recycled'
 
 
-# In[81]:
+# In[31]:
 
 
 sim2.createScenario(name='nomfgscrap', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -436,7 +439,7 @@ for var in range(0,len(mat_circ_vars)):
     sim2.modifyScenario('nomfgscrap', mat_circ_vars[var], 0.0, start_year=2020) #set mat recycle to 0
 
 
-# In[82]:
+# In[32]:
 
 
 sim2.createScenario(name='lqmfgscrap', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -464,7 +467,7 @@ sim2.modifyScenario('lqmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ', 0.0, start_y
 sim2.modifyScenario('lqmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 0.0, start_year=2020) # all LQ
 
 
-# In[83]:
+# In[33]:
 
 
 sim2.createScenario(name='CLHQmfgscrap', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -492,7 +495,7 @@ sim2.modifyScenario('CLHQmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ', 100.0, sta
 sim2.modifyScenario('CLHQmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 100.0, start_year=2020) # all CL
 
 
-# In[84]:
+# In[34]:
 
 
 sim2.createScenario(name='OLHQmfgscrap', massmodulefile=moduleFile_m, energymodulefile=moduleFile_e)
@@ -520,39 +523,39 @@ sim2.modifyScenario('OLHQmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ', 100.0, sta
 sim2.modifyScenario('OLHQmfgscrap', 'mat_MFG_scrap_Recycled_into_HQ_Reused4MFG', 0.0, start_year=2020) # all OL
 
 
-# In[85]:
+# In[35]:
 
 
 sim2.trim_Years(startYear=2020, endYear=2050)
 
 
-# In[86]:
+# In[36]:
 
 
 #identical deploy 10 MW
 sim2.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', value= 10.0, start_year=2020)
 
 
-# In[87]:
+# In[37]:
 
 
 sim2.calculateFlows()
 
 
-# In[88]:
+# In[38]:
 
 
 cc_yearly2, cc_cumu2 = sim2.aggregateResults()
 allenergy2, energyGen2, energy_demands2 = sim2.aggregateEnergyResults()
 
 
-# In[89]:
+# In[39]:
 
 
 sim2.scenario['lqmfgscrap'].dataIn_m
 
 
-# In[91]:
+# In[40]:
 
 
 glass_mfgvirgin_e = allenergy2.filter(like='glass').filter(regex='MFG_virgin$')
@@ -560,7 +563,7 @@ plt.plot(glass_mfgvirgin_e)
 plt.legend(glass_mfgvirgin_e.columns)
 
 
-# In[93]:
+# In[41]:
 
 
 allenergy2.filter(like='glass').filter(regex='MFGScrap')
