@@ -8,8 +8,7 @@ MFG Kerf Recycling
 
 600 kWh/kg: Oh et al 2015, https://www.degruyter.com/document/doi/10.3139/146.111272/html	produces 15g of 6N purity si ingot through hydrogen plasma arc melting, 90 mins at 300 A and 20V, plus acid leaching pre-treatments
 
-Two different processes used ~600 kWh/kg and one appears to require significantly less (24.5 kWh/kg). The more conservative number is 600 kWh/kg. This is as much electricity as it took to make silicon in 1995. Given that kerf recycling has yet to become an industry practice, it suggests some aspect is prohibitively expensive, and energy demands could be one reason. We will use 600 kWh/kg for the HQ MFG recycling process.
-For the LQ MFG recycling process, we will use 24.5 kWh/kg from Liu et al 2019, since this is 2N but does recover Si. Another option would be Jungbluth 2009 at 1.3 kWh/kg, however this only recovers the cutting solution, not the silicon.
+These processes are focused on kerf loss recycling, as opposed to ingot offcut recycling, which is directly fed back into the charge, or MG-Si. If we used the numbers above, the mfging scrap recycling would require more energy than the virgin material demand, which isn't reasonable. Therefore we will use the EoL recycling as the proxy for mfging scrap recycling energy - see below and the silicon energy journal.
 
 EOL Silicon Recycling
 -few to no commericial processes
