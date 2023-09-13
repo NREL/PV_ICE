@@ -1220,7 +1220,7 @@ effective_capacity = ii_yearly.filter(like='ActiveCapacity')
 scennames_labels_flat[5:8]
 
 
-# In[82]:
+# In[184]:
 
 
 effective_capacity_tw = ii_yearly.filter(like='ActiveCapacity')/1e6
@@ -1267,9 +1267,14 @@ plt.plot(effective_capacity_tw.iloc[:,8:], label=scennames_labels_flat[8:],  ls=
 #plt.plot(effective_capacity/1e6, label=sim1.scenario.keys())
 plt.legend(prop={'size': 11}) #bbox_to_anchor=(1,1.02), 
 plt.ylabel('Effective Capacity [TW]')
-plt.title('Effective Capacity: No Replacements')
-plt.ylim(0,)
+plt.title('Effective Capacity: No Replacements', fontsize=20)
+plt.ylim(0,90)
 plt.xlim(2000,2100)
+
+#ax.xaxis.set_minor_locator(MultipleLocator(10))
+plt.xticks(np.arange(2000, 2101, 10))
+plt.yticks(np.arange(0, 91, 10))
+plt.grid(axis='both', which='both', color='0.9', ls='--')
 
 fig_effectiveCap
 
@@ -1484,7 +1489,7 @@ for col in annual_installs_decademod:
 #plt.plot(annual_installs_decademod)
 
 
-# In[100]:
+# In[183]:
 
 
 #annual_installs_TW = cc_yearly.filter(like='newInstalled')
@@ -1551,7 +1556,7 @@ ax3.xaxis.set_minor_locator(MultipleLocator(10))
 ax3.grid(axis='both', which='both', color='0.9', ls='--') 
 
 #overall figure
-fig_installs_annual.suptitle('Annual Installs with Replacements Decade Average Post 2050', fontsize=24, y=1)
+fig_installs_annual.suptitle('Annual Installs with Replacements Decade Average Post 2050', fontsize=20, y=1)
 plt.show()
 fig_installs_annual.savefig('energyresults-annualInstalls-decade.png', dpi=300, bbox_inches='tight')
 
@@ -1889,6 +1894,12 @@ mass_cumu.to_csv(os.path.join(testfolder, 'cc_cumu_mass_2100results.csv'))
 
 
 cc_cumu.to_csv(os.path.join(testfolder, 'cc_cumu_mass_results.csv'))
+
+
+# In[ ]:
+
+
+
 
 
 # # RESULTS: Lifecycle Wastes
@@ -2415,7 +2426,7 @@ cum_e_mfging_bymat = e_mfging_bymat.cumsum().loc[2100]
 cum_e_mfging_bymat
 
 
-# In[134]:
+# In[182]:
 
 
 #run 2x rn??

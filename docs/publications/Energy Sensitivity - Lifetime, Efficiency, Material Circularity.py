@@ -1250,24 +1250,24 @@ plt.title('Energy Balance')
 plt.ylabel('Unitless')
 
 
-# In[71]:
+# In[105]:
 
 
-discussTable2 = pd.concat([total_installed2,cumu_area_deployed2_total,virgin2,wastes2,
+discussTable2 = pd.concat([total_installed2,virgin2,wastes2,
                            cumu_e_demands2, netEnergy_cumu2.loc[2100].T, energyBalance2],
-                         axis=1, keys=['replacements','area','virgin','wastes','energydemand','netenergy','energybalance'])
+                         axis=1, keys=['replacements','virgin','wastes','energydemand','netenergy','energybalance'])
 #discussTable.to_csv(os.path.join(testfolder,'discussiontable.csv'))
 discussTable2
 
 
-# In[72]:
+# In[106]:
 
 
 discussTable_all = pd.concat([discussTable,discussTable2], axis=0)
 discussTable_all
 
 
-# In[73]:
+# In[107]:
 
 
 discussTable_norm = (discussTable_all/discussTable.loc['PV_ICE'])*100-100
@@ -1574,12 +1574,6 @@ plt.bar(scennames_labels3, wastes3/1e9)
 #plt.legend(scennames)
 plt.title('Cumulative Lifecycle Wastes')
 plt.ylabel('Lifecycle Wastes\n[billion tonnes]')
-
-
-# In[94]:
-
-
-cumu_e_demands3
 
 
 # In[95]:
