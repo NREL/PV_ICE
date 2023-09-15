@@ -1058,27 +1058,27 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[70]:
+# In[212]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
 
-fig, ax1 = plt.subplots(figsize=(8,5))
+fig, ax1 = plt.subplots(figsize=(10,5))
 
 ax1.plot(global_projection['World_annual_[MWdc]']/1e6)
-ax1.set_ylabel('Annual Installations [TWdc]')
+ax1.set_ylabel('Annual Installations [TWdc]', fontsize=18)
 ax1.set_ylim(0,5)
 ax1.axvspan(2000,2022, facecolor='0.2', alpha=0.1) #grey shading
-ax1.text(2005,0.5,'Global\nHistorical\nDeployment', fontsize=10)
-ax1.text(2060,0.3,'+ Replacements')
+ax1.text(2005,0.5,'Global\nHistorical\nDeployment', fontsize=14)
+ax1.text(2060,0.3,'+ Replacements', fontsize=16)
 
 ax2 = ax1.twinx()
 ax2.stackplot(global_projection.index, global_projection['World_cum']/1e6, color='#F7A11A')
-ax2.set_ylabel('Cumulative Solar Capacity [TW]', color='#F7A11A')
+ax2.set_ylabel('Cumulative Solar Capacity [TW]', color='#F7A11A', fontsize=18)
 ax2.set_ylim(0,90)
 ax2.set_xlim(2000,2100)
-ax2.text(2051,70,'75 TW', color='#954712')
-ax2.text(2090,80,'86 TW', color='#954712')
+ax2.text(2051,70,'75 TW', color='#954712', fontsize=16)
+ax2.text(2090,80,'86 TW', color='#954712', fontsize=16)
 
 ax1.set_zorder(10) #send orange to back
 ax1.patch.set_visible(False) #send orange to back
@@ -1086,6 +1086,18 @@ ax1.patch.set_visible(False) #send orange to back
 plt.show()
 
 fig.savefig('energyresults-deployment.png', dpi=300, bbox_inches='tight')
+
+
+# In[202]:
+
+
+global_projection.loc[2030]/1e3
+
+
+# In[204]:
+
+
+1500/130
 
 
 # In[71]:
@@ -1591,7 +1603,7 @@ total_deploy = cumu_installs.iloc[-1,]/1e6
 total_deploy.index = scennames_labels_flat
 
 
-# In[104]:
+# In[207]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -1605,18 +1617,24 @@ ax0.set_ylim(0,410)
 ax0.set_ylabel('Cumulative installed [TW]', fontsize=20)
 ax0.set_title('Baseline', fontsize=14)
 ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
+ax0.grid(axis='y', color='0.9', ls='--') 
+ax0.set_axisbelow(True)
 
 #Extreme
 ax2.bar(scennames_labels[5:8], cumu_installs.iloc[-1,5:8]/1e6, #width=0.8,
         tick_label=scennames_labels[5:8], color=colorpalette[5:8])
 ax2.set_title('Extreme', fontsize=14)
 ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
+ax2.grid(axis='y', color='0.9', ls='--') 
+ax2.set_axisbelow(True)
 
 #Ambitious
 ax3.bar(scennames_labels[8:], cumu_installs.iloc[-1,8:]/1e6, #width=0.8,
         tick_label=scennames_labels[8:], color=colorpalette[8:], hatch='x', edgecolor='white')
 ax3.set_title('Ambitious', fontsize=14)
 ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.9', ls='--') 
+ax3.set_axisbelow(True)
 
 #overall fig
 fig_installs_cumu.suptitle('Cumulative Installs with Replacements', fontsize=24)
@@ -1656,7 +1674,7 @@ global_projection['World_annual_[MWdc]'].sum()
 # plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 # plt.xticks(rotation=90)
 
-# In[107]:
+# In[206]:
 
 
 cumu_virgin_module_bt = cc_cumu.filter(like='VirginStock_Module')/1e9
@@ -1670,18 +1688,24 @@ ax0.set_ylim(0,12.5)
 ax0.set_ylabel('Cumulative Virgin Material Demand\n[billion metric tonnes]', fontsize=20)
 ax0.set_title('Baseline', fontsize=14)
 ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
+ax0.grid(axis='y', color='0.9', ls='--') 
+ax0.set_axisbelow(True)
 
 #Extreme
 ax2.bar(scennames_labels[5:8], cumu_virgin_module_bt.iloc[-1,5:8], #width=0.8,
         tick_label=scennames_labels[5:8], color=colorpalette[5:8])
 ax2.set_title('Extreme', fontsize=14)
 ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
+ax2.grid(axis='y', color='0.9', ls='--') 
+ax2.set_axisbelow(True)
 
 #Ambitious
 ax3.bar(scennames_labels[8:], cumu_virgin_module_bt.iloc[-1,8:], #width=0.8,
         tick_label=scennames_labels[8:], color=colorpalette[8:], hatch='x', edgecolor='white')
 ax3.set_title('Ambitious', fontsize=14)
 ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.9', ls='--') 
+ax3.set_axisbelow(True)
 
 #overall fig
 fig_vmat_cumu.suptitle('Cumulative Virgin Material Demands', fontsize=24)
@@ -2069,7 +2093,7 @@ sim1.scenario['r_IRENA'].dataOut_m.loc[45:,]
 # fig_wastes
 # 
 
-# In[122]:
+# In[186]:
 
 
 # Figure of cumulative capacity and mass metrics
@@ -2081,7 +2105,7 @@ fig_mat_cumu, axs = plt.subplots(3,3,figsize=(15,18),
 axs[0,0].bar(scennames_labels[0:5], cumu_installs.iloc[-1,0:5]/1e6,# width=0.1, 
         tick_label=scennames_labels[0:5], color=colorpalette[0:5])
 axs[0,0].set_ylim(0,410)
-axs[0,0].set_ylabel('Cumulative Installed\n[TW]', fontsize=20)
+axs[0,0].set_ylabel('Total Deployed Capacity\n[TW]', fontsize=20)
 axs[0,0].set_title('Business as Usual', fontsize=14)
 axs[0,0].set_xticklabels([])
 axs[0,0].grid(axis='y', color='0.9', ls='--') 
@@ -2171,7 +2195,7 @@ axs[2,2].grid(axis='y', color='0.9', ls='--')
 axs[2,2].set_axisbelow(True)
 
 #Overall Figure
-fig_mat_cumu.suptitle('Cumulative Installed Capacity', fontsize=24, y=0.92)
+fig_mat_cumu.suptitle('Cumulative Deployed Capacity', fontsize=24, y=0.92)
 fig_mat_cumu.savefig('energyresults-Cumu-CapMass.png', dpi=300, bbox_inches='tight')
 fig_mat_cumu.show()
 
@@ -2369,7 +2393,7 @@ e_annual_sumDemands_cumu = e_annual_sumDemands.cumsum()
 # plt.ylabel('Cumulative Energy Demands\n[TWh]')
 # plt.xticks(rotation=90)
 
-# In[131]:
+# In[210]:
 
 
 cumu_e_demands_twh = e_annual_sumDemands_cumu.loc[2100]/1e12
@@ -2378,24 +2402,30 @@ cumu_e_demands_twh.index = scennames_labels_flat
 fig_eDemands, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,6), sharey=True, 
                                       gridspec_kw={'wspace': 0, 'width_ratios': [1.5,1,1.5]})
 #BAU
-ax0.bar(scennames_labels[0:5], cumu_e_demands_twh.iloc[0:5]/1e6,# width=0.1, 
+ax0.bar(scennames_labels[0:5], cumu_e_demands_twh.iloc[0:5],# width=0.1, 
         tick_label=scennames_labels[0:5], color=colorpalette[0:5])
-ax0.set_ylim(0,)
+ax0.set_ylim(0,200000)
 ax0.set_ylabel('Cumulative Energy Demands [TWh]', fontsize=20)
 ax0.set_title('Baseline', fontsize=14)
 ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
+ax0.grid(axis='y', color='0.9', ls='--') 
+ax0.set_axisbelow(True)
 
 #Extreme
-ax2.bar(scennames_labels[5:8], cumu_e_demands_twh.iloc[5:8]/1e6, #width=0.8,
+ax2.bar(scennames_labels[5:8], cumu_e_demands_twh.iloc[5:8], #width=0.8,
         tick_label=scennames_labels[5:8], color=colorpalette[5:8])
 ax2.set_title('Extreme', fontsize=14)
 ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
+ax2.grid(axis='y', color='0.9', ls='--') 
+ax2.set_axisbelow(True)
 
 #Ambitious
-ax3.bar(scennames_labels[8:], cumu_e_demands_twh.iloc[8:]/1e6, #width=0.8,
+ax3.bar(scennames_labels[8:], cumu_e_demands_twh.iloc[8:], #width=0.8,
         tick_label=scennames_labels[8:], color=colorpalette[8:], hatch='x', edgecolor='white')
 ax3.set_title('Ambitious', fontsize=14)
 ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.9', ls='--') 
+ax3.set_axisbelow(True)
 
 #overall fig
 
@@ -2494,7 +2524,7 @@ netEnergy_cumu
 # #plt.ylim(4e6,5.5e6)
 # plt.xticks(rotation=90)
 
-# In[138]:
+# In[195]:
 
 
 cumu_netEnergy_twh = netEnergy_cumu.loc[2100]/1e15
@@ -2505,7 +2535,7 @@ fig, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,6), sharey=True,
 ax0.bar(scennames_labels[0:5], cumu_netEnergy_twh.iloc[0:5],# width=0.1, 
         tick_label=scennames_labels[0:5], color=colorpalette[0:5])
 ax0.set_ylim(0,8000)
-ax0.set_ylabel('Cumulative Net Energy [TWh]', fontsize=20)
+ax0.set_ylabel('Cumulative Net Energy\n[thousand TWh]', fontsize=20)
 ax0.set_title('Baseline', fontsize=14)
 ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
 
@@ -2559,7 +2589,7 @@ netEnergy_cumu_norm
 netEnergy_cumu_norm_waterfall
 
 
-# In[141]:
+# In[208]:
 
 
 
@@ -2573,6 +2603,8 @@ ax0.set_ylabel('Cumulative installed [TW]', fontsize=20)
 ax0.set_title('Baseline', fontsize=14)
 ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
 ax0.axhline(0, lw=1, color='black')
+ax0.grid(axis='y', color='0.9', ls='--') 
+ax0.set_axisbelow(True)
 
 #Extreme
 ax2.bar(scennames_labels[5:8], netEnergy_cumu_norm_waterfall.iloc[-1,5:8], #width=0.8,
@@ -2580,12 +2612,16 @@ ax2.bar(scennames_labels[5:8], netEnergy_cumu_norm_waterfall.iloc[-1,5:8], #widt
 ax2.set_title('Extreme', fontsize=14)
 ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
 ax2.axhline(0, lw=1, color='black')
+ax2.grid(axis='y', color='0.9', ls='--') 
+ax2.set_axisbelow(True)
 
 #Ambitious
 ax3.bar(scennames_labels[8:], netEnergy_cumu_norm_waterfall.iloc[-1,8:], #width=0.8,
         tick_label=scennames_labels[8:], color=colorpalette[8:], hatch='x', edgecolor='white')
 ax3.set_title('Ambitious', fontsize=14)
 ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.9', ls='--') 
+ax3.set_axisbelow(True)
 
 #overall fig
 ax3.axhline(0, lw=1, color='black')
@@ -2631,7 +2667,7 @@ energyBalance_allyears = energyGen_cumu/e_annual_sumDemands_cumu
 # plt.ylabel('Unitless')
 # plt.xticks(rotation=90)
 
-# In[145]:
+# In[211]:
 
 
 energyBalance = energyBalance_allyears.loc[2100]
@@ -2645,18 +2681,24 @@ ax0.set_ylim(0,75)
 ax0.set_ylabel('Energy Balance [Unitless]', fontsize=20)
 ax0.set_title('Baseline', fontsize=14)
 ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
+ax0.grid(axis='y', color='0.9', ls='--') 
+ax0.set_axisbelow(True)
 
 #Extreme
 ax2.bar(scennames_labels[5:8], energyBalance.iloc[5:8], #width=0.8,
         tick_label=scennames_labels[5:8], color=colorpalette[5:8])
 ax2.set_title('Extreme', fontsize=14)
 ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
+ax2.grid(axis='y', color='0.9', ls='--') 
+ax2.set_axisbelow(True)
 
 #Ambitious
 ax3.bar(scennames_labels[8:], energyBalance.iloc[8:], #width=0.8,
         tick_label=scennames_labels[8:], color=colorpalette[8:], hatch='x', edgecolor='white')
 ax3.set_title('Ambitious', fontsize=14)
 ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.9', ls='--') 
+ax3.set_axisbelow(True)
 
 #overall fig
 
@@ -2670,7 +2712,7 @@ fig_eBalance.savefig('energyresults-energyBalance.png', dpi=300, bbox_inches='ti
 # fig_eNetE
 # fig_eBalance
 
-# In[146]:
+# In[193]:
 
 
 #cumulative energy figure
@@ -2679,17 +2721,18 @@ fig_e_cumu, axs = plt.subplots(3,3,figsize=(15,18),
 
 #Energy Demands
 #BAU
-axs[0,0].bar(scennames_labels[0:5], cumu_e_demands_twh.iloc[0:5]/1e6,# width=0.1, 
+axs[0,0].bar(scennames_labels[0:5], cumu_e_demands_twh.iloc[0:5]/1e3,# width=0.1, 
         color=colorpalette[0:5])
-axs[0,0].set_ylim(0,0.25)
-axs[0,0].set_ylabel('Cumulative Energy Demands\n[TWh]', fontsize=20)
+axs[0,0].set_ylim(0,200)
+axs[0,0].set_ylabel('Cumulative Energy Demands\n[thousand TWh]', fontsize=20)
 axs[0,0].set_title('Business As Usual', fontsize=20)
 axs[0,0].set_xticklabels([])
+#axs[0,0].yaxis.set_minor_locator(MultipleLocator(0.05))
 axs[0,0].grid(axis='y', color='0.9', ls='--') 
 axs[0,0].set_axisbelow(True)
 
 #Extreme
-axs[0,1].bar(scennames_labels[5:8], cumu_e_demands_twh.iloc[5:8]/1e6, #width=0.8,
+axs[0,1].bar(scennames_labels[5:8], cumu_e_demands_twh.iloc[5:8]/1e3, #width=0.8,
         color=colorpalette[5:8])
 axs[0,1].set_title('Extreme', fontsize=20)
 axs[0,1].set_ylim(axs[0,0].get_ylim())#, visible=False)#sharey(axs[0, 0])
@@ -2699,7 +2742,7 @@ axs[0,1].grid(axis='y', color='0.9', ls='--')
 axs[0,1].set_axisbelow(True)
 
 #Ambitious
-axs[0,2].bar(scennames_labels[8:], cumu_e_demands_twh.iloc[8:]/1e6, #width=0.8,
+axs[0,2].bar(scennames_labels[8:], cumu_e_demands_twh.iloc[8:]/1e3, #width=0.8,
         color=colorpalette[8:], hatch='x', edgecolor='white')
 axs[0,2].set_title('Ambitious', fontsize=20)
 axs[0,2].set_ylim(axs[0,0].get_ylim())#, visible=False)
