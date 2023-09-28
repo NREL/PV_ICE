@@ -1058,7 +1058,7 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 # 
 # This is the deployment curve applied to all PV technologies - however, it will be modified for each PV tech using the installation compensation method, increasing it for any replacement modules required to maintain capacity.
 
-# In[212]:
+# In[6]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -1376,7 +1376,7 @@ UnderInstall_df.to_csv(os.path.join(testfolder, 'cc_13scen_underInstalls.csv'))
 sim1.saveSimulation(customname='_EnergyAnalysis_withreplacements')
 
 
-# In[88]:
+# In[7]:
 
 
 #read in saved results files for speed
@@ -1456,7 +1456,7 @@ plt.ylim(0,)
 
 # #### Fixing Jagged Lines
 
-# In[96]:
+# In[8]:
 
 
 annual_installs = cc_yearly.filter(like='newInstalled')
@@ -1465,7 +1465,7 @@ flatinstallslate = posttransinstalls.loc[2100]/(2100-2050)
 flatinstallslate
 
 
-# In[97]:
+# In[9]:
 
 
 annual_installs_modify = annual_installs.copy()
@@ -1476,7 +1476,7 @@ for col in annual_installs_modify:
 #plt.plot(annual_installs_modify)
 
 
-# In[98]:
+# In[10]:
 
 
 #decade binning of post 2050 installs by decade
@@ -1487,7 +1487,7 @@ posttransinstalls_decades
 #this is the sum each decade, still need to divide by 10 for annual
 
 
-# In[99]:
+# In[11]:
 
 
 annual_installs_decademod = annual_installs.copy()
@@ -1501,7 +1501,7 @@ for col in annual_installs_decademod:
 #plt.plot(annual_installs_decademod)
 
 
-# In[183]:
+# In[14]:
 
 
 #annual_installs_TW = cc_yearly.filter(like='newInstalled')
@@ -1519,7 +1519,7 @@ ax1.set_title('Business as Usual', fontsize=14)
 ax1.set_ylabel('Annual installed [TW]', fontsize=20)
 ax1.set_xlim(2000,2100)
 ax1.set_ylim(0,8.5)
-#ax1.legend(bbox_to_anchor=(0.9,-0.05))
+ax1.legend(bbox_to_anchor=(0.9,-0.05))
 ax1.xaxis.set_minor_locator(MultipleLocator(10))
 ax1.grid(axis='both', which='both', color='0.9', ls='--')
 
@@ -1555,7 +1555,7 @@ for n in range(1, n_lines+1):
             color=colorpalette[7])
 
 ax2.set_title('Extreme', fontsize=14)
-#ax2.legend(bbox_to_anchor=(0.9,-0.05))
+ax2.legend(bbox_to_anchor=(0.9,-0.05))
 
 
 #Ambitious
@@ -1563,9 +1563,10 @@ ax3.plot(global_projection['World_annual_[MWdc]']/1e6, label='Minimum Deployment
 ax3.set_prop_cycle(color=colorpalette[8:])
 ax3.plot(annual_installs_decademod_TW.iloc[:,8:], label=scennames_labels_flat[8:], ls='--')# 
 ax3.set_title('Ambitious', fontsize=14)
-#ax3.legend(bbox_to_anchor=(1.05,-0.05)) #(x,y)
+ax3.legend(bbox_to_anchor=(1.05,-0.05)) #(x,y)
 ax3.xaxis.set_minor_locator(MultipleLocator(10))
 ax3.grid(axis='both', which='both', color='0.9', ls='--') 
+
 
 #overall figure
 fig_installs_annual.suptitle('Annual Installs with Replacements Decade Average Post 2050', fontsize=20, y=1)
@@ -2215,7 +2216,7 @@ fig_mat_cumu.show()
 # ## Annual Energy Demands through 2050
 # Increasing the steepness of the curve
 
-# In[123]:
+# In[17]:
 
 
 e_annual_sumDemands = energy_demands.filter(like='demand_total')
@@ -2228,7 +2229,7 @@ e_annual_sumDemands = energy_demands.filter(like='demand_total')
 # plt.ylim(0,)
 # plt.xlim(2000,2050)
 
-# In[124]:
+# In[18]:
 
 
 #ember electricity demand
@@ -2239,7 +2240,7 @@ elec_2050 = pd.DataFrame({2050:[58000],2050:[103400],2050:[105000],2050:[85300],
 elec_2050
 
 
-# In[125]:
+# In[19]:
 
 
 #calculate percentage of world electricity demands
@@ -2253,7 +2254,7 @@ elec_demand_goal = pd.DataFrame(pd.concat([world_elec_demand.loc[:2022,'Electric
 elec_demand = elec_demand_goal.interpolate()
 
 
-# In[126]:
+# In[20]:
 
 
 e_annual_sumDemands_TWh = e_annual_sumDemands/1e12
@@ -2261,13 +2262,13 @@ prct_elec_demand_2050 = e_annual_sumDemands_TWh.loc[:2050]/elec_demand.values*10
 prct_elec_demand_2050.loc[2050]
 
 
-# In[127]:
+# In[21]:
 
 
 sim1.scenario['r_IRENA'].material['glass'].matdataOut_e
 
 
-# In[128]:
+# In[22]:
 
 
 e_annual_sumDemands_TWh = e_annual_sumDemands/1e12
@@ -2316,7 +2317,7 @@ plt.xlim(2000,2050)
 plt.show()
 
 
-# In[129]:
+# In[23]:
 
 
 e_annual_demands_TWh = e_annual_sumDemands/1e12
@@ -2381,7 +2382,7 @@ fig.savefig('energyresults-annualEnergyDemands2050.png', dpi=300, bbox_inches='t
 
 # ## Energy Demands
 
-# In[130]:
+# In[24]:
 
 
 e_annual_sumDemands_cumu = e_annual_sumDemands.cumsum()
@@ -2393,7 +2394,7 @@ e_annual_sumDemands_cumu = e_annual_sumDemands.cumsum()
 # plt.ylabel('Cumulative Energy Demands\n[TWh]')
 # plt.xticks(rotation=90)
 
-# In[210]:
+# In[25]:
 
 
 cumu_e_demands_twh = e_annual_sumDemands_cumu.loc[2100]/1e12
@@ -2435,7 +2436,7 @@ plt.show()
 fig_eDemands.savefig('energyresults-energyDemands.png', dpi=300, bbox_inches='tight')
 
 
-# In[132]:
+# In[26]:
 
 
 #select material demands that are not fuel
@@ -2449,14 +2450,14 @@ for scen in sim1.scenario.keys():
     e_mfging_bymat = pd.concat([e_mfging_bymat,e_energy_mfg_scen,e_energy_mod_mfg_scen], axis=1)
 
 
-# In[133]:
+# In[ ]:
 
 
 cum_e_mfging_bymat = e_mfging_bymat.cumsum().loc[2100]
 cum_e_mfging_bymat
 
 
-# In[182]:
+# In[ ]:
 
 
 #run 2x rn??
@@ -2497,7 +2498,7 @@ plt.legend(MATERIALS)
 
 # ## Net Energy
 
-# In[135]:
+# In[27]:
 
 
 energyGen_cumu = energyGen.cumsum()
@@ -2505,13 +2506,13 @@ energyGen_cumu.columns = e_annual_sumDemands_cumu.columns = scennames_labels_fla
 netEnergy_cumu = energyGen_cumu.loc[[2100]] - e_annual_sumDemands_cumu.loc[[2100]]
 
 
-# In[136]:
+# In[28]:
 
 
 e_annual_sumDemands_cumu.loc[[2100]]
 
 
-# In[137]:
+# In[29]:
 
 
 netEnergy_cumu
@@ -2524,7 +2525,7 @@ netEnergy_cumu
 # #plt.ylim(4e6,5.5e6)
 # plt.xticks(rotation=90)
 
-# In[195]:
+# In[30]:
 
 
 cumu_netEnergy_twh = netEnergy_cumu.loc[2100]/1e15
@@ -2567,7 +2568,7 @@ fig.savefig('energyresults-cumuNetEnergy.png', dpi=300, bbox_inches='tight')
 # plt.ylabel('Relative Cumulative Net Energy [TWh]')
 # plt.xticks(rotation=90)
 
-# In[139]:
+# In[31]:
 
 
 netEnergy_cumu_norm = netEnergy_cumu/netEnergy_cumu.loc[2100,'PV_ICE']
@@ -2583,13 +2584,13 @@ netEnergy_cumu_norm
 # plt.plot(0.0, lw=2)
 # plt.xticks(rotation=90)
 
-# In[140]:
+# In[32]:
 
 
 netEnergy_cumu_norm_waterfall
 
 
-# In[208]:
+# In[33]:
 
 
 
@@ -2599,7 +2600,7 @@ fig_eNetE, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,6), sharey=True,
 ax0.bar(scennames_labels[0:5], netEnergy_cumu_norm_waterfall.iloc[-1,0:5],# width=0.1, 
         tick_label=scennames_labels[0:5], color=colorpalette[0:5])
 #ax0.set_ylim(0,410)
-ax0.set_ylabel('Cumulative installed [TW]', fontsize=20)
+ax0.set_ylabel('Net Energy Normalized\n[Fraction]', fontsize=20)
 ax0.set_title('Baseline', fontsize=14)
 ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
 ax0.axhline(0, lw=1, color='black')
@@ -2632,13 +2633,13 @@ plt.show()
 fig_eNetE.savefig('energyresults-cumuNetEnergyNorm.png', dpi=300, bbox_inches='tight')
 
 
-# In[142]:
+# In[34]:
 
 
 netenergy_final = netEnergy_cumu.loc[2100]/1e12
 
 
-# In[143]:
+# In[35]:
 
 
 energyGen.columns = e_annual_sumDemands.columns = scennames_labels_flat

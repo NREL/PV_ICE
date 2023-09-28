@@ -191,7 +191,7 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 
 # Global Deployment Projection
 
-# In[12]:
+# In[7]:
 
 
 global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -278,20 +278,14 @@ plt.title('Effective Capacity: No Replacements')
 
 # ## Run Simulation - Replacements
 
-# In[ ]:
-
-
-
-
-
-# In[19]:
+# In[26]:
 
 
 #currently takes 15 mins to run with 5 mateirals and 5 scenarios
 
 for row in range (0,len(sim1.scenario['PV ICE'].dataIn_m)): #loop over length of years
     for scen in scennames: #loop over scenarios
-        Under_Installment = global_projection.iloc[row,0] - ((sim1.scenario[scen].dataOut_m['Installed_Capacity_[W]'][row])/1e6)  # MWATTS
+        Under_Installment = global_projection.iloc[row,0] - ((sim1.scenario[scen].dataOut_m['Effective_Capacity_[W]'][row])/1e6)  # MWATTS
         sim1.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
         #calculate flows for that scenario with it's bifi factor and modified weibull
         sim1.calculateFlows(scenarios=[scen]) # , bifacialityfactors=bifiPathDict[scen]
@@ -517,7 +511,7 @@ for scen in range(0,len(scennames2)):
 
 for row in range (0,len(sim2.scenario['deg_1.5%/yr'].dataIn_m)): #loop over length of years
     for scen in scennames2: #loop over scenarios
-        Under_Installment = global_projection.iloc[row,0] - ((sim2.scenario[scen].dataOut_m['Installed_Capacity_[W]'][row])/1e6)  # MWATTS
+        Under_Installment = global_projection.iloc[row,0] - ((sim2.scenario[scen].dataOut_m['Effective_Capacity_[W]'][row])/1e6)  # MWATTS
         sim2.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
         #calculate flows for that scenario with it's bifi factor and modified weibull
         sim2.calculateFlows(scenarios=[scen], nameplatedeglimit=0.8) # , bifacialityfactors=bifiPathDict[scen]
@@ -602,7 +596,7 @@ plt.xlabel('Arbitrary units')
 # # Explore Failures
 # Explore the effect of the range of failures from Heislmair and IRENA
 
-# In[ ]:
+# In[8]:
 
 
 weibulls= {'class_a':[2.810, 100.238], 
@@ -617,7 +611,7 @@ weibullsdf = pd.DataFrame(weibulls, index=['alpha','beta'])
 #weibullist[0]
 
 
-# In[ ]:
+# In[9]:
 
 
 for col in weibullist:
@@ -631,7 +625,7 @@ plt.ylabel('Probability')
 plt.xlabel('Years')
 
 
-# In[ ]:
+# In[10]:
 
 
 sim3 = PV_ICE.Simulation(name='sim3_fail', path=testfolder) #init simulation
@@ -645,13 +639,13 @@ for var in range(0,len(weibulls)):
             sim3.scenario[scenname].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[ ]:
+# In[11]:
 
 
 scennames3 = sim3.scenario.keys()
 
 
-# In[ ]:
+# In[12]:
 
 
 #Mod Project Lifetime on all 
@@ -660,7 +654,7 @@ sim3.modifyScenario(scenarios=None, stage='mod_lifetime', value=200, start_year=
 sim3.modifyScenario(scenarios=None, stage='mod_degradation', value=0.0, start_year=2022)
 
 
-# In[ ]:
+# In[13]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -674,21 +668,21 @@ sim3.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
 #global deployment: global_projection['World_annual_[MWdc]']
 
 
-# In[ ]:
+# In[14]:
 
 
 for scen in scennames3:
     sim3.calculateFlows(scenarios=[scen], weibullInputParams=dict(weibullsdf[scen].T))
 
 
-# In[ ]:
+# In[15]:
 
 
 sim3_ii_yearly, sim3_ii_cumu = sim3.aggregateResults() #have to do this to get auto plots
 sim3_ii_allenergy, sim3_ii_energyGen, sim3_ii_energy_demands = sim3.aggregateEnergyResults()
 
 
-# In[ ]:
+# In[21]:
 
 
 effective_capacity = sim3_ii_yearly.filter(like='ActiveCapacity')
@@ -703,7 +697,7 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[ ]:
+# In[22]:
 
 
 effective_capacity_tw = effective_capacity/1e6
@@ -727,25 +721,25 @@ for scen in range(0,len(scennames3)):
 
 
 
-# In[ ]:
+# In[23]:
 
 
 for row in range (0,len(sim3.scenario['class_a'].dataIn_m)): #loop over length of years
     for scen in scennames3: #loop over scenarios
-        Under_Installment = global_projection.iloc[row,0] - ((sim3.scenario[scen].dataOut_m['Installed_Capacity_[W]'][row])/1e6)  # MWATTS
+        Under_Installment = global_projection.iloc[row,0] - ((sim3.scenario[scen].dataOut_m['Effective_Capacity_[W]'][row])/1e6)  # MWATTS
         sim3.scenario[scen].dataIn_m['new_Installed_Capacity_[MW]'][row] += Under_Installment #overwrite new installed
         #calculate flows for that scenario with it's bifi factor and modified weibull
         sim3.calculateFlows(scenarios=[scen], weibullInputParams=dict(weibullsdf[scen].T))
 
 
-# In[ ]:
+# In[24]:
 
 
 sim3_cc_yearly, sim3_cc_cumu = sim3.aggregateResults() #have to do this to get auto plots
 sim3_allenergy, sim3_energyGen, sim3_energy_demands = sim3.aggregateEnergyResults()
 
 
-# In[ ]:
+# In[25]:
 
 
 sim3_cc_yearly.to_csv(os.path.join(testfolder,'fail_cc_yearly_m.csv'))
@@ -755,14 +749,14 @@ sim3_energyGen.to_csv(os.path.join(testfolder,'fail_cc_Egen.csv'))
 sim3_energy_demands.to_csv(os.path.join(testfolder,'fail_cc_Edemand.csv'))
 
 
-# In[ ]:
+# In[28]:
 
 
 effective_capacity = sim3_cc_yearly.filter(like='ActiveCapacity')
 #effective_capacity_tw = effective_capacity/1e6
 #effective_capacity_tw.plot(color=colors, legend=False, title='Effective Capacity: No Replacements')
 
-plt.plot(ii_cumu['newInstalledCapacity_sim1_Immortal_[MW]']/1e6, label='Capacity Target', color='black', ls='--')    
+#plt.plot(ii_cumu['newInstalledCapacity_sim1_Immortal_[MW]']/1e6, label='Capacity Target', color='black', ls='--')    
 plt.plot(effective_capacity/1e6, label=scennames3)
 plt.legend()
 plt.ylabel('Effective Capacity [TW]')
