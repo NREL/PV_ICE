@@ -14614,7 +14614,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[130]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ag_WSS2023_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span> <span class="s1">&#39;input-worldsilversurvey2023-silverminebycountry.csv&#39;</span><span class="p">),</span>
@@ -14635,7 +14635,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[131]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ag_WSS</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">ag_WSS2014_raw</span><span class="p">,</span><span class="n">ag_WSS2023_raw</span><span class="p">])</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Mine Production Million Ounces&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -14656,7 +14656,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[132]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ag_USGS_raw</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
@@ -14677,7 +14677,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[132]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
 
 
 
@@ -15341,7 +15341,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[139]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#compare the values of the two dataframes</span>
@@ -15366,7 +15366,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[139]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
 
 
 
@@ -15400,6 +15400,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <th>Chile</th>
       <th>China</th>
       <th>...</th>
+      <th>Spain</th>
       <th>Sweden</th>
       <th>Tajikistan</th>
       <th>Tanzania</th>
@@ -15409,7 +15410,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <th>Uzbekistan</th>
       <th>Zambia</th>
       <th>Zimbabwe</th>
-      <th>SUM</th>
     </tr>
     <tr>
       <th>MineProduction_[kg]</th>
@@ -15450,6 +15450,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.097752</td>
       <td>1.367401</td>
       <td>...</td>
+      <td>inf</td>
       <td>1.099478</td>
       <td>1.763668</td>
       <td>1.146384</td>
@@ -15459,7 +15460,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.485194</td>
       <td>0.000000</td>
       <td>1.058201</td>
-      <td>2.283856</td>
     </tr>
     <tr>
       <th>2005</th>
@@ -15474,6 +15474,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.114734</td>
       <td>1.304488</td>
       <td>...</td>
+      <td>0.881834</td>
       <td>1.201620</td>
       <td>inf</td>
       <td>1.146384</td>
@@ -15483,7 +15484,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.394138</td>
       <td>0.000000</td>
       <td>1.058201</td>
-      <td>2.278095</td>
     </tr>
     <tr>
       <th>2006</th>
@@ -15498,6 +15498,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.100778</td>
       <td>1.208310</td>
       <td>...</td>
+      <td>0.835626</td>
       <td>1.100037</td>
       <td>inf</td>
       <td>1.314462</td>
@@ -15507,7 +15508,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.044881</td>
       <td>0.000000</td>
       <td>0.352734</td>
-      <td>2.201784</td>
     </tr>
     <tr>
       <th>2007</th>
@@ -15522,6 +15522,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.096399</td>
       <td>1.200985</td>
       <td>...</td>
+      <td>1.199295</td>
       <td>1.013171</td>
       <td>inf</td>
       <td>1.455732</td>
@@ -15531,7 +15532,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.097129</td>
       <td>0.000000</td>
       <td>0.211640</td>
-      <td>2.201377</td>
     </tr>
     <tr>
       <th>2008</th>
@@ -15546,6 +15546,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.098887</td>
       <td>1.164687</td>
       <td>...</td>
+      <td>1.216931</td>
       <td>1.112791</td>
       <td>inf</td>
       <td>1.221399</td>
@@ -15555,7 +15556,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.548874</td>
       <td>0.000000</td>
       <td>0.176367</td>
-      <td>2.206617</td>
     </tr>
     <tr>
       <th>2009</th>
@@ -15570,6 +15570,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.097878</td>
       <td>1.178488</td>
       <td>...</td>
+      <td>1.234568</td>
       <td>1.074419</td>
       <td>inf</td>
       <td>0.967784</td>
@@ -15579,7 +15580,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.097126</td>
       <td>0.000000</td>
       <td>0.176367</td>
-      <td>2.171605</td>
     </tr>
     <tr>
       <th>2010</th>
@@ -15594,6 +15594,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.106971</td>
       <td>1.305040</td>
       <td>...</td>
+      <td>0.025195</td>
       <td>1.158270</td>
       <td>inf</td>
       <td>1.099647</td>
@@ -15603,7 +15604,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.097132</td>
       <td>0.881834</td>
       <td>0.176367</td>
-      <td>2.197756</td>
     </tr>
     <tr>
       <th>2011</th>
@@ -15618,6 +15618,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.113631</td>
       <td>1.272042</td>
       <td>...</td>
+      <td>0.294372</td>
       <td>0.922651</td>
       <td>0.622222</td>
       <td>0.917019</td>
@@ -15627,7 +15628,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.113896</td>
       <td>0.881834</td>
       <td>0.194004</td>
-      <td>2.169746</td>
     </tr>
     <tr>
       <th>2012</th>
@@ -15642,6 +15642,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.138778</td>
       <td>1.216323</td>
       <td>...</td>
+      <td>0.250823</td>
       <td>1.113404</td>
       <td>0.623280</td>
       <td>0.990035</td>
@@ -15651,7 +15652,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.113896</td>
       <td>0.881834</td>
       <td>0.211640</td>
-      <td>2.171145</td>
     </tr>
     <tr>
       <th>2013</th>
@@ -15666,6 +15666,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.143570</td>
       <td>1.224562</td>
       <td>...</td>
+      <td>0.176367</td>
       <td>1.114854</td>
       <td>0.176367</td>
       <td>inf</td>
@@ -15675,7 +15676,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>0.382626</td>
       <td>inf</td>
       <td>inf</td>
-      <td>2.156888</td>
     </tr>
     <tr>
       <th>2014</th>
@@ -15690,6 +15690,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.104427</td>
       <td>1.057608</td>
       <td>...</td>
+      <td>0.875613</td>
       <td>1.062675</td>
       <td>0.105820</td>
       <td>inf</td>
@@ -15699,7 +15700,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.375064</td>
       <td>inf</td>
       <td>inf</td>
-      <td>2.239056</td>
     </tr>
     <tr>
       <th>2015</th>
@@ -15714,6 +15714,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.103133</td>
       <td>1.004891</td>
       <td>...</td>
+      <td>0.687503</td>
       <td>1.070926</td>
       <td>0.128267</td>
       <td>inf</td>
@@ -15723,7 +15724,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.375064</td>
       <td>inf</td>
       <td>inf</td>
-      <td>2.174823</td>
     </tr>
     <tr>
       <th>2016</th>
@@ -15738,6 +15738,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.136496</td>
       <td>1.016617</td>
       <td>...</td>
+      <td>0.613733</td>
       <td>1.107754</td>
       <td>0.081400</td>
       <td>inf</td>
@@ -15747,7 +15748,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.375064</td>
       <td>inf</td>
       <td>inf</td>
-      <td>2.212024</td>
     </tr>
     <tr>
       <th>2017</th>
@@ -15762,6 +15762,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.151258</td>
       <td>1.091232</td>
       <td>...</td>
+      <td>1.535208</td>
       <td>1.110849</td>
       <td>0.101117</td>
       <td>inf</td>
@@ -15771,7 +15772,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.315278</td>
       <td>inf</td>
       <td>inf</td>
-      <td>2.180185</td>
     </tr>
     <tr>
       <th>2018</th>
@@ -15786,6 +15786,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.208322</td>
       <td>1.091370</td>
       <td>...</td>
+      <td>1.486756</td>
       <td>1.108348</td>
       <td>0.148148</td>
       <td>inf</td>
@@ -15795,7 +15796,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.339192</td>
       <td>inf</td>
       <td>inf</td>
-      <td>2.197827</td>
     </tr>
     <tr>
       <th>2019</th>
@@ -15810,6 +15810,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.209009</td>
       <td>1.089204</td>
       <td>...</td>
+      <td>1.301772</td>
       <td>1.038058</td>
       <td>0.272109</td>
       <td>inf</td>
@@ -15819,7 +15820,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.267528</td>
       <td>inf</td>
       <td>inf</td>
-      <td>2.218218</td>
     </tr>
     <tr>
       <th>2020</th>
@@ -15834,6 +15834,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.172649</td>
       <td>1.096857</td>
       <td>...</td>
+      <td>1.307400</td>
       <td>1.055382</td>
       <td>0.272781</td>
       <td>inf</td>
@@ -15843,7 +15844,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.330310</td>
       <td>inf</td>
       <td>inf</td>
-      <td>2.213484</td>
     </tr>
     <tr>
       <th>2021</th>
@@ -15858,6 +15858,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.097880</td>
       <td>1.093818</td>
       <td>...</td>
+      <td>1.201907</td>
       <td>1.187857</td>
       <td>0.261023</td>
       <td>inf</td>
@@ -15867,11 +15868,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1.229381</td>
       <td>inf</td>
       <td>inf</td>
-      <td>2.177355</td>
     </tr>
   </tbody>
 </table>
-<p>18 rows × 57 columns</p>
+<p>18 rows × 56 columns</p>
 </div>
 </div>
 
@@ -15898,7 +15898,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[142]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#USGS country market share</span>
@@ -15917,7 +15917,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[143]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ag_WSS_kg</span><span class="p">[</span><span class="s1">&#39;SUM&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ag_WSS_kg</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -15930,35 +15930,17 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[141]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#compare the values of the two dataframes</span>
-<span class="n">common</span> <span class="o">=</span> <span class="n">ag_USGS_mrktshr</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">ag_WSS_mrktshr</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">common_yrs</span> <span class="o">=</span> <span class="n">ag_USGS_mrktshr</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">ag_WSS_mrktshr</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-
-<span class="n">ag_USGS_mrktshr</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common</span><span class="p">,</span><span class="n">common_yrs</span><span class="p">]</span><span class="o">/</span><span class="n">ag_WSS_mrktshr</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common</span><span class="p">,</span><span class="n">common_yrs</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#take the median of each country and only consider the big ones.</span>
+<span class="n">country_market_medians_USGS</span> <span class="o">=</span> <span class="n">ag_USGS_mrktshr</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">country_market_medians_USGS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">country_market_medians_USGS</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
 
      </div>
@@ -15976,7 +15958,199 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[141]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Argentina       2.354488
+Australia       7.739948
+Bolivia         4.491565
+Canada          2.858926
+Chile           6.085946
+China          12.942929
+Indonesia       1.307193
+Kazakhstan      3.250129
+Mexico         15.907177
+Morocco         1.054667
+Peru           14.830289
+Poland          5.343839
+Russia          5.294344
+Sweden          1.552606
+USA             4.280695
+SUM           100.000000
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">country_market_medians_WSS</span> <span class="o">=</span> <span class="n">ag_WSS_mrktshr</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">country_market_medians_WSS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">country_market_medians_WSS</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Argentina       3.092509
+Australia       7.002602
+Bolivia         4.708602
+Canada          2.353915
+Chile           5.417219
+China          13.346900
+India           1.265673
+Indonesia       1.157943
+Kazakhstan      2.330783
+Mexico         21.018025
+Morocco         1.059603
+Peru           16.041735
+Poland          5.076142
+Russia          5.099338
+SUM           100.000000
+Sweden          1.439746
+USA             4.296565
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Great, they have nearly the same top countries that matter. WSS adds India, so we'll choose the world silver survey.</p>
+<p>We will only consider these countries, the rest will be summed into "World". Then take the new marketshare of each, and print to csv.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">important_countries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">country_market_medians_WSS</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">country_market_medians_WSS</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">important_countries</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>0      Argentina
+1      Australia
+2        Bolivia
+3         Canada
+4          Chile
+5          China
+6          India
+7      Indonesia
+8     Kazakhstan
+9         Mexico
+10       Morocco
+11          Peru
+12        Poland
+13        Russia
+14           SUM
+15        Sweden
+16           USA
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ag_WSS_kg_subset</span> <span class="o">=</span> <span class="n">ag_WSS_kg</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">important_countries</span><span class="p">]</span>
+<span class="n">ag_WSS_kg_importantcountries</span> <span class="o">=</span> <span class="n">ag_WSS_kg_subset</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;SUM&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ag_WSS_kg_importantcountries</span><span class="p">[</span><span class="s1">&#39;World&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ag_WSS_kg_subset</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;SUM&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">ag_WSS_kg_importantcountries</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ag_WSS_bycountrymarketshare</span> <span class="o">=</span> <span class="n">ag_WSS_kg_importantcountries</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,:]</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">ag_WSS_kg_subset</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;SUM&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">ag_WSS_bycountrymarketshare</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[56]:</div>
 
 
 
@@ -16000,33 +16174,25 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     <tr style="text-align: right;">
       <th></th>
       <th>Argentina</th>
-      <th>Armenia</th>
       <th>Australia</th>
       <th>Bolivia</th>
-      <th>Botswana</th>
-      <th>Brazil</th>
-      <th>Bulgaria</th>
       <th>Canada</th>
       <th>Chile</th>
       <th>China</th>
-      <th>...</th>
+      <th>India</th>
+      <th>Indonesia</th>
+      <th>Kazakhstan</th>
+      <th>Mexico</th>
+      <th>Morocco</th>
+      <th>Peru</th>
+      <th>Poland</th>
+      <th>Russia</th>
       <th>Sweden</th>
-      <th>Tajikistan</th>
-      <th>Tanzania</th>
-      <th>Thailand</th>
-      <th>Turkey</th>
       <th>USA</th>
-      <th>Uzbekistan</th>
-      <th>Zambia</th>
-      <th>Zimbabwe</th>
-      <th>SUM</th>
+      <th>World</th>
     </tr>
     <tr>
       <th>MineProduction_[kg]</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -16049,1537 +16215,386 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
   <tbody>
     <tr>
       <th>2004</th>
-      <td>0.577496</td>
-      <td>0.047522</td>
-      <td>0.480404</td>
-      <td>0.448998</td>
-      <td>0.000000</td>
-      <td>1.801877</td>
-      <td>1.287055</td>
-      <td>0.496382</td>
-      <td>0.480658</td>
-      <td>0.598725</td>
-      <td>...</td>
-      <td>0.481413</td>
-      <td>0.772233</td>
-      <td>0.501951</td>
-      <td>0.000000</td>
-      <td>0.281865</td>
-      <td>0.480244</td>
-      <td>0.650301</td>
-      <td>0.000000</td>
-      <td>0.463340</td>
-      <td>1.0</td>
+      <td>0.749918</td>
+      <td>11.656342</td>
+      <td>2.282361</td>
+      <td>6.781872</td>
+      <td>7.124226</td>
+      <td>10.303228</td>
+      <td>0.554288</td>
+      <td>1.402022</td>
+      <td>3.684382</td>
+      <td>13.465928</td>
+      <td>1.173785</td>
+      <td>16.041735</td>
+      <td>7.140528</td>
+      <td>4.939680</td>
+      <td>1.532442</td>
+      <td>6.553635</td>
+      <td>4.613629</td>
     </tr>
     <tr>
       <th>2005</th>
-      <td>0.451608</td>
-      <td>0.051612</td>
-      <td>0.483516</td>
-      <td>0.506850</td>
-      <td>0.000000</td>
-      <td>1.961271</td>
-      <td>1.105980</td>
-      <td>0.508880</td>
-      <td>0.489327</td>
-      <td>0.572623</td>
-      <td>...</td>
-      <td>0.527467</td>
-      <td>inf</td>
-      <td>0.503221</td>
-      <td>0.000000</td>
-      <td>0.238211</td>
-      <td>0.485841</td>
-      <td>0.611975</td>
-      <td>0.000000</td>
-      <td>0.464511</td>
-      <td>1.0</td>
+      <td>0.938380</td>
+      <td>12.105099</td>
+      <td>2.001877</td>
+      <td>5.348764</td>
+      <td>6.928370</td>
+      <td>10.572412</td>
+      <td>0.516109</td>
+      <td>1.548327</td>
+      <td>4.081952</td>
+      <td>14.560525</td>
+      <td>1.235533</td>
+      <td>16.046293</td>
+      <td>6.334063</td>
+      <td>5.082890</td>
+      <td>1.423209</td>
+      <td>6.130748</td>
+      <td>5.145449</td>
     </tr>
     <tr>
       <th>2006</th>
-      <td>0.577496</td>
-      <td>0.498283</td>
-      <td>0.497611</td>
-      <td>0.497694</td>
-      <td>0.000000</td>
-      <td>1.602036</td>
-      <td>1.735539</td>
-      <td>0.510918</td>
-      <td>0.499948</td>
-      <td>0.548787</td>
-      <td>...</td>
-      <td>0.499612</td>
-      <td>inf</td>
-      <td>0.596999</td>
-      <td>0.000000</td>
-      <td>0.446808</td>
-      <td>0.000000</td>
-      <td>0.474561</td>
-      <td>0.000000</td>
-      <td>0.160204</td>
-      <td>1.0</td>
+      <td>1.057543</td>
+      <td>8.646967</td>
+      <td>2.363919</td>
+      <td>4.852255</td>
+      <td>8.009331</td>
+      <td>11.804044</td>
+      <td>0.917574</td>
+      <td>1.228616</td>
+      <td>3.981337</td>
+      <td>14.852255</td>
+      <td>1.181960</td>
+      <td>17.278383</td>
+      <td>6.298600</td>
+      <td>4.867807</td>
+      <td>1.337481</td>
+      <td>5.707621</td>
+      <td>5.614308</td>
     </tr>
     <tr>
       <th>2007</th>
-      <td>0.505559</td>
-      <td>0.498379</td>
-      <td>0.498474</td>
-      <td>0.497755</td>
-      <td>0.000000</td>
-      <td>1.442099</td>
-      <td>2.203206</td>
-      <td>0.516376</td>
-      <td>0.498051</td>
-      <td>0.545561</td>
-      <td>...</td>
-      <td>0.460244</td>
-      <td>inf</td>
-      <td>0.661282</td>
-      <td>0.000000</td>
-      <td>0.423016</td>
-      <td>0.000000</td>
-      <td>0.498383</td>
-      <td>0.000000</td>
-      <td>0.096140</td>
-      <td>1.0</td>
+      <td>1.216216</td>
+      <td>9.069069</td>
+      <td>2.537538</td>
+      <td>4.009009</td>
+      <td>9.354354</td>
+      <td>11.906907</td>
+      <td>0.855856</td>
+      <td>1.291291</td>
+      <td>3.423423</td>
+      <td>15.135135</td>
+      <td>1.036036</td>
+      <td>16.906907</td>
+      <td>5.945946</td>
+      <td>4.399399</td>
+      <td>1.411411</td>
+      <td>6.081081</td>
+      <td>5.420420</td>
     </tr>
     <tr>
       <th>2008</th>
-      <td>0.531243</td>
-      <td>0.497191</td>
-      <td>0.497377</td>
-      <td>0.497313</td>
-      <td>0.000000</td>
-      <td>1.418693</td>
-      <td>2.197975</td>
-      <td>0.541053</td>
-      <td>0.497996</td>
-      <td>0.527816</td>
-      <td>...</td>
-      <td>0.504297</td>
-      <td>inf</td>
-      <td>0.553517</td>
-      <td>0.000000</td>
-      <td>0.465314</td>
-      <td>0.000000</td>
-      <td>0.701923</td>
-      <td>0.000000</td>
-      <td>0.079926</td>
-      <td>1.0</td>
+      <td>1.566389</td>
+      <td>9.061631</td>
+      <td>5.240814</td>
+      <td>3.147416</td>
+      <td>6.602254</td>
+      <td>12.413995</td>
+      <td>0.995462</td>
+      <td>1.171132</td>
+      <td>2.957107</td>
+      <td>15.239350</td>
+      <td>1.141853</td>
+      <td>17.318109</td>
+      <td>5.709267</td>
+      <td>5.328649</td>
+      <td>1.229688</td>
+      <td>5.270092</td>
+      <td>5.606793</td>
     </tr>
     <tr>
       <th>2009</th>
-      <td>0.376797</td>
-      <td>0.536790</td>
-      <td>0.506819</td>
-      <td>0.505477</td>
-      <td>0.000000</td>
-      <td>1.421262</td>
-      <td>1.786729</td>
-      <td>0.525521</td>
-      <td>0.505560</td>
-      <td>0.542681</td>
-      <td>...</td>
-      <td>0.494758</td>
-      <td>inf</td>
-      <td>0.445654</td>
-      <td>0.000000</td>
-      <td>0.456883</td>
-      <td>0.000000</td>
-      <td>0.505214</td>
-      <td>0.000000</td>
-      <td>0.081215</td>
-      <td>1.0</td>
+      <td>2.507354</td>
+      <td>7.339964</td>
+      <td>5.967222</td>
+      <td>2.731475</td>
+      <td>5.855162</td>
+      <td>12.158566</td>
+      <td>0.868469</td>
+      <td>1.078582</td>
+      <td>2.759490</td>
+      <td>16.010646</td>
+      <td>1.246673</td>
+      <td>17.313349</td>
+      <td>5.490965</td>
+      <td>5.911192</td>
+      <td>1.218658</td>
+      <td>5.631041</td>
+      <td>5.911192</td>
     </tr>
     <tr>
       <th>2010</th>
-      <td>0.500335</td>
-      <td>0.646029</td>
-      <td>0.499295</td>
-      <td>0.492996</td>
-      <td>0.000000</td>
-      <td>2.768576</td>
-      <td>1.104943</td>
-      <td>0.515930</td>
-      <td>0.503682</td>
-      <td>0.593806</td>
-      <td>...</td>
-      <td>0.527024</td>
-      <td>inf</td>
-      <td>0.500350</td>
-      <td>0.391682</td>
-      <td>0.474341</td>
-      <td>0.503521</td>
-      <td>0.499205</td>
-      <td>0.401243</td>
-      <td>0.080249</td>
-      <td>1.0</td>
+      <td>3.092509</td>
+      <td>8.051186</td>
+      <td>5.465209</td>
+      <td>2.452679</td>
+      <td>5.465209</td>
+      <td>12.609971</td>
+      <td>1.093042</td>
+      <td>0.893095</td>
+      <td>2.346041</td>
+      <td>18.901626</td>
+      <td>1.319648</td>
+      <td>15.595841</td>
+      <td>5.011997</td>
+      <td>4.905359</td>
+      <td>1.226340</td>
+      <td>5.438550</td>
+      <td>6.131698</td>
     </tr>
     <tr>
       <th>2011</th>
-      <td>0.537664</td>
-      <td>0.171219</td>
-      <td>0.505282</td>
-      <td>0.505876</td>
-      <td>0.000000</td>
-      <td>2.909987</td>
-      <td>1.045124</td>
-      <td>0.574720</td>
-      <td>0.513254</td>
-      <td>0.586263</td>
-      <td>...</td>
-      <td>0.425234</td>
-      <td>0.286772</td>
-      <td>0.422639</td>
-      <td>0.395368</td>
-      <td>0.430896</td>
-      <td>0.505771</td>
-      <td>0.513376</td>
-      <td>0.406423</td>
-      <td>0.089413</td>
-      <td>1.0</td>
+      <td>2.993377</td>
+      <td>7.350993</td>
+      <td>5.165563</td>
+      <td>2.476821</td>
+      <td>5.417219</td>
+      <td>13.589404</td>
+      <td>0.993377</td>
+      <td>0.794702</td>
+      <td>2.331126</td>
+      <td>20.344371</td>
+      <td>1.059603</td>
+      <td>14.543046</td>
+      <td>5.403974</td>
+      <td>5.099338</td>
+      <td>1.205298</td>
+      <td>4.768212</td>
+      <td>6.463576</td>
     </tr>
     <tr>
       <th>2012</th>
-      <td>0.534379</td>
-      <td>0.138720</td>
-      <td>0.505542</td>
-      <td>0.493451</td>
-      <td>0.704283</td>
-      <td>2.920297</td>
-      <td>1.259722</td>
-      <td>0.522672</td>
-      <td>0.524506</td>
-      <td>0.560222</td>
-      <td>...</td>
-      <td>0.512819</td>
-      <td>0.287075</td>
-      <td>0.455997</td>
-      <td>0.421690</td>
-      <td>0.431510</td>
-      <td>0.505021</td>
-      <td>0.513045</td>
-      <td>0.406161</td>
-      <td>0.097479</td>
-      <td>1.0</td>
+      <td>3.066633</td>
+      <td>7.004038</td>
+      <td>5.010096</td>
+      <td>2.688036</td>
+      <td>4.669359</td>
+      <td>14.273094</td>
+      <td>1.501767</td>
+      <td>0.567895</td>
+      <td>2.208481</td>
+      <td>21.744069</td>
+      <td>0.946492</td>
+      <td>14.121656</td>
+      <td>5.212014</td>
+      <td>5.678950</td>
+      <td>1.236749</td>
+      <td>4.303382</td>
+      <td>5.767289</td>
     </tr>
     <tr>
       <th>2013</th>
-      <td>0.518650</td>
-      <td>0.138353</td>
-      <td>0.508235</td>
-      <td>0.508470</td>
-      <td>0.461934</td>
-      <td>1.185653</td>
-      <td>inf</td>
-      <td>0.530863</td>
-      <td>0.530195</td>
-      <td>0.567745</td>
-      <td>...</td>
-      <td>0.516881</td>
-      <td>0.081769</td>
-      <td>inf</td>
-      <td>0.422760</td>
-      <td>0.477029</td>
-      <td>0.506190</td>
-      <td>0.177397</td>
-      <td>inf</td>
-      <td>inf</td>
-      <td>1.0</td>
+      <td>3.146440</td>
+      <td>7.002602</td>
+      <td>4.897090</td>
+      <td>2.353915</td>
+      <td>4.447599</td>
+      <td>13.969718</td>
+      <td>1.265673</td>
+      <td>0.922640</td>
+      <td>2.519517</td>
+      <td>22.131535</td>
+      <td>0.875325</td>
+      <td>14.549326</td>
+      <td>4.589543</td>
+      <td>5.251952</td>
+      <td>1.277502</td>
+      <td>3.974450</td>
+      <td>6.825172</td>
     </tr>
     <tr>
       <th>2014</th>
-      <td>0.526870</td>
-      <td>0.126902</td>
-      <td>0.489849</td>
-      <td>0.511049</td>
-      <td>0.437716</td>
-      <td>0.525600</td>
-      <td>inf</td>
-      <td>0.489193</td>
-      <td>0.493256</td>
-      <td>0.472346</td>
-      <td>...</td>
-      <td>0.474609</td>
-      <td>0.047261</td>
-      <td>inf</td>
-      <td>0.444626</td>
-      <td>0.452623</td>
-      <td>0.490484</td>
-      <td>0.614126</td>
-      <td>inf</td>
-      <td>inf</td>
-      <td>1.0</td>
+      <td>3.355629</td>
+      <td>6.733930</td>
+      <td>4.886067</td>
+      <td>1.723161</td>
+      <td>5.690965</td>
+      <td>13.490534</td>
+      <td>0.952273</td>
+      <td>0.793561</td>
+      <td>2.051922</td>
+      <td>21.018025</td>
+      <td>0.884253</td>
+      <td>14.284095</td>
+      <td>4.353248</td>
+      <td>5.226165</td>
+      <td>1.439746</td>
+      <td>4.296565</td>
+      <td>8.819862</td>
     </tr>
     <tr>
       <th>2015</th>
-      <td>0.523890</td>
-      <td>0.093071</td>
-      <td>0.504198</td>
-      <td>0.504370</td>
-      <td>0.454293</td>
-      <td>0.418652</td>
-      <td>inf</td>
-      <td>0.505650</td>
-      <td>0.507229</td>
-      <td>0.462057</td>
-      <td>...</td>
-      <td>0.492420</td>
-      <td>0.058978</td>
-      <td>inf</td>
-      <td>0.426701</td>
-      <td>0.468261</td>
-      <td>0.505105</td>
-      <td>0.632265</td>
-      <td>inf</td>
-      <td>inf</td>
-      <td>1.0</td>
+      <td>4.057971</td>
+      <td>5.128205</td>
+      <td>4.682274</td>
+      <td>1.326644</td>
+      <td>5.362319</td>
+      <td>13.277592</td>
+      <td>1.337793</td>
+      <td>1.103679</td>
+      <td>1.794872</td>
+      <td>21.415831</td>
+      <td>1.003344</td>
+      <td>15.117057</td>
+      <td>4.370123</td>
+      <td>5.696767</td>
+      <td>1.761427</td>
+      <td>3.901895</td>
+      <td>8.662207</td>
     </tr>
     <tr>
       <th>2016</th>
-      <td>0.527724</td>
-      <td>0.106308</td>
-      <td>0.495871</td>
-      <td>0.496056</td>
-      <td>0.648160</td>
-      <td>0.247485</td>
-      <td>inf</td>
-      <td>0.529249</td>
-      <td>0.513781</td>
-      <td>0.459587</td>
-      <td>...</td>
-      <td>0.500787</td>
-      <td>0.036799</td>
-      <td>inf</td>
-      <td>0.441023</td>
-      <td>0.896414</td>
-      <td>0.495625</td>
-      <td>0.621631</td>
-      <td>inf</td>
-      <td>inf</td>
-      <td>1.0</td>
+      <td>3.546020</td>
+      <td>5.068920</td>
+      <td>4.835482</td>
+      <td>1.289462</td>
+      <td>5.180080</td>
+      <td>13.483771</td>
+      <td>1.556247</td>
+      <td>1.200534</td>
+      <td>1.934193</td>
+      <td>19.375278</td>
+      <td>1.111605</td>
+      <td>16.929747</td>
+      <td>4.546465</td>
+      <td>5.180080</td>
+      <td>1.823032</td>
+      <td>4.112939</td>
+      <td>8.826145</td>
     </tr>
     <tr>
       <th>2017</th>
-      <td>0.552948</td>
-      <td>0.096452</td>
-      <td>0.503349</td>
-      <td>0.502777</td>
-      <td>inf</td>
-      <td>0.496929</td>
-      <td>inf</td>
-      <td>0.468811</td>
-      <td>0.528055</td>
-      <td>0.500523</td>
-      <td>...</td>
-      <td>0.509521</td>
-      <td>0.046380</td>
-      <td>inf</td>
-      <td>5.817023</td>
-      <td>0.500197</td>
-      <td>0.501941</td>
-      <td>0.603287</td>
-      <td>inf</td>
-      <td>inf</td>
-      <td>1.0</td>
+      <td>3.381195</td>
+      <td>4.168597</td>
+      <td>4.458082</td>
+      <td>1.470588</td>
+      <td>4.678092</td>
+      <td>13.478462</td>
+      <td>1.956925</td>
+      <td>1.157943</td>
+      <td>2.188513</td>
+      <td>21.653543</td>
+      <td>1.192682</td>
+      <td>17.948124</td>
+      <td>4.828624</td>
+      <td>4.863363</td>
+      <td>1.794812</td>
+      <td>3.844372</td>
+      <td>6.936082</td>
     </tr>
     <tr>
       <th>2018</th>
-      <td>0.531737</td>
-      <td>0.156480</td>
-      <td>0.499397</td>
-      <td>0.499086</td>
-      <td>inf</td>
-      <td>0.495432</td>
-      <td>inf</td>
-      <td>0.533160</td>
-      <td>0.549780</td>
-      <td>0.496567</td>
-      <td>...</td>
-      <td>0.504293</td>
-      <td>0.067407</td>
-      <td>inf</td>
-      <td>5.770330</td>
-      <td>0.673793</td>
-      <td>0.503019</td>
-      <td>0.609326</td>
-      <td>inf</td>
-      <td>inf</td>
-      <td>1.0</td>
+      <td>3.637434</td>
+      <td>4.743967</td>
+      <td>4.508534</td>
+      <td>1.389052</td>
+      <td>4.708652</td>
+      <td>13.019423</td>
+      <td>2.495586</td>
+      <td>1.212478</td>
+      <td>2.330783</td>
+      <td>22.895821</td>
+      <td>0.824014</td>
+      <td>17.245438</td>
+      <td>4.814597</td>
+      <td>5.073573</td>
+      <td>1.765745</td>
+      <td>3.507946</td>
+      <td>5.826957</td>
     </tr>
     <tr>
       <th>2019</th>
-      <td>0.517650</td>
-      <td>0.151066</td>
-      <td>0.494594</td>
-      <td>0.494035</td>
-      <td>inf</td>
-      <td>0.477050</td>
-      <td>inf</td>
-      <td>0.411924</td>
-      <td>0.545036</td>
-      <td>0.491027</td>
-      <td>...</td>
-      <td>0.467970</td>
-      <td>0.122670</td>
-      <td>inf</td>
-      <td>5.717287</td>
-      <td>1.202564</td>
-      <td>0.496801</td>
-      <td>0.571417</td>
-      <td>inf</td>
-      <td>inf</td>
-      <td>1.0</td>
+      <td>3.938233</td>
+      <td>5.099354</td>
+      <td>4.440986</td>
+      <td>1.615992</td>
+      <td>4.572660</td>
+      <td>13.346900</td>
+      <td>2.441944</td>
+      <td>0.909744</td>
+      <td>2.034953</td>
+      <td>22.480249</td>
+      <td>0.957625</td>
+      <td>16.171894</td>
+      <td>4.836007</td>
+      <td>5.350730</td>
+      <td>1.723725</td>
+      <td>3.758678</td>
+      <td>6.320326</td>
     </tr>
     <tr>
       <th>2020</th>
-      <td>0.509336</td>
-      <td>0.141582</td>
-      <td>0.497712</td>
-      <td>0.614563</td>
-      <td>inf</td>
-      <td>0.492557</td>
-      <td>inf</td>
-      <td>0.550734</td>
-      <td>0.529775</td>
-      <td>0.495534</td>
-      <td>...</td>
-      <td>0.476797</td>
-      <td>0.123236</td>
-      <td>inf</td>
-      <td>5.729515</td>
-      <td>0.391619</td>
-      <td>0.542919</td>
-      <td>0.601003</td>
-      <td>inf</td>
-      <td>inf</td>
-      <td>1.0</td>
+      <td>3.063960</td>
+      <td>5.489595</td>
+      <td>3.817184</td>
+      <td>1.200051</td>
+      <td>6.051321</td>
+      <td>13.979318</td>
+      <td>2.757564</td>
+      <td>1.123452</td>
+      <td>2.221371</td>
+      <td>23.005234</td>
+      <td>1.161752</td>
+      <td>12.970765</td>
+      <td>5.030001</td>
+      <td>5.374697</td>
+      <td>1.710711</td>
+      <td>4.046981</td>
+      <td>6.996042</td>
     </tr>
     <tr>
       <th>2021</th>
-      <td>0.418067</td>
-      <td>0.143857</td>
-      <td>0.515905</td>
-      <td>0.504279</td>
-      <td>0.280343</td>
-      <td>0.563482</td>
-      <td>inf</td>
-      <td>0.578621</td>
-      <td>0.504227</td>
-      <td>0.502361</td>
-      <td>...</td>
-      <td>0.545551</td>
-      <td>0.119881</td>
-      <td>inf</td>
-      <td>5.824584</td>
-      <td>0.289528</td>
-      <td>0.506874</td>
-      <td>0.564621</td>
-      <td>inf</td>
-      <td>inf</td>
-      <td>1.0</td>
-    </tr>
-  </tbody>
-</table>
-<p>18 rows × 57 columns</p>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[110]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ag_USGS_raw</span><span class="p">,</span> <span class="n">ag_WSS_kg</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;MineProduction_[kg]&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">,</span> <span class="n">indicator</span><span class="o">=</span><span class="s1">&#39;indicator_col&#39;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[110]:</div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Algeria</th>
-      <th>Argentina_x</th>
-      <th>Armenia_x</th>
-      <th>Australia_x</th>
-      <th>Azerbaijan</th>
-      <th>Bolivia_x</th>
-      <th>Botswana_x</th>
-      <th>Brazil_x</th>
-      <th>Bulgaria_x</th>
-      <th>Burma</th>
-      <th>...</th>
-      <th>Others.2</th>
-      <th>Australia_y</th>
-      <th>PapuaNewGuinea_y</th>
-      <th>NewZealand_y</th>
-      <th>Dominican Republic_y</th>
-      <th>Finland_y</th>
-      <th>Others.3</th>
-      <th>Others.4</th>
-      <th>Others.5</th>
-      <th>indicator_col</th>
+      <td>3.372009</td>
+      <td>5.172831</td>
+      <td>5.015712</td>
+      <td>1.099831</td>
+      <td>4.979454</td>
+      <td>13.645153</td>
+      <td>2.683104</td>
+      <td>1.232777</td>
+      <td>1.812908</td>
+      <td>23.688663</td>
+      <td>0.966884</td>
+      <td>13.959391</td>
+      <td>5.076142</td>
+      <td>4.713561</td>
+      <td>1.679961</td>
+      <td>3.940053</td>
+      <td>6.961566</td>
     </tr>
     <tr>
-      <th>MineProduction_[kg]</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1998.0</th>
-      <td>2000.0</td>
-      <td>36000.0</td>
-      <td>0.0</td>
-      <td>1474000.0</td>
-      <td>0.0</td>
-      <td>404000.0</td>
-      <td>0.0</td>
-      <td>34000.0</td>
-      <td>24000.0</td>
-      <td>3000.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>left_only</td>
-    </tr>
-    <tr>
-      <th>1999.0</th>
-      <td>1000.0</td>
-      <td>74000.0</td>
-      <td>0.0</td>
-      <td>1720000.0</td>
-      <td>0.0</td>
-      <td>422000.0</td>
-      <td>0.0</td>
-      <td>42000.0</td>
-      <td>25000.0</td>
-      <td>4000.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>left_only</td>
-    </tr>
-    <tr>
-      <th>2000.0</th>
-      <td>1000.0</td>
-      <td>78000.0</td>
-      <td>0.0</td>
-      <td>2060000.0</td>
-      <td>0.0</td>
-      <td>434000.0</td>
-      <td>0.0</td>
-      <td>41000.0</td>
-      <td>25000.0</td>
-      <td>1804.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>left_only</td>
-    </tr>
-    <tr>
-      <th>2001.0</th>
-      <td>2000.0</td>
-      <td>153000.0</td>
-      <td>0.0</td>
-      <td>2100000.0</td>
-      <td>0.0</td>
-      <td>408000.0</td>
-      <td>0.0</td>
-      <td>46000.0</td>
-      <td>25000.0</td>
-      <td>1500.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>left_only</td>
-    </tr>
-    <tr>
-      <th>2002.0</th>
-      <td>1000.0</td>
-      <td>126000.0</td>
-      <td>6000.0</td>
-      <td>2077000.0</td>
-      <td>0.0</td>
-      <td>450000.0</td>
-      <td>0.0</td>
-      <td>33000.0</td>
-      <td>609000.0</td>
-      <td>1000.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>left_only</td>
-    </tr>
-    <tr>
-      <th>2003.0</th>
-      <td>1000.0</td>
-      <td>134000.0</td>
-      <td>4000.0</td>
-      <td>1868000.0</td>
-      <td>0.0</td>
-      <td>465000.0</td>
-      <td>0.0</td>
-      <td>31000.0</td>
-      <td>50000.0</td>
-      <td>1000.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>left_only</td>
-    </tr>
-    <tr>
-      <th>2004.0</th>
-      <td>500.0</td>
-      <td>172000.0</td>
-      <td>4000.0</td>
-      <td>2224000.0</td>
-      <td>0.0</td>
-      <td>407000.0</td>
-      <td>0.0</td>
-      <td>35000.0</td>
-      <td>50000.0</td>
-      <td>1000.0</td>
-      <td>...</td>
-      <td>28350.0</td>
-      <td>2027025.0</td>
-      <td>48195.0</td>
-      <td>28350.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2005.0</th>
-      <td>1000.0</td>
-      <td>175000.0</td>
-      <td>4000.0</td>
-      <td>2417000.0</td>
-      <td>0.0</td>
-      <td>419000.0</td>
-      <td>0.0</td>
-      <td>38000.0</td>
-      <td>50000.0</td>
-      <td>2000.0</td>
-      <td>...</td>
-      <td>28350.0</td>
-      <td>2194290.0</td>
-      <td>62370.0</td>
-      <td>42525.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2006.0</th>
-      <td>0.0</td>
-      <td>245124.0</td>
-      <td>40434.0</td>
-      <td>1727000.0</td>
-      <td>0.0</td>
-      <td>472208.0</td>
-      <td>0.0</td>
-      <td>30000.0</td>
-      <td>65000.0</td>
-      <td>684.0</td>
-      <td>...</td>
-      <td>31185.0</td>
-      <td>1576260.0</td>
-      <td>45360.0</td>
-      <td>31185.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2007.0</th>
-      <td>0.0</td>
-      <td>255567.0</td>
-      <td>37324.0</td>
-      <td>1879000.0</td>
-      <td>0.0</td>
-      <td>524989.0</td>
-      <td>0.0</td>
-      <td>36000.0</td>
-      <td>55000.0</td>
-      <td>500.0</td>
-      <td>...</td>
-      <td>8505.0</td>
-      <td>1712340.0</td>
-      <td>39690.0</td>
-      <td>17010.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2008.0</th>
-      <td>0.0</td>
-      <td>355596.0</td>
-      <td>40434.0</td>
-      <td>1926000.0</td>
-      <td>0.0</td>
-      <td>1113764.0</td>
-      <td>0.0</td>
-      <td>35500.0</td>
-      <td>55000.0</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>8505.0</td>
-      <td>1754865.0</td>
-      <td>45360.0</td>
-      <td>28350.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2009.0</th>
-      <td>0.0</td>
-      <td>415235.0</td>
-      <td>52876.0</td>
-      <td>1635000.0</td>
-      <td>0.0</td>
-      <td>1325700.0</td>
-      <td>0.0</td>
-      <td>35000.0</td>
-      <td>55000.0</td>
-      <td>500.0</td>
-      <td>...</td>
-      <td>0.0</td>
-      <td>1485540.0</td>
-      <td>62370.0</td>
-      <td>14175.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2010.0</th>
-      <td>0.0</td>
-      <td>723238.0</td>
-      <td>68428.0</td>
-      <td>1879000.0</td>
-      <td>1500.0</td>
-      <td>1259388.0</td>
-      <td>0.0</td>
-      <td>69000.0</td>
-      <td>27538.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>0.0</td>
-      <td>1712340.0</td>
-      <td>59535.0</td>
-      <td>11340.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2011.0</th>
-      <td>0.0</td>
-      <td>747449.0</td>
-      <td>25277.0</td>
-      <td>1725000.0</td>
-      <td>1217.0</td>
-      <td>1213586.0</td>
-      <td>0.0</td>
-      <td>71600.0</td>
-      <td>32144.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>2835.0</td>
-      <td>1573425.0</td>
-      <td>85050.0</td>
-      <td>8505.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2012.0</th>
-      <td>0.0</td>
-      <td>799277.0</td>
-      <td>22200.0</td>
-      <td>1727000.0</td>
-      <td>626.0</td>
-      <td>1205804.0</td>
-      <td>8670.0</td>
-      <td>71900.0</td>
-      <td>46523.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>2835.0</td>
-      <td>1573425.0</td>
-      <td>73710.0</td>
-      <td>5670.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2013.0</th>
-      <td>0.0</td>
-      <td>843600.0</td>
-      <td>19458.0</td>
-      <td>1839783.0</td>
-      <td>2051.0</td>
-      <td>1287200.0</td>
-      <td>22597.0</td>
-      <td>72500.0</td>
-      <td>55637.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>133245.0</td>
-      <td>1678320.0</td>
-      <td>85050.0</td>
-      <td>0.0</td>
-      <td>73710.0</td>
-      <td>2835.0</td>
-      <td>5670.0</td>
-      <td>51030.0</td>
-      <td>14175.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2014.0</th>
-      <td>16.0</td>
-      <td>989950.0</td>
-      <td>19333.0</td>
-      <td>1847000.0</td>
-      <td>239.0</td>
-      <td>1398163.0</td>
-      <td>22228.0</td>
-      <td>36700.0</td>
-      <td>50200.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>93555.0</td>
-      <td>1683990.0</td>
-      <td>87885.0</td>
-      <td>0.0</td>
-      <td>124740.0</td>
-      <td>2835.0</td>
-      <td>5670.0</td>
-      <td>51030.0</td>
-      <td>17010.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2015.0</th>
-      <td>20.0</td>
-      <td>1175760.0</td>
-      <td>14346.0</td>
-      <td>1430000.0</td>
-      <td>133.0</td>
-      <td>1306098.0</td>
-      <td>2801.0</td>
-      <td>41300.0</td>
-      <td>37955.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>99225.0</td>
-      <td>1304100.0</td>
-      <td>65205.0</td>
-      <td>0.0</td>
-      <td>87885.0</td>
-      <td>2835.0</td>
-      <td>8505.0</td>
-      <td>45360.0</td>
-      <td>17010.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2016.0</th>
-      <td>20.0</td>
-      <td>1055700.0</td>
-      <td>16000.0</td>
-      <td>1418000.0</td>
-      <td>320.0</td>
-      <td>1353202.0</td>
-      <td>NaN</td>
-      <td>38800.0</td>
-      <td>52526.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>62370.0</td>
-      <td>1292760.0</td>
-      <td>90720.0</td>
-      <td>0.0</td>
-      <td>110565.0</td>
-      <td>2835.0</td>
-      <td>17010.0</td>
-      <td>59535.0</td>
-      <td>11340.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2017.0</th>
-      <td>25.0</td>
-      <td>997961.0</td>
-      <td>15500.0</td>
-      <td>1120000.0</td>
-      <td>3429.0</td>
-      <td>1196416.0</td>
-      <td>NaN</td>
-      <td>86000.0</td>
-      <td>53053.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>68040.0</td>
-      <td>1020600.0</td>
-      <td>59535.0</td>
-      <td>0.0</td>
-      <td>138915.0</td>
-      <td>2835.0</td>
-      <td>14175.0</td>
-      <td>53865.0</td>
-      <td>11340.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2018.0</th>
-      <td>26.0</td>
-      <td>1023768.0</td>
-      <td>19500.0</td>
-      <td>1254000.0</td>
-      <td>3229.0</td>
-      <td>1191024.0</td>
-      <td>NaN</td>
-      <td>71000.0</td>
-      <td>41315.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>68040.0</td>
-      <td>1142505.0</td>
-      <td>85050.0</td>
-      <td>0.0</td>
-      <td>144585.0</td>
-      <td>2835.0</td>
-      <td>17010.0</td>
-      <td>65205.0</td>
-      <td>8505.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2019.0</th>
-      <td>20.0</td>
-      <td>1071000.0</td>
-      <td>22800.0</td>
-      <td>1325000.0</td>
-      <td>3820.0</td>
-      <td>1152628.0</td>
-      <td>NaN</td>
-      <td>66000.0</td>
-      <td>35145.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>70875.0</td>
-      <td>1207710.0</td>
-      <td>133245.0</td>
-      <td>0.0</td>
-      <td>127575.0</td>
-      <td>31185.0</td>
-      <td>17010.0</td>
-      <td>62370.0</td>
-      <td>2835.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2020.0</th>
-      <td>12.0</td>
-      <td>767087.0</td>
-      <td>23100.0</td>
-      <td>1343000.0</td>
-      <td>4310.0</td>
-      <td>1153100.0</td>
-      <td>NaN</td>
-      <td>68000.0</td>
-      <td>32760.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>70875.0</td>
-      <td>1219050.0</td>
-      <td>107730.0</td>
-      <td>0.0</td>
-      <td>116235.0</td>
-      <td>45360.0</td>
-      <td>17010.0</td>
-      <td>68040.0</td>
-      <td>2835.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2021.0</th>
-      <td>12.0</td>
-      <td>720000.0</td>
-      <td>22200.0</td>
-      <td>1363000.0</td>
-      <td>3860.0</td>
-      <td>1291817.0</td>
-      <td>10383.0</td>
-      <td>80000.0</td>
-      <td>31816.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>73710.0</td>
-      <td>1213380.0</td>
-      <td>82215.0</td>
-      <td>0.0</td>
-      <td>96390.0</td>
-      <td>42525.0</td>
-      <td>17010.0</td>
-      <td>59535.0</td>
-      <td>2835.0</td>
-      <td>both</td>
-    </tr>
-    <tr>
-      <th>2022.0</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>79380.0</td>
-      <td>1091475.0</td>
-      <td>76545.0</td>
-      <td>0.0</td>
-      <td>82215.0</td>
-      <td>42525.0</td>
-      <td>19845.0</td>
-      <td>68040.0</td>
-      <td>2835.0</td>
-      <td>right_only</td>
-    </tr>
-  </tbody>
-</table>
-<p>25 rows × 146 columns</p>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[77]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ag_USGS_raw</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ag_WSS_kg</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">,</span> <span class="n">lsuffix</span><span class="o">=</span><span class="s1">&#39;_USGS&#39;</span><span class="p">,</span><span class="n">rsuffix</span><span class="o">=</span><span class="s1">&#39;_WSS&#39;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[77]:</div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>1998</th>
-      <th>1999</th>
-      <th>2000</th>
-      <th>2001</th>
-      <th>2002</th>
-      <th>2003</th>
-      <th>2004_USGS</th>
-      <th>2005_USGS</th>
-      <th>2006_USGS</th>
-      <th>2007_USGS</th>
-      <th>...</th>
-      <th>2013_WSS</th>
-      <th>2014_WSS</th>
-      <th>2015_WSS</th>
-      <th>2016_WSS</th>
-      <th>2017_WSS</th>
-      <th>2018_WSS</th>
-      <th>2019_WSS</th>
-      <th>2020_WSS</th>
-      <th>2021_WSS</th>
       <th>2022</th>
-    </tr>
-    <tr>
-      <th>MineProduction_[kg]</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Algeria</th>
-      <td>2000.0</td>
-      <td>1000.0</td>
-      <td>1000.0</td>
-      <td>2000.0</td>
-      <td>1000.0</td>
-      <td>1000.0</td>
-      <td>500.0</td>
-      <td>1000.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>Argentina</th>
-      <td>36000.0</td>
-      <td>74000.0</td>
-      <td>78000.0</td>
-      <td>153000.0</td>
-      <td>126000.0</td>
-      <td>134000.0</td>
-      <td>172000.0</td>
-      <td>175000.0</td>
-      <td>245124.0</td>
-      <td>255567.0</td>
-      <td>...</td>
-      <td>754110.0</td>
-      <td>839160.0</td>
-      <td>1031940.0</td>
-      <td>904365.0</td>
-      <td>827820.0</td>
-      <td>876015.0</td>
-      <td>932715.0</td>
-      <td>680400.0</td>
-      <td>790965.0</td>
-      <td>876015.0</td>
-    </tr>
-    <tr>
-      <th>Armenia</th>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>6000.0</td>
-      <td>4000.0</td>
-      <td>4000.0</td>
-      <td>4000.0</td>
-      <td>40434.0</td>
-      <td>37324.0</td>
-      <td>...</td>
-      <td>65205.0</td>
-      <td>68040.0</td>
-      <td>70875.0</td>
-      <td>68040.0</td>
-      <td>73710.0</td>
-      <td>56700.0</td>
-      <td>68040.0</td>
-      <td>73710.0</td>
-      <td>70875.0</td>
-      <td>70875.0</td>
-    </tr>
-    <tr>
-      <th>Australia</th>
-      <td>1474000.0</td>
-      <td>1720000.0</td>
-      <td>2060000.0</td>
-      <td>2100000.0</td>
-      <td>2077000.0</td>
-      <td>1868000.0</td>
-      <td>2224000.0</td>
-      <td>2417000.0</td>
-      <td>1727000.0</td>
-      <td>1879000.0</td>
-      <td>...</td>
-      <td>1678320.0</td>
-      <td>1683990.0</td>
-      <td>1304100.0</td>
-      <td>1292760.0</td>
-      <td>1020600.0</td>
-      <td>1142505.0</td>
-      <td>1207710.0</td>
-      <td>1219050.0</td>
-      <td>1213380.0</td>
-      <td>1091475.0</td>
-    </tr>
-    <tr>
-      <th>Azerbaijan</th>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>USA</th>
-      <td>2060000.0</td>
-      <td>1950000.0</td>
-      <td>1980000.0</td>
-      <td>1740000.0</td>
-      <td>1350000.0</td>
-      <td>1240000.0</td>
-      <td>1250000.0</td>
-      <td>1230000.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>952560.0</td>
-      <td>1074465.0</td>
-      <td>992250.0</td>
-      <td>1048950.0</td>
-      <td>941220.0</td>
-      <td>844830.0</td>
-      <td>890190.0</td>
-      <td>898695.0</td>
-      <td>924210.0</td>
-      <td>918540.0</td>
-    </tr>
-    <tr>
-      <th>UnitedKingdom</th>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1160000.0</td>
-      <td>1280000.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>Uzbekistan</th>
-      <td>85000.0</td>
-      <td>89000.0</td>
-      <td>90000.0</td>
-      <td>80000.0</td>
-      <td>80000.0</td>
-      <td>80000.0</td>
-      <td>80000.0</td>
-      <td>83000.0</td>
-      <td>62207.0</td>
-      <td>77759.0</td>
-      <td>...</td>
-      <td>167265.0</td>
-      <td>167265.0</td>
-      <td>167265.0</td>
-      <td>167265.0</td>
-      <td>167265.0</td>
-      <td>167265.0</td>
-      <td>172935.0</td>
-      <td>178605.0</td>
-      <td>192780.0</td>
-      <td>198450.0</td>
-    </tr>
-    <tr>
-      <th>Zambia</th>
-      <td>8000.0</td>
-      <td>4940.0</td>
-      <td>4560.0</td>
-      <td>5000.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>...</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>Zimbabwe</th>
-      <td>7000.0</td>
-      <td>5000.0</td>
-      <td>4000.0</td>
-      <td>3000.0</td>
-      <td>2000.0</td>
-      <td>1000.0</td>
-      <td>3000.0</td>
-      <td>3000.0</td>
-      <td>1000.0</td>
-      <td>600.0</td>
-      <td>...</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
+      <td>3.759581</td>
+      <td>4.684268</td>
+      <td>4.708602</td>
+      <td>1.058523</td>
+      <td>5.097944</td>
+      <td>13.602628</td>
+      <td>2.713225</td>
+      <td>1.387030</td>
+      <td>1.800706</td>
+      <td>24.236525</td>
+      <td>0.973354</td>
+      <td>13.018615</td>
+      <td>5.158778</td>
+      <td>5.000608</td>
+      <td>1.800706</td>
+      <td>3.942085</td>
+      <td>7.056820</td>
     </tr>
   </tbody>
 </table>
-<p>84 rows × 43 columns</p>
 </div>
 </div>
 
@@ -17594,10 +16609,10 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ag_WSS_bycountrymarketshare</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span> <span class="s1">&#39;output-silver-MFGingByCountry.csv&#39;</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -17605,54 +16620,18 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Possible future improvement - use USGS pre-2004, and WSS starting in 2004</p>
 
-     </div>
 </div>
 </div>
 </div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div>
 </body>
 
