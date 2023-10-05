@@ -1614,7 +1614,7 @@ class Simulation:
                     demat['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
                     demat['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
                     demat['mat_Recycled_HQ_fuel'] = demat['mat_Recycled_HQ']*matEnergy['e_mat_Recycled_HQ_fuelfraction']*0.01
-                    #demat['mat_Recycled_HQ_elec'] = demat['mat_Recycled_HQ']-demat['mat_Recycled_HQ_fuel']
+                    demat['mat_Recycled_HQ_elec'] = demat['mat_Recycled_HQ']-demat['mat_Recycled_HQ_fuel']
     
                 self.scenario[scen].material[mat].matdataOut_e = demat #Wh
 
@@ -1636,8 +1636,8 @@ class Simulation:
 
         print("\n\n>>>> Calculating Carbon Flows <<<<\n")
         
-        #carbon folder
-        carbonfolder = os.path.join(str(Path().resolve().parent.parent/ 'PV_ICE'/ 'baselines'/ 'CarbonLayer'))
+        #carbon folder NEED TO MAKE THIS MORE DYNAMIC
+        carbonfolder = os.path.join(str(Path().resolve().parent.parent.parent/ 'PV_ICE'/ 'baselines'/ 'CarbonLayer'))
         #default files
         gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
         materialprocesscarbon = pd.read_csv(os.path.join(carbonfolder,'baseline_materials_processCO2.csv'), index_col='Material')
@@ -1680,6 +1680,7 @@ class Simulation:
             
             #carbon intensity of module manufacturing weighted by country
             #list countries mfging modules
+            print('Working on Carbon for Module')
             countriesmfgingmodules = list(countrymodmfg.columns[1:])
 
             #weight carbon intensity of electricity by countries which mfging modules
@@ -1695,7 +1696,7 @@ class Simulation:
             #print(modmfg_gco2eqpwh_bycountry['China'].iloc[-1])
             #carbon impacts module mfging wtd by country
             dc = modmfg_gco2eqpwh_bycountry.mul(de['mod_MFG'], axis=0)
-            dc.rename(columns={'Global_gCO2eqpWh':'Global'}, inplace=True)
+            dc.rename(columns={'Global_Sum_gCO2eqpWh':'Global'}, inplace=True)
             dc = dc.add_suffix('_mod_MFG_gCO2eq')
             
             #carbon impacts other module level steps
@@ -1737,7 +1738,7 @@ class Simulation:
                         if matcountry in country_carbonpwh:
                             currentcountry = country_carbonpwh[matcountry]*countrymatmfg[matcountry]*.01
                             countrycarbon_matmfg_gco2eqpwh.append(currentcountry)
-                        else: print(matcountry)
+                        else: print('Check '+mat+' MFGing by Country file OR add to country grid mix file. We dont have a grid mix for: '+matcountry)
         
                     matmfg_gco2eqpwh_bycountry = pd.DataFrame(countrycarbon_matmfg_gco2eqpwh).T #
                     matmfg_gco2eqpwh_bycountry['Global_gCO2eqpwh'] = matmfg_gco2eqpwh_bycountry.sum(axis=1) #annual carbon intensity of elec country wtd 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[6]:
 
 
 import numpy as np
@@ -18,7 +18,7 @@ baselinesFolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baseli
 carbonfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE'/ 'baselines'/ 'CarbonLayer')
 
 
-# In[2]:
+# In[7]:
 
 
 #df = self.scenario[scen].dataOut_m
@@ -38,7 +38,7 @@ de_in = pd.read_pickle('dataIn_e.pkl')
 
 
 
-# In[3]:
+# In[12]:
 
 
 gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
@@ -47,7 +47,7 @@ countrygridmixes = pd.read_csv(os.path.join(carbonfolder, 'baseline_countrygridm
 countrymodmfg = pd.read_csv(os.path.join(carbonfolder, 'baseline_module_countrymarketshare.csv'))
 
 
-# In[4]:
+# In[13]:
 
 
 #carbon intensity of country grid mixes
@@ -62,7 +62,7 @@ final_country_carbon_int = []
 for country in countrylist:
     temp_country_carbon = []
     for fuel in fuellist: 
-        fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_kgpkWh_ember']
+        fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_gpWh_ember']
         fuelemitfactor = list(fuelemitfactor)[0]
         if str(country+'_'+fuel) in countrygridmixes:
             countryfuel = countrygridmixes[str(country+'_'+fuel)]
@@ -73,7 +73,13 @@ country_carbonpkwh = pd.DataFrame(final_country_carbon_int).T
 country_carbonpkwh.columns = countrylist
 
 
-# In[5]:
+# In[15]:
+
+
+fuelemitfactor
+
+
+# In[ ]:
 
 
 #carbon intensity of module manufacturing weighted by country
@@ -92,7 +98,7 @@ modmfg_co2eqpkwh_bycountry = pd.DataFrame(countrycarbon_modmfg_co2eqpkwh).T #
 modmfg_co2eqpkwh_bycountry['Global_kgCO2eqpkWh'] = modmfg_co2eqpkwh_bycountry.sum(axis=1) #annual carbon intensity of pv module mfg wtd by country
 
 
-# In[6]:
+# In[ ]:
 
 
 #carbon impacts module mfging wtd by country
@@ -101,7 +107,7 @@ dc.rename(columns={'Global_kgCO2eqpkWh':'Global'}, inplace=True)
 dc = dc.add_suffix('_mod_MFG_kgCO2eq')
 
 
-# In[7]:
+# In[ ]:
 
 
 #carbon impacts other module level steps
@@ -117,7 +123,7 @@ dc['mod_ReMFG_Disassembly_kgCO2eq'] = de['mod_ReMFG_Disassembly']*country_carbon
 dc['mod_Recycle_Crush_kgCO2eq'] = de['mod_Recycle_Crush']*country_carbonpkwh[country_deploy]
 
 
-# In[8]:
+# In[ ]:
 
 
 dc.head()
@@ -125,7 +131,7 @@ dc.head()
 
 # # Material Level
 
-# In[9]:
+# In[ ]:
 
 
 matEnergy = pd.read_pickle('matdataIn_e.pkl')
@@ -137,7 +143,7 @@ dm = pd.read_pickle('matdataOut_m.pkl')
 #e_mat_Recycled_HQ_fuelfraction
 
 
-# In[10]:
+# In[ ]:
 
 
 countrymatmfg = pd.read_csv(os.path.join(carbonfolder, 'baseline_silicon_MFGing_countrymarketshare.csv'))
@@ -145,7 +151,7 @@ countrymatmfg = pd.read_csv(os.path.join(carbonfolder, 'baseline_silicon_MFGing_
 mat='silicon'
 
 
-# In[11]:
+# In[ ]:
 
 
 #carbon intensity of material manufacturing weighted by country
@@ -164,7 +170,7 @@ matmfg_co2eqpkwh_bycountry = pd.DataFrame(countrycarbon_modmfg_co2eqpkwh).T #
 matmfg_co2eqpkwh_bycountry['Global_kgCO2eqpkWh'] = modmfg_co2eqpkwh_bycountry.sum(axis=1) #annual carbon intensity of pv module mfg wtd by country
 
 
-# In[12]:
+# In[ ]:
 
 
 #carbon impacts mat mfging wtd by country
@@ -179,13 +185,13 @@ dcmat['mat_MFG_virgin_fuel_kgCO2eq'] = demat['mat_MFG_virgin_fuel']*steamHeat #C
 dcmat['mat_MFGScrap_HQ_fuel_kgCO2eq'] = demat['mat_MFGScrap_HQ_fuel']*steamHeat #CO2 from recycling fuels
 
 
-# In[13]:
+# In[ ]:
 
 
 dcmat
 
 
-# In[14]:
+# In[ ]:
 
 
 #CO2 process emissions from MFGing (v, lq, hq)
@@ -199,13 +205,13 @@ dcmat['mat_HQeol_kgCO2eq'] = dm['mat_EOL_Recycled_2_HQ']*materialprocesscarbon.l
 dcmat['mat_HQ_kgCO2eq'] = dcmat['mat_HQmfg_kgCO2eq']+dcmat['mat_HQeol_kgCO2eq'] 
 
 
-# In[15]:
+# In[ ]:
 
 
 dcmat
 
 
-# In[18]:
+# In[ ]:
 
 
 #sum carbon stuff
@@ -214,7 +220,7 @@ dcmat['mat_vMFG_total_kgCO2eq'] = dcmat['mat_vMFG_energy_kgCO2eq']+dcmat['mat_vM
 dcmat['mat_Recycle_kgCO2eq'] = dcmat['mat_HQ_kgCO2eq'] + dcmat['mat_LQ_kgCO2eq'] + dcmat['mat_MFGScrap_HQ_fuel_kgCO2eq']
 
 
-# In[19]:
+# In[ ]:
 
 
 dcmat
