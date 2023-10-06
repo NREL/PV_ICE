@@ -363,6 +363,18 @@ class Simulation:
 
         self.scenario = {}
 
+    def pickle_Sim(self, filename=None):
+        import pickle
+        if filename is None:
+            filename = self.name + '.pkl'
+            filename = os.path.join(self.path, filename)
+        with open(filename, 'wb') as outp:  # Overwrites any existing file
+            pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
+
+    def load_Simpickle(filename):
+        import pickle
+        return pickle.load(open(filename, "rb", -1))
+
     def _setPath(self, path):
         """
         setPath - move path and working directory
