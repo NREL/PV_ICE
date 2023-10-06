@@ -1638,10 +1638,19 @@ class Simulation:
         
         #carbon folder NEED TO MAKE THIS MORE DYNAMIC
         carbonfolder = os.path.join(str(Path().resolve().parent.parent.parent/ 'PV_ICE'/ 'baselines'/ 'CarbonLayer'))
+        
+        if countrygridmixes is None:
+            countrygridmixes = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'))
+        else:
+            if isinstance(countrygridmixes, str):
+                countrygridmixes = pd.read_csv(countrygridmixes)
+            if isinstance(countrygridmixes, object):
+                countrygridmixes = countrygridmixes
+        
         #default files
         gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
         materialprocesscarbon = pd.read_csv(os.path.join(carbonfolder,'baseline_materials_processCO2.csv'), index_col='Material')
-        countrygridmixes = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'))
+        #countrygridmixes = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'))
         countrymodmfg = pd.read_csv(os.path.join(carbonfolder,'baseline_module_countrymarketshare.csv'))
         
         

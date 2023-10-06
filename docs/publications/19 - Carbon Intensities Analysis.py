@@ -79,7 +79,7 @@ sim1.calculateCarbonFlows()
 # In[8]:
 
 
-sim1.scenario['PV_ICE'].material['encapsulant'].matdataOut_c
+test_base = sim1.scenario['PV_ICE'].material['encapsulant'].matdataOut_c
 
 
 # In[9]:
@@ -95,7 +95,7 @@ energyanalysisfolder
 # 
 # Estimating that 60-70% generation will be from Solar, 30-40% from wind, and any remainder from "other renewables"
 
-# In[25]:
+# In[10]:
 
 
 countrygridmix = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'), index_col='year')
@@ -103,7 +103,7 @@ gridsources = ['Bioenergy','Hydro','Nuclear','OtherFossil','OtherRenewables','So
 nonRE = ['Coal','Gas','OtherFossil','Nuclear','Bioenergy']
 
 
-# In[33]:
+# In[11]:
 
 
 countrygridmix.loc[2023:,:]=np.nan #delete 2023 to 2050
@@ -111,7 +111,7 @@ nonRE_search = '|'.join(nonRE) #create nonRE search
 countrygridmix.loc[2050, countrygridmix.columns.str.contains(nonRE_search)] = 0.0 #set all nonRE to 0 in 2050
 
 
-# In[44]:
+# In[12]:
 
 
 countrygridmix.loc[2050, countrygridmix.columns.str.contains('Solar')] = 63.0
@@ -121,7 +121,7 @@ countrygridmix.loc[2050, countrygridmix.columns.str.contains('OtherRenewables')]
 #numbers derived from leading scenario electricity generation Breyer et al 2022 scenarios (EU focused)
 
 
-# In[46]:
+# In[13]:
 
 
 countrygridmix_100RE2050 = countrygridmix.interpolate() 
@@ -129,16 +129,16 @@ countrygridmix_100RE2050 = countrygridmix.interpolate()
 
 # This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.
 
-# In[ ]:
+# In[14]:
 
 
+sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE2050)
 
 
-
-# In[ ]:
-
+# In[16]:
 
 
+sim1.scenario['PV_ICE'].material['encapsulant'].matdataOut_c#/test_base
 
 
 # In[ ]:
