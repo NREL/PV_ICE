@@ -21,8 +21,9 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'CarbonAna
 inputfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
 baselinesfolder = str(Path().resolve().parent.parent /'PV_ICE' / 'baselines')
 supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
-carbonfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE'/ 'baselines'/ 'CarbonLayer')
-#altBaselinesfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'Energy_CellModuleTechCompare')
+carbonfolder = str(Path().resolve().parent.parent / 'PV_ICE'/ 'baselines'/ 'CarbonLayer')
+altBaselinesfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'Energy_CellModuleTechCompare')
+energyanalysisfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'EnergyAnalysis')
 
 if not os.path.exists(testfolder):
     os.makedirs(testfolder)
@@ -79,4 +80,69 @@ sim1.calculateCarbonFlows()
 
 
 sim1.scenario['PV_ICE'].material['encapsulant'].matdataOut_c
+
+
+# In[9]:
+
+
+energyanalysisfolder
+
+
+# ## Project grid forward to 100% re in 2050
+# To parallel the PV deployment, we will assume that we globally hit 100% RE in 2050 with the 75 TW of PV. As such, we need to change the future projection of marketshares of the different country grids.
+# 
+# One scenario with decarb grid, one scenario with decarb grid and heat
+# 
+# Estimating that 60-70% generation will be from Solar, 30-40% from wind, and any remainder from "other renewables"
+
+# In[25]:
+
+
+countrygridmix = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'), index_col='year')
+gridsources = ['Bioenergy','Hydro','Nuclear','OtherFossil','OtherRenewables','Solar','Wind']
+nonRE = ['Coal','Gas','OtherFossil','Nuclear','Bioenergy']
+
+
+# In[33]:
+
+
+countrygridmix.loc[2023:,:]=np.nan #delete 2023 to 2050
+nonRE_search = '|'.join(nonRE) #create nonRE search
+countrygridmix.loc[2050, countrygridmix.columns.str.contains(nonRE_search)] = 0.0 #set all nonRE to 0 in 2050
+
+
+# In[44]:
+
+
+countrygridmix.loc[2050, countrygridmix.columns.str.contains('Solar')] = 63.0
+countrygridmix.loc[2050, countrygridmix.columns.str.contains('Wind')] = 33.0
+countrygridmix.loc[2050, countrygridmix.columns.str.contains('Hydro')] = 3.0
+countrygridmix.loc[2050, countrygridmix.columns.str.contains('OtherRenewables')] = 1.0
+#numbers derived from leading scenario electricity generation Breyer et al 2022 scenarios (EU focused)
+
+
+# In[46]:
+
+
+countrygridmix_100RE2050 = countrygridmix.interpolate() 
+
+
+# This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 

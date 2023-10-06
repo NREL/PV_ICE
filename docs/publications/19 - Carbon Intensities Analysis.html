@@ -14605,8 +14605,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="n">inputfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">)</span>
 <span class="n">baselinesfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span><span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="p">)</span>
 <span class="n">supportMatfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span> <span class="o">/</span> <span class="s1">&#39;SupportingMaterial&#39;</span><span class="p">)</span>
-<span class="n">carbonfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span><span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="o">/</span> <span class="s1">&#39;CarbonLayer&#39;</span><span class="p">)</span>
-<span class="c1">#altBaselinesfolder = str(Path().resolve().parent.parent / &#39;PV_ICE&#39; / &#39;baselines&#39; / &#39;Energy_CellModuleTechCompare&#39;)</span>
+<span class="n">carbonfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span><span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="o">/</span> <span class="s1">&#39;CarbonLayer&#39;</span><span class="p">)</span>
+<span class="n">altBaselinesfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span> <span class="o">/</span> <span class="s1">&#39;Energy_CellModuleTechCompare&#39;</span><span class="p">)</span>
+<span class="n">energyanalysisfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span> <span class="o">/</span> <span class="s1">&#39;EnergyAnalysis&#39;</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">testfolder</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">testfolder</span><span class="p">)</span>
@@ -14690,7 +14691,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;v0.2.0+512.g0b57d08.dirty&#39;</pre>
+<pre>&#39;v0.2.0+513.g34028f7.dirty&#39;</pre>
 </div>
 
 </div>
@@ -16306,6 +16307,193 @@ Working on Carbon for Module
 
 </div>
 
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">energyanalysisfolder</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&#39;C:\\Users\\hmirletz\\Documents\\GitHub\\PV_ICE\\PV_ICE\\TEMP\\EnergyAnalysis&#39;</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Project-grid-forward-to-100%25-re-in-2050">Project grid forward to 100% re in 2050<a class="anchor-link" href="#Project-grid-forward-to-100%25-re-in-2050">&#182;</a></h2><p>To parallel the PV deployment, we will assume that we globally hit 100% RE in 2050 with the 75 TW of PV. As such, we need to change the future projection of marketshares of the different country grids.</p>
+<p>One scenario with decarb grid, one scenario with decarb grid and heat</p>
+<p>Estimating that 60-70% generation will be from Solar, 30-40% from wind, and any remainder from "other renewables"</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span><span class="s1">&#39;baseline_countrygridmix.csv&#39;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
+<span class="n">gridsources</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Bioenergy&#39;</span><span class="p">,</span><span class="s1">&#39;Hydro&#39;</span><span class="p">,</span><span class="s1">&#39;Nuclear&#39;</span><span class="p">,</span><span class="s1">&#39;OtherFossil&#39;</span><span class="p">,</span><span class="s1">&#39;OtherRenewables&#39;</span><span class="p">,</span><span class="s1">&#39;Solar&#39;</span><span class="p">,</span><span class="s1">&#39;Wind&#39;</span><span class="p">]</span>
+<span class="n">nonRE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Coal&#39;</span><span class="p">,</span><span class="s1">&#39;Gas&#39;</span><span class="p">,</span><span class="s1">&#39;OtherFossil&#39;</span><span class="p">,</span><span class="s1">&#39;Nuclear&#39;</span><span class="p">,</span><span class="s1">&#39;Bioenergy&#39;</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2023</span><span class="p">:,:]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="c1">#delete 2023 to 2050</span>
+<span class="n">nonRE_search</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nonRE</span><span class="p">)</span> <span class="c1">#create nonRE search</span>
+<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">nonRE_search</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1">#set all nonRE to 0 in 2050</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Solar&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">63.0</span>
+<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Wind&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">33.0</span>
+<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Hydro&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;OtherRenewables&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="c1">#numbers derived from leading scenario electricity generation Breyer et al 2022 scenarios (EU focused)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix_100RE2050</span> <span class="o">=</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div>
