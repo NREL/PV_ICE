@@ -1648,7 +1648,8 @@ class Simulation:
 
         print("\n\n>>>> Calculating Carbon Flows <<<<\n")
         
-        #carbon folder NEED TO MAKE THIS MORE DYNAMIC
+        #carbon folder 
+        #TODO: NEED TO MAKE THIS MORE DYNAMIC/robust
         carbonfolder = os.path.join(str(Path().resolve().parent.parent/ 'PV_ICE'/ 'baselines'/ 'CarbonLayer'))
         
         if countrygridmixes is None:
@@ -1663,7 +1664,7 @@ class Simulation:
         gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
         materialprocesscarbon = pd.read_csv(os.path.join(carbonfolder,'baseline_materials_processCO2.csv'), index_col='Material')
         #countrygridmixes = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'))
-        countrymodmfg = pd.read_csv(os.path.join(carbonfolder,'baseline_module_countrymarketshare.csv'))
+        countrymodmfg = pd.read_csv(os.path.join(carbonfolder,'baseline2100_module_countrymarketshare.csv'))
         
         
         
@@ -1746,7 +1747,7 @@ class Simulation:
                     demat = self.scenario[scen].material[mat].matdataOut_e
                     dm = self.scenario[scen].material[mat].matdataOut_m               
                     
-                    matfilename = 'baseline_'+str(mat)+'_MFGing_countrymarketshare.csv'
+                    matfilename = 'baseline2100_'+str(mat)+'_MFGing_countrymarketshare.csv'
                     countrymatmfg = pd.read_csv(os.path.join(carbonfolder, matfilename))
                 
                     #carbon intensity of material manufacturing weighted by country

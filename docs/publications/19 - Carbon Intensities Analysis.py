@@ -54,26 +54,18 @@ moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 # In[5]:
 
 
-#load in the simulation from previous journal/work
+#load in the simulation from Energy Analysis journal
 sim1 = PV_ICE.Simulation.load_Simpickle(filename=r'C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP\EnergyAnalysis\sim1.pkl')
 
+
+# sim1.calculateCarbonFlows()
+
+# sim1.scenario['r_PERC'].dataOut_c
 
 # In[6]:
 
 
-sim1.calculateCarbonFlows()
-
-
-# In[7]:
-
-
-sim1.scenario['r_PERC'].dataOut_c
-
-
-# In[ ]:
-
-
-
+sim1.scenario['r_PERC'].dataOut_m
 
 
 # ## Project grid forward to 100% re in 2050
@@ -83,7 +75,7 @@ sim1.scenario['r_PERC'].dataOut_c
 # 
 # Estimating that 60-70% generation will be from Solar, 30-40% from wind, and any remainder from "other renewables"
 
-# In[ ]:
+# In[7]:
 
 
 countrygridmix = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'), index_col='year')
@@ -91,7 +83,7 @@ gridsources = ['Bioenergy','Hydro','Nuclear','OtherFossil','OtherRenewables','So
 nonRE = ['Coal','Gas','OtherFossil','Nuclear','Bioenergy']
 
 
-# In[ ]:
+# In[8]:
 
 
 countrygridmix.loc[2023:,:]=np.nan #delete 2023 to 2050
@@ -99,7 +91,7 @@ nonRE_search = '|'.join(nonRE) #create nonRE search
 countrygridmix.loc[2050, countrygridmix.columns.str.contains(nonRE_search)] = 0.0 #set all nonRE to 0 in 2050
 
 
-# In[ ]:
+# In[9]:
 
 
 countrygridmix.loc[2050, countrygridmix.columns.str.contains('Solar')] = 63.0
@@ -109,38 +101,42 @@ countrygridmix.loc[2050, countrygridmix.columns.str.contains('OtherRenewables')]
 #numbers derived from leading scenario electricity generation Breyer et al 2022 scenarios (EU focused)
 
 
-# In[ ]:
+# In[10]:
 
 
-countrygridmix_100RE2050 = countrygridmix.interpolate() 
+countrygridmix_100RE2050 = countrygridmix.interpolate() #linearly interpolate between 2022 and 2050
+
+
+# In[11]:
+
+
+apnd_idx = pd.RangeIndex(start=2051,stop=2101,step=1) #create temp df
+apnd_df = pd.DataFrame(columns=countrygridmix_100RE2050.columns, index=apnd_idx )
+countrygridmix_100RE20502100 = pd.concat([countrygridmix_100RE2050.loc[2000:],apnd_df], axis=0) #extend through 2100
+countrygridmix_100RE20502100.ffill(inplace=True) #propogate 2050 values through 2100
+
+
+# In[12]:
+
+
+countrygridmix_100RE20502100.loc[2050]
 
 
 # This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.
 
-# In[ ]:
+# In[13]:
 
 
-sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE2050)
-
-
-# In[ ]:
-
-
-sim1.scenario['PV_ICE'].material['encapsulant'].matdataOut_c#/test_base
+sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE20502100)
 
 
 # In[ ]:
 
 
-mod_carbon_results = sim1.scenario['PV_ICE'].dataOut_c
-mod_carbon_results
 
 
-# variables which are the sum of other steps:
-# - Global_Sum_gCO2eqpWh_mod_MFG_gCO2eq
-# - mat_Recycle_e_p_gCO2eq (process, elec, fuel)
-# - mat_vMFG_total_gCO2eq (process, elec, fuel)
-# - mat_vMFG_energy_gCO2eq (elec, fuel)
+
+# # Carbon Analysis
 
 # In[ ]:
 
@@ -225,5 +221,36 @@ scen_annual_carbon.columns
 # In[ ]:
 
 
+#https://www.learnui.design/tools/data-color-picker.html#palette
+#color pallette - modify here for all graphs below
+colorpalette=['#000000', #PV ICE baseline
+              '#595959', '#7F7F7F', '#A6A6A6', '#D9D9D9', #BAU, 4 grays, perc, shj, topcon, irena
+              #'#067872','#0aa39e','#09d0cd','#00ffff', #realistic cases (4) teals, perc, shj, topcon, irena
+              '#0579C1','#C00000','#FFC000', #extreme cases (3) long life, high eff, circular
+                '#6E30A0','#00B3B5','#10C483', #ambitious modules (5) high eff+ long life, 50 yr perc, recycleSi, 
+               '#97CB3F','#FF7E00' #circular perovskite+life, circular perovkiste+ high eff
+                ] 
 
+colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B'] #colors for material plots       
+
+import matplotlib as mpl #import matplotlib
+from cycler import cycler #import cycler
+mpl.rcParams['axes.prop_cycle'] = cycler(color=colorpalette) #reset the default color palette of mpl
+
+plt.rcParams.update({'font.size': 14})
+plt.rcParams['figure.figsize'] = (8, 6)
+
+scennames_labels = ['PV_ICE','PERC','SHJ','TOPCon','Low\nQuality',
+                         'Long-Lived','High Eff','Circular',
+                        'High Eff\n+ Long-life','Long-Life\n+ Recycling',
+                         'Recycled-Si\n+ Long-life','Circular\n+ Long-life',
+                        'Circular\n+ High Eff'
+                    ]  
+
+scennames_labels_flat = ['PV_ICE','PERC','SHJ','TOPCon','Low Quality',
+                         'Long-Lived','High Eff','Circular',
+                        'High Eff + Long-life','Long-Life + Recycling',
+                         'Recycled-Si + Long-life','Circular + Long-life',
+                        'Circular + High Eff'
+                    ] 
 
