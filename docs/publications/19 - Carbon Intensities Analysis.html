@@ -14691,7 +14691,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;v0.2.0+514.g5c43ee2.dirty&#39;</pre>
+<pre>&#39;v0.2.0+516.g4d52040.dirty&#39;</pre>
 </div>
 
 </div>
@@ -14718,7 +14718,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -14726,43 +14726,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#load in a baseline and materials for modification</span>
-<span class="n">sim1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;sim1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
-
-<span class="n">sim1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="n">moduleFile_m</span><span class="p">,</span> <span class="n">energymodulefile</span><span class="o">=</span><span class="n">moduleFile_e</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">)):</span>
-    <span class="n">matbaseline_m</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesfolder</span><span class="p">,</span><span class="s1">&#39;baseline_material_mass_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
-    <span class="n">matbaseline_e</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesfolder</span><span class="p">,</span><span class="s1">&#39;baseline_material_energy_&#39;</span><span class="o">+</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
-    <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">MATERIALS</span><span class="p">[</span><span class="n">mat</span><span class="p">],</span> <span class="n">massmatfile</span><span class="o">=</span><span class="n">matbaseline_m</span><span class="p">,</span> <span class="n">energymatfile</span><span class="o">=</span><span class="n">matbaseline_e</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#load in the simulation from previous journal/work</span>
+<span class="n">sim1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="o">.</span><span class="n">load_Simpickle</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP\EnergyAnalysis\sim1.pkl&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>path = C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP\CarbonAnalysis
-Baseline folder directed to default:  C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\baselines
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -14771,69 +14741,6 @@ Baseline folder directed to default:  C:\Users\hmirletz\Documents\GitHub\PV_ICE\
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">calculateFlows</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>&gt;&gt;&gt;&gt; Calculating Material Flows &lt;&lt;&lt;&lt;
-
-Working on Scenario:  PV_ICE
-********************
-Finished Area+Power Generation Calculations
-==&gt; Working on Material :  glass
-==&gt; Working on Material :  silicon
-==&gt; Working on Material :  silver
-==&gt; Working on Material :  aluminium_frames
-==&gt; Working on Material :  copper
-==&gt; Working on Material :  encapsulant
-==&gt; Working on Material :  backsheet
-
-
-&gt;&gt;&gt;&gt; Calculating Energy Flows &lt;&lt;&lt;&lt;
-
-Working on Scenario:  PV_ICE
-********************
-==&gt; Working on Energy for Material :  glass
-==&gt; Working on Energy for Material :  silicon
-==&gt; Working on Energy for Material :  silver
-==&gt; Working on Energy for Material :  aluminium_frames
-==&gt; Working on Energy for Material :  copper
-==&gt; Working on Energy for Material :  encapsulant
-==&gt; Working on Energy for Material :  backsheet
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">calculateCarbonFlows</span><span class="p">()</span>
@@ -14872,204 +14779,117 @@ Working on Carbon for Module
 ==&gt; Working on Carbon for Material :  copper
 ==&gt; Working on Carbon for Material :  encapsulant
 ==&gt; Working on Carbon for Material :  backsheet
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_base</span> <span class="o">=</span> <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;encapsulant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataOut_c</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">energyanalysisfolder</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;C:\\Users\\hmirletz\\Documents\\GitHub\\PV_ICE\\PV_ICE\\TEMP\\EnergyAnalysis&#39;</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Project-grid-forward-to-100%25-re-in-2050">Project grid forward to 100% re in 2050<a class="anchor-link" href="#Project-grid-forward-to-100%25-re-in-2050">&#182;</a></h2><p>To parallel the PV deployment, we will assume that we globally hit 100% RE in 2050 with the 75 TW of PV. As such, we need to change the future projection of marketshares of the different country grids.</p>
-<p>One scenario with decarb grid, one scenario with decarb grid and heat</p>
-<p>Estimating that 60-70% generation will be from Solar, 30-40% from wind, and any remainder from "other renewables"</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span><span class="s1">&#39;baseline_countrygridmix.csv&#39;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
-<span class="n">gridsources</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Bioenergy&#39;</span><span class="p">,</span><span class="s1">&#39;Hydro&#39;</span><span class="p">,</span><span class="s1">&#39;Nuclear&#39;</span><span class="p">,</span><span class="s1">&#39;OtherFossil&#39;</span><span class="p">,</span><span class="s1">&#39;OtherRenewables&#39;</span><span class="p">,</span><span class="s1">&#39;Solar&#39;</span><span class="p">,</span><span class="s1">&#39;Wind&#39;</span><span class="p">]</span>
-<span class="n">nonRE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Coal&#39;</span><span class="p">,</span><span class="s1">&#39;Gas&#39;</span><span class="p">,</span><span class="s1">&#39;OtherFossil&#39;</span><span class="p">,</span><span class="s1">&#39;Nuclear&#39;</span><span class="p">,</span><span class="s1">&#39;Bioenergy&#39;</span><span class="p">]</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2023</span><span class="p">:,:]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="c1">#delete 2023 to 2050</span>
-<span class="n">nonRE_search</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nonRE</span><span class="p">)</span> <span class="c1">#create nonRE search</span>
-<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">nonRE_search</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1">#set all nonRE to 0 in 2050</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Solar&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">63.0</span>
-<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Wind&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">33.0</span>
-<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Hydro&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">3.0</span>
-<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;OtherRenewables&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="c1">#numbers derived from leading scenario electricity generation Breyer et al 2022 scenarios (EU focused)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix_100RE2050</span> <span class="o">=</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span> 
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">calculateCarbonFlows</span><span class="p">(</span><span class="n">countrygridmixes</span><span class="o">=</span><span class="n">countrygridmix_100RE2050</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>
-
-&gt;&gt;&gt;&gt; Calculating Carbon Flows &lt;&lt;&lt;&lt;
-
-Working on Scenario:  PV_ICE
+Working on Scenario:  r_PERC
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  r_SHJ
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  r_TOPCon
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  r_IRENA
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  ex_Life
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  ex_High_eff
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  ex_Circular
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  h_EffLife
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  h_50PERC
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  h_RecycledPERC
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  h_Perovskite_life
+********************
+Working on Carbon for Module
+==&gt; Working on Carbon for Material :  glass
+==&gt; Working on Carbon for Material :  silicon
+==&gt; Working on Carbon for Material :  silver
+==&gt; Working on Carbon for Material :  aluminium_frames
+==&gt; Working on Carbon for Material :  copper
+==&gt; Working on Carbon for Material :  encapsulant
+==&gt; Working on Carbon for Material :  backsheet
+Working on Scenario:  h_Perovskite_Eff
 ********************
 Working on Carbon for Module
 ==&gt; Working on Carbon for Material :  glass
@@ -15092,10 +14912,10 @@ Working on Carbon for Module
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;encapsulant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataOut_c</span><span class="c1">#/test_base</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;r_PERC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dataOut_c</span>
 </pre></div>
 
      </div>
@@ -15113,7 +14933,7 @@ Working on Carbon for Module
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
 
 
 
@@ -15136,1377 +14956,297 @@ Working on Carbon for Module
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Austria_vmfg_elec_gCO2eq</th>
-      <th>Brazil_vmfg_elec_gCO2eq</th>
-      <th>China_vmfg_elec_gCO2eq</th>
-      <th>France_vmfg_elec_gCO2eq</th>
-      <th>Germany_vmfg_elec_gCO2eq</th>
-      <th>India_vmfg_elec_gCO2eq</th>
-      <th>Italy_vmfg_elec_gCO2eq</th>
-      <th>Japan_vmfg_elec_gCO2eq</th>
-      <th>SKorea_vmfg_elec_gCO2eq</th>
-      <th>Netherlands_vmfg_elec_gCO2eq</th>
+      <th>China_mod_MFG_gCO2eq</th>
+      <th>India_mod_MFG_gCO2eq</th>
+      <th>Taiwan_mod_MFG_gCO2eq</th>
+      <th>Germany_mod_MFG_gCO2eq</th>
+      <th>Japan_mod_MFG_gCO2eq</th>
+      <th>SKorea_mod_MFG_gCO2eq</th>
+      <th>Canada_mod_MFG_gCO2eq</th>
+      <th>Mexico_mod_MFG_gCO2eq</th>
+      <th>USA_mod_MFG_gCO2eq</th>
+      <th>VietNam_mod_MFG_gCO2eq</th>
       <th>...</th>
-      <th>mat_vMFG_p_gCO2eq</th>
-      <th>mat_LQmfg_p_gCO2eq</th>
-      <th>mat_LQeol_p_gCO2eq</th>
-      <th>mat_LQ_p_gCO2eq</th>
-      <th>mat_HQmfg_p_gCO2eq</th>
-      <th>mat_HQeol_p_gCO2eq</th>
-      <th>mat_HQ_p_gCO2eq</th>
-      <th>mat_vMFG_energy_gCO2eq</th>
-      <th>mat_vMFG_total_gCO2eq</th>
-      <th>mat_Recycle_e_p_gCO2eq</th>
+      <th>ElSalvador_mod_MFG_gCO2eq</th>
+      <th>Global_gCO2eqpwh_mod_MFG_gCO2eq</th>
+      <th>mod_Install_gCO2eq</th>
+      <th>mod_OandM_gCO2eq</th>
+      <th>mod_Repair_gCO2eq</th>
+      <th>mod_Demount_gCO2eq</th>
+      <th>mod_Store_gCO2eq</th>
+      <th>mod_Resell_Certify_gCO2eq</th>
+      <th>mod_ReMFG_Disassembly_gCO2eq</th>
+      <th>mod_Recycle_Crush_gCO2eq</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>1.787519e+05</td>
-      <td>7.791768e+04</td>
-      <td>2.732055e+07</td>
-      <td>1.471878e+05</td>
-      <td>2.701880e+06</td>
-      <td>7.017471e+06</td>
-      <td>1.371764e+06</td>
-      <td>1.788924e+06</td>
-      <td>2.462092e+06</td>
-      <td>5.069888e+05</td>
+      <td>1.295672e+10</td>
+      <td>7.630043e+09</td>
+      <td>1.309779e+09</td>
+      <td>3.659212e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.148408e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
       <td>...</td>
-      <td>4.746600e+08</td>
+      <td>0.0</td>
+      <td>2.681519e+10</td>
+      <td>2.403978e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.000000</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>8.195087e+07</td>
-      <td>5.566109e+08</td>
-      <td>0.0</td>
+      <td>0.000000</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>1.359721e+05</td>
-      <td>5.927002e+04</td>
-      <td>2.078205e+07</td>
-      <td>1.119621e+05</td>
-      <td>2.055252e+06</td>
-      <td>5.338014e+06</td>
-      <td>1.043467e+06</td>
-      <td>1.360790e+06</td>
-      <td>1.872852e+06</td>
-      <td>3.856536e+05</td>
+      <td>5.956419e+09</td>
+      <td>3.507657e+09</td>
+      <td>6.021269e+08</td>
+      <td>1.682200e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.279421e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
       <td>...</td>
-      <td>3.610620e+08</td>
+      <td>0.0</td>
+      <td>1.232738e+10</td>
+      <td>1.093136e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.153594</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>6.233797e+07</td>
-      <td>4.233999e+08</td>
-      <td>0.0</td>
+      <td>0.649945</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>1.610565e+05</td>
-      <td>7.020426e+04</td>
-      <td>2.461596e+07</td>
-      <td>1.326171e+05</td>
-      <td>2.434409e+06</td>
-      <td>6.322781e+06</td>
-      <td>1.235967e+06</td>
-      <td>1.611831e+06</td>
-      <td>2.218359e+06</td>
-      <td>4.567997e+05</td>
+      <td>6.065793e+09</td>
+      <td>3.572066e+09</td>
+      <td>6.131833e+08</td>
+      <td>1.713089e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.376363e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
       <td>...</td>
-      <td>4.276713e+08</td>
+      <td>0.0</td>
+      <td>1.255374e+10</td>
+      <td>1.101239e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>11.882959</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>7.383819e+07</td>
-      <td>5.015095e+08</td>
-      <td>0.0</td>
+      <td>50.283680</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>1.608918e+05</td>
-      <td>7.013245e+04</td>
-      <td>2.459079e+07</td>
-      <td>1.324814e+05</td>
-      <td>2.431919e+06</td>
-      <td>6.316313e+06</td>
-      <td>1.234703e+06</td>
-      <td>1.610182e+06</td>
-      <td>2.216090e+06</td>
-      <td>4.563325e+05</td>
+      <td>9.293833e+09</td>
+      <td>5.473016e+09</td>
+      <td>9.395018e+08</td>
+      <td>2.624746e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>8.237509e+08</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
       <td>...</td>
-      <td>4.272339e+08</td>
+      <td>0.0</td>
+      <td>1.923449e+10</td>
+      <td>1.669336e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>146.403950</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>7.376267e+07</td>
-      <td>5.009966e+08</td>
-      <td>0.0</td>
+      <td>619.519872</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>2.272904e+05</td>
-      <td>9.907553e+04</td>
-      <td>3.473920e+07</td>
-      <td>1.871554e+05</td>
-      <td>3.435551e+06</td>
-      <td>8.923002e+06</td>
-      <td>1.744254e+06</td>
-      <td>2.274691e+06</td>
-      <td>3.130651e+06</td>
-      <td>6.446571e+05</td>
+      <td>1.903933e+10</td>
+      <td>1.121201e+10</td>
+      <td>1.924662e+09</td>
+      <td>5.377050e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.687534e+09</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
       <td>...</td>
-      <td>6.035497e+08</td>
+      <td>0.0</td>
+      <td>3.940373e+10</td>
+      <td>3.383801e+07</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>849.011736</td>
       <td>0.0</td>
       <td>0.0</td>
       <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.042039e+08</td>
-      <td>7.077536e+08</td>
-      <td>0.0</td>
+      <td>3592.660188</td>
     </tr>
     <tr>
-      <th>5</th>
-      <td>2.777194e+05</td>
-      <td>1.210574e+05</td>
-      <td>4.244679e+07</td>
-      <td>2.286796e+05</td>
-      <td>4.197797e+06</td>
-      <td>1.090275e+07</td>
-      <td>2.131253e+06</td>
-      <td>2.779377e+06</td>
-      <td>3.825249e+06</td>
-      <td>7.876873e+05</td>
+      <th>...</th>
       <td>...</td>
-      <td>7.374594e+08</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.273236e+08</td>
-      <td>8.647831e+08</td>
-      <td>0.0</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
     </tr>
     <tr>
-      <th>6</th>
-      <td>4.307294e+05</td>
-      <td>1.954007e+05</td>
-      <td>5.751332e+07</td>
-      <td>2.829479e+05</td>
-      <td>5.791578e+06</td>
-      <td>1.531302e+07</td>
-      <td>2.925682e+06</td>
-      <td>3.864668e+06</td>
-      <td>5.452151e+06</td>
-      <td>1.096479e+06</td>
+      <th>96</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
-      <td>9.724321e+08</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.745845e+08</td>
-      <td>1.147017e+09</td>
-      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>6.765990e+05</td>
-      <td>2.833725e+05</td>
-      <td>9.239641e+07</td>
-      <td>4.863174e+05</td>
-      <td>9.237312e+06</td>
-      <td>2.452297e+07</td>
-      <td>4.870488e+06</td>
-      <td>6.485668e+06</td>
-      <td>8.639870e+06</td>
-      <td>1.731665e+06</td>
+      <th>97</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
-      <td>1.461755e+09</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>2.753913e+08</td>
-      <td>1.737146e+09</td>
-      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>8</th>
-      <td>1.236527e+06</td>
-      <td>3.872835e+05</td>
-      <td>1.388350e+08</td>
-      <td>7.608554e+05</td>
-      <td>1.366093e+07</td>
-      <td>3.609426e+07</td>
-      <td>7.125236e+06</td>
-      <td>1.009551e+07</td>
-      <td>1.224517e+07</td>
-      <td>2.551002e+06</td>
+      <th>98</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
-      <td>2.036405e+09</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>4.049009e+08</td>
-      <td>2.441306e+09</td>
-      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>9</th>
-      <td>1.893417e+06</td>
-      <td>7.097430e+05</td>
-      <td>2.266740e+08</td>
-      <td>1.216819e+06</td>
-      <td>2.205304e+07</td>
-      <td>5.706478e+07</td>
-      <td>1.144776e+07</td>
-      <td>1.606177e+07</td>
-      <td>2.060164e+07</td>
-      <td>4.134599e+06</td>
+      <th>99</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
-      <td>3.199018e+09</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>6.557035e+08</td>
-      <td>3.854722e+09</td>
-      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>10</th>
-      <td>2.001073e+06</td>
-      <td>7.349643e+05</td>
-      <td>2.423915e+08</td>
-      <td>1.419705e+06</td>
-      <td>2.326964e+07</td>
-      <td>6.163324e+07</td>
-      <td>1.216163e+07</td>
-      <td>1.743523e+07</td>
-      <td>2.143193e+07</td>
-      <td>4.318637e+06</td>
+      <th>100</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
-      <td>3.230131e+09</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>6.937138e+08</td>
-      <td>3.923844e+09</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>2.093067e+06</td>
-      <td>7.586293e+05</td>
-      <td>2.586251e+08</td>
-      <td>1.366028e+06</td>
-      <td>2.419291e+07</td>
-      <td>6.415396e+07</td>
-      <td>1.277311e+07</td>
-      <td>1.775977e+07</td>
-      <td>2.264127e+07</td>
-      <td>4.558904e+06</td>
-      <td>...</td>
-      <td>3.239586e+09</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>7.271433e+08</td>
-      <td>3.966729e+09</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>6.640768e+06</td>
-      <td>2.492283e+06</td>
-      <td>8.913115e+08</td>
-      <td>4.844050e+06</td>
-      <td>8.552525e+07</td>
-      <td>2.177106e+08</td>
-      <td>4.355742e+07</td>
-      <td>6.539130e+07</td>
-      <td>8.152691e+07</td>
-      <td>1.561683e+07</td>
-      <td>...</td>
-      <td>1.054905e+10</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>2.484296e+09</td>
-      <td>1.303335e+10</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>6.445280e+06</td>
-      <td>3.095296e+06</td>
-      <td>8.592714e+08</td>
-      <td>4.653385e+06</td>
-      <td>8.265271e+07</td>
-      <td>2.246717e+08</td>
-      <td>4.222230e+07</td>
-      <td>6.582579e+07</td>
-      <td>8.290716e+07</td>
-      <td>1.537946e+07</td>
-      <td>...</td>
-      <td>1.009658e+10</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>2.437791e+09</td>
-      <td>1.253437e+10</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>8.326528e+06</td>
-      <td>3.493370e+06</td>
-      <td>1.239144e+09</td>
-      <td>6.579031e+06</td>
-      <td>1.167235e+08</td>
-      <td>3.235290e+08</td>
-      <td>5.672585e+07</td>
-      <td>8.814222e+07</td>
-      <td>1.225992e+08</td>
-      <td>2.163246e+07</td>
-      <td>...</td>
-      <td>1.365470e+10</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>3.412957e+09</td>
-      <td>1.706765e+10</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>1.659604e+07</td>
-      <td>7.585083e+06</td>
-      <td>2.122675e+09</td>
-      <td>1.186745e+07</td>
-      <td>2.012144e+08</td>
-      <td>5.557594e+08</td>
-      <td>9.579316e+07</td>
-      <td>1.556798e+08</td>
-      <td>2.149201e+08</td>
-      <td>3.723924e+07</td>
-      <td>...</td>
-      <td>2.248851e+10</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>5.811510e+09</td>
-      <td>2.830002e+10</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>4.354042e+07</td>
-      <td>1.703534e+07</td>
-      <td>5.456701e+09</td>
-      <td>2.904817e+07</td>
-      <td>5.184312e+08</td>
-      <td>1.371404e+09</td>
-      <td>2.400226e+08</td>
-      <td>4.446589e+08</td>
-      <td>5.341821e+08</td>
-      <td>9.258688e+07</td>
-      <td>...</td>
-      <td>5.390379e+10</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.456665e+10</td>
-      <td>6.847043e+10</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>6.021980e+07</td>
-      <td>3.800248e+07</td>
-      <td>9.286315e+09</td>
-      <td>5.198152e+07</td>
-      <td>9.236386e+08</td>
-      <td>2.518078e+09</td>
-      <td>4.159801e+08</td>
-      <td>9.322923e+08</td>
-      <td>9.556072e+08</td>
-      <td>1.674851e+08</td>
-      <td>...</td>
-      <td>9.091414e+10</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>2.543014e+10</td>
-      <td>1.163443e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>7.405677e+07</td>
-      <td>6.541394e+07</td>
-      <td>1.234678e+10</td>
-      <td>6.738911e+07</td>
-      <td>1.236169e+09</td>
-      <td>3.359748e+09</td>
-      <td>5.036440e+08</td>
-      <td>1.241417e+09</td>
-      <td>1.297282e+09</td>
-      <td>2.253750e+08</td>
-      <td>...</td>
-      <td>1.152995e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>3.321039e+10</td>
-      <td>1.485099e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>6.200520e+07</td>
-      <td>7.176512e+07</td>
-      <td>1.139577e+10</td>
-      <td>4.683890e+07</td>
-      <td>1.140948e+09</td>
-      <td>3.231166e+09</td>
-      <td>4.549024e+08</td>
-      <td>1.161895e+09</td>
-      <td>1.193881e+09</td>
-      <td>2.190157e+08</td>
-      <td>...</td>
-      <td>1.045981e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>3.068003e+10</td>
-      <td>1.352782e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>1.320266e+08</td>
-      <td>1.290045e+08</td>
-      <td>2.038393e+10</td>
-      <td>9.796305e+07</td>
-      <td>2.044348e+09</td>
-      <td>6.029596e+09</td>
-      <td>8.878099e+08</td>
-      <td>2.103234e+09</td>
-      <td>2.177277e+09</td>
-      <td>4.186051e+08</td>
-      <td>...</td>
-      <td>1.846201e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>5.462509e+10</td>
-      <td>2.392452e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>2.358903e+08</td>
-      <td>1.985924e+08</td>
-      <td>3.846592e+10</td>
-      <td>2.209969e+08</td>
-      <td>3.935565e+09</td>
-      <td>1.167979e+10</td>
-      <td>1.685307e+09</td>
-      <td>3.980478e+09</td>
-      <td>4.220360e+09</td>
-      <td>7.853537e+08</td>
-      <td>...</td>
-      <td>3.394653e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.022071e+11</td>
-      <td>4.416724e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>1.953280e+08</td>
-      <td>1.613346e+08</td>
-      <td>2.977129e+10</td>
-      <td>1.940230e+08</td>
-      <td>2.909169e+09</td>
-      <td>9.021545e+09</td>
-      <td>1.332404e+09</td>
-      <td>2.993482e+09</td>
-      <td>3.407148e+09</td>
-      <td>5.841481e+08</td>
-      <td>...</td>
-      <td>2.531783e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>7.803923e+10</td>
-      <td>3.312175e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>1.820065e+08</td>
-      <td>1.377234e+08</td>
-      <td>2.841352e+10</td>
-      <td>1.470378e+08</td>
-      <td>2.718638e+09</td>
-      <td>8.649991e+09</td>
-      <td>1.202068e+09</td>
-      <td>2.794259e+09</td>
-      <td>3.355535e+09</td>
-      <td>5.450265e+08</td>
-      <td>...</td>
-      <td>2.330590e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>7.340330e+10</td>
-      <td>3.064623e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>2.071438e+08</td>
-      <td>1.606564e+08</td>
-      <td>3.261779e+10</td>
-      <td>1.777021e+08</td>
-      <td>2.809505e+09</td>
-      <td>9.906254e+09</td>
-      <td>1.367797e+09</td>
-      <td>3.178496e+09</td>
-      <td>3.795465e+09</td>
-      <td>5.865743e+08</td>
-      <td>...</td>
-      <td>2.622177e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>8.274053e+10</td>
-      <td>3.449582e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>2.395082e+08</td>
-      <td>1.975677e+08</td>
-      <td>4.173820e+10</td>
-      <td>2.279883e+08</td>
-      <td>3.369506e+09</td>
-      <td>1.265067e+10</td>
-      <td>1.705653e+09</td>
-      <td>4.164195e+09</td>
-      <td>4.632109e+09</td>
-      <td>6.645708e+08</td>
-      <td>...</td>
-      <td>3.418787e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.054183e+11</td>
-      <td>4.472970e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>2.503821e+08</td>
-      <td>2.687824e+08</td>
-      <td>4.162880e+10</td>
-      <td>2.295335e+08</td>
-      <td>3.729046e+09</td>
-      <td>1.298927e+10</td>
-      <td>1.738852e+09</td>
-      <td>4.062553e+09</td>
-      <td>4.674302e+09</td>
-      <td>6.586975e+08</td>
-      <td>...</td>
-      <td>3.443229e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.070178e+11</td>
-      <td>4.513407e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>2.365502e+08</td>
-      <td>1.536937e+08</td>
-      <td>3.688383e+10</td>
-      <td>2.561854e+08</td>
-      <td>3.484254e+09</td>
-      <td>1.142238e+10</td>
-      <td>1.679951e+09</td>
-      <td>3.633306e+09</td>
-      <td>3.938290e+09</td>
-      <td>5.330522e+08</td>
-      <td>...</td>
-      <td>3.050759e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>9.436523e+10</td>
-      <td>3.994412e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>2.204336e+08</td>
-      <td>1.438517e+08</td>
-      <td>3.417093e+10</td>
-      <td>2.403990e+08</td>
-      <td>3.231220e+09</td>
-      <td>1.057878e+10</td>
-      <td>1.558142e+09</td>
-      <td>3.367167e+09</td>
-      <td>3.650873e+09</td>
-      <td>4.944821e+08</td>
-      <td>...</td>
-      <td>2.924166e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>8.796421e+10</td>
-      <td>3.803808e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>2.239978e+08</td>
-      <td>1.468549e+08</td>
-      <td>3.450832e+10</td>
-      <td>2.460806e+08</td>
-      <td>3.266632e+09</td>
-      <td>1.067948e+10</td>
-      <td>1.575427e+09</td>
-      <td>3.401604e+09</td>
-      <td>3.689359e+09</td>
-      <td>5.000540e+08</td>
-      <td>...</td>
-      <td>3.058881e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>8.941691e+10</td>
-      <td>3.953050e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>2.229444e+08</td>
-      <td>1.468791e+08</td>
-      <td>3.411893e+10</td>
-      <td>2.468178e+08</td>
-      <td>3.233498e+09</td>
-      <td>1.055500e+10</td>
-      <td>1.559669e+09</td>
-      <td>3.364486e+09</td>
-      <td>3.650320e+09</td>
-      <td>4.951440e+08</td>
-      <td>...</td>
-      <td>3.136794e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>8.902847e+10</td>
-      <td>4.027079e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>2.239118e+08</td>
-      <td>1.482794e+08</td>
-      <td>3.402465e+10</td>
-      <td>2.499106e+08</td>
-      <td>3.228566e+09</td>
-      <td>1.052155e+10</td>
-      <td>1.557528e+09</td>
-      <td>3.356547e+09</td>
-      <td>3.643016e+09</td>
-      <td>4.945627e+08</td>
-      <td>...</td>
-      <td>3.248902e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>8.944905e+10</td>
-      <td>4.143392e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>2.301775e+08</td>
-      <td>1.532635e+08</td>
-      <td>3.471155e+10</td>
-      <td>2.591162e+08</td>
-      <td>3.298158e+09</td>
-      <td>1.072926e+10</td>
-      <td>1.591362e+09</td>
-      <td>3.425808e+09</td>
-      <td>3.719631e+09</td>
-      <td>5.054144e+08</td>
-      <td>...</td>
-      <td>3.447603e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>9.198956e+10</td>
-      <td>4.367499e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>33</th>
-      <td>2.364967e+08</td>
-      <td>1.583861e+08</td>
-      <td>3.537385e+10</td>
-      <td>2.686546e+08</td>
-      <td>3.365960e+09</td>
-      <td>1.092877e+10</td>
-      <td>1.624365e+09</td>
-      <td>3.492827e+09</td>
-      <td>3.793989e+09</td>
-      <td>5.160156e+08</td>
-      <td>...</td>
-      <td>3.660385e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>9.455608e+10</td>
-      <td>4.605946e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>34</th>
-      <td>2.479463e+08</td>
-      <td>1.670796e+08</td>
-      <td>3.676065e+10</td>
-      <td>2.843787e+08</td>
-      <td>3.503426e+09</td>
-      <td>1.135134e+10</td>
-      <td>1.691030e+09</td>
-      <td>3.631629e+09</td>
-      <td>3.946558e+09</td>
-      <td>5.373280e+08</td>
-      <td>...</td>
-      <td>3.969996e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>9.917989e+10</td>
-      <td>4.961795e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>35</th>
-      <td>2.596848e+08</td>
-      <td>1.761404e+08</td>
-      <td>3.813544e+10</td>
-      <td>3.008916e+08</td>
-      <td>3.640681e+09</td>
-      <td>1.176921e+10</td>
-      <td>1.757648e+09</td>
-      <td>3.769562e+09</td>
-      <td>4.098487e+09</td>
-      <td>5.586484e+08</td>
-      <td>...</td>
-      <td>4.306523e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.039270e+11</td>
-      <td>5.345793e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>36</th>
-      <td>2.717768e+08</td>
-      <td>1.856359e+08</td>
-      <td>3.950025e+10</td>
-      <td>3.183306e+08</td>
-      <td>3.778050e+09</td>
-      <td>1.218286e+10</td>
-      <td>1.824384e+09</td>
-      <td>3.906870e+09</td>
-      <td>4.250084e+09</td>
-      <td>5.800322e+08</td>
-      <td>...</td>
-      <td>4.674073e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.088243e+11</td>
-      <td>5.762316e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>37</th>
-      <td>2.835184e+08</td>
-      <td>1.951093e+08</td>
-      <td>4.074508e+10</td>
-      <td>3.359349e+08</td>
-      <td>3.905144e+09</td>
-      <td>1.255822e+10</td>
-      <td>1.886229e+09</td>
-      <td>4.032719e+09</td>
-      <td>4.389607e+09</td>
-      <td>5.998903e+08</td>
-      <td>...</td>
-      <td>5.063652e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.135911e+11</td>
-      <td>6.199563e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>38</th>
-      <td>2.954431e+08</td>
-      <td>2.049513e+08</td>
-      <td>4.193918e+10</td>
-      <td>3.543991e+08</td>
-      <td>4.028732e+09</td>
-      <td>1.291650e+10</td>
-      <td>1.946460e+09</td>
-      <td>4.154008e+09</td>
-      <td>4.524608e+09</td>
-      <td>6.192680e+08</td>
-      <td>...</td>
-      <td>5.487818e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.184421e+11</td>
-      <td>6.672239e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>39</th>
-      <td>3.074784e+08</td>
-      <td>2.151447e+08</td>
-      <td>4.306175e+10</td>
-      <td>3.737237e+08</td>
-      <td>4.147002e+09</td>
-      <td>1.325109e+10</td>
-      <td>2.004213e+09</td>
-      <td>4.268738e+09</td>
-      <td>4.652972e+09</td>
-      <td>6.378948e+08</td>
-      <td>...</td>
-      <td>5.949493e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.233498e+11</td>
-      <td>7.182991e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>40</th>
-      <td>3.195402e+08</td>
-      <td>2.256679e+08</td>
-      <td>4.408914e+10</td>
-      <td>3.939055e+08</td>
-      <td>4.257891e+09</td>
-      <td>1.355449e+10</td>
-      <td>2.058503e+09</td>
-      <td>4.374640e+09</td>
-      <td>4.772292e+09</td>
-      <td>6.554626e+08</td>
-      <td>...</td>
-      <td>6.451875e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.282821e+11</td>
-      <td>7.734697e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>41</th>
-      <td>3.315310e+08</td>
-      <td>2.364944e+08</td>
-      <td>4.499445e+10</td>
-      <td>4.149364e+08</td>
-      <td>4.359046e+09</td>
-      <td>1.381815e+10</td>
-      <td>2.108207e+09</td>
-      <td>4.469125e+09</td>
-      <td>4.879827e+09</td>
-      <td>6.716197e+08</td>
-      <td>...</td>
-      <td>6.998460e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.332018e+11</td>
-      <td>8.330478e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>42</th>
-      <td>3.433375e+08</td>
-      <td>2.475915e+08</td>
-      <td>4.574701e+10</td>
-      <td>4.368021e+08</td>
-      <td>4.447784e+09</td>
-      <td>1.403237e+10</td>
-      <td>2.152043e+09</td>
-      <td>4.549248e+09</td>
-      <td>4.972452e+09</td>
-      <td>6.859646e+08</td>
-      <td>...</td>
-      <td>7.593060e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.380654e+11</td>
-      <td>8.973714e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>43</th>
-      <td>3.548282e+08</td>
-      <td>2.589191e+08</td>
-      <td>4.631197e+10</td>
-      <td>4.594803e+08</td>
-      <td>4.521043e+09</td>
-      <td>1.418609e+10</td>
-      <td>2.188550e+09</td>
-      <td>4.611652e+09</td>
-      <td>5.046605e+09</td>
-      <td>6.980393e+08</td>
-      <td>...</td>
-      <td>8.239833e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.428227e+11</td>
-      <td>9.668060e+11</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>44</th>
-      <td>3.658514e+08</td>
-      <td>2.704288e+08</td>
-      <td>4.664967e+10</td>
-      <td>4.829399e+08</td>
-      <td>4.575336e+09</td>
-      <td>1.426676e+10</td>
-      <td>2.216062e+09</td>
-      <td>4.652518e+09</td>
-      <td>5.098232e+09</td>
-      <td>7.073215e+08</td>
-      <td>...</td>
-      <td>8.943311e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.474152e+11</td>
-      <td>1.041746e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>3.762317e+08</td>
-      <td>2.820624e+08</td>
-      <td>4.671506e+10</td>
-      <td>5.071385e+08</td>
-      <td>4.606695e+09</td>
-      <td>1.426013e+10</td>
-      <td>2.232682e+09</td>
-      <td>4.667507e+09</td>
-      <td>5.122723e+09</td>
-      <td>7.132167e+08</td>
-      <td>...</td>
-      <td>9.708428e+11</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.517756e+11</td>
-      <td>1.122618e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>3.857673e+08</td>
-      <td>2.937507e+08</td>
-      <td>4.645707e+10</td>
-      <td>5.320214e+08</td>
-      <td>4.610613e+09</td>
-      <td>1.415003e+10</td>
-      <td>2.236256e+09</td>
-      <td>4.651695e+09</td>
-      <td>5.114846e+09</td>
-      <td>7.150491e+08</td>
-      <td>...</td>
-      <td>1.054056e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.558261e+11</td>
-      <td>1.209882e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>3.942265e+08</td>
-      <td>3.054114e+08</td>
-      <td>4.581781e+10</td>
-      <td>5.575190e+08</td>
-      <td>4.581976e+09</td>
-      <td>1.391816e+10</td>
-      <td>2.224340e+09</td>
-      <td>4.599501e+09</td>
-      <td>5.068664e+09</td>
-      <td>7.120517e+08</td>
-      <td>...</td>
-      <td>1.144555e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.594773e+11</td>
-      <td>1.304032e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>4.013440e+08</td>
-      <td>3.169481e+08</td>
-      <td>4.473181e+10</td>
-      <td>5.835450e+08</td>
-      <td>4.514988e+09</td>
-      <td>1.354383e+10</td>
-      <td>2.194162e+09</td>
-      <td>4.504608e+09</td>
-      <td>4.977460e+09</td>
-      <td>7.033550e+08</td>
-      <td>...</td>
-      <td>1.242977e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.626269e+11</td>
-      <td>1.405604e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>4.068163e+08</td>
-      <td>3.282475e+08</td>
-      <td>4.312512e+10</td>
-      <td>6.099932e+08</td>
-      <td>4.403095e+09</td>
-      <td>1.300367e+10</td>
-      <td>2.142589e+09</td>
-      <td>4.359876e+09</td>
-      <td>4.833636e+09</td>
-      <td>6.879750e+08</td>
-      <td>...</td>
-      <td>1.350015e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.651575e+11</td>
-      <td>1.515173e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>4.102976e+08</td>
-      <td>3.391780e+08</td>
-      <td>4.091424e+10</td>
-      <td>6.367355e+08</td>
-      <td>4.238891e+09</td>
-      <td>1.227133e+10</td>
-      <td>2.066077e+09</td>
-      <td>4.157245e+09</td>
-      <td>4.628612e+09</td>
-      <td>6.647995e+08</td>
-      <td>...</td>
-      <td>1.466423e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.669353e+11</td>
-      <td>1.633358e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>51</th>
-      <td>4.113941e+08</td>
-      <td>3.495865e+08</td>
-      <td>3.800511e+10</td>
-      <td>6.636180e+08</td>
-      <td>4.014018e+09</td>
-      <td>1.131709e+10</td>
-      <td>1.960628e+09</td>
-      <td>3.887627e+09</td>
-      <td>4.352711e+09</td>
-      <td>6.325729e+08</td>
-      <td>...</td>
-      <td>1.593022e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.678080e+11</td>
-      <td>1.760830e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>52</th>
-      <td>4.096585e+08</td>
-      <td>3.592963e+08</td>
-      <td>3.429179e+10</td>
-      <td>6.904581e+08</td>
-      <td>3.719055e+09</td>
-      <td>1.010753e+10</td>
-      <td>1.821735e+09</td>
-      <td>3.540788e+09</td>
-      <td>3.995030e+09</td>
-      <td>5.898797e+08</td>
-      <td>...</td>
-      <td>1.730705e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.676020e+11</td>
-      <td>1.898307e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>53</th>
-      <td>4.045833e+08</td>
-      <td>3.681037e+08</td>
-      <td>2.965516e+10</td>
-      <td>7.170401e+08</td>
-      <td>3.343399e+09</td>
-      <td>8.605068e+09</td>
-      <td>1.644325e+09</td>
-      <td>3.105211e+09</td>
-      <td>3.543300e+09</td>
-      <td>5.351259e+08</td>
-      <td>...</td>
-      <td>1.880444e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.661207e+11</td>
-      <td>2.046564e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>54</th>
-      <td>3.955941e+08</td>
-      <td>3.757746e+08</td>
-      <td>2.396138e+10</td>
-      <td>7.431107e+08</td>
-      <td>2.875124e+09</td>
-      <td>6.767485e+09</td>
-      <td>1.422689e+09</td>
-      <td>2.567958e+09</td>
-      <td>2.983730e+09</td>
-      <td>4.665180e+08</td>
-      <td>...</td>
-      <td>2.043296e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.631411e+11</td>
-      <td>2.206437e+12</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>55</th>
-      <td>3.820410e+08</td>
-      <td>3.820410e+08</td>
-      <td>1.706023e+10</td>
-      <td>7.683746e+08</td>
-      <td>2.300831e+09</td>
-      <td>4.547413e+09</td>
-      <td>1.150416e+09</td>
-      <td>1.914498e+09</td>
-      <td>2.300831e+09</td>
-      <td>3.820410e+08</td>
-      <td>...</td>
-      <td>2.220411e+12</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>1.584110e+11</td>
-      <td>2.378822e+12</td>
-      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
-<p>56 rows × 39 columns</p>
+<p>101 rows × 29 columns</p>
 </div>
 </div>
 
@@ -16514,6 +15254,357 @@ Working on Carbon for Module
 
 </div>
 
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Project-grid-forward-to-100%25-re-in-2050">Project grid forward to 100% re in 2050<a class="anchor-link" href="#Project-grid-forward-to-100%25-re-in-2050">&#182;</a></h2><p>To parallel the PV deployment, we will assume that we globally hit 100% RE in 2050 with the 75 TW of PV. As such, we need to change the future projection of marketshares of the different country grids.</p>
+<p>One scenario with decarb grid, one scenario with decarb grid and heat</p>
+<p>Estimating that 60-70% generation will be from Solar, 30-40% from wind, and any remainder from "other renewables"</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">carbonfolder</span><span class="p">,</span><span class="s1">&#39;baseline_countrygridmix.csv&#39;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
+<span class="n">gridsources</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Bioenergy&#39;</span><span class="p">,</span><span class="s1">&#39;Hydro&#39;</span><span class="p">,</span><span class="s1">&#39;Nuclear&#39;</span><span class="p">,</span><span class="s1">&#39;OtherFossil&#39;</span><span class="p">,</span><span class="s1">&#39;OtherRenewables&#39;</span><span class="p">,</span><span class="s1">&#39;Solar&#39;</span><span class="p">,</span><span class="s1">&#39;Wind&#39;</span><span class="p">]</span>
+<span class="n">nonRE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Coal&#39;</span><span class="p">,</span><span class="s1">&#39;Gas&#39;</span><span class="p">,</span><span class="s1">&#39;OtherFossil&#39;</span><span class="p">,</span><span class="s1">&#39;Nuclear&#39;</span><span class="p">,</span><span class="s1">&#39;Bioenergy&#39;</span><span class="p">]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2023</span><span class="p">:,:]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="c1">#delete 2023 to 2050</span>
+<span class="n">nonRE_search</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nonRE</span><span class="p">)</span> <span class="c1">#create nonRE search</span>
+<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">nonRE_search</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="c1">#set all nonRE to 0 in 2050</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Solar&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">63.0</span>
+<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Wind&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">33.0</span>
+<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Hydro&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="n">countrygridmix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2050</span><span class="p">,</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;OtherRenewables&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="c1">#numbers derived from leading scenario electricity generation Breyer et al 2022 scenarios (EU focused)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">countrygridmix_100RE2050</span> <span class="o">=</span> <span class="n">countrygridmix</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">calculateCarbonFlows</span><span class="p">(</span><span class="n">countrygridmixes</span><span class="o">=</span><span class="n">countrygridmix_100RE2050</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;encapsulant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataOut_c</span><span class="c1">#/test_base</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mod_carbon_results</span> <span class="o">=</span> <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;PV_ICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dataOut_c</span>
+<span class="n">mod_carbon_results</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>variables which are the sum of other steps:</p>
+<ul>
+<li>Global_Sum_gCO2eqpWh_mod_MFG_gCO2eq</li>
+<li>mat_Recycle_e_p_gCO2eq (process, elec, fuel)</li>
+<li>mat_vMFG_total_gCO2eq (process, elec, fuel)</li>
+<li>mat_vMFG_energy_gCO2eq (elec, fuel)</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">scen</span> <span class="ow">in</span> <span class="n">scenarios</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">scen</span><span class="p">)</span>
+    <span class="n">mod_carbon_scen_results</span> <span class="o">=</span> <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">dataOut_c</span><span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">scen</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="p">))</span>
+    <span class="n">scenmatdc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="n">MATERIALS</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+        <span class="n">mat_carbon_scen_results</span> <span class="o">=</span> <span class="n">sim1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="n">scen</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="n">mat</span><span class="p">]</span><span class="o">.</span><span class="n">matdataOut_c</span><span class="o">.</span><span class="n">add_prefix</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">scen</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">mat</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="p">))</span> 
+        <span class="n">scenmatdc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">scenmatdc</span><span class="p">,</span><span class="n">mat_carbon_scen_results</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#group all material dc</span>
+    <span class="n">scen_carbon_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mod_carbon_scen_results</span><span class="p">,</span><span class="n">scenmatdc</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#calculation for annual carbon emissions total (selecting to avoid double countings)</span>
+<span class="n">mats_vmfg_total</span> <span class="o">=</span> <span class="n">scen_carbon_results</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;total&#39;</span><span class="p">)</span>
+<span class="n">mats_ce_recycle</span> <span class="o">=</span> <span class="n">scen_carbon_results</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;Recycle_e_p&#39;</span><span class="p">)</span>
+<span class="n">mats_ce_remfg</span> <span class="o">=</span> <span class="n">scen_carbon_results</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;ReMFG_clean&#39;</span><span class="p">)</span>
+<span class="n">mats_landfill</span> <span class="o">=</span> <span class="n">scen_carbon_results</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;landfill_total&#39;</span><span class="p">)</span>
+
+<span class="n">mod_mfg_carbon_total</span> <span class="o">=</span> <span class="n">scen_carbon_results</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;Global_gCO2eqpwh_mod_MFG_gCO2eq&#39;</span><span class="p">)</span>
+
+<span class="n">mod_nonvMFG</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Install&#39;</span><span class="p">,</span><span class="s1">&#39;OandM&#39;</span><span class="p">,</span><span class="s1">&#39;Repair&#39;</span><span class="p">,</span><span class="s1">&#39;Demount&#39;</span><span class="p">,</span><span class="s1">&#39;Store&#39;</span><span class="p">,</span><span class="s1">&#39;Resell&#39;</span><span class="p">,</span><span class="s1">&#39;ReMFG&#39;</span><span class="p">,</span><span class="s1">&#39;Recycle&#39;</span><span class="p">]</span>
+<span class="n">nonvMFG_search</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mod_nonvMFG</span><span class="p">)</span> <span class="c1">#create nonRE search</span>
+<span class="n">mod_carbon_sum_nonvmfg</span> <span class="o">=</span> <span class="n">scen_carbon_results</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">scen_carbon_results</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">nonvMFG_search</span><span class="p">)]</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;mod&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scen_annual_carbon_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mod_mfg_carbon_total</span><span class="p">,</span><span class="n">mod_carbon_sum_nonvmfg</span><span class="p">,</span>
+                                <span class="n">mats_vmfg_total</span><span class="p">,</span><span class="n">mats_ce_recycle</span><span class="p">,</span><span class="n">mats_ce_remfg</span><span class="p">,</span><span class="n">mats_landfill</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">scen_annual_carbon_all</span><span class="p">[</span><span class="s1">&#39;Annual_Emit_total_gCO2eq&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scen_annual_carbon</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">scen_annual_carbon_mod</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mod_mfg_carbon_total</span><span class="p">,</span><span class="n">mod_carbon_sum_nonvmfg</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">scen_annual_carbon_mats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mats_vmfg_total</span><span class="p">,</span><span class="n">mats_ce_recycle</span><span class="p">,</span><span class="n">mats_ce_remfg</span><span class="p">,</span><span class="n">mats_landfill</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scen_annual_carbon_mats</span><span class="o">.</span><span class="n">groupby</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scen_annual_carbon</span><span class="o">/</span><span class="mf">1e12</span><span class="p">)</span> <span class="c1">#meggatonnes</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">scen_annual_carbon_all</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span><span class="o">-</span><span class="mf">0.05</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Annual Carbon Emissions from all aspects of Mods and Mats&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Annual GHG emissions from PV Lifecycle</span><span class="se">\n</span><span class="s1">[million tonnes CO2eq]&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scen_cumu_carbon</span> <span class="o">=</span> <span class="n">scen_annual_carbon</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scen_cumu_carbon</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">55</span><span class="p">,</span><span class="s1">&#39;Annual_Emit_total_gCO2eq&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">1e12</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scen_annual_carbon</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">

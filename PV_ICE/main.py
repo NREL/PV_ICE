@@ -1649,7 +1649,7 @@ class Simulation:
         print("\n\n>>>> Calculating Carbon Flows <<<<\n")
         
         #carbon folder NEED TO MAKE THIS MORE DYNAMIC
-        carbonfolder = os.path.join(str(Path().resolve().parent.parent.parent/ 'PV_ICE'/ 'baselines'/ 'CarbonLayer'))
+        carbonfolder = os.path.join(str(Path().resolve().parent.parent/ 'PV_ICE'/ 'baselines'/ 'CarbonLayer'))
         
         if countrygridmixes is None:
             countrygridmixes = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'))
@@ -1798,6 +1798,7 @@ class Simulation:
                     dcmat['mat_vMFG_energy_gCO2eq'] = dcmat['Global_vmfg_elec_gCO2eq']+dcmat['mat_MFG_virgin_fuel_gCO2eq']
                     dcmat['mat_vMFG_total_gCO2eq'] = dcmat['mat_vMFG_energy_gCO2eq']+dcmat['mat_vMFG_p_gCO2eq']
                     dcmat['mat_Recycle_e_p_gCO2eq'] = dcmat['mat_HQ_p_gCO2eq'] + dcmat['mat_LQ_p_gCO2eq'] + dcmat['mat_MFGScrap_HQ_fuel_gCO2eq']+dcmat['mat_Recycled_LQ_gCO2eq']+dcmat['mat_Recycled_HQ_elec_gCO2eq']
+                    dcmat['mat_landfill_total_gCO2eq'] = dcmat['mat_landfill_gCO2eq'] + dcmat['mat_landfill_fuel_gCO2eq']
                 
                     self.scenario[scen].material[mat].matdataOut_c = dcmat
                 
