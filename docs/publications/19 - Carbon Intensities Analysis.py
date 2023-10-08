@@ -124,6 +124,12 @@ countrygridmix_100RE20502100.loc[2050]
 
 # This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.
 
+# In[59]:
+
+
+pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
+
+
 # In[13]:
 
 
@@ -137,61 +143,218 @@ sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE20502100)
 
 
 # # Carbon Analysis
+# this will become the aggregate carbon results function
 
-# In[ ]:
+# In[14]:
 
 
+scenarios = sim1.scenario
+
+
+# In[25]:
+
+
+sim_carbon_results = pd.DataFrame()
+sim_annual_carbon = pd.DataFrame()
 for scen in scenarios:
     print(scen)
     mod_carbon_scen_results = sim1.scenario[scen].dataOut_c.add_prefix(str(scen+'_'))
+    
+    #mod annual carbon calcs here (selecting to avoid double counting)
+    mod_mfg_carbon_total = mod_carbon_scen_results.filter(like='Global_gCO2eqpwh_mod_MFG_gCO2eq') #annual mfging carbon
+
+    mod_nonvMFG = ['Install','OandM','Repair','Demount','Store','Resell','ReMFG','Recycle'] #could remove from loop
+    nonvMFG_search = '|'.join(mod_nonvMFG) #create nonRE search
+    mod_carbon_sum_nonvmfg = mod_carbon_scen_results.loc[:,mod_carbon_scen_results.columns.str.contains(nonvMFG_search)] #annual non mfging carbon
+    scen_annual_carbon_mod = pd.concat([mod_mfg_carbon_total,mod_carbon_sum_nonvmfg], axis=1)
+    scen_annual_carbon_mod[scen+'_Annual_Emit_mod_gCO2eq'] = scen_annual_carbon_mod.sum(axis=1)
+
     scenmatdc = pd.DataFrame()
     for mat in MATERIALS:
         print(mat)
         mat_carbon_scen_results = sim1.scenario[scen].material[mat].matdataOut_c.add_prefix(str(scen+'_'+mat+'_')) 
-        scenmatdc = pd.concat([scenmatdc,mat_carbon_scen_results], axis=1) #group all material dc
-    scen_carbon_results = pd.concat([mod_carbon_scen_results,scenmatdc], axis=1)
+        
+        #calculation for annual carbon emissions total (selecting to avoid double countings)
+        mat_vmfg_total = mat_carbon_scen_results.filter(like='vMFG_total')
+        mat_ce_recycle = mat_carbon_scen_results.filter(like='Recycle_e_p')
+        mat_ce_remfg = mat_carbon_scen_results.filter(like='ReMFG_clean')
+        mat_landfill = mat_carbon_scen_results.filter(like='landfill_total')
+        mat_scen_annual_carbon = pd.concat([mat_vmfg_total,mat_ce_recycle,mat_ce_remfg,mat_landfill], axis=1)
+        mat_scen_annual_carbon[scen+'_Annual_Emit_'+mat+'_gCO2eq'] = mat_scen_annual_carbon.sum(axis=1)
+        
+        scenmatdc = pd.concat([scenmatdc,mat_carbon_scen_results,
+                               mat_scen_annual_carbon[scen+'_Annual_Emit_'+mat+'_gCO2eq']], axis=1) #group all material dc
+    
+    scen_carbon_results = pd.concat([mod_carbon_scen_results,scenmatdc], axis=1) #append mats to mod
+    sim_carbon_results = pd.concat([sim_carbon_results, scen_carbon_results], axis=1) #append all scens "raw" data
+    
+    #calculate annual carbon emits with grouping by mod and mat
+    scen_mats_annual_carbon = scenmatdc.filter(like='Annual_Emit')
+    scen_mod_annual_carbon = scen_annual_carbon_mod.filter(like='Annual_Emit_mod')
+    scen_annual_carbon = pd.concat([scen_mod_annual_carbon,scen_mats_annual_carbon], axis=1)
+    scen_annual_carbon[scen+'_Annual_Emit_total_modmats_gCO2eq'] = scen_annual_carbon.sum(axis=1)
+    sim_annual_carbon = pd.concat([sim_annual_carbon,scen_annual_carbon], axis=1)
+    
+    #FIX INDEX of dfs
+sim_annual_carbon.index = pd.RangeIndex(start=2000,stop=2101,step=1)
+sim_carbon_results.index = pd.RangeIndex(start=2000,stop=2101,step=1)
+    
+#return sim_carbon_results, sim_annual_carbon
+
+
+# In[26]:
+
+
+sim_carbon_results
+
+
+# In[27]:
+
+
+pvice_annual_carbon = sim_annual_carbon.filter(like='Annual_Emit').filter(like='PV_ICE')/1e12 #million tonnes
+pvice_annual_carbon.index = pd.RangeIndex(start=2000,stop=2101,step=1)
+
+colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
+
+plt.plot([],[],color=colormats[0], label=MATERIALS[0])
+plt.plot([],[],color=colormats[1], label=MATERIALS[1])
+plt.plot([],[],color=colormats[2], label=MATERIALS[2])
+plt.plot([],[],color=colormats[3], label=MATERIALS[3])
+plt.plot([],[],color=colormats[4], label=MATERIALS[4])
+plt.plot([],[],color=colormats[5], label=MATERIALS[5])
+plt.plot([],[],color=colormats[6], label=MATERIALS[6])
+plt.plot([],[],color=colormats[7], label='module')
+
+
+plt.stackplot(pvice_annual_carbon.index,
+              pvice_annual_carbon['PV_ICE_Annual_Emit_glass_gCO2eq'], 
+              pvice_annual_carbon['PV_ICE_Annual_Emit_silicon_gCO2eq'],
+              pvice_annual_carbon['PV_ICE_Annual_Emit_silver_gCO2eq'], 
+              pvice_annual_carbon['PV_ICE_Annual_Emit_aluminium_frames_gCO2eq'], 
+              pvice_annual_carbon['PV_ICE_Annual_Emit_copper_gCO2eq'],
+              pvice_annual_carbon['PV_ICE_Annual_Emit_encapsulant_gCO2eq'],
+              pvice_annual_carbon['PV_ICE_Annual_Emit_backsheet_gCO2eq'],
+              pvice_annual_carbon['PV_ICE_Annual_Emit_mod_gCO2eq'],
+              colors = colormats)
+plt.title('Carbon Emissions Annually by Module and Material Lifecycle')
+plt.ylabel('GHG Emissions Annually from Lifecycle Mats and Mods\n[million metric tonnes CO2eq]')
+plt.xlim(2000,2100)
+
+handles, labels = plt.gca().get_legend_handles_labels()
+#specify order of items in legend
+#order = [1,2,0]
+#add legend to plot
+#plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
+plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
+
+#plt.legend()
+plt.show()
+
+
+# In[31]:
+
+
+colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
+for scen in scenarios:
+
+    scen_annual_carbon = sim_annual_carbon.filter(like='Annual_Emit').filter(like=scen)/1e12 #million tonnes
+    
+    plt.plot([],[],color=colormats[0], label=MATERIALS[0])
+    plt.plot([],[],color=colormats[1], label=MATERIALS[1])
+    plt.plot([],[],color=colormats[2], label=MATERIALS[2])
+    plt.plot([],[],color=colormats[3], label=MATERIALS[3])
+    plt.plot([],[],color=colormats[4], label=MATERIALS[4])
+    plt.plot([],[],color=colormats[5], label=MATERIALS[5])
+    plt.plot([],[],color=colormats[6], label=MATERIALS[6])
+    plt.plot([],[],color=colormats[7], label='module')
+
+
+    plt.stackplot(scen_annual_carbon.index,
+                  scen_annual_carbon[scen+'_Annual_Emit_glass_gCO2eq'], 
+                  scen_annual_carbon[scen+'_Annual_Emit_silicon_gCO2eq'],
+                  scen_annual_carbon[scen+'_Annual_Emit_silver_gCO2eq'], 
+                  scen_annual_carbon[scen+'_Annual_Emit_aluminium_frames_gCO2eq'], 
+                  scen_annual_carbon[scen+'_Annual_Emit_copper_gCO2eq'],
+                  scen_annual_carbon[scen+'_Annual_Emit_encapsulant_gCO2eq'],
+                  scen_annual_carbon[scen+'_Annual_Emit_backsheet_gCO2eq'],
+                  scen_annual_carbon[scen+'_Annual_Emit_mod_gCO2eq'],
+                  colors = colormats)
+    plt.title(scen+':\nGHG Emissions Annually by Module and Material Lifecycle')
+    plt.ylabel('GHG Emissions Annually from Lifecycle Mats and Mods\n[million metric tonnes CO2eq]')
+    plt.xlim(2000,2100)
+
+    handles, labels = plt.gca().get_legend_handles_labels()
+#specify order of items in legend
+#order = [1,2,0]
+#add legend to plot
+#plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
+    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
+
+#plt.legend()
+    plt.show()
+
+
+# In[57]:
+
+
+sim_cumu_carbon = sim_annual_carbon.cumsum()
+sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats')
+
+
+# In[58]:
+
+
+colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
+for scen in scenarios:
+
+    scen_cumu_carbon = sim_cumu_carbon.filter(like='Annual_Emit').filter(like=scen)/1e12 #million tonnes
+    
+    plt.plot([],[],color=colormats[0], label=MATERIALS[0])
+    plt.plot([],[],color=colormats[1], label=MATERIALS[1])
+    plt.plot([],[],color=colormats[2], label=MATERIALS[2])
+    plt.plot([],[],color=colormats[3], label=MATERIALS[3])
+    plt.plot([],[],color=colormats[4], label=MATERIALS[4])
+    plt.plot([],[],color=colormats[5], label=MATERIALS[5])
+    plt.plot([],[],color=colormats[6], label=MATERIALS[6])
+    plt.plot([],[],color=colormats[7], label='module')
+
+
+    plt.stackplot(scen_cumu_carbon.index,
+                  scen_cumu_carbon[scen+'_Annual_Emit_glass_gCO2eq'], 
+                  scen_cumu_carbon[scen+'_Annual_Emit_silicon_gCO2eq'],
+                  scen_cumu_carbon[scen+'_Annual_Emit_silver_gCO2eq'], 
+                  scen_cumu_carbon[scen+'_Annual_Emit_aluminium_frames_gCO2eq'], 
+                  scen_cumu_carbon[scen+'_Annual_Emit_copper_gCO2eq'],
+                  scen_cumu_carbon[scen+'_Annual_Emit_encapsulant_gCO2eq'],
+                  scen_cumu_carbon[scen+'_Annual_Emit_backsheet_gCO2eq'],
+                  scen_cumu_carbon[scen+'_Annual_Emit_mod_gCO2eq'],
+                  colors = colormats)
+    plt.title(scen+':\nGHG Emissions Annually by Module and Material Lifecycle')
+    plt.ylabel('GHG Emissions Annually from Lifecycle Mats and Mods\n[million metric tonnes CO2eq]')
+    plt.xlim(2000,2100)
+    plt.ylim(0,38000)
+
+    handles, labels = plt.gca().get_legend_handles_labels()
+#specify order of items in legend
+#order = [1,2,0]
+#add legend to plot
+#plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
+    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
+
+#plt.legend()
+    plt.show()
 
 
 # In[ ]:
 
 
-#calculation for annual carbon emissions total (selecting to avoid double countings)
-mats_vmfg_total = scen_carbon_results.filter(like='total')
-mats_ce_recycle = scen_carbon_results.filter(like='Recycle_e_p')
-mats_ce_remfg = scen_carbon_results.filter(like='ReMFG_clean')
-mats_landfill = scen_carbon_results.filter(like='landfill_total')
 
-mod_mfg_carbon_total = scen_carbon_results.filter(like='Global_gCO2eqpwh_mod_MFG_gCO2eq')
-
-mod_nonvMFG = ['Install','OandM','Repair','Demount','Store','Resell','ReMFG','Recycle']
-nonvMFG_search = '|'.join(mod_nonvMFG) #create nonRE search
-mod_carbon_sum_nonvmfg = scen_carbon_results.loc[:,scen_carbon_results.columns.str.contains(nonvMFG_search)].filter(like='mod')
 
 
 # In[ ]:
 
 
-scen_annual_carbon_all = pd.concat([mod_mfg_carbon_total,mod_carbon_sum_nonvmfg,
-                                mats_vmfg_total,mats_ce_recycle,mats_ce_remfg,mats_landfill], axis=1)
-scen_annual_carbon_all['Annual_Emit_total_gCO2eq'] = scen_annual_carbon.sum(axis=1)
 
-scen_annual_carbon_mod = pd.concat([mod_mfg_carbon_total,mod_carbon_sum_nonvmfg], axis=1)
-scen_annual_carbon_mats = pd.concat([mats_vmfg_total,mats_ce_recycle,mats_ce_remfg,mats_landfill], axis=1)
-
-
-# In[ ]:
-
-
-scen_annual_carbon_mats.groupby()
-
-
-# In[ ]:
-
-
-plt.plot(scen_annual_carbon/1e12) #meggatonnes
-plt.legend(scen_annual_carbon_all.columns, bbox_to_anchor=(1.05,-0.05))
-plt.title('Annual Carbon Emissions from all aspects of Mods and Mats')
-plt.ylabel('Annual GHG emissions from PV Lifecycle\n[million tonnes CO2eq]')
 
 
 # In[ ]:
