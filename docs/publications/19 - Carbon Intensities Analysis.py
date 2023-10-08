@@ -43,6 +43,43 @@ import PV_ICE
 PV_ICE.__version__
 
 
+# In[48]:
+
+
+#https://www.learnui.design/tools/data-color-picker.html#palette
+#color pallette - modify here for all graphs below
+colorpalette=['#000000', #PV ICE baseline
+              '#595959', '#7F7F7F', '#A6A6A6', '#D9D9D9', #BAU, 4 grays, perc, shj, topcon, irena
+              #'#067872','#0aa39e','#09d0cd','#00ffff', #realistic cases (4) teals, perc, shj, topcon, irena
+              '#0579C1','#C00000','#FFC000', #extreme cases (3) long life, high eff, circular
+                '#6E30A0','#00B3B5','#10C483', #ambitious modules (5) high eff+ long life, 50 yr perc, recycleSi, 
+               '#97CB3F','#FF7E00' #circular perovskite+life, circular perovkiste+ high eff
+                ] 
+
+colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B'] #colors for material plots       
+
+import matplotlib as mpl #import matplotlib
+from cycler import cycler #import cycler
+mpl.rcParams['axes.prop_cycle'] = cycler(color=colorpalette) #reset the default color palette of mpl
+
+plt.rcParams.update({'font.size': 14})
+plt.rcParams['figure.figsize'] = (8, 6)
+
+scennames_labels = ['PV_ICE','PERC','SHJ','TOPCon','Low\nQuality',
+                         'Long-Lived','High Eff','Circular',
+                        'High Eff\n+ Long-life','Long-Life\n+ Recycling',
+                         'Recycled-Si\n+ Long-life','Circular\n+ Long-life',
+                        'Circular\n+ High Eff'
+                    ]  
+
+scennames_labels_flat = ['PV_ICE','PERC','SHJ','TOPCon','Low Quality',
+                         'Long-Lived','High Eff','Circular',
+                        'High Eff + Long-life','Long-Life + Recycling',
+                         'Recycled-Si + Long-life','Circular + Long-life',
+                        'Circular + High Eff'
+                    ] 
+
+
 # In[4]:
 
 
@@ -124,13 +161,13 @@ countrygridmix_100RE20502100.loc[2050]
 
 # This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.
 
-# In[59]:
-
-
-pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
-
-
 # In[13]:
+
+
+pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'), index_col=[0])
+
+
+# In[14]:
 
 
 sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE20502100)
@@ -145,13 +182,13 @@ sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE20502100)
 # # Carbon Analysis
 # this will become the aggregate carbon results function
 
-# In[14]:
+# In[38]:
 
 
 scenarios = sim1.scenario
 
 
-# In[25]:
+# In[16]:
 
 
 sim_carbon_results = pd.DataFrame()
@@ -202,59 +239,17 @@ sim_carbon_results.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 #return sim_carbon_results, sim_annual_carbon
 
 
-# In[26]:
+# In[17]:
 
 
 sim_carbon_results
 
 
-# In[27]:
+# # Cabon Emissions by material or module
+
+# In[19]:
 
 
-pvice_annual_carbon = sim_annual_carbon.filter(like='Annual_Emit').filter(like='PV_ICE')/1e12 #million tonnes
-pvice_annual_carbon.index = pd.RangeIndex(start=2000,stop=2101,step=1)
-
-colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
-
-plt.plot([],[],color=colormats[0], label=MATERIALS[0])
-plt.plot([],[],color=colormats[1], label=MATERIALS[1])
-plt.plot([],[],color=colormats[2], label=MATERIALS[2])
-plt.plot([],[],color=colormats[3], label=MATERIALS[3])
-plt.plot([],[],color=colormats[4], label=MATERIALS[4])
-plt.plot([],[],color=colormats[5], label=MATERIALS[5])
-plt.plot([],[],color=colormats[6], label=MATERIALS[6])
-plt.plot([],[],color=colormats[7], label='module')
-
-
-plt.stackplot(pvice_annual_carbon.index,
-              pvice_annual_carbon['PV_ICE_Annual_Emit_glass_gCO2eq'], 
-              pvice_annual_carbon['PV_ICE_Annual_Emit_silicon_gCO2eq'],
-              pvice_annual_carbon['PV_ICE_Annual_Emit_silver_gCO2eq'], 
-              pvice_annual_carbon['PV_ICE_Annual_Emit_aluminium_frames_gCO2eq'], 
-              pvice_annual_carbon['PV_ICE_Annual_Emit_copper_gCO2eq'],
-              pvice_annual_carbon['PV_ICE_Annual_Emit_encapsulant_gCO2eq'],
-              pvice_annual_carbon['PV_ICE_Annual_Emit_backsheet_gCO2eq'],
-              pvice_annual_carbon['PV_ICE_Annual_Emit_mod_gCO2eq'],
-              colors = colormats)
-plt.title('Carbon Emissions Annually by Module and Material Lifecycle')
-plt.ylabel('GHG Emissions Annually from Lifecycle Mats and Mods\n[million metric tonnes CO2eq]')
-plt.xlim(2000,2100)
-
-handles, labels = plt.gca().get_legend_handles_labels()
-#specify order of items in legend
-#order = [1,2,0]
-#add legend to plot
-#plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
-plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
-
-#plt.legend()
-plt.show()
-
-
-# In[31]:
-
-
-colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
 for scen in scenarios:
 
     scen_annual_carbon = sim_annual_carbon.filter(like='Annual_Emit').filter(like=scen)/1e12 #million tonnes
@@ -294,14 +289,15 @@ for scen in scenarios:
     plt.show()
 
 
-# In[57]:
+# In[32]:
 
 
 sim_cumu_carbon = sim_annual_carbon.cumsum()
+maxy = round(sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats').max()/1e12,-3)
 sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats')
 
 
-# In[58]:
+# In[33]:
 
 
 colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
@@ -332,7 +328,7 @@ for scen in scenarios:
     plt.title(scen+':\nGHG Emissions Annually by Module and Material Lifecycle')
     plt.ylabel('GHG Emissions Annually from Lifecycle Mats and Mods\n[million metric tonnes CO2eq]')
     plt.xlim(2000,2100)
-    plt.ylim(0,38000)
+    plt.ylim(0,maxy)
 
     handles, labels = plt.gca().get_legend_handles_labels()
 #specify order of items in legend
@@ -345,6 +341,229 @@ for scen in scenarios:
     plt.show()
 
 
+# In[77]:
+
+
+sim_cumu_carbon
+
+
+# In[131]:
+
+
+#create a df from which to do a bar chart of 2100 emissions by mat/mod
+mats_emit_2100 = pd.DataFrame() #index=scennames_labels_flat
+for mat in MATERIALS:
+    mat_emit_2100 = pd.Series(sim_cumu_carbon.loc[2100].filter(like=mat).values)
+    mats_emit_2100 = pd.concat([mats_emit_2100, mat_emit_2100], axis=1)
+
+mats_emit_2100
+mats_emit_2100.columns = MATERIALS
+modmats_emit_2100 = pd.concat([mats_emit_2100,pd.Series(sim_cumu_carbon.loc[2100].filter(like='mod_').values)], axis=1)
+modmats_emit_2100.index = scennames_labels_flat
+modmats_emit_2100.rename(columns={0:'module'}, inplace=True)
+modmats_emit_2100_megatonne = modmats_emit_2100/1e12
+modmats_emit_2100_megatonne
+
+
+# In[142]:
+
+
+plt.bar(modmats_emit_2100_megatonne.index, modmats_emit_2100_megatonne['glass'], color=colormats[0])
+plt.bar(modmats_emit_2100_megatonne.index, modmats_emit_2100_megatonne['silicon'],
+        bottom=modmats_emit_2100_megatonne['glass'], color=colormats[1])
+plt.bar(modmats_emit_2100_megatonne.index, modmats_emit_2100_megatonne['silver'],
+       bottom=modmats_emit_2100_megatonne.iloc[:,0:2].sum(axis=1), color=colormats[2])
+plt.bar(modmats_emit_2100_megatonne.index, modmats_emit_2100_megatonne['aluminium_frames'],
+       bottom=modmats_emit_2100_megatonne.iloc[:,0:3].sum(axis=1), color=colormats[3])
+plt.bar(modmats_emit_2100_megatonne.index, modmats_emit_2100_megatonne['copper'],
+       bottom=modmats_emit_2100_megatonne.iloc[:,0:4].sum(axis=1), color=colormats[4])
+plt.bar(modmats_emit_2100_megatonne.index, modmats_emit_2100_megatonne['encapsulant'],
+       bottom=modmats_emit_2100_megatonne.iloc[:,0:5].sum(axis=1), color=colormats[5])
+plt.bar(modmats_emit_2100_megatonne.index, modmats_emit_2100_megatonne['backsheet'],
+       bottom=modmats_emit_2100_megatonne.iloc[:,0:6].sum(axis=1), color=colormats[6])
+plt.bar(modmats_emit_2100_megatonne.index, modmats_emit_2100_megatonne['module'],
+       bottom=modmats_emit_2100_megatonne.iloc[:,0:7].sum(axis=1), color='black')
+
+
+# In[148]:
+
+
+modmats_emit_2100_megatonne.iloc[0:5,0:2]
+
+
+# In[155]:
+
+
+plt.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['glass'], color=colormats[0])
+plt.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['silicon'],
+        bottom=modmats_emit_2100_megatonne[0:5]['glass'], color=colormats[1])
+plt.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['silver'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:2].sum(axis=1), color=colormats[2])
+plt.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['aluminium_frames'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:3].sum(axis=1), color=colormats[3])
+plt.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['copper'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:4].sum(axis=1), color=colormats[4])
+plt.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['encapsulant'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:5].sum(axis=1), color=colormats[5])
+plt.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['backsheet'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:6].sum(axis=1), color=colormats[6])
+plt.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['module'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:7].sum(axis=1), color='black')
+
+
+# In[159]:
+
+
+fig_cumuemit_modmat, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
+                                      gridspec_kw={'wspace': 0, 'width_ratios': [1.5,1,1.5]})
+#BAU
+ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['glass'], color=colormats[0])
+ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['silicon'],
+        bottom=modmats_emit_2100_megatonne[0:5]['glass'], color=colormats[1])
+ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['silver'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:2].sum(axis=1), color=colormats[2])
+ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['aluminium_frames'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:3].sum(axis=1), color=colormats[3])
+ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['copper'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:4].sum(axis=1), color=colormats[4])
+ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['encapsulant'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:5].sum(axis=1), color=colormats[5])
+ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['backsheet'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:6].sum(axis=1), color=colormats[6])
+ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['module'],
+       bottom=modmats_emit_2100_megatonne.iloc[0:5,0:7].sum(axis=1), color='black')
+
+ax0.set_ylim(0,31000)
+ax0.set_ylabel('Cumulative Carbon Emissions\n[million metric tonnes CO2eq]', fontsize=20)
+ax0.set_title('Baseline', fontsize=14)
+ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
+ax0.grid(axis='y', color='0.9', ls='--') 
+ax0.set_axisbelow(True)
+
+#Extreme
+ax2.bar(scennames_labels[5:8], modmats_emit_2100_megatonne[5:8]['glass'], color=colormats[0])
+ax2.bar(scennames_labels[5:8], modmats_emit_2100_megatonne[5:8]['silicon'],
+        bottom=modmats_emit_2100_megatonne[5:8]['glass'], color=colormats[1])
+ax2.bar(scennames_labels[5:8], modmats_emit_2100_megatonne[5:8]['silver'],
+       bottom=modmats_emit_2100_megatonne.iloc[5:8,0:2].sum(axis=1), color=colormats[2])
+ax2.bar(scennames_labels[5:8], modmats_emit_2100_megatonne[5:8]['aluminium_frames'],
+       bottom=modmats_emit_2100_megatonne.iloc[5:8,0:3].sum(axis=1), color=colormats[3])
+ax2.bar(scennames_labels[5:8], modmats_emit_2100_megatonne[5:8]['copper'],
+       bottom=modmats_emit_2100_megatonne.iloc[5:8,0:4].sum(axis=1), color=colormats[4])
+ax2.bar(scennames_labels[5:8], modmats_emit_2100_megatonne[5:8]['encapsulant'],
+       bottom=modmats_emit_2100_megatonne.iloc[5:8,0:5].sum(axis=1), color=colormats[5])
+ax2.bar(scennames_labels[5:8], modmats_emit_2100_megatonne[5:8]['backsheet'],
+       bottom=modmats_emit_2100_megatonne.iloc[5:8,0:6].sum(axis=1), color=colormats[6])
+ax2.bar(scennames_labels[5:8], modmats_emit_2100_megatonne[5:8]['module'],
+       bottom=modmats_emit_2100_megatonne.iloc[5:8,0:7].sum(axis=1), color='black')
+
+ax2.set_title('Extreme', fontsize=14)
+ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
+ax2.grid(axis='y', color='0.9', ls='--') 
+ax2.set_axisbelow(True)
+
+#Ambitious
+ax3.bar(scennames_labels[8:], modmats_emit_2100_megatonne[8:]['glass'], color=colormats[0])
+ax3.bar(scennames_labels[8:], modmats_emit_2100_megatonne[8:]['silicon'],
+        bottom=modmats_emit_2100_megatonne[8:]['glass'], color=colormats[1])
+ax3.bar(scennames_labels[8:], modmats_emit_2100_megatonne[8:]['silver'],
+       bottom=modmats_emit_2100_megatonne.iloc[8:,0:2].sum(axis=1), color=colormats[2])
+ax3.bar(scennames_labels[8:], modmats_emit_2100_megatonne[8:]['aluminium_frames'],
+       bottom=modmats_emit_2100_megatonne.iloc[8:,0:3].sum(axis=1), color=colormats[3])
+ax3.bar(scennames_labels[8:], modmats_emit_2100_megatonne[8:]['copper'],
+       bottom=modmats_emit_2100_megatonne.iloc[8:,0:4].sum(axis=1), color=colormats[4])
+ax3.bar(scennames_labels[8:], modmats_emit_2100_megatonne[8:]['encapsulant'],
+       bottom=modmats_emit_2100_megatonne.iloc[8:,0:5].sum(axis=1), color=colormats[5])
+ax3.bar(scennames_labels[8:], modmats_emit_2100_megatonne[8:]['backsheet'],
+       bottom=modmats_emit_2100_megatonne.iloc[8:,0:6].sum(axis=1), color=colormats[6])
+ax3.bar(scennames_labels[8:], modmats_emit_2100_megatonne[8:]['module'],
+       bottom=modmats_emit_2100_megatonne.iloc[8:,0:7].sum(axis=1), color='black')
+
+
+ax3.set_title('Ambitious', fontsize=14)
+ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.9', ls='--') 
+ax3.set_axisbelow(True)
+
+#overall fig
+
+fig_cumuemit_modmat.suptitle('Cumulative Emisisons in 2100 by material', fontsize=24)
+plt.show()
+
+#fig_cumuemit_modmat.savefig('energyresults-energyBalance.png', dpi=300, bbox_inches='tight')
+
+
+# # Cumulative Carbon in 2050 and 2100
+
+# In[41]:
+
+
+#mins in 2050 and 2100
+cumu_carbon_2050 = sim_cumu_carbon.loc[2050].filter(like='Annual_Emit_total_modmats')/1e12
+cumu_carbon_2100 = sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats')/1e12
+cumu_carbon_rankings_crittime = pd.concat([cumu_carbon_2050,cumu_carbon_2100], axis=1)
+cumu_carbon_rankings_crittime.index = scennames_labels_flat
+cumu_carbon_rankings_crittime
+
+
+# In[58]:
+
+
+cumu_carbon_rankings_crittime_plot = cumu_carbon_rankings_crittime.copy()
+cumu_carbon_rankings_crittime_plot['diff'] = cumu_carbon_rankings_crittime[2100]-cumu_carbon_rankings_crittime[2050]
+
+
+# In[76]:
+
+
+
+fig_cumulativeemit, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
+                                      gridspec_kw={'wspace': 0, 'width_ratios': [1.5,1,1.5]})
+#BAU
+ax0.bar(cumu_carbon_rankings_crittime_plot.index[0:5], cumu_carbon_rankings_crittime_plot[2050].iloc[0:5],
+        tick_label=scennames_labels[0:5], color=colorpalette[0:5], alpha = 0.7, edgecolor='white')
+ax0.bar(cumu_carbon_rankings_crittime_plot.index[0:5], cumu_carbon_rankings_crittime_plot['diff'].iloc[0:5],
+        bottom=cumu_carbon_rankings_crittime_plot[2050].iloc[0:5],
+        tick_label=scennames_labels[0:5], color=colorpalette[0:5])
+ax0.set_ylim(0,31000)
+ax0.set_ylabel('Cumulative Carbon Emissions\n[million metric tonnes CO2eq]', fontsize=20)
+ax0.set_title('Baseline', fontsize=14)
+ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
+ax0.grid(axis='y', color='0.9', ls='--') 
+ax0.set_axisbelow(True)
+
+#Extreme
+ax2.bar(cumu_carbon_rankings_crittime_plot.index[5:8], cumu_carbon_rankings_crittime_plot[2050].iloc[5:8],
+        tick_label=scennames_labels[5:8], color=colorpalette[5:8], alpha = 0.7, edgecolor='white')
+ax2.bar(cumu_carbon_rankings_crittime_plot.index[5:8], cumu_carbon_rankings_crittime_plot['diff'].iloc[5:8],
+        bottom=cumu_carbon_rankings_crittime_plot[2050].iloc[5:8],
+        tick_label=scennames_labels[5:8], color=colorpalette[5:8])
+ax2.set_title('Extreme', fontsize=14)
+ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
+ax2.grid(axis='y', color='0.9', ls='--') 
+ax2.set_axisbelow(True)
+
+#Ambitious
+ax3.bar(cumu_carbon_rankings_crittime_plot.index[8:], cumu_carbon_rankings_crittime_plot[2050].iloc[8:],
+        tick_label=scennames_labels[8:], color=colorpalette[8:], hatch='x', edgecolor='white', alpha=0.7)
+ax3.bar(cumu_carbon_rankings_crittime_plot.index[8:], cumu_carbon_rankings_crittime_plot['diff'].iloc[8:],
+        bottom=cumu_carbon_rankings_crittime_plot[2050].iloc[8:],
+        tick_label=scennames_labels[8:], color=colorpalette[8:], hatch='x', edgecolor='white')
+ax3.set_title('Ambitious', fontsize=14)
+ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.9', ls='--') 
+ax3.set_axisbelow(True)
+
+#overall fig
+
+fig_cumulativeemit.suptitle('Cumulative Emisisons in 2050, 2100', fontsize=24)
+plt.show()
+
+#fig_eBalance.savefig('energyresults-energyBalance.png', dpi=300, bbox_inches='tight')
+
+
+# # 
+
 # In[ ]:
 
 
@@ -360,60 +579,11 @@ for scen in scenarios:
 # In[ ]:
 
 
-scen_cumu_carbon = scen_annual_carbon.cumsum()
-
-
-# In[ ]:
-
-
-scen_cumu_carbon.loc[55,'Annual_Emit_total_gCO2eq']/1e12
-
-
-# In[ ]:
-
-
-scen_annual_carbon.columns
-
-
-# In[ ]:
-
-
 
 
 
 # In[ ]:
 
 
-#https://www.learnui.design/tools/data-color-picker.html#palette
-#color pallette - modify here for all graphs below
-colorpalette=['#000000', #PV ICE baseline
-              '#595959', '#7F7F7F', '#A6A6A6', '#D9D9D9', #BAU, 4 grays, perc, shj, topcon, irena
-              #'#067872','#0aa39e','#09d0cd','#00ffff', #realistic cases (4) teals, perc, shj, topcon, irena
-              '#0579C1','#C00000','#FFC000', #extreme cases (3) long life, high eff, circular
-                '#6E30A0','#00B3B5','#10C483', #ambitious modules (5) high eff+ long life, 50 yr perc, recycleSi, 
-               '#97CB3F','#FF7E00' #circular perovskite+life, circular perovkiste+ high eff
-                ] 
 
-colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B'] #colors for material plots       
-
-import matplotlib as mpl #import matplotlib
-from cycler import cycler #import cycler
-mpl.rcParams['axes.prop_cycle'] = cycler(color=colorpalette) #reset the default color palette of mpl
-
-plt.rcParams.update({'font.size': 14})
-plt.rcParams['figure.figsize'] = (8, 6)
-
-scennames_labels = ['PV_ICE','PERC','SHJ','TOPCon','Low\nQuality',
-                         'Long-Lived','High Eff','Circular',
-                        'High Eff\n+ Long-life','Long-Life\n+ Recycling',
-                         'Recycled-Si\n+ Long-life','Circular\n+ Long-life',
-                        'Circular\n+ High Eff'
-                    ]  
-
-scennames_labels_flat = ['PV_ICE','PERC','SHJ','TOPCon','Low Quality',
-                         'Long-Lived','High Eff','Circular',
-                        'High Eff + Long-life','Long-Life + Recycling',
-                         'Recycled-Si + Long-life','Circular + Long-life',
-                        'Circular + High Eff'
-                    ] 
 

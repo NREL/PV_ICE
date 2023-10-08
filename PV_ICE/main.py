@@ -1690,7 +1690,7 @@ class Simulation:
             for country in countrylist:
                 temp_country_carbon = []
                 for fuel in fuellist: 
-                    fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_gpWh_ember']
+                    fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_gpWh_IPCC2006']
                     fuelemitfactor = list(fuelemitfactor)[0]
                     if str(country+'_'+fuel) in countrygridmixes:
                         countryfuel = countrygridmixes[str(country+'_'+fuel)]
