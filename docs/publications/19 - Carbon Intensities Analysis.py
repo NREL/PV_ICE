@@ -300,7 +300,7 @@ sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats')
 # In[21]:
 
 
-colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
+#colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
 for scen in scenarios:
 
     scen_cumu_carbon = sim_cumu_carbon.filter(like='Annual_Emit').filter(like=scen)/1e12 #million tonnes
@@ -522,7 +522,7 @@ plt.show()
 # ## Process emission summing
 #  This only happens on the material files
 
-# In[47]:
+# In[120]:
 
 
 process_emissions = pd.DataFrame()
@@ -534,18 +534,15 @@ for scen in scenarios:
     scen_p_sum = scen_p.sum(axis=1)
     process_emissions = pd.concat([process_emissions,scen_p_sum], axis=1)
 
-
-# In[49]:
-
-
 process_emissions.columns = scennames_labels_flat
-process_emissions
+process_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
+process_emissions_cumu = process_emissions.cumsum()
 
 
 # ## Fuel Emissions
 # This is capturing steam and heating fuel
 
-# In[54]:
+# In[121]:
 
 
 fuel_emissions = pd.DataFrame()
@@ -555,21 +552,17 @@ for scen in scenarios:
     fuel_emissions = pd.concat([fuel_emissions,scen_f_sum], axis=1)
     
 fuel_emissions.columns = scennames_labels_flat
-
-
-# In[55]:
-
-
-fuel_emissions
+fuel_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
+fuel_emissions_cumu = fuel_emissions.cumsum()
 
 
 # ## Electricity Emissions
 # both module and material level elec.
 
-# In[76]:
+# In[122]:
 
 
-
+elec_emissions = pd.DataFrame()
 for scen in scenarios:
     scen_mod_elec = sim_annual_carbon.filter(like=scen).filter(like='Annual_Emit_mod') #module elec lifecycle energy
     
@@ -578,12 +571,98 @@ for scen in scenarios:
     scen_mat_elecs = sim_carbon_results.loc[:,sim_carbon_results.columns.str.contains(mat_elecs_search)].filter(like=scen)
     
     #sum them together by scen
+    scen_mat_elecs_sum = scen_mat_elecs.sum(axis=1)
+    scen_elec_modmat_annual_sum = scen_mat_elecs_sum+scen_mod_elec.iloc[:,0]
+    elec_emissions = pd.concat([elec_emissions,scen_elec_modmat_annual_sum], axis=1)
+    
+elec_emissions.columns=scennames_labels_flat
+elec_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
+elec_emissions_cumu = elec_emissions.cumsum()
 
 
-# In[77]:
+# In[123]:
 
 
-scen_mat_elecs
+#(elec_emissions+fuel_emissions+process_emissions) vs sim_annual_carbon
+#TO DO: I have a double counting or missing data problem somewhere, these should add to the same I think.
+
+
+# In[124]:
+
+
+#graphing by emission source
+efp_emit_total = elec_emissions+fuel_emissions+process_emissions
+
+
+# In[125]:
+
+
+efp_emit_total.index
+
+
+# In[126]:
+
+
+#graphing by emission source, annual
+#efp_emit_total = elec_emissions+fuel_emissions+process_emissions
+
+for scen in scennames_labels_flat:
+    
+    plt.plot([],[],color='black', label='process')
+    plt.plot([],[],color='darkred', label='fuel')
+    plt.plot([],[],color='blue', label='electricity')
+
+    plt.stackplot(elec_emissions.index,
+                  process_emissions[scen]/1e12, 
+                  fuel_emissions[scen]/1e12,
+                  elec_emissions[scen]/1e12, 
+                  colors = ['black','darkred','blue'])
+    plt.title(scen+':\nGHG Emissions Annually by Source')
+    plt.ylabel('GHG Emissions Annually from Lifecycle Source\n[million metric tonnes CO2eq]')
+    plt.xlim(2000,2100)
+    plt.ylim(0,)
+
+    handles, labels = plt.gca().get_legend_handles_labels()
+#specify order of items in legend
+#order = [1,2,0]
+#add legend to plot
+#plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
+    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
+
+#plt.legend()
+    plt.show()
+
+
+# In[128]:
+
+
+#graphing by emission source, annual
+
+for scen in scennames_labels_flat:
+    
+    plt.plot([],[],color='black', label='process')
+    plt.plot([],[],color='darkred', label='fuel')
+    plt.plot([],[],color='blue', label='electricity')
+
+    plt.stackplot(elec_emissions_cumu.index,
+                  process_emissions_cumu[scen]/1e12, 
+                  fuel_emissions_cumu[scen]/1e12,
+                  elec_emissions_cumu[scen]/1e12, 
+                  colors = ['black','darkred','blue'])
+    plt.title(scen+':\nGHG Emissions Annually by Source')
+    plt.ylabel('GHG Emissions Annually from Lifecycle Source\n[million metric tonnes CO2eq]')
+    plt.xlim(2000,2100)
+    plt.ylim(0,maxy)
+
+    handles, labels = plt.gca().get_legend_handles_labels()
+#specify order of items in legend
+#order = [1,2,0]
+#add legend to plot
+#plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
+    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
+
+#plt.legend()
+    plt.show()
 
 
 # In[ ]:
