@@ -213,71 +213,52 @@ sim_carbon_dfs.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 #return sim_carbon_results, sim_annual_carbon
 
 
-# In[18]:
+# In[21]:
 
 
-scen
-
-
-# In[19]:
-
-
-sim_carbon_dfs.filter(like=scen).filter(like='Global')
-
-
-# In[ ]:
-
-
-#Do math on the carbon dfs
+#Do math on the carbon dfs, take in the output aggregate sim df
 sim_annual_carbon = pd.DataFrame()
 for scen in scenarios:
-    #print(scen)
-    #mod annual carbon calcs here (selecting to avoid double counting)
-    mod_mfg_carbon_total = mod_carbon_scen_results.filter(like='Global_mod_MFG_gCO2eq') #annual mfging elec carbon
-
+    mod_mfg_carbon_total = sim_carbon_dfs.filter(like=scen).filter(like='Global_mod_MFG') #annual mfging elec carbon
     mod_nonvMFG = ['Install','OandM','Repair','Demount','Store','Resell','ReMFG','Recycle'] #could remove from loop
     nonvMFG_search = '|'.join(mod_nonvMFG) #create nonRE search
-    mod_carbon_sum_nonvmfg = mod_carbon_scen_results.loc[:,mod_carbon_scen_results.columns.str.contains(nonvMFG_search)] #annual non mfging carbon
+    mod_carbon_sum_nonvmfg = sim_carbon_dfs.loc[:,sim_carbon_dfs.columns.str.contains(nonvMFG_search)].filter(like=scen).filter(like='_mod_') #annual non mfging carbon
     scen_annual_carbon_mod = pd.concat([mod_mfg_carbon_total,mod_carbon_sum_nonvmfg], axis=1)
-    scen_annual_carbon_mod[scen+'_Annual_Emit_mod_gCO2eq'] = scen_annual_carbon_mod.sum(axis=1)
+    scen_annual_carbon_mod[scen+'_Annual_Emit_mod_elec_gCO2eq'] = scen_annual_carbon_mod.sum(axis=1)
 
-    scenmatdc = pd.DataFrame()
+    scenmatdcmaths = pd.DataFrame()
     for mat in MATERIALS:
-        print(mat)
-        mat_carbon_scen_results = sim1.scenario[scen].material[mat].matdataOut_c.add_prefix(str(scen+'_'+mat+'_')) 
-        
+        scen_mat_dc_temp = sim_carbon_dfs.filter(like=scen).filter(like=mat)
         #calculation for annual carbon emissions total (selecting to avoid double countings)
-        mat_vmfg_total = mat_carbon_scen_results.filter(like='vMFG_total')
-        mat_ce_recycle = mat_carbon_scen_results.filter(like='Recycle_e_p')
-        mat_ce_remfg = mat_carbon_scen_results.filter(like='ReMFG_clean')
-        mat_landfill = mat_carbon_scen_results.filter(like='landfill_total')
-        mat_scen_annual_carbon = pd.concat([mat_vmfg_total,mat_ce_recycle,mat_ce_remfg,mat_landfill], axis=1)
-        mat_scen_annual_carbon[scen+'_Annual_Emit_'+mat+'_gCO2eq'] = mat_scen_annual_carbon.sum(axis=1)
+        mat_global_vmfg_elec = scen_mat_dc_temp.filter(like='Global_vmfg_elec') #select global mod mfging
+        mat_vmfg_countries = scen_mat_dc_temp.filter(like='vmfg_elec') #select country specific mod mfging, includes global
+        mat_emit_lifecycle = scen_mat_dc_temp.loc[:,~scen_mat_dc_temp.columns.isin(mat_vmfg_countries.columns)] #select everything not the two above
         
-        scenmatdc = pd.concat([scenmatdc,mat_carbon_scen_results,
-                               mat_scen_annual_carbon[scen+'_Annual_Emit_'+mat+'_gCO2eq']], axis=1) #group all material dc
+        scen_mat_annual_carbon = pd.concat([mat_global_vmfg_elec,mat_emit_lifecycle], axis=1) #group global mod, lifecycle
+        scen_mat_annual_carbon[scen+'_Annual_Emit_'+mat+'_gCO2eq'] = scen_mat_annual_carbon.sum(axis=1) #sum annual emit
+        
+        scenmatdcmaths = pd.concat([scenmatdcmaths,scen_mat_annual_carbon], axis=1)
+        #add by material
+        #add by process, fuel, elec
+        
+        #mat_ce_recycle = mat_carbon_scen_results.filter(like='Recycle_e_p')
+        #mat_ce_remfg = mat_carbon_scen_results.filter(like='ReMFG_clean')
+        #mat_landfill = mat_carbon_scen_results.filter(like='landfill_total')
+        #mat_scen_annual_carbon = pd.concat([mat_vmfg_total,mat_ce_recycle,mat_ce_remfg,mat_landfill], axis=1)
+    scen_modmat_annual_carbon = pd.concat([scen_annual_carbon_mod,scenmatdcmaths], axis=1)
+    scen_modmat_annual_carbon[scen+'_Annual_Emit_total_modmats_gCO2eq'] = scen_modmat_annual_carbon.sum(axis=1)
     
-    scen_carbon_results = pd.concat([mod_carbon_scen_results,scenmatdc], axis=1) #append mats to mod
-    sim_carbon_results = pd.concat([sim_carbon_results, scen_carbon_results], axis=1) #append all scens "raw" data
-    
-    #calculate annual carbon emits with grouping by mod and mat
-    scen_mats_annual_carbon = scenmatdc.filter(like='Annual_Emit')
-    scen_mod_annual_carbon = scen_annual_carbon_mod.filter(like='Annual_Emit_mod')
-    scen_annual_carbon = pd.concat([scen_mod_annual_carbon,scen_mats_annual_carbon], axis=1)
-    scen_annual_carbon[scen+'_Annual_Emit_total_modmats_gCO2eq'] = scen_annual_carbon.sum(axis=1)
-    sim_annual_carbon = pd.concat([sim_annual_carbon,scen_annual_carbon], axis=1)
-    
+    sim_annual_carbon = pd.concat([sim_annual_carbon, scen_modmat_annual_carbon], axis=1)
+
+
     #FIX INDEX of dfs
 sim_annual_carbon.index = pd.RangeIndex(start=2000,stop=2101,step=1)
-sim_carbon_results.index = pd.RangeIndex(start=2000,stop=2101,step=1)
-    
-#return sim_carbon_results, sim_annual_carbon
 
 
 # In[ ]:
 
 
-sim_annual_carbon
+sim_annual_carbon.filter(like='Annual_Emit_total_modmats')
 
 
 # # Cabon Emissions by material or module
