@@ -1718,7 +1718,7 @@ class Simulation:
             #print(modmfg_gco2eqpwh_bycountry['China'].iloc[-1])
             #carbon impacts module mfging wtd by country
             dc = modmfg_gco2eqpwh_bycountry.mul(de['mod_MFG'], axis=0)
-            dc.rename(columns={'Global_Sum_gCO2eqpWh':'Global'}, inplace=True)
+            dc.rename(columns={'Global_gCO2eqpwh':'Global'}, inplace=True)
             dc = dc.add_suffix('_mod_MFG_gCO2eq')
             
             #carbon impacts other module level steps
@@ -1774,15 +1774,15 @@ class Simulation:
                     
                     #fuel CO2 impacts
                     steamHeat = list(gridemissionfactors[gridemissionfactors['Energy Source']=='SteamAndHeat']['CO2_gpWh_EPA'])[0]
-                    dcmat['mat_MFG_virgin_fuel_gCO2eq'] = demat['mat_MFG_virgin_fuel']*steamHeat #CO2 from mfging fuels
+                    dcmat['mat_vmfg_fuel_gCO2eq'] = demat['mat_MFG_virgin_fuel']*steamHeat #CO2 from mfging fuels
                     dcmat['mat_MFGScrap_HQ_fuel_gCO2eq'] = demat['mat_MFGScrap_HQ_fuel']*steamHeat #CO2 from mfging scrap recycling fuels
                     dcmat['mat_landfill_fuel_gCO2eq'] = demat['mat_Landfill_fuel']*steamHeat
                     dcmat['mat_Recycled_HQ_fuel_gCO2eq'] = demat['mat_Recycled_HQ_fuel']*steamHeat #co2 from eol recycling fuels
                     
                     #circular paths electricity in target country
                     dcmat['mat_landfill_elec_gCO2eq'] = (demat['mat_Landfill']-demat['mat_Landfill_fuel'])*country_carbonpwh[country_deploy]
-                    dcmat['mat_EoL_ReMFG_clean_gCO2eq'] = demat['mat_EoL_ReMFG_clean']*country_carbonpwh[country_deploy]
-                    dcmat['mat_Recycled_LQ_gCO2eq'] = demat['mat_Recycled_LQ']*country_carbonpwh[country_deploy]
+                    dcmat['mat_EoL_ReMFG_clean_elec_gCO2eq'] = demat['mat_EoL_ReMFG_clean']*country_carbonpwh[country_deploy]
+                    dcmat['mat_Recycled_LQ_elec_gCO2eq'] = demat['mat_Recycled_LQ']*country_carbonpwh[country_deploy]
                     dcmat['mat_Recycled_HQ_elec_gCO2eq'] = demat['mat_Recycled_HQ_elec']*country_carbonpwh[country_deploy]
                     
                     #CO2 process emissions from MFGing (v, lq, hq)
@@ -1790,16 +1790,16 @@ class Simulation:
                     dcmat['mat_vMFG_p_gCO2eq'] = dm['mat_Virgin_Stock']*materialprocesscarbon.loc[mat,'v_MFG_gCO2eqpg']
                     dcmat['mat_LQmfg_p_gCO2eq'] = dm['mat_MFG_Scrap_Sentto_Recycling']*materialprocesscarbon.loc[mat,'LQ_Recycle_gCO2eqpg']
                     dcmat['mat_LQeol_p_gCO2eq'] = dm['mat_recycled_target']*materialprocesscarbon.loc[mat,'LQ_Recycle_gCO2eqpg']
-                    dcmat['mat_LQ_p_gCO2eq'] = dcmat['mat_LQmfg_p_gCO2eq']+dcmat['mat_LQeol_p_gCO2eq']
+                    #dcmat['mat_LQ_p_gCO2eq'] = dcmat['mat_LQmfg_p_gCO2eq']+dcmat['mat_LQeol_p_gCO2eq']
                     dcmat['mat_HQmfg_p_gCO2eq'] = dm['mat_MFG_Recycled_into_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_gCO2eqpg']
                     dcmat['mat_HQeol_p_gCO2eq'] = dm['mat_EOL_Recycled_2_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_gCO2eqpg']
-                    dcmat['mat_HQ_p_gCO2eq'] = dcmat['mat_HQmfg_p_gCO2eq']+dcmat['mat_HQeol_p_gCO2eq'] 
+                    #dcmat['mat_HQ_p_gCO2eq'] = dcmat['mat_HQmfg_p_gCO2eq']+dcmat['mat_HQeol_p_gCO2eq'] 
                 
                     #sum carbon stuff
-                    dcmat['mat_vMFG_energy_gCO2eq'] = dcmat['Global_vmfg_elec_gCO2eq']+dcmat['mat_MFG_virgin_fuel_gCO2eq']
-                    dcmat['mat_vMFG_total_gCO2eq'] = dcmat['mat_vMFG_energy_gCO2eq']+dcmat['mat_vMFG_p_gCO2eq']
-                    dcmat['mat_Recycle_e_p_gCO2eq'] = dcmat['mat_HQ_p_gCO2eq'] + dcmat['mat_LQ_p_gCO2eq'] + dcmat['mat_MFGScrap_HQ_fuel_gCO2eq']+dcmat['mat_Recycled_LQ_gCO2eq']+dcmat['mat_Recycled_HQ_elec_gCO2eq']
-                    dcmat['mat_landfill_total_gCO2eq'] = dcmat['mat_landfill_elec_gCO2eq'] + dcmat['mat_landfill_fuel_gCO2eq']
+                    #dcmat['mat_vMFG_energy_gCO2eq'] = dcmat['Global_vmfg_elec_gCO2eq']+dcmat['mat_vmfg_fuel_gCO2eq']
+                    #dcmat['mat_vMFG_total_gCO2eq'] = dcmat['mat_vMFG_energy_gCO2eq']+dcmat['mat_vMFG_p_gCO2eq']
+                    #dcmat['mat_Recycle_e_p_gCO2eq'] = dcmat['mat_HQ_p_gCO2eq'] + dcmat['mat_LQ_p_gCO2eq'] + dcmat['mat_MFGScrap_HQ_fuel_gCO2eq']+dcmat['mat_Recycled_LQ_gCO2eq']+dcmat['mat_Recycled_HQ_elec_gCO2eq']
+                    #dcmat['mat_landfill_total_gCO2eq'] = dcmat['mat_landfill_elec_gCO2eq'] + dcmat['mat_landfill_fuel_gCO2eq']
                 
                     self.scenario[scen].material[mat].matdataOut_c = dcmat
                 

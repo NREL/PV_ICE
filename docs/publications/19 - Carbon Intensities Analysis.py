@@ -191,14 +191,49 @@ scenarios = sim1.scenario
 # In[17]:
 
 
-sim_carbon_results = pd.DataFrame()
-sim_annual_carbon = pd.DataFrame()
+#simply group mod and mats carbon dfs by scenario
+sim_carbon_dfs = pd.DataFrame()
+
 for scen in scenarios:
     print(scen)
     mod_carbon_scen_results = sim1.scenario[scen].dataOut_c.add_prefix(str(scen+'_'))
     
+    scenmatdc = pd.DataFrame()
+    for mat in MATERIALS:
+        print(mat)
+        mat_carbon_scen_results = sim1.scenario[scen].material[mat].matdataOut_c.add_prefix(str(scen+'_'+mat+'_')) 
+        scenmatdc = pd.concat([scenmatdc,mat_carbon_scen_results], axis=1) #group all material dc
+    
+    scen_carbon_results = pd.concat([mod_carbon_scen_results,scenmatdc], axis=1) #append mats to mod
+    sim_carbon_dfs = pd.concat([sim_carbon_dfs, scen_carbon_results], axis=1) #append all scens "raw" data
+
+#FIX INDEX of dfs
+sim_carbon_dfs.index = pd.RangeIndex(start=2000,stop=2101,step=1)
+    
+#return sim_carbon_results, sim_annual_carbon
+
+
+# In[18]:
+
+
+scen
+
+
+# In[19]:
+
+
+sim_carbon_dfs.filter(like=scen).filter(like='Global')
+
+
+# In[ ]:
+
+
+#Do math on the carbon dfs
+sim_annual_carbon = pd.DataFrame()
+for scen in scenarios:
+    #print(scen)
     #mod annual carbon calcs here (selecting to avoid double counting)
-    mod_mfg_carbon_total = mod_carbon_scen_results.filter(like='Global_gCO2eqpwh_mod_MFG_gCO2eq') #annual mfging carbon
+    mod_mfg_carbon_total = mod_carbon_scen_results.filter(like='Global_mod_MFG_gCO2eq') #annual mfging elec carbon
 
     mod_nonvMFG = ['Install','OandM','Repair','Demount','Store','Resell','ReMFG','Recycle'] #could remove from loop
     nonvMFG_search = '|'.join(mod_nonvMFG) #create nonRE search
@@ -239,15 +274,15 @@ sim_carbon_results.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 #return sim_carbon_results, sim_annual_carbon
 
 
-# In[18]:
+# In[ ]:
 
 
-sim_carbon_results
+sim_annual_carbon
 
 
 # # Cabon Emissions by material or module
 
-# In[19]:
+# In[ ]:
 
 
 for scen in scenarios:
@@ -289,7 +324,7 @@ for scen in scenarios:
     plt.show()
 
 
-# In[20]:
+# In[ ]:
 
 
 sim_cumu_carbon = sim_annual_carbon.cumsum()
@@ -297,7 +332,7 @@ maxy = round(sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats').
 sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats')
 
 
-# In[21]:
+# In[ ]:
 
 
 #colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
@@ -341,13 +376,13 @@ for scen in scenarios:
     plt.show()
 
 
-# In[22]:
+# In[ ]:
 
 
 sim_cumu_carbon
 
 
-# In[23]:
+# In[ ]:
 
 
 #create a df from which to do a bar chart of 2100 emissions by mat/mod
@@ -365,7 +400,7 @@ modmats_emit_2100_megatonne = modmats_emit_2100/1e12
 modmats_emit_2100_megatonne
 
 
-# In[24]:
+# In[ ]:
 
 
 fig_cumuemit_modmat, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
@@ -449,7 +484,7 @@ plt.show()
 
 # # Cumulative Carbon in 2050 and 2100
 
-# In[25]:
+# In[ ]:
 
 
 #mins in 2050 and 2100
@@ -460,14 +495,14 @@ cumu_carbon_rankings_crittime.index = scennames_labels_flat
 cumu_carbon_rankings_crittime
 
 
-# In[26]:
+# In[ ]:
 
 
 cumu_carbon_rankings_crittime_plot = cumu_carbon_rankings_crittime.copy()
 cumu_carbon_rankings_crittime_plot['diff'] = cumu_carbon_rankings_crittime[2100]-cumu_carbon_rankings_crittime[2050]
 
 
-# In[27]:
+# In[ ]:
 
 
 
@@ -522,7 +557,7 @@ plt.show()
 # ## Process emission summing
 #  This only happens on the material files
 
-# In[120]:
+# In[ ]:
 
 
 process_emissions = pd.DataFrame()
@@ -542,7 +577,7 @@ process_emissions_cumu = process_emissions.cumsum()
 # ## Fuel Emissions
 # This is capturing steam and heating fuel
 
-# In[121]:
+# In[ ]:
 
 
 fuel_emissions = pd.DataFrame()
@@ -559,7 +594,7 @@ fuel_emissions_cumu = fuel_emissions.cumsum()
 # ## Electricity Emissions
 # both module and material level elec.
 
-# In[122]:
+# In[ ]:
 
 
 elec_emissions = pd.DataFrame()
@@ -580,27 +615,27 @@ elec_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 elec_emissions_cumu = elec_emissions.cumsum()
 
 
-# In[123]:
+# In[ ]:
 
 
 #(elec_emissions+fuel_emissions+process_emissions) vs sim_annual_carbon
 #TO DO: I have a double counting or missing data problem somewhere, these should add to the same I think.
 
 
-# In[124]:
+# In[ ]:
 
 
 #graphing by emission source
 efp_emit_total = elec_emissions+fuel_emissions+process_emissions
 
 
-# In[125]:
+# In[ ]:
 
 
 efp_emit_total.index
 
 
-# In[126]:
+# In[ ]:
 
 
 #graphing by emission source, annual
@@ -633,7 +668,7 @@ for scen in scennames_labels_flat:
     plt.show()
 
 
-# In[128]:
+# In[ ]:
 
 
 #graphing by emission source, annual
