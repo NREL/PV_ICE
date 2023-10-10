@@ -182,13 +182,13 @@ sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE20502100)
 # # Carbon Analysis
 # this will become the aggregate carbon results function
 
-# In[16]:
+# In[28]:
 
 
 scenarios = sim1.scenario
 
 
-# In[17]:
+# In[29]:
 
 
 #simply group mod and mats carbon dfs by scenario
@@ -213,7 +213,7 @@ sim_carbon_dfs.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 #return sim_carbon_results, sim_annual_carbon
 
 
-# In[21]:
+# In[30]:
 
 
 #Do math on the carbon dfs, take in the output aggregate sim df
@@ -246,7 +246,7 @@ for scen in scenarios:
         #mat_landfill = mat_carbon_scen_results.filter(like='landfill_total')
         #mat_scen_annual_carbon = pd.concat([mat_vmfg_total,mat_ce_recycle,mat_ce_remfg,mat_landfill], axis=1)
     scen_modmat_annual_carbon = pd.concat([scen_annual_carbon_mod,scenmatdcmaths], axis=1)
-    scen_modmat_annual_carbon[scen+'_Annual_Emit_total_modmats_gCO2eq'] = scen_modmat_annual_carbon.sum(axis=1)
+    scen_modmat_annual_carbon[scen+'_Annual_Emit_total_modmats_gCO2eq'] = scen_modmat_annual_carbon.filter(like='Annual_Emit').sum(axis=1)
     
     sim_annual_carbon = pd.concat([sim_annual_carbon, scen_modmat_annual_carbon], axis=1)
 
@@ -258,12 +258,12 @@ sim_annual_carbon.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 # In[ ]:
 
 
-sim_annual_carbon.filter(like='Annual_Emit_total_modmats')
+
 
 
 # # Cabon Emissions by material or module
 
-# In[ ]:
+# In[31]:
 
 
 for scen in scenarios:
@@ -288,7 +288,7 @@ for scen in scenarios:
                   scen_annual_carbon[scen+'_Annual_Emit_copper_gCO2eq'],
                   scen_annual_carbon[scen+'_Annual_Emit_encapsulant_gCO2eq'],
                   scen_annual_carbon[scen+'_Annual_Emit_backsheet_gCO2eq'],
-                  scen_annual_carbon[scen+'_Annual_Emit_mod_gCO2eq'],
+                  scen_annual_carbon[scen+'_Annual_Emit_mod_elec_gCO2eq'],
                   colors = colormats)
     plt.title(scen+':\nGHG Emissions Annually by Module and Material Lifecycle')
     plt.ylabel('GHG Emissions Annually from Lifecycle Mats and Mods\n[million metric tonnes CO2eq]')
@@ -299,21 +299,27 @@ for scen in scenarios:
 #order = [1,2,0]
 #add legend to plot
 #plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
-    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
+    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.45,1))
 
 #plt.legend()
     plt.show()
 
 
-# In[ ]:
+# In[37]:
 
 
 sim_cumu_carbon = sim_annual_carbon.cumsum()
-maxy = round(sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats').max()/1e12,-3)
-sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats')
+maxy = round(sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gCO2eq').max()/1e12,-3)
+sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gCO2eq')
 
 
-# In[ ]:
+# In[38]:
+
+
+maxy
+
+
+# In[40]:
 
 
 #colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
@@ -339,49 +345,49 @@ for scen in scenarios:
                   scen_cumu_carbon[scen+'_Annual_Emit_copper_gCO2eq'],
                   scen_cumu_carbon[scen+'_Annual_Emit_encapsulant_gCO2eq'],
                   scen_cumu_carbon[scen+'_Annual_Emit_backsheet_gCO2eq'],
-                  scen_cumu_carbon[scen+'_Annual_Emit_mod_gCO2eq'],
+                  scen_cumu_carbon[scen+'_Annual_Emit_mod_elec_gCO2eq'],
                   colors = colormats)
     plt.title(scen+':\nGHG Emissions Annually by Module and Material Lifecycle')
     plt.ylabel('GHG Emissions Annually from Lifecycle Mats and Mods\n[million metric tonnes CO2eq]')
     plt.xlim(2000,2100)
-    plt.ylim(0,maxy)
+    plt.ylim(0,maxy+1000)
 
     handles, labels = plt.gca().get_legend_handles_labels()
 #specify order of items in legend
 #order = [1,2,0]
 #add legend to plot
 #plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
-    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
+    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.45,1))
 
 #plt.legend()
     plt.show()
 
 
-# In[ ]:
+# In[46]:
 
 
-sim_cumu_carbon
+sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_mod_elec')
 
 
-# In[ ]:
+# In[47]:
 
 
 #create a df from which to do a bar chart of 2100 emissions by mat/mod
 mats_emit_2100 = pd.DataFrame() #index=scennames_labels_flat
 for mat in MATERIALS:
-    mat_emit_2100 = pd.Series(sim_cumu_carbon.loc[2100].filter(like=mat).values)
+    mat_emit_2100 = pd.Series(sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_'+mat).values)
     mats_emit_2100 = pd.concat([mats_emit_2100, mat_emit_2100], axis=1)
 
 mats_emit_2100
 mats_emit_2100.columns = MATERIALS
-modmats_emit_2100 = pd.concat([mats_emit_2100,pd.Series(sim_cumu_carbon.loc[2100].filter(like='mod_').values)], axis=1)
+modmats_emit_2100 = pd.concat([mats_emit_2100,pd.Series(sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_mod_elec').values)], axis=1)
 modmats_emit_2100.index = scennames_labels_flat
 modmats_emit_2100.rename(columns={0:'module'}, inplace=True)
 modmats_emit_2100_megatonne = modmats_emit_2100/1e12
 modmats_emit_2100_megatonne
 
 
-# In[ ]:
+# In[51]:
 
 
 fig_cumuemit_modmat, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
@@ -403,11 +409,11 @@ ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['backsheet'],
 ax0.bar(scennames_labels[0:5], modmats_emit_2100_megatonne[0:5]['module'],
        bottom=modmats_emit_2100_megatonne.iloc[0:5,0:7].sum(axis=1), color='black')
 
-ax0.set_ylim(0,31000)
+ax0.set_ylim(0,maxy+1000)
 ax0.set_ylabel('Cumulative Carbon Emissions\n[million metric tonnes CO2eq]', fontsize=20)
 ax0.set_title('Baseline', fontsize=14)
 ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
-ax0.grid(axis='y', color='0.9', ls='--') 
+ax0.grid(axis='y', color='0.6', ls='--') 
 ax0.set_axisbelow(True)
 
 #Extreme
@@ -429,7 +435,7 @@ ax2.bar(scennames_labels[5:8], modmats_emit_2100_megatonne[5:8]['module'],
 
 ax2.set_title('Extreme', fontsize=14)
 ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
-ax2.grid(axis='y', color='0.9', ls='--') 
+ax2.grid(axis='y', color='0.6', ls='--') 
 ax2.set_axisbelow(True)
 
 #Ambitious
@@ -452,7 +458,7 @@ ax3.bar(scennames_labels[8:], modmats_emit_2100_megatonne[8:]['module'],
 
 ax3.set_title('Ambitious', fontsize=14)
 ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
-ax3.grid(axis='y', color='0.9', ls='--') 
+ax3.grid(axis='y', color='0.6', ls='--') 
 ax3.set_axisbelow(True)
 
 #overall fig
@@ -465,7 +471,7 @@ plt.show()
 
 # # Cumulative Carbon in 2050 and 2100
 
-# In[ ]:
+# In[52]:
 
 
 #mins in 2050 and 2100
@@ -476,14 +482,14 @@ cumu_carbon_rankings_crittime.index = scennames_labels_flat
 cumu_carbon_rankings_crittime
 
 
-# In[ ]:
+# In[53]:
 
 
 cumu_carbon_rankings_crittime_plot = cumu_carbon_rankings_crittime.copy()
 cumu_carbon_rankings_crittime_plot['diff'] = cumu_carbon_rankings_crittime[2100]-cumu_carbon_rankings_crittime[2050]
 
 
-# In[ ]:
+# In[56]:
 
 
 
@@ -495,11 +501,11 @@ ax0.bar(cumu_carbon_rankings_crittime_plot.index[0:5], cumu_carbon_rankings_crit
 ax0.bar(cumu_carbon_rankings_crittime_plot.index[0:5], cumu_carbon_rankings_crittime_plot['diff'].iloc[0:5],
         bottom=cumu_carbon_rankings_crittime_plot[2050].iloc[0:5],
         tick_label=scennames_labels[0:5], color=colorpalette[0:5])
-ax0.set_ylim(0,31000)
+ax0.set_ylim(0,maxy+1000)
 ax0.set_ylabel('Cumulative Carbon Emissions\n[million metric tonnes CO2eq]', fontsize=20)
 ax0.set_title('Baseline', fontsize=14)
 ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
-ax0.grid(axis='y', color='0.9', ls='--') 
+ax0.grid(axis='y', color='0.6', ls='--') 
 ax0.set_axisbelow(True)
 
 #Extreme
@@ -510,7 +516,7 @@ ax2.bar(cumu_carbon_rankings_crittime_plot.index[5:8], cumu_carbon_rankings_crit
         tick_label=scennames_labels[5:8], color=colorpalette[5:8])
 ax2.set_title('Extreme', fontsize=14)
 ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
-ax2.grid(axis='y', color='0.9', ls='--') 
+ax2.grid(axis='y', color='0.6', ls='--') 
 ax2.set_axisbelow(True)
 
 #Ambitious
@@ -521,7 +527,7 @@ ax3.bar(cumu_carbon_rankings_crittime_plot.index[8:], cumu_carbon_rankings_critt
         tick_label=scennames_labels[8:], color=colorpalette[8:], hatch='x', edgecolor='white')
 ax3.set_title('Ambitious', fontsize=14)
 ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
-ax3.grid(axis='y', color='0.9', ls='--') 
+ax3.grid(axis='y', color='0.6', ls='--') 
 ax3.set_axisbelow(True)
 
 #overall fig
@@ -538,15 +544,12 @@ plt.show()
 # ## Process emission summing
 #  This only happens on the material files
 
-# In[ ]:
+# In[57]:
 
 
 process_emissions = pd.DataFrame()
 for scen in scenarios:
-    scen_p_totrim = sim_carbon_results.filter(like=scen).filter(like='_p_')
-    exclude_p_sums = ['_HQ_p_','_LQ_p_','_e_p_']
-    exclude_p_sums_search = '|'.join(exclude_p_sums)
-    scen_p = scen_p_totrim.loc[:,~scen_p_totrim.columns.str.contains(exclude_p_sums_search)]
+    scen_p = sim_carbon_dfs.filter(like=scen).filter(like='_p_')
     scen_p_sum = scen_p.sum(axis=1)
     process_emissions = pd.concat([process_emissions,scen_p_sum], axis=1)
 
@@ -555,15 +558,21 @@ process_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 process_emissions_cumu = process_emissions.cumsum()
 
 
-# ## Fuel Emissions
-# This is capturing steam and heating fuel
+# In[67]:
 
-# In[ ]:
+
+#process_emissions_cumu
+
+
+# ## Fuel Emissions
+# This is capturing steam and heating fuel, also only on material level
+
+# In[68]:
 
 
 fuel_emissions = pd.DataFrame()
 for scen in scenarios:
-    scen_f = sim_carbon_results.filter(like=scen).filter(like='_fuel_')
+    scen_f = sim_carbon_dfs.filter(like=scen).filter(like='_fuel_')
     scen_f_sum = scen_f.sum(axis=1)
     fuel_emissions = pd.concat([fuel_emissions,scen_f_sum], axis=1)
     
@@ -572,22 +581,29 @@ fuel_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 fuel_emissions_cumu = fuel_emissions.cumsum()
 
 
+# In[74]:
+
+
+#fuel_emissions_cumu
+
+
 # ## Electricity Emissions
 # both module and material level elec.
 
-# In[ ]:
+# In[88]:
 
 
 elec_emissions = pd.DataFrame()
 for scen in scenarios:
-    scen_mod_elec = sim_annual_carbon.filter(like=scen).filter(like='Annual_Emit_mod') #module elec lifecycle energy
+    scen_mod_elec = sim_carbon_dfs.filter(like=scen).filter(like='Global_mod_MFG') #module elec lifecycle emits
     
-    mat_eleckey = ['Global_vmfg_elec','landfill_elec','ReMFG_clean','Recycled_LQ','Recycled_HQ_elec']
+    #material elec emits
+    mat_eleckey = ['Global_vmfg_elec','landfill_elec','ReMFG_clean_elec','Recycled_LQ_elec','Recycled_HQ_elec']
     mat_elecs_search = '|'.join(mat_eleckey)
-    scen_mat_elecs = sim_carbon_results.loc[:,sim_carbon_results.columns.str.contains(mat_elecs_search)].filter(like=scen)
+    scen_mat_elecs = sim_carbon_dfs.loc[:,sim_carbon_dfs.columns.str.contains(mat_elecs_search)].filter(like=scen)
+    scen_mat_elecs_sum = scen_mat_elecs.sum(axis=1)
     
     #sum them together by scen
-    scen_mat_elecs_sum = scen_mat_elecs.sum(axis=1)
     scen_elec_modmat_annual_sum = scen_mat_elecs_sum+scen_mod_elec.iloc[:,0]
     elec_emissions = pd.concat([elec_emissions,scen_elec_modmat_annual_sum], axis=1)
     
@@ -596,27 +612,15 @@ elec_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 elec_emissions_cumu = elec_emissions.cumsum()
 
 
-# In[ ]:
-
-
-#(elec_emissions+fuel_emissions+process_emissions) vs sim_annual_carbon
-#TO DO: I have a double counting or missing data problem somewhere, these should add to the same I think.
-
-
-# In[ ]:
+# In[97]:
 
 
 #graphing by emission source
 efp_emit_total = elec_emissions+fuel_emissions+process_emissions
+efp_emit_total_cumu = elec_emissions_cumu+fuel_emissions_cumu+process_emissions_cumu
 
 
-# In[ ]:
-
-
-efp_emit_total.index
-
-
-# In[ ]:
+# In[99]:
 
 
 #graphing by emission source, annual
@@ -649,10 +653,10 @@ for scen in scennames_labels_flat:
     plt.show()
 
 
-# In[ ]:
+# In[104]:
 
 
-#graphing by emission source, annual
+#graphing by emission source, cumulative
 
 for scen in scennames_labels_flat:
     
@@ -665,10 +669,10 @@ for scen in scennames_labels_flat:
                   fuel_emissions_cumu[scen]/1e12,
                   elec_emissions_cumu[scen]/1e12, 
                   colors = ['black','darkred','blue'])
-    plt.title(scen+':\nGHG Emissions Annually by Source')
-    plt.ylabel('GHG Emissions Annually from Lifecycle Source\n[million metric tonnes CO2eq]')
+    plt.title(scen+':\nGHG Emissions Cumulative by Source')
+    plt.ylabel('GHG Emissions Cumulatively from Lifecycle Source\n[million metric tonnes CO2eq]')
     plt.xlim(2000,2100)
-    plt.ylim(0,maxy)
+    plt.ylim(0,maxy+1000)
 
     handles, labels = plt.gca().get_legend_handles_labels()
 #specify order of items in legend
@@ -684,7 +688,7 @@ for scen in scennames_labels_flat:
 # In[ ]:
 
 
-
+#bar chart 2050 and 2100 by scenario by emission source
 
 
 # In[ ]:
