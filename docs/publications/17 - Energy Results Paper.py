@@ -57,6 +57,8 @@ import matplotlib as mpl #import matplotlib
 from cycler import cycler #import cycler
 mpl.rcParams['axes.prop_cycle'] = cycler(color=colorpalette) #reset the default color palette of mpl
 
+from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
+
 plt.rcParams.update({'font.size': 14})
 plt.rcParams['figure.figsize'] = (8, 6)
 
@@ -1507,7 +1509,7 @@ for col in annual_installs_decademod:
 
 #annual_installs_TW = cc_yearly.filter(like='newInstalled')
 annual_installs_decademod_TW = annual_installs_decademod/1e6
-from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
+
 
 fig_installs_annual, (ax1,ax2,ax3) = plt.subplots(1,3,figsize=(15,5), sharey=True, sharex=True, 
                                       gridspec_kw={'wspace':0})

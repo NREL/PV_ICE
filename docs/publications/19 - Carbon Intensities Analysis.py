@@ -43,7 +43,7 @@ import PV_ICE
 PV_ICE.__version__
 
 
-# In[4]:
+# In[144]:
 
 
 #https://www.learnui.design/tools/data-color-picker.html#palette
@@ -61,6 +61,8 @@ colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564
 import matplotlib as mpl #import matplotlib
 from cycler import cycler #import cycler
 mpl.rcParams['axes.prop_cycle'] = cycler(color=colorpalette) #reset the default color palette of mpl
+
+from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 
 plt.rcParams.update({'font.size': 14})
 plt.rcParams['figure.figsize'] = (8, 6)
@@ -255,10 +257,94 @@ for scen in scenarios:
 sim_annual_carbon.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 
 
+# In[137]:
+
+
+#create cumulative
+sim_cumu_carbon = sim_annual_carbon.cumsum()
+maxy = round(sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gCO2eq').max()/1e12,-3) #for graphing
+sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gCO2eq')
+
+
 # In[ ]:
 
 
 
+
+
+# # Carbon Emissions Cumulative Scenario compare
+
+# In[141]:
+
+
+sim_cumu_carbon_mmt = sim_cumu_carbon.filter(like='Annual_Emit_total_modmats_gCO2eq')/1e12
+sim_cumu_carbon_mmt
+
+
+# In[146]:
+
+
+
+fig_cumu_carbon, (ax1,ax2,ax3) = plt.subplots(1,3,figsize=(15,5), sharey=True, sharex=True, 
+                                      gridspec_kw={'wspace':0})
+
+#BAU
+ax1.set_prop_cycle(color=colorpalette[0:5])
+ax1.plot(sim_cumu_carbon_mmt.iloc[:,0:5], label=scennames_labels_flat[0:5]) # baselines
+ax1.set_title('Business as Usual', fontsize=14)
+ax1.set_ylabel('Cumulative Carbon Emissions\n[million metric tonnes CO2 eq]', fontsize=20)
+ax1.set_xlim(2000,2100)
+ax1.legend(bbox_to_anchor=(0.9,-0.05))
+ax1.set_ylim(0,maxy+1000)
+ax1.xaxis.set_minor_locator(MultipleLocator(10))
+ax1.grid(axis='both', which='both', color='0.9', ls='--') 
+
+
+#Extreme
+ax2.set_prop_cycle(color=colorpalette[5:8])
+
+ax2.plot(sim_cumu_carbon_mmt.iloc[:,5:8], label=scennames_labels_flat[5:8])
+ax2.xaxis.set_minor_locator(MultipleLocator(10))
+ax2.grid(axis='both', which='both', color='0.9', ls='--') 
+
+#create glowlines for Extreme scens
+n_lines = 10
+diff_linewidth = 1.05
+alpha_value = 0.05
+for n in range(1, n_lines+1):    
+    ax2.plot(sim_cumu_carbon_mmt.iloc[:,5],
+            linewidth=2+(diff_linewidth*n),
+            alpha=alpha_value,
+            color=colorpalette[5])
+
+for n in range(1, n_lines+1):    
+    ax2.plot(sim_cumu_carbon_mmt.iloc[:,6],
+            linewidth=2+(diff_linewidth*n),
+            alpha=alpha_value,
+            color=colorpalette[6])
+
+for n in range(1, n_lines+1):    
+    ax2.plot(sim_cumu_carbon_mmt.iloc[:,7],
+            linewidth=2+(diff_linewidth*n),
+            alpha=alpha_value,
+            color=colorpalette[7])
+
+ax2.set_title('Extreme', fontsize=14)
+ax2.legend(bbox_to_anchor=(0.9,-0.05))
+
+#Ambitious
+ax3.set_prop_cycle(color=colorpalette[8:])
+ax3.plot(sim_cumu_carbon_mmt.iloc[:,8:], label=scennames_labels_flat[8:], ls='--')# 
+ax3.set_title('Ambitious', fontsize=14)
+ax3.legend(bbox_to_anchor=(1.05,-0.05)) #(x,y)
+ax3.xaxis.set_minor_locator(MultipleLocator(10))
+ax3.grid(axis='both', which='both', color='0.9', ls='--') 
+
+#overall figure
+
+fig_cumu_carbon.suptitle('Cumulative Carbon Emissions', fontsize=24, y=1)
+plt.show()
+#fig_cumu_carbon.savefig('energyresults-annualMatDemands-decade.png', dpi=300, bbox_inches='tight')
 
 
 # # Cabon Emissions by material or module
@@ -308,9 +394,7 @@ for scen in scenarios:
 # In[37]:
 
 
-sim_cumu_carbon = sim_annual_carbon.cumsum()
-maxy = round(sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gCO2eq').max()/1e12,-3)
-sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gCO2eq')
+
 
 
 # In[38]:
@@ -319,7 +403,7 @@ sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gCO2eq')
 maxy
 
 
-# In[40]:
+# In[136]:
 
 
 #colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
@@ -358,7 +442,7 @@ for scen in scenarios:
 #add legend to plot
 #plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
     plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.45,1))
-
+    plt.grid(axis='both', which='both', color='0.9', ls='--')
 #plt.legend()
     plt.show()
 
@@ -620,7 +704,7 @@ efp_emit_total = elec_emissions+fuel_emissions+process_emissions
 efp_emit_total_cumu = elec_emissions_cumu+fuel_emissions_cumu+process_emissions_cumu
 
 
-# In[99]:
+# In[130]:
 
 
 #graphing by emission source, annual
@@ -648,12 +732,13 @@ for scen in scennames_labels_flat:
 #add legend to plot
 #plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
     plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
-
+    #plt.grid(axis='both', which='both', color='0.9', ls='--', zorder=0)
+    #plt.set_axisbelow(True)
 #plt.legend()
     plt.show()
 
 
-# In[104]:
+# In[135]:
 
 
 #graphing by emission source, cumulative
@@ -679,22 +764,238 @@ for scen in scennames_labels_flat:
 #order = [1,2,0]
 #add legend to plot
 #plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order])
-    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.4,1))
-
+    plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.3,1))
+    plt.grid(axis='both', which='both', color='0.9', ls='--')
 #plt.legend()
     plt.show()
 
 
-# In[ ]:
+# In[109]:
 
 
 #bar chart 2050 and 2100 by scenario by emission source
+emit_efp_2100_forbar = pd.concat([elec_emissions_cumu.loc[2100],fuel_emissions_cumu.loc[2100],process_emissions_cumu.loc[2100]],
+                                 axis=1,keys=['electricity','fuel','process'])
+
+
+# In[113]:
+
+
+emit_efp_2100_mmt = emit_efp_2100_forbar/1e12
+
+
+# In[162]:
+
+
+
+fig_cumulativeemit, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
+                                      gridspec_kw={'wspace': 0, 'width_ratios': [1.5,1,1.5]})
+#BAU
+ax0.bar(emit_efp_2100_mmt.index[0:5], emit_efp_2100_mmt['process'].iloc[0:5],label='process',
+        tick_label=scennames_labels[0:5], color='black')
+
+ax0.bar(emit_efp_2100_mmt.index[0:5], emit_efp_2100_mmt['fuel'].iloc[0:5],label='fuel',
+        bottom=emit_efp_2100_mmt['process'].iloc[0:5], 
+        tick_label=scennames_labels[0:5], color='darkred')
+
+ax0.bar(emit_efp_2100_mmt.index[0:5], emit_efp_2100_mmt['electricity'].iloc[0:5],label='electricity',
+        bottom=emit_efp_2100_mmt['process'].iloc[0:5]+emit_efp_2100_mmt['fuel'].iloc[0:5],
+        tick_label=scennames_labels[0:5], color='blue')
+
+ax0.set_ylim(0,maxy+1000)
+ax0.set_ylabel('Cumulative Carbon Emissions\n[million metric tonnes CO2eq]', fontsize=20)
+ax0.set_title('Baseline', fontsize=14)
+ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
+ax0.grid(axis='y', color='0.6', ls='--') 
+ax0.set_axisbelow(True)
+
+#Extreme
+ax2.bar(emit_efp_2100_mmt.index[5:8], emit_efp_2100_mmt['process'].iloc[5:8],
+        tick_label=scennames_labels[5:8], color='black')
+
+ax2.bar(emit_efp_2100_mmt.index[5:8], emit_efp_2100_mmt['fuel'].iloc[5:8],
+        bottom=emit_efp_2100_mmt['process'].iloc[5:8], 
+        tick_label=scennames_labels[5:8], color='darkred')
+
+ax2.bar(emit_efp_2100_mmt.index[5:8], emit_efp_2100_mmt['electricity'].iloc[5:8],
+        bottom=emit_efp_2100_mmt['process'].iloc[5:8]+emit_efp_2100_mmt['fuel'].iloc[5:8],
+        tick_label=scennames_labels[5:8], color='blue')
+
+ax2.set_title('Extreme', fontsize=14)
+ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
+ax2.grid(axis='y', color='0.6', ls='--') 
+ax2.set_axisbelow(True)
+
+#Ambitious
+ax3.bar(emit_efp_2100_mmt.index[8:], emit_efp_2100_mmt['process'].iloc[8:],
+        tick_label=scennames_labels[8:], color='black')
+
+ax3.bar(emit_efp_2100_mmt.index[8:], emit_efp_2100_mmt['fuel'].iloc[8:],
+        bottom=emit_efp_2100_mmt['process'].iloc[8:], 
+        tick_label=scennames_labels[8:], color='darkred')
+
+ax3.bar(emit_efp_2100_mmt.index[8:], emit_efp_2100_mmt['electricity'].iloc[8:],
+        bottom=emit_efp_2100_mmt['process'].iloc[8:]+emit_efp_2100_mmt['fuel'].iloc[8:],
+        tick_label=scennames_labels[8:], color='blue')
+
+ax3.set_title('Ambitious', fontsize=14)
+ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.6', ls='--') 
+ax3.set_axisbelow(True)
+
+#overall fig
+fig_cumulativeemit.suptitle('Cumulative Emisisons in 2100 by emission source', fontsize=24)
+handles, labels = plt.gca().get_legend_handles_labels()
+plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.42,1))
+plt.show()
+
+#fig_eBalance.savefig('energyresults-energyBalance.png', dpi=300, bbox_inches='tight')
 
 
 # In[ ]:
 
 
 
+
+
+# # vMFG versus Circular Processes
+# 3 categories for this:
+# - vmfg of materials
+# - CE of materials and materials
+# - install/decomission requirements 
+# and I think module mfging falls into the last category
+
+# In[180]:
+
+
+CEkey = ['ReMFG','Recycled','Resell','Repair','LQ','HQ']
+CEkey_search = '|'.join(CEkey)
+
+LinearKey = ['vMFG', 'landfill']
+LinearKey_search = '|'.join(LinearKey)
+
+otherkey = ['mod_MFG','OandM','Install','Demount', 'Store'] #THIS ONE IS MISSING COLUMNS!!!
+otherkey_search = '|'.join(otherkey)
+
+
+# In[186]:
+
+
+#subset by pathways
+sim_carbon_CE = pd.DataFrame()
+sim_carbon_linear = pd.DataFrame()
+sim_carbon_necessary = pd.DataFrame()
+
+for scen in scenarios:
+    scen_annual_carbon = sim_annual_carbon.filter(like=scen)
+    
+    scen_carbon_CE = scen_annual_carbon.loc[:,scen_annual_carbon.columns.str.contains(CEkey_search)]
+    scen_carbon_CE_sum = scen_carbon_CE.sum(axis=1)
+    sim_carbon_CE = pd.concat([sim_carbon_CE, scen_carbon_CE_sum], axis=1)
+    
+    scen_carbon_linear = scen_annual_carbon.loc[:,scen_annual_carbon.columns.str.contains(LinearKey_search)]
+    scen_carbon_linear_sum = scen_carbon_linear.sum(axis=1)
+    sim_carbon_linear = pd.concat([sim_carbon_linear,scen_carbon_linear_sum ], axis=1)
+    
+    scen_carbon_other = scen_annual_carbon.loc[:,scen_annual_carbon.columns.str.contains(otherkey_search)]
+    scen_carbon_other_sum = scen_carbon_other.sum(axis=1)
+    sim_carbon_necessary = pd.concat([sim_carbon_necessary, scen_carbon_other_sum], axis=1)
+    
+sim_carbon_CE.columns = scennames_labels_flat
+sim_carbon_linear.columns = scennames_labels_flat
+sim_carbon_necessary.columns = scennames_labels_flat
+
+#.index = pd.RangeIndex(start=2000,stop=2101,step=1)
+
+
+# In[189]:
+
+
+sim_carbon_CE_cumu = sim_carbon_CE.cumsum()
+sim_carbon_linear_cumu = sim_carbon_linear.cumsum()
+sim_carbon_necessary_cumu = sim_carbon_necessary.cumsum()
+
+
+# In[190]:
+
+
+emit_pathway = pd.concat([sim_carbon_CE_cumu.loc[2100],sim_carbon_linear_cumu.loc[2100],sim_carbon_necessary_cumu.loc[2100]],
+                                 axis=1,keys=['Circular','Linear/Virgin','Necessary'])
+emit_pathway_mmt = emit_pathway/1e12
+
+
+# In[197]:
+
+
+emit_pathway.sum(axis=1) #I am not catching all emissions =/
+
+
+# In[195]:
+
+
+
+fig_emitByPathway, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
+                                      gridspec_kw={'wspace': 0, 'width_ratios': [1.5,1,1.5]})
+#BAU
+ax0.bar(emit_pathway_mmt.index[0:5], emit_pathway_mmt['Necessary'].iloc[0:5],label='Necessary',
+        tick_label=scennames_labels[0:5], color='darkgray')
+
+ax0.bar(emit_pathway_mmt.index[0:5], emit_pathway_mmt['Linear/Virgin'].iloc[0:5],label='Linear/Virgin',
+        bottom=emit_pathway_mmt['Necessary'].iloc[0:5], 
+        tick_label=scennames_labels[0:5], color='darkorange')
+
+ax0.bar(emit_pathway_mmt.index[0:5], emit_pathway_mmt['Circular'].iloc[0:5],label='Circular',
+        bottom=emit_pathway_mmt['Necessary'].iloc[0:5]+emit_pathway_mmt['Linear/Virgin'].iloc[0:5],
+        tick_label=scennames_labels[0:5], color='green')
+
+ax0.set_ylim(0,maxy+1000)
+ax0.set_ylabel('Cumulative Carbon Emissions\n[million metric tonnes CO2eq]', fontsize=20)
+ax0.set_title('Baseline', fontsize=14)
+ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
+ax0.grid(axis='y', color='0.6', ls='--') 
+ax0.set_axisbelow(True)
+
+#Extreme
+ax2.bar(emit_efp_2100_mmt.index[5:8], emit_efp_2100_mmt['process'].iloc[5:8],
+        tick_label=scennames_labels[5:8], color='black')
+
+ax2.bar(emit_efp_2100_mmt.index[5:8], emit_efp_2100_mmt['fuel'].iloc[5:8],
+        bottom=emit_efp_2100_mmt['process'].iloc[5:8], 
+        tick_label=scennames_labels[5:8], color='darkred')
+
+ax2.bar(emit_efp_2100_mmt.index[5:8], emit_efp_2100_mmt['electricity'].iloc[5:8],
+        bottom=emit_efp_2100_mmt['process'].iloc[5:8]+emit_efp_2100_mmt['fuel'].iloc[5:8],
+        tick_label=scennames_labels[5:8], color='blue')
+
+ax2.set_title('Extreme', fontsize=14)
+ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
+ax2.grid(axis='y', color='0.6', ls='--') 
+ax2.set_axisbelow(True)
+
+#Ambitious
+ax3.bar(emit_efp_2100_mmt.index[8:], emit_efp_2100_mmt['process'].iloc[8:],
+        tick_label=scennames_labels[8:], color='black')
+
+ax3.bar(emit_efp_2100_mmt.index[8:], emit_efp_2100_mmt['fuel'].iloc[8:],
+        bottom=emit_efp_2100_mmt['process'].iloc[8:], 
+        tick_label=scennames_labels[8:], color='darkred')
+
+ax3.bar(emit_efp_2100_mmt.index[8:], emit_efp_2100_mmt['electricity'].iloc[8:],
+        bottom=emit_efp_2100_mmt['process'].iloc[8:]+emit_efp_2100_mmt['fuel'].iloc[8:],
+        tick_label=scennames_labels[8:], color='blue')
+
+ax3.set_title('Ambitious', fontsize=14)
+ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.6', ls='--') 
+ax3.set_axisbelow(True)
+
+#overall fig
+fig_emitByPathway.suptitle('Cumulative Emisisons in 2100 by emission source', fontsize=24)
+handles, labels = plt.gca().get_legend_handles_labels()
+plt.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.42,1))
+plt.show()
+
+#fig_eBalance.savefig('energyresults-energyBalance.png', dpi=300, bbox_inches='tight')
 
 
 # In[ ]:
