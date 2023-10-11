@@ -394,24 +394,51 @@ Polverini2023_gwp_range['Polverini2023_high'] = kw_installed_pvice.loc[:22].valu
 Polverini2023_gwp_range_cumu_mmt = Polverini2023_gwp_range.cumsum()/1e9 #cumulative, and kg to million metric tonnes
 
 
-# In[25]:
+# In[60]:
+
+
+#compare to Liang and You 2023, using Figure 1 2020 values from a and e
+LiangYou2023_scSi_low = 250 #kg CO2eq/m2 ""
+LiangYou2023_scSi_high = 350 #kg CO2eq/m2 ""
+LiangYou2023_mcSi_low = 210
+LiangYou2023_mcSi_high = 300
+
+m2_installed_pvice = sim1.scenario['PV_ICE'].dataOut_m['Area'] # area deployed in m2
+
+LiangYou2023_gwp_range = pd.DataFrame(index=ember_PVCO2.index)
+LiangYou2023_gwp_range['LiangYou2023_scSi_low'] = m2_installed_pvice.loc[:22].values*LiangYou2023_scSi_low
+LiangYou2023_gwp_range['LiangYou2023_scSi_high'] = m2_installed_pvice.loc[:22].values*LiangYou2023_scSi_high
+LiangYou2023_gwp_range['LiangYou2023_mcSi_low'] = m2_installed_pvice.loc[:22].values*LiangYou2023_mcSi_low
+LiangYou2023_gwp_range['LiangYou2023_mcSi_high'] = m2_installed_pvice.loc[:22].values*LiangYou2023_mcSi_high
+
+LiangYou2023_gwp_range_cumu_mmt = LiangYou2023_gwp_range.cumsum()/1e9 #cumulative, and kg to million metric tonnes
+
+
+# In[68]:
 
 
 plt.plot(sim_cumu_carbon_mmt.loc[:2022,'PV_ICE_Annual_Emit_total_modmats_gCO2eq'], label='PV_ICE', color='black')
 
-plt.plot(ember_PVCO2_cumu.index, ember_PVCO2_cumu['emissions_mtco2'], label='Ember', color='green', ls='--')
-plt.plot(FL2021_gwp_range_cumu_mmt['F&L_sc-Si_2020'], label='F&L_sc-Si_2020', color='lightcoral', ls='-.')
-plt.plot(FL2021_gwp_range_cumu_mmt.loc[:2015,'F&L_sc-Si_2015'], label='F&L_sc-Si_2015', color='indianred', ls='-.')
-plt.plot(FL2021_gwp_range_cumu_mmt['F&L_mc-Si_2020'], label='F&L_mc-Si_2020', color='firebrick', ls='dotted')
-plt.plot(FL2021_gwp_range_cumu_mmt.loc[:2015,'F&L_mc-Si_2015'], label='F&L_mc-Si_2015', color='maroon', ls='dotted')
+plt.plot(LiangYou2023_gwp_range_cumu_mmt['LiangYou2023_scSi_low'], label='LiangYou2023_scSi_low', color='violet', ls='-.')
+plt.plot(LiangYou2023_gwp_range_cumu_mmt['LiangYou2023_scSi_high'], label='LiangYou2023_scSi_high', color='mediumorchid', ls='-.')
+plt.plot(LiangYou2023_gwp_range_cumu_mmt['LiangYou2023_mcSi_low'], label='LiangYou2023_mcSi_low', color='darkviolet', ls=':')
+plt.plot(LiangYou2023_gwp_range_cumu_mmt['LiangYou2023_mcSi_high'], label='LiangYou2023_mcSi_high', color='blueviolet', ls=':')
+
+plt.plot(FL2021_gwp_range_cumu_mmt['F&L_sc-Si_2020'], label='FthenakisLeccisi2021_sc-Si_2020', color='lightcoral', ls='-.')
+plt.plot(FL2021_gwp_range_cumu_mmt.loc[:2015,'F&L_sc-Si_2015'], label='FthenakisLeccisi2021_sc-Si_2015', color='indianred', ls='-.')
+plt.plot(FL2021_gwp_range_cumu_mmt['F&L_mc-Si_2020'], label='FthenakisLeccisi2021_mc-Si_2020', color='firebrick', ls='dotted')
+plt.plot(FL2021_gwp_range_cumu_mmt.loc[:2015,'F&L_mc-Si_2015'], label='FthenakisLeccisi2021_mc-Si_2015', color='maroon', ls='dotted')
+
 plt.plot(Polverini2023_gwp_range_cumu_mmt['Polverini2023_low'], label='Polverini2023_low', color='deepskyblue', ls='--')
 plt.plot(Polverini2023_gwp_range_cumu_mmt['Polverini2023_high'], label='Polverini2023_high', color='dodgerblue', ls='--')
+
+plt.plot(ember_PVCO2_cumu.index, ember_PVCO2_cumu['emissions_mtco2'], label='Ember', color='green', ls='--')
 
 plt.ylabel('Cumulative Carbon\n[$CO_{2eq}$ million metric tonnes]')
 plt.title('Cumulative Carbon Emissions from PV')
 plt.xlim(2000,2025)
 plt.ylim(0,)
-plt.legend(loc='upper left')
+plt.legend(loc='upper left', fontsize=12)
 
 
 # # Cabon Emissions by material or module
