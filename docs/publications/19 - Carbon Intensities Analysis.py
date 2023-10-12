@@ -6,7 +6,7 @@
 # 
 # Attempt 1
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np
@@ -29,21 +29,21 @@ if not os.path.exists(testfolder):
     os.makedirs(testfolder)
 
 
-# In[2]:
+# In[3]:
 
 
 from platform import python_version 
 print(python_version())
 
 
-# In[3]:
+# In[4]:
 
 
 import PV_ICE
 PV_ICE.__version__
 
 
-# In[4]:
+# In[5]:
 
 
 #https://www.learnui.design/tools/data-color-picker.html#palette
@@ -82,7 +82,7 @@ scennames_labels_flat = ['PV_ICE','PERC','SHJ','TOPCon','Low Quality',
                     ] 
 
 
-# In[5]:
+# In[6]:
 
 
 MATERIALS = ['glass', 'silicon', 'silver', 'aluminium_frames', 'copper', 'encapsulant', 'backsheet']
@@ -90,7 +90,7 @@ moduleFile_m = os.path.join(baselinesfolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
-# In[6]:
+# In[7]:
 
 
 #load in the simulation from Energy Analysis journal
@@ -101,7 +101,7 @@ sim1 = PV_ICE.Simulation.load_Simpickle(filename=r'C:\Users\hmirletz\Documents\G
 
 # sim1.scenario['r_PERC'].dataOut_c
 
-# In[7]:
+# In[8]:
 
 
 sim1.scenario['r_PERC'].dataOut_m
@@ -114,7 +114,7 @@ sim1.scenario['r_PERC'].dataOut_m
 # 
 # Estimating that 60-70% generation will be from Solar, 30-40% from wind, and any remainder from "other renewables"
 
-# In[8]:
+# In[9]:
 
 
 countrygridmix = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'), index_col='year')
@@ -122,7 +122,7 @@ gridsources = ['Bioenergy','Hydro','Nuclear','OtherFossil','OtherRenewables','So
 nonRE = ['Coal','Gas','OtherFossil','Nuclear','Bioenergy']
 
 
-# In[9]:
+# In[10]:
 
 
 countrygridmix.loc[2023:,:]=np.nan #delete 2023 to 2050
@@ -130,7 +130,7 @@ nonRE_search = '|'.join(nonRE) #create nonRE search
 countrygridmix.loc[2050, countrygridmix.columns.str.contains(nonRE_search)] = 0.0 #set all nonRE to 0 in 2050
 
 
-# In[10]:
+# In[11]:
 
 
 countrygridmix.loc[2050, countrygridmix.columns.str.contains('Solar')] = 63.0
@@ -140,13 +140,13 @@ countrygridmix.loc[2050, countrygridmix.columns.str.contains('OtherRenewables')]
 #numbers derived from leading scenario electricity generation Breyer et al 2022 scenarios (EU focused)
 
 
-# In[11]:
+# In[12]:
 
 
 countrygridmix_100RE2050 = countrygridmix.interpolate() #linearly interpolate between 2022 and 2050
 
 
-# In[12]:
+# In[13]:
 
 
 apnd_idx = pd.RangeIndex(start=2051,stop=2101,step=1) #create temp df
@@ -155,7 +155,7 @@ countrygridmix_100RE20502100 = pd.concat([countrygridmix_100RE2050.loc[2000:],ap
 countrygridmix_100RE20502100.ffill(inplace=True) #propogate 2050 values through 2100
 
 
-# In[13]:
+# In[14]:
 
 
 countrygridmix_100RE20502100.loc[2050]
@@ -163,13 +163,13 @@ countrygridmix_100RE20502100.loc[2050]
 
 # This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.
 
-# In[14]:
+# In[15]:
 
 
 pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'), index_col=[0])
 
 
-# In[15]:
+# In[16]:
 
 
 sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE20502100)
@@ -184,13 +184,13 @@ sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE20502100)
 # # Carbon Analysis
 # this will become the aggregate carbon results function
 
-# In[16]:
+# In[17]:
 
 
 scenarios = sim1.scenario
 
 
-# In[17]:
+# In[18]:
 
 
 #simply group mod and mats carbon dfs by scenario
@@ -215,7 +215,7 @@ sim_carbon_dfs.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 #return sim_carbon_results, sim_annual_carbon
 
 
-# In[18]:
+# In[19]:
 
 
 #Do math on the carbon dfs, take in the output aggregate sim df
@@ -257,7 +257,7 @@ for scen in scenarios:
 sim_annual_carbon.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 
 
-# In[19]:
+# In[20]:
 
 
 #create cumulative
@@ -274,14 +274,14 @@ sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gCO2eq')
 
 # # Carbon Emissions Cumulative Scenario compare
 
-# In[20]:
+# In[21]:
 
 
 sim_cumu_carbon_mmt = sim_cumu_carbon.filter(like='Annual_Emit_total_modmats_gCO2eq')/1e12
 sim_cumu_carbon_mmt
 
 
-# In[21]:
+# In[22]:
 
 
 
@@ -349,7 +349,7 @@ plt.show()
 
 # # Literature Validation
 
-# In[22]:
+# In[23]:
 
 
 #comparing to Ember open source data, uses a lifecycle PV emission factor from IPCC
@@ -358,7 +358,7 @@ ember_PVCO2 = pd.read_csv(os.path.join(carbonfolder,'Ember-PVEmissionsWorld2000-
 ember_PVCO2_cumu = ember_PVCO2.cumsum()
 
 
-# In[23]:
+# In[24]:
 
 
 #compare to Fthenakis and Leccisi 2021 analysis
@@ -378,7 +378,7 @@ FL2021_gwp_range['F&L_mc-Si_2015'] = kw_installed_pvice.loc[:22].values*FL2021_g
 FL2021_gwp_range_cumu_mmt = FL2021_gwp_range.cumsum()/1e9 #cumulative, and kg to million metric tonnes
 
 
-# In[24]:
+# In[25]:
 
 
 #compare to Ultra Low Carbon Solar Alliance South Korea rating, as redproduced in Polverini 2023
@@ -394,7 +394,7 @@ Polverini2023_gwp_range['Polverini2023_high'] = kw_installed_pvice.loc[:22].valu
 Polverini2023_gwp_range_cumu_mmt = Polverini2023_gwp_range.cumsum()/1e9 #cumulative, and kg to million metric tonnes
 
 
-# In[60]:
+# In[26]:
 
 
 #compare to Liang and You 2023, using Figure 1 2020 values from a and e
@@ -414,7 +414,7 @@ LiangYou2023_gwp_range['LiangYou2023_mcSi_high'] = m2_installed_pvice.loc[:22].v
 LiangYou2023_gwp_range_cumu_mmt = LiangYou2023_gwp_range.cumsum()/1e9 #cumulative, and kg to million metric tonnes
 
 
-# In[68]:
+# In[27]:
 
 
 plt.plot(sim_cumu_carbon_mmt.loc[:2022,'PV_ICE_Annual_Emit_total_modmats_gCO2eq'], label='PV_ICE', color='black')
@@ -443,7 +443,7 @@ plt.legend(loc='upper left', fontsize=12)
 
 # # Cabon Emissions by material or module
 
-# In[26]:
+# In[28]:
 
 
 for scen in scenarios:
@@ -491,13 +491,13 @@ for scen in scenarios:
 
 
 
-# In[27]:
+# In[29]:
 
 
 maxy
 
 
-# In[28]:
+# In[30]:
 
 
 #colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
@@ -541,13 +541,13 @@ for scen in scenarios:
     plt.show()
 
 
-# In[29]:
+# In[47]:
 
 
 sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_mod_elec')
 
 
-# In[30]:
+# In[48]:
 
 
 #create a df from which to do a bar chart of 2100 emissions by mat/mod
@@ -565,7 +565,7 @@ modmats_emit_2100_megatonne = modmats_emit_2100/1e12
 modmats_emit_2100_megatonne
 
 
-# In[31]:
+# In[49]:
 
 
 fig_cumuemit_modmat, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
@@ -647,9 +647,105 @@ plt.show()
 #fig_cumuemit_modmat.savefig('energyresults-energyBalance.png', dpi=300, bbox_inches='tight')
 
 
+# In[50]:
+
+
+cumu_emit_sum = modmats_emit_2100_megatonne.sum(axis=1)
+fraction_modmats_cumu_emit = modmats_emit_2100_megatonne.div(cumu_emit_sum, axis=0)*100
+fraction_modmats_cumu_emit
+
+
+# In[51]:
+
+
+fig_cumuemit_modmat, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
+                                      gridspec_kw={'wspace': 0, 'width_ratios': [1.5,1,1.5]})
+#BAU
+ax0.bar(scennames_labels[0:5], fraction_modmats_cumu_emit[0:5]['glass'], color=colormats[0])
+ax0.bar(scennames_labels[0:5], fraction_modmats_cumu_emit[0:5]['silicon'],
+        bottom=fraction_modmats_cumu_emit[0:5]['glass'], color=colormats[1])
+ax0.bar(scennames_labels[0:5], fraction_modmats_cumu_emit[0:5]['silver'],
+       bottom=fraction_modmats_cumu_emit.iloc[0:5,0:2].sum(axis=1), color=colormats[2])
+ax0.bar(scennames_labels[0:5], fraction_modmats_cumu_emit[0:5]['aluminium_frames'],
+       bottom=fraction_modmats_cumu_emit.iloc[0:5,0:3].sum(axis=1), color=colormats[3])
+ax0.bar(scennames_labels[0:5], fraction_modmats_cumu_emit[0:5]['copper'],
+       bottom=fraction_modmats_cumu_emit.iloc[0:5,0:4].sum(axis=1), color=colormats[4])
+ax0.bar(scennames_labels[0:5], fraction_modmats_cumu_emit[0:5]['encapsulant'],
+       bottom=fraction_modmats_cumu_emit.iloc[0:5,0:5].sum(axis=1), color=colormats[5])
+ax0.bar(scennames_labels[0:5], fraction_modmats_cumu_emit[0:5]['backsheet'],
+       bottom=fraction_modmats_cumu_emit.iloc[0:5,0:6].sum(axis=1), color=colormats[6])
+ax0.bar(scennames_labels[0:5], fraction_modmats_cumu_emit[0:5]['module'],
+       bottom=fraction_modmats_cumu_emit.iloc[0:5,0:7].sum(axis=1), color='black')
+
+ax0.set_ylim(0,100)
+ax0.set_ylabel('Percent Emissions by Material\n[%]', fontsize=20)
+ax0.set_title('Baseline', fontsize=14)
+ax0.set_xticklabels(labels=scennames_labels[0:5], rotation=45)
+ax0.grid(axis='y', color='0.6', ls='--') 
+ax0.set_axisbelow(True)
+
+#Extreme
+ax2.bar(scennames_labels[5:8], fraction_modmats_cumu_emit[5:8]['glass'], color=colormats[0])
+ax2.bar(scennames_labels[5:8], fraction_modmats_cumu_emit[5:8]['silicon'],
+        bottom=fraction_modmats_cumu_emit[5:8]['glass'], color=colormats[1])
+ax2.bar(scennames_labels[5:8], fraction_modmats_cumu_emit[5:8]['silver'],
+       bottom=fraction_modmats_cumu_emit.iloc[5:8,0:2].sum(axis=1), color=colormats[2])
+ax2.bar(scennames_labels[5:8], fraction_modmats_cumu_emit[5:8]['aluminium_frames'],
+       bottom=fraction_modmats_cumu_emit.iloc[5:8,0:3].sum(axis=1), color=colormats[3])
+ax2.bar(scennames_labels[5:8], fraction_modmats_cumu_emit[5:8]['copper'],
+       bottom=fraction_modmats_cumu_emit.iloc[5:8,0:4].sum(axis=1), color=colormats[4])
+ax2.bar(scennames_labels[5:8], fraction_modmats_cumu_emit[5:8]['encapsulant'],
+       bottom=fraction_modmats_cumu_emit.iloc[5:8,0:5].sum(axis=1), color=colormats[5])
+ax2.bar(scennames_labels[5:8], fraction_modmats_cumu_emit[5:8]['backsheet'],
+       bottom=fraction_modmats_cumu_emit.iloc[5:8,0:6].sum(axis=1), color=colormats[6])
+ax2.bar(scennames_labels[5:8], fraction_modmats_cumu_emit[5:8]['module'],
+       bottom=fraction_modmats_cumu_emit.iloc[5:8,0:7].sum(axis=1), color='black')
+
+ax2.set_title('Extreme', fontsize=14)
+ax2.set_xticklabels(labels=scennames_labels[5:8], rotation=45)
+ax2.grid(axis='y', color='0.6', ls='--') 
+ax2.set_axisbelow(True)
+
+#Ambitious
+ax3.bar(scennames_labels[8:], fraction_modmats_cumu_emit[8:]['glass'], color=colormats[0])
+ax3.bar(scennames_labels[8:], fraction_modmats_cumu_emit[8:]['silicon'],
+        bottom=fraction_modmats_cumu_emit[8:]['glass'], color=colormats[1])
+ax3.bar(scennames_labels[8:], fraction_modmats_cumu_emit[8:]['silver'],
+       bottom=fraction_modmats_cumu_emit.iloc[8:,0:2].sum(axis=1), color=colormats[2])
+ax3.bar(scennames_labels[8:], fraction_modmats_cumu_emit[8:]['aluminium_frames'],
+       bottom=fraction_modmats_cumu_emit.iloc[8:,0:3].sum(axis=1), color=colormats[3])
+ax3.bar(scennames_labels[8:], fraction_modmats_cumu_emit[8:]['copper'],
+       bottom=fraction_modmats_cumu_emit.iloc[8:,0:4].sum(axis=1), color=colormats[4])
+ax3.bar(scennames_labels[8:], fraction_modmats_cumu_emit[8:]['encapsulant'],
+       bottom=fraction_modmats_cumu_emit.iloc[8:,0:5].sum(axis=1), color=colormats[5])
+ax3.bar(scennames_labels[8:], fraction_modmats_cumu_emit[8:]['backsheet'],
+       bottom=fraction_modmats_cumu_emit.iloc[8:,0:6].sum(axis=1), color=colormats[6])
+ax3.bar(scennames_labels[8:], fraction_modmats_cumu_emit[8:]['module'],
+       bottom=fraction_modmats_cumu_emit.iloc[8:,0:7].sum(axis=1), color='black')
+
+
+ax3.set_title('Ambitious', fontsize=14)
+ax3.set_xticklabels(labels=scennames_labels[8:], rotation=45)
+ax3.grid(axis='y', color='0.6', ls='--') 
+ax3.set_axisbelow(True)
+
+#overall fig
+
+fig_cumuemit_modmat.suptitle('Fraction of Emissions attribute to Module/Material', fontsize=24)
+plt.show()
+
+#fig_cumuemit_modmat.savefig('energyresults-energyBalance.png', dpi=300, bbox_inches='tight')
+
+
+# In[ ]:
+
+
+
+
+
 # # Cumulative Carbon in 2050 and 2100
 
-# In[32]:
+# In[52]:
 
 
 #mins in 2050 and 2100
@@ -661,14 +757,14 @@ cumu_carbon_rankings_crittime_bmt = cumu_carbon_rankings_crittime/1000
 round(cumu_carbon_rankings_crittime_bmt,1)
 
 
-# In[33]:
+# In[53]:
 
 
 cumu_carbon_rankings_crittime_plot = cumu_carbon_rankings_crittime.copy()
 cumu_carbon_rankings_crittime_plot['diff'] = cumu_carbon_rankings_crittime[2100]-cumu_carbon_rankings_crittime[2050]
 
 
-# In[34]:
+# In[54]:
 
 
 
@@ -723,7 +819,7 @@ plt.show()
 # ## Process emission summing
 #  This only happens on the material files
 
-# In[35]:
+# In[55]:
 
 
 process_emissions = pd.DataFrame()
@@ -737,7 +833,7 @@ process_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 process_emissions_cumu = process_emissions.cumsum()
 
 
-# In[36]:
+# In[56]:
 
 
 #process_emissions_cumu
@@ -746,7 +842,7 @@ process_emissions_cumu = process_emissions.cumsum()
 # ## Fuel Emissions
 # This is capturing steam and heating fuel, also only on material level
 
-# In[37]:
+# In[57]:
 
 
 fuel_emissions = pd.DataFrame()
@@ -760,7 +856,7 @@ fuel_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 fuel_emissions_cumu = fuel_emissions.cumsum()
 
 
-# In[38]:
+# In[58]:
 
 
 #fuel_emissions_cumu
@@ -769,7 +865,7 @@ fuel_emissions_cumu = fuel_emissions.cumsum()
 # ## Electricity Emissions
 # both module and material level elec.
 
-# In[39]:
+# In[59]:
 
 
 elec_emissions = pd.DataFrame()
@@ -791,7 +887,7 @@ elec_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 elec_emissions_cumu = elec_emissions.cumsum()
 
 
-# In[40]:
+# In[60]:
 
 
 #graphing by emission source
@@ -799,7 +895,7 @@ efp_emit_total = elec_emissions+fuel_emissions+process_emissions
 efp_emit_total_cumu = elec_emissions_cumu+fuel_emissions_cumu+process_emissions_cumu
 
 
-# In[41]:
+# In[61]:
 
 
 #graphing by emission source, annual
@@ -833,7 +929,7 @@ for scen in scennames_labels_flat:
     plt.show()
 
 
-# In[42]:
+# In[62]:
 
 
 #graphing by emission source, cumulative
@@ -865,7 +961,7 @@ for scen in scennames_labels_flat:
     plt.show()
 
 
-# In[43]:
+# In[63]:
 
 
 #bar chart 2050 and 2100 by scenario by emission source
@@ -873,13 +969,13 @@ emit_efp_2100_forbar = pd.concat([elec_emissions_cumu.loc[2100],fuel_emissions_c
                                  axis=1,keys=['electricity','fuel','process'])
 
 
-# In[44]:
+# In[64]:
 
 
 emit_efp_2100_mmt = emit_efp_2100_forbar/1e12
 
 
-# In[45]:
+# In[65]:
 
 
 
@@ -960,7 +1056,7 @@ plt.show()
 # - install/decomission requirements 
 # and I think module mfging falls into the last category
 
-# In[46]:
+# In[66]:
 
 
 CEkey = ['ReMFG','Recycle_Crush','Recycled_LQ','Recycled_HQ','Resell','Repair','LQ','HQ']
@@ -985,7 +1081,7 @@ otherkey_search = '|'.join(otherkey)
 
 # set(allcolumns).difference(selectedcolumns)
 
-# In[47]:
+# In[67]:
 
 
 #subset by pathways
@@ -1015,7 +1111,7 @@ sim_carbon_necessary.columns = scennames_labels_flat
 #.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 
 
-# In[48]:
+# In[68]:
 
 
 sim_carbon_CE_cumu = sim_carbon_CE.cumsum()
@@ -1023,7 +1119,7 @@ sim_carbon_linear_cumu = sim_carbon_linear.cumsum()
 sim_carbon_necessary_cumu = sim_carbon_necessary.cumsum()
 
 
-# In[49]:
+# In[69]:
 
 
 emit_pathway = pd.concat([sim_carbon_CE_cumu.loc[2100],sim_carbon_linear_cumu.loc[2100],sim_carbon_necessary_cumu.loc[2100]],
@@ -1031,20 +1127,20 @@ emit_pathway = pd.concat([sim_carbon_CE_cumu.loc[2100],sim_carbon_linear_cumu.lo
 emit_pathway_mmt = emit_pathway/1e12
 
 
-# In[50]:
+# In[70]:
 
 
 sim_carbon_CE_cumu
 
 
-# In[51]:
+# In[71]:
 
 
 #emit_pathway.sum(axis=1) #check that matches, we're good
 emit_pathway_mmt
 
 
-# In[52]:
+# In[72]:
 
 
 
@@ -1127,14 +1223,14 @@ plt.show()
 # # Emissions per Capacity
 # Trying to quantify the emissions entailed in achieving energy transition target capacities. Our current calculations don't allow a good method of CO2/kWh, but we do know how much it now takes to achieve the first 75 TW then the the next 11 TW will entail a different amount of carbon. This may be a valuable comparison
 
-# In[53]:
+# In[73]:
 
 
 
 cumu_carbon_rankings_crittime#.loc[scen,2050]
 
 
-# In[54]:
+# In[74]:
 
 
 cumu_carbon_rankings_crittime.index = scenarios #relabel the index for the calc
@@ -1155,10 +1251,22 @@ for scen in scenarios:
     #marginal increase between 2050 and 2100
 
 
-# In[55]:
+# In[75]:
 
 
 round(scen_carbonPERcapacity,0)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
