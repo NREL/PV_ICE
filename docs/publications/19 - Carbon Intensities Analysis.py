@@ -444,7 +444,7 @@ plt.legend(loc='upper left', fontsize=12)
 # ## Flip it, compare on CO2eq/kWp
 # This is a simple way of doing it, will not work for much beyond 2022, because the annual emissions include end of life of other systems, not just the mfging of installed - its not necessarily fair. Might work out on balance, kinda
 
-# In[94]:
+# In[27]:
 
 
 #lit factors into scatter points
@@ -467,12 +467,16 @@ litfactors.loc[2015,'Anctil2021_high'] = 1775
 litfactors.loc[2020,'Anctil2021_low'] = 500
 litfactors.loc[2020,'Anctil2021_high'] = 750
 
-litfactors.loc[2005,'AlsemadeWild2005_scSi'] = 41 #g/kWh/1000 = kg/kWh *1275 kw
+litfactors.loc[2005,'Jungbluth2005_scSi_m$^{2}$'] = 170 #scSi CO2fossil, might be just module not full lifecycle
+
+litfactors.loc[2020,'Wikoff2022_low_m$^{2}$'] = 125
+litfactors.loc[2020,'Wikoff2022_high_m$^{2}$'] = 275
+
 
 #litfactors
 
 
-# In[73]:
+# In[28]:
 
 
 #calculate CO2eq/kWp by dividing annual CO2eq/deployed PV
@@ -484,7 +488,7 @@ pvice_annual_kgco2pkwp = pvice_emit_annual['PV_ICE_Annual_Emit_total_modmats_gCO
 #pvice_annual_kgco2pkwp
 
 
-# In[74]:
+# In[29]:
 
 
 #calculate CO2eq/m2 for PV ICE
@@ -495,17 +499,17 @@ pvice_annual_kgco2eqpm2 = pvice_emit_annual['PV_ICE_Annual_Emit_total_modmats_gC
 #pvice_annual_kgco2eqpm2
 
 
-# In[92]:
+# In[30]:
 
 
 litfactors.columns
 
 
-# In[96]:
+# In[160]:
 
 
 #graphing
-plt.plot(pvice_annual_kgco2eqpm2, label='PV_ICE kg CO$_{2}$eq/m$^{2}$', color='darkgray')
+
 plt.plot(pvice_annual_kgco2pkwp, label='PV_ICE kg CO$_{2}$eq/kW$_{p}$', color='black')
 
 plt.scatter(litfactors.index, litfactors['Polverini2023_low'], label='Polverini2023_low', color='deepskyblue')
@@ -514,29 +518,108 @@ plt.scatter(litfactors.index, litfactors['Polverini2023_high'], label='Polverini
 plt.scatter(litfactors.index, litfactors['FthenakisLeccisi2021_scSi'], label='FthenakisLeccisi2021_scSi', color='lightcoral')
 plt.scatter(litfactors.index, litfactors['FthenakisLeccisi2021_mcSi'], label='FthenakisLeccisi2021_mcSi', color='firebrick')
 
-plt.scatter(litfactors.index, litfactors['LiangYou2023_scSi_m$^{2}$'], label='LiangYou2023_scSi_m$^{2}$', color='violet')
-plt.scatter(litfactors.index, litfactors['LiangYou2023_mcSi_m$^{2}$'], label='LiangYou2023_mcSi_m$^{2}$', color='darkviolet')
-
 plt.scatter(litfactors.index, litfactors['Anctil2021_low'], label='Anctil2021_low', color='green')
 plt.scatter(litfactors.index, litfactors['Anctil2021_high'], label='Anctil2021_high', color='limegreen')
 
+
+#plt.plot(pvice_annual_kgco2eqpm2, label='PV_ICE kg CO$_{2}$eq/m$^{2}$', color='darkgray', marker='^')
+
+#plt.scatter(litfactors.index, litfactors['LiangYou2023_scSi_m$^{2}$'], label='LiangYou2023_scSi_m$^{2}$', color='violet', marker='^')
+#plt.scatter(litfactors.index, litfactors['LiangYou2023_mcSi_m$^{2}$'], label='LiangYou2023_mcSi_m$^{2}$', color='darkviolet', marker='^')
+
+#plt.scatter(litfactors.index, litfactors['Jungbluth2005_scSi_m$^{2}$'], label='Jungbluth2005_scSi_m$^{2}$', color='orange', marker='^')
+plt.ylim(0,2500)
 plt.ylabel('kg CO$_{2}$eq/kW$_{p}$ OR kg CO$_{2}$eq/m$^{2}$')
 plt.title('Literature Comparison:\nkg CO$_{2}$eq/kW$_{p}$')
 plt.legend(bbox_to_anchor=(1.6,1))
 
 
+# In[159]:
+
+
+plt.plot(pvice_annual_kgco2eqpm2, label='PV_ICE kg CO$_{2}$eq/m$^{2}$', color='darkgray', marker='^')
+
+plt.scatter(litfactors.index, litfactors['LiangYou2023_scSi_m$^{2}$'], label='LiangYou2023_scSi_m$^{2}$', color='violet', marker='^')
+plt.scatter(litfactors.index, litfactors['LiangYou2023_mcSi_m$^{2}$'], label='LiangYou2023_mcSi_m$^{2}$', color='darkviolet', marker='^')
+
+plt.scatter(litfactors.index, litfactors['Jungbluth2005_scSi_m$^{2}$'], label='Jungbluth2005_scSi_m$^{2}$', color='orange', marker='^')
+
+plt.scatter(litfactors.index, litfactors['Wikoff2022_low_m$^{2}$'], label='Wikoff2022_low_m$^{2}$', color='fuchsia', marker='^')
+plt.scatter(litfactors.index, litfactors['Wikoff2022_high_m$^{2}$'], label='Wikoff2022_high_m$^{2}$', color='deeppink', marker='^')
+
+plt.ylim(0,375)
+plt.ylabel('kg CO$_{2}$eq/m$^{2}$')
+plt.title('Literature Comparison:\nkg CO$_{2}$eq/m$^{2}$')
+plt.legend(bbox_to_anchor=(1.6,1))
+
+
 # # Contextualize versus Global Carbon Emissions and Budget
 
-# In[ ]:
+# In[147]:
 
 
+annualco2emitglobal_raw = pd.read_csv(os.path.join(carbonfolder,'WorldInData-annual-co2-emissions-per-country.csv'))
+annualco2emitglobal_subset = annualco2emitglobal_raw.loc[(annualco2emitglobal_raw['Entity']=='World')&(annualco2emitglobal_raw['Year']>=2000), 'Year':]
+annualco2emitglobal_subset.index=annualco2emitglobal_subset['Year']
+
+#create % PV emit vs world
+pvice_annualPVemit_bmt = sim_annual_carbon.loc[:2022,'PV_ICE_Annual_Emit_total_modmats_gCO2eq']/1e15 #bmt
+world_annual_bmt = annualco2emitglobal_subset.iloc[:,1]/1e9 #bmt
+
+percentPVemitvsWorld = pvice_annualPVemit_bmt/world_annual_bmt*100
 
 
-
-# In[ ]:
-
+# In[148]:
 
 
+#cumulative compare
+sim_cumu_carbon_bmt = sim_cumu_carbon_mmt.loc[:,'PV_ICE_Annual_Emit_total_modmats_gCO2eq']/1e3
+sim_cumu_carbon_bmt
+
+
+# In[149]:
+
+
+fig_worldcompare, ax1 = plt.subplots()
+
+ax1.plot(annualco2emitglobal_subset.iloc[:,1]/1e9, label = 'World Emissions', color='red') #bmt
+ax1.plot(sim_annual_carbon.loc[:2022,'PV_ICE_Annual_Emit_total_modmats_gCO2eq']/1e15,
+         label='PV_ICE PV Emissions', color='black')
+ax1.set_ylim(0,40)
+ax1.set_ylabel('Emissions\n[billion metric tonnes $CO_{2eq}$]')
+ax1.set_xlim(2000,2023)
+
+ax2 = ax1.twinx()
+ax2.plot(percentPVemitvsWorld,ls=':', color='blue')
+ax2.set_ylabel('PV Percent of World Emissions [%]', color='blue')
+ax2.set_ylim(0,0.5)
+#ax2.set_xlim(2000,2022)
+
+plt.title('Compare PV Emissions to Global Emissions')
+ax1.legend(loc='center left')
+plt.show()
+
+
+# In[158]:
+
+
+fig_worldcompare, ax1 = plt.subplots()
+
+ax1.plot(annualco2emitglobal_subset.iloc[:,1]/1e9, label = 'World Annual Emissions', color='red') #bmt
+ax1.plot(sim_cumu_carbon_bmt, label='PV_ICE Cumulative Emissions', color='black')
+ax1.set_ylim(0,40)
+ax1.set_ylabel('Emissions\n[billion metric tonnes $CO_{2eq}$]')
+ax1.set_xlim(2000,2100)
+
+#ax2 = ax1.twinx()
+#ax2.plot(percentPVemitvsWorld,ls=':', color='blue')
+#ax2.set_ylabel('PV Percent of World Emissions [%]', color='blue')
+#ax2.set_ylim(0,0.5)
+#ax2.set_xlim(2000,2022)
+
+plt.title('Compare:\nPV Cumulative Emissions\nvs Global Annual Emissions')
+ax1.legend(loc='upper right')
+plt.show()
 
 
 # In[ ]:
@@ -547,7 +630,7 @@ plt.legend(bbox_to_anchor=(1.6,1))
 
 # # Cabon Emissions by material or module
 
-# In[28]:
+# In[ ]:
 
 
 for scen in scenarios:
@@ -595,13 +678,13 @@ for scen in scenarios:
 
 
 
-# In[29]:
+# In[ ]:
 
 
 maxy
 
 
-# In[30]:
+# In[ ]:
 
 
 #colormats = ['#00bfbf','#ff7f0e','#1f77be','#2ca02c','#d62728','#9467BD','#8C564B','black'] #colors for material plots
@@ -645,13 +728,13 @@ for scen in scenarios:
     plt.show()
 
 
-# In[47]:
+# In[ ]:
 
 
 sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_mod_elec')
 
 
-# In[48]:
+# In[ ]:
 
 
 #create a df from which to do a bar chart of 2100 emissions by mat/mod
@@ -669,7 +752,7 @@ modmats_emit_2100_megatonne = modmats_emit_2100/1e12
 modmats_emit_2100_megatonne
 
 
-# In[49]:
+# In[ ]:
 
 
 fig_cumuemit_modmat, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
@@ -751,7 +834,7 @@ plt.show()
 #fig_cumuemit_modmat.savefig('energyresults-energyBalance.png', dpi=300, bbox_inches='tight')
 
 
-# In[50]:
+# In[ ]:
 
 
 cumu_emit_sum = modmats_emit_2100_megatonne.sum(axis=1)
@@ -759,7 +842,7 @@ fraction_modmats_cumu_emit = modmats_emit_2100_megatonne.div(cumu_emit_sum, axis
 fraction_modmats_cumu_emit
 
 
-# In[51]:
+# In[ ]:
 
 
 fig_cumuemit_modmat, (ax0,ax2,ax3) = plt.subplots(1,3,figsize=(15,8), sharey=True, 
@@ -849,7 +932,7 @@ plt.show()
 
 # # Cumulative Carbon in 2050 and 2100
 
-# In[52]:
+# In[ ]:
 
 
 #mins in 2050 and 2100
@@ -861,14 +944,14 @@ cumu_carbon_rankings_crittime_bmt = cumu_carbon_rankings_crittime/1000
 round(cumu_carbon_rankings_crittime_bmt,1)
 
 
-# In[53]:
+# In[ ]:
 
 
 cumu_carbon_rankings_crittime_plot = cumu_carbon_rankings_crittime.copy()
 cumu_carbon_rankings_crittime_plot['diff'] = cumu_carbon_rankings_crittime[2100]-cumu_carbon_rankings_crittime[2050]
 
 
-# In[54]:
+# In[ ]:
 
 
 
@@ -923,7 +1006,7 @@ plt.show()
 # ## Process emission summing
 #  This only happens on the material files
 
-# In[55]:
+# In[ ]:
 
 
 process_emissions = pd.DataFrame()
@@ -937,7 +1020,7 @@ process_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 process_emissions_cumu = process_emissions.cumsum()
 
 
-# In[56]:
+# In[ ]:
 
 
 #process_emissions_cumu
@@ -946,7 +1029,7 @@ process_emissions_cumu = process_emissions.cumsum()
 # ## Fuel Emissions
 # This is capturing steam and heating fuel, also only on material level
 
-# In[57]:
+# In[ ]:
 
 
 fuel_emissions = pd.DataFrame()
@@ -960,7 +1043,7 @@ fuel_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 fuel_emissions_cumu = fuel_emissions.cumsum()
 
 
-# In[58]:
+# In[ ]:
 
 
 #fuel_emissions_cumu
@@ -969,7 +1052,7 @@ fuel_emissions_cumu = fuel_emissions.cumsum()
 # ## Electricity Emissions
 # both module and material level elec.
 
-# In[59]:
+# In[ ]:
 
 
 elec_emissions = pd.DataFrame()
@@ -991,7 +1074,7 @@ elec_emissions.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 elec_emissions_cumu = elec_emissions.cumsum()
 
 
-# In[60]:
+# In[ ]:
 
 
 #graphing by emission source
@@ -999,7 +1082,7 @@ efp_emit_total = elec_emissions+fuel_emissions+process_emissions
 efp_emit_total_cumu = elec_emissions_cumu+fuel_emissions_cumu+process_emissions_cumu
 
 
-# In[61]:
+# In[ ]:
 
 
 #graphing by emission source, annual
@@ -1033,7 +1116,7 @@ for scen in scennames_labels_flat:
     plt.show()
 
 
-# In[62]:
+# In[ ]:
 
 
 #graphing by emission source, cumulative
@@ -1065,7 +1148,7 @@ for scen in scennames_labels_flat:
     plt.show()
 
 
-# In[63]:
+# In[ ]:
 
 
 #bar chart 2050 and 2100 by scenario by emission source
@@ -1073,13 +1156,13 @@ emit_efp_2100_forbar = pd.concat([elec_emissions_cumu.loc[2100],fuel_emissions_c
                                  axis=1,keys=['electricity','fuel','process'])
 
 
-# In[64]:
+# In[ ]:
 
 
 emit_efp_2100_mmt = emit_efp_2100_forbar/1e12
 
 
-# In[65]:
+# In[ ]:
 
 
 
@@ -1160,7 +1243,7 @@ plt.show()
 # - install/decomission requirements 
 # and I think module mfging falls into the last category
 
-# In[66]:
+# In[ ]:
 
 
 CEkey = ['ReMFG','Recycle_Crush','Recycled_LQ','Recycled_HQ','Resell','Repair','LQ','HQ']
@@ -1185,7 +1268,7 @@ otherkey_search = '|'.join(otherkey)
 
 # set(allcolumns).difference(selectedcolumns)
 
-# In[67]:
+# In[ ]:
 
 
 #subset by pathways
@@ -1215,7 +1298,7 @@ sim_carbon_necessary.columns = scennames_labels_flat
 #.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 
 
-# In[68]:
+# In[ ]:
 
 
 sim_carbon_CE_cumu = sim_carbon_CE.cumsum()
@@ -1223,7 +1306,7 @@ sim_carbon_linear_cumu = sim_carbon_linear.cumsum()
 sim_carbon_necessary_cumu = sim_carbon_necessary.cumsum()
 
 
-# In[69]:
+# In[ ]:
 
 
 emit_pathway = pd.concat([sim_carbon_CE_cumu.loc[2100],sim_carbon_linear_cumu.loc[2100],sim_carbon_necessary_cumu.loc[2100]],
@@ -1231,20 +1314,20 @@ emit_pathway = pd.concat([sim_carbon_CE_cumu.loc[2100],sim_carbon_linear_cumu.lo
 emit_pathway_mmt = emit_pathway/1e12
 
 
-# In[70]:
+# In[ ]:
 
 
 sim_carbon_CE_cumu
 
 
-# In[71]:
+# In[ ]:
 
 
 #emit_pathway.sum(axis=1) #check that matches, we're good
 emit_pathway_mmt
 
 
-# In[72]:
+# In[ ]:
 
 
 
@@ -1327,14 +1410,14 @@ plt.show()
 # # Emissions per Capacity
 # Trying to quantify the emissions entailed in achieving energy transition target capacities. Our current calculations don't allow a good method of CO2/kWh, but we do know how much it now takes to achieve the first 75 TW then the the next 11 TW will entail a different amount of carbon. This may be a valuable comparison
 
-# In[73]:
+# In[ ]:
 
 
 
 cumu_carbon_rankings_crittime#.loc[scen,2050]
 
 
-# In[74]:
+# In[ ]:
 
 
 cumu_carbon_rankings_crittime.index = scenarios #relabel the index for the calc
@@ -1355,7 +1438,7 @@ for scen in scenarios:
     #marginal increase between 2050 and 2100
 
 
-# In[75]:
+# In[ ]:
 
 
 round(scen_carbonPERcapacity,0)
