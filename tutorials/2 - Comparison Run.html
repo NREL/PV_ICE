@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>1 - Basics run &#8212; PV_ICE Training</title>
+    <title>2 - Comparison Run &#8212; PV_ICE Training</title>
   
   
   
@@ -62,11 +62,10 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/1 - Basic run';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/2 - Comparison Run';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2 - Comparison Run" href="2%20-%20Comparison%20Run.html" />
-    <link rel="prev" title="Welcome to the PV_ICE Training" href="../intro.html" />
+    <link rel="prev" title="1 - Basics run" href="1%20-%20Basic%20run.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -167,8 +166,8 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">1 - Basics run</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2%20-%20Comparison%20Run.html">2 - Comparison Run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1%20-%20Basic%20run.html">1 - Basics run</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2 - Comparison Run</a></li>
 </ul>
 
     </div>
@@ -223,7 +222,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/NREL/PV_ICE/blob/development/training/tutorials/1 - Basic run.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/NREL/PV_ICE/blob/development/training/tutorials/2 - Comparison Run.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -289,7 +288,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/NREL/PV_ICE/issues/new?title=Issue%20on%20page%20%2Ftutorials/1 - Basic run.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/NREL/PV_ICE/issues/new?title=Issue%20on%20page%20%2Ftutorials/2 - Comparison Run.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -319,7 +318,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../_sources/tutorials/1 - Basic run.ipynb" target="_blank"
+      <li><a href="../_sources/tutorials/2 - Comparison Run.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -401,7 +400,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>1 - Basics run</h1>
+    <h1>2 - Comparison Run</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -412,8 +411,8 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-create-pv-ice-simulation-object">1. Setup and Create PV ICE Simulation Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-the-files-to-the-folder-now">2. Add the Files to the Folder now</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-your-scenario">3. Create your Scenario</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-the-files-and-add-to-the-folder-now">2. Modify the files and add to the folder now</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-standard-and-modified-scenarios">3. Create standard and modified scenarios</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-flows">4. Run the flows</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-results">5. Aggregate Results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-simulation">6. Save Simulation</a></li>
@@ -429,8 +428,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="basics-run">
-<h1>1 - Basics run<a class="headerlink" href="#basics-run" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="comparison-run">
+<h1>2 - Comparison Run<a class="headerlink" href="#comparison-run" title="Permalink to this heading">#</a></h1>
 <p><strong>Objectives:</strong></p>
 <ol class="arabic simple">
 <li><p>Read in necessary mass and energy data</p></li>
@@ -442,18 +441,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># if running on google colab, uncomment the next line and execute this cell to install the dependencies and prevent &quot;ModuleNotFoundError&quot; in later cells:</span>
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/NREL/PV_ICE.git@development
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>^C
-Defaulting to user installation because normal site-packages is not writeable
-Collecting git+https://github.com/NREL/PV_ICE.git@development
-  Cloning https://github.com/NREL/PV_ICE.git (to revision development) to c:\users\sayala\appdata\local\temp\1\pip-req-build-zgjqgj74
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Running command git clone --filter=blob:none --quiet https://github.com/NREL/PV_ICE.git &#39;C:\Users\sayala\AppData\Local\Temp\1\pip-req-build-zgjqgj74&#39;
+<span class="c1"># !pip install git+https://github.com/NREL/PV_ICE.git@development</span>
 </pre></div>
 </div>
 </div>
@@ -465,35 +453,49 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;v0.2.0+540.gd32fee4.dirty&#39;
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">testfolder</span> <span class="o">=</span> <span class="s1">&#39;Tuesday&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pwd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;C:\\Users\\sayala\\Documents\\GitHub\\PV_ICE\\training\\tutorials&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">testfolder</span> <span class="o">=</span> <span class="s1">&#39;Second&#39;</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">testfolder</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">testfolder</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sim1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">);</span> <span class="c1"># Is it possible to define more than one simulation here?</span>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">testfolder</span> <span class="o">=</span> <span class="s1">&#39;Second&#39;</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">testfolder</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">testfolder</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;os&#39; is not defined
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>PV ICE uses <i>object oriented programing</i>, so this created a <code class="docutils literal notranslate"><span class="pre">PV_ICE.main.Simulation</span></code> Object. An Object is data field that has unique attributes and behaviors. We can crack open objects with the <code class="docutils literal notranslate"><span class="pre">.__dict__</span></code> command</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="vm">__dict__</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sim2&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">);</span> <span class="c1"># Is it possible to define more than one simulation here?</span>
 </pre></div>
 </div>
 </div>
@@ -506,10 +508,9 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
 </div>
 </div>
 </section>
-<section id="add-the-files-to-the-folder-now">
-<h2>2. Add the Files to the Folder now<a class="headerlink" href="#add-the-files-to-the-folder-now" title="Permalink to this heading">#</a></h2>
-<p>Drag the files to the <code class="docutils literal notranslate"><span class="pre">/content</span></code> folder</p>
-<p>Alternatively, the cell below can open a upload window</p>
+<section id="modify-the-files-and-add-to-the-folder-now">
+<h2>2. Modify the files and add to the folder now<a class="headerlink" href="#modify-the-files-and-add-to-the-folder-now" title="Permalink to this heading">#</a></h2>
+<p>Let’s discuss as a group what would be a good scenario comparison to define.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#from google.colab import files</span>
@@ -519,79 +520,60 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
 </div>
 </div>
 </section>
-<section id="create-your-scenario">
-<h2>3. Create your Scenario<a class="headerlink" href="#create-your-scenario" title="Permalink to this heading">#</a></h2>
-<p>First create scenario and add its module files</p>
+<section id="create-standard-and-modified-scenarios">
+<h2>3. Create standard and modified scenarios<a class="headerlink" href="#create-standard-and-modified-scenarios" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> 
                   <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;baseline_modules_mass_US.csv&#39;</span><span class="p">,</span> 
                   <span class="n">energymodulefile</span> <span class="o">=</span> <span class="s1">&#39;baseline_modules_energy.csv&#39;</span> <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Then add at least one material file</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> 
+
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> 
+                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_mass_glass.csv&#39;</span><span class="p">,</span> 
+                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_glass.csv&#39;</span><span class="p">)</span>
+
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> 
                                     <span class="n">massmatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_mass_glass.csv&#39;</span><span class="p">,</span> 
                                     <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_glass.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We can explore the module and material objects now. For example:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;modified&#39;</span><span class="p">,</span> 
+                  <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;baseline_modules_mass_US_modified.csv&#39;</span><span class="p">,</span> 
+                  <span class="n">energymodulefile</span> <span class="o">=</span> <span class="s1">&#39;baseline_modules_energy.csv&#39;</span> <span class="p">)</span>
+
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;modified&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> 
+                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_mass_glass_modified.csv&#39;</span><span class="p">,</span> 
+                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_glass.csv&#39;</span><span class="p">)</span>
+
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;modified&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> 
+                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_mass_glass_modified.csv&#39;</span><span class="p">,</span> 
+                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_glass.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">matdataIn_m</span>
-</pre></div>
-</div>
-</div>
-</div>
+<p>Alternatively, use one of the PV_ICE support functions to modify</p>
+<ul class="simple">
+<li><p>modifyScenario</p></li>
+<li><p>modifyScenario Energy</p></li>
+</ul>
+<p>or</p>
+<ul class="simple">
+<li><p>scenMod_PerfectManufacturing</p></li>
+<li><p>scenMod_noCircularity</p></li>
+<li><p>scenMod_perfectRecycling</p></li>
+<li><p>scenMod_IRENIFY</p></li>
+</ul>
 </section>
 <section id="run-the-flows">
 <h2>4. Run the flows<a class="headerlink" href="#run-the-flows" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateEnergyFlow</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Same thing, but together</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateFlows</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can explore the outputs. They are still a bit raw at this step</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dataOut_m</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -602,24 +584,6 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">USyearly</span><span class="p">,</span> <span class="n">UScum</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">aggregateResults</span><span class="p">()</span>
-
-<span class="c1"># The results are also saved into the simulation object itself:</span>
-<span class="c1"># r1.USyearly</span>
-<span class="c1"># r1.UScum</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">USyearly</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">UScum</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -627,7 +591,6 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
 </section>
 <section id="save-simulation">
 <h2>6. Save Simulation<a class="headerlink" href="#save-simulation" title="Permalink to this heading">#</a></h2>
-<p>This is useful to see the inputs (in case you modified the values with some of the support functions), the full dataframes of internal processing data, and the outputs in an organized manner</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">saveSimulation</span><span class="p">()</span>
@@ -716,22 +679,13 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../intro.html"
+       href="1%20-%20Basic%20run.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Welcome to the PV_ICE Training</p>
+        <p class="prev-next-title">1 - Basics run</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="2%20-%20Comparison%20Run.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">2 - Comparison Run</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -749,8 +703,8 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-create-pv-ice-simulation-object">1. Setup and Create PV ICE Simulation Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-the-files-to-the-folder-now">2. Add the Files to the Folder now</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-your-scenario">3. Create your Scenario</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-the-files-and-add-to-the-folder-now">2. Modify the files and add to the folder now</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-standard-and-modified-scenarios">3. Create standard and modified scenarios</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-flows">4. Run the flows</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-results">5. Aggregate Results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-simulation">6. Save Simulation</a></li>
