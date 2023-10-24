@@ -5,3 +5,4 @@ format: jb-book
 root: intro
 chapters:
 - file: tutorials/1 - Basic run
+- file: tutorials/2 - Comparison Run

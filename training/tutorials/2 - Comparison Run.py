@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # 1 - Basics run
+# # 2 - Comparison Run
 # 
 # **Objectives:**
 # 1. Read in necessary mass and energy data
@@ -14,7 +14,7 @@
 
 
 # if running on google colab, uncomment the next line and execute this cell to install the dependencies and prevent "ModuleNotFoundError" in later cells:
-get_ipython().system('pip install git+https://github.com/NREL/PV_ICE.git@development')
+# !pip install git+https://github.com/NREL/PV_ICE.git@development
 
 
 # In[ ]:
@@ -27,7 +27,13 @@ PV_ICE.__version__
 # In[ ]:
 
 
-testfolder = 'Tuesday'
+pwd
+
+
+# In[ ]:
+
+
+testfolder = 'Second'
 
 if not os.path.exists(testfolder):
     os.makedirs(testfolder)
@@ -36,21 +42,7 @@ if not os.path.exists(testfolder):
 # In[ ]:
 
 
-r1 = PV_ICE.Simulation(name='Sim1', path=testfolder); # Is it possible to define more than one simulation here?
-
-
-# In[ ]:
-
-
-r1
-
-
-# PV ICE uses <i>object oriented programing</i>, so this created a ``PV_ICE.main.Simulation`` Object. An Object is data field that has unique attributes and behaviors. We can crack open objects with the `.__dict__` command
-
-# In[ ]:
-
-
-r1.__dict__
+r1 = PV_ICE.Simulation(name='Sim2', path=testfolder); # Is it possible to define more than one simulation here?
 
 
 # In[ ]:
@@ -59,22 +51,19 @@ r1.__dict__
 r1.baselinepath = '/content'
 
 
-# ## 2. Add the Files to the Folder now
+# ## 2. Modify the files and add to the folder now 
 # 
-# Drag the files to the `/content` folder 
-# 
-# Alternatively, the cell below can open a upload window
+# Let's discuss as a group what would be a good scenario comparison to define.
 
-# In[ ]:
+# In[1]:
 
 
 #from google.colab import files
 #files.upload()
 
 
-# ## 3. Create your Scenario
+# ## 3. Create standard and modified scenarios
 # 
-# First create scenario and add its module files 
 
 # In[ ]:
 
@@ -83,65 +72,49 @@ r1.createScenario(name='standard',
                   massmodulefile=r'baseline_modules_mass_US.csv', 
                   energymodulefile = 'baseline_modules_energy.csv' )
 
-
-# Then add at least one material file
-
-# In[ ]:
-
+r1.scenario['standard'].addMaterial(materialname='glass', 
+                                    massmatfile='/content/baseline_material_mass_glass.csv', 
+                                    energymatfile='/content/baseline_material_energy_glass.csv')
 
 r1.scenario['standard'].addMaterial(materialname='glass', 
                                     massmatfile='/content/baseline_material_mass_glass.csv', 
                                     energymatfile='/content/baseline_material_energy_glass.csv')
 
 
-# We can explore the module and material objects now. For example:
-
 # In[ ]:
 
 
-r1.scenario['standard'].material['glass']
+r1.createScenario(name='modified', 
+                  massmodulefile=r'baseline_modules_mass_US_modified.csv', 
+                  energymodulefile = 'baseline_modules_energy.csv' )
+
+r1.scenario['modified'].addMaterial(materialname='glass', 
+                                    massmatfile='/content/baseline_material_mass_glass_modified.csv', 
+                                    energymatfile='/content/baseline_material_energy_glass.csv')
+
+r1.scenario['modified'].addMaterial(materialname='silicon', 
+                                    massmatfile='/content/baseline_material_mass_glass_modified.csv', 
+                                    energymatfile='/content/baseline_material_energy_glass.csv')
 
 
-# In[ ]:
-
-
-r1.scenario['standard'].material['glass'].__dict__
-
-
-# In[ ]:
-
-
-r1.scenario['standard'].material['glass'].matdataIn_m
-
+# Alternatively, use one of the PV_ICE support functions to modify 
+# 
+# * modifyScenario
+# * modifyScenario Energy
+# 
+# or 
+# * scenMod_PerfectManufacturing
+# * scenMod_noCircularity
+# * scenMod_perfectRecycling
+# * scenMod_IRENIFY
+# 
 
 # ## 4. Run the flows 
 
 # In[ ]:
 
 
-r1.calculateMassFlow()
-
-
-# In[ ]:
-
-
-r1.calculateEnergyFlow()
-
-
-# Same thing, but together 
-
-# In[ ]:
-
-
 r1.calculateFlows()
-
-
-# We can explore the outputs. They are still a bit raw at this step
-
-# In[ ]:
-
-
-r1.scenario['standard'].dataOut_m.keys()
 
 
 # ## 5. Aggregate Results
@@ -151,26 +124,9 @@ r1.scenario['standard'].dataOut_m.keys()
 
 USyearly, UScum = r1.aggregateResults()
 
-# The results are also saved into the simulation object itself:
-# r1.USyearly
-# r1.UScum
-
-
-# In[ ]:
-
-
-USyearly.keys()
-
-
-# In[ ]:
-
-
-UScum.keys()
-
 
 # ## 6. Save Simulation
 # 
-# This is useful to see the inputs (in case you modified the values with some of the support functions), the full dataframes of internal processing data, and the outputs in an organized manner
 
 # In[ ]:
 

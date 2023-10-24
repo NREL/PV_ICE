@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>1 - Basic run</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>2 - Comparison Run</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -14580,7 +14580,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="1---Basics-run">1 - Basics run<a class="anchor-link" href="#1---Basics-run">&#182;</a></h1><p><strong>Objectives:</strong></p>
+<h1 id="2---Comparison-Run">2 - Comparison Run<a class="anchor-link" href="#2---Comparison-Run">&#182;</a></h1><p><strong>Objectives:</strong></p>
 <ol>
 <li>Read in necessary mass and energy data</li>
 <li>Run</li>
@@ -14610,7 +14610,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># if running on google colab, uncomment the next line and execute this cell to install the dependencies and prevent "ModuleNotFoundError" in later cells:</span>
-<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/NREL/PV_ICE.git@development
+<span class="c1"># !pip install git+https://github.com/NREL/PV_ICE.git@development</span>
 </pre></div>
 
      </div>
@@ -14643,7 +14643,23 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">testfolder</span> <span class="o">=</span> <span class="s1">'Tuesday'</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pwd</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">testfolder</span> <span class="o">=</span> <span class="s1">'Second'</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">testfolder</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">testfolder</span><span class="p">)</span>
@@ -14662,51 +14678,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'Sim1'</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">);</span> <span class="c1"># Is it possible to define more than one simulation here?</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>PV ICE uses <i>object oriented programing</i>, so this created a <code>PV_ICE.main.Simulation</code> Object. An Object is data field that has unique attributes and behaviors. We can crack open objects with the <code>.__dict__</code> command</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="vm">__dict__</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'Sim2'</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">);</span> <span class="c1"># Is it possible to define more than one simulation here?</span>
 </pre></div>
 
      </div>
@@ -14737,8 +14709,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="2.-Add-the-Files-to-the-Folder-now">2. Add the Files to the Folder now<a class="anchor-link" href="#2.-Add-the-Files-to-the-Folder-now">&#182;</a></h2><p>Drag the files to the <code>/content</code> folder</p>
-<p>Alternatively, the cell below can open a upload window</p>
+<h2 id="2.-Modify-the-files-and-add-to-the-folder-now">2. Modify the files and add to the folder now<a class="anchor-link" href="#2.-Modify-the-files-and-add-to-the-folder-now">&#182;</a></h2><p>Let's discuss as a group what would be a good scenario comparison to define.</p>
 
 </div>
 </div>
@@ -14748,7 +14719,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#from google.colab import files</span>
@@ -14767,8 +14738,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="3.-Create-your-Scenario">3. Create your Scenario<a class="anchor-link" href="#3.-Create-your-Scenario">&#182;</a></h2><p>First create scenario and add its module files</p>
-
+<h2 id="3.-Create-standard-and-modified-scenarios">3. Create standard and modified scenarios<a class="anchor-link" href="#3.-Create-standard-and-modified-scenarios">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -14783,6 +14753,14 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'standard'</span><span class="p">,</span> 
                   <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">'baseline_modules_mass_US.csv'</span><span class="p">,</span> 
                   <span class="n">energymodulefile</span> <span class="o">=</span> <span class="s1">'baseline_modules_energy.csv'</span> <span class="p">)</span>
+
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">'glass'</span><span class="p">,</span> 
+                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">'/content/baseline_material_mass_glass.csv'</span><span class="p">,</span> 
+                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">'/content/baseline_material_energy_glass.csv'</span><span class="p">)</span>
+
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">'glass'</span><span class="p">,</span> 
+                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">'/content/baseline_material_mass_glass.csv'</span><span class="p">,</span> 
+                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">'/content/baseline_material_energy_glass.csv'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14790,18 +14768,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Then add at least one material file</p>
-
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14810,8 +14776,16 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">'glass'</span><span class="p">,</span> 
-                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">'/content/baseline_material_mass_glass.csv'</span><span class="p">,</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'modified'</span><span class="p">,</span> 
+                  <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">'baseline_modules_mass_US_modified.csv'</span><span class="p">,</span> 
+                  <span class="n">energymodulefile</span> <span class="o">=</span> <span class="s1">'baseline_modules_energy.csv'</span> <span class="p">)</span>
+
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'modified'</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">'glass'</span><span class="p">,</span> 
+                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">'/content/baseline_material_mass_glass_modified.csv'</span><span class="p">,</span> 
+                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">'/content/baseline_material_energy_glass.csv'</span><span class="p">)</span>
+
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'modified'</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">'silicon'</span><span class="p">,</span> 
+                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">'/content/baseline_material_mass_glass_modified.csv'</span><span class="p">,</span> 
                                     <span class="n">energymatfile</span><span class="o">=</span><span class="s1">'/content/baseline_material_energy_glass.csv'</span><span class="p">)</span>
 </pre></div>
 
@@ -14827,59 +14801,22 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can explore the module and material objects now. For example:</p>
+<p>Alternatively, use one of the PV_ICE support functions to modify</p>
+<ul>
+<li>modifyScenario</li>
+<li>modifyScenario Energy</li>
+</ul>
+<p>or</p>
+<ul>
+<li>scenMod_PerfectManufacturing</li>
+<li>scenMod_noCircularity</li>
+<li>scenMod_perfectRecycling</li>
+<li>scenMod_IRENIFY</li>
+</ul>
 
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">'glass'</span><span class="p">]</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">'glass'</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">'glass'</span><span class="p">]</span><span class="o">.</span><span class="n">matdataIn_m</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -14899,79 +14836,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateMassFlow</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateEnergyFlow</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Same thing, but together</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">calculateFlows</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can explore the outputs. They are still a bit raw at this step</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">dataOut_m</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14999,42 +14864,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span><span class="p">,</span> <span class="n">UScum</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">aggregateResults</span><span class="p">()</span>
-
-<span class="c1"># The results are also saved into the simulation object itself:</span>
-<span class="c1"># r1.USyearly</span>
-<span class="c1"># r1.UScum</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">USyearly</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">UScum</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15049,8 +14878,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="6.-Save-Simulation">6. Save Simulation<a class="anchor-link" href="#6.-Save-Simulation">&#182;</a></h2><p>This is useful to see the inputs (in case you modified the values with some of the support functions), the full dataframes of internal processing data, and the outputs in an organized manner</p>
-
+<h2 id="6.-Save-Simulation">6. Save Simulation<a class="anchor-link" href="#6.-Save-Simulation">&#182;</a></h2>
 </div>
 </div>
 </div>
