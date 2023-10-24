@@ -101,3 +101,6 @@ tests/results/
 
 # PVDEMICE temp folder
 PV_ICE/TEMP/
+
+# Traning Jupyter-book
+training/_build/
