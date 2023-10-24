@@ -9,7 +9,7 @@ As per the instructions on each journal, you should uncomment the first line
 that reads `pip install ...`  to install the environment if you follow this mode.
 
 You can also clone the repository and run them locally, following the 
-instructions on the [PVDegTools Github page](https://github.com/NREL/PV_ICE)
+instructions on the [PV_ICE Github page](https://github.com/NREL/PV_ICE)
 
 ```{tableofcontents}
 ```
