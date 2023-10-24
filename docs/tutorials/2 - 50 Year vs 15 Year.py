@@ -90,6 +90,7 @@ r1.scenario['15_Year_Module'].dataIn_m['mod_lifetime'] = 15
 r1.scenario['15_Year_Module'].dataIn_m['mod_degradation'] = 1.4
 
 
+
 # ## Change Recyclability Values
 
 # In[7]:
@@ -318,6 +319,7 @@ plt.ylabel('Virgin Glass [Million Tonnes]')
 plt.legend()
 plt.title('Annual Virgin Material Input')
 plt.xlim([2000, 2050])
+
 
 
 # In[30]:

@@ -14560,12 +14560,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14640,7 +14640,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">PV_ICE</span> <span class="c1"># Load PV_ICE package</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Successfully imported PV_ICE, version &quot;</span><span class="p">,</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Successfully imported PV_ICE, version "</span><span class="p">,</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14694,15 +14694,15 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span> <span class="o">/</span> <span class="s1">&#39;Tutorial0&#39;</span><span class="p">)</span> <span class="c1"># Path to the simulation folder.</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">'PV_ICE'</span> <span class="o">/</span> <span class="s1">'TEMP'</span> <span class="o">/</span> <span class="s1">'Tutorial0'</span><span class="p">)</span> <span class="c1"># Path to the simulation folder.</span>
 
-<span class="n">baselinesfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="p">)</span>  <span class="c1"># Path to baselines and data.</span>
+<span class="n">baselinesfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">'PV_ICE'</span> <span class="o">/</span> <span class="s1">'baselines'</span><span class="p">)</span>  <span class="c1"># Path to baselines and data.</span>
 
-<span class="c1"># Another option using relative address; for some operative systems you might need &#39;/&#39; instead of &#39;\&#39;</span>
-<span class="c1"># testfolder = os.path.abspath(r&#39;..\..\PV_DEMICE\TEMP&#39;)  </span>
+<span class="c1"># Another option using relative address; for some operative systems you might need '/' instead of '\'</span>
+<span class="c1"># testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  </span>
 
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Your simulation will be stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">testfolder</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Your baselines are stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">baselinesfolder</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">"Your simulation will be stored in </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">testfolder</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">"Your baselines are stored in </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">baselinesfolder</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">testfolder</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">testfolder</span><span class="p">)</span>
@@ -14772,7 +14772,7 @@ Your baselines are stored in C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\base
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Simulation_1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">);</span> <span class="c1"># Is it possible to define more than one simulation here?</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'Simulation_1'</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">);</span> <span class="c1"># Is it possible to define more than one simulation here?</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1"># Shows the name of the simulation object</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="c1"># Shows the path of the simulation object</span>
 </pre></div>
@@ -14829,7 +14829,7 @@ C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP\Tutorial0
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'standard'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14880,7 +14880,7 @@ C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP\Tutorial0
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="s1">&#39;baseline_modules_mass_US.csv&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'standard'</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="s1">'baseline_modules_mass_US.csv'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14931,7 +14931,7 @@ C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP\Tutorial0
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesfolder</span><span class="p">,</span><span class="s1">&#39;baseline_modules_mass_US.csv&#39;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'standard'</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">baselinesfolder</span><span class="p">,</span><span class="s1">'baseline_modules_mass_US.csv'</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -14971,8 +14971,8 @@ C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP\Tutorial0
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">##  Alternative method</span>
-<span class="c1"># modulefile = r&#39;C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\baselines\baseline_modules_mass_US.csv&#39;</span>
-<span class="c1"># r1.createScenario(name=&#39;standard&#39;, massmodulefile=modulefile)</span>
+<span class="c1"># modulefile = r'C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\baselines\baseline_modules_mass_US.csv'</span>
+<span class="c1"># r1.createScenario(name='standard', massmodulefile=modulefile)</span>
 </pre></div>
 
      </div>
@@ -15000,7 +15000,7 @@ C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP\Tutorial0
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterials</span><span class="p">([</span><span class="s1">&#39;glass&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterials</span><span class="p">([</span><span class="s1">'glass'</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -15039,7 +15039,7 @@ C:\Users\sayala\Documents\GitHub\PV_ICE\PV_ICE\TEMP\Tutorial0
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">&#39;glass&#39;</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">material</span><span class="p">[</span><span class="s1">'glass'</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span>
 </pre></div>
 
      </div>
@@ -15683,7 +15683,7 @@ Finished Area+Power Generation Calculations
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dataOut_m</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span><span class="o">.</span><span class="n">dataOut_m</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15985,7 +15985,7 @@ Finished Area+Power Generation Calculations
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">plotMaterialComparisonAcrossScenarios</span><span class="p">(</span><span class="n">material</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> <span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;mat_EOL_Recycled_2_HQ&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r1</span><span class="o">.</span><span class="n">plotMaterialComparisonAcrossScenarios</span><span class="p">(</span><span class="n">material</span><span class="o">=</span><span class="s1">'glass'</span><span class="p">,</span> <span class="n">keyword</span><span class="o">=</span><span class="s1">'mat_EOL_Recycled_2_HQ'</span><span class="p">)</span>
 </pre></div>
 
      </div>
