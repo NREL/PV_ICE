@@ -133,7 +133,11 @@ for ii in range (len(rawdf.unstack(level=1))):
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
    
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,mod_degradation,"    "mod_lifetime,mod_MFG_eff,mod_Repair,mod_MerchantTail,mod_EOL_collection_eff,mod_EOL_pg0_resell,"    "mod_EOL_pg1_landfill,mod_EOL_pg2_stored,mod_EOL_pg3_reMFG,mod_EOL_pg4_recycled,mod_EOL_reMFG_yield,"    "mod_EOL_sp_reMFG_recycle,mod_EOL_pb1_landfill,mod_EOL_pb2_stored,mod_EOL_pb3_reMFG,mod_EOL_pb4_recycled\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%,%,%,%,%,%,%,%,%,%\n"
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,mod_degradation,"\
+    "mod_lifetime,mod_MFG_eff,mod_Repair,mod_MerchantTail,mod_EOL_collection_eff,mod_EOL_pg0_resell,"\
+    "mod_EOL_pg1_landfill,mod_EOL_pg2_stored,mod_EOL_pg3_reMFG,mod_EOL_pg4_recycled,mod_EOL_reMFG_yield,"\
+    "mod_EOL_sp_reMFG_recycle,mod_EOL_pb1_landfill,mod_EOL_pb2_stored,mod_EOL_pb3_reMFG,mod_EOL_pb4_recycled\n"\
+    "year,MW,%,years,years,%,years,%,%,%,%,%,%,%,%,%,%,%,%,%,%,%\n"
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -190,7 +194,11 @@ for ii in range (len(df.unstack(level=2))):
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
     
     
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,mod_degradation,"    "mod_lifetime,mod_MFG_eff,mod_Repair,mod_MerchantTail,mod_EOL_collection_eff,mod_EOL_pg0_resell,"    "mod_EOL_pg1_landfill,mod_EOL_pg2_stored,mod_EOL_pg3_reMFG,mod_EOL_pg4_recycled,mod_EOL_reMFG_yield,"    "mod_EOL_sp_reMFG_recycle,mod_EOL_pb1_landfill,mod_EOL_pb2_stored,mod_EOL_pb3_reMFG,mod_EOL_pb4_recycled\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%,%,%,%,%,%,%,%,%,%\n"
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,mod_degradation,"\
+    "mod_lifetime,mod_MFG_eff,mod_Repair,mod_MerchantTail,mod_EOL_collection_eff,mod_EOL_pg0_resell,"\
+    "mod_EOL_pg1_landfill,mod_EOL_pg2_stored,mod_EOL_pg3_reMFG,mod_EOL_pg4_recycled,mod_EOL_reMFG_yield,"\
+    "mod_EOL_sp_reMFG_recycle,mod_EOL_pb1_landfill,mod_EOL_pb2_stored,mod_EOL_pb3_reMFG,mod_EOL_pb4_recycled\n"\
+    "year,MW,%,years,years,%,years,%,%,%,%,%,%,%,%,%,%,%,%,%,%,%\n"
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -244,7 +252,11 @@ for ii in range (len(df.unstack(level=1))):
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
    
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,mod_degradation,"    "mod_lifetime,mod_MFG_eff,mod_Repair,mod_MerchantTail,mod_EOL_collection_eff,mod_EOL_pg0_resell,"    "mod_EOL_pg1_landfill,mod_EOL_pg2_stored,mod_EOL_pg3_reMFG,mod_EOL_pg4_recycled,mod_EOL_reMFG_yield,"    "mod_EOL_sp_reMFG_recycle,mod_EOL_pb1_landfill,mod_EOL_pb2_stored,mod_EOL_pb3_reMFG,mod_EOL_pb4_recycled\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%,%,%,%,%,%,%,%,%,%\n"
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,mod_degradation,"\
+    "mod_lifetime,mod_MFG_eff,mod_Repair,mod_MerchantTail,mod_EOL_collection_eff,mod_EOL_pg0_resell,"\
+    "mod_EOL_pg1_landfill,mod_EOL_pg2_stored,mod_EOL_pg3_reMFG,mod_EOL_pg4_recycled,mod_EOL_reMFG_yield,"\
+    "mod_EOL_sp_reMFG_recycle,mod_EOL_pb1_landfill,mod_EOL_pb2_stored,mod_EOL_pb3_reMFG,mod_EOL_pb4_recycled\n"\
+    "year,MW,%,years,years,%,years,%,%,%,%,%,%,%,%,%,%,%,%,%,%,%\n"
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -703,7 +715,6 @@ pvice_2050_cumwastes.to_csv(os.path.join(testfolder,'PVICE_cumulativeWastes2050_
 # NOTE: this mass flow calculation takes a LONG time to run, recommend leaving it overnight. A csv of the yearly and cumulative aggregated results is saved as csv and read back in to speed analysis and graphing.
 
 # In[57]:
-
 
 
 for row in range (0,len(r1.scenario['Decarb+E_PVICE_defaults'].dataIn_m)):
