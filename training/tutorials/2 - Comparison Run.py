@@ -14,13 +14,14 @@
 
 
 # if running on google colab, uncomment the next line and execute this cell to install the dependencies and prevent "ModuleNotFoundError" in later cells:
-# !pip install git+https://github.com/NREL/PV_ICE.git@development
+get_ipython().system('pip install git+https://github.com/NREL/PV_ICE.git@development')
 
 
 # In[ ]:
 
 
 import PV_ICE
+import os
 PV_ICE.__version__
 
 
@@ -42,13 +43,7 @@ if not os.path.exists(testfolder):
 # In[ ]:
 
 
-r1 = PV_ICE.Simulation(name='Sim2', path=testfolder); # Is it possible to define more than one simulation here?
-
-
-# In[ ]:
-
-
-r1.baselinepath = '/content'
+r1 = PV_ICE.Simulation(name='Sim2', path=testfolder, baselinepath='/content'); # Is it possible to define more than one simulation here?
 
 
 # ## 2. Modify the files and add to the folder now 
