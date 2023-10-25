@@ -42,7 +42,7 @@ Put the following in the file:
 
 I hereby agree to the terms of the Contributors License
 Agreement, version 1.0, with MD5 checksum
-6e53acc1506fff5cf4335e0fee943da4.
+c54efab3bc98a2ca5e631c204a58a15c.
 
 I furthermore declare that I am authorized and able to make this
 agreement and sign this declaration.
@@ -63,7 +63,7 @@ You can confirm the MD5 checksum of the CLA by running the md5 program over `cla
 
 ```
 md5 cla-1.0.md
-MD5 (cla-1.0.md) = 6e53acc1506fff5cf4335e0fee943da4
+MD5 (cla-1.0.md) = c54efab3bc98a2ca5e631c204a58a15c
 ```
 
 If the output is different from above, do not sign the CLA and let us know.
