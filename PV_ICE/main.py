@@ -1650,7 +1650,7 @@ class Simulation:
         
         #carbon folder 
         #TODO: NEED TO MAKE THIS MORE DYNAMIC/robust
-        carbonfolder = os.path.join(str(Path().resolve().parent.parent/ 'PV_ICE'/ 'baselines'/ 'CarbonLayer'))
+        carbonfolder = Path(DATA_PATH) / 'CarbonLayer'
         
         if countrygridmixes is None:
             countrygridmixes = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'))
