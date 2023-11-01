@@ -9,11 +9,11 @@
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'Tutorial_3')
 
-# Another option using relative address; for some operative systems you might need '/' instead of '\'
-# testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
-
+if not os.path.exists(testfolder):
+    os.makedirs(testfolder)
+    
 print ("Your simulation will be stored in %s" % testfolder)
 
 
@@ -35,60 +35,111 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # ## REPAIR
 
-# In[4]:
-
-
-r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='Repair_0', file=r'..\baselines\baseline_modules_US.csv')
-r1.scenario['Repair_0'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['Repair_0'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
-
-r1.createScenario(name='Repair_50', file=r'..\baselines\baseline_modules_US.csv')
-r1.scenario['Repair_50'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['Repair_50'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
-
-
-# In[5]:
-
-
-r1.scenario['Repair_0'].data['mod_Repair'] = 0
-r1.scenario['Repair_50'].data['mod_Repair'] = 50
-
-r1.scenario['Repair_0'].data['mod_reliability_t50'] = 25
-r1.scenario['Repair_0'].data['mod_reliability_t90'] = 35
-r1.scenario['Repair_50'].data['mod_reliability_t50'] = 25
-r1.scenario['Repair_50'].data['mod_reliability_t90'] = 35
-
-# Setting Project Lifetime beyond Failures
-r1.scenario['Repair_0'].data['mod_lifetime'] = 50
-r1.scenario['Repair_50'].data['mod_lifetime'] = 50
-
-
 # In[6]:
 
 
-r1.calculateMassFlow()
+r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
+r1.createScenario(name='Repair_0', 
+                  massmodulefile=r'baseline_modules_mass_US.csv', 
+                  energymodulefile=r'baseline_modules_energy.csv', )
+r1.scenario['Repair_0'].addMaterial('glass', 
+                                    massmatfile=r'..\..\baselines\baseline_material_mass_glass.csv', 
+                                    energymatfile=r'..\..\baselines\baseline_material_energy_glass.csv')
+
+r1.scenario['Repair_0'].addMaterial('silicon', 
+                                    massmatfile=r'..\..\baselines\baseline_material_mass_silicon.csv',
+                                    energymatfile=r'..\..\baselines\baseline_material_energy_silicon.csv')
+    
+r1.createScenario(name='Repair_50', 
+                  massmodulefile=r'..\..\baselines\baseline_modules_mass_US.csv', 
+                  energymodulefile=r'..\..\baselines\baseline_modules_energy.csv', )
+r1.scenario['Repair_50'].addMaterial('glass', 
+                                     massmatfile=r'..\..\baselines\baseline_material_mass_glass.csv',
+                                     energymatfile=r'..\..\baselines\baseline_material_energy_glass.csv')
+r1.scenario['Repair_50'].addMaterial('silicon', 
+                                     massmatfile=r'..\..\baselines\baseline_material_mass_silicon.csv', 
+                                     energymatfile=r'..\..\baselines\baseline_material_energy_silicon.csv')
 
 
 # In[7]:
 
 
-r1.scenario['Repair_0'].data.keys()
+r1.scenario['Repair_0'].dataIn_m['mod_Repair'] = 0
+r1.scenario['Repair_50'].dataIn_m['mod_Repair'] = 50
+
+r1.scenario['Repair_0'].dataIn_m['mod_reliability_t50'] = 25
+r1.scenario['Repair_0'].dataIn_m['mod_reliability_t90'] = 35
+r1.scenario['Repair_50'].dataIn_m['mod_reliability_t50'] = 25
+r1.scenario['Repair_50'].dataIn_m['mod_reliability_t90'] = 35
+
+# Setting Project Lifetime beyond Failures
+r1.scenario['Repair_0'].dataIn_m['mod_lifetime'] = 50
+r1.scenario['Repair_50'].dataIn_m['mod_lifetime'] = 50
 
 
 # In[8]:
 
 
+r1.calculateMassFlow()
+r1.calculateEnergyFlow(insolation=4800) # Modify to European value here. 4800 is for US NSRDB Average.
+
+
+# <b> Examples of accessing the dataframes/printing hte keywords: </b>
+# (we don't have energy now)
+# * r1.scenario['Repair_0'].dataOut_m.keys()
+# * r1.scenario['Repair_0'].dataIn_m.keys()
+# * r1.scenario['Repair_0'].dataOut_e.keys()
+# * r1.scenario['Repair_0'].material['glass'].matdataIn_m.keys()
+# * r1.scenario['Repair_0'].material['glass'].matdataOut_m.keys()
+# * r1.scenario['Repair_0'].material['glass'].matdataOut_e.keys()
+
+# In[9]:
+
+
+r1.scenario['Repair_0'].material['glass'].matdataOut_m.keys()
+
+
+# In[10]:
+
+
+r1.scenario['Repair_0'].material['glass'].matdataIn_m
+
+
+# In[11]:
+
+
+USyearly, UScum = r1.aggregateResults()
+USyearly.to_csv('USYearly.csv')
+UScum.to_csv('USCum.csv')
+
+
+# In[13]:
+
+
+r1.saveSimulation()
+
+
+# In[14]:
+
+
+r1.plotMaterialComparisonAcrossScenarios(keyword='mat_Manufacturing_Input', material='glass')
+
+
+# # clean after this
+
+# In[ ]:
+
+
 AREA = r1.scenario['Repair_0'].data['Area'].iloc[0]
 
 
-# In[9]:
+# In[ ]:
 
 
 filter_col = [col for col in r1.scenario['Repair_0'].data if col.startswith('EOL_on_Year_')]
 
 
-# In[10]:
+# In[ ]:
 
 
 Cumul_EOL_R0 = []
@@ -103,7 +154,7 @@ for life in range (0, len(filter_col)):
     Cumul_EOL_R50.append(foo2)
 
 
-# In[11]:
+# In[ ]:
 
 
 fig = plt.figure()
@@ -128,7 +179,7 @@ plt.legend()
 plt.xlim([0,45])
 
 
-# In[12]:
+# In[ ]:
 
 
 fig = plt.figure()
@@ -151,13 +202,13 @@ plt.title('Generation 1995 - Repair effects')
 plt.xlim([0,45])
 
 
-# In[13]:
+# In[ ]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
-# In[14]:
+# In[ ]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
@@ -168,7 +219,7 @@ r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_
 # 
 # Starting a Clean simulation
 
-# In[15]:
+# In[ ]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -181,7 +232,7 @@ r1.scenario['Reuse_50'].addMaterial('glass', file=r'..\baselines\baseline_materi
 r1.scenario['Reuse_50'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
 
 
-# In[16]:
+# In[ ]:
 
 
 r1.scenario['Reuse_0'].data['mod_Reuse'] = 0
@@ -198,31 +249,31 @@ r1.scenario['Reuse_0'].data['mod_lifetime'] = 25
 r1.scenario['Reuse_50'].data['mod_lifetime'] = 25
 
 
-# In[17]:
+# In[ ]:
 
 
 r1.calculateMassFlow()
 
 
-# In[18]:
+# In[ ]:
 
 
 r1.scenario['Reuse_50'].data.keys()
 
 
-# In[19]:
+# In[ ]:
 
 
 AREA = r1.scenario['Reuse_50'].data['Area'].iloc[0]
 
 
-# In[20]:
+# In[ ]:
 
 
 filter_col = [col for col in r1.scenario['Reuse_50'].data if col.startswith('EOL_on_Year_')]
 
 
-# In[21]:
+# In[ ]:
 
 
 Cumul_EOL_R0 = []
@@ -237,7 +288,7 @@ for life in range (0, len(filter_col)):
     Cumul_EOL_R50.append(foo2)
 
 
-# In[22]:
+# In[ ]:
 
 
 fig = plt.figure()
@@ -251,7 +302,7 @@ plt.legend()
 plt.xlim([0,45])
 
 
-# In[23]:
+# In[ ]:
 
 
 fig = plt.figure()
@@ -276,7 +327,7 @@ plt.title('Generation 1995 - Reuse at End of Project Lifetime')
 plt.xlim([0,45])
 
 
-# In[24]:
+# In[ ]:
 
 
 fig = plt.figure()
@@ -301,13 +352,13 @@ plt.legend()
 plt.xlim([0,45])
 
 
-# In[25]:
+# In[ ]:
 
 
 r1.plotScenariosComparison(keyword='Installed_Capacity_[W]')
 
 
-# In[26]:
+# In[ ]:
 
 
 r1.plotMaterialComparisonAcrossScenarios(material='glass', keyword='mat_Total_Landfilled')
