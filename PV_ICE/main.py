@@ -1514,7 +1514,7 @@ class Simulation:
 
 
     #method to calculate energy flows as a function of mass flows and circular pathways
-    def calculateEnergyFlow(self, scenarios=None, materials=None, modEnergy=None, matEnergy=None,
+    def calculateEnergyFlow(self, scenarios=None, materials=None,
                             insolation = 4800, PR = 0.85):
         '''
         Function takes as input PV ICE resulting mass flow dataframes for scenarios
@@ -1531,12 +1531,6 @@ class Simulation:
             materials names to loop over. Must exists on the PV ICE object
             scenario(s) modeled and already have undergone the mass flow
             calculations.
-        modEnergy : str
-            File with the module energy baseline. This process will be updated
-            so that it's added to the PV_ICE object. Units are typically in Wh/m2 or Wh/g
-        matEnergy : str
-            File with the material energy baseline. This process will be updated
-            so that it's added to the PV_ICE object. Units are typically in Wh/m2 or Wh/g
         insolation : float
             Insolation received in the location modeled during the time period
             modeled. i.e. for 1 year, the average insolation in the US is
