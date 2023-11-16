@@ -617,6 +617,36 @@ The energy associated with making the refined material into the PV specific mate
 
 Outputs of Energy Calculations
 --------------------------------
+``mod_MFG:float``
+The annual energy flow of energy associated with Manufacturing of each yearly cohort.
+
+``mod_Install:float``
+The annual energy flow of energy associated with installing of each yearly cohort.
+
+``mod_OandM:float``
+The annual energy flow of energy associated with O&M of all effective Capacity.
+
+``mod_Repair:float``
+The annual energy flow of energy associated with repair of failed Modules that undergo repair pathway.
+
+``mod_Demount:float``
+The annual energy flow of energy associated with demounting modules at end-of-life.
+
+``mod_Store:float``
+The annual energy flow of energy associated with modules at end-of-life that undergo storage pathway.
+
+``mod_Resell_Certify:float``
+The annual energy flow of energy associated with modules at end-of-life that undergo certification adn reselling pathway.
+
+``mod_ReMFG_Disassembly:float``
+The annual energy flow of energy associated with modules at end-of-life that undergo dissaembly for remanufacturing. 
+
+``mod_Recycle_Crush:float``
+The annual energy flow of energy associated with modules at end-of-life that undergo recycling via crushing.
+
+``e_out_annual_[Wh]:float``
+The annual energy flow of energy produced by the PV fleet effective capacity, 
+considering installs minus degradation, failures, and modules that have ended their projectl ife.
 
 
 Energy Data References
