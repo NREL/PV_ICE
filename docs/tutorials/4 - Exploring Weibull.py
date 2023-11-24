@@ -5,8 +5,9 @@
 # 
 # 
 # PV ICE handles failures through a probabilistic distribution, so far in specific the Weibull. The Weibull equation is defined by an Alfa and a Beta parameters. These parameters can be found on literature, or they can be calculated if the reliability is known. Altough other values can be set by changing the probabilities, we use by default:
-#     - T50: number of years when 50 % of the year will be off and 
-#     - T90 are used:
+# 
+# - T50: number of years until 50 % of the modules fail 
+# - T90: number of years until 90 % of the modules fail
 #     
 # Below we show a couple ways of passing the parameters, plot a comparison between different literature values, and highlight the significance of T50 and T90.
 # 
@@ -289,4 +290,10 @@ plt.axvline(x=t90, color='c', linestyle='--')
 #plt.axhline(y=0.1, color='r', linestyle='--')
 plt.title('Probability Density Function (PDF) \na.k.a. Density')
 plt.ylabel("DENSITY")
+
+
+# In[ ]:
+
+
+
 
