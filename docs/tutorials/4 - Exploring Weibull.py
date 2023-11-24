@@ -32,10 +32,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-PV_ICE.__version__
-
 
 # In[3]:
+
+
+# This information helps with debugging and getting support :)
+import sys, platform
+print("Working on a ", platform.system(), platform.release())
+print("Python version ", sys.version)
+print("Pandas version ", pd.__version__)
+print("PV_ICE version ", PV_ICE.__version__)
+
+
+# In[4]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -45,7 +54,7 @@ r1.scenario['standard'].addMaterials('glass')
 
 # ## A. Passing Alpha and Beta values
 
-# In[4]:
+# In[5]:
 
 
 weibullInputParams = {'alpha': 3.4,
@@ -56,7 +65,7 @@ print("\n Weibull Params \n", r1.scenario['standard'].dataOut_m.WeibullParams.he
 
 # ## B. Internally calculated Weibull with t50 and t90
 
-# In[5]:
+# In[6]:
 
 
 r1.calculateMassFlow()  # Note we are not passing weibullInputParams, 
@@ -67,7 +76,7 @@ print("\n Weibull Params \n", r1.scenario['standard'].dataOut_m.WeibullParams)
 
 # ### This is what T50, T90 look like for this dataset, and the alpha and beta values resulting for each year.
 
-# In[6]:
+# In[7]:
 
 
 # Plotting T50 and T90
@@ -93,7 +102,7 @@ plt.legend(['Alpha', 'Beta']);
 # 
 # 
 
-# In[7]:
+# In[8]:
 
 
 firstgen = r1.scenario['standard'].dataOut_m.WeibullParams.iloc[0]
@@ -122,7 +131,7 @@ Lifetime = 30
 Kumar = PV_ICE.weibull_cdf_vis(alpha, beta=Lifetime)
 
 
-# In[8]:
+# In[9]:
 
 
 plt.rcParams.update({'font.size': 15})
@@ -144,7 +153,7 @@ plt.legend(bbox_to_anchor=(1.05, 1.0), loc='lower center');
 # 
 # Using ``PV_ICe.weibull_params`` to calculate alpha and beta values for t50 and t90. This is done internally usually but this is an example of directly accesing that function
 
-# In[9]:
+# In[10]:
 
 
 t50 = 25
@@ -156,7 +165,7 @@ print(weibullIParams)
 
 # Here's a plot showing the relationship between the t50 and t90 and how our Weibull looks like.
 
-# In[10]:
+# In[11]:
 
 
 calc_cdf = PV_ICE.weibull_cdf_vis(weibullIParams['alpha'], weibullIParams['beta'])
@@ -177,14 +186,14 @@ plt.legend();
 # 
 # Calculating all of these for a Weibull PDF with Irena Regular Loss Values, of alpha: 5.3759 and beta:30
 
-# In[11]:
+# In[12]:
 
 
 weibullIParams = {'alpha': 5.3759,
                       'beta': 30}
 
 
-# In[12]:
+# In[13]:
 
 
 # Changing size for slide presentation of these results
@@ -194,7 +203,7 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # ### Calculating CDF with PV ICE 
 
-# In[13]:
+# In[14]:
 
 
 calc_cdf = PV_ICE.weibull_cdf_vis(weibullIParams['alpha'], weibullIParams['beta'])
@@ -202,7 +211,7 @@ calc_cdf = PV_ICE.weibull_cdf_vis(weibullIParams['alpha'], weibullIParams['beta'
 
 # ### PDF f(t) is the difference between every value of the CDF
 
-# In[14]:
+# In[15]:
 
 
 calc_pdf = np.diff(calc_cdf)
@@ -210,7 +219,7 @@ calc_pdf = np.diff(calc_cdf)
 
 # ### Reliability Function R(t) is the "Complement" of the CDF
 
-# In[15]:
+# In[16]:
 
 
 reliability_function = [1 - x for x in calc_cdf]
@@ -218,7 +227,7 @@ reliability_function = [1 - x for x in calc_cdf]
 
 # ### Failure Rate is the ratio of the PDF to the Reliability function (f(t)/R(t))
 
-# In[16]:
+# In[17]:
 
 
 failure_rate = calc_pdf / reliability_function[:-1]
@@ -226,7 +235,7 @@ failure_rate = calc_pdf / reliability_function[:-1]
 
 # ### Plotting each of the Functions
 
-# In[17]:
+# In[18]:
 
 
 mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $ : '+ str(round(weibullIParams['beta'],2))
@@ -242,7 +251,7 @@ plt.title('Cumulative Density Function (CDF)\n (a.k.a. Unreliability Function)')
 plt.legend();
 
 
-# In[18]:
+# In[19]:
 
 
 mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $ : '+ str(round(weibullIParams['beta'],2))
@@ -260,7 +269,7 @@ plt.title('Failure Rate')
 #plt.axhline(y=0.1, color='r', linestyle='--')
 
 
-# In[19]:
+# In[20]:
 
 
 mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $ : '+ str(round(weibullIParams['beta'],2))
@@ -276,7 +285,7 @@ plt.ylabel("RELIABILITY")
 plt.title('Reliability Function \na.k.a. Survival Plot')
 
 
-# In[20]:
+# In[21]:
 
 
 mylabel = r'$ \alpha $: '+str(round(weibullIParams['alpha'],2))+ r'    $ \beta $ : '+ str(round(weibullIParams['beta'],2))
