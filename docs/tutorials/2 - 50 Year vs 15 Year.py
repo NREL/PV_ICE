@@ -57,6 +57,25 @@ plt.rcParams['figure.figsize'] = (12, 5)
 # In[4]:
 
 
+# This information helps with debugging and getting support :)
+import sys, platform
+print("Working on a ", platform.system(), platform.release())
+print("Python version ", sys.version)
+print("Pandas version ", pd.__version__)
+print("PV_ICE version ", PV_ICE.__version__)
+
+
+# Let's start by defining our simulation. In this project, we will create three scenarios:
+# * `'base'`: Standard scenario we have seen so far with the default baseline values. 
+# * `'50_Year_Module'`: Simulation of a 50 year old module with lower recyclability and higher reliability(the reliability and recyclability values will be modified in Section 3.2.3 and 3.2.4 respectively).
+# * `'15_Year_Module'`: Simulation of a 15 year old module with higher recyclability and higher reliability (the reliability and recyclability values will be modified in Section 3.2.3 and 3.2.4 respectively).
+# 
+# All these scenarios will be loaded with the same materials: `'glass'`, `'silicon'`, `'silver'`, `'copper'`, `'aluminium_frames'` and `'encapsulant'`.
+# 
+
+# In[5]:
+
+
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
 r1.createScenario(name='50_Year_Module', massmodulefile='baseline_modules_mass_US.csv')
 r1.scenario['50_Year_Module'].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant'])
@@ -68,13 +87,9 @@ r1.createScenario(name='base', massmodulefile='baseline_modules_mass_US.csv')
 r1.scenario['base'].addMaterials(['glass', 'silicon', 'silver', 'copper', 'aluminium_frames', 'encapsulant'])
 
 
-# In[5]:
-
-
-r1.scenario['50_Year_Module'].dataIn_m.keys()
-
-
 # ## Change Reliability Values
+# 
+# Now we modify certain columns to model each module according to the mentioned characteristics.
 
 # In[6]:
 
@@ -126,18 +141,8 @@ r1.scenario['50_Year_Module'].material['glass'].matdataIn_m['mat_EOL_RecycledHQ_
 # In[8]:
 
 
-IRENA= False
-ELorRL = 'RL'
-if IRENA:
-    if ELorRL == 'RL':
-        weibullInputParams = {'alpha': 5.3759, 'beta': 30}  # Regular-loss scenario IRENA
-    if ELorRL == 'EL':
-        weibullInputParams = {'alpha': 2.49, 'beta': 30}  # Regular-loss scenario IRENA
-    r1.calculateMassFlow(weibullInputParams=weibullInputParams)
-    title_Method = 'Irena_'+ELorRL
-else:
-    r1.calculateMassFlow()
-    title_Method = 'PVICE'
+r1.calculateMassFlow()
+title_Method = 'PVICE'
 
 
 # In[9]:
@@ -337,13 +342,13 @@ plt.title('Annual Landfilled Waste')
 plt.xlim([2000, 2050])
 
 
-# In[ ]:
+# In[31]:
 
 
 USyearly, UScum = r1.aggregateResults()
 
 
-# In[ ]:
+# In[32]:
 
 
 r1.saveSimulation()
@@ -351,7 +356,7 @@ r1.saveSimulation()
 
 # # Calculating Overall changes between the Scenarios
 
-# In[31]:
+# In[33]:
 
 
 cum_Waste = []
@@ -373,13 +378,13 @@ df = pd.DataFrame(list(zip(list(r1.scenario.keys()), cum_Waste, cum_VirginNeeds,
 
 # ##  Normalize by Base Scenario (row 2)
 
-# In[32]:
+# In[34]:
 
 
 df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']] = df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']]*100/df[['cum_Waste', 'cum_VirginNeeds', 'cum_NewInstalls', 'cum_InstalledCapacity']].iloc[2] -100
 
 
-# In[33]:
+# In[35]:
 
 
 df.round(2)
@@ -389,7 +394,7 @@ df.round(2)
 # 
 # We have previously obtained results for ladnfilled waste for 50 year module, 15 year module, and 15 year module with increased installations to reach to 50 year module installed capacity. This is applies the LCA methodology to evaluate environmetnal impacts based on landfilled area.
 
-# In[34]:
+# In[36]:
 
 
 Area_50years = r1.scenario['50_Year_Module'].material['glass'].matdataOut_m['mat_Virgin_Stock'].sum()
@@ -399,7 +404,7 @@ Area_15years_Increased_Installs = r1.scenario['15_Year_Module_IncreasedInstalls'
 
 # #### First we calculate the Area, based on the glass thickness and glass density and the Total Landfilled Waste [kg]. The PV panel area will be equal to the Glass Area for our modeled scenarios so far.
 
-# In[35]:
+# In[37]:
 
 
 [acidification, carcinogenics, ecotoxicity, eutrophication, 
@@ -407,7 +412,7 @@ fossil_fuel_depletion, global_warming,
 non_carcinogenics, ozone_depletion, respiratory_effects, smog] = PV_ICE.calculateLCA(Area_50years)
 
 
-# In[36]:
+# In[38]:
 
 
 [acidification2, carcinogenics2, ecotoxicity2, eutrophication2, 
@@ -415,7 +420,7 @@ fossil_fuel_depletion2, global_warming2,
 non_carcinogenics2, ozone_depletion2, respiratory_effects2, smog2] = PV_ICE.calculateLCA(Area_15years)
 
 
-# In[37]:
+# In[39]:
 
 
 [acidification3, carcinogenics3, ecotoxicity3, eutrophication3, 
@@ -423,16 +428,28 @@ fossil_fuel_depletion3, global_warming3,
 non_carcinogenics3, ozone_depletion3, respiratory_effects3, smog3] = PV_ICE.calculateLCA(Area_15years_Increased_Installs)
 
 
-# In[38]:
+# In[40]:
 
 
 global_warming = pd.DataFrame({'Global warming':['50 year', '15 year', '15 year Increased Installs'], 
                                'val':[global_warming, global_warming2, global_warming3]})
 
 
-# In[39]:
+# In[41]:
 
 
 ax = global_warming.plot.bar(x='Global warming', y='val', rot=0)
 plt.title('Global Warming Effect, in kg CO2 eq')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
