@@ -25,11 +25,14 @@
 #     <li> Power to Glass conversion: 76 t/MW </li>
 # </ul>
 
-# In[1]:
+# In[2]:
 
 
 import os
 from pathlib import Path
+import PV_ICE
+import matplotlib.pyplot as plt
+import pandas as pd
 
 testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'Tutorial5')
 
@@ -38,18 +41,19 @@ if not os.path.exists(testfolder):
     
 
 
-# In[2]:
-
-
-import PV_ICE
-PV_ICE.__version__
-
-
 # In[3]:
 
 
-import matplotlib.pyplot as plt
-import pandas as pd
+# This information helps with debugging and getting support :)
+import sys, platform
+print("Working on a ", platform.system(), platform.release())
+print("Python version ", sys.version)
+print("Pandas version ", pd.__version__)
+print("PV_ICE version ", PV_ICE.__version__)
+
+
+# In[4]:
+
 
 plt.rcParams.update({'font.size': 15})
 plt.rcParams['figure.figsize'] = (12, 5)
@@ -57,7 +61,7 @@ plt.rcParams['figure.figsize'] = (12, 5)
 
 # ## PV ICE
 
-# In[4]:
+# In[5]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
@@ -84,7 +88,8 @@ if Wambach:
     r1.scenario['Wambach2020'].addMaterial('glass', massmatfile=r'C:\Users\sayala\Documents\GitHub\Wambach_Baseline_DonotShare\baseline_material_glass_Wambach2020.csv')
 
 
-# In[5]:
+
+# In[6]:
 
 
 '''
@@ -101,11 +106,10 @@ r1.scenario['Garvin_2020'].data['mod_reliability_t50'] = 45
 r1.scenario['Garvin_2020'].data['mod_reliability_t90'] = 50
 # Setting Project Lifetime beyond Failures
 r1.scenario['Garvin_2020'].data['mod_lifetime'] = 40
-'''
-pass
+''';
 
 
-# In[6]:
+# In[7]:
 
 
 r1.scenario['PV_ICE_base'].dataIn_m.keys()
@@ -113,7 +117,7 @@ r1.scenario['PV_ICE_base'].dataIn_m.keys()
 
 # Plot same plot from Garvin's paper from digitized data input
 
-# In[7]:
+# In[8]:
 
 
 fig = plt.figure(figsize=(20,10))
@@ -129,7 +133,7 @@ plt.xlim([2000, 2050.5])
 plt.ylim([0, 400])
 
 
-# In[8]:
+# In[9]:
 
 
 fig = plt.figure(figsize=(20,10))
@@ -147,13 +151,13 @@ plt.ylim([0, 400])
 
 # #### Adjusting input parameters to represent the inputs from the IRENA analysis:
 
-# In[9]:
+# In[10]:
 
 
 r1.scenario.keys()
 
 
-# In[10]:
+# In[11]:
 
 
 # Selecting only the ones we want with IRENA Assumptions
@@ -161,31 +165,31 @@ Irenify = ['Irena_2019', 'A_MassBased', 'Irena_2016'] # 'Wambach2020']
 r1.scenMod_IRENIFY(scenarios=Irenify)
 
 
-# In[11]:
+# In[12]:
 
 
 r1.scenario['PV_ICE_base'].dataIn_m.keys()
 
 
-# In[12]:
+# In[13]:
 
 
 r1.scenario['Irena_2019'].dataIn_m.keys()
 
 
-# In[13]:
+# In[14]:
 
 
 r1.calculateMassFlow()
 
 
-# In[14]:
+# In[15]:
 
 
 r1.scenario['PV_ICE_base'].dataOut_m['WeibullParams'].head(10)
 
 
-# In[15]:
+# In[16]:
 
 
 r1.scenario['Irena_2019'].dataOut_m['WeibullParams'].head(10)
@@ -197,7 +201,7 @@ r1.scenario['Irena_2019'].dataOut_m['WeibullParams'].head(10)
 
 # Querying some of the values for plotting the flags
 
-# In[16]:
+# In[17]:
 
 
 x2020 = r1.scenario['Irena_2019'].dataIn_m['year'].iloc[25]
@@ -216,7 +220,7 @@ t2050 = r1.scenario['Irena_2019'].dataOut_m['Effective_Capacity_[W]'].iloc[55]/(
 print(x2050)
 
 
-# In[17]:
+# In[18]:
 
 
 if Wambach:
@@ -240,7 +244,7 @@ if Wambach:
 # Using glass for proxy of the module; glass is ~76% of the module's mass [REF]
 # 
 
-# In[18]:
+# In[19]:
 
 
 cumWaste = r1.scenario['PV_ICE_base'].material['glass'].matdataOut_m['mat_Total_Landfilled'].cumsum()
@@ -263,7 +267,7 @@ if Wambach:
     cumWaste3 = (cumWaste3*100/76)/1000000  # Converting to tonnes
 
 
-# In[19]:
+# In[20]:
 
 
 x2020_irena = 2020
@@ -455,6 +459,7 @@ plt.show()
 
 
 
+
 # In[22]:
 
 
@@ -600,6 +605,7 @@ if Wambach:
     )
 
 plt.show()
+
 
 
 
