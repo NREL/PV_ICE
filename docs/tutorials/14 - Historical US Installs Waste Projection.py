@@ -163,37 +163,37 @@ print(r1.scenario['All Sector All Tech Installs_[MWdc]'].dataOut_m.keys())
 #print(r1.scenario['All Sector All Tech Installs_[MWdc]'].material['glass'].materialdata.keys())
 
 
-# In[19]:
+# In[15]:
 
 
 r1.scenario['All Sector All Tech Installs_[MWdc]'].dataOut_m.to_csv('All Sector All Tech Installs_MWdc.csv')
 
 
-# In[21]:
+# In[16]:
 
 
 r1.scenario['All Sector All Tech Installs_[MWdc]'].dataIn_m.head()
 
 
-# In[20]:
+# In[17]:
 
 
 r1.scenario['All Sector All Tech Installs_[MWdc]'].dataOut_m.head()
 
 
-# In[15]:
+# In[19]:
 
 
 for scen in scennames:
     plt.plot(r1.scenario[scen].dataIn_m['year'], 
-             r1.scenario[scen].dataOut_m['Installed_Capacity_[W]']/10e6, label=scen)
+             r1.scenario[scen].dataOut_m['Effective_Capacity_[W]']/10e6, label=scen)
 
 plt.title('Effective Capacity Annually')
 plt.ylabel('Installed Cap [MW]')
 plt.legend()
 
 
-# In[16]:
+# In[20]:
 
 
 usyearlyr1, uscumr1 = r1.aggregateResults()
@@ -203,7 +203,7 @@ uscumr1.to_csv(os.path.join(resultsfolder,'historicalUS-cumulative.csv'))
 
 # Examine a specific year
 
-# In[17]:
+# In[21]:
 
 
 #subset result dataframes to look at all tech and just cSi and remove old USHistory file
@@ -216,7 +216,7 @@ yearlyallPV_agg = usyearlyr1[filter_col]
 
 # ## Area Equivilent Calcs
 
-# In[18]:
+# In[22]:
 
 
 keys = pd.DataFrame(r1.scenario['All Sector All Tech Installs_[MWdc]'].dataOut_m.keys())
@@ -224,12 +224,12 @@ import re
 keys[keys[0].str.contains('area', flags=re.IGNORECASE)]
 
 
-# In[ ]:
+# In[24]:
 
 
 for scen in scennames:
     plt.plot(r1.scenario[scen].dataIn_m['year'], 
-             r1.scenario[scen].dataOut_m['Yearly_Sum_Area_disposed'], label=scen)
+             r1.scenario[scen].dataOut_m['Yearly_Sum_Area_atEOL'], label=scen)
 
 plt.title('Yearly sum Disposed')
 plt.ylabel('Disposed Area [m2]')
