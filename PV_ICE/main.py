@@ -2391,13 +2391,13 @@ class Simulation:
         datac = self.UScum
 
         filter_colc = [col for col in datac if col.startswith('newInstalledCapacity')]
-        filter_coly = [col for col in datay if col.startswith('Capacity')]
+        filter_coly = [col for col in datay if col.startswith('ActiveCapacity')]
 
         datay = datay[filter_coly].copy()
         mylegend = [col.split('_')[1:] for col in datay]
         mylegend = [col[:-1] for col in mylegend]
         mylegend = [str(col)[2:-2] for col in mylegend]
-        mylegendy = ['Cumulative New Installs, '+col for col in mylegend]
+        mylegendy = ['Active Capacity, '+col for col in mylegend]
 
         print(mylegend)
 
@@ -2405,7 +2405,7 @@ class Simulation:
         mylegend = [col.split('_')[1:] for col in datac]
         mylegend = [col[:-1] for col in mylegend]
         mylegend = [str(col)[2:-2] for col in mylegend]
-        mylegendc = ['Capacity, '+col for col in mylegend]
+        mylegendc = ['Cumulative New Installs, '+col for col in mylegend]
 
         data = datay.join(datac)
         mylegend = mylegendy + mylegendc
