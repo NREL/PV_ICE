@@ -126,6 +126,7 @@ sim1.modifyScenario('life_low', 'mod_lifetime',
                     sim1.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_lifetime']-10, start_year=2022) #project lifetime of 25 years
 
 
+
 # ### Efficiency
 
 # In[8]:
@@ -296,22 +297,22 @@ global_projection.iloc[-1,:]
 #fig.savefig('energyresults-deployment.png', dpi=300, bbox_inches='tight')
 
 
-# In[13]:
+# In[16]:
 
 
 #deployment projection for all scenarios
 sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', 
-                    value= global_projection['World_annual_[MWdc]'], start_year=2000)
+                    value= global_projection['World_Annual_[MW]'], start_year=2000)
 
 
-# In[14]:
+# In[17]:
 
 
 scennames_labels = sim1.scenario.keys()
 scennames_labels
 
 
-# In[15]:
+# In[18]:
 
 
 bifiFactors = {'PV_ICE':0.0,
@@ -341,7 +342,7 @@ for f in bifiFactors.keys(): #loop over module types
 
 # ## Calculate Mass Flow: Identical Installs
 
-# In[16]:
+# In[19]:
 
 
 #CALCULATE MASS FLOWs
@@ -351,20 +352,20 @@ for scen in sim1.scenario.keys(): #loop over scenarios
     sim1.calculateMassFlow(scenarios=[scen], bifacialityfactors=bifiPathDict[scen])
 
 
-# In[17]:
+# In[20]:
 
 
 #sim1.calculateMassFlow()
 
 
-# In[18]:
+# In[21]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 sim1.saveSimulation(customname='_EnergySensitivity_identicalinstalls')
 
 
-# In[19]:
+# In[22]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity')
@@ -376,7 +377,7 @@ plt.title('Effective Capacity: No Replacements')
 plt.ylim(0,)
 
 
-# In[20]:
+# In[23]:
 
 
 cumu_installs = ii_cumu.filter(like='newInstalled')
@@ -390,7 +391,7 @@ plt.title('Cumulative Installs with Replacements')
 #plt.ylim(0,410)
 
 
-# In[21]:
+# In[24]:
 
 
 cumu_virgin_module = ii_cumu.filter(like='VirginStock_Module')
@@ -410,13 +411,13 @@ plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 
 
 
-# In[22]:
+# In[25]:
 
 
 sim1.scenario['eff_high'].dataIn_m
 
 
-# In[23]:
+# In[26]:
 
 
 #plt.plot(sim1.scenario['eff_high'].dataOut_m['Yearly_Sum_Area_PathsBad'])
@@ -437,7 +438,7 @@ plt.legend()
 
 # ## Calculate Flows: Capacity Compensation
 
-# In[24]:
+# In[ ]:
 
 
 UnderInstall_df = pd.DataFrame()
@@ -456,7 +457,7 @@ for row in range (0,len(sim1.scenario['PV_ICE'].dataIn_m)): #loop over length of
 sim1.calculateEnergyFlow()
 
 
-# In[25]:
+# In[ ]:
 
 
 sim1.saveSimulation(customname='_EnergySensitivity_withreplacements')
@@ -475,7 +476,7 @@ energy_demands.to_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_energy_de
 UnderInstall_df.to_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_underInstalls.csv'))
 
 
-# In[26]:
+# In[ ]:
 
 
 cc_yearly = pd.read_csv(os.path.join(testfolder, 'cc_sensitivity_3aspect_yearly.csv'), index_col='year')
@@ -682,14 +683,14 @@ ax.grid(axis='y', color='0.7', ls='--')
 ax.set_axisbelow(True) 
 ax.axhspan(0,-100, facecolor='0.2', alpha=0.1)
 
-plt.bar(x, sense_table.iloc[:,0], color=colors[0], label=sens_scenarios[0],width=bwidth)
-plt.bar(x, sense_table.iloc[:,1], color=colors[1], label=sens_scenarios[1],width=bwidth)
-plt.bar(x+bwidth, sense_table.iloc[:,3], color=colors[3], label=sens_scenarios[3],width=bwidth)
-plt.bar(x+bwidth, sense_table.iloc[:,2], color=colors[2], label=sens_scenarios[2],width=bwidth)
-plt.bar(x+bwidth, sense_table.iloc[:,4], color=colors[4], label=sens_scenarios[4],width=bwidth)
-plt.bar(x+2*bwidth, sense_table.iloc[:,5], color=colors[5], label=sens_scenarios[5],width=bwidth)
-plt.bar(x+2*bwidth, sense_table.iloc[:,6], color=colors[6], label=sens_scenarios[6],width=bwidth)
-plt.bar(x+2*bwidth, sense_table.iloc[:,7], color=colors[7], label=sens_scenarios[7],width=bwidth)
+plt.bar(x, sense_table.iloc[:,0], color=colors[0], label=sens_scenarios[0],width=bwidth, edgecolor='black')
+plt.bar(x, sense_table.iloc[:,1], color=colors[1], label=sens_scenarios[1],width=bwidth, edgecolor='black')
+plt.bar(x+bwidth, sense_table.iloc[:,3], color=colors[3], label=sens_scenarios[3],width=bwidth, edgecolor='black')
+plt.bar(x+bwidth, sense_table.iloc[:,2], color=colors[2], label=sens_scenarios[2],width=bwidth, edgecolor='black')
+plt.bar(x+bwidth, sense_table.iloc[:,4], color=colors[4], label=sens_scenarios[4],width=bwidth, edgecolor='black')
+plt.bar(x+2*bwidth, sense_table.iloc[:,5], color=colors[5], label=sens_scenarios[5],width=bwidth, edgecolor='black')
+plt.bar(x+2*bwidth, sense_table.iloc[:,6], color=colors[6], label=sens_scenarios[6],width=bwidth, edgecolor='black')
+plt.bar(x+2*bwidth, sense_table.iloc[:,7], color=colors[7], label=sens_scenarios[7],width=bwidth, edgecolor='black')
 
 plt.ylim(-80,100)
 ax.set_xticks(x+2*bwidth / 2)
@@ -790,6 +791,7 @@ sim2.modifyScenario('good_eff_life', 'mod_lifetime',
 
 sim2.modifyScenario('good_eff_life', 'mod_eff', 
                     sim2.scenario['PV_ICE'].dataIn_m.loc[timeshift:,'mod_eff']+5, start_year=2022) #
+
 
 
 
