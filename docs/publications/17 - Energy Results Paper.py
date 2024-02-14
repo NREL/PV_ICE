@@ -1243,7 +1243,7 @@ effective_capacity = ii_yearly.filter(like='ActiveCapacity')
 scennames_labels_flat[5:8]
 
 
-# In[85]:
+# In[93]:
 
 
 effective_capacity_tw = ii_yearly.filter(like='ActiveCapacity')/1e6
@@ -1285,7 +1285,12 @@ for n in range(1, n_lines+1):
             color=colorpalette[7])
 
 #Ambitious
-plt.plot(effective_capacity_tw.iloc[:,8:], label=scennames_labels_flat[8:],  ls='--') #color=colorpalette[4:7],
+plt.plot(effective_capacity_tw.iloc[:,8], label=scennames_labels_flat[8],  ls=(0, (3, 1, 1, 1, 1, 1))) #color=colorpalette[4:7],
+plt.plot(effective_capacity_tw.iloc[:,9], label=scennames_labels_flat[9],  ls=(5, (10, 3))) #color=colorpalette[4:7],
+plt.plot(effective_capacity_tw.iloc[:,10], label=scennames_labels_flat[10],  ls='--') #color=colorpalette[4:7],
+plt.plot(effective_capacity_tw.iloc[:,11], label=scennames_labels_flat[11],  ls='-.') #color=colorpalette[4:7],
+plt.plot(effective_capacity_tw.iloc[:,12], label=scennames_labels_flat[12],  ls=':') #color=colorpalette[4:7],
+
 
 #plt.plot(effective_capacity/1e6, label=sim1.scenario.keys())
 plt.legend(prop={'size': 11}) #bbox_to_anchor=(1,1.02), 
@@ -1381,14 +1386,14 @@ energy_demands.to_csv(os.path.join(testfolder, 'cc_13scen_energy_demands.csv'))
 UnderInstall_df.to_csv(os.path.join(testfolder, 'cc_13scen_underInstalls.csv'))
 
 
-# In[90]:
+# In[95]:
 
 
 sim1.saveSimulation(customname='_EnergyAnalysis_withreplacements')
 sim1.pickle_Sim()
 
 
-# In[91]:
+# In[96]:
 
 
 #read in saved results files for speed
@@ -1401,20 +1406,20 @@ energy_demands = pd.read_csv(os.path.join(testfolder, 'cc_13scen_energy_demands.
 
 # plt.plot(sim1.scenario['r_PERC'].dataOut_m['Effective_Capacity_[W]'])
 
-# In[92]:
+# In[97]:
 
 
 #sim1.scenario['PV_ICE'].dataOut_m['irradiance_stc'].head(2)
 sim1.scenario.keys()
 
 
-# In[93]:
+# In[98]:
 
 
 UnderInstall_df_temp = cc_yearly.filter(like='newInstalledCapacity_').subtract(global_projection[['World_Annual_[MW]']].values)
 
 
-# In[94]:
+# In[99]:
 
 
 #Attempt to make the deployment less dumb
@@ -1427,13 +1432,13 @@ flatinstall
 
 # # RESULTS: Effective Capacity and Replacements
 
-# In[95]:
+# In[100]:
 
 
 sim1.scenario['h_RecycledPERC'].dataOut_m['WeibullParams'].tail(4)
 
 
-# In[96]:
+# In[101]:
 
 
 effective_capacity = cc_yearly.filter(like='ActiveCapacity')
@@ -1444,7 +1449,7 @@ plt.title('Effective Capacity: With Replacements')
 plt.ylim(0,)
 
 
-# In[97]:
+# In[102]:
 
 
 annual_EoL = cc_yearly.filter(like='DecommisionedCapacity')
@@ -1455,7 +1460,7 @@ plt.title('Annual Decommissions [TW]')
 plt.ylim(0,)
 
 
-# In[98]:
+# In[103]:
 
 
 annual_installs = cc_yearly.filter(like='newInstalled')
@@ -1468,7 +1473,7 @@ plt.ylim(0,)
 
 # #### Fixing Jagged Lines
 
-# In[99]:
+# In[104]:
 
 
 annual_installs = cc_yearly.filter(like='newInstalled')
@@ -1477,7 +1482,7 @@ flatinstallslate = posttransinstalls.loc[2100]/(2100-2050)
 flatinstallslate
 
 
-# In[100]:
+# In[105]:
 
 
 annual_installs_modify = annual_installs.copy()
@@ -1488,7 +1493,7 @@ for col in annual_installs_modify:
 #plt.plot(annual_installs_modify)
 
 
-# In[101]:
+# In[106]:
 
 
 #decade binning of post 2050 installs by decade
@@ -1499,7 +1504,7 @@ posttransinstalls_decades
 #this is the sum each decade, still need to divide by 10 for annual
 
 
-# In[102]:
+# In[107]:
 
 
 annual_installs_decademod = annual_installs.copy()
@@ -1513,14 +1518,14 @@ for col in annual_installs_decademod:
 #plt.plot(annual_installs_decademod)
 
 
-# In[103]:
+# In[108]:
 
 
 annual_installs_decademod_GW = np.round(annual_installs_decademod/1e3,2)
 annual_installs_decademod_GW.to_csv(os.path.join(testfolder, 'cc_annual_installs_decademod_GW.csv'))
 
 
-# In[104]:
+# In[109]:
 
 
 #annual_installs_TW = cc_yearly.filter(like='newInstalled')
@@ -1580,7 +1585,13 @@ ax2.legend(bbox_to_anchor=(0.9,-0.05))
 #Ambitious
 ax3.plot(global_projection['World_Annual_[MW]']/1e6, label='Minimum Deployment', ls='dashdot')
 ax3.set_prop_cycle(color=colorpalette[8:])
-ax3.plot(annual_installs_decademod_TW.iloc[:,8:], label=scennames_labels_flat[8:], ls='--')# 
+ax3.plot(annual_installs_decademod_TW.iloc[:,8], label=scennames_labels_flat[8], ls=(0, (3, 1, 1, 1, 1, 1)))# 
+ax3.plot(annual_installs_decademod_TW.iloc[:,9], label=scennames_labels_flat[9], ls=(5, (10, 3)))# 
+ax3.plot(annual_installs_decademod_TW.iloc[:,10], label=scennames_labels_flat[10], ls='--')# 
+ax3.plot(annual_installs_decademod_TW.iloc[:,11], label=scennames_labels_flat[11], ls='-.')# 
+ax3.plot(annual_installs_decademod_TW.iloc[:,12], label=scennames_labels_flat[12], ls=':')# 
+
+
 ax3.set_title('Ambitious', fontsize=14)
 ax3.legend(bbox_to_anchor=(1.05,-0.05)) #(x,y)
 ax3.xaxis.set_minor_locator(MultipleLocator(10))
@@ -1593,7 +1604,7 @@ plt.show()
 fig_installs_annual.savefig('energyresults-annualInstalls-decade.png', dpi=300, bbox_inches='tight')
 
 
-# In[105]:
+# In[111]:
 
 
 cumu_installs_annually = cc_cumu.filter(like='newInstalled')
@@ -1604,7 +1615,7 @@ plt.title('Replacements Adjusted Deployment Curve \n Cumulative Installs with Re
 plt.ylim(0,)
 
 
-# In[106]:
+# In[112]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -1616,14 +1627,14 @@ plt.title('Cumulative Installs with Replacements')
 plt.ylim(0,410)
 
 
-# In[107]:
+# In[113]:
 
 
 total_deploy = cumu_installs.iloc[-1,]/1e6
 total_deploy.index = scennames_labels_flat
 
 
-# In[108]:
+# In[114]:
 
 
 cumu_installs = cc_cumu.filter(like='newInstalled')
@@ -1664,14 +1675,14 @@ plt.show()
 fig_installs_cumu.savefig('energyresults-cumulativedeploy.png', dpi=300, bbox_inches='tight')
 
 
-# In[109]:
+# In[115]:
 
 
 cumulative_nameplate_installs = global_projection.loc[2100,'World_Cumu_[MW]'] #MW
 print('The nameplate installations for energy transition and through 2100 are '+str(cumulative_nameplate_installs/1e6)+' TW.')
 
 
-# In[110]:
+# In[116]:
 
 
 global_projection['World_Annual_[MW]'].sum()
@@ -1694,7 +1705,7 @@ global_projection['World_Annual_[MW]'].sum()
 # plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 # plt.xticks(rotation=90)
 
-# In[111]:
+# In[117]:
 
 
 cumu_virgin_module_bt = cc_cumu.filter(like='VirginStock_Module')/1e9
@@ -1734,14 +1745,14 @@ plt.show()
 fig_vmat_cumu.savefig('energyresults-cumuMatDemand.png', dpi=300, bbox_inches='tight')
 
 
-# In[112]:
+# In[118]:
 
 
 virgin = cumu_virgin_module_bt.iloc[-1,:]
 virgin.index=scennames_labels_flat
 
 
-# In[113]:
+# In[119]:
 
 
 recycledperc_virginstock = cc_cumu.filter(like='VirginStock').filter(like='Recycled')
@@ -1757,7 +1768,7 @@ plt.ylabel('Million Metric tonnes')
 # plt.ylabel('Virgin Material Requirements\n[billion tonnes]')
 # plt.ylim(0,)
 
-# In[114]:
+# In[120]:
 
 
 annual_virgin_module = cc_yearly.filter(like='VirginStock_Module')
@@ -1825,7 +1836,7 @@ plt.ylim(0,)
 # plt.show()
 # fig.savefig('energyresults-annualMatDemands.png', dpi=300, bbox_inches='tight')
 
-# In[115]:
+# In[121]:
 
 
 #do it by decade to match up with annual installs graphs
@@ -1837,7 +1848,7 @@ virgin_module_decades
 #this is the sum each decade, still need to divide by 10 for annual
 
 
-# In[116]:
+# In[122]:
 
 
 annual_virgin_module_decademod = annual_virgin_module.copy()
@@ -1851,7 +1862,7 @@ for col in annual_virgin_module_decademod:
 #plt.plot(annual_virgin_module_decademod)
 
 
-# In[117]:
+# In[123]:
 
 
 annual_virgin_module_decademod_mt = annual_virgin_module_decademod/1e6
@@ -1906,7 +1917,13 @@ ax2.legend(bbox_to_anchor=(0.9,-0.05))
 
 #Ambitious
 ax3.set_prop_cycle(color=colorpalette[8:])
-ax3.plot(annual_virgin_module_decademod_mt.iloc[:,8:], label=scennames_labels_flat[8:], ls='--')# 
+ax3.plot(annual_virgin_module_decademod_mt.iloc[:,8], label=scennames_labels_flat[8], ls=(0, (3, 1, 1, 1, 1, 1)))# 
+ax3.plot(annual_virgin_module_decademod_mt.iloc[:,9], label=scennames_labels_flat[9], ls=(5, (10, 3)))# 
+ax3.plot(annual_virgin_module_decademod_mt.iloc[:,10], label=scennames_labels_flat[10], ls='--')# 
+ax3.plot(annual_virgin_module_decademod_mt.iloc[:,11], label=scennames_labels_flat[11], ls='-.')# 
+ax3.plot(annual_virgin_module_decademod_mt.iloc[:,12], label=scennames_labels_flat[12], ls=':')# 
+
+
 ax3.set_title('Ambitious', fontsize=14)
 ax3.legend(bbox_to_anchor=(1.05,-0.05)) #(x,y)
 ax3.xaxis.set_minor_locator(MultipleLocator(10))

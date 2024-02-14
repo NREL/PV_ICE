@@ -122,6 +122,7 @@ sim1.modifyScenario('Immortal', 'mod_reliability_t50', 250, start_year=2022)
 sim1.modifyScenario('Immortal', 'mod_reliability_t90', 280, start_year=2022) 
 
 
+
 # ### Degradation
 
 # In[8]:
