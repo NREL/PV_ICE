@@ -200,8 +200,8 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 # In[17]:
 
 
-global_projection = pd.read_csv(os.path.join(supportMatfolder,'input-globalDeploymentProjection-HieslmairPlus.csv'), index_col=0)
-#global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
+#global_projection = pd.read_csv(os.path.join(supportMatfolder,'input-globalDeploymentProjection-HieslmairPlus.csv'), index_col=0)
+global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
 #global_projection = pd.read_csv(os.path.join(supportMatfolder,'input-expotoflatGlobalInstallsProjection.csv'), index_col=0)
 
 #global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
@@ -540,7 +540,18 @@ sim2_energyGen.to_csv(os.path.join(testfolder,'deg_cc_Egen.csv'))
 sim2_energy_demands.to_csv(os.path.join(testfolder,'deg_cc_Edemand.csv'))
 
 
-# In[ ]:
+# In[100]:
+
+
+annual_installs = sim2_cc_yearly.filter(like='newInstalled')/1e6
+annual_installs.plot(color=colors)
+plt.legend(sim2.scenario.keys(), 'upper left')
+plt.ylabel('Annual installed [TW]')
+plt.title('Annual Installs with Replacements')
+plt.savefig(os.path.join(testfolder, 'degs_annualInstalls'))
+
+
+# In[96]:
 
 
 cumu_installs = sim2_cc_cumu.filter(like='newInstalled')
@@ -550,33 +561,54 @@ plt.xlabel('Cumulative installed [TW]')
 plt.title('Cumulative Installs with Replacements')
 #plt.ylim(0,160)
 #plt.xticks(rotation=90)
+plt.savefig(os.path.join(testfolder, 'CUMUreplacements_by_deg'))
 
 
-# In[ ]:
+# ### Save how many TW installs by year 20XX
+
+# In[101]:
+
+
+(cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_2.0%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_1.9%/yr_[MW]'])/1e6
+#TW
+
+
+# In[103]:
+
+
+years_of_interest = [2030,2050,2100]
+for year in years_of_interest:
+    for scen in range(0,len(scennames2)-1):
+        deg_installs = cumu_installs.loc[year,'newInstalledCapacity_sim2_deg_'+str(scennames2[scen]+'_[MW]')]
+        deg_minus_n_installs = cumu_installs.loc[year,'newInstalledCapacity_sim2_deg_'+str(scennames2[scen+1]+'_[MW]')]
+        print(year,'_',scen,'-',str(scen+1),round((deg_minus_n_installs-deg_installs)/1e6,2),'TW')
+
+
+# In[51]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_2.0%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
 
 
-# In[ ]:
+# In[52]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.1%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
 
 
-# In[ ]:
+# In[53]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.6%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
 
 
-# In[ ]:
+# In[54]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.8%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
 
 
-# In[ ]:
+# In[55]:
 
 
 #sim2_allenergy, sim2_energyGen, sim2_energy_demands
@@ -587,7 +619,7 @@ energyGen_cumu.columns = e_annual_sumDemands_cumu.columns = scennames2
 netEnergy_cumu = energyGen_cumu.loc[[2100]] - e_annual_sumDemands_cumu.loc[[2100]]
 
 
-# In[ ]:
+# In[49]:
 
 
 eroi = energyGen_cumu.loc[[2100]] / e_annual_sumDemands_cumu.loc[[2100]]
