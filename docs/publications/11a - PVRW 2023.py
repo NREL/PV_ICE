@@ -197,12 +197,12 @@ sim1.trim_Years(startYear=2000, endYear=2100)
 
 # # Global Deployment Projection
 
-# In[17]:
+# In[182]:
 
 
 #global_projection = pd.read_csv(os.path.join(supportMatfolder,'input-globalDeploymentProjection-HieslmairPlus.csv'), index_col=0)
-global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
-#global_projection = pd.read_csv(os.path.join(supportMatfolder,'input-expotoflatGlobalInstallsProjection.csv'), index_col=0)
+#global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
+global_projection = pd.read_csv(os.path.join(supportMatfolder,'input-expotoflatGlobalInstallsProjection.csv'), index_col=0)
 
 #global_projection = pd.read_csv(os.path.join(supportMatfolder,'output-globalInstallsProjection.csv'), index_col=0)
 
@@ -218,7 +218,7 @@ plt.show()
 
 # Single Install in time
 
-# In[18]:
+# In[165]:
 
 
 idx_temp = pd.RangeIndex(start=2000,stop=2101,step=1) #create the index
@@ -227,7 +227,7 @@ single_deploy_2025['MW'] = 0.0
 single_deploy_2025.loc[2025,'MW'] = 100.0
 
 
-# In[20]:
+# In[166]:
 
 
 #deployment projection for all scenarios
@@ -266,7 +266,7 @@ ii_yearly, ii_cumu = sim1.aggregateResults() #have to do this to get auto plots
 ii_allenergy, ii_energyGen, ii_energy_demands = sim1.aggregateEnergyResults()
 
 
-# In[24]:
+# In[139]:
 
 
 effective_capacity = ii_yearly.filter(like='ActiveCapacity')
@@ -379,7 +379,7 @@ eroi
 # # Explore Degradation
 # explore effect of the range of degradation rates as presented in Jordan et al 2022
 
-# In[26]:
+# In[183]:
 
 
 # from Jordan et al 2022: -1.9%/yr is lowest (P90), will do one more for visual effect
@@ -389,7 +389,7 @@ Degradation_Range = round(pd.Series(np.linspace(0.1,2.0, num=20)), 1)
 #Degradation_Range
 
 
-# In[27]:
+# In[184]:
 
 
 sim2 = PV_ICE.Simulation(name='sim2_deg', path=testfolder) #init simulation
@@ -403,14 +403,14 @@ for degs in range(0,len(Degradation_Range)):
             sim2.scenario[scenname].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[28]:
+# In[185]:
 
 
 scennames2 = pd.Series(sim2.scenario.keys())
 scennames2
 
 
-# In[29]:
+# In[186]:
 
 
 # Degradation
@@ -425,7 +425,7 @@ sim2.modifyScenario(scenarios=None, stage='mod_reliability_t50', value=250, star
 sim2.modifyScenario(scenarios=None, stage='mod_reliability_t90', value=280, start_year=2022) 
 
 
-# In[30]:
+# In[187]:
 
 
 #degradation rates:
@@ -435,13 +435,13 @@ for scen in range(0,len(scennames2)):
     sim2.modifyScenario(scennames2[scen], 'mod_degradation', Degradation_Range[scen], start_year=2022) # Jordan et al 2022
 
 
-# In[31]:
+# In[188]:
 
 
 sim2.scenario['deg_1.6%/yr'].dataIn_m.tail(2)
 
 
-# In[32]:
+# In[189]:
 
 
 #trim to start in 2000, this trims module and materials
@@ -455,20 +455,26 @@ sim2.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
 #global deployment: global_projection['World_annual_[MWdc]']
 
 
-# In[33]:
+# In[190]:
 
 
 sim2.calculateFlows(nameplatedeglimit=0.8)
 
 
-# In[34]:
+# In[191]:
 
 
 sim2_ii_yearly, sim2_ii_cumu = sim2.aggregateResults() #have to do this to get auto plots
 sim2_ii_allenergy, sim2_ii_energyGen, sim2_ii_energy_demands = sim2.aggregateEnergyResults()
 
 
-# In[37]:
+# In[192]:
+
+
+global_projection.loc[2049:2051,:]/1e6
+
+
+# In[197]:
 
 
 effective_capacity = sim2_ii_yearly.filter(like='ActiveCapacity')
@@ -483,20 +489,22 @@ effective_capacity = sim2_ii_yearly.filter(like='ActiveCapacity')
 colors = get_color_gradient(color1, color2, len(scennames2)) #generates a list of hex values
 effective_capacity_tw = effective_capacity/1e6
 effective_capacity_tw.plot(color=colors, legend=False, title='Effective Capacity: No Replacements')
-plt.plot(ii_cumu['newInstalledCapacity_sim1_Immortal_[MW]']/1e6, label='Capacity Target', color='black', ls='--') 
+#plt.plot(ii_cumu['newInstalledCapacity_sim1_Immortal_[MW]']/1e6, label='Capacity Target', color='black', ls='--') 
+plt.plot(global_projection['World_Cumu_[MW]']/1e6, label='Capacity Target', color='black', ls='--') 
+
 plt.ylim(0,)
 
 
-# In[38]:
+# In[194]:
 
 
-plt.plot(ii_cumu['newInstalledCapacity_sim1_Immortal_[MW]']/1e6, label='Capacity Target', color='black', ls='--')
+plt.plot(global_projection['World_Cumu_[MW]']/1e6, label='Capacity Target', color='black', ls='--')
 plt.ylabel('Effective Capacity [TW]')
 plt.xlabel('year')
 plt.title('Effective Capacity: No Replacements')
 
 
-# In[39]:
+# In[195]:
 
 
 colors = get_color_gradient(color1, color2, len(scennames2)) #generates a list of hex values
@@ -504,7 +512,7 @@ colors = get_color_gradient(color1, color2, len(scennames2)) #generates a list o
 effective_capacity_tw = effective_capacity/1e6
 for scen in range(0,len(scennames2)):
     effective_capacity_tw.iloc[:,0:scen+1].plot(color=colors, legend=False, title='Effective Capacity: No Replacements')
-    plt.plot(ii_cumu['newInstalledCapacity_sim1_Immortal_[MW]']/1e6, label='Capacity Target', color='black', ls='--') 
+    plt.plot(global_projection['World_Cumu_[MW]']/1e6, label='Capacity Target', color='black', ls='--') 
     plt.ylim(0,)
     plt.ylabel('Effective Capacity [TW]')
     plt.savefig(os.path.join(testfolder, 'deg'+str(scen)))
@@ -512,7 +520,7 @@ for scen in range(0,len(scennames2)):
 #plt.title('Effective Capacity: No Replacements')
 
 
-# In[40]:
+# In[ ]:
 
 
 for row in range (0,len(sim2.scenario['deg_1.5%/yr'].dataIn_m)): #loop over length of years
@@ -523,14 +531,14 @@ for row in range (0,len(sim2.scenario['deg_1.5%/yr'].dataIn_m)): #loop over leng
         sim2.calculateFlows(scenarios=[scen], nameplatedeglimit=0.8) # , bifacialityfactors=bifiPathDict[scen]
 
 
-# In[41]:
+# In[ ]:
 
 
 sim2_cc_yearly, sim2_cc_cumu = sim2.aggregateResults() #have to do this to get auto plots
 sim2_allenergy, sim2_energyGen, sim2_energy_demands = sim2.aggregateEnergyResults()
 
 
-# In[42]:
+# In[ ]:
 
 
 sim2_cc_yearly.to_csv(os.path.join(testfolder,'deg_cc_yearly_m.csv'))
@@ -540,7 +548,7 @@ sim2_energyGen.to_csv(os.path.join(testfolder,'deg_cc_Egen.csv'))
 sim2_energy_demands.to_csv(os.path.join(testfolder,'deg_cc_Edemand.csv'))
 
 
-# In[100]:
+# In[ ]:
 
 
 annual_installs = sim2_cc_yearly.filter(like='newInstalled')/1e6
@@ -551,7 +559,7 @@ plt.title('Annual Installs with Replacements')
 plt.savefig(os.path.join(testfolder, 'degs_annualInstalls'))
 
 
-# In[96]:
+# In[ ]:
 
 
 cumu_installs = sim2_cc_cumu.filter(like='newInstalled')
@@ -566,14 +574,14 @@ plt.savefig(os.path.join(testfolder, 'CUMUreplacements_by_deg'))
 
 # ### Save how many TW installs by year 20XX
 
-# In[101]:
+# In[ ]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_2.0%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_1.9%/yr_[MW]'])/1e6
 #TW
 
 
-# In[103]:
+# In[ ]:
 
 
 years_of_interest = [2030,2050,2100]
@@ -584,31 +592,31 @@ for year in years_of_interest:
         print(year,'_',scen,'-',str(scen+1),round((deg_minus_n_installs-deg_installs)/1e6,2),'TW')
 
 
-# In[51]:
+# In[ ]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_2.0%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
 
 
-# In[52]:
+# In[ ]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.1%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
 
 
-# In[53]:
+# In[ ]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.6%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
 
 
-# In[54]:
+# In[ ]:
 
 
 (cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.8%/yr_[MW]']-cumu_installs.loc[2100,'newInstalledCapacity_sim2_deg_deg_0.7%/yr_[MW]'])/1e6
 
 
-# In[55]:
+# In[ ]:
 
 
 #sim2_allenergy, sim2_energyGen, sim2_energy_demands
@@ -619,7 +627,7 @@ energyGen_cumu.columns = e_annual_sumDemands_cumu.columns = scennames2
 netEnergy_cumu = energyGen_cumu.loc[[2100]] - e_annual_sumDemands_cumu.loc[[2100]]
 
 
-# In[49]:
+# In[ ]:
 
 
 eroi = energyGen_cumu.loc[[2100]] / e_annual_sumDemands_cumu.loc[[2100]]
