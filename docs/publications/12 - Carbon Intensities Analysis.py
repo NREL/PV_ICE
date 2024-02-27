@@ -96,22 +96,22 @@ moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
 
-# In[198]:
+# In[8]:
 
 
 #load in the simulation from Energy Analysis journal
-#sim1 = PV_ICE.Simulation.load_Simpickle(filename=r'C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP\EnergyAnalysis\Deploy_MirletzLinear\sim1.pkl')
-sim1 = PV_ICE.Simulation.load_Simpickle(filename=r'C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP\EnergyAnalysis\Deploy_HieslmairSigmoid\sim1.pkl')
+sim1 = PV_ICE.Simulation.load_Simpickle(filename=r'C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP\EnergyAnalysis\Deploy_MirletzLinear\sim1.pkl')
+#sim1 = PV_ICE.Simulation.load_Simpickle(filename=r'C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP\EnergyAnalysis\Deploy_HieslmairSigmoid\sim1.pkl')
 #sim1 = PV_ICE.Simulation.load_Simpickle(filename=r'C:\Users\hmirletz\Documents\GitHub\PV_ICE\PV_ICE\TEMP\EnergyAnalysis\Deploy_ExpoToFlat\sim1.pkl')
 
 
-# In[199]:
+# In[9]:
 
 
 sim1.scenario['r_PERC'].dataOut_e
 
 
-# In[200]:
+# In[10]:
 
 
 sim1.scenario['PV_ICE'].dataOut_m['Effective_Capacity_[W]'].plot()
@@ -124,7 +124,7 @@ sim1.scenario['PV_ICE'].dataOut_m['Effective_Capacity_[W]'].plot()
 # 
 # Estimating that 60-70% generation will be from Solar, 30-40% from wind, and any remainder from "other renewables"
 
-# In[201]:
+# In[11]:
 
 
 countrygridmix = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'), index_col='year')
@@ -132,7 +132,7 @@ gridsources = ['Bioenergy','Hydro','Nuclear','OtherFossil','OtherRenewables','So
 nonRE = ['Coal','Gas','OtherFossil','Nuclear','Bioenergy']
 
 
-# In[202]:
+# In[12]:
 
 
 countrygridmix.loc[2023:,:]=np.nan #delete 2023 to 2050
@@ -140,7 +140,7 @@ nonRE_search = '|'.join(nonRE) #create nonRE search
 countrygridmix.loc[2050, countrygridmix.columns.str.contains(nonRE_search)] = 0.0 #set all nonRE to 0 in 2050
 
 
-# In[203]:
+# In[13]:
 
 
 countrygridmix.loc[2050, countrygridmix.columns.str.contains('Solar')] = 63.0
@@ -150,13 +150,13 @@ countrygridmix.loc[2050, countrygridmix.columns.str.contains('OtherRenewables')]
 #numbers derived from leading scenario electricity generation Breyer et al 2022 scenarios (EU focused)
 
 
-# In[204]:
+# In[14]:
 
 
 countrygridmix_100RE2050 = countrygridmix.interpolate() #linearly interpolate between 2022 and 2050
 
 
-# In[205]:
+# In[15]:
 
 
 apnd_idx = pd.RangeIndex(start=2051,stop=2101,step=1) #create temp df
@@ -165,7 +165,7 @@ countrygridmix_100RE20502100 = pd.concat([countrygridmix_100RE2050.loc[2000:],ap
 countrygridmix_100RE20502100.ffill(inplace=True) #propogate 2050 values through 2100
 
 
-# In[206]:
+# In[16]:
 
 
 countrygridmix_100RE20502100.loc[2050]
@@ -173,13 +173,13 @@ countrygridmix_100RE20502100.loc[2050]
 
 # This is a simple projection, assumes all countries have same ratio of PV and wind (which we know can't be true). Update in future with country specific projections.
 
-# In[207]:
+# In[17]:
 
 
 pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'), index_col=[0])
 
 
-# In[208]:
+# In[18]:
 
 
 sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE20502100)
@@ -194,13 +194,13 @@ sim1.calculateCarbonFlows(countrygridmixes=countrygridmix_100RE20502100)
 # # Carbon Analysis
 # this will become the aggregate carbon results function
 
-# In[209]:
+# In[19]:
 
 
 scenarios = sim1.scenario
 
 
-# In[210]:
+# In[20]:
 
 
 #simply group mod and mats carbon dfs by scenario
@@ -225,7 +225,7 @@ sim_carbon_dfs.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 #return sim_carbon_results, sim_annual_carbon
 
 
-# In[211]:
+# In[21]:
 
 
 #Do math on the carbon dfs, take in the output aggregate sim df
@@ -267,7 +267,7 @@ for scen in scenarios:
 sim_annual_carbon.index = pd.RangeIndex(start=2000,stop=2101,step=1)
 
 
-# In[212]:
+# In[22]:
 
 
 #create cumulative
@@ -276,7 +276,7 @@ maxy = round(sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gC
 sim_cumu_carbon.loc[2100].filter(like='Annual_Emit_total_modmats_gCO2eq')
 
 
-# In[213]:
+# In[43]:
 
 
 #save the carbondataframe as csvs for now
@@ -284,16 +284,23 @@ sim_annual_carbon.to_csv(os.path.join(testfolder,'13scen_carbon_annual.csv'))
 sim_cumu_carbon.to_csv(os.path.join(testfolder,'13scen_carbon_cumu.csv'))
 
 
+# In[45]:
+
+
+sim_annual_carbon_bmt_tocsv = sim_annual_carbon.filter(like='Annual_Emit_total_modmats_gCO2eq')/1e15
+sim_annual_carbon_bmt_tocsv.to_csv(os.path.join(testfolder, '13scen_carbon_annual_total_GtCO2.csv'))
+
+
 # # Carbon Emissions Cumulative Scenario compare
 
-# In[214]:
+# In[46]:
 
 
 sim_cumu_carbon_mmt = sim_cumu_carbon.filter(like='Annual_Emit_total_modmats_gCO2eq')/1e12
 sim_cumu_carbon_mmt
 
 
-# In[215]:
+# In[27]:
 
 
 fig_cumu_carbon, (ax1,ax2,ax3) = plt.subplots(1,3,figsize=(15,5), sharey=True, sharex=True, 
@@ -360,7 +367,7 @@ plt.show()
 
 # # Literature Validation
 
-# In[216]:
+# In[28]:
 
 
 #comparing to Ember open source data, uses a lifecycle PV emission factor from IPCC for electricity carbon
@@ -369,7 +376,7 @@ ember_PVCO2 = pd.read_csv(os.path.join(carbonfolder,'Ember-PVEmissionsWorld2000-
 ember_PVCO2_cumu = ember_PVCO2.cumsum()
 
 
-# In[217]:
+# In[29]:
 
 
 #compare to Fthenakis and Leccisi 2021 analysis
@@ -389,7 +396,7 @@ FL2021_gwp_range['F&L_mc-Si_2015'] = kw_installed_pvice.loc[:22].values*FL2021_g
 FL2021_gwp_range_cumu_mmt = FL2021_gwp_range.cumsum()/1e9 #cumulative, and kg to million metric tonnes
 
 
-# In[218]:
+# In[30]:
 
 
 #compare to Ultra Low Carbon Solar Alliance South Korea rating, as redproduced in Polverini 2023
@@ -405,7 +412,7 @@ Polverini2023_gwp_range['Polverini2023_high'] = kw_installed_pvice.loc[:22].valu
 Polverini2023_gwp_range_cumu_mmt = Polverini2023_gwp_range.cumsum()/1e9 #cumulative, and kg to million metric tonnes
 
 
-# In[219]:
+# In[31]:
 
 
 #compare to Liang and You 2023, using Figure 1 2020 values from a and e
@@ -425,7 +432,7 @@ LiangYou2023_gwp_range['LiangYou2023_mcSi_high'] = m2_installed_pvice.loc[:22].v
 LiangYou2023_gwp_range_cumu_mmt = LiangYou2023_gwp_range.cumsum()/1e9 #cumulative, and kg to million metric tonnes
 
 
-# In[220]:
+# In[32]:
 
 
 plt.plot(sim_cumu_carbon_mmt.loc[:2022,'PV_ICE_Annual_Emit_total_modmats_gCO2eq'], label='PV_ICE', color='black')
@@ -455,7 +462,7 @@ plt.legend(loc='upper left', fontsize=12)
 # ## Flip it, compare on CO2eq/kWp
 # This is a simple way of doing it, will not work for much beyond 2022, because the annual emissions include end of life of other systems, not just the mfging of installed - its not necessarily fair. Might work out on balance, kinda
 
-# In[221]:
+# In[33]:
 
 
 #lit factors into scatter points
@@ -487,7 +494,7 @@ litfactors.loc[2020,'Wikoff2022_high_m$^{2}$'] = 275
 #litfactors
 
 
-# In[222]:
+# In[34]:
 
 
 #calculate CO2eq/kWp by dividing annual CO2eq/deployed PV
@@ -499,7 +506,7 @@ pvice_annual_kgco2pkwp = pvice_emit_annual['PV_ICE_Annual_Emit_total_modmats_gCO
 #pvice_annual_kgco2pkwp
 
 
-# In[223]:
+# In[35]:
 
 
 #calculate CO2eq/m2 for PV ICE
@@ -510,13 +517,13 @@ pvice_annual_kgco2eqpm2 = pvice_emit_annual['PV_ICE_Annual_Emit_total_modmats_gC
 #pvice_annual_kgco2eqpm2
 
 
-# In[224]:
+# In[36]:
 
 
 litfactors.columns
 
 
-# In[225]:
+# In[37]:
 
 
 #graphing
@@ -545,7 +552,7 @@ plt.title('Literature Comparison:\nkg CO$_{2}$eq/kW$_{p}$')
 plt.legend(bbox_to_anchor=(1.6,1))
 
 
-# In[226]:
+# In[38]:
 
 
 plt.plot(pvice_annual_kgco2eqpm2, label='PV_ICE kg CO$_{2}$eq/m$^{2}$', color='darkgray', marker='^')
@@ -566,7 +573,7 @@ plt.legend(bbox_to_anchor=(1.6,1))
 
 # # Contextualize versus Global Carbon Emissions and Budget
 
-# In[227]:
+# In[39]:
 
 
 annualco2emitglobal_raw = pd.read_csv(os.path.join(carbonfolder,'WorldInData-annual-co2-emissions-per-country.csv'))
@@ -580,7 +587,7 @@ world_annual_bmt = annualco2emitglobal_subset.iloc[:,1]/1e9 #bmt
 percentPVemitvsWorld = pvice_annualPVemit_bmt/world_annual_bmt*100
 
 
-# In[228]:
+# In[40]:
 
 
 #cumulative compare
@@ -588,7 +595,7 @@ sim_cumu_carbon_bmt = sim_cumu_carbon_mmt.loc[:,'PV_ICE_Annual_Emit_total_modmat
 sim_cumu_carbon_bmt
 
 
-# In[229]:
+# In[41]:
 
 
 fig_worldcompare, ax1 = plt.subplots()
@@ -611,7 +618,7 @@ ax1.legend(loc='center left')
 plt.show()
 
 
-# In[230]:
+# In[42]:
 
 
 fig_worldcompare, ax1 = plt.subplots()
