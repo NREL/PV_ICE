@@ -20,6 +20,7 @@ get_ipython().system('pip install git+https://github.com/NREL/PV_ICE.git@develop
 # In[ ]:
 
 
+import os
 import PV_ICE
 PV_ICE.__version__
 
@@ -27,7 +28,7 @@ PV_ICE.__version__
 # In[ ]:
 
 
-testfolder = 'Tuesday'
+testfolder = 'Sunday'
 
 if not os.path.exists(testfolder):
     os.makedirs(testfolder)
@@ -36,7 +37,7 @@ if not os.path.exists(testfolder):
 # In[ ]:
 
 
-r1 = PV_ICE.Simulation(name='Sim1', path=testfolder); # Is it possible to define more than one simulation here?
+r1 = PV_ICE.Simulation(name='Sim1', path=testfolder, baselinepath='/content')
 
 
 # In[ ]:
@@ -51,12 +52,6 @@ r1
 
 
 r1.__dict__
-
-
-# In[ ]:
-
-
-r1.baselinepath = '/content'
 
 
 # ## 2. Add the Files to the Folder now

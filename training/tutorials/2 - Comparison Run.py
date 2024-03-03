@@ -43,7 +43,7 @@ if not os.path.exists(testfolder):
 # In[ ]:
 
 
-r1 = PV_ICE.Simulation(name='Sim2', path=testfolder, baselinepath='/content'); # Is it possible to define more than one simulation here?
+r1 = PV_ICE.Simulation(name='Sim2', path=testfolder, baselinepath='/content')
 
 
 # ## 2. Modify the files and add to the folder now 
@@ -71,9 +71,9 @@ r1.scenario['standard'].addMaterial(materialname='glass',
                                     massmatfile='/content/baseline_material_mass_glass.csv', 
                                     energymatfile='/content/baseline_material_energy_glass.csv')
 
-r1.scenario['standard'].addMaterial(materialname='glass', 
-                                    massmatfile='/content/baseline_material_mass_glass.csv', 
-                                    energymatfile='/content/baseline_material_energy_glass.csv')
+r1.scenario['standard'].addMaterial(materialname='silicon', 
+                                    massmatfile='/content/baseline_material_mass_silicon.csv', 
+                                    energymatfile='/content/baseline_material_energy_silicon.csv')
 
 
 # In[ ]:
@@ -88,8 +88,8 @@ r1.scenario['modified'].addMaterial(materialname='glass',
                                     energymatfile='/content/baseline_material_energy_glass.csv')
 
 r1.scenario['modified'].addMaterial(materialname='silicon', 
-                                    massmatfile='/content/baseline_material_mass_glass_modified.csv', 
-                                    energymatfile='/content/baseline_material_energy_glass.csv')
+                                    massmatfile='/content/baseline_material_mass_silicon.csv', 
+                                    energymatfile='/content/baseline_material_energy_silicon.csv')
 
 
 # Alternatively, use one of the PV_ICE support functions to modify 
