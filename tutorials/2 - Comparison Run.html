@@ -449,10 +449,11 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>^C
 Defaulting to user installation because normal site-packages is not writeable
 Collecting git+https://github.com/NREL/PV_ICE.git@development
-  Cloning https://github.com/NREL/PV_ICE.git (to revision development) to c:\users\sayala\appdata\local\temp\1\pip-req-build-ljgyb5f9
+  Cloning https://github.com/NREL/PV_ICE.git (to revision development) to c:\users\sayala\appdata\local\temp\1\pip-req-build-v6dtus44
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Running command git clone --filter=blob:none --quiet https://github.com/NREL/PV_ICE.git &#39;C:\Users\sayala\AppData\Local\Temp\1\pip-req-build-ljgyb5f9&#39;
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Running command git clone --filter=blob:none --quiet https://github.com/NREL/PV_ICE.git &#39;C:\Users\sayala\AppData\Local\Temp\1\pip-req-build-v6dtus44&#39;
+  Running command git checkout -b development --track origin/development
 </pre></div>
 </div>
 </div>
@@ -485,7 +486,7 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sim2&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">,</span> <span class="n">baselinepath</span><span class="o">=</span><span class="s1">&#39;/content&#39;</span><span class="p">);</span> <span class="c1"># Is it possible to define more than one simulation here?</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Sim2&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">,</span> <span class="n">baselinepath</span><span class="o">=</span><span class="s1">&#39;/content&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -515,9 +516,9 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
                                     <span class="n">massmatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_mass_glass.csv&#39;</span><span class="p">,</span> 
                                     <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_glass.csv&#39;</span><span class="p">)</span>
 
-<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">&#39;glass&#39;</span><span class="p">,</span> 
-                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_mass_glass.csv&#39;</span><span class="p">,</span> 
-                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_glass.csv&#39;</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;standard&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> 
+                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_mass_silicon.csv&#39;</span><span class="p">,</span> 
+                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_silicon.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -533,8 +534,8 @@ Collecting git+https://github.com/NREL/PV_ICE.git@development
                                     <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_glass.csv&#39;</span><span class="p">)</span>
 
 <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;modified&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">addMaterial</span><span class="p">(</span><span class="n">materialname</span><span class="o">=</span><span class="s1">&#39;silicon&#39;</span><span class="p">,</span> 
-                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_mass_glass_modified.csv&#39;</span><span class="p">,</span> 
-                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_glass.csv&#39;</span><span class="p">)</span>
+                                    <span class="n">massmatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_mass_silicon.csv&#39;</span><span class="p">,</span> 
+                                    <span class="n">energymatfile</span><span class="o">=</span><span class="s1">&#39;/content/baseline_material_energy_silicon.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
