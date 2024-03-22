@@ -18,7 +18,7 @@ Usage Improvements
 * More outpus provided in the results dataframes, including Area equivalencies for many of the steps.
 
 New Structuring
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 * ``data`` changed to ``dataIn_m`` and ``dataIn_e`` for module level, and ``materialdata`` changed to ``matdataIn_m`` and ``matdataIn_e`` where ``_m`` stands for mass and ``_e`` stands for energy
 * Output data changed to ``dataOut_m``, ``dataOut_e``, ``matdataOut_m``, ``matdataOut_e`` for modules and materials and mass and energy respectively
 

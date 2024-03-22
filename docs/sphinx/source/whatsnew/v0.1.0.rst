@@ -16,7 +16,7 @@ First official release. This software is still under development, in particular 
 * Pypi registration
 
 Contributors
-~~~~~~~~~~~~
+------------
 * Silvana Ayala (:ghuser:`shirubana`)
 * Tim Silverman (:ghuser:`silverman`)
 * Heather Mirletz (:ghuser:`heathermirletz`)
