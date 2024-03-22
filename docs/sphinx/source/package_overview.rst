@@ -11,7 +11,7 @@ In addition to the documentation here, please check out our paper documenting th
 
 The PV ICE tool explores the effects of Circular Economy (CE) pathways for photovoltaic (PV) materials. It can be used to quantify and assign a value framework to CE efforts including re-design, lightweighting, replacement, reuse, recycling, and lifetime and reliability improvements across the PV value chain. PV ICE enables tradeoff analysis through scenario comparisons, and is highly customizable through user inputs such as deployment schedules, module properties and component materials, and CE pathways. The PV ICE tool considers the following material flows and their associated energies:
 
-.. image:: ../../images_wiki/PV_ICE_diagram-simpleAltUpdate.PNG
+.. image:: ../../images_wiki/PV_ICE_diagram-simpleAltUpdate.png
   :width: 450
   :alt: Simplified diagram of mass flows captured in the PV ICE tool.
 
@@ -27,7 +27,7 @@ Framework and Definitions
 
 The following flow chart details the mass and energy path structure of the PV ICE framework.
 
-.. image:: ../../images_wiki/MassEnergyFlowChart.PNG
+.. image:: ../../images_wiki/MassEnergyFlowChart.png
   :width: 900
   :alt: Full logic flow chart of mass and energy quantities as captured and structured in the PV ICE tool. Begin at the "Mine" in the bottom right corner.
 
@@ -60,7 +60,7 @@ EOL Pathway Options
 ~~~~~~~~~~~~~~~~~~~~~
 Each year in the model produces modules that enter EOL. Below is a flow chart of the EOL decision tree.
 
-.. image:: ../../images_wiki/EOLLogic.PNG
+.. image:: ../../images_wiki/EOLLogic.png
   :width: 900
   :alt:
 
