@@ -3,7 +3,7 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>(development) ReEDS Scenarios Baseline Creation</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>(development) ReEDS Scenarios Baseline Creation Updated</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
@@ -36,6 +36,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .m { color: var(--jp-mirror-editor-number-color) } /* Literal.Number */
 .highlight .s { color: var(--jp-mirror-editor-string-color) } /* Literal.String */
 .highlight .ow { color: var(--jp-mirror-editor-operator-color); font-weight: bold } /* Operator.Word */
+.highlight .pm { color: var(--jp-mirror-editor-punctuation-color) } /* Punctuation.Marker */
 .highlight .w { color: var(--jp-mirror-editor-variable-color) } /* Text.Whitespace */
 .highlight .mb { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Bin */
 .highlight .mf { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Float */
@@ -14559,12 +14560,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14612,8 +14613,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">'font.size'</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14632,9 +14633,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;TEMP&#39;</span><span class="p">)</span>
+<span class="n">testfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">'PV_ICE'</span> <span class="o">/</span> <span class="s1">'TEMP'</span><span class="p">)</span>
 
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Your simulation will be stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">testfolder</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">"Your simulation will be stored in </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">testfolder</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14661,8 +14662,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reedsFile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span> <span class="o">/</span> <span class="s1">&#39;SupportingMaterial&#39;</span> <span class="o">/</span> <span class="s1">&#39;December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx&#39;</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Input file is stored in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">reedsFile</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">reedsFile</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">'PV_ICE'</span> <span class="o">/</span> <span class="s1">'baselines'</span> <span class="o">/</span> <span class="s1">'SupportingMaterial'</span> <span class="o">/</span> <span class="s1">'December Core Scenarios ReEDS Outputs Solar Futures v3a.xlsx'</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">"Input file is stored in </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">reedsFile</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14679,8 +14680,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">REEDSInput</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">reedsFile</span><span class="p">,</span>
-<span class="c1">#                        sheet_name=&quot;new installs PV (2)&quot;)</span>
-                       <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;new installs PV&quot;</span><span class="p">)</span>
+<span class="c1">#                        sheet_name="new installs PV (2)")</span>
+                       <span class="n">sheet_name</span><span class="o">=</span><span class="s2">"new installs PV"</span><span class="p">)</span>
 
 <span class="c1">#index_col=[0,2,3]) #this casts scenario, PCA and State as levels</span>
 </pre></div>
@@ -14721,9 +14722,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;State&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Tech&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#tech=pvtotal from &quot;new installs PV sheet&quot;, so can drop</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span><span class="s1">&#39;PCA&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'State'</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Tech'</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#tech=pvtotal from "new installs PV sheet", so can drop</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'Scenario'</span><span class="p">,</span><span class="s1">'Year'</span><span class="p">,</span><span class="s1">'PCA'</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">rawdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
 </pre></div>
 
@@ -14752,13 +14753,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
-<span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Simulation1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
-<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_modules_mass_US.csv&#39;</span><span class="p">)</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'Simulation1'</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'US'</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">'..\baselines\baseline_modules_mass_US.csv'</span><span class="p">)</span>
 <span class="n">r1</span><span class="o">.</span><span class="n">scenMod_noCircularity</span><span class="p">()</span> <span class="c1"># Reeds Solar Future Study had circularity paths set to 0</span>
-<span class="n">baseline</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;US&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dataIn_m</span>
-<span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">])</span>
-<span class="n">baseline</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">baseline</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>  <span class="c1"># A -- Annual</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'US'</span><span class="p">]</span><span class="o">.</span><span class="n">dataIn_m</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">])</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'year'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">'A'</span><span class="p">)</span>  <span class="c1"># A -- Annual</span>
 <span class="n">baseline</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -14804,20 +14805,20 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">csv</span>
 
-<span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_modules_mass_US.csv&#39;</span>
+<span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">'..\baselines\baseline_modules_mass_US.csv'</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">massmodulefile</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">massmodulefile</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
   <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
   <span class="n">row1</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>  <span class="c1"># gets the first line</span>
   <span class="n">row2</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>  <span class="c1"># gets the first line</span>
 
-<span class="n">row11</span> <span class="o">=</span> <span class="s1">&#39;year&#39;</span>
+<span class="n">row11</span> <span class="o">=</span> <span class="s1">'year'</span>
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row1</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-    <span class="n">row11</span> <span class="o">=</span> <span class="n">row11</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="n">x</span> 
+    <span class="n">row11</span> <span class="o">=</span> <span class="n">row11</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="n">x</span> 
 
-<span class="n">row22</span> <span class="o">=</span> <span class="s1">&#39;year&#39;</span>
+<span class="n">row22</span> <span class="o">=</span> <span class="s1">'year'</span>
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">row2</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-    <span class="n">row22</span> <span class="o">=</span> <span class="n">row22</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="n">x</span> 
+    <span class="n">row22</span> <span class="o">=</span> <span class="n">row22</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="n">x</span> 
 </pre></div>
 
      </div>
@@ -14852,28 +14853,28 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">))):</span>
     <span class="n">PCA</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">SCEN</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">PCA</span> <span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
-    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;PCAs&#39;</span><span class="p">)</span>
+    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'+'</span><span class="p">,</span> <span class="s1">'_'</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">'_'</span><span class="o">+</span><span class="n">PCA</span> <span class="o">+</span><span class="s1">'.csv'</span>
+    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">'PCAs'</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">)</span>
     <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'new_Installed_Capacity_[MW]'</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">'A'</span><span class="p">)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
     <span class="c1"># Add other columns</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
    
-    <span class="n">header</span> <span class="o">=</span> <span class="n">row11</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">row22</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">row11</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="n">row22</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
     
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
     <span class="c1"># Write the header lines, including the index variable for</span>
-    <span class="c1"># the last one if you&#39;re letting Pandas produce that for you.</span>
+    <span class="c1"># the last one if you're letting Pandas produce that for you.</span>
     <span class="c1"># (see above).</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
             <span class="n">ict</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
@@ -14918,9 +14919,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="c1">#rawdf.drop(columns=[&#39;State&#39;], inplace=True)</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Tech&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span><span class="s1">&#39;PCA&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#rawdf.drop(columns=['State'], inplace=True)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Tech'</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'Scenario'</span><span class="p">,</span><span class="s1">'Year'</span><span class="p">,</span><span class="s1">'PCA'</span><span class="p">,</span> <span class="s1">'State'</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">rawdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
 </pre></div>
 
@@ -14948,8 +14949,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#df = rawdf.groupby([&#39;Scenario&#39;,&#39;State&#39;, &#39;Year&#39;])[&#39;Capacity (GW)&#39;].sum(axis=0)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">])[</span><span class="s1">&#39;Capacity (GW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#df = rawdf.groupby(['Scenario','State', 'Year'])['Capacity (GW)'].sum(axis=0)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'Scenario'</span><span class="p">,</span><span class="s1">'State'</span><span class="p">,</span> <span class="s1">'Year'</span><span class="p">])[</span><span class="s1">'Capacity (GW)'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -14981,31 +14982,31 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">))):</span>   
     <span class="n">STATE</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">SCEN</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">STATE</span> <span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
+    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'+'</span><span class="p">,</span> <span class="s1">'_'</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">'_'</span><span class="o">+</span><span class="n">STATE</span> <span class="o">+</span><span class="s1">'.csv'</span>
     
-    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;STATEs&#39;</span><span class="p">)</span>
+    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">'STATEs'</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">)</span>
     <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
 
     <span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'new_Installed_Capacity_[MW]'</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">'A'</span><span class="p">)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares['Si']</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
     <span class="c1"># Add other columns</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     
     
-    <span class="n">header</span> <span class="o">=</span> <span class="n">row11</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">row22</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">row11</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="n">row22</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
     <span class="c1"># Write the header lines, including the index variable for</span>
-    <span class="c1"># the last one if you&#39;re letting Pandas produce that for you.</span>
+    <span class="c1"># the last one if you're letting Pandas produce that for you.</span>
     <span class="c1"># (see above).</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
             <span class="n">ict</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
@@ -15050,9 +15051,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rawdf</span> <span class="o">=</span> <span class="n">REEDSInput</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="c1">#rawdf.drop(columns=[&#39;State&#39;], inplace=True)</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Tech&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#rawdf.drop(columns=['State'], inplace=True)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Tech'</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">rawdf</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">'Scenario'</span><span class="p">,</span><span class="s1">'Year'</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">rawdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
 </pre></div>
 
@@ -15069,8 +15070,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#df = rawdf.groupby([&#39;Scenario&#39;,&#39;Year&#39;])[&#39;Capacity (GW)&#39;].sum(axis=0)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Scenario&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">])[</span><span class="s1">&#39;Capacity (GW)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#df = rawdf.groupby(['Scenario','Year'])['Capacity (GW)'].sum(axis=0)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">rawdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'Scenario'</span><span class="p">,</span><span class="s1">'Year'</span><span class="p">])[</span><span class="s1">'Capacity (GW)'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15098,14 +15099,14 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PV_ICE</span>
-<span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Simulation1&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
-<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;US&#39;</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;..\baselines\baseline_modules_mass_US.csv&#39;</span><span class="p">)</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">PV_ICE</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'Simulation1'</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">testfolder</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">createScenario</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'US'</span><span class="p">,</span> <span class="n">massmodulefile</span><span class="o">=</span><span class="sa">r</span><span class="s1">'..\baselines\baseline_modules_mass_US.csv'</span><span class="p">)</span>
 <span class="n">r1</span><span class="o">.</span><span class="n">scenMod_noCircularity</span><span class="p">()</span> <span class="c1"># Reeds Solar Future Study had circularity paths set to 0</span>
-<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;US&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dataIn_m</span><span class="p">[</span><span class="s1">&#39;mod_EOL_collection_eff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="n">baseline</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">&#39;US&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dataIn_m</span>
-<span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">])</span>
-<span class="n">baseline</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">baseline</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>  <span class="c1"># A -- Annual</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'US'</span><span class="p">]</span><span class="o">.</span><span class="n">dataIn_m</span><span class="p">[</span><span class="s1">'mod_EOL_collection_eff'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">scenario</span><span class="p">[</span><span class="s1">'US'</span><span class="p">]</span><span class="o">.</span><span class="n">dataIn_m</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">])</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'year'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">baseline</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">baseline</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">'A'</span><span class="p">)</span>  <span class="c1"># A -- Annual</span>
 <span class="n">baseline</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -15135,31 +15136,31 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">))):</span>
     <span class="n">SCEN</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
-    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
-    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">&#39;.csv&#39;</span>
+    <span class="n">SCEN</span><span class="o">=</span><span class="n">SCEN</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'+'</span><span class="p">,</span> <span class="s1">'_'</span><span class="p">)</span>
+    <span class="n">filetitle</span> <span class="o">=</span> <span class="n">SCEN</span><span class="o">+</span><span class="s1">'.csv'</span>
     
-    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">&#39;USA&#39;</span><span class="p">)</span>
+    <span class="n">subtestfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">testfolder</span><span class="p">,</span> <span class="s1">'USA'</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">)</span>
     <span class="n">filetitle</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subtestfolder</span><span class="p">,</span> <span class="n">filetitle</span><span class="p">)</span>
     
     <span class="n">A</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
 
-    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'new_Installed_Capacity_[MW]'</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">'A'</span><span class="p">)</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares[&#39;Si&#39;]</span>
-    <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">&#39;new_Installed_Capacity_[MW]&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.85</span> <span class="c1"># marketshares['Si']</span>
+    <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="s1">'new_Installed_Capacity_[MW]'</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>   <span class="c1"># ReEDS file is in GW.</span>
     <span class="c1"># Add other columns</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">index</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
    
-    <span class="n">header</span> <span class="o">=</span> <span class="n">row11</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">row22</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">row11</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="n">row22</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
 
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filetitle</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span> <span class="k">as</span> <span class="n">ict</span><span class="p">:</span>
     <span class="c1"># Write the header lines, including the index variable for</span>
-    <span class="c1"># the last one if you&#39;re letting Pandas produce that for you.</span>
+    <span class="c1"># the last one if you're letting Pandas produce that for you.</span>
     <span class="c1"># (see above).</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
             <span class="n">ict</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
