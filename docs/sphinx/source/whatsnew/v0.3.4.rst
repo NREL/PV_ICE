@@ -1,0 +1,38 @@
+.. _whatsnew_0304:
+
+v0.3.4 (03/22/2024)
+=======================
+
+* Formal release for the Energy layer and energy baselines.
+* Informal inclusion of the carbon layer in development.
+* New interactive training available via JupyterBook and Google Collab
+* Added raw, inputs, outputs, figures folders for saving simulation files.
+* Simulations can also now be saved as pickles, for easy use and load.
+
+Code Updates
+------------
+* Updated default "reducecapacity" to False, i.e. by default, bifaciality will not affect installed capacity, it will be bonus energy generation
+* Improved internal data path for baselines folder
+* Additional math added to energy calculations layer to support carbon calculations
+* New Mass Flows input `nameplatedeglimit` and `secondlifenameplatedeglimit` to set up degradation limits for first and second life.
+
+Baseline Updates
+-----------------
+* Updated scenarios for PERC, SHJ, TopCon, Perovskites (from Mirletz EPJ 2024)
+* New deployment schedules available for Global (from Mirletz EPJ 2024)
+* Baselines for Roger Nagle's Master thesis exploring European deployment and sustainability pathways scenarios added
+* Carbon baselines added (still under development)
+
+Documentation Updates
+----------------------
+* Reorganized documentation folder into tutorials, publications, and baseline development documents.
+* Version for various of the journals added, as well as printouts of system, python, pandas and other packages added for easier debugging for users.
+* Removed OpenEI documentation as it is out of date.
+* Added documentation for using the energy layer, including journal for the Mirletz EPJ 2024 paper, and an energy sensitivity analysis journals
+
+Contributors
+~~~~~~~~~~~~
+* Heather Mirletz (:ghuser:`heathermirletz`)
+* Silvana Ovaitt (:ghuser:`shirubana`)
+* Rachel Woods-Robinson (:ghuser:`rwoodsrobinson`)
+
