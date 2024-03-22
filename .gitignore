@@ -33,6 +33,7 @@ var/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+pip-wheel-metadata/
 
 # Unit test / coverage reports
 htmlcov/
@@ -100,7 +101,11 @@ ENV/
 tests/results/
 
 # PVDEMICE temp folder
+<<<<<<< HEAD
 PV_ICE/TEMP/
 
 # Traning Jupyter-book
 training/_build/
+=======
+# PV_ICE/TEMP/
+>>>>>>> be4860f9b4c2ce5a2b887e2d153f7cfea32b3a6c

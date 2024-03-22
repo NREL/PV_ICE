@@ -3,6 +3,8 @@
 
 # # Energy Requirements of Silicon Manufacturing
 
+# ### v0.3.0 note: FOR A MORE UPDATED VERSION, Check Development Branch. Currently working on this! 
+# 
 # This journal creates a baseline for the energy required to manufacture silicon for PV applications. The processes covered here include silica to MG-Si, MG-Si to polysilicon (siemens and FBR), Cz ingot growth, wafering, and cell processing steps. 
 # 
 # 
