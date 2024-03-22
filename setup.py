@@ -87,7 +87,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=['matplotlib',
-                       'numpy',
+                      'numpy',
                       'pandas',
                       'tqdm >= 4.32.1'
                       ],
