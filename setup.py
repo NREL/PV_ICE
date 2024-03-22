@@ -30,8 +30,8 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.4.0',
-    #version=versioneer.get_version(),
+    #version='0.4.0',
+    version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
 
 
@@ -43,8 +43,8 @@ setup(
     url='https://github.com/NREL/PV_ICE',
 
     # Author details
-    author='Silvana Ayala',
-    author_email='silvana.ayala@nrel.gov',
+    author='Silvana Ovaitt',
+    author_email='silvana.ovaitt@nrel.gov',
 
     # Choose your license
     license='BSD-3',
