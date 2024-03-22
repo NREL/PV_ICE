@@ -1,6 +1,6 @@
-.. _whatsnew_0303:
+.. _whatsnew_0304:
 
-v0.3.3 (03/22/2024)
+v0.3.4 (03/22/2024)
 =======================
 
 * Formal release for the Energy layer and energy baselines.
