@@ -97,15 +97,11 @@ ENV/
 # vscode
 .vscode/
 
-# PVDEMICE tests
+# PVDICE tests
 tests/results/
 
-# PVDEMICE temp folder
-<<<<<<< HEAD
+# PVICE temp folder
 PV_ICE/TEMP/
 
 # Traning Jupyter-book
 training/_build/
-=======
-# PV_ICE/TEMP/
->>>>>>> be4860f9b4c2ce5a2b887e2d153f7cfea32b3a6c
