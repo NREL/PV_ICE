@@ -17,6 +17,8 @@ import matplotlib.pyplot as plt
 import itertools
 from pathlib import Path
 
+global DATA_PATH # path to data files including module.json.  Global context
+DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'baselines'))
 
 
 def read_baseline_material(scenario, material='None', file=None):
@@ -100,13 +102,13 @@ def _unitReferences(keyword):
                       'source': 'input'},
         'Area': {'unit': 'm$^2$',
                  'source': 'generated'},
-        'Cumulative_Area_disposedby_Failure': {'unit': 'm$^2$',
+        'Cumulative_Area_EOLby_Failure': {'unit': 'm$^2$',
                                                'source': 'generated'},
-        'Cumulative_Area_disposedby_ProjectLifetime': {'unit': 'm$^2$',
+        'Cumulative_Area_EOLby_ProjectLifetime': {'unit': 'm$^2$',
                                                        'source': 'generated'},
-        'Cumulative_Area_disposed': {'unit': 'm$^2$', 'source': 'generated'},
+        'Cumulative_Area_atEOL': {'unit': 'm$^2$', 'source': 'generated'},
         'Cumulative_Active_Area': {'unit': 'm$^2$', 'source': 'generated'},
-        'Installed_Capacity_[W]': {'unit': 'Power [W]', 'source': 'generated'},
+        'Effective_Capacity_[W]': {'unit': 'Power [W]', 'source': 'generated'},
         'EOL_on_Year_0': {'unit': 'm$^2$', 'source': 'generated'},
         'EOL_on_Year_1': {'unit': 'm$^2$', 'source': 'generated'},
         'EOL_on_Year_2': {'unit': 'm$^2$', 'source': 'generated'},
@@ -233,7 +235,7 @@ def _unitReferences(keyword):
                                      'source': 'generated'},
         'mat_Total_Landfilled': {'unit': 'Mass [g]', 'source': 'generated'},
         'mat_Total_Recycled_OU': {'unit': 'Mass [g]', 'source': 'generated'},
-        'Yearly_Sum_Area_disposedby_Failure': {'unit': 'Area [m$^2$]',
+        'Yearly_Sum_Area_EOLby_Failure': {'unit': 'Area [m$^2$]',
                                                'source': 'generated'}
         }
 
@@ -321,7 +323,7 @@ class Simulation:
 
     """
 
-    def __init__(self, name=None, path=None):
+    def __init__(self, name=None, path=None, baselinepath=None):
         '''
         initialize ScenarioObj with path of Scenario's baseline of module and
         materials as well as a basename to append to
@@ -353,7 +355,25 @@ class Simulation:
         else:
             self.name = name
 
+        if baselinepath is None:
+            self.baselinepath = DATA_PATH
+            print("Baseline folder directed to default: ", DATA_PATH)
+        else:
+            self.baselinepath = baselinepath
+
         self.scenario = {}
+
+    def pickle_Sim(self, filename=None):
+        import pickle
+        if filename is None:
+            filename = self.name + '.pkl'
+            filename = os.path.join(self.path, filename)
+        with open(filename, 'wb') as outp:  # Overwrites any existing file
+            pickle.dump(self, outp, pickle.HIGHEST_PROTOCOL)
+
+    def load_Simpickle(filename):
+        import pickle
+        return pickle.load(open(filename, "rb", -1))
 
     def _setPath(self, path):
         """
@@ -376,8 +396,51 @@ class Simulation:
                 os.makedirs(path)
                 print('Making path: '+path)
 
+        _checkPath('raw')
+        _checkPath('input')
+        _checkPath('output')
+        _checkPath('figures')
+
     def createScenario(self, name, massmodulefile=None, energymodulefile=None,
                        file=None):
+
+        import re
+        
+        if file is not None:
+            print("Please use massmodulefile or energymodulefile as inputs " +
+                  " to this function.")
+            return
+        
+        if massmodulefile is None:
+            files = [f for f in os.listdir(DATA_PATH) if re.match(
+                r'baseline_modules_mass', f)]
+            print("Please pass one of the following options: ", files)
+            return
+        elif os.path.isfile(massmodulefile) is False:
+            if os.path.isfile(os.path.join(self.baselinepath, massmodulefile)):
+                massmodulefile = os.path.join(self.baselinepath,
+                                              massmodulefile)
+            else:
+                print('File not found, check path to folder if passed is ' +
+                      'correct or that baseline folder is correct',
+                      massmodulefile)
+                return
+
+        if energymodulefile is None:
+            files = [f for f in os.listdir(DATA_PATH) if re.match(
+                r'baseline_modules_energy', f)]
+            print("No energy module file passed. If desired, pass one of the" +
+                  " following options: ", files)
+        elif os.path.isfile(energymodulefile) is False:
+            if os.path.isfile(os.path.join(self.baselinepath,
+                                           energymodulefile)):
+                energymodulefile = os.path.join(self.baselinepath,
+                                                energymodulefile)
+            else:
+                print('File not found, check path to folder if passed is ' +
+                      'correct or that baseline folder is correct',
+                      energymodulefile)
+                return
 
         self.scenario[name] = Scenario(name, file=file,
                                        massmodulefile=massmodulefile,
@@ -406,7 +469,62 @@ class Simulation:
                 self.scenario[scen].dataIn_m.loc[selectyears, stage] = value
                 
                 
-                
+    def saveSimulation(self, scenarios=None, materials=None, customname=None,
+                       overwrite=True):
+        
+        if customname is None:
+            customname = ''
+
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+    
+        if materials is None:
+            materials = list(self.scenario[scenarios[0]].material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+        def _existsandSavequestionmark(attribute, savefolder, customname, overwrite, scen, mat=None, metattribute=None):
+            if mat is None:
+                titlecsv = scen + '_' + attribute + customname + '.csv'
+                pviceobj = self.scenario[scen]
+            else:
+                titlecsv = scen + '_' + mat + '_' + attribute + customname + '.csv'
+                pviceobj = self.scenario[scen].material[mat]
+            
+            filefullpath = os.path.join(savefolder, titlecsv)
+            if (os.path.isfile(filefullpath)) and (overwrite is False):
+                print(filefullpath + " exists and set to not overwrite, skipping.")
+            else:
+                if hasattr(pviceobj, attribute):
+                    dffoo = getattr(pviceobj, attribute)
+                    if metattribute is not None:
+                        if hasattr(pviceobj, metattribute):
+                            mydict = getattr(pviceobj, metattribute)
+                            metdata = pd.DataFrame(mydict, index=[0])
+                            dffoo = pd.concat([metdata, dffoo], axis=0)
+                    dffoo.to_csv(os.path.join(savefolder, titlecsv))
+#                    dffoo.to_csv(os.path.join(savefolder, titlecsv), index_col=False)
+
+        for scen in scenarios:
+
+            _existsandSavequestionmark('dataIn_m', 'input', customname, overwrite, scen, mat=None, metattribute='metdataIn_m')
+            _existsandSavequestionmark('dataIn_e', 'input', customname, overwrite, scen, mat=None, metattribute='metdataIn_e')
+            _existsandSavequestionmark('dataOut_m', 'output', customname, overwrite, scen)
+            _existsandSavequestionmark('dataOut_e', 'output', customname, overwrite, scen)
+            _existsandSavequestionmark('dataDebug_m', 'output', customname, overwrite, scen)
+                        
+            for mat in materials:
+                _existsandSavequestionmark('matdataIn_m', 'input', customname, overwrite, scen, mat, metattribute='matmetdataIn_m')
+                _existsandSavequestionmark('matdataIn_e', 'input', customname, overwrite, scen, mat, metattribute='matmetdataIn_e')
+                _existsandSavequestionmark('matdataOut_m', 'output', customname, overwrite, scen, mat)
+                _existsandSavequestionmark('matdataOut_e', 'output', customname, overwrite, scen, mat)
+        
+        print(":) Saved Input and Output Dataframes")
+
     def modifyScenarioEnergy(self, scenarios, stage, value, start_year=None):
 
         if start_year is None:
@@ -433,7 +551,7 @@ class Simulation:
     def calculateFlows(self, scenarios=None, materials=None,
                        weibullInputParams=None, bifacialityfactors=None,
                        reducecapacity=True, debugflag=False,
-                       installByArea=None):
+                       installByArea=None, nameplatedeglimit=None):
         
         # #create a check that the start year on mass and energy files are the same
         # for scen in scenarios:
@@ -457,14 +575,18 @@ class Simulation:
                                bifacialityfactors=bifacialityfactors,
                                reducecapacity=reducecapacity,
                                debugflag=debugflag,
-                               installByArea=installByArea)
+                               installByArea=installByArea,
+                               nameplatedeglimit=nameplatedeglimit)
 
         self.calculateEnergyFlow(scenarios=scenarios, materials=materials)
+        
+        #self.calculateCarbonFlows(scenarios=scenarios,materials=materials)
 
     def calculateMassFlow(self, scenarios=None, materials=None,
                           weibullInputParams=None, bifacialityfactors=None,
-                          reducecapacity=True, debugflag=False,
-                          installByArea=None):
+                          reducecapacity=False, debugflag=False,
+                          installByArea=None, nameplatedeglimit=None,
+                          secondlifenameplatedeglimit = None):
         '''
         Function takes as input a baseline dataframe already imported,
         with the right number of columns and content.
@@ -493,6 +615,12 @@ class Simulation:
             installs this area instead calculating the installed capacity based
             on the module characteristics (efficiency and bifaciality factor).
             Length must match the years in the loaded dataframes.
+        nameplatedeglimit : float
+            Limit at which if the nameplate power is below they will be
+            trashed. i.e. 0.8 default.
+        secondlifenameplatedeglimit : float
+            Limit at which if the nameplate power is below at their second life,
+            the modules will be trashed. i.e. 0.5 default. 
 
         Returns
         --------
@@ -507,6 +635,12 @@ class Simulation:
         else:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
+
+        if nameplatedeglimit is None:
+            nameplatedeglimit = 0.8
+
+        if secondlifenameplatedeglimit is None:
+            secondlifenameplatedeglimit = 0.5
 
         print(">>>> Calculating Material Flows <<<<\n")
 
@@ -566,40 +700,44 @@ class Simulation:
             # Calculating Wast by Generation by Year, and Cum. Waste by Year.
             Generation_EOL_pathsG = []
             Matrix_Landfilled_noncollected = []
-            Matrix_area_bad_status = []
+            Matrix_areaEOL_degradation_all = []
             Matrix_Failures = []
             weibullParamList = []
-            # Not used at the moment. legacy. REMOVE?
-            # Generation_Disposed_byYear = []
-            # Generation_Active_byYear= []
-            # Generation_Power_byYear = []
 
-            df['Yearly_Sum_Area_disposedby_Failure'] = 0
-            df['Yearly_Sum_Power_disposedby_Failure'] = 0
-            df['Yearly_Sum_Area_disposedby_ProjectLifetime'] = 0
-            df['Yearly_Sum_Power_disposedby_ProjectLifetime'] = 0
-            df['Yearly_Sum_Area_disposed'] = 0  # Failure + ProjectLifetime
-            df['Yearly_Sum_Power_disposed'] = 0
 
-            df['landfilled_noncollected'] = 0
+            df['Yearly_Sum_Area_EOLby_Failure'] = 0
+            df['Yearly_Sum_Power_EOLby_Failure'] = 0
+            df['Yearly_Sum_Area_EOLby_Degradation'] = 0
+            df['Yearly_Sum_Power_EOLby_Degradation'] = 0
+            df['Yearly_Sum_Area_EOLby_ProjectLifetime'] = 0
+            df['Yearly_Sum_Power_EOLby_ProjectLifetime'] = 0
 
-            df['Repaired_[W]'] = 0
+            df['Yearly_Sum_Area_atEOL'] = 0  # Failure + Degradation + ProjcLife
+            df['Yearly_Sum_Power_atEOL'] = 0
+            df['Yearly_Sum_Area_PathsBad'] = 0 # should be degradation, failures not fixed
+            df['Yearly_Sum_Power_PathsBad'] = 0
+            df['Yearly_Sum_Area_PathsGood'] = 0  # should be proj lifetimes
+            df['Yearly_Sum_Power_PathsGood'] = 0
+
+            df['Landfill_0_ProjLife'] = 0 # non collected
+
             df['Repaired_Area'] = 0
+            df['Repaired_[W]'] = 0
 
             df['Resold_Area'] = 0
             df['Resold_[W]'] = 0
 
-            df['Cumulative_Active_Area'] = 0
-            df['Installed_Capacity_[W]'] = 0
+            df['MerchantTail_Area'] = 0
+            df['MerchantTail_[W]'] = 0
 
-            df['Status_BAD_Area'] = 0
-            df['Status_BAD_[W]'] = 0
+            df['Cumulative_Active_Area'] = 0 # Effective installed area
+            df['Effective_Capacity_[W]'] = 0 # Effective installed capacity 
+            # i.e  installed - degrad - fails - eol PL ..
 
-            df['Area_for_EOL_pathsG'] = 0
-            df['Power_for_EOL_pathsG'] = 0
-
-            df['Landfill_0'] = 0
-
+            df['Power_Degraded_[W]'] = 0   # The way it is calculated it is 
+                                           # 'cumulative' or relative from the nameplate
+                                           # to each year. 
+            
             for generation, row in df.iterrows():
                 # generation is an int 0,1,2,.... etc.
                 # generation=4
@@ -625,176 +763,235 @@ class Simulation:
                 cdf = list(map(f, x))
                 # TODO: Check this line, does it need commas or remove space
                 # for linting?
-                pdf = [0] + [j - i for i, j in zip(cdf[: -1], cdf[1 :])]
+                pdf = [0] + [j - i for i, j in zip(cdf[:-1], cdf[1:])]
 
                 activearea = row['Area']
                 if np.isnan(activearea):
                     activearea = 0
 
                 activeareacount = []
-                area_landfill_noncollected = []
+                activepowercount = []  # Active area production.
 
-                areadisposed_failure = []
-                powerdisposed_failure = []
+                areaEOL_failure_notrepaired_all = []
+                powerEOL_failure_notrepaired_all = []
 
-                areadisposed_projectlifetime = []
-                powerdisposed_projectlifetime = []
+                areaEOL_ProjLife_all = []
+                powerEOL_ProjLife_all = []
 
-                area_repaired = []
-                power_repaired = []
+                area_repaired_all = []
+                power_repaired_all = []
 
-                power_resold = []
-                area_resold = []
+                area_resold_all = []
+                power_resold_all = []
+                
+                area_merchantTail_all = []
+                power_merchantTail_all = []
+                
+                areaEOL_degradation_all = []
+                powerEOL_degradation_all = []
+                
+                areaEOL_ProjLife_collected_PG_3to5_all = []
+                powerEOL_ProjLife_collected_PG_3to5_all = []
 
-                area_powergen = []  # Active area production.
+                areaEOL_ProjLife_notcollected_L0_all = []
+                powerEOL_ProjLife_notcollected_L0_all = []
 
-                area_bad_status = []
-                power_bad_status = []
-                area_otherpaths = []
-                power_otherpaths = []
+                power_degraded_all = []
+                # Age 0, nothing dies <3
 
                 active = 0
-                disposed_projectlifetime = 0
-                powerdisposed_projectlifetime0 = 0
-                landfilled_noncollected = 0
-                area_resold0 = 0
-                power_resold0 = 0
-                area_otherpaths0 = 0
-                power_otherpaths0 = 0
-                area_bad_status0 = 0
-                power_bad_status0 = 0
-                for age in range(len(cdf)):
-                    disposed_projectlifetime = 0
-                    landfilled_noncollected = 0
-                    area_otherpaths0 = 0
+                secondlife = False
 
+                for age in range(len(cdf)):
+                    
                     if x[age] == 0.0:
                         activeareacount.append(0)
-                        areadisposed_failure.append(0)
-                        powerdisposed_failure.append(0)
-                        areadisposed_projectlifetime.append(0)
-                        powerdisposed_projectlifetime.append(0)
-                        area_resold.append(0)
-                        power_resold.append(0)
-                        area_bad_status.append(0)
-                        power_bad_status.append(0)
-                        area_powergen.append(0)
-                        area_repaired.append(0)
-                        power_repaired.append(0)
-                        area_otherpaths.append(0)
-                        power_otherpaths.append(0)
-                        area_landfill_noncollected.append(0)
+                        activepowercount.append(0)
+
+                        areaEOL_failure_notrepaired_all.append(0)
+                        powerEOL_failure_notrepaired_all.append(0)
+                        areaEOL_ProjLife_all.append(0)
+                        powerEOL_ProjLife_all.append(0)
+                        area_resold_all.append(0)
+                        power_resold_all.append(0)
+                        area_merchantTail_all.append(0)
+                        power_merchantTail_all.append(0)
+                        areaEOL_degradation_all.append(0)
+                        powerEOL_degradation_all.append(0)
+                        area_repaired_all.append(0)
+                        power_repaired_all.append(0)
+                        areaEOL_ProjLife_collected_PG_3to5_all.append(0)
+                        powerEOL_ProjLife_collected_PG_3to5_all.append(0)             
+                        areaEOL_ProjLife_notcollected_L0_all.append(0)
+                        powerEOL_ProjLife_notcollected_L0_all.append(0)
+                        power_degraded_all.append(0)
+                        
                     else:
                         active += 1
+                        removed_projectlifetime = 0
+                        landfilled_noncollected = 0
+                        
                         deg_nameplate = (1-row['mod_degradation']*0.01)**active
                         poweragegen = (row['mod_eff'] * 0.01 *
                                        row['irradiance_stc']*deg_nameplate)
-
-                        # FAILURES HERE!
-                        activeareaprev = activearea
-
-                        failures = row['Area']*pdf[age]
-
-                        if failures > activearea:
-                            # TODO: make this code comment pr re,pve
-                            # print("More failures than active area, reducing
-                            # failures to possibilities now.")
-                            failures = activearea
-
-                        area_repaired0 = (failures *
-                                          df.iloc[age]['mod_Repair']*0.01)
-                        power_repaired0 = area_repaired0*poweragegen
-
-                        area_notrepaired0 = failures-area_repaired0
-                        power_notrepaired0 = area_notrepaired0*poweragegen
-
-                        activearea = activeareaprev-area_notrepaired0
-
-                        if age == int(row['mod_lifetime']+generation):
-                            # activearea_temp = activearea
-                            merchantTail_area = (
-                                    0+activearea *
-                                    (df.iloc[age]['mod_MerchantTail']*0.01))
-                            disposed_projectlifetime = (activearea -
-                                                        merchantTail_area)
-                            activearea = merchantTail_area
-
-                            # I don't think these should be here.
-                            # area_notrepaired0 = 0
-                            # power_notrepaired0 = 0
+                        powerinitgen = row['mod_eff'] * 0.01 * row['irradiance_stc']
+                        
+                        
+                        # 1. Check if remaining cohort has degraded
+    
+                        power_degradaded = activearea * (powerinitgen - poweragegen) 
+    
+                        if secondlife:
+                            nameplatedeglimiteval = secondlifenameplatedeglimit
+                        else:
+                            nameplatedeglimiteval = nameplatedeglimit
+    
+                        if deg_nameplate < nameplatedeglimiteval:
+                            # TODO check this! killing and not sending
+                            # to EOL collection paths,
+                            areaEOL_degradation = activearea
+                            powerEOL_degradation = (
+                                areaEOL_degradation * poweragegen)
                             
-                            #TO DO: Make deg_nameplate variable an input
-                            if deg_nameplate > 0.5: 
-                                area_collected = (
-                                    disposed_projectlifetime *
-                                    (df.iloc[age]['mod_EOL_collection_eff'] *
-                                     0.01))
-                                landfilled_noncollected = (
-                                    disposed_projectlifetime-area_collected)
-
-                                area_resold0 = (
-                                    area_collected *
-                                    (df.iloc[age]['mod_EOL_pg0_resell']*0.01))
-                                power_resold0 = area_resold0*poweragegen
-
-                                area_otherpaths0 = (
-                                    area_collected - area_resold0)
-
-                                power_otherpaths0 = (
-                                    area_otherpaths0 * poweragegen)
-
-                                activearea = activearea + area_resold0
-
-                                # disposed_projectlifetime does not include
-                                # Merchant Tail & Resold as they went back to
-                                # active
-                                disposed_projectlifetime = (
-                                    disposed_projectlifetime - area_resold0)
-                                powerdisposed_projectlifetime0 = (
-                                    disposed_projectlifetime*poweragegen)
-                            else: 
-                                # TODO check this! killing and not sending 
-                                # to EOL collection paths,
-                                area_bad_status0 = disposed_projectlifetime
-                                power_bad_status0 = (
-                                    area_bad_status0 * poweragegen)
-                                # powerdisposed_projectlifetime0 = 0 # CHECK?
-
-                            # activearea = (0+disposed_projectlifetime*
-                            #              (df.iloc[age]['mod_Reuse']*0.01))
-                            # disposed_projectlifetime = ( activearea_temp -
-                            #                             activearea)
-
-                        areadisposed_failure.append(area_notrepaired0)
-                        powerdisposed_failure.append(power_notrepaired0)
-
-                        # TODO IMPORTANT: Add Failures matrices to EoL Matrix.
-
-#                        areadisposed_failure_collected.append(area_notrepaired0*df.iloc[age]['mod_EOL_collection_eff']*0.01)
-                        areadisposed_projectlifetime.append(
-                            disposed_projectlifetime)
-                        powerdisposed_projectlifetime.append(
-                            powerdisposed_projectlifetime0)
-
-                        area_landfill_noncollected.append(
-                            landfilled_noncollected)
-
-                        area_repaired.append(area_repaired0)
-                        power_repaired.append(power_repaired0)
-
-                        area_resold.append(area_resold0)
-                        power_resold.append(power_resold0)
-
-                        area_bad_status.append(area_bad_status0)
-                        power_bad_status.append(power_bad_status0)
-
-                        area_otherpaths.append(area_otherpaths0)
-                        power_otherpaths.append(power_otherpaths0)
-
+                            # Reduntant as it is performed in the MATRIX later on PBD
+                            '''
+                            areaEOL_degradation_collected = (
+                                areaEOL_degradation *
+                                (df.iloc[age]['mod_EOL_collection_eff'] *
+                                 0.01))
+                            powerEOL_degradation_collected = areaEOL_degradation_collected * poweragegen
+                            areaEOL_Deg_notcollected_L0 = areaEOL_degradation - areaEOL_degradation_collected
+                            powerEOL_Deg_notcollected_L0 = areaEOL_Deg_notcollected_L0*poweragegen
+                            '''
+                            activearea = 0
+                        else:
+                            areaEOL_degradation = 0
+                            powerEOL_degradation = 0
+                            
+                            #areaEOL_degradation_collected = 0
+                            #powerEOL_degradation_collected = 0
+                            #areaEOL_Deg_notcollected_L0 = 0
+                            #powerEOL_Deg_notcollected_L0 = 0
+    
+                        # 3. EoL Project Lifetime 
+                        if age != int(row['mod_lifetime']+generation):
+                            #removed_projectlifetime = 0
+                            #landfilled_noncollected = 0
+                            area_merchantTail = 0
+                            power_merchantTail = 0
+                            area_resold = 0
+                            power_resold = 0
+                            areaEOL_ProjLife_notcollected_L0 = 0
+                            powerEOL_ProjLife_notcollected_L0 = 0
+                            areaEOL_ProjLife_collected_PG_3to5 = 0
+                            powerEOL_ProjLife_collected_PG_3to5 = 0
+                            areaEOL_ProjLife = 0
+                            powerEOL_ProjLife = 0
+                        else:
+                            # activearea_temp = activearea
+                            area_merchantTail = (
+                                    activearea *
+                                    (df.iloc[age]['mod_MerchantTail']*0.01))
+                            power_merchantTail = area_merchantTail*poweragegen
+    
+                            if area_merchantTail > 0:
+                                secondlife = True
+                                
+                            # internal - removed_projectlifetime
+                            area_removed_projectlifetime = (activearea -
+                                                        area_merchantTail)
+    
+                            # internal - area_removed_collected (pre-resold)
+                            area_ProjLife_collected = (
+                                area_removed_projectlifetime *
+                                (df.iloc[age]['mod_EOL_collection_eff'] *
+                                 0.01))
+                            areaEOL_ProjLife_notcollected_L0 = (
+                                area_removed_projectlifetime-area_ProjLife_collected)
+    
+                            powerEOL_ProjLife_notcollected_L0 = areaEOL_ProjLife_notcollected_L0 * poweragegen
+                            area_resold = (
+                                area_ProjLife_collected *
+                                (df.iloc[age]['mod_EOL_pg0_resell']*0.01))
+                            power_resold = area_resold*poweragegen
+    
+                            areaEOL_ProjLife_collected_PG_3to5 = (
+                                area_ProjLife_collected - area_resold)
+    
+                            powerEOL_ProjLife_collected_PG_3to5 = (
+                                areaEOL_ProjLife_collected_PG_3to5 * poweragegen)
+    
+                            activearea = area_merchantTail + area_resold
+    
+                            # removed_projectlifetime does not include
+                            # Merchant Tail & Resold as they went back to
+                            # active
+                            areaEOL_ProjLife = (areaEOL_ProjLife_collected_PG_3to5 +
+                                               areaEOL_ProjLife_notcollected_L0)
+                                    # Same as removed_ProjLife - area_Resold
+                            powerEOL_ProjLife = (
+                                areaEOL_ProjLife*poweragegen)
+    
+                        # 2. Calculate failures
+                        activeareaprev = activearea
+                        failures = row['Area']*pdf[age]
+    
+                        if failures > activearea:
+                            failures = activearea
+    
+    
+                        area_repaired = (failures *
+                                          df.iloc[age]['mod_Repair']*0.01)
+                        power_repaired = area_repaired*poweragegen
+    
+                        areaEOL_Failures_notrepaired = failures-area_repaired
+                        powerEOL_Failures_notrepaired = areaEOL_Failures_notrepaired*poweragegen
+    
+                        activearea = activeareaprev-areaEOL_Failures_notrepaired
+    
+    
+                        # Start appending the yearly age values
+    
+                        power_degraded_all.append(power_degradaded)
+                        
+                        areaEOL_degradation_all.append(areaEOL_degradation)
+                        powerEOL_degradation_all.append(powerEOL_degradation)
+    
+                        area_repaired_all.append(area_repaired)
+                        power_repaired_all.append(power_repaired)
+                        
+                        areaEOL_failure_notrepaired_all.append(areaEOL_Failures_notrepaired)
+                        powerEOL_failure_notrepaired_all.append(powerEOL_Failures_notrepaired)
+    
+                        area_merchantTail_all.append(area_merchantTail)
+                        power_merchantTail_all.append(power_merchantTail)
+    
+                        area_resold_all.append(area_resold)
+                        power_resold_all.append(power_resold)
+                        
+                        # has collected and non collected
+                        # but not merchant tailed and resold
+                        areaEOL_ProjLife_all.append(areaEOL_ProjLife)
+                        powerEOL_ProjLife_all.append(powerEOL_ProjLife)
+    
+                        # noncollected from project lifetime ((only one that had to be
+                        # collected internally for calculating the resold. 
+                        # Failures and degradation collection get calculated
+                        # later on the matrixes directly))
+                        areaEOL_ProjLife_notcollected_L0_all.append(areaEOL_ProjLife_notcollected_L0)
+                        powerEOL_ProjLife_notcollected_L0_all.append(powerEOL_ProjLife_notcollected_L0)
+                        
+                        # Collected for Path Goods
+                        areaEOL_ProjLife_collected_PG_3to5_all.append(areaEOL_ProjLife_collected_PG_3to5)
+                        powerEOL_ProjLife_collected_PG_3to5_all.append(powerEOL_ProjLife_collected_PG_3to5)
+    
                         activeareacount.append(activearea)
-                        area_powergen.append(activearea*poweragegen)
-                        # print('PowerAgeGen: '+str(poweragegen))
-
+                        activepowercount.append(activearea*poweragegen)
+    
+                        # Generation age loop ends
+    
+                
+                # !! Unelegantly Correcting Initial Years 
                 try:
                     # becuase the clip starts with 0 for the installation year,
                     # dentifying installation year and adding initial area
@@ -802,8 +999,8 @@ class Simulation:
                                                 if e), None) - 1
                     activeareacount[fixinitialareacount] = (
                         activeareacount[fixinitialareacount]+row['Area'])
-                    area_powergen[fixinitialareacount] = (
-                        area_powergen[fixinitialareacount] +
+                    activepowercount[fixinitialareacount] = (
+                        activepowercount[fixinitialareacount] +
                         row['Area'] * row['mod_eff'] * 0.01 *
                         row['irradiance_stc'])
                     # TODO: note mentioned 'this addition seems to do nothing.'
@@ -816,8 +1013,8 @@ class Simulation:
                     fixinitialareacount = len(cdf)-1
                     activeareacount[fixinitialareacount] = (
                         activeareacount[fixinitialareacount]+row['Area'])
-                    area_powergen[fixinitialareacount] = (
-                        area_powergen[fixinitialareacount] + row['Area'] *
+                    activepowercount[fixinitialareacount] = (
+                        activepowercount[fixinitialareacount] + row['Area'] *
                         row['mod_eff'] * 0.01 * row['irradiance_stc'])
                     print("Finished Area+Power Generation Calculations")
 
@@ -825,63 +1022,63 @@ class Simulation:
                 #                                           for element in pdf]
                 # This used to be labeled as cumulative; but in the sense that
                 # they cumulate yearly deaths for all cohorts that die.
-                df['Yearly_Sum_Area_disposedby_Failure'] += (
-                    areadisposed_failure)
-                df['Yearly_Sum_Power_disposedby_Failure'] += (
-                    powerdisposed_failure)
 
-                df['Yearly_Sum_Area_disposedby_ProjectLifetime'] += (
-                    areadisposed_projectlifetime)
-                df['Yearly_Sum_Power_disposedby_ProjectLifetime'] += (
-                    powerdisposed_projectlifetime)
+                df['Yearly_Sum_Area_EOLby_Degradation'] += (
+                    areaEOL_degradation_all)
+                df['Yearly_Sum_Power_EOLby_Degradation'] += (
+                    powerEOL_degradation_all)
+                
+                df['Power_Degraded_[W]'] += power_degraded_all
+                
+                df['Yearly_Sum_Area_EOLby_Failure'] += (
+                    areaEOL_failure_notrepaired_all)
+                df['Yearly_Sum_Power_EOLby_Failure'] += (
+                    powerEOL_failure_notrepaired_all)
 
-                df['Yearly_Sum_Area_disposed'] += areadisposed_failure
-                df['Yearly_Sum_Area_disposed'] += areadisposed_projectlifetime
+                df['Yearly_Sum_Area_EOLby_ProjectLifetime'] += (
+                    areaEOL_ProjLife_all)
+                df['Yearly_Sum_Power_EOLby_ProjectLifetime'] += (
+                    powerEOL_ProjLife_all)
 
-                df['Yearly_Sum_Power_disposed'] += powerdisposed_failure
-                df['Yearly_Sum_Power_disposed'] += (
-                    powerdisposed_projectlifetime)
+                df['Yearly_Sum_Area_atEOL'] += areaEOL_failure_notrepaired_all
+                df['Yearly_Sum_Area_atEOL'] += areaEOL_ProjLife_all
+                df['Yearly_Sum_Area_atEOL'] += areaEOL_degradation_all
 
-                df['Repaired_Area'] += area_repaired
-                df['Repaired_[W]'] += power_repaired
-                df['Resold_Area'] += area_resold
-                df['Resold_[W]'] += power_resold
+                df['Yearly_Sum_Power_atEOL'] += powerEOL_failure_notrepaired_all
+                df['Yearly_Sum_Power_atEOL'] += (
+                    powerEOL_ProjLife_all)
 
-                df['Status_BAD_Area'] += area_bad_status
-                df['Status_BAD_[W]'] += power_bad_status
+                df['Repaired_Area'] += area_repaired_all
+                df['Repaired_[W]'] += power_repaired_all
+                df['Resold_Area'] += area_resold_all
+                df['Resold_[W]'] += power_resold_all
+                df['MerchantTail_Area'] += area_merchantTail_all
+                df['MerchantTail_[W]'] += power_merchantTail_all
 
-                df['Area_for_EOL_pathsG'] += area_otherpaths
-                df['Power_for_EOL_pathsG'] += power_otherpaths
+                df['Yearly_Sum_Area_PathsBad'] += areaEOL_degradation_all
+                df['Yearly_Sum_Power_PathsBad'] += powerEOL_degradation_all
+                
+                df['Yearly_Sum_Area_PathsBad'] += areaEOL_failure_notrepaired_all
+                df['Yearly_Sum_Power_PathsBad'] += powerEOL_failure_notrepaired_all
 
-                df['Installed_Capacity_[W]'] += area_powergen
+                df['Yearly_Sum_Area_PathsGood'] += areaEOL_ProjLife_collected_PG_3to5_all
+                df['Yearly_Sum_Power_PathsGood'] += powerEOL_ProjLife_collected_PG_3to5_all
+
                 df['Cumulative_Active_Area'] += activeareacount
+                df['Effective_Capacity_[W]'] += activepowercount
 
-                df['Landfill_0'] += area_landfill_noncollected
+                df['Landfill_0_ProjLife'] += areaEOL_ProjLife_notcollected_L0_all
 
-                Generation_EOL_pathsG.append(area_otherpaths)
+
+                # MATRIXES:
+                Generation_EOL_pathsG.append(areaEOL_ProjLife_collected_PG_3to5_all)
                 Matrix_Landfilled_noncollected.append(
-                    area_landfill_noncollected)
-                Matrix_area_bad_status.append(area_bad_status)
-                Matrix_Failures.append(areadisposed_failure)
+                    areaEOL_ProjLife_notcollected_L0_all)
+                Matrix_areaEOL_degradation_all.append(areaEOL_degradation_all)
+                Matrix_Failures.append(areaEOL_failure_notrepaired_all)
 
-                # Generation_Disposed_byYear.append([x + y for x, y in
-                #   zip(areadisposed_failure, areadisposed_projectlifetime)])
-
-                # Not using at the moment:
-                # Generation_Active_byYear.append(activeareacount)
-                # Generation_Power_byYear.append(area_powergen)
 
             df['WeibullParams'] = weibullParamList
-
-            # TODO: remove this?
-            # We don't need this Disposed by year because we already collected,
-            # merchaint tailed and resold.
-            # Just need Landfil matrix, and Paths Good Matrix (and Paths Bad
-            # Eventually)
-            # MatrixDisposalbyYear = pd.DataFrame(Generation_Disposed_byYear,
-            #                       columns = df.index, index = df.index)
-            # MatrixDisposalbyYear = MatrixDisposalbyYear.add_prefix(
-            #                                                   "EOL_on_Year_")
 
             # Cleanup of old calculations. Needed when you run twice function.
             try:
@@ -896,15 +1093,15 @@ class Simulation:
             L0 = pd.DataFrame(Matrix_Landfilled_noncollected,
                               columns=df.index, index=df.index)
 
-            PB = pd.DataFrame(Matrix_area_bad_status, columns=df.index,
+            PBD = pd.DataFrame(Matrix_areaEOL_degradation_all, columns=df.index,
                               index=df.index)
 
-            PF = pd.DataFrame(Matrix_Failures, columns=df.index,
+            PBF = pd.DataFrame(Matrix_Failures, columns=df.index,
                               index=df.index)
 
             # Path Bad includes Path Bad from Project Lifetime and adding now
-            #  the path bads from Failures disposed (not repaired)
-            PB = PB + PF
+            #  the path bads from Failures atEOL (not repaired)
+            PB = PBD + PBF
 
             # Updating Path Bad for collection efficiency.
             PBC = PB.mul(df['mod_EOL_collection_eff'].values*0.01)
@@ -950,6 +1147,7 @@ class Simulation:
             # Paths GOOD Check for 100% sum.
             # If P1-P5 over 100% will reduce landfill.
             # If P2-P5 over 100% it will shut down with Warning and Exit.
+            #TODO: add check for less than 100%, adjust landfill
             SUMS1 = (df['mod_EOL_pg1_landfill'] + df['mod_EOL_pg0_resell'] +
                      df['mod_EOL_pg2_stored'] + df['mod_EOL_pg3_reMFG'] +
                      df['mod_EOL_pg4_recycled'])
@@ -1300,17 +1498,23 @@ class Simulation:
 
 
             # CLEANUP MATRICES HERE:
-            #try:
-            #    df = df[df.columns.drop(list(df.filter(regex='EOL_PG_Year_')))]
-            #except:
-            #    print("Warning: Issue dropping EOL_PG columns generated by " \
-            #          "calculateMFC routine to overwrite")
+            if debugflag:
+                debugdf = df[(list(df.filter(regex='EOL_PG_Year_')))]
+                debugdfB = df[(list(df.filter(regex='EOL_L0_Year_')))]
+                debugdfC = df[(list(df.filter(regex='EOL_BS_Year')))]
+                debugdf = debugdf.join(debugdfB) 
+                debugdf = debugdf.join(debugdfC) 
+                self.scenario[scen].dataDebug_m = debugdf                        
+
+            df = df[df.columns.drop(list(df.filter(regex='EOL_PG_Year_')))]
+            df = df[df.columns.drop(list(df.filter(regex='EOL_L0_Year_')))]
+            df = df[df.columns.drop(list(df.filter(regex='EOL_BS_Year')))]
 
             self.scenario[scen].dataOut_m = df[df.columns.difference(initialCols)]
 
 
     #method to calculate energy flows as a function of mass flows and circular pathways
-    def calculateEnergyFlow(self, scenarios=None, materials=None, modEnergy=None, matEnergy=None,
+    def calculateEnergyFlow(self, scenarios=None, materials=None,
                             insolation = 4800, PR = 0.85):
         '''
         Function takes as input PV ICE resulting mass flow dataframes for scenarios
@@ -1327,12 +1531,6 @@ class Simulation:
             materials names to loop over. Must exists on the PV ICE object
             scenario(s) modeled and already have undergone the mass flow
             calculations.
-        modEnergy : str
-            File with the module energy baseline. This process will be updated
-            so that it's added to the PV_ICE object. Units are typically in Wh/m2 or Wh/g
-        matEnergy : str
-            File with the material energy baseline. This process will be updated
-            so that it's added to the PV_ICE object. Units are typically in Wh/m2 or Wh/g
         insolation : float
             Insolation received in the location modeled during the time period
             modeled. i.e. for 1 year, the average insolation in the US is
@@ -1382,18 +1580,18 @@ class Simulation:
             de['mod_Install'] = df['Area']*modEnergy['e_mod_Install']
             de['mod_OandM'] = df['Cumulative_Active_Area']*modEnergy['e_mod_OandM']
             de['mod_Repair'] = df['Repaired_Area']*modEnergy['e_mod_Repair']
-            de['mod_Demount'] = (df['Resold_Area']+df['Status_BAD_Area']+df['Landfill_0']
-                               +df['Area_for_EOL_pathsG'])*modEnergy['e_mod_Demount']
+            de['mod_Demount'] = (df['Resold_Area']+df['Yearly_Sum_Area_PathsBad']+df['Landfill_0_ProjLife']
+                               +df['Yearly_Sum_Area_PathsGood'])*modEnergy['e_mod_Demount']
             de['mod_Store'] = df['P2_stored']*modEnergy['e_mod_Store']
             de['mod_Resell_Certify'] = df['Resold_Area']*modEnergy['e_mod_Resell_Certify']
             de['mod_ReMFG_Disassembly'] = df['P3_reMFG']*modEnergy['e_mod_ReMFG_Disassembly']
             de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
 
             #Energy Generation, Energy_out = Insolation (adjusted for bifi) * ActivePower/Irradience * time * PR
-            de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Installed_Capacity_[W]']/1000) * 365 * PR
+            de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Effective_Capacity_[W]']/1000) * 365 * PR
             
-            self.scenario[scen].dataOut_e = de
-
+            self.scenario[scen].dataOut_e = de #Wh
+            
             for mat in materials:
                 
                 if self.scenario[scen].material[mat].matdataIn_e is None:
@@ -1409,16 +1607,196 @@ class Simulation:
                     demat = pd.DataFrame()
                     demat['mat_extraction'] = dm['mat_Virgin_Stock_Raw']*matEnergy['e_mat_extraction']
                     demat['mat_MFG_virgin'] = dm['mat_Virgin_Stock']*matEnergy['e_mat_MFG'] #multiply only the virgin input
-                    demat['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only
-                    demat['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']+matEnergy['e_mat_MFGScrap_LQ']) #fraction sent to HQ seperate from OQ
+                    demat['mat_MFG_virgin_fuel'] = demat['mat_MFG_virgin']*matEnergy['e_mat_MFG_fuelfraction']*0.01 #fuel fraction of the virgin energy demands
+                    #demat['mat_MFG_virgin_elec'] = demat['mat_MFG_virgin']*(1-matEnergy['e_mat_MFG_fuelfraction'])*0.01 
+                    demat['mat_MFGScrap_LQ'] = dm['mat_MFG_Scrap_Sentto_Recycling']*matEnergy['e_mat_MFGScrap_LQ'] #OQ only - everything that goes into mfgscrap recycle
+                    demat['mat_MFGScrap_HQ'] = dm['mat_MFG_Recycled_into_HQ']*(matEnergy['e_mat_MFGScrap_HQ']) #the additional energy required for HQ
+                    demat['mat_MFGScrap_HQ_fuel'] = demat['mat_MFGScrap_HQ']*matEnergy['e_mat_Recycled_HQ_fuelfraction']*0.01 #fraction of HQ energy attributable to fuel
+                    #demat['mat_MFG_virgin_elec'] = demat['mat_MFG_virgin']*(1-matEnergy['e_mat_MFG_fuelfraction'])*0.01 
     
                     demat['mat_Landfill'] = dm['mat_Total_Landfilled']*matEnergy['e_mat_Landfill']
+                    demat['mat_Landfill_fuel'] = demat['mat_Landfill']*matEnergy['e_mat_Landfill_fuelfraction']*0.01 #fuel fraction of landfilling
                     demat['mat_EoL_ReMFG_clean'] = dm['mat_reMFG_target']*matEnergy['e_mat_EoL_ReMFG_clean']
                     demat['mat_Recycled_LQ'] = dm['mat_recycled_target']*matEnergy['e_mat_Recycled_LQ']
                     demat['mat_Recycled_HQ'] = dm['mat_EOL_Recycled_2_HQ']*matEnergy['e_mat_Recycled_HQ']
+                    demat['mat_Recycled_HQ_fuel'] = demat['mat_Recycled_HQ']*matEnergy['e_mat_Recycled_HQ_fuelfraction']*0.01
+                    demat['mat_Recycled_HQ_elec'] = demat['mat_Recycled_HQ']-demat['mat_Recycled_HQ_fuel']
     
-                self.scenario[scen].material[mat].matdataOut_e = demat
+                self.scenario[scen].material[mat].matdataOut_e = demat #Wh
 
+    def calculateCarbonFlows(self, scenarios=None, materials=None, 
+                             countrygridmixes = None, gridemissionfactors = None, 
+                             materialprocesscarbon = None, modulecountrymarketshare = None, 
+                             materialcountrymarketshare = None, country_deploy = 'USA'):
+        if scenarios is None:
+            scenarios = list(self.scenario.keys())
+        else:
+            if isinstance(scenarios, str):
+                scenarios = [scenarios]
+
+        if materials is None:
+            materials = list(self.scenario[scenarios[0]].material.keys())
+        else:
+            if isinstance(materials, str):
+                materials = [materials]
+
+        print("\n\n>>>> Calculating Carbon Flows <<<<\n")
+        
+        #carbon folder 
+        #TODO: NEED TO MAKE THIS MORE DYNAMIC/robust
+        carbonfolder = Path(DATA_PATH) / 'CarbonLayer'
+        
+        if countrygridmixes is None:
+            countrygridmixes = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'))
+        else:
+            if isinstance(countrygridmixes, str):
+                countrygridmixes = pd.read_csv(countrygridmixes)
+            if isinstance(countrygridmixes, object):
+                countrygridmixes = countrygridmixes
+        
+        #default files
+        gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
+        materialprocesscarbon = pd.read_csv(os.path.join(carbonfolder,'baseline_materials_processCO2.csv'), index_col='Material')
+        #countrygridmixes = pd.read_csv(os.path.join(carbonfolder,'baseline_countrygridmix.csv'))
+        countrymodmfg = pd.read_csv(os.path.join(carbonfolder,'baseline2100_module_countrymarketshare.csv'))
+        
+        
+        
+        for scen in scenarios:
+            print("Working on Scenario: ", scen)
+            print("********************")
+        
+            #df = self.scenario[scen].dataOut_m
+            #df_in = self.scenario[scen].dataIn_m
+            de = self.scenario[scen].dataOut_e
+            #de_in = self.scenario[scen].dataIn_e
+            
+            #carbon intensity of country grid mixes
+            #extract lists
+            countryfuellist = [cols.split('_')[0] for cols in countrygridmixes.columns[1:]]
+            countrylist = (pd.DataFrame(countryfuellist)[0].unique()).tolist()
+            countryfuellist_fuels = [cols.split('_')[1] for cols in countrygridmixes.columns[1:]]
+            fuellist = (pd.DataFrame(countryfuellist_fuels)[0].unique()).tolist()
+            
+            #create carbon intensity of country grid mix, 
+            #inside scenarios allows for different future grid projections
+            final_country_carbon_int = []
+            for country in countrylist:
+                temp_country_carbon = []
+                for fuel in fuellist: 
+                    fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_gpWh_IPCC2006']
+                    fuelemitfactor = list(fuelemitfactor)[0]
+                    if str(country+'_'+fuel) in countrygridmixes:
+                        countryfuel = countrygridmixes[str(country+'_'+fuel)]
+                        temp_country_carbon.append(list(0.01*countryfuel*fuelemitfactor)) #multiply country fuel % by fuel factor
+                final_country_carbon_int.append(list(pd.DataFrame(temp_country_carbon).sum())) #sum the carbon int by country
+
+            country_carbonpwh = pd.DataFrame(final_country_carbon_int).T
+            country_carbonpwh.columns = countrylist
+            
+            #carbon intensity of module manufacturing weighted by country
+            #list countries mfging modules
+            print('Working on Carbon for Module')
+            countriesmfgingmodules = list(countrymodmfg.columns[1:])
+
+            #weight carbon intensity of electricity by countries which mfging modules
+            countrycarbon_modmfg_gco2eqpwh = []
+            for country in countriesmfgingmodules:
+                if country in country_carbonpwh:
+                    currentcountry = country_carbonpwh[country]*countrymodmfg[country]*.01
+                    countrycarbon_modmfg_gco2eqpwh.append(currentcountry)
+                else: print(country)
+        
+            modmfg_gco2eqpwh_bycountry = pd.DataFrame(countrycarbon_modmfg_gco2eqpwh).T #
+            modmfg_gco2eqpwh_bycountry['Global_gCO2eqpwh'] = modmfg_gco2eqpwh_bycountry.sum(axis=1) #annual carbon intensity of pv module mfg wtd by country
+            #print(modmfg_gco2eqpwh_bycountry['China'].iloc[-1])
+            #carbon impacts module mfging wtd by country
+            dc = modmfg_gco2eqpwh_bycountry.mul(de['mod_MFG'], axis=0)
+            dc.rename(columns={'Global_gCO2eqpwh':'Global'}, inplace=True)
+            dc = dc.add_suffix('_mod_MFG_gCO2eq')
+            
+            #carbon impacts other module level steps
+            #assumption: all CO2 after mfg is attributable to target deployment country
+            country_deploy = 'USA' #user input in calc carbon function, default USA
+            dc['mod_Install_gCO2eq'] = de['mod_Install']*country_carbonpwh[country_deploy]
+            dc['mod_OandM_gCO2eq'] = de['mod_OandM']*country_carbonpwh[country_deploy]
+            dc['mod_Repair_gCO2eq'] = de['mod_Repair']*country_carbonpwh[country_deploy]
+            dc['mod_Demount_gCO2eq'] = de['mod_Demount']*country_carbonpwh[country_deploy]
+            dc['mod_Store_gCO2eq'] = de['mod_Store']*country_carbonpwh[country_deploy]
+            dc['mod_Resell_Certify_gCO2eq'] = de['mod_Resell_Certify']*country_carbonpwh[country_deploy]
+            dc['mod_ReMFG_Disassembly_gCO2eq'] = de['mod_ReMFG_Disassembly']*country_carbonpwh[country_deploy]
+            dc['mod_Recycle_Crush_gCO2eq'] = de['mod_Recycle_Crush']*country_carbonpwh[country_deploy]
+            
+            self.scenario[scen].dataOut_c = dc
+            
+            for mat in materials:
+                
+                if self.scenario[scen].material[mat].matdataIn_e is None:
+                    print("==> No Carbon intensity found for Material : ", mat, ". Skipping Carbon calculations.")
+                    demat = None
+                else:
+    
+                    print("==> Working on Carbon for Material : ", mat)
+                    
+                    demat = self.scenario[scen].material[mat].matdataOut_e
+                    dm = self.scenario[scen].material[mat].matdataOut_m               
+                    
+                    matfilename = 'baseline2100_'+str(mat)+'_MFGing_countrymarketshare.csv'
+                    countrymatmfg = pd.read_csv(os.path.join(carbonfolder, matfilename))
+                
+                    #carbon intensity of material manufacturing weighted by country
+                    #list countries mfging material
+                    countriesmfgingmat = list(countrymatmfg.columns[1:])
+
+                    #weight carbon intensity of electricity by countries which mfging modules
+                    countrycarbon_matmfg_gco2eqpwh = []
+                    for matcountry in countriesmfgingmat:
+                        if matcountry in country_carbonpwh:
+                            currentcountry = country_carbonpwh[matcountry]*countrymatmfg[matcountry]*.01
+                            countrycarbon_matmfg_gco2eqpwh.append(currentcountry)
+                        else: print('Check '+mat+' MFGing by Country file OR add to country grid mix file. We dont have a grid mix for: '+matcountry)
+        
+                    matmfg_gco2eqpwh_bycountry = pd.DataFrame(countrycarbon_matmfg_gco2eqpwh).T #
+                    matmfg_gco2eqpwh_bycountry['Global_gCO2eqpwh'] = matmfg_gco2eqpwh_bycountry.sum(axis=1) #annual carbon intensity of elec country wtd 
+            
+                    #carbon impacts mat mfging wtd by country
+                    #electric
+                    demat['mat_MFG_virgin_elec'] = demat['mat_MFG_virgin']-demat['mat_MFG_virgin_fuel']
+                    dcmat = matmfg_gco2eqpwh_bycountry.mul(demat['mat_MFG_virgin_elec'],axis=0)
+                    dcmat.rename(columns={'Global_gCO2eqpwh':'Global'}, inplace=True)
+                    dcmat = dcmat.add_suffix('_vmfg_elec_gCO2eq')
+                    
+                    #fuel CO2 impacts
+                    steamHeat = list(gridemissionfactors[gridemissionfactors['Energy Source']=='SteamAndHeat']['CO2_gpWh_EPA'])[0]
+                    dcmat['mat_vmfg_fuel_gCO2eq'] = demat['mat_MFG_virgin_fuel']*steamHeat #CO2 from mfging fuels
+                    dcmat['mat_MFGScrap_HQ_fuel_gCO2eq'] = demat['mat_MFGScrap_HQ_fuel']*steamHeat #CO2 from mfging scrap recycling fuels
+                    dcmat['mat_landfill_fuel_gCO2eq'] = demat['mat_Landfill_fuel']*steamHeat
+                    dcmat['mat_Recycled_HQ_fuel_gCO2eq'] = demat['mat_Recycled_HQ_fuel']*steamHeat #co2 from eol recycling fuels
+                    
+                    #circular paths electricity in target country
+                    dcmat['mat_landfill_elec_gCO2eq'] = (demat['mat_Landfill']-demat['mat_Landfill_fuel'])*country_carbonpwh[country_deploy]
+                    dcmat['mat_EoL_ReMFG_clean_elec_gCO2eq'] = demat['mat_EoL_ReMFG_clean']*country_carbonpwh[country_deploy]
+                    dcmat['mat_Recycled_LQ_elec_gCO2eq'] = demat['mat_Recycled_LQ']*country_carbonpwh[country_deploy]
+                    dcmat['mat_Recycled_HQ_elec_gCO2eq'] = demat['mat_Recycled_HQ_elec']*country_carbonpwh[country_deploy]
+                    
+                    #CO2 process emissions from MFGing (v, lq, hq)
+                    #mass of material being processed in each stream * CO2 intensity of that process
+                    dcmat['mat_vMFG_p_gCO2eq'] = dm['mat_Virgin_Stock']*materialprocesscarbon.loc[mat,'v_MFG_gCO2eqpg']
+                    dcmat['mat_LQmfg_p_gCO2eq'] = dm['mat_MFG_Scrap_Sentto_Recycling']*materialprocesscarbon.loc[mat,'LQ_Recycle_gCO2eqpg']
+                    dcmat['mat_LQeol_p_gCO2eq'] = dm['mat_recycled_target']*materialprocesscarbon.loc[mat,'LQ_Recycle_gCO2eqpg']
+                    #dcmat['mat_LQ_p_gCO2eq'] = dcmat['mat_LQmfg_p_gCO2eq']+dcmat['mat_LQeol_p_gCO2eq']
+                    dcmat['mat_HQmfg_p_gCO2eq'] = dm['mat_MFG_Recycled_into_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_gCO2eqpg']
+                    dcmat['mat_HQeol_p_gCO2eq'] = dm['mat_EOL_Recycled_2_HQ']*materialprocesscarbon.loc[mat,'HQ_Recycle_gCO2eqpg']
+                    #dcmat['mat_HQ_p_gCO2eq'] = dcmat['mat_HQmfg_p_gCO2eq']+dcmat['mat_HQeol_p_gCO2eq'] 
+                
+                    #sum carbon stuff
+                    #dcmat['mat_vMFG_energy_gCO2eq'] = dcmat['Global_vmfg_elec_gCO2eq']+dcmat['mat_vmfg_fuel_gCO2eq']
+                    #dcmat['mat_vMFG_total_gCO2eq'] = dcmat['mat_vMFG_energy_gCO2eq']+dcmat['mat_vMFG_p_gCO2eq']
+                    #dcmat['mat_Recycle_e_p_gCO2eq'] = dcmat['mat_HQ_p_gCO2eq'] + dcmat['mat_LQ_p_gCO2eq'] + dcmat['mat_MFGScrap_HQ_fuel_gCO2eq']+dcmat['mat_Recycled_LQ_gCO2eq']+dcmat['mat_Recycled_HQ_elec_gCO2eq']
+                    #dcmat['mat_landfill_total_gCO2eq'] = dcmat['mat_landfill_elec_gCO2eq'] + dcmat['mat_landfill_fuel_gCO2eq']
+                
+                    self.scenario[scen].material[mat].matdataOut_c = dcmat
+                
     def scenMod_IRENIFY(self, scenarios=None, ELorRL='RL'):
 
         if ELorRL == 'RL':
@@ -1475,12 +1853,13 @@ class Simulation:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
 
-        scen0 = scenarios[0]
+        scen0 = scenarios[0] #static scenario of the first in the list
         dataStartYear = int(self.scenario[scen0].dataIn_m.iloc[0]['year'])
         dataEndYear = int(self.scenario[scen0].dataIn_m.iloc[-1]['year'])
 
-        tryenergy = True
+        tryenergy = True #see below, default to try trimming energy dfs
         for scen in scenarios:
+            print('Trimming and extending ',scen)
             baseline = self.scenario[scen].dataIn_m
             # Add check if data does not need to be reduced to not do these.
             reduced = baseline.loc[(baseline['year']>=startYear) & (baseline['year']<=endYear)].copy()
@@ -1616,7 +1995,7 @@ class Simulation:
                         newStartYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[0]['year'])
                         newEndYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[-1]['year'])
                         if (newStartYear_e == newStartYear_emat) & (newEndYear_e == newEndYear_emat):
-                            print("Data trimmed for Energy, years now encompass ", newStartYear_e, " to ", newEndYear_e) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
+                            print(scen,mat,": Data trimmed for Energy, years now encompass ", newStartYear_e, " to ", newEndYear_e) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
                         else:
                             print('There is an issue with year modification for Energy!!')
                     except:
@@ -1627,7 +2006,7 @@ class Simulation:
             newStartYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[0]['year'])
             newEndYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[-1]['year'])
             if (newStartYear_m == newStartYear_mat) & (newEndYear_m == newEndYear_mat):
-                print("Data trimmed for Mass, years now encompass ", newStartYear_m, " to ", newEndYear_m) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
+                print(scen,mat,": Data trimmed for Mass, years now encompass ", newStartYear_m, " to ", newEndYear_m) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
             else:
                 print('There is an issue with year modification for Mass!!')
             
@@ -1804,7 +2183,7 @@ class Simulation:
         # Adding Installed Capacity to US (This is already 'Cumulative') so not including it in UScum
         # We are also renaming it to 'ActiveCapacity' and calculating Decommisioned Capacity.
         # TODO: Rename Installed_CApacity to ActiveCapacity throughout.
-        keywd='Installed_Capacity_[W]'
+        keywd='Effective_Capacity_[W]'
         for scen in scenarios:
             USyearly['ActiveCapacity_'+self.name+'_'+scen+'_[MW]'] = self.scenario[scen].dataOut_m[keywd]/1e6 #this value is cumulative
             #decommissions are cumulative
@@ -1834,26 +2213,7 @@ class Simulation:
             if isinstance(materials, str):
                 materials = [materials]
         
-        #module level energy
-        energy_mod=pd.DataFrame()
-        for scen in scenarios:
-            # add the scen name as a prefix 
-            scende = self.scenario[scen].dataOut_e.add_prefix(str(scen+'_'))
-            #concat into one large df
-            energy_mod = pd.concat([energy_mod, scende], axis=1)
-        
-        #material level energy
-        energy_mat = pd.DataFrame()
-        for scen in scenarios:
-            for mat in materials:
-                # add the scen name as a prefix 
-                scenmatde = self.scenario[scen].material[mat].matdataOut_e.add_prefix(str(scen+'_'+mat+'_'))
-                #concat into one large df
-                energy_mat = pd.concat([energy_mat, scenmatde], axis=1)
-        #compile module and material energies into one df
-        allenergy = pd.concat([energy_mod,energy_mat], axis=1) #this will be one of the returned dataframes
-        
-        #categorize the energy in values into lifecycle stages
+        #TODO: categorize the energy in values into lifecycle stages
         mfg_energies = ['mod_MFG','mat_extraction','mat_MFG_virgin']
         mfg_recycle_energies_LQ = ['mat_MFGScrap_LQ'] #LQ and HQ are separate becuase LQ is only LQ
         mfg_recycle_energies_HQ = ['mat_MFGScrap_HQ'] #and HQ material is E_LQ + E_HQ
@@ -1866,21 +2226,48 @@ class Simulation:
         energy_demands_keys = [mfg_energies,mfg_recycle_energies_LQ,mfg_recycle_energies_HQ,use_energies,eol_energies,eol_remfg_energies,eol_recycle_energies_LQ,eol_recycle_energies_HQ]
         energy_demands_flat = list(itertools.chain(*energy_demands_keys))
         
-        #TO DO: organize energy demands into lifecycle stages
-        
-        energyGen = allenergy.filter(like='e_out_annual') #select all columns of energy generation
-        energy_demands = allenergy.loc[:,~allenergy.columns.isin(energyGen.columns)] #select all columns that are NOT energy generation, i.e. demands
+        #init variables
+        allenergy = pd.DataFrame()
+        energyGen = pd.DataFrame()
+        energyFuel = pd.DataFrame()
+        energyDemands = pd.DataFrame()
+        energyDemands_all = pd.DataFrame()
 
-        for scen in scenarios: #sum the lifecycle energy demands
-            colname = str(scen+'_e_demand_total')
-            energy_demands[colname] = energy_demands.filter(like=scen).sum(axis=1)
+        for scen in scenarios:
+            # add the scen name as a prefix \
+            
+            energy_mod_scen = self.scenario[scen].dataOut_e.add_prefix(str(scen+'_')) #extract and label de module (10cols)
+            
+            scenmatde = pd.DataFrame() #wipe and initialize material energy df
+            
+            #material level energy
+            for mat in materials:
+                # add the scen name as a prefix 
+                energy_mat_scen = self.scenario[scen].material[mat].matdataOut_e.add_prefix(str(scen+'_'+mat+'_')) #extract and label de material
+                scenmatde = pd.concat([scenmatde,energy_mat_scen], axis=1) #group all material de (84)
+            
+            scende = pd.concat([energy_mod_scen,scenmatde], axis=1) #group single scenario de (module and materials) (94cols)
+            scende_gen = scende.filter(like='e_out_annual')# create df of energy generation
+            scende_fuels = scende.filter(like='_fuel')# create df of fuel
+            scende_filter1 = scende.loc[:,~scende.columns.isin(scende_gen.columns)] #select all columns that are NOT energy generation
+            scende_demands = scende_filter1.loc[:,~scende_filter1.columns.isin(scende_fuels.columns)] #select all columns that are NOT fuel (this avoids double counting)
+            colname = str(scen+'_e_demand_total') #create column name
+            scende_demands.loc[:,colname] = scende_demands.sum(axis=1) #sums module and material energy demands
+            
+            allenergy = pd.concat([allenergy, scende], axis=1) #collect all scenarios de (excludes demand sum)
+            energyDemands = pd.concat([energyDemands,scende_demands], axis=1) #collect energy demands (includes demand sum column)
+            energyGen = pd.concat([energyGen, scende_gen], axis=1) #collect all scenarios energy generation
+            energyFuel = pd.concat([energyFuel, scende_fuels], axis=1) #collect all scenarios fuel energy demands
+            energyDemands_all = pd.concat([energyDemands_all, scende_demands, scende_fuels], axis=1)
+        
         
         #Fix the index to be years
         allenergy.index = self.scenario[scen].dataIn_e['year']
+        energyDemands_all.index = self.scenario[scen].dataIn_e['year']
         energyGen.index = self.scenario[scen].dataIn_e['year']
-        energy_demands.index = self.scenario[scen].dataIn_e['year']
-        
-        return allenergy, energyGen, energy_demands #note, all these are annual
+
+                
+        return allenergy, energyGen, energyDemands_all #note, all these are annual
         
 
     def plotScenariosComparison(self, keyword=None, scenarios=None):
@@ -1893,16 +2280,17 @@ class Simulation:
 
         if keyword is None:
             # TODO: Not ideal way to provide this info, but will have to work for this release.
-            scens = list(self.scenario.keys())[0]
-            try:
-                print("Choose one of the keywords: ", 
-                  "\n ** Scenario Data In Mass ", list(self.scenario[scens].dataIn_m.keys()),
-                  "\n ** Scenario Data In Energy ", list(self.scenario[scens].dataIn_e.keys()),
-                  "\n ** Scenario Data Out Mass ", list(self.scenario[scens].dataOut_m.keys()),
-                  "\n ** Scenario Data Out Mass ", list(self.scenario[scens].dataOut_e.keys())
-                  )
-            except:
-                print("Please pass a keyword.")
+            scen = list(self.scenario.keys())[0]
+            print("Please pass a keyword:")
+            if hasattr(self.scenario[scen], 'dataIn_m'):
+              print("\n ** Scenario Data In Mass ", list(self.scenario[scen].dataIn_m.keys()))
+            if hasattr(self.scenario[scen], 'dataOut_m'):
+              print("\n ** Scenario Data Out Mass ", list(self.scenario[scen].dataOut_m.keys()))
+            if hasattr(self.scenario[scen], 'dataIn_e'):
+              print("\n ** Scenario Data In Energy ", list(self.scenario[scen].dataIn_e.keys()))
+            if hasattr(self.scenario[scen], 'dataOut_e'):
+              print("\n ** Scenario Data Out Energy ", list(self.scenario[scen].dataOut_e.keys()))
+                  
             return
 
         
@@ -1911,20 +2299,26 @@ class Simulation:
         plt.figure()
 
         
-        for scen in scenarios:       
+        for scen in scenarios:      
+            if hasattr(self.scenario[scen], 'dataIn_e'):
+                dataIn_e = True
+            else:
+                dataIn_e = False
+                
             # Not very elegant but works?
             if keyword in self.scenario[scen].dataIn_m:                
                 plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataIn_m[keyword], label=scen)
-            elif keyword in self.scenario[scen].dataIn_e: 
-                plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataIn_e[keyword], label=scen) 
-                # the year column is not getting added to the dataOut DFs
-            elif keyword in self.scenario[scen].dataIn_m: 
+            elif keyword in self.scenario[scen].dataOut_m: 
                 plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataOut_m[keyword], label=scen)
-            elif keyword in self.scenario[scen].dataIn_e: 
-                plt.plot(self.scenario[scen].dataIn_e['year'],self.scenario[scen].dataOut_e[keyword], label=scen)
-            else:
-                print("No data for ", keyword, "for Scenario ", scen)
-        plt.legend()
+            elif dataIn_e:
+                if keyword in self.scenario[scen].dataIn_e: 
+                    plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataIn_e[keyword], label=scen) 
+                # the year column is not getting added to the dataOut DFs   
+                elif keyword in self.scenario[scen].dataOut_e: 
+                    plt.plot(self.scenario[scen].dataIn_m['year'],self.scenario[scen].dataOut_e[keyword], label=scen)
+                else:
+                    print("No data for ", keyword, "for Scenario ", scen)
+            plt.legend()
         plt.xlabel('Year')
         plt.title(keyword.replace('_', " "))
         plt.ylabel(yunits)
@@ -1997,13 +2391,13 @@ class Simulation:
         datac = self.UScum
 
         filter_colc = [col for col in datac if col.startswith('newInstalledCapacity')]
-        filter_coly = [col for col in datay if col.startswith('Capacity')]
+        filter_coly = [col for col in datay if col.startswith('ActiveCapacity')]
 
         datay = datay[filter_coly].copy()
         mylegend = [col.split('_')[1:] for col in datay]
         mylegend = [col[:-1] for col in mylegend]
         mylegend = [str(col)[2:-2] for col in mylegend]
-        mylegendy = ['Cumulative New Installs, '+col for col in mylegend]
+        mylegendy = ['Active Capacity, '+col for col in mylegend]
 
         print(mylegend)
 
@@ -2011,7 +2405,7 @@ class Simulation:
         mylegend = [col.split('_')[1:] for col in datac]
         mylegend = [col[:-1] for col in mylegend]
         mylegend = [str(col)[2:-2] for col in mylegend]
-        mylegendc = ['Capacity, '+col for col in mylegend]
+        mylegendc = ['Cumulative New Installs, '+col for col in mylegend]
 
         data = datay.join(datac)
         mylegend = mylegendy + mylegendc
@@ -2134,10 +2528,25 @@ class Scenario(Simulation):
         self.energyfile = energymodulefile
         self.metdataIn_e = meta
         self.dataIn_e = data
-        
-        
-    def addMaterial(self, materialname, massmatfile=None, file=None, energymatfile=None):
-        
+
+    def addMaterial(self, materialname, massmatfile=None, energymatfile=None,
+                    file=None):
+        '''
+        Adds a material object, assigning its name and loading mass and energy
+        data.
+
+        Inputs
+        --------
+        materialname : string
+            String of the material to import, assigned to the material object.  
+        massmatfile : file
+            Path including filename to the material file to load
+        energymatfile : str
+            Path including filename to the material file to load
+
+            
+        '''
+
         if massmatfile is None and file is not None:
             print("Deprecation warning: file has been deprecated as of v 0.3 as",
                   "an input to class Material and will be fully removed for v 0.4;",
@@ -2146,26 +2555,51 @@ class Scenario(Simulation):
 
         self.material[materialname] = Material(materialname, massmatfile, energymatfile)
             
-    def addMaterials(self, materials, baselinefolder=None, nameformat=None):
 
+
+    def addMaterials(self, materials, baselinefolder=None, matnameformatMass=None,
+                     matnameformatEnergy=None):
+        '''
+        Inputs
+        --------
+        materialname : list of strings(preferred)
+            List of materials to loop over and add to the simulation.
+            Single material string (i.e. 'glass') can be passed but converted to
+            list. Examples: materials = ['glass', 'silver']  
+        baselinefolder : path
+            Path to where the material folders are stored
+        matnameformatMass : str
+            Format of the material baseline files mass names, including a bracket for 
+            formatting in the materialname. i.e.
+            'baseline_material_mass_{}.csv'
+        matnameformatEnergy : str
+            Format of the material baseline files energy names, including a bracket for 
+            formatting in the materialname. i.e.
+            'baseline_material_energy_{}.csv'
+        matnameformatEnergy : str
+        '''
         if baselinefolder is None:
-            baselinefolder = os.path.join(str(Path().resolve().parent.parent, 'baselines'))
-            # TOD: Check if works and remove this comment
-            # baselinefolder = r'..\..\baselines'
+            baselinefolder = DATA_PATH
 
-        if nameformat is None:
-            nameformatMass = r'baseline_material_mass_{}.csv'
-            nameformatEnergy = r'baseline_material_energy_{}.csv'
+        # Checking if string passed for a single material, converting it to list
+        if type(materials) == str:
+            materials = [materials]
+    
+        if matnameformatMass is None:
+            matnameformatMass = r'baseline_material_mass_{}.csv'
+        if matnameformatEnergy is None:
+            matnameformatEnergy = r'baseline_material_energy_{}.csv'
         for mat in materials:
-            filematmass = os.path.join(baselinefolder, nameformatMass.format(mat))
-            filematenergy = os.path.join(baselinefolder, nameformatEnergy.format(mat))
-            if os.path.isfile(filematenergy):
+            massmatfile = os.path.join(baselinefolder, matnameformatMass.format(mat))
+            energymatfile = os.path.join(baselinefolder, matnameformatEnergy.format(mat))
+            if os.path.isfile(energymatfile):
                 print("Adding Mass AND Energy files for: ", mat )
             else:
-                filematenergy = None
+                energymatfile = None
+                print("Adding Mass files for: ", mat )
                 
-            self.material[mat] = Material(mat, massmatfile = filematmass, 
-                                          energymatfile = filematenergy)
+            self.material[mat] = Material(mat, massmatfile = massmatfile, 
+                                          energymatfile = energymatfile)
 
 
     def modifyMaterials(self, materials, stage, value, start_year=None):
@@ -2213,7 +2647,6 @@ class Scenario(Simulation):
             for mat in materials:
                 self.material[mat].matdataIn_e.loc[selectyears, stage] = value
 
-
     def __getitem__(self, key):
         return getattr(self, key)
 
@@ -2225,34 +2658,48 @@ class Material:
 
     def __init__(self, materialname, massmatfile, energymatfile=None):
         self.materialname = materialname
-            
+
         if massmatfile is None:
             try:
-                massmatfile = _interactive_load('Select material baseline file')
+                massmatfile = _interactive_load('Select material baseline ' +
+                                                'file')
             except:
-                raise Exception('Interactive load failed. Tkinter not supported'+
-                                'on this system. Try installing X-Quartz and reloading')
+                raise Exception('Interactive load failed. Tkinter not ' +
+                                'supported on this system. Try installing ' +
+                                'X-Quartz and reloading')
 
         data, meta = _readPVICEFile(massmatfile)
-         
+
         self.massmatfile = massmatfile
         self.matmetdataIn_m = meta
         self.matdataIn_m = data
 
+        # SAVING A COPY TO RAW
+        # Joining the metdata back in
+        foometa = pd.DataFrame(meta, index=[0])
+        foodata = pd.concat([foometa, data], axis=0)
+        # Removing the path to just get the filename
+        # TODO - find fancy python way, this will probably break on a mac
+        try:
+            foomassmatfile = massmatfile.split('\\')[-1]
+            foodata.to_csv(os.path.join('raw', materialname + '_' +
+                                        foomassmatfile))
+        except:
+            print("Can't save raw files on macs yet.")
         if energymatfile is not None:
             self.addEnergytoMaterial(energymatfile)
         else:
             self.energymatfile = None
             self.matmetdataIn_e = None
             self.matdataIn_e = None
-    
+
     def addEnergytoMaterial(self, energymatfile):
 
         data, meta = _readPVICEFile(energymatfile)
-        
+
         self.energymatfile = energymatfile
         self.matmetdataIn_e = meta
-        self.matdataIn_e = data 
+        self.matdataIn_e = data
 
 
 def weibull_params(keypoints):
@@ -2550,7 +2997,7 @@ def calculateLCA(PVarea, modified_impacts=None, printflag = False):
 
     impacts = {'Acidification':{'UUID':  '75d0c8a2-e466-3bd7-813b-5beef2209330',
                                 'Result':  1.29374135667815,
-                                'Unit': 'kg SO2' },
+                                'Unit': 'g SO2' },
                 'Carcinogenics':{'UUID':  'a6e5e5d8-a1e5-3c77-8170-586c4fe37514',
                                             'Result':  0.0000231966690476102,
                                             'Unit': 'CTUh' },

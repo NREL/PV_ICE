@@ -1,0 +1,72 @@
+﻿year,E_mfg_kWhpkg,Source,Notes,E_mfg_FUEL_kWhpkg,Source,Notes
+1980,0.781,"Brown, H.L. (1996) Energy Analysis of 108 Industrial Processes. The Fairmont Press, Inc.,","LDPE pg. 148-150, convert BTU to kWh,",1.03,"Brown, H.L. (1996) Energy Analysis of 108 Industrial Processes. The Fairmont Press, Inc., pg. 148-150",LDPE fuel for boiler (makes process steam) and generator
+1981,0.23240623,"Brown, H.L. (1996) Energy Analysis of 108 Industrial Processes. The Fairmont Press, Inc.,","unknown plastic, pg 152-153",1.385521045,"Brown, H.L. (1996) Energy Analysis of 108 Industrial Processes. The Fairmont Press, Inc., pg. 148-150",LDPE fuel for boiler (makes process steam) and generator
+1982,,,,,,
+1983,,,,,,
+1984,,,,,,
+1985,,,,,,
+1986,,,,,,
+1987,,,,,,
+1988,,,,,,
+1989,,,,,,
+1990,0.00333324,"Joosten, L.A.J. (1998) Process Data Descriptions for the production of synthetic organic materials: Input data for the MATTER study. Utrecht University The Netherlands.","CED of new cracker plants, ethylene",,,
+1991,,,,,,
+1992,,,,,,
+1993,,,,,,
+1994,0.8333,"Harding, K.G. et al. (2007) ‘Environmental analysis of plastic production processes: Comparing petroleum-based polypropylene and polyethylene with biologically-based poly-β-hydroxybutyric acid using life cycle analysis’, Journal of Biotechnology, 130(1), pp. 57–66. Available at: https://doi.org/10.1016/j.jbiotec.2007.02.012.","Frischknecht and Suter 1996, LDPE electricity, CED ~80 MJ/kg",,,
+1995,19,"G. J. M. Phylipsen and E. A. Alsema, “Environmental life-cycle assessment of multicrystalline silicon solar cell modules,” Netherlands Agency for Energy and the Environment,NOVEM, Netherlands, Sep. 1995.","CED ""rough estimate"" based off higher than polyethylene, includes through foil extrusion",3.94444,"Joosten, L.A.J. (1998) Process Data Descriptions for the production of synthetic organic materials: Input data for the MATTER study. Utrecht University The Netherlands.","Table 38, polymerization PET, steam, ethylene"
+1996,0.9167,"Joosten, L.A.J. (1998) Process Data Descriptions for the production of synthetic organic materials: Input data for the MATTER study. Utrecht University The Netherlands.","Table 38, polymerization PET, electricity",0.86111,"Joosten, L.A.J. (1998) Process Data Descriptions for the production of synthetic organic materials: Input data for the MATTER study. Utrecht University The Netherlands.","Table 38, polymerization PET, gas, ethylene"
+1997,0.056,"Joosten, L.A.J. (1998) Process Data Descriptions for the production of synthetic organic materials: Input data for the MATTER study. Utrecht University The Netherlands.","Steamcracking is primary production of ethylene, page 12 average of 4 feedstocks",2.88889,"Joosten, L.A.J. (1998) Process Data Descriptions for the production of synthetic organic materials: Input data for the MATTER study. Utrecht University The Netherlands.","Table 38, polymerization PET, fuel, ethylene"
+1998,0.0833,"Holmgren, K.M. et al. (2014) ‘Gasification-based methanol production from biomass in industrial clusters: Characterisation of energy balances and greenhouse gas emissions’, Energy, 69, pp. 622–637. Available at: https://doi.org/10.1016/j.energy.2014.03.058.","Table 1, based on Joosten 1998, ethylene production",1.083333,"Holmgren, K.M. et al. (2014) ‘Gasification-based methanol production from biomass in industrial clusters: Characterisation of energy balances and greenhouse gas emissions’, Energy, 69, pp. 622–637. Available at: https://doi.org/10.1016/j.energy.2014.03.058.","Table 1, based on Joosten 1998, ethylene production, steam+external fuel"
+1999,,,,,,
+2000,0.494654512,Ecoinvent 2,EVA copolymer production+ethylene production*1+vinyl acetate production*0.2+acetic acid production*.7,1.161,Ecoinvent 2,"EVA copolymer production +vinyl acetate production*1+acetic acid production*0.7, heat natural gas"
+2001,,,,,,
+2002,,,,,,
+2003,,,,,,
+2004,,,,,,
+2005,,,,,,
+2006,0.16667,"Liptow, C. and Tillman, A.-M. (2009) Comparative life cycle assessment of polyethylene based on sugarcane and crude oil. REPORT NO 2009:14. Göteborg, Sweden: Department of Energy and Environment Division of Environmental Systems Analysis CHALMERS UNIVERSITY OF TECHNOLOGY.",LDPE Table 5 (attributional) figure from Shell Raffinaderi 2007,0.8889,"Liptow, C. and Tillman, A.-M. (2009) Comparative life cycle assessment of polyethylene based on sugarcane and crude oil. REPORT NO 2009:14. Göteborg, Sweden: Department of Energy and Environment Division of Environmental Systems Analysis CHALMERS UNIVERSITY OF TECHNOLOGY.",LDPE Table 5 figure from Shell Raffinaderi 2007
+2007,1.13889,"Liptow, C. and Tillman, A.-M. (2009) Comparative life cycle assessment of polyethylene based on sugarcane and crude oil. REPORT NO 2009:14. Göteborg, Sweden: Department of Energy and Environment Division of Environmental Systems Analysis CHALMERS UNIVERSITY OF TECHNOLOGY.","from Statoil Hydro 2007, pg 26, extract offshore Saudi Oil, making LDPE",,,
+2008,1.36111,"Liptow, C. and Tillman, A.-M. (2009) Comparative life cycle assessment of polyethylene based on sugarcane and crude oil. REPORT NO 2009:14. Göteborg, Sweden: Department of Energy and Environment Division of Environmental Systems Analysis CHALMERS UNIVERSITY OF TECHNOLOGY.",LDPE Table 7 (attributional) naptha cracking,4.1667,"Liptow, C. and Tillman, A.-M. (2009) Comparative life cycle assessment of polyethylene based on sugarcane and crude oil. REPORT NO 2009:14. Göteborg, Sweden: Department of Energy and Environment Division of Environmental Systems Analysis CHALMERS UNIVERSITY OF TECHNOLOGY.",LDPE Table 7 naptha cracking
+2009,3.72221,"Liptow, C. and Tillman, A.-M. (2009) Comparative life cycle assessment of polyethylene based on sugarcane and crude oil. REPORT NO 2009:14. Göteborg, Sweden: Department of Energy and Environment Division of Environmental Systems Analysis CHALMERS UNIVERSITY OF TECHNOLOGY.","LDPE table 10 polymerization, produces plastic granuals",0.0833,"Liptow, C. and Tillman, A.-M. (2009) Comparative life cycle assessment of polyethylene based on sugarcane and crude oil. REPORT NO 2009:14. Göteborg, Sweden: Department of Energy and Environment Division of Environmental Systems Analysis CHALMERS UNIVERSITY OF TECHNOLOGY.",LDPE Table 10 polymerization
+2010,0.21111,"EPD: Ethylene, Propylene, Butadiene, Pyrolysis Gasoline, Ethylene Oxide (EO), Ethylene Glycols (MEG, DEG, TEG) (2012). EPD. PlasticsEurope.","data 2007-2010, Table 16, ethylene electricity",3.5,"EPD: Ethylene, Propylene, Butadiene, Pyrolysis Gasoline, Ethylene Oxide (EO), Ethylene Glycols (MEG, DEG, TEG) (2012). EPD. PlasticsEurope.","ethylene Table 16, heat/thermal E"
+2011,6.2222,"EPD: Ethylene, Propylene, Butadiene, Pyrolysis Gasoline, Ethylene Oxide (EO), Ethylene Glycols (MEG, DEG, TEG) (2012). EPD. PlasticsEurope.","data 2007-2010, Table 6, ethylene Total Process Energy (includes fuel) = CED - embodied E polymer",0,"EPD: Ethylene, Propylene, Butadiene, Pyrolysis Gasoline, Ethylene Oxide (EO), Ethylene Glycols (MEG, DEG, TEG) (2012). EPD. PlasticsEurope.","data 2007-2010, Table 6, ethylene Total Process Energy (includes fuel)"
+2012,,,,,,
+2013,,,,,,
+2014,0.259,Ecoinvent 3.8 cutoff,"LLDPE, virgin resin at plant, fuel in m3",,,
+2015,0.23,Ecoinvent 3.8 cutoff,"PET virgin resin, usa, fuel in m3",,,
+2016,,,,,,
+2017,,,,,,
+2018,3.88,"Nicholson, S.R. et al. (2021) ‘Manufacturing energy and greenhouse gas emissions associated with plastics consumption’, Joule, 5(3), pp. 673–686. Available at: https://doi.org/10.1016/j.joule.2020.12.027.","Table S3, LLDPE ""net fuel and net renewable for electricity"", uses MFI tool",2.7222146,"Nicholson, S.R. et al. (2021) ‘Manufacturing energy and greenhouse gas emissions associated with plastics consumption’, Joule, 5(3), pp. 673–686. Available at: https://doi.org/10.1016/j.joule.2020.12.027.","Table S3, LLDPE ""Net Process Fuel"", most of the fuels are for chemical feedstock, uses MFI tool"
+2019,1.908332799,"Nicholson, S.R. et al. (2021) ‘Manufacturing energy and greenhouse gas emissions associated with plastics consumption’, Joule, 5(3), pp. 673–686. Available at: https://doi.org/10.1016/j.joule.2020.12.027.","Table S3, EVA ""net fuel and net renewable for electricity"", uses MFI tool",1.5277735,"Nicholson, S.R. et al. (2021) ‘Manufacturing energy and greenhouse gas emissions associated with plastics consumption’, Joule, 5(3), pp. 673–686. Available at: https://doi.org/10.1016/j.joule.2020.12.027.","Table S3, EVA ""Net Process Fuel"", most of the fuels are for chemical feedstock, uses MFI tool"
+2020,,,,,,
+2021,,,,,,
+2022,29.722139,"Uekert, T. et al. (2023) ‘Technical, Economic, and Environmental Comparison of Closed-Loop Recycling Technologies for Common Plastics’, ACS Sustainable Chemistry & Engineering [Preprint]. Available at: https://doi.org/10.1021/acssuschemeng.2c05497.","Table S27, PET Virgin, CED",,,
+2023,,,,,,
+2024,,,,,,
+2025,,,,,,
+2026,,,,,,
+2027,,,,,,
+2028,,,,,,
+2029,,,,,,
+2030,,,,,,
+2031,,,,,,
+2032,,,,,,
+2033,,,,,,
+2034,,,,,,
+2035,,,,,,
+2036,,,,,,
+2037,,,,,,
+2038,,,,,,
+2039,,,,,,
+2040,,,,,,
+2041,,,,,,
+2042,,,,,,
+2043,,,,,,
+2044,,,,,,
+2045,,,,,,
+2046,,,,,,
+2047,,,,,,
+2048,,,,,,
+2049,,,,,,
+2050,,,,,,

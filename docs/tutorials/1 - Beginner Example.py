@@ -8,25 +8,36 @@
 
 # ### Step 1: Set Working Folder and Import PV ICE
 
-# In[1]:
+# In[3]:
 
 
 import os
 from pathlib import Path
 
-testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'Tutorial1')
 
-# Another option using relative address; for some operative systems you might need '/' instead of '\'
-# testfolder = os.path.abspath(r'..\..\PV_DEMICE\TEMP')  
+if not os.path.exists(testfolder):
+    os.makedirs(testfolder)
 
 print ("Your simulation will be stored in %s" % testfolder)
 
 
-# In[2]:
+# In[6]:
 
 
 import PV_ICE
+import pandas as pd
 
+
+# In[7]:
+
+
+# This information helps with debugging and getting support :)
+import sys, platform
+print("Working on a ", platform.system(), platform.release())
+print("Python version ", sys.version)
+print("Pandas version ", pd.__version__)
+print("PV_ICE version ", PV_ICE.__version__)
 
 
 # ### Step 2: Add Scenarios and Materials
@@ -34,145 +45,117 @@ import PV_ICE
 # ``silicon`` and ``glass`` materials are added to the two simulations, along with a scenario, in this case the ``baseline_modules_US``. The baseline files for decadence scenario will be modified.
 # 
 
-# In[3]:
+# In[8]:
 
 
 r1 = PV_ICE.Simulation(name='Simulation1', path=testfolder)
-r1.createScenario(name='standard', file=r'..\baselines\baseline_modules_US.csv')
-rr1.scenario['standard'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv' )
+r1.createScenario(name='standard', massmodulefile=r'..\..\baselines\baseline_modules_mass_US.csv')
+r1.scenario['standard'].addMaterial('glass', massmatfile=r'..\..\baselines\baseline_material_mass_glass.csv' )
+r1.scenario['standard'].addMaterial('silicon', massmatfile=r'..\..\baselines\baseline_material_mass_silicon.csv' )
 
-r1.createScenario('decadence', file=r'..\baselines\baseline_modules_US.csv')
-r1.scenario['decadence'].addMaterial('glass', file=r'..\baselines\baseline_material_glass.csv')
-r1.scenario['decadence'].addMaterial('silicon', file=r'..\baselines\baseline_material_silicon.csv')
-
-
-# ### Step 3: Modify Parameters in the Scenarios
-# 
-# We have some functions to create changes based on improvements, but for this example we'll just be modifying values for the full column and comparing effects.
-# 
-
-# In[4]:
+r1.createScenario('low_quality', massmodulefile=r'..\..\baselines\baseline_modules_mass_US.csv')
+r1.scenario['low_quality'].addMaterial('glass', massmatfile=r'..\..\baselines\baseline_material_mass_glass.csv')
+r1.scenario['low_quality'].addMaterial('silicon', massmatfile=r'..\..\baselines\baseline_material_mass_silicon.csv')
 
 
-r1.scenario['decadence'].data['mod_lifetime'] = 35
-r1.scenario['decadence'].material['glass'].materialdata['mat_virgin_eff'] = 70.0
+# Exploring that the data got loaded properly, we can look at each scenario object, and material object saved dataframe and properties
 
-r1.scenario['decadence'].material['silicon'].materialdata['mat_virgin_eff'] = 80.0
-r1.scenario['decadence'].material['silicon'].materialdata['mat_EOL_collected_Recycled'] = 100.0
-r1.scenario['decadence'].material['silicon'].materialdata['mat_massperm2'] = 22
+# In[9]:
+
+
+r1.scenario['standard'].dataIn_m.head(2)
+
+
+# In[10]:
+
+
+r1.scenario['standard'].material['silicon'].matdataIn_m.head(2)
+
+
+# # Step 3: Modify values
+#     
+# PV_ICE has some dedicated functions that create changes based on improvements, but for this example we'll just be modifying values for the full column and comparing effects. To modify these columns, we specify the scenario or material parameter we want to modify, and assign the new value. In this case we are updating:
+# * module lifetime
+# * module degradation
+
+# In[16]:
+
+
+r1.scenario['low_quality'].dataIn_m['mod_lifetime'] = 15 
+r1.scenario['low_quality'].dataIn_m['mod_degradation'] = 1.4 
 
 
 # ### Step 4: Run the Mass Flow Calculations on All Scenarios and Materials
 
-# In[5]:
+# In[17]:
 
 
 r1.calculateMassFlow()
-r1.aggregateResults();
+
+
+# Now we have results on the mass layer that we can access
+
+# In[18]:
+
+
+r1.scenario['standard'].dataOut_m.keys()
+
+
+# What can aggregate results from dataOut_m and matdataOut_m and compile the data so we can use it more easily
+
+# In[19]:
+
+
+USyearly, UScum = r1.aggregateResults()
+# r1.USyearly # another way of accessing after running aggregateResults()
+# r1.UScum
+
+
+# In[20]:
+
+
+USyearly.keys()
+
+
+# In[21]:
+
+
+UScum.keys()
+
+
+# In[22]:
+
+
+r1.saveSimulation()
 
 
 # ### Step 5: Use internal plotting functions to plot results
 
-# Pull out the keywords by printing the keys to the module data or the material data:
-# 
-#     print(r1.scenario.keys())
-#     
-#     print(r1.scenario['standard'].data.keys())
-#     
-#     print(r1.scenario['standard'].material['glass'].materialdata.keys())
+# From this list, select the one that fits your study and select the type of plotting method. There are various plotting options:
+# * `plotScenariosComparison`
+# * `plotMaterialComparisonAcrossScenarios`
+# * `plotMetricResults`: You can select the following keyword options: 'VirginStock', 'WasteALL', 'WasteEOL', 'WasteMFG'
+# * `plotMaterialResults`
+# * `plotInstalledCapacityResults`
 
-# In[6]:
+# You can also view all the keywords you can use by calling the function without argumnets, or by printing the keys to the module data or the material data
 
-
-#print(r1.scenario.keys())
-#print(r1.scenario['standard'].data.keys())
-print(r1.scenario['standard'].material['glass'].materialdata.keys())
-
-
-# In[8]:
+# In[23]:
 
 
 r1.plotScenariosComparison()
 
 
-# In[ ]:
+# In[28]:
 
 
-r1.plotMaterialComparisonAcrossScenarios(material='silicon', keyword='mat_Total_Landfilled')
+r1.plotScenariosComparison('Effective_Capacity_[W]')
 
 
-# In[ ]:
-
-
-r1.plotMaterialResults(keyword='VirginStock')
-
-
-# In[ ]:
+# In[26]:
 
 
 r1.plotMetricResults()
-
-
-# In[ ]:
-
-
-r1.plotInstalledCapacityResults()
-
-
-# In[ ]:
-
-
-datay = r1.USyearly
-datac = r1.UScum
-
-
-# In[ ]:
-
-
-filter_colc = [col for col in datac if col.startswith('newInstalledCapacity')]
-filter_coly = [col for col in datay if col.startswith('Capacity')]
-
-
-# In[ ]:
-
-
-datac[filter_colc]
-
-
-# In[ ]:
-
-
-data = datac[filter_colc].copy()
-data.join(datay[filter_coly].copy())
-
-
-# In[ ]:
-
-
-data
-
-
-# In[ ]:
-
-
-mylegend = [col.split('_')[1:] for col in data]
-mylegend = [col[:-1] for col in mylegend]
-mylegend
-
-
-# In[ ]:
-
-
-test_list=['standard', 'decadence', '2standard', '2decadence']
-test_list2=['asdfadsf', 'dfdffd', 'dfsfs', 'ssssssss']
-#str(test_list)[1:-1]
-test_list + test_list2
-
-
-# In[ ]:
-
-
-test_list
 
 
 # In[ ]:

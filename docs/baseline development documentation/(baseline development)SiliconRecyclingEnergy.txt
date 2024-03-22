@@ -1,0 +1,18 @@
+Silicon Recycling Electricity Demand Choices
+MFG Kerf Recycling
+-not commonly done to recover Si
+-mostly lab scale processes
+600 kWh/kg: De Sousa, M., A. Vardelle, G. Mariaux, M. Vardelle, U. Michon, and V. Beudin. 2016. “Use of a Thermal Plasma Process to Recycle Silicon Kerf Loss to Solar-Grade Silicon Feedstock.” Separation and Purification Technology 161 (March): 187–92. https://doi.org/10.1016/j.seppur.2016.02.005.	94% purity, lab scale Thermal plasma process, diamond powder yield is max 20%, 400-800 kWh/kg
+
+24.5 kWh/kg: Liu, Yang, Jian Kong, Yanxin Zhuang, Pengfei Xing, Huayi Yin, and Xuetao Luo. 2019. “Recycling High Purity Silicon from Solar Grade Silicon Cutting Slurry Waste by Carbothermic Reduction in the Electric Arc Furnace.” Journal of Cleaner Production 224 (July): 709–18. https://doi.org/10.1016/j.jclepro.2019.03.187.	2N purity, essentially the mining process: leaching H2SO4, Water wash, dried, mixed with SiO2 and C put in Electric arc furnace, warmup energy+process energy
+
+600 kWh/kg: Oh et al 2015, https://www.degruyter.com/document/doi/10.3139/146.111272/html	produces 15g of 6N purity si ingot through hydrogen plasma arc melting, 90 mins at 300 A and 20V, plus acid leaching pre-treatments
+
+These processes are focused on kerf loss recycling, as opposed to ingot offcut recycling, which is directly fed back into the charge, or MG-Si. If we used the numbers above, the mfging scrap recycling would require more energy than the virgin material demand, which isn't reasonable. Therefore we will use the EoL recycling as the proxy for mfging scrap recycling energy - see below and the silicon energy journal.
+
+EOL Silicon Recycling
+-few to no commericial processes
+
+1.6 kWh/kg Latunussa, Cynthia E. L., Fulvio Ardente, Gian Andrea Blengini, and Lucia Mancini. 2016. “Life Cycle Assessment of an Innovative Recycling Process for Crystalline Silicon Photovoltaic Panels.” Solar Energy Materials and Solar Cells, Life cycle, environmental, ecology and impact analysis of solar technology, 156 (November): 101–11. https://doi.org/10.1016/j.solmat.2016.03.020.	LQ process, note: this electricity is used for metals separation including Cu and Ag, but majority of output is Si, however it is MG-Si, meaning it would have to go through Seimens again.
+
+No other processes were found that recover the silicon at EOL to higher than MG-Si. Therefore, we will add the MFG processing energy after the Si reduction to MG-Si to 1.6 kWh/kg. See the Energy Silicon Manufacturing Jupyter Journal at the end.
