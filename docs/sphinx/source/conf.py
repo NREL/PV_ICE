@@ -193,8 +193,9 @@ latex_documents = [
 extlinks = {'issue': ('https://github.com/NREL/PV_ICE/issues/%s', 'GH'),
             'pull': ('https://github.com/NREL/PV_ICE/pull/%s', 'GH'),
             'wiki': ('https://github.com/NREL/PV_ICE/wiki/%s', 'wiki '),
-            'doi': ('http://dx.doi.org/%s', 'DOI: '),
-            'ghuser': ('https://github.com/%s', '@')}
+            'doi': ('http://dx.doi.org/%s', 'DOI:%s'),
+            'ghuser': ('https://github.com/%s', '@%s')}
+    
 """
 # -- Options for manual page output ---------------------------------------
 
