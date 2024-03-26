@@ -9,8 +9,18 @@ import pandas as pd
 import os,sys
 from pathlib import Path
 import matplotlib.pyplot as plt
-
+import PV_ICE
 cwd = os.getcwd() #grabs current working directory
+
+
+# In[3]:
+
+
+#print("Working on a ", platform.system(), platform.release())
+print("Python version ", sys.version)
+print("Pandas version ", pd.__version__)
+print("pyplot ", plt.matplotlib.__version__)
+print("PV_ICE version ", PV_ICE.__version__)
 
 
 # In[2]:
@@ -339,11 +349,7 @@ Agimprovedrecycle.interpolate()
 #      (ex) TN0 - x years = TM0
 #      and TN0 = -beta*-np.abs(np.log(1-TN0))^(1/alpha)
 
-# In[8]:
-
-
-import PV_ICE
-
+# import PV_ICE
 
 # In[9]:
 
