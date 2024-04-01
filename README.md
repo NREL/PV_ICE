@@ -31,7 +31,7 @@
 
 This open-source tool explores the effects of Circular Economy (CE) pathways for photovoltaic (PV) materials. It can be used to quantify and assign a value framework to CE efforts including re-design, reduction, replacement, reuse, recycling, and lifetime and reliability improvements across the PV value chain. PV ICE enables tradeoff analysis through scenario comparisons, and is highly customizable through user inputs such as deployment schedules, module properties and component materials, and CE pathways.
 
-The provided PV ICE module and material baselines leverage published data from many sources on PV manufacturing and predicted technological changes. Input data are being compiled [here](https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing) and the baselines are available here for use in other projects as well as for the PV ICE tool.
+The provided PV ICE module and material baselines leverage published data from many sources on PV manufacturing and predicted technological changes. Input data are being compiled [here](https://docs.google.com/spreadsheets/d/1Ec5JRBSN2NFXjEABgUp1ch-EG6uQao8j5Rk1MLuZZYI/edit?usp=sharing) and the baselines are available here for use in other projects as well as for the PV ICE tool.
 
 
 How it Works
