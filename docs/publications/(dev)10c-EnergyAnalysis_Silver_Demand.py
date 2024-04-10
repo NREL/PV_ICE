@@ -24,13 +24,13 @@ if not os.path.exists(testfolder):
     os.makedirs(testfolder)
 
 
-# In[3]:
+# In[2]:
 
 
 print(cwd)
 
 
-# In[2]:
+# In[3]:
 
 
 #print("Working on a ", platform.system(), platform.release())
@@ -44,14 +44,14 @@ print("PV_ICE version ", PV_ICE.__version__)
 # 
 # We pull in the output dataframes from journal 10a and do graphing here.
 
-# In[7]:
+# In[4]:
 
 
 cc_13scen_yearly_dataOut = pd.read_csv(os.path.join(inputfolder, 'EnergyAnalysis','Deploy_MirletzLinear','cc_13scen_yearly.csv'),
            index_col = 0)
 
 
-# In[19]:
+# In[5]:
 
 
 silver_annual_demand = cc_13scen_yearly_dataOut.filter(like='VirginStock_silver') #tonnes
@@ -61,7 +61,7 @@ silver_annual_demand_topcon = silver_annual_demand.filter(like='r_TOPCon')
 silver_annual_demand_shj = silver_annual_demand.filter(like='r_SHJ')
 
 
-# In[36]:
+# In[6]:
 
 
 plt.plot(silver_annual_demand_pvice, color='black', label='Baseline')
@@ -74,15 +74,15 @@ plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
 plt.legend()
 
 
-# In[40]:
+# In[8]:
 
 
-plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:,0], color='tab:red', label='SHJ')
-plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:,0], color='tab:orange', label='TOPCon')
-plt.bar(silver_annual_demand_pvice.index, silver_annual_demand_pvice.iloc[:,0], color='black', label='Baseline')
-plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:,0], color='tab:blue', label='PERC')
+plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='tab:red', label='SHJ')
+plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:2051,0], color='tab:orange', label='TOPCon')
+plt.bar(silver_annual_demand_pvice.index, silver_annual_demand_pvice.iloc[:2051,0], color='black', label='Baseline')
+plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:2051,0], color='tab:blue', label='PERC')
 plt.ylim(0,)
-plt.xlim(2000,2100)
+plt.xlim(2000,2050)
 plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
 plt.legend()
 
