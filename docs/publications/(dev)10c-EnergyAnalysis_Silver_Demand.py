@@ -116,36 +116,38 @@ ag_WSS_flatforward = ag_WSS.interpolate()
 ag_WSS_flatforward.loc[2023,'Total Supply [metric tonnes]']
 
 
-# In[12]:
+# In[106]:
 
 
-plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='tab:red', label='SHJ')
-plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:2051,0], color='tab:orange', label='TOPCon')
+plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='#41B8FF', label='SHJ')
+plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:2051,0], color='#0079C1', label='TOPCon')
 plt.bar(silver_annual_demand_pvice.index, silver_annual_demand_pvice.iloc[:2051,0], color='black', label='Baseline')
-plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:2051,0], color='tab:blue', label='PERC')
+plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:2051,0], color='#005B91', label='PERC')
 
-plt.plot(ag_WSS.index, ag_WSS['PV Silver Demand [metric tonnes]'], color='black', label='Historical PV Silver Demand, WSS')
-plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Silver Production [metric tonnes]'], ls='--', color='gray', label='Mining production, WSS')
+plt.plot(ag_WSS.index, ag_WSS['PV Silver Demand [metric tonnes]'], lw=2, color='black', label='Historical PV Silver Demand, WSS')
+plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Silver Production [metric tonnes]'],
+         lw=3, ls='--', color='gray', label='Mining production, WSS')
 plt.plot(2023, ag_WSS.loc[2023,'Silver Production [metric tonnes]'], '*', markersize=10, color='grey')
-plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Total Supply [metric tonnes]'], ls='-.', color='gray', label='Total Supply, WSS')
+plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Total Supply [metric tonnes]'],
+         lw=3, ls='-.', color='gray', label='Total Supply, WSS')
 plt.plot(2023, ag_WSS.loc[2023,'Total Supply [metric tonnes]'], '*', markersize=10, color='grey')
 
 #plt.grid(axis='y', color='0.9', ls='--', zorder=0)
 #plt.set_axisbelow(True)
-plt.legend(fontsize=12)
+plt.legend(fontsize=12, bbox_to_anchor=(1,1))
 plt.ylim(0,)
 plt.xlim(2005,2050)
 plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
 plt.title('Silver Demand by Technology to Achieve 75 TW')
 
 
-# In[13]:
+# In[70]:
 
 
-plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='tab:red', label='SHJ')
-plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:2051,0], color='tab:orange', label='TOPCon')
+plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='#41B8FF', label='SHJ')
+plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:2051,0], color='#0079C1', label='TOPCon')
 plt.bar(silver_annual_demand_pvice.index, silver_annual_demand_pvice.iloc[:2051,0], color='black', label='Baseline')
-plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:2051,0], color='tab:blue', label='PERC')
+plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:2051,0], color='#005B91', label='PERC')
 
 plt.plot(ag_WSS.index, ag_WSS['PV Silver Demand [metric tonnes]'], color='black', label='Historical PV Silver Demand, WSS')
 plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Silver Production [metric tonnes]'], ls='--', color='gray', label='Mining production, WSS')
@@ -167,18 +169,14 @@ plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
 plt.title('Silver Demand by Technology to Achieve 75 TW')
 
 
-# In[15]:
+# ### Read in literature comparisons
+
+# In[54]:
 
 
 #read in literature compare 
 ag_lit_compare = pd.read_csv(os.path.join(supportMatfolder, 'Ag_Literature_Compare.csv'), index_col=0)
 ag_lit_compare_ffill = ag_lit_compare.interpolate()
-
-
-# In[16]:
-
-
-ag_lit_compare_ffill.columns
 
 
 # In[42]:
@@ -207,52 +205,143 @@ plt.legend(fontsize=2)
 #they assume 10 tons/GW from Manberger + Stenqvist 2018
 
 
-# In[19]:
+# In[55]:
 
 
-plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Industry [tonnes]'], color='red', label='Hallam et al 2022, learning rate 10% Industry')
-plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Ntype [tonnes]'], color='tab:red', label='Hallam et al 2022, learning rate 10% n-type')
+ag_lit_compare_ffill.columns
+
+
+# In[61]:
+
+
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Industry [tonnes]'], color='red', label='Hallam et al 2022, LR 10% Industry')
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Ntype [tonnes]'], color='tab:red', label='Hallam et al 2022, LR 10% n-type')
 plt.plot(ag_lit_compare_ffill['Wang 2023_1.5C_min [tonnes]'], color='mediumpurple', label='')
 plt.plot(ag_lit_compare_ffill['Wang 2023_1.5C_median [tonnes]'], color='rebeccapurple', label='Wang et al 2023, 1.5C median')
 plt.plot(ag_lit_compare_ffill['Wang 2023_1.5C_max [tonnes]'], color='mediumorchid', label='')
 plt.plot(ag_lit_compare_ffill['Wang 2023_2C_min [tonnes]'], color='aqua', label='')
 plt.plot(ag_lit_compare_ffill['Wang 2023_2C_median [tonnes]'], color='deepskyblue', label='Wang et al 2023, 2C median')
 plt.plot(ag_lit_compare_ffill['Wang 2023_2C_max [tonnes]'], color='royalblue', label='')
+
+plt.plot(ag_lit_compare_ffill['Gervais 2021_ScenarioA [tonnes]'], color='lime', label='Gervais 2021, Scenario A ')
+plt.plot(ag_lit_compare_ffill['Gervais 2021_IEA8TW_PERCmoderate [tonnes]'], color='limegreen', label='Gervais 2021, 8TW')
+plt.plot(ag_lit_compare_ffill['Gervais 2021_70TW_PERCmoderate [tonnes]'], color='forestgreen', label='Gervais 2021, 70TW')
+
 
 plt.ylim(0,)
 plt.xlim(2020, 2050)
-plt.legend()
+plt.legend(loc='upper left', fontsize = 8)
 
 
-# In[ ]:
+# In[116]:
 
 
-plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='tab:red', label='SHJ')
-plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:2051,0], color='tab:orange', label='TOPCon')
+plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='#41B8FF', label='SHJ')
+plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:2051,0], color='#0079C1', label='TOPCon')
 plt.bar(silver_annual_demand_pvice.index, silver_annual_demand_pvice.iloc[:2051,0], color='black', label='Baseline')
-plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:2051,0], color='tab:blue', label='PERC')
+plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:2051,0], color='#005B91', label='PERC')
 
-plt.plot(ag_WSS.index, ag_WSS['PV Silver Demand [metric tonnes]'], color='black', label='Historical PV Silver Demand, WSS')
-plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Silver Production [metric tonnes]'], ls='--', color='gray', label='Mining production, WSS')
+plt.plot(ag_WSS.index, ag_WSS['PV Silver Demand [metric tonnes]'], lw=2, color='black', label='Historical PV Silver Demand, WSS')
+plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Silver Production [metric tonnes]'],
+         lw=3, ls='--', color='gray', label='Mining production, WSS')
 plt.plot(2023, ag_WSS.loc[2023,'Silver Production [metric tonnes]'], '*', markersize=10, color='grey')
-plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Total Supply [metric tonnes]'], ls='-.', color='gray', label='Total Supply, WSS')
+plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Total Supply [metric tonnes]'],
+         lw=3, ls='-.', color='gray', label='Total Supply, WSS')
 plt.plot(2023, ag_WSS.loc[2023,'Total Supply [metric tonnes]'], '*', markersize=10, color='grey')
 
-plt.plot(ag_lit_compare_ffill['Hallam 2022 [kilotons]'], color='red', label='Hallam et al 2022')
-plt.plot(ag_lit_compare_ffill['Wang 2023_1.5C_min [tonnes]'], color='mediumpurple', label='')
-plt.plot(ag_lit_compare_ffill['Wang 2023_1.5C_median [tonnes]'], color='rebeccapurple', label='Wang et al 2023, 1.5C median')
-plt.plot(ag_lit_compare_ffill['Wang 2023_1.5C_max [tonnes]'], color='mediumorchid', label='')
-plt.plot(ag_lit_compare_ffill['Wang 2023_2C_min [tonnes]'], color='aqua', label='')
-plt.plot(ag_lit_compare_ffill['Wang 2023_2C_median [tonnes]'], color='deepskyblue', label='Wang et al 2023, 2C median')
-plt.plot(ag_lit_compare_ffill['Wang 2023_2C_max [tonnes]'], color='royalblue', label='')
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Industry [tonnes]'],lw=2, color='#F77D31', label='Hallam et al 2022, LR 10% Industry')
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Ntype [tonnes]'],lw=2, color='#933C06', label='Hallam et al 2022, LR 10% n-type')
+
+plt.plot(wang2023_Agdemand_allMC[0], color='#9CD174', lw=2, label='Wang 2023')
+
+plt.plot(ag_lit_compare_ffill['Gervais 2021_ScenarioA [tonnes]'],lw=2, color='#FFDC7C', label='Gervais 2021, Scenario A ')
+plt.plot(ag_lit_compare_ffill['Gervais 2021_IEA8TW_PERCmoderate [tonnes]'],lw=2, color='#FFC425', label='Gervais 2021, PERC 8TW')
+#plt.plot(ag_lit_compare_ffill['Gervais 2021_70TW_PERCmoderate [tonnes]'], color='#DBA000', label='Gervais 2021, PERC 70TW')
 
 #plt.grid(axis='y', color='0.9', ls='--', zorder=0)
 #plt.set_axisbelow(True)
-plt.legend(fontsize=12)
+plt.legend(bbox_to_anchor=(1,.2))
 plt.ylim(0,)
-plt.xlim(2005,2050)
+plt.xlim(2010,2050)
 plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
-plt.title('Silver Demand by Technology to Achieve 75 TW')
+plt.title('Silver Demand by Technology to Achieve up to 75 TW')
+
+
+# In[114]:
+
+
+plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='#41B8FF', label='SHJ')
+plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:2051,0], color='#0079C1', label='TOPCon')
+plt.bar(silver_annual_demand_pvice.index, silver_annual_demand_pvice.iloc[:2051,0], color='black', label='Baseline')
+plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:2051,0], color='#005B91', label='PERC')
+
+plt.plot(ag_WSS.index, ag_WSS['PV Silver Demand [metric tonnes]'],lw=2, color='black', label='Historical PV Silver Demand, WSS')
+plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Silver Production [metric tonnes]'],
+         lw=2, ls='--', color='gray', label='Mining production, WSS')
+plt.plot(2023, ag_WSS.loc[2023,'Silver Production [metric tonnes]'], '*', markersize=10, color='grey')
+plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Total Supply [metric tonnes]'],
+         lw=2, ls='-.', color='gray', label='Total Supply, WSS')
+plt.plot(2023, ag_WSS.loc[2023,'Total Supply [metric tonnes]'], '*', markersize=10, color='grey')
+
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Industry [tonnes]'],
+         lw=2, color='#F77D31', label='Hallam et al 2022, LR 10% Industry')
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Ntype [tonnes]'],
+         lw=2, color='#933C06', label='Hallam et al 2022, LR 10% n-type')
+
+plt.plot(ag_lit_compare_ffill['Gervais 2021_ScenarioA [tonnes]'],lw=2, color='#FFDC7C', label='Gervais 2021, Scenario A ')
+plt.plot(ag_lit_compare_ffill['Gervais 2021_IEA8TW_PERCmoderate [tonnes]'],lw=2, color='#FFC425', label='Gervais 2021, PERC 8TW')
+plt.plot(ag_lit_compare_ffill['Gervais 2021_70TW_PERCmoderate [tonnes]'],lw=2, color='#DBA000', label='Gervais 2021, PERC 70TW')
+
+plt.plot(wang2023_Agdemand_allMC[0], color='#9CD174', lw=2, label='Wang 2023')
+
+#plt.grid(axis='y', color='0.9', ls='--', zorder=0)
+#plt.set_axisbelow(True)
+plt.legend(fontsize=12, bbox_to_anchor=(1,1)) #(x,y)
+plt.ylim(0,)
+plt.xlim(2010,2050)
+plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
+plt.title('Silver Demand by Technology to Achieve up to 75 TW')
+
+
+# In[118]:
+
+
+plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='#41B8FF', label='SHJ')
+plt.bar(silver_annual_demand_topcon.index, silver_annual_demand_topcon.iloc[:2051,0], color='#0079C1', label='TOPCon')
+plt.bar(silver_annual_demand_pvice.index, silver_annual_demand_pvice.iloc[:2051,0], color='black', label='Baseline')
+plt.bar(silver_annual_demand_perc.index, silver_annual_demand_perc.iloc[:2051,0], color='#005B91', label='PERC')
+
+plt.plot(ag_WSS.index, ag_WSS['PV Silver Demand [metric tonnes]'],lw=2, color='black', label='Historical PV Silver Demand, WSS')
+plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Silver Production [metric tonnes]'],
+         lw=2, ls='--', color='gray', label='Mining production, WSS')
+plt.plot(2023, ag_WSS.loc[2023,'Silver Production [metric tonnes]'], '*', markersize=10, color='grey')
+plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Total Supply [metric tonnes]'],
+         lw=2, ls='-.', color='gray', label='Total Supply, WSS')
+plt.plot(2023, ag_WSS.loc[2023,'Total Supply [metric tonnes]'], '*', markersize=10, color='grey')
+
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Industry [tonnes]'],
+         lw=2, color='#F77D31', label='Hallam et al 2022, LR 10% Industry')
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Ntype [tonnes]'],
+         lw=2, color='#933C06', label='Hallam et al 2022, LR 10% n-type')
+
+plt.plot(wang2023_Agdemand_allMC[0], color='#9CD174', lw=2, label='Wang 2023')
+
+
+plt.plot(ag_lit_compare_ffill['Gervais 2021_ScenarioA [tonnes]'],lw=2, color='#FFDC7C', label='Gervais 2021, Scenario A ')
+plt.plot(ag_lit_compare_ffill['Gervais 2021_IEA8TW_PERCmoderate [tonnes]'],lw=2, color='#FFC425', label='Gervais 2021, PERC 8TW')
+plt.plot(ag_lit_compare_ffill['Gervais 2021_70TW_PERCmoderate [tonnes]'], color='#DBA000', label='Gervais 2021, PERC 70TW')
+
+plt.plot(ag_WSS.index, ag_WSS['Global ReserveBase_USGS [tonnes]'],lw=2, color='black', label='Global Reserve Base, USGS')
+plt.plot(ag_WSS.index, ag_WSS['Global Resources excluding reserves [metric tonnes]'],lw=2, color='#50565C', label='Global Resources, WSS')
+plt.plot(ag_WSS.index, ag_WSS['Global Reserves (exclude production) [ metric tonnes]'],lw=2, color='#A4ABB1', label='Global Reserves, WSS')
+
+#plt.grid(axis='y', color='0.9', ls='--', zorder=0)
+#plt.set_axisbelow(True)
+plt.legend(fontsize=12, bbox_to_anchor=(1,1)) #(x,y)
+plt.ylim(0,)
+plt.xlim(2010,2050)
+plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
+plt.title('Silver Demand by Technology to Achieve up to 75 TW')
 
 
 # In[ ]:
