@@ -107,7 +107,7 @@ plt.ylabel("Silver, grams/module m2")
 # ### Extend projection through 2050
 # It appears that the silver per cell is expected to level out by 2025 or so. We will extend 2030 values through 2050 as a "lower limit" or minimal further improvement.
 
-# In[22]:
+# In[9]:
 
 
 #create an empty df as a place holder
@@ -122,7 +122,7 @@ ag_gpm2_full = ag_gpm2.interpolate()
 #print(ag_gpm2_full)
 
 
-# In[25]:
+# In[10]:
 
 
 cpm2
@@ -131,7 +131,7 @@ cpm2
 #fulldf.loc[2020:2050]
 
 
-# In[9]:
+# In[11]:
 
 
 #plot
@@ -140,7 +140,7 @@ plt.title("Silver mass per module area over time")
 plt.ylabel("Silver, grams/module m2")
 
 
-# In[10]:
+# In[12]:
 
 
 #print out to csv
