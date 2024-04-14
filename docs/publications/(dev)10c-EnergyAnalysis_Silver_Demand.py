@@ -227,7 +227,7 @@ plt.title('Silver Demand by Technology to Achieve 75 TW')
 plt.show()
 
 
-# In[113]:
+# In[115]:
 
 
 plt.rcParams.update({'font.size': 14})
@@ -258,7 +258,7 @@ ax.axvspan(2009,2023, facecolor='0.2', alpha=0.1) #grey shading
 ax.text(2023,550000,'Global Reserve Base, USGS', fontsize=12)
 ax.text(2023,230000,'Global Resources, WSS', fontsize=12)
 ax.text(2023,100000,'Global Reserves, WSS', fontsize=12)
-ax.text(2011,8000,'Historical Supply,\nMining and\nPV demand, WSS', fontsize=10)
+ax.text(2011,8000,'Historical Supply, Mining\nand PV demand, WSS', fontsize=10)
 
 ax.set_yticklabels(['{:,}'.format(int(x)) for x in ax.get_yticks().tolist()])
     
