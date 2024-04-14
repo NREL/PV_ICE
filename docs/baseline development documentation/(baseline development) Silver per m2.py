@@ -18,10 +18,16 @@ plt.rcParams['figure.figsize'] = (12, 8)
 
 cwd = os.getcwd() #grabs current working directory
 
-baselinesfolder = str(Path().resolve().parent.parent.parent /'PV_ICE' / 'baselines')
-supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
+baselinesfolder = str(Path().resolve().parent.parent /'PV_ICE' / 'baselines')
+supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
 
 density_Ag = 10.49 #g/cm3, source Wikipedia
+
+
+# In[2]:
+
+
+print(supportMatfolder)
 
 
 # ### Pre-Journal Calculations
@@ -40,7 +46,7 @@ density_Ag = 10.49 #g/cm3, source Wikipedia
 # <https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing>
 # then copied to a csv and is uploaded here.
 
-# In[2]:
+# In[3]:
 
 
 #read in the csv of 2009 through 2030 data for silver per cell.
@@ -50,13 +56,13 @@ itrpv_ag_gpc = pd.read_csv(os.path.join(supportMatfolder, "ag_g_per_cell.csv"),
                            index_col='Year', usecols=lambda x: x not in skipcols)
 
 
-# In[3]:
+# In[4]:
 
 
 itrpv_ag_gpc
 
 
-# In[4]:
+# In[5]:
 
 
 #plot the raw data
@@ -67,7 +73,7 @@ plt.ylabel("Silver, grams/cell")
 
 # Based on looking at the plot of original data, it doesn't seem crazy to linearly interpolate for missing data
 
-# In[5]:
+# In[6]:
 
 
 ag_gpc = itrpv_ag_gpc.interpolate()
@@ -78,7 +84,7 @@ plt.ylabel("Silver, grams/cell")
 
 # ## Convert to a per module area basis (not per cell)
 
-# In[6]:
+# In[7]:
 
 
 #import cell per m2 from the silicon baseline
@@ -87,7 +93,7 @@ cpm2 = pd.read_csv(os.path.join(supportMatfolder, "output_cell_per_m2.csv"),
 #print(cpm2)
 
 
-# In[7]:
+# In[8]:
 
 
 #convert silver per cell to silver per m^2 of module, based on output from silicon baseline
@@ -101,19 +107,32 @@ plt.ylabel("Silver, grams/module m2")
 # ### Extend projection through 2050
 # It appears that the silver per cell is expected to level out by 2025 or so. We will extend 2030 values through 2050 as a "lower limit" or minimal further improvement.
 
-# In[8]:
+# In[22]:
 
 
 #create an empty df as a place holder
-yrs = pd.Series(index=range(2031,2050), dtype='float64')
-tempdf = pd.DataFrame(yrs, columns=['ag_g_per_m2'])
-fulldf = pd.concat([ag_gpm2,tempdf]) #attach it to rest of df
+#yrs = pd.Series(index=range(2031,2050), dtype='float64')
+#tempdf = pd.DataFrame(yrs, columns=['ag_g_per_m2'])
+#fulldf = pd.concat([ag_gpm2,tempdf]) #attach it to rest of df
 
 #set the 2050 value to the same as 2030
-fulldf.loc[2050] = fulldf.loc[2030]
+ag_gpm2.loc[2050] = ag_gpm2.loc[2031]
 #interpolate for missing values
-ag_gpm2_full = fulldf.interpolate()
+ag_gpm2_full = ag_gpm2.interpolate()
 #print(ag_gpm2_full)
+
+
+# In[25]:
+
+
+cpm2
+#ag_gpc
+#ag_gpm2_full
+#fulldf.loc[2020:2050]
+
+
+# In[9]:
+
 
 #plot
 plt.plot(ag_gpm2_full)
@@ -121,7 +140,7 @@ plt.title("Silver mass per module area over time")
 plt.ylabel("Silver, grams/module m2")
 
 
-# In[9]:
+# In[10]:
 
 
 #print out to csv
