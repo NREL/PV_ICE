@@ -183,7 +183,7 @@ ag_WSS_flatforward = ag_WSS.interpolate()
 ag_WSS_flatforward.loc[2023,'Total Supply [metric tonnes]']
 
 
-# In[109]:
+# In[14]:
 
 
 plt.rcParams.update({'font.size': 14})
@@ -227,7 +227,7 @@ plt.title('Silver Demand by Technology to Achieve 75 TW')
 plt.show()
 
 
-# In[115]:
+# In[15]:
 
 
 plt.rcParams.update({'font.size': 14})
@@ -311,7 +311,7 @@ plt.legend(fontsize=2)
 ag_lit_compare_ffill.columns
 
 
-# In[26]:
+# In[21]:
 
 
 plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Industry [tonnes]'], color='red', label='Hallam et al 2022, LR 10% Industry')
@@ -355,10 +355,10 @@ plt.plot(ag_WSS_flatforward.index, ag_WSS_flatforward['Total Supply [metric tonn
          lw=3, ls=':', color='gray', label='Total Supply, WSS')
 plt.plot(2023, ag_WSS.loc[2023,'Total Supply [metric tonnes]'], '*', markersize=10, color='grey')
 
-plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Industry [tonnes], 63.4TW'],
-         lw=2, color='#F77D31', label='Hallam et al 2022, LR 10% Industry')
-plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Ntype [tonnes], 63.4TW'],
-         lw=2, color='#933C06', label='Hallam et al 2022, LR 10% n-type')
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Industry [tonnes]'],
+         lw=2, color='#F77D31', label='Hallam et al 2022, LR 10% Industry, 63.4TW')
+plt.plot(ag_lit_compare_ffill['Hallam 2022_LearningRate10%_Ntype [tonnes]'],
+         lw=2, color='#933C06', label='Hallam et al 2022, LR 10% n-type, 63.4TW')
 
 plt.plot(wang2023_Agdemand_allMC[0], color='#9CD174', lw=2, label='Wang 2023, TW')
 
@@ -375,7 +375,7 @@ plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
 plt.title('Silver Demand by Technology to Achieve up to 75 TW')
 
 
-# In[108]:
+# In[23]:
 
 
 plt.rcParams.update({'font.size': 14})
@@ -423,7 +423,7 @@ ax.set_ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
 plt.title('Silver Demand by Technology to Achieve up to 75 TW')
 
 
-# In[45]:
+# In[24]:
 
 
 plt.rcParams.update({'font.size': 14})
@@ -466,7 +466,7 @@ ax.set_ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
 plt.title('Silver Demand by Technology to Achieve up to 75 TW')
 
 
-# In[24]:
+# In[25]:
 
 
 plt.bar(silver_annual_demand_shj.index, silver_annual_demand_shj.iloc[:2051,0], color='#41B8FF', label='SHJ')
@@ -507,18 +507,92 @@ plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
 plt.title('Silver Demand by Technology to Achieve up to 75 TW')
 
 
-# In[25]:
+# In[26]:
 
 
 silver_annual_demand_pvice.loc[2011:2023]
 
 
-# ### Energy Compare of these techs
+# #### Compare cumulative silver demand to global reserves (in terms of %)
+
+# In[71]:
+
+
+cumumass = pd.read_csv(os.path.join(inputfolder, 'EnergyAnalysis','Deploy_MirletzLinear','cc_cumu_mass_results.csv'),
+           index_col = 0)
+discussiontable = pd.read_csv(os.path.join(inputfolder, 'EnergyAnalysis','Deploy_MirletzLinear','discussiontable.csv'),
+           index_col = 0)
+
+
+# In[48]:
+
+
+energytechsubset = discussiontable.iloc[0:4,3:]
+energytechsubset
+
+
+# In[78]:
+
+
+
+
+
+# In[90]:
+
+
+techscens = '|'.join(['_PERC','SHJ','TOPCon','PV_ICE_'])
+cumulativeAg_byscen = cumumass.filter(like='VirginStock_silver').filter(regex=techscens).loc[2050]
+cumulativeAg_byscen.index = energytechsubset.index
+cumulativeAg_byscen_f = pd.DataFrame(cumulativeAg_byscen).rename(columns={2050:'Cumu Ag Demand 2050 [tonnes]'})
+cumulativeAg_byscen_f
+
+
+# In[97]:
+
+
+ag_WSS.loc[2020:2025]
+
+
+# In[68]:
+
+
+ag_WSS['Global ReserveBase_USGS [tonnes]'].mean()
+
+
+# In[89]:
+
+
+cumulativeAg_byscen_f/ag_WSS['Global ReserveBase_USGS [tonnes]'].mean()
+
 
 # In[ ]:
 
 
 
+
+
+# ### Energy Compare of these techs
+
+# In[29]:
+
+
+energytechsubset['SilverDemand [tonnes]'] = [cumuAg2100_pvice,cumuAg2100_perc,cumuAg2100_topcon,cumuAg2100_shj]
+energytechsubset
+
+
+# In[ ]:
+
+
+pd.DataFrame([[cumuAg2100_pvice],[cumuAg2100_perc],[cumuAg2100_topcon],[cumuAg2100_shj]],
+                index=energytechsubset.index, columns=['Silver Demand [tonnes]'])
+
+
+# In[ ]:
+
+
+fig, ax = plt.subplots()
+ax.bar(energytechsubset.index,energytechsubset['netenergy'])
+plt.show()
 
 
 # In[ ]:
