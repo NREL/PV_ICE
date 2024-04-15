@@ -507,10 +507,10 @@ plt.ylabel('Virgin Material Demand for Silver\n[Metric Tonnes]')
 plt.title('Silver Demand by Technology to Achieve up to 75 TW')
 
 
-# In[26]:
+# In[102]:
 
 
-silver_annual_demand_pvice.loc[2011:2023]
+silver_annual_demand_shj.loc[2024:2033]
 
 
 # #### Compare cumulative silver demand to global reserves (in terms of %)
