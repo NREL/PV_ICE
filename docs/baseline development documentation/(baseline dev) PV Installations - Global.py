@@ -18,7 +18,7 @@ plt.rcParams['figure.figsize'] = (30, 15)
 
 cwd = os.getcwd() #grabs current working directory
 
-supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
+supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
 
 
 # In[2]:
@@ -207,7 +207,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 cwd = os.getcwd() #grabs current working directory
 
-supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
+supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
 
 
 # In[17]:
@@ -406,7 +406,7 @@ plt.ylabel('Annually Deployed PV [MWdc]')
 # So lets say cumulative of 50 TW in 2050.
 # Updating to Haegel et al 75 TW in 2050.
 
-# In[67]:
+# In[38]:
 
 
 #2021:
@@ -414,7 +414,7 @@ cumPV_2022 = IRENA_global.loc[2022,'World']
 print('In 2022, there is a cumulative of '+str(round(cumPV_2022,2))+' MWdc installed globally.')
 
 
-# In[68]:
+# In[39]:
 
 
 cumPV2050_MWdc = 75*1000000 #MW or 75 TW
@@ -422,13 +422,13 @@ req_additions = cumPV2050_MWdc-cumPV_2022
 print('A total of '+str(round(req_additions,0))+' MWdc need to be added between 2023 and 2050')
 
 
-# In[57]:
+# In[40]:
 
 
 req_additions/(2050-2023)
 
 
-# In[58]:
+# In[41]:
 
 
 idx_fullrange = pd.RangeIndex(start=2000,stop=2051,step=1) #create the index
@@ -443,7 +443,7 @@ altproj_50TW_cum_shift = altproj_50TW_cum.shift(1).fillna(0)
 altproj_50TW_cum['World_annual_[MWdc]'] = altproj_50TW_cum-altproj_50TW_cum_shift
 
 
-# In[59]:
+# In[42]:
 
 
 fig, ax1 = plt.subplots()
@@ -457,7 +457,7 @@ ax2.set_ylabel('Annual Installations [MW]')
 plt.show()
 
 
-# In[60]:
+# In[43]:
 
 
 altproj_50TW_annual_TW = altproj_50TW_cum['World_annual_[MWdc]']/1e6
@@ -470,7 +470,7 @@ altproj_50TW_annual_TW.loc[2040]
 altproj_50TW_annual_TW.loc[2050]
 
 
-# In[61]:
+# In[44]:
 
 
 altproj_50TW_cum.loc[2030,'World_cum']/1e6
@@ -480,7 +480,7 @@ altproj_50TW_cum.loc[2030,'World_cum']/1e6
 # 
 # There is also a smooth transitition of increasing deployments, as opposed to a step change.
 
-# In[62]:
+# In[45]:
 
 
 altproj_50TW_cum.to_csv(os.path.join(supportMatfolder,'output-installationProjection-World-50TW.csv'))
@@ -494,7 +494,7 @@ altproj_50TW_cum.to_csv(os.path.join(supportMatfolder,'output-installationProjec
 # **For Small growth through 2100:**
 # From https://ember-climate.org/data/data-explorer/historical there is a linear increase in cumulative installed capacity. The slope of the increase is 219.32 GW/yr (see LiteratureIntallationProjections.xlsx in SupportingMaterials folder). If we assume that PV maintains a constant marketshare, then we can apply the increasing capacity slope to 2050 through 2100 as a steady increase in PV installation starting at the 75 TW in 2050 (Haegel et al 2023).
 
-# In[63]:
+# In[46]:
 
 
 #calculate the cumulative installed capacity in 2100 using 2000-2021 historical increase in global electrical capacity
@@ -511,7 +511,7 @@ proj_2050_2100_energyIncrease.interpolate(inplace=True)
 proj_2050_2100_energyIncrease['World_annual_[MWdc]'] = 219.32*1e3
 
 
-# In[64]:
+# In[47]:
 
 
 #combine with through 2050 projection
@@ -520,7 +520,7 @@ global_projection_full.to_csv(os.path.join(supportMatfolder, 'output-globalInsta
 global_projection_full.loc[2022]
 
 
-# In[65]:
+# In[48]:
 
 
 fig, ax1 = plt.subplots()
@@ -533,6 +533,32 @@ ax2.set_ylabel('Annual Installations [TW]')
 plt.show()
 
 
+# In[53]:
+
+
+plt.rcParams['figure.figsize'] = (10,5)
+
+fig_effectiveCap_immortal = plt.figure()
+
+#capacity target
+plt.plot(global_projection_full['World_cum']/1e6, 
+         label='Capacity Target', color='black', ls='dashdot')
+
+#plt.plot(effective_capacity/1e6, label=sim1.scenario.keys())
+plt.legend(prop={'size': 11}) #bbox_to_anchor=(1,1.02), 
+plt.ylabel('Effective Capacity [TW]')
+plt.title('Effective Capacity: No Replacements', fontsize=20)
+plt.ylim(0,90)
+plt.xlim(2000,2100)
+
+#ax.xaxis.set_minor_locator(MultipleLocator(10))
+plt.xticks(np.arange(2000, 2101, 10))
+plt.yticks(np.arange(0, 91, 10))
+plt.grid(axis='both', which='both', color='0.9', ls='--')
+
+fig_effectiveCap_immortal.savefig(os.path.join(supportMatfolder,'energyresults-effectivecapacity.png'), dpi=300, bbox_inches='tight')
+
+
 # In[ ]:
 
 
@@ -541,7 +567,7 @@ plt.show()
 
 # ## Country wise
 
-# In[66]:
+# In[50]:
 
 
 #create deployment profile 2000 through 2100
