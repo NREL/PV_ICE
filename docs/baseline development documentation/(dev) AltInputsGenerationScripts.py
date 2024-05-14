@@ -13,7 +13,7 @@ import PV_ICE
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[3]:
+# In[2]:
 
 
 #print("Working on a ", platform.system(), platform.release())
@@ -351,7 +351,7 @@ Agimprovedrecycle.interpolate()
 
 # import PV_ICE
 
-# In[9]:
+# In[3]:
 
 
 def alphabeta2T10T50T90(alpha,beta):
@@ -369,14 +369,14 @@ def alphabeta2T90(alpha,beta):
     return T90
 
 
-# In[10]:
+# In[5]:
 
 
 alpha = pd.Series([x / 10.0 for x in range(1, 500,1)])
 beta = pd.Series([x / 10.0 for x in range(1, 1000,1)])
 
 
-# In[11]:
+# In[6]:
 
 
 T50 = pd.Series(range(15,66,1))
@@ -385,7 +385,7 @@ inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 inputsdf
 
 
-# In[12]:
+# In[7]:
 
 
 for row in inputsdf.index:
@@ -453,7 +453,7 @@ alphabeta2T10T50T90(5.692,29.697)
 #input T10 and a range between T50-T90, to solve for T50 T90 for a particular project lifetime
 
 
-# In[19]:
+# In[8]:
 
 
 def projectlife2T50T90(projectlife, N=10, plot=True):
@@ -467,10 +467,10 @@ def projectlife2T50T90(projectlife, N=10, plot=True):
     return T50,T90
 
 
-# In[20]:
+# In[10]:
 
 
-projectlife2T50T90(20)
+projectlife2T50T90(29)
 
 
 # In[21]:

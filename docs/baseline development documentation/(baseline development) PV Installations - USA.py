@@ -214,7 +214,7 @@ plt.title('Thin Film PV Installations (MW) in the USA, 1995 through 2018')
 us_tf_installed.to_csv(os.path.join(supportMatfolder,'output_USA_TFPV_installs.csv'), index=True)
 
 
-# In[21]:
+# In[20]:
 
 
 us_tf_installed.to_csv(os.path.join(supportMatfolder,'output_USA_TFPV_installs.csv'), index=True)
