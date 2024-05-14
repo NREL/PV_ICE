@@ -28,15 +28,15 @@ plt.rcParams['figure.figsize'] = (30, 15)
 
 cwd = os.getcwd() #grabs current working directory
 
-supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
-baselinesFolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines')
+supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
+baselinesFolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines')
 
 
 # In[3]:
 
 
 cwd = os.getcwd() #grabs current working directory
-df_installs_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/PVInstalls_USA_AllSources.csv", index_col='Year')
+df_installs_raw = pd.read_csv(os.path.join(supportMatfolder, 'PVInstalls_USA_AllSources.csv'), index_col='Year')
 
 
 # In[4]:
@@ -64,13 +64,14 @@ plt.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower left")
 
 # # Select the data to use for installs
 
-# The IRENA is consistently lower than the other sources from 2012 through the present. Given that all other sources are in agreement, we will select one of these data sets to use for installation data, rather than IRENA. In this case, we will select the Wood Mackenzie Power & Renewables quarterly reports and PV forecasts from 2010 through 2019.
+# The IRENA is consistently lower than the other sources from 2012 through the present. Given that all other sources are in agreement, we will select one of these data sets to use for installation data, rather than IRENA. In this case, we will select the Wood Mackenzie Power & Renewables year in review reports from 2010 through present.
 
 # In[6]:
 
 
-installs_2010_2019 = df_installs_raw.loc[(df_installs_raw.index>=2010)]
-installs_recent = pd.DataFrame(installs_2010_2019[sources[0]])
+#select since 2010 data
+installs_2010_present = df_installs_raw.loc[(df_installs_raw.index>=2010)]
+installs_recent = pd.DataFrame(installs_2010_present[sources[0]])
 installs_recent.columns = ['installed_pv_MW']
 print(installs_recent)
 
@@ -120,7 +121,7 @@ plt.title('Installations of PV in the USA (MW) since 1995')
 
 
 cwd = os.getcwd() #grabs current working directory
-df_raw_mrktshr_siVtf = pd.read_csv(cwd+"/../../../PV_ICE/baselines/SupportingMaterial/MarketShare_US_siliconVSthinfilm.csv", index_col='Year')
+df_raw_mrktshr_siVtf = pd.read_csv(os.path.join(supportMatfolder, "MarketShare_US_siliconVSthinfilm.csv"), index_col='Year')
 
 
 # In[11]:
@@ -154,7 +155,7 @@ df_mrktshr_us =  pd.DataFrame(df_raw_mrktshr_siVtf['All_Marketshare'])
 df_mrktshr_us_si_complete = df_mrktshr_us.interpolate(limit_area='inside')
 plt.plot(df_mrktshr_us_si_complete)
 plt.title('Marketshare of Silicon PV installed since 1995')
-df_mrktshr_us_si_complete.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_Si_marketshare.csv', index=True)
+df_mrktshr_us_si_complete.to_csv(os.path.join(supportMatfolder,'output_USA_Si_marketshare.csv'), index=True)
 
 
 # # Marketshare weight PV installs by percent Silicon
@@ -181,13 +182,13 @@ plt.legend()
 # In[15]:
 
 
-us_si_installs.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_SiPV_installs.csv', index=True)
+us_si_installs.to_csv(os.path.join(supportMatfolder,'output_USA_SiPV_installs.csv'), index=True)
 
 
 # In[16]:
 
 
-installs.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_allPV_installs.csv', index=True)
+installs.to_csv(os.path.join(supportMatfolder,'output_USA_allPV_installs.csv'), index=True)
 
 
 # This data only takes installes through 2019. For the remaining years through 2050, a compound annual growth rate of 8.9% was used to predict increasing installations. This compound annual growth rate was sourced from IRENA 2016 EoL Mangement Report.
@@ -210,13 +211,13 @@ plt.title('Thin Film PV Installations (MW) in the USA, 1995 through 2018')
 # In[19]:
 
 
-us_tf_installed.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_TFPV_installs.csv', index=True)
+us_tf_installed.to_csv(os.path.join(supportMatfolder,'output_USA_TFPV_installs.csv'), index=True)
 
 
-# In[19]:
+# In[21]:
 
 
-us_tf_installed.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/output_USA_TFPV_installs.csv', index=True)
+us_tf_installed.to_csv(os.path.join(supportMatfolder,'output_USA_TFPV_installs.csv'), index=True)
 
 
 # # Only Commercial and Utility Scale c-Si
