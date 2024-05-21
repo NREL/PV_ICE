@@ -75,7 +75,7 @@ MATERIALS = ['glass','aluminium_frames','silver','silicon', 'copper', 'encapsula
 moduleFile = os.path.join(baselinesfolder, 'baseline_modules_mass_US_updatedT50T90.csv')
 
 
-# In[9]:
+# In[8]:
 
 
 sim1 = PV_ICE.Simulation(name='MESC_StdScen', path=testfolder)
@@ -86,7 +86,7 @@ for mat in MATERIALS:
     sim1.scenario[scens].addMaterial(mat, massmatfile=materialfile) # add all materials listed in MATERIALS
 
 
-# In[10]:
+# In[9]:
 
 
 #deployment projection for all scenarios
@@ -94,38 +94,38 @@ sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]',
                     value=stdscens_pv_filled.sum(axis=1), start_year=2024) #
 
 
-# In[15]:
+# In[10]:
 
 
 plt.plot(sim1.scenario['23_MidCase_NoNascent'].dataIn_m.loc[:,'new_Installed_Capacity_[MW]'])
 
 
-# In[17]:
+# In[11]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[23]:
+# In[12]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults()
 
 
-# In[24]:
+# In[13]:
 
 
 sim1.plotMetricResults()
 
 
-# In[26]:
+# In[14]:
 
 
 wasteEoL = ii_yearly['WasteEOL_Module_MESC_StdScen_23_MidCase_NoNascent_[Tonnes]']
 decomm = ii_yearly['DecommisionedCapacity_MESC_StdScen_23_MidCase_NoNascent_[MW]']
 
 
-# In[42]:
+# In[15]:
 
 
 plt.plot(wasteEoL)
@@ -143,14 +143,14 @@ plt.grid()
 # 
 # Explain the jaggedy nature of the EoL
 
-# In[32]:
+# In[16]:
 
 
 EoLByMethod_MW = sim1.scenario['23_MidCase_NoNascent'].dataOut_m.filter(like='Yearly_Sum_Power_EOLby_')
 EoLByMethod_MW.columns
 
 
-# In[35]:
+# In[17]:
 
 
 #plotly plot
@@ -160,10 +160,10 @@ fig.show()
 
 # Most PV failing before 2050 is due to old installations with shorter project lifetimes. 
 
-# In[ ]:
+# In[23]:
 
 
-
+sim1.scenario['23_MidCase_NoNascent'].dataOut_m.keys()
 
 
 # In[ ]:

@@ -36,6 +36,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .m { color: var(--jp-mirror-editor-number-color) } /* Literal.Number */
 .highlight .s { color: var(--jp-mirror-editor-string-color) } /* Literal.String */
 .highlight .ow { color: var(--jp-mirror-editor-operator-color); font-weight: bold } /* Operator.Word */
+.highlight .pm { color: var(--jp-mirror-editor-punctuation-color) } /* Punctuation.Marker */
 .highlight .w { color: var(--jp-mirror-editor-variable-color) } /* Text.Whitespace */
 .highlight .mb { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Bin */
 .highlight .mf { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Float */
@@ -14559,12 +14560,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14607,8 +14608,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">'font.size'</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
 </pre></div>
 
@@ -14638,9 +14639,9 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
-<span class="c1">#skipcols = [&#39;Source&#39;, &#39;Notes&#39;,&#39;Country&#39;]</span>
-<span class="n">e_reducesilica_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-reduceSilicaSi.csv&quot;</span><span class="p">,</span>
-                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span><span class="c1">#, usecols=lambda x: x not in skipcols)</span>
+<span class="c1">#skipcols = ['Source', 'Notes','Country']</span>
+<span class="n">e_reducesilica_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-reduceSilicaSi.csv"</span><span class="p">,</span>
+                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span><span class="c1">#, usecols=lambda x: x not in skipcols)</span>
 </pre></div>
 
      </div>
@@ -14656,7 +14657,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14794,8 +14795,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: Silica Reduction&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: Silica Reduction'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'[kWh/kg]'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14867,7 +14868,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pa_1990</span> <span class="o">=</span> <span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1990</span><span class="p">,</span><span class="s1">&#39;E_reduce_SilicatoMGSi&#39;</span><span class="p">]</span><span class="o">-</span><span class="mf">13.0</span> <span class="c1">#Phylipsen Alsema</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pa_1990</span> <span class="o">=</span> <span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1990</span><span class="p">,</span><span class="s1">'E_reduce_SilicatoMGSi'</span><span class="p">]</span><span class="o">-</span><span class="mf">13.0</span> <span class="c1">#Phylipsen Alsema</span>
 <span class="n">pa_1990</span>
 </pre></div>
 
@@ -14909,7 +14910,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">chen_2016</span> <span class="o">=</span> <span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2016</span><span class="p">,</span><span class="s1">&#39;E_reduce_SilicatoMGSi&#39;</span><span class="p">]</span><span class="o">-</span><span class="mf">12.0</span> <span class="c1">#Chen Fig. 2</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">chen_2016</span> <span class="o">=</span> <span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2016</span><span class="p">,</span><span class="s1">'E_reduce_SilicatoMGSi'</span><span class="p">]</span><span class="o">-</span><span class="mf">12.0</span> <span class="c1">#Chen Fig. 2</span>
 <span class="n">chen_2016</span>
 </pre></div>
 
@@ -14951,7 +14952,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ha_2022</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">,</span><span class="s1">&#39;E_reduce_SilicatoMGSi&#39;</span><span class="p">]</span><span class="o">-</span><span class="mf">11.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#Heidari Anctil</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ha_2022</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">,</span><span class="s1">'E_reduce_SilicatoMGSi'</span><span class="p">]</span><span class="o">-</span><span class="mf">11.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">#Heidari Anctil</span>
 <span class="n">ha_2022</span>
 </pre></div>
 
@@ -15007,7 +15008,7 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">idx</span> <span class="o">=</span> <span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">index</span>
 <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1990</span><span class="p">:</span><span class="n">pa_1990</span><span class="p">,</span> <span class="mi">2016</span><span class="p">:</span><span class="n">chen_2016</span><span class="p">,</span> <span class="mi">2022</span><span class="p">:</span><span class="n">ha_2022</span><span class="p">}</span>
-<span class="n">e_reduce_carbonpart</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">idx</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;E_reduce_carbonpart&#39;</span><span class="p">)</span>
+<span class="n">e_reduce_carbonpart</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">idx</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'E_reduce_carbonpart'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15053,8 +15054,8 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_reduce_carbonpart</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_reduce_carbonpart</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_reduce_carbonpart_filled</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Energy Silica Reduction: Carbon contribution&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Carbon-based energy [kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Energy Silica Reduction: Carbon contribution'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Carbon-based energy [kWh/kg]'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15128,7 +15129,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_reducesilica</span> <span class="o">=</span> <span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:</span><span class="mi">2004</span><span class="p">,[</span><span class="s1">&#39;E_reduce_SilicatoMGSi&#39;</span><span class="p">]]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_reducesilica</span> <span class="o">=</span> <span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:</span><span class="mi">2004</span><span class="p">,[</span><span class="s1">'E_reduce_SilicatoMGSi'</span><span class="p">]]</span>
 <span class="c1">#e_reducesilica</span>
 </pre></div>
 
@@ -15146,12 +15147,12 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2005-2018</span>
-<span class="n">mrktshr_mgsi_region</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-marketshareMGSiProdRegion.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
-<span class="n">mrktshr_mgsi_region</span><span class="p">[</span><span class="s1">&#39;MarketShare_RoW_MGSi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">-</span><span class="n">mrktshr_mgsi_region</span><span class="p">[</span><span class="s1">&#39;MarketShare_Chinese_MGSi&#39;</span><span class="p">]</span>
-<span class="n">mrktshr_mgsi_region</span><span class="p">[</span><span class="s1">&#39;MarketShare_Chinese_MGSi&#39;</span><span class="p">]</span><span class="o">*=</span><span class="mi">13</span> <span class="c1">#multiply by kWh/kg China</span>
-<span class="n">mrktshr_mgsi_region</span><span class="p">[</span><span class="s1">&#39;MarketShare_RoW_MGSi&#39;</span><span class="p">]</span><span class="o">*=</span><span class="mi">11</span> <span class="c1">#multiply by kWh/kg RoW</span>
+<span class="n">mrktshr_mgsi_region</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-marketshareMGSiProdRegion.csv"</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span>
+<span class="n">mrktshr_mgsi_region</span><span class="p">[</span><span class="s1">'MarketShare_RoW_MGSi'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">-</span><span class="n">mrktshr_mgsi_region</span><span class="p">[</span><span class="s1">'MarketShare_Chinese_MGSi'</span><span class="p">]</span>
+<span class="n">mrktshr_mgsi_region</span><span class="p">[</span><span class="s1">'MarketShare_Chinese_MGSi'</span><span class="p">]</span><span class="o">*=</span><span class="mi">13</span> <span class="c1">#multiply by kWh/kg China</span>
+<span class="n">mrktshr_mgsi_region</span><span class="p">[</span><span class="s1">'MarketShare_RoW_MGSi'</span><span class="p">]</span><span class="o">*=</span><span class="mi">11</span> <span class="c1">#multiply by kWh/kg RoW</span>
 <span class="n">wtd_mrktshr_mgsi_region</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mrktshr_mgsi_region</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="c1">#sum weighted kWh/kg, is a series</span>
-<span class="n">wtd_mrktshr_mgsi_region</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_reduce_SilicatoMGSi&#39;</span><span class="p">]</span> <span class="c1">#rename for merge/join</span>
+<span class="n">wtd_mrktshr_mgsi_region</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'E_reduce_SilicatoMGSi'</span><span class="p">]</span> <span class="c1">#rename for merge/join</span>
 <span class="c1">#wtd_mrktshr_mgsi_region</span>
 </pre></div>
 
@@ -15169,9 +15170,9 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#2018-2030, linear decrease to 11 kWh/kg in 2030</span>
-<span class="n">e_reducesilica_end</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_reduce_SilicatoMGSi&#39;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="mi">2051</span><span class="p">))</span>
-<span class="n">e_reducesilica_end</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;year&#39;</span>
-<span class="n">e_reducesilica_end</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">,[</span><span class="s1">&#39;E_reduce_SilicatoMGSi&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">e_reducesilica_end</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'E_reduce_SilicatoMGSi'</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span><span class="mi">2051</span><span class="p">))</span>
+<span class="n">e_reducesilica_end</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="s1">'year'</span>
+<span class="n">e_reducesilica_end</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2030</span><span class="p">,[</span><span class="s1">'E_reduce_SilicatoMGSi'</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">11</span>
 <span class="c1">#e_reducesilica_end</span>
 </pre></div>
 
@@ -15208,7 +15209,7 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_reducesilica_gaps</span> <span class="o">=</span> <span class="n">e_reducesilica_gappy</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span> <span class="c1">#for some reason this was objects?!</span>
 <span class="n">e_reducesilica_full</span> <span class="o">=</span> <span class="n">e_reducesilica_gaps</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span> <span class="c1">#linearly interpolate between points</span>
-<span class="c1">#e_reducesilica_trim = e_reducesilica_full.loc[1995:,[&#39;E_reduceSilicatoMGSi&#39;]] #trim to 1995-2050</span>
+<span class="c1">#e_reducesilica_trim = e_reducesilica_full.loc[1995:,['E_reduceSilicatoMGSi']] #trim to 1995-2050</span>
 </pre></div>
 
      </div>
@@ -15225,9 +15226,9 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_reducesilica_full</span><span class="p">)</span>
-<span class="c1">#plt.scatter(e_reducesilica_raw.index,e_reducesilica_raw.iloc[:,0], color=&#39;black&#39;)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity to reduce silica to MG-Si&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Electricity Demand [kWh/kg]&#39;</span><span class="p">)</span>
+<span class="c1">#plt.scatter(e_reducesilica_raw.index,e_reducesilica_raw.iloc[:,0], color='black')</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity to reduce silica to MG-Si'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Electricity Demand [kWh/kg]'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15298,7 +15299,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_reduce</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">e_reducesilica_full</span><span class="p">,</span><span class="n">e_reduce_carbonpart_filled</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_reduce</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">e_reducesilica_full</span><span class="p">,</span><span class="n">e_reduce_carbonpart_filled</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">'inner'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15314,7 +15315,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_reduce</span><span class="p">[</span><span class="s1">&#39;E_reduce_sum_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e_reduce</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#run only once if possible</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_reduce</span><span class="p">[</span><span class="s1">'E_reduce_sum_kWhpkg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">e_reduce</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#run only once if possible</span>
 </pre></div>
 
      </div>
@@ -15343,7 +15344,7 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#run only once if possible</span>
-<span class="n">e_reduce</span><span class="p">[</span><span class="s1">&#39;E_FuelFraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e_reduce</span><span class="p">[</span><span class="s1">&#39;E_reduce_carbonpart&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">e_reduce</span><span class="p">[</span><span class="s1">&#39;E_reduce_sum_kWhpkg&#39;</span><span class="p">]</span> <span class="o">*</span><span class="mi">100</span>
+<span class="n">e_reduce</span><span class="p">[</span><span class="s1">'E_FuelFraction'</span><span class="p">]</span> <span class="o">=</span> <span class="n">e_reduce</span><span class="p">[</span><span class="s1">'E_reduce_carbonpart'</span><span class="p">]</span><span class="o">/</span><span class="n">e_reduce</span><span class="p">[</span><span class="s1">'E_reduce_sum_kWhpkg'</span><span class="p">]</span> <span class="o">*</span><span class="mi">100</span>
 </pre></div>
 
      </div>
@@ -15377,24 +15378,24 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_reduce</span><span class="p">[</span><span class="s1">&#39;E_reduce_sum_kWhpkg&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Total Energy&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;raw energy data&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_reduce</span><span class="p">[</span><span class="s1">'E_reduce_sum_kWhpkg'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Total Energy'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">'raw energy data'</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Electricity and Carboniferous [kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Electricity and Carboniferous [kWh/kg]'</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_reduce</span><span class="p">[</span><span class="s1">&#39;E_FuelFraction&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fuel Fraction&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_reduce</span><span class="p">[</span><span class="s1">'E_FuelFraction'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Fuel Fraction'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_reducesilica_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> 
-            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;raw fuel fraction data&#39;</span><span class="p">)</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'raw fuel fraction data'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fuel Fraction [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Fuel Fraction [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span><span class="mi">2035</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Energy Total: Silica Reduction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Energy Total: Silica Reduction'</span><span class="p">)</span>
 
-<span class="c1">#ax1.legend(loc=&#39;upper right&#39;)</span>
-<span class="c1">#ax2.legend(loc=&#39;upper right&#39;)</span>
+<span class="c1">#ax1.legend(loc='upper right')</span>
+<span class="c1">#ax2.legend(loc='upper right')</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -15464,9 +15465,9 @@ A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSI
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#skipcols = [&#39;Source&#39;, &#39;Notes&#39;,&#39;Country&#39;]</span>
-<span class="n">e_refinesilicon_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-refineMGtoSo.csv&quot;</span><span class="p">,</span>
-                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span><span class="c1">#, usecols=lambda x: x not in skipcols)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#skipcols = ['Source', 'Notes','Country']</span>
+<span class="n">e_refinesilicon_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-refineMGtoSo.csv"</span><span class="p">,</span>
+                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span><span class="c1">#, usecols=lambda x: x not in skipcols)</span>
 </pre></div>
 
      </div>
@@ -15511,7 +15512,7 @@ A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSI
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15714,14 +15715,14 @@ A. CIFTJA, “Refining and Recycling of Silicon: A Review,” NORWEGIAN UNIVERSI
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: Siemens Process&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: Siemens Process'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'[kWh/kg]'</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
 
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fuel Fraction [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Fuel Fraction [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -15799,14 +15800,14 @@ class="
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
 <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: Siemens Process&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: Siemens Process'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'[kWh/kg]'</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
 
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fuel Fraction [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Fuel Fraction [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -15881,7 +15882,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> <span class="n">e_siemens_fitting</span> <span class="o">=</span> <span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span> <span class="n">e_siemens_fitting</span> <span class="o">=</span> <span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15899,7 +15900,7 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#fit polynomial</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">e_siemens_fitting</span><span class="o">.</span><span class="n">index</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">e_siemens_fitting</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;E_refineSiemens_kWhpkg&#39;</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">e_siemens_fitting</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">'E_refineSiemens_kWhpkg'</span><span class="p">]</span>
 <span class="n">model1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">poly1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
 <span class="c1">#create data for plotting</span>
@@ -15907,7 +15908,7 @@ class="
 
 <span class="c1">#plot for viewing</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">polyline</span><span class="p">,</span> <span class="n">model1</span><span class="p">(</span><span class="n">polyline</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">polyline</span><span class="p">,</span> <span class="n">model1</span><span class="p">(</span><span class="n">polyline</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -15955,7 +15956,7 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#extract the values of the fitted data</span>
 <span class="n">e_siemens_fitting1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">model1</span><span class="p">(</span><span class="n">polyline</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">polyline</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
-                                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_refineSiemens_kWhpkg&#39;</span><span class="p">])</span>
+                                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'E_refineSiemens_kWhpkg'</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -15980,7 +15981,7 @@ class="
     <span class="n">ybar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">ssreg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">yhat</span><span class="o">-</span><span class="n">ybar</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">sstot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">ybar</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span> <span class="p">(((</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">ssreg</span><span class="o">/</span><span class="n">sstot</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">-</span><span class="n">degree</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">'r_squared'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span> <span class="p">(((</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">ssreg</span><span class="o">/</span><span class="n">sstot</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">-</span><span class="n">degree</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">results</span>
 </pre></div>
@@ -16106,7 +16107,7 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_siemens_fitting2</span> <span class="o">=</span> <span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
 <span class="n">e_siemens_fitting2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2021</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="c1">#remove Fan et al 2021</span>
-<span class="n">e_siemens_fitting2</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">limit_direction</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">e_siemens_fitting2</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16156,20 +16157,20 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refinesilicon_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refinesilicon_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refinesilicon_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refinesilicon_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_siemens_fitting2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_siemens_fitting2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_siemens_fitting1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_siemens_fitting1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: Siemens Process&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: Siemens Process'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'[kWh/kg]'</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
 
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_siemens_fitting2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_siemens_fitting2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_siemens_fitting2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_siemens_fitting2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fuel Fraction [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Fuel Fraction [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span><span class="mi">2030</span><span class="p">)</span>
 
@@ -16230,10 +16231,10 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_siemens_fitting1</span><span class="p">[</span><span class="s1">&#39;E_refine_FuelFraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">31.0</span> <span class="c1">#add fuel fraction column and set to 31</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_siemens_fitting1</span><span class="p">[</span><span class="s1">'E_refine_FuelFraction'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">31.0</span> <span class="c1">#add fuel fraction column and set to 31</span>
 <span class="c1">#extend index through 2050 and fill (uses idx from above)</span>
 <span class="n">idx</span> <span class="o">=</span> <span class="n">e_refinesilicon_raw</span><span class="o">.</span><span class="n">index</span>
-<span class="n">e_siemens_final</span> <span class="o">=</span> <span class="n">e_siemens_fitting1</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;ffill&#39;</span><span class="p">)</span> 
+<span class="n">e_siemens_final</span> <span class="o">=</span> <span class="n">e_siemens_fitting1</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'ffill'</span><span class="p">)</span> 
 </pre></div>
 
      </div>
@@ -16251,19 +16252,19 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refinesilicon_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refinesilicon_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_siemens_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_siemens_final</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refinesilicon_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refinesilicon_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_siemens_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_siemens_final</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">325</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: Siemens Process&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: Siemens Process'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'[kWh/kg]'</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
 
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_siemens_final</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_refineSi_siemens</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_siemens_final</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fuel Fraction [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Fuel Fraction [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span><span class="mi">2025</span><span class="p">)</span>
 
@@ -16324,7 +16325,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#e_refineSi_fbr.dropna(how=&#39;all&#39;)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#e_refineSi_fbr.dropna(how='all')</span>
 </pre></div>
 
      </div>
@@ -16352,8 +16353,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_ingotenergy_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-ingotgrowing.csv&quot;</span><span class="p">,</span>
-                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_ingotenergy_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-ingotgrowing.csv"</span><span class="p">,</span>
+                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16382,7 +16383,7 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_casting_raw</span> <span class="o">=</span> <span class="n">e_ingotenergy_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
-<span class="n">e_casting_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<span class="n">e_casting_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16526,7 +16527,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_casting_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_casting_raw</span><span class="p">[</span><span class="s1">&#39;E_mcSiCast_kWhpkg&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_casting_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_casting_raw</span><span class="p">[</span><span class="s1">'E_mcSiCast_kWhpkg'</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -16616,10 +16617,10 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_casting_manual</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_casting_manual</span><span class="p">[</span><span class="s1">&#39;E_mcSiCast_kWhpkg&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_casting_manual</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_casting_manual</span><span class="p">[</span><span class="s1">'E_mcSiCast_kWhpkg'</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: DS of mc-Si&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Electricity Demand [kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: DS of mc-Si'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Electricity Demand [kWh/kg]'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16690,8 +16691,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_casting_mcSi</span> <span class="o">=</span> <span class="n">e_casting_manual</span><span class="p">[</span><span class="s1">&#39;E_mcSiCast_kWhpkg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The electrical energy to make mc-Si through direct solidification is &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e_casting_mcSi</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; kWh/kg.&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_casting_mcSi</span> <span class="o">=</span> <span class="n">e_casting_manual</span><span class="p">[</span><span class="s1">'E_mcSiCast_kWhpkg'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'The electrical energy to make mc-Si through direct solidification is '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e_casting_mcSi</span><span class="p">)</span><span class="o">+</span><span class="s1">' kWh/kg.'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16743,7 +16744,7 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_growczingot_raw</span> <span class="o">=</span> <span class="n">e_ingotenergy_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
-<span class="n">e_growczingot_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<span class="n">e_growczingot_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16908,9 +16909,9 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_growczingot_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_growczingot_raw</span><span class="p">[</span><span class="s1">&#39;E_Cz_kWhpkg&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: Cz Ingot Growth&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg]&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_growczingot_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_growczingot_raw</span><span class="p">[</span><span class="s1">'E_Cz_kWhpkg'</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: Cz Ingot Growth'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'[kWh/kg]'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17001,7 +17002,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">e_growczingot_manual</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1999</span><span class="p">,</span><span class="s1">&#39;E_Cz_kWhpkg&#39;</span><span class="p">],</span> <span class="n">e_growczingot_manual</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2004</span><span class="p">,</span><span class="s1">&#39;E_Cz_kWhpkg&#39;</span><span class="p">]])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">e_growczingot_manual</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1999</span><span class="p">,</span><span class="s1">'E_Cz_kWhpkg'</span><span class="p">],</span> <span class="n">e_growczingot_manual</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2004</span><span class="p">,</span><span class="s1">'E_Cz_kWhpkg'</span><span class="p">]])</span>
 <span class="n">e_growczingot_manual</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1999</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg</span>
 <span class="n">e_growczingot_manual</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2004</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg</span>
 </pre></div>
@@ -17035,10 +17036,10 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_ingotcz_filled</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_ingotcz_filled</span><span class="p">[</span><span class="s1">&#39;E_Cz_kWhpkg&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_growczingot_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_growczingot_raw</span><span class="p">[</span><span class="s1">&#39;E_Cz_kWhpkg&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: Cz Ingot Growth&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg]&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_ingotcz_filled</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_ingotcz_filled</span><span class="p">[</span><span class="s1">'E_Cz_kWhpkg'</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_growczingot_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_growczingot_raw</span><span class="p">[</span><span class="s1">'E_Cz_kWhpkg'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: Cz Ingot Growth'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'[kWh/kg]'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1993</span><span class="p">,</span><span class="mi">2021</span><span class="p">)</span>
 </pre></div>
 
@@ -17110,8 +17111,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pvice_mcSimono_marketshare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv&quot;</span><span class="p">,</span>
-                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pvice_mcSimono_marketshare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/output_scaledmrktshr_mcSi_mono.csv"</span><span class="p">,</span>
+                                     <span class="n">index_col</span><span class="o">=</span><span class="s1">'Year'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17127,17 +17128,17 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_ingotcz</span> <span class="o">=</span> <span class="n">e_ingotcz_filled</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">&#39;E_Cz_kWhpkg&#39;</span><span class="p">]]</span> <span class="c1">#slice Cz dataframe</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_ingotcz</span> <span class="o">=</span> <span class="n">e_ingotcz_filled</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">'E_Cz_kWhpkg'</span><span class="p">]]</span> <span class="c1">#slice Cz dataframe</span>
 <span class="n">e_ingots</span> <span class="o">=</span> <span class="n">e_ingotcz</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1">#create new df for math</span>
-<span class="n">e_ingots</span><span class="p">[</span><span class="s1">&#39;E_DS_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e_casting_mcSi</span> <span class="c1">#add column for mcsi DS</span>
+<span class="n">e_ingots</span><span class="p">[</span><span class="s1">'E_DS_kWhpkg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">e_casting_mcSi</span> <span class="c1">#add column for mcsi DS</span>
 <span class="n">pvice_mcSimono_marketshare_trim</span> <span class="o">=</span> <span class="n">pvice_mcSimono_marketshare</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,]</span> <span class="c1">#trim the marketshare to start in 1995</span>
 <span class="n">pvice_mcSimono_marketshare_extend</span> <span class="o">=</span> <span class="n">pvice_mcSimono_marketshare_trim</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span> <span class="c1">#fill through 2050</span>
 
 <span class="n">e_ingots_wtd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">e_ingots</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="c1">#create new df for math</span>
-<span class="n">e_ingots_wtd</span><span class="p">[</span><span class="s1">&#39;mono&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvice_mcSimono_marketshare_extend</span><span class="p">[</span><span class="s1">&#39;monoSi&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">e_ingots</span><span class="p">[</span><span class="s1">&#39;E_Cz_kWhpkg&#39;</span><span class="p">]</span> <span class="c1">#mrktshr mono*CZ energy</span>
-<span class="n">e_ingots_wtd</span><span class="p">[</span><span class="s1">&#39;mocsi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvice_mcSimono_marketshare_extend</span><span class="p">[</span><span class="s1">&#39;mcSi&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">e_ingots</span><span class="p">[</span><span class="s1">&#39;E_DS_kWhpkg&#39;</span><span class="p">]</span> <span class="c1">#mrktshr mcSi*DS energy</span>
+<span class="n">e_ingots_wtd</span><span class="p">[</span><span class="s1">'mono'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvice_mcSimono_marketshare_extend</span><span class="p">[</span><span class="s1">'monoSi'</span><span class="p">]</span><span class="o">*</span><span class="n">e_ingots</span><span class="p">[</span><span class="s1">'E_Cz_kWhpkg'</span><span class="p">]</span> <span class="c1">#mrktshr mono*CZ energy</span>
+<span class="n">e_ingots_wtd</span><span class="p">[</span><span class="s1">'mocsi'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvice_mcSimono_marketshare_extend</span><span class="p">[</span><span class="s1">'mcSi'</span><span class="p">]</span><span class="o">*</span><span class="n">e_ingots</span><span class="p">[</span><span class="s1">'E_DS_kWhpkg'</span><span class="p">]</span> <span class="c1">#mrktshr mcSi*DS energy</span>
 <span class="n">e_ingots_wtd_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">e_ingots_wtd</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># sum the annual energy demand PV Si ingot growth</span>
-<span class="n">e_ingots_wtd_final</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_Ingot_kWhpkg&#39;</span><span class="p">]</span>
+<span class="n">e_ingots_wtd_final</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span><span class="p">[</span><span class="s1">'E_Ingot_kWhpkg'</span><span class="p">]</span>
 </pre></div>
 
      </div>
@@ -17155,23 +17156,23 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_ingots_wtd_final</span><span class="p">[</span><span class="s1">&#39;E_Ingot_kWhpkg&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Wtd Avg Electricity Demand&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_growczingot_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_growczingot_raw</span><span class="p">[</span><span class="s1">&#39;E_Cz_kWhpkg&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;CZ, mono-Si, raw data&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_casting_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_casting_raw</span><span class="p">[</span><span class="s1">&#39;E_mcSiCast_kWhpkg&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> 
-            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;DS, mc-Si, raw data&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Electricity Demand [kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_ingots_wtd_final</span><span class="p">[</span><span class="s1">'E_Ingot_kWhpkg'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Wtd Avg Electricity Demand'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_growczingot_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_growczingot_raw</span><span class="p">[</span><span class="s1">'E_Cz_kWhpkg'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'CZ, mono-Si, raw data'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_casting_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_casting_raw</span><span class="p">[</span><span class="s1">'E_mcSiCast_kWhpkg'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'gray'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">,</span> 
+            <span class="n">label</span><span class="o">=</span><span class="s1">'DS, mc-Si, raw data'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Electricity Demand [kWh/kg]'</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pvice_mcSimono_marketshare_trim</span><span class="p">[</span><span class="s1">&#39;monoSi&#39;</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Mono Si Market Share&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pvice_mcSimono_marketshare_trim</span><span class="p">[</span><span class="s1">'monoSi'</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Mono Si Market Share'</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Market Share Monocrystalline Si [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Market Share Monocrystalline Si [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span><span class="mi">2030</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: Weighted Average of Si Ingot Growth&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: Weighted Average of Si Ingot Growth'</span><span class="p">)</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper center'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -17229,7 +17230,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_ingots_wtd_final</span><span class="p">[</span><span class="s1">&#39;E_Ingot_FuelFraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_ingots_wtd_final</span><span class="p">[</span><span class="s1">'E_Ingot_FuelFraction'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">e_ingots_wtd_final</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -17337,8 +17338,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_wafering_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-wafering.csv&quot;</span><span class="p">,</span>
-                             <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_wafering_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-wafering.csv"</span><span class="p">,</span>
+                             <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17354,7 +17355,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17519,7 +17520,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_wafering_raw</span><span class="p">[</span><span class="s1">&#39;E_Wafering_kWhpkg&#39;</span><span class="p">])</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_wafering_raw</span><span class="p">[</span><span class="s1">'E_Wafering_kWhpkg'</span><span class="p">])</span> 
 </pre></div>
 
      </div>
@@ -17594,7 +17595,7 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#average fuel fraction</span>
 <span class="n">avg_FuelFraction</span> <span class="o">=</span> <span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The average fuel fraction in wafering energy is &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">avg_FuelFraction</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;%&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'The average fuel fraction in wafering energy is '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">avg_FuelFraction</span><span class="p">)</span><span class="o">+</span><span class="s1">'%'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17634,11 +17635,11 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Pre-2000 average</span>
-<span class="n">avg_wafering_pre2000</span> <span class="o">=</span> <span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:</span><span class="mi">1999</span><span class="p">,</span><span class="s1">&#39;E_Wafering_kWhpkg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pre-2000, the average wafering energy was &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">avg_wafering_pre2000</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; kWh/kg&#39;</span><span class="p">)</span>
+<span class="n">avg_wafering_pre2000</span> <span class="o">=</span> <span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:</span><span class="mi">1999</span><span class="p">,</span><span class="s1">'E_Wafering_kWhpkg'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Pre-2000, the average wafering energy was '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">avg_wafering_pre2000</span><span class="p">)</span><span class="o">+</span><span class="s1">' kWh/kg'</span><span class="p">)</span>
 <span class="c1">#Post-2005 average</span>
-<span class="n">avg_wafering_post2005</span> <span class="o">=</span> <span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2005</span><span class="p">:,</span><span class="s1">&#39;E_Wafering_kWhpkg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Post-2005, the average wafering energy was &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">avg_wafering_post2005</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; kWh/kg&#39;</span><span class="p">)</span>
+<span class="n">avg_wafering_post2005</span> <span class="o">=</span> <span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2005</span><span class="p">:,</span><span class="s1">'E_Wafering_kWhpkg'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Post-2005, the average wafering energy was '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">avg_wafering_post2005</span><span class="p">)</span><span class="o">+</span><span class="s1">' kWh/kg'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17679,8 +17680,8 @@ Post-2005, the average wafering energy was 8.31 kWh/kg
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_wafering</span> <span class="o">=</span> <span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">]]</span>
-<span class="n">e_wafering</span><span class="o">.</span><span class="n">loc</span><span class="p">[:</span><span class="mi">1999</span><span class="p">,[</span><span class="s1">&#39;E_Wafering_kWhpkg&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">avg_wafering_pre2000</span>
-<span class="n">e_wafering</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2005</span><span class="p">:,[</span><span class="s1">&#39;E_Wafering_kWhpkg&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">avg_wafering_post2005</span>
+<span class="n">e_wafering</span><span class="o">.</span><span class="n">loc</span><span class="p">[:</span><span class="mi">1999</span><span class="p">,[</span><span class="s1">'E_Wafering_kWhpkg'</span><span class="p">]]</span> <span class="o">=</span> <span class="n">avg_wafering_pre2000</span>
+<span class="n">e_wafering</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2005</span><span class="p">:,[</span><span class="s1">'E_Wafering_kWhpkg'</span><span class="p">]]</span> <span class="o">=</span> <span class="n">avg_wafering_post2005</span>
 </pre></div>
 
      </div>
@@ -17745,7 +17746,7 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[63]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_wafering_filled</span><span class="p">[</span><span class="s1">&#39;E_Wafer_FuelFraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_FuelFraction</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_wafering_filled</span><span class="p">[</span><span class="s1">'E_Wafer_FuelFraction'</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_FuelFraction</span>
 </pre></div>
 
      </div>
@@ -17761,10 +17762,10 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[64]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_wafering_filled</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;interpolated&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_wafering_raw</span><span class="p">[</span><span class="s1">&#39;E_Wafering_kWhpkg&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;raw&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span> 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity demand: Wafering&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg]&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_wafering_filled</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'interpolated'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_wafering_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_wafering_raw</span><span class="p">[</span><span class="s1">'E_Wafering_kWhpkg'</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">'raw'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity demand: Wafering'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'[kWh/kg]'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span><span class="mi">2023</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
 </pre></div>
@@ -17836,9 +17837,9 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[65]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_cellprocess_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-cellProcess.csv&quot;</span><span class="p">,</span>
-                             <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
-<span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_cellprocess_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/energy-input-silicon-cellProcess.csv"</span><span class="p">,</span>
+                             <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span>
+<span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17982,7 +17983,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[66]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_cellprocess_raw</span><span class="p">[</span><span class="s1">&#39;E_cellProcess_kWhpkg&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_cellprocess_raw</span><span class="p">[</span><span class="s1">'E_cellProcess_kWhpkg'</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -18053,7 +18054,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[67]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_cellprocess</span> <span class="o">=</span> <span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1994</span><span class="p">:,[</span><span class="s1">&#39;E_cellProcess_kWhpkg&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_cellprocess</span> <span class="o">=</span> <span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1994</span><span class="p">:,[</span><span class="s1">'E_cellProcess_kWhpkg'</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -18079,7 +18080,7 @@ class="
 
 <span class="c1">#plot for viewing</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">polyline</span><span class="p">,</span> <span class="n">model1</span><span class="p">(</span><span class="n">polyline</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">polyline</span><span class="p">,</span> <span class="n">model1</span><span class="p">(</span><span class="n">polyline</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -18127,7 +18128,7 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#extract the values of the fitted data</span>
 <span class="n">e_cellprocess_fitting1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">model1</span><span class="p">(</span><span class="n">polyline</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="n">polyline</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
-                                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_cellProcess_kWhpkg&#39;</span><span class="p">])</span>
+                                  <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'E_cellProcess_kWhpkg'</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -18156,8 +18157,8 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#create fuel fraction column</span>
-<span class="n">e_cellprocess_fitting1</span><span class="p">[</span><span class="s1">&#39;E_cell_FuelFraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.0</span>
-<span class="c1">#.reindex(idx).fillna(method=&#39;ffill&#39;)</span>
+<span class="n">e_cellprocess_fitting1</span><span class="p">[</span><span class="s1">'E_cell_FuelFraction'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="c1">#.reindex(idx).fillna(method='ffill')</span>
 </pre></div>
 
      </div>
@@ -18173,7 +18174,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[71]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">idx_app</span><span class="o">=</span> <span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">:,[</span><span class="s1">&#39;E_cellProcess_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;E_cell_FuelFraction&#39;</span><span class="p">]]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">idx_app</span><span class="o">=</span> <span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2022</span><span class="p">:,[</span><span class="s1">'E_cellProcess_kWhpkg'</span><span class="p">,</span><span class="s1">'E_cell_FuelFraction'</span><span class="p">]]</span>
 <span class="n">e_cellprocess_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">e_cellprocess_fitting1</span><span class="p">,</span> <span class="n">idx_app</span><span class="p">])</span>
 <span class="n">e_cellprocess_final</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
@@ -18191,12 +18192,12 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[72]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_cellprocess_final</span><span class="p">[</span><span class="s1">&#39;E_cellProcess_kWhpkg&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_cellprocess_raw</span><span class="p">[</span><span class="s1">&#39;E_cellProcess_kWhpkg&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e_cellprocess_final</span><span class="p">[</span><span class="s1">'E_cellProcess_kWhpkg'</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">e_cellprocess_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">e_cellprocess_raw</span><span class="p">[</span><span class="s1">'E_cellProcess_kWhpkg'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span><span class="mi">2025</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;[kWh/kg Si]&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity Demand: Cell Processing&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'[kWh/kg Si]'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity Demand: Cell Processing'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -18268,8 +18269,8 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mfg_energies</span> <span class="o">=</span> <span class="p">[</span><span class="n">e_reduce_silica</span><span class="p">,</span> <span class="n">e_siemens_final</span><span class="p">,</span> <span class="n">e_ingots_wtd_final</span><span class="p">,</span> <span class="n">e_wafering_filled</span><span class="p">,</span> <span class="n">e_cellprocess_final</span><span class="p">]</span>
-<span class="n">df_mfg_energies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">mfg_energies</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
-<span class="c1">#df_mfg_energies[&#39;e_mfg_kWhpkg&#39;] = round(df_mfg_energies.sum(axis=1),2)</span>
+<span class="n">df_mfg_energies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">mfg_energies</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">'inner'</span><span class="p">)</span>
+<span class="c1">#df_mfg_energies['e_mfg_kWhpkg'] = round(df_mfg_energies.sum(axis=1),2)</span>
 </pre></div>
 
      </div>
@@ -18480,8 +18481,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[76]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fuelfracts</span> <span class="o">=</span> <span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;FuelFraction&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
-<span class="n">mfg_energies</span> <span class="o">=</span> <span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;kWhpkg&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fuelfracts</span> <span class="o">=</span> <span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">'FuelFraction'</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">mfg_energies</span> <span class="o">=</span> <span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">'kWhpkg'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -18641,7 +18642,7 @@ class="
 <span class="n">mfg_energies_sum</span> <span class="o">=</span> <span class="n">mfg_energies</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">mfg_FuelFraction</span> <span class="o">=</span> <span class="n">mfg_energy_fuels_sum</span><span class="o">/</span><span class="n">mfg_energies_sum</span>
 <span class="n">mfg_energy_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mfg_energies_sum</span><span class="p">,</span><span class="n">mfg_FuelFraction</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">mfg_energy_final</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;E_mfgFuelFraction&#39;</span><span class="p">]</span>
+<span class="n">mfg_energy_final</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'E_MFG_kWhpkg'</span><span class="p">,</span><span class="s1">'E_mfgFuelFraction'</span><span class="p">]</span>
 </pre></div>
 
      </div>
@@ -18749,19 +18750,19 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mfg_energy_final</span><span class="p">[</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">])</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Electricity Demand [kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mfg_energy_final</span><span class="p">[</span><span class="s1">'E_MFG_kWhpkg'</span><span class="p">])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Electricity Demand [kWh/kg]'</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mfg_energy_final</span><span class="p">[</span><span class="s1">&#39;E_mfgFuelFraction&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mfg_energy_final</span><span class="p">[</span><span class="s1">'E_mfgFuelFraction'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fuel Fraction of MFG Energy&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Fuel Fraction of MFG Energy'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1994</span><span class="p">,</span><span class="mi">2030</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Energy of Si MFG&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Energy of Si MFG'</span><span class="p">)</span>
 
-<span class="c1">#ax1.legend(loc=&#39;upper center&#39;)</span>
+<span class="c1">#ax1.legend(loc='upper center')</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -18808,7 +18809,7 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg_STEPS.csv&quot;</span><span class="p">)</span>
+<span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg_STEPS.csv"</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -18824,20 +18825,20 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[84]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Reduce Si&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Refine Si&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Ingot&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Wafer&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Cell&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">'brown'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Reduce Si'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Refine Si'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Ingot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Wafer'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],[],</span><span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Cell'</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">stackplot</span><span class="p">(</span><span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;E_reduce_sum_kWhpkg&#39;</span><span class="p">],</span> 
-              <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;E_refineSiemens_kWhpkg&#39;</span><span class="p">],</span>
-              <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;E_Ingot_kWhpkg&#39;</span><span class="p">],</span> 
-              <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;E_Wafering_kWhpkg&#39;</span><span class="p">],</span> 
-              <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">&#39;E_cellProcess_kWhpkg&#39;</span><span class="p">],</span>
-             <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Energy: Silicon Manufacturing&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Energy Demand [kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">stackplot</span><span class="p">(</span><span class="n">df_mfg_energies</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">'E_reduce_sum_kWhpkg'</span><span class="p">],</span> 
+              <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">'E_refineSiemens_kWhpkg'</span><span class="p">],</span>
+              <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">'E_Ingot_kWhpkg'</span><span class="p">],</span> 
+              <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">'E_Wafering_kWhpkg'</span><span class="p">],</span> 
+              <span class="n">df_mfg_energies</span><span class="p">[</span><span class="s1">'E_cellProcess_kWhpkg'</span><span class="p">],</span>
+             <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'brown'</span><span class="p">,</span><span class="s1">'red'</span><span class="p">,</span><span class="s1">'orange'</span><span class="p">,</span><span class="s1">'green'</span><span class="p">,</span><span class="s1">'blue'</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Energy: Silicon Manufacturing'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Energy Demand [kWh/kg]'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span><span class="mi">2022</span><span class="p">)</span>
 
 <span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
@@ -18935,17 +18936,17 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[86]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mfg_energy_final</span><span class="p">[</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mfg_energy_final</span><span class="p">[</span><span class="s1">'E_MFG_kWhpkg'</span><span class="p">])</span>
 
 <span class="c1">#literature</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span> <span class="n">phyl_alsema1995_kWh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;pink&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span> <span class="n">jungbluth2005_kWh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="n">wildscholten2013_kWh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="c1">#plt.scatter(2020, , color=&#39;red&#39;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span> <span class="n">phyl_alsema1995_kWh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'pink'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span> <span class="n">jungbluth2005_kWh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'purple'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="n">wildscholten2013_kWh</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+<span class="c1">#plt.scatter(2020, , color='red')</span>
 
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Electricity: Silicon Manufacturing&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Electricity Demand [kWh/kg]&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Electricity: Silicon Manufacturing'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Electricity Demand [kWh/kg]'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">1994</span><span class="p">,</span><span class="mi">2022</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
 </pre></div>
@@ -19007,7 +19008,7 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mfg_energy_final_rounded</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">mfg_energy_final</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">mfg_energy_final_rounded</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg.csv&quot;</span><span class="p">)</span>
+<span class="n">mfg_energy_final_rounded</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_mfg.csv"</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -19035,8 +19036,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[88]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_eol_recycle</span> <span class="o">=</span> <span class="n">mfg_energy_final</span><span class="p">[</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">mfg_energy_fuels</span><span class="p">[</span><span class="s1">&#39;E_reduce_sum_kWhpkg&#39;</span><span class="p">]</span><span class="o">+</span> <span class="n">mfg_energies</span><span class="p">[</span><span class="s1">&#39;E_reduce_sum_kWhpkg&#39;</span><span class="p">])</span><span class="c1">#creates a series</span>
-<span class="n">e_eol_recycle_HQ</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">e_eol_recycle</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_RecycleHQ_sum_kWhpkg&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_eol_recycle</span> <span class="o">=</span> <span class="n">mfg_energy_final</span><span class="p">[</span><span class="s1">'E_MFG_kWhpkg'</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">mfg_energy_fuels</span><span class="p">[</span><span class="s1">'E_reduce_sum_kWhpkg'</span><span class="p">]</span><span class="o">+</span> <span class="n">mfg_energies</span><span class="p">[</span><span class="s1">'E_reduce_sum_kWhpkg'</span><span class="p">])</span><span class="c1">#creates a series</span>
+<span class="n">e_eol_recycle_HQ</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">e_eol_recycle</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'E_RecycleHQ_sum_kWhpkg'</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -19065,7 +19066,7 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">recycle_hq_fuels</span> <span class="o">=</span> <span class="n">mfg_energy_fuels</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#sum all fuel energy excluding e_reduce</span>
-<span class="n">recycle_hq_fuelsfraction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">recycle_hq_fuels</span><span class="o">/</span><span class="n">e_eol_recycle</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_RecycleHQ_fuelfraction&#39;</span><span class="p">])</span>
+<span class="n">recycle_hq_fuelsfraction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">recycle_hq_fuels</span><span class="o">/</span><span class="n">e_eol_recycle</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'E_RecycleHQ_fuelfraction'</span><span class="p">])</span>
 <span class="n">e_eol_recycle_HQ_complete</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">e_eol_recycle_HQ</span><span class="p">,</span><span class="n">recycle_hq_fuelsfraction</span><span class="o">*</span><span class="mi">100</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
@@ -19082,7 +19083,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[90]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_eol_recycle_HQ_complete</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_eol_recycle_HQ_complete</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ.csv"</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -19110,12 +19111,12 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[91]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_ingotcz</span><span class="p">[</span><span class="s1">&#39;E_Cz_FuelFraction&#39;</span><span class="p">]</span><span class="o">=</span><span class="mf">0.0</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">e_ingotcz</span><span class="p">[</span><span class="s1">'E_Cz_FuelFraction'</span><span class="p">]</span><span class="o">=</span><span class="mf">0.0</span>
 
 <span class="n">altHQRecycle</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">e_ingotcz</span><span class="p">,</span><span class="n">e_wafering_filled</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:],</span><span class="n">e_cellprocess_final</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="n">fuelfracts_alt</span> <span class="o">=</span> <span class="n">altHQRecycle</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;FuelFraction&#39;</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
-<span class="n">altHQ_energies</span> <span class="o">=</span> <span class="n">altHQRecycle</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;kWh&#39;</span><span class="p">)</span>
+<span class="n">fuelfracts_alt</span> <span class="o">=</span> <span class="n">altHQRecycle</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">'FuelFraction'</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">altHQ_energies</span> <span class="o">=</span> <span class="n">altHQRecycle</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">'kWh'</span><span class="p">)</span>
 
 <span class="n">fuelfracts_alt</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">altHQ_energies</span><span class="o">.</span><span class="n">columns</span> <span class="c1">#ish</span>
 <span class="n">altHQ_fuelenergy</span> <span class="o">=</span> <span class="n">altHQ_energies</span><span class="o">*</span><span class="n">fuelfracts_alt</span>
@@ -19138,7 +19139,7 @@ class="
 <span class="n">altHQ_energies_sum</span> <span class="o">=</span> <span class="n">altHQ_energies</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">altHQ_FuelFraction</span> <span class="o">=</span> <span class="n">altHQ_fuelenergy_sum</span><span class="o">/</span><span class="n">altHQ_energies_sum</span>
 <span class="n">altHQ_energies_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">altHQ_energies_sum</span><span class="p">,</span><span class="n">altHQ_FuelFraction</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">altHQ_energies_final</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;E_mfgFuelFraction&#39;</span><span class="p">]</span>
+<span class="n">altHQ_energies_final</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'E_MFG_kWhpkg'</span><span class="p">,</span><span class="s1">'E_mfgFuelFraction'</span><span class="p">]</span>
 </pre></div>
 
      </div>
@@ -19154,7 +19155,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[93]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">altHQ_energies_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ_ALT.csv&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">altHQ_energies_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_eol_recycleHQ_ALT.csv"</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -19182,8 +19183,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[94]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mfg_energies_mcSi</span> <span class="o">=</span> <span class="p">[</span><span class="n">e_reduce_silica</span><span class="p">,</span> <span class="n">e_siemens_final</span><span class="p">,</span> <span class="n">e_ingots</span><span class="p">[</span><span class="s1">&#39;E_DS_kWhpkg&#39;</span><span class="p">],</span> <span class="n">e_wafering_filled</span><span class="p">,</span> <span class="n">e_cellprocess_final</span><span class="p">]</span>
-<span class="n">df_mfg_energies_mcSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">mfg_energies_mcSi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mfg_energies_mcSi</span> <span class="o">=</span> <span class="p">[</span><span class="n">e_reduce_silica</span><span class="p">,</span> <span class="n">e_siemens_final</span><span class="p">,</span> <span class="n">e_ingots</span><span class="p">[</span><span class="s1">'E_DS_kWhpkg'</span><span class="p">],</span> <span class="n">e_wafering_filled</span><span class="p">,</span> <span class="n">e_cellprocess_final</span><span class="p">]</span>
+<span class="n">df_mfg_energies_mcSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">mfg_energies_mcSi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">'inner'</span><span class="p">)</span>
 
 <span class="n">df_mfg_energies_mcSi</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -19319,13 +19320,13 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#ingoting energy appears to be electricity only</span>
 
-<span class="n">df_mfg_energies_mcSi_elec</span> <span class="o">=</span> <span class="n">df_mfg_energies_mcSi</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;_kWhpkg&#39;</span><span class="p">)</span>
+<span class="n">df_mfg_energies_mcSi_elec</span> <span class="o">=</span> <span class="n">df_mfg_energies_mcSi</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">'_kWhpkg'</span><span class="p">)</span>
 <span class="n">mfg_energies_sum_mcSi</span> <span class="o">=</span> <span class="n">df_mfg_energies_mcSi_elec</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">mfg_FuelFraction_mcSi</span> <span class="o">=</span> <span class="n">mfg_energy_fuels_sum</span><span class="o">/</span><span class="n">mfg_energies_sum_mcSi</span>
 
 <span class="n">mfg_energy_final_mcSi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">mfg_energies_sum_mcSi</span><span class="p">,</span><span class="n">mfg_FuelFraction_mcSi</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">mfg_energy_final_mcSi</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;E_MFG_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;E_mfgFuelFraction&#39;</span><span class="p">]</span>
+<span class="n">mfg_energy_final_mcSi</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'E_MFG_kWhpkg'</span><span class="p">,</span><span class="s1">'E_mfgFuelFraction'</span><span class="p">]</span>
 </pre></div>
 
      </div>
@@ -19341,7 +19342,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[96]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mfg_energy_final_mcSi</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&quot;/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_MFG_mcSi.csv&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mfg_energy_final_mcSi</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">cwd</span><span class="o">+</span><span class="s2">"/../../../PV_ICE/baselines/SupportingMaterial/output_energy_silicon_MFG_mcSi.csv"</span><span class="p">)</span>
 </pre></div>
 
      </div>
