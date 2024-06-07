@@ -383,6 +383,7 @@ PVICE_EOLpaths_norm = PVICE_EOLpaths.divide(PVICE_EOLpaths.sum(axis=1), axis=0)
 IRENA_EOLpaths_norm = IRENA_EOLpaths.divide(IRENA_EOLpaths.sum(axis=1), axis=0)
 
 
+
 # In[34]:
 
 
@@ -398,6 +399,7 @@ plt.subplot(1, 3, 1)
 plt.plot(IRENA_EOLpaths_norm, label=IRENA_EOLpaths.columns)
 plt.legend()
 plt.title('IRENA')
+
 
 
 # # 2. Remove Trim Years
@@ -691,8 +693,6 @@ plt.legend(sim3.scenario.keys())
 # In[53]:
 
 
-
-
 plt.plot(ii_yearly3['WasteAll_Module_sim3_r_50PERC_[Tonnes]'], label='PERC_waste')
 plt.plot(ii_yearly3['VirginStock_Module_sim3_r_50PERC_[Tonnes]'], label='PERC_virgin')
 
@@ -703,7 +703,6 @@ plt.legend()
 
 
 # In[54]:
-
 
 
 plt.plot(sim3.scenario['r_50PERC'].dataOut_m['Yearly_Sum_Area_EOLby_Degradation'], label='r_perc_deg')

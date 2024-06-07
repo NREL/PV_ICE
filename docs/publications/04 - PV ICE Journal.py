@@ -19,6 +19,7 @@ testfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'TEMP' / 'ElectricF
 print ("Your simulation will be stored in %s" % testfolder)
 
 
+
 # In[2]:
 
 
@@ -74,6 +75,7 @@ MATERIALBASELINE = r'..\..\baselines\PVSC_2021\baseline_material_glass_bifacialT
 r2.scenario['high'].addMaterial('glass', file=MATERIALBASELINE)
 MATERIALBASELINE = r'..\..\baselines\PVSC_2021\baseline_material_aluminium_frames_bifacialTrend.csv'
 r2.scenario['high'].addMaterial('aluminium_frames', file=MATERIALBASELINE)
+
 
 
 # In[7]:
@@ -604,7 +606,6 @@ df
 # In[27]:
 
 
-
 plt.rcParams.update({'font.size': 15})
 plt.rcParams['figure.figsize'] = (8, 7)
 
@@ -677,6 +678,7 @@ df6 = df[['inc0', 'inc0']]/1000
 
 # Then, just call :
 plot_clustered_stacked([df1, df2, df3, df4, df5, df6],["PV ICE, Early Loss", "PV ICE, Regular Loss", "PV ICE, PV ICE loss", "Irena 2016, Regular Loss", "CSA 2020"], title='')
+
 
 
 

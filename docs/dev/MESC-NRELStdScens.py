@@ -62,7 +62,7 @@ stdscens_pv_filled
 # In[6]:
 
 
-#stdscens_pv_filled.sum(axis=1)
+#Reeds is in MWac, we're in MWdc, so multiply residential by 1.1 and utility by 1.3
 
 
 # ### Set up PV ICE simulation using historical US installs with the NREL Std Scenarios projection
