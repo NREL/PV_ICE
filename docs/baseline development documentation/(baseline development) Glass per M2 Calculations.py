@@ -31,7 +31,6 @@ density_glass = 2500*1000 # g/m^3
 # In[2]:
 
 
-
 thickness_glass = 0.0032  # m
 glassperm2 = thickness_glass * density_glass
 print("Glass g/m2 up to 2012:", glassperm2)
@@ -187,8 +186,6 @@ conformation_perc.to_csv(cwd+'/../../../PV_ICE/baselines/SupportingMaterial/outp
 
 
 # In[13]:
-
-
 
 
 #eqn = density glass * mm to m * [(mrktshr g-g * 2 * avg glass thickmm )+ (mrktshr g-b * 1 * avg glass thick)]

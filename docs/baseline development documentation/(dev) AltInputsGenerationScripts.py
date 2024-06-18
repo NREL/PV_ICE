@@ -435,16 +435,16 @@ T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
 
-# In[16]:
+# In[4]:
 
 
 alphabeta2T10(5.692,29.697)
 
 
-# In[17]:
+# In[6]:
 
 
-alphabeta2T10T50T90(5.692,29.697)
+alphabeta2T10T50T90(2.810,100)
 
 
 # In[18]:
