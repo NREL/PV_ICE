@@ -70,13 +70,7 @@ e_modmfg_raw.iloc[2022-1995,2]
 # 
 # Also possible that the 2021-2022 data point is outlier low. This is calculated from the First Solar Sustainability Report and the specs of the series 6 module (power and area) and their reported EPD. It is alternatively possible that the previous data points (which are highly self citing), are too high due to possibly including overhead operations. From the sustainability report, given that values of energy are reported per Wp, and the module efficiency and size continue to get larger, it is possible that the manufacturing energy hasn't decreased on a per area basis (but looks like improvement on a per watt basis). Or it's the total manufacturing energy demand divided by total manufactured in Wp. 
 
-# In[12]:
-
-
-e_modmfg_tidy.loc[2021]
-
-
-# In[9]:
+# In[13]:
 
 
 e_modmfg_tidy = e_modmfg_raw.iloc[:,0].copy()
@@ -91,7 +85,7 @@ plt.ylim(0,60)
 
 # Removed outliers, now  linearly interpolate between available data.
 
-# In[13]:
+# In[14]:
 
 
 e_modmfg_filled = e_modmfg_tidy.interpolate(method='linear', limit_direction='both') 
@@ -100,7 +94,7 @@ plt.xlim(2000,2025)
 plt.ylim(0,60)
 
 
-# In[16]:
+# In[15]:
 
 
 #trim early years
@@ -108,7 +102,7 @@ e_modmfg = e_modmfg_filled.loc[e_modmfg_filled.index>=1995]*1000 #in Wh/m2)
 e_modmfg.columns=['Module Assembly Energy Whpm2']
 
 
-# In[17]:
+# In[16]:
 
 
 #print to csv in Wh/m2
