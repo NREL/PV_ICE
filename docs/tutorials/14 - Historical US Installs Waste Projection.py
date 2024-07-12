@@ -181,7 +181,7 @@ r1.scenario['All Sector All Tech Installs_[MWdc]'].dataIn_m.head()
 r1.scenario['All Sector All Tech Installs_[MWdc]'].dataOut_m.head()
 
 
-# In[19]:
+# In[18]:
 
 
 for scen in scennames:
@@ -193,7 +193,7 @@ plt.ylabel('Installed Cap [MW]')
 plt.legend()
 
 
-# In[20]:
+# In[19]:
 
 
 usyearlyr1, uscumr1 = r1.aggregateResults()
@@ -201,7 +201,7 @@ usyearlyr1.to_csv(os.path.join(resultsfolder,'historicalUS-yearly.csv'))
 uscumr1.to_csv(os.path.join(resultsfolder,'historicalUS-cumulative.csv'))
 
 
-# In[55]:
+# In[20]:
 
 
 resultsfolder
@@ -230,7 +230,7 @@ import re
 keys[keys[0].str.contains('area', flags=re.IGNORECASE)]
 
 
-# In[24]:
+# In[23]:
 
 
 for scen in scennames:
@@ -242,7 +242,7 @@ plt.ylabel('Disposed Area [m2]')
 plt.legend()
 
 
-# In[26]:
+# In[24]:
 
 
 #extract area disposed from simulation #should be m2
@@ -252,7 +252,7 @@ for scen in scennames:
     yearly_AreaDisposed_Results = pd.concat([yearly_AreaDisposed_Results,temp], axis=1)
 
 
-# In[27]:
+# In[25]:
 
 
 yearly_AreaDisposed_Results.index = r1.scenario['Residential'].dataIn_m['year']
@@ -260,7 +260,7 @@ yearly_AreaDisposed_Results.columns = scennames
 yearly_AreaDisposed_Results.tail()
 
 
-# In[28]:
+# In[26]:
 
 
 yearly_AreaDisposed_Results_cum = yearly_AreaDisposed_Results.cumsum()
@@ -269,14 +269,14 @@ yearly_AreaDisposed_Results_cum.tail()
 
 # Now we take the area and divide it by 1.6 m2 or 2 m2 to approximate the # of modules. And Also extract the 2030 and 2050 values for area equivilence estimations.
 
-# In[29]:
+# In[27]:
 
 
 subset_areaDisposed_yearly = yearly_AreaDisposed_Results.loc[[2030,2050]]
 subset_areaDisposed_cum = yearly_AreaDisposed_Results_cum.loc[[2030,2050]]
 
 
-# In[30]:
+# In[28]:
 
 
 subset_1pt6m2ModulesDisposed_yearly = subset_areaDisposed_yearly/1.6
@@ -293,7 +293,7 @@ subset_NoModules.to_csv(os.path.join(resultsfolder,'US_Historical_NoModulesDispo
 subset_NoModules
 
 
-# In[31]:
+# In[29]:
 
 
 AreaDisposed_Eq = pd.concat([subset_areaDisposed_yearly,subset_areaDisposed_cum], keys = ['yearly','cumulative'])
@@ -303,14 +303,14 @@ AreaDisposed_Eq
 
 # ### in 2022
 
-# In[32]:
+# In[30]:
 
 
 #annual
 round(yearly_AreaDisposed_Results.loc[[2022]]/1.6,0)
 
 
-# In[33]:
+# In[31]:
 
 
 #cumulative
@@ -324,20 +324,20 @@ round(yearly_AreaDisposed_Results_cum.loc[[2022]]/1.6,0)
 # 
 # Create a table output of installs, active generating capacity annually decommissioned, cumulatively decomissioned, and cumulative decomissioned module mass.
 
-# In[34]:
+# In[32]:
 
 
 df_Capacity_all = usyearlyr1[usyearlyr1.filter(like='[MW]').columns]
 
 
-# In[35]:
+# In[33]:
 
 
 capacity_results_alltech = yearlyallPV_agg.filter(like='[MW]')
 capacity_results_cSi = yearlycSi_agg.filter(like='[MW]')
 
 
-# In[36]:
+# In[34]:
 
 
 #caution, run this only once
@@ -345,13 +345,13 @@ for colname in df_Capacity_all.filter(like='Decommisioned').columns:
     df_Capacity_all[str('Annual_'+colname)] = df_Capacity_all[colname]-df_Capacity_all[colname].shift(1).fillna(0)
 
 
-# In[37]:
+# In[35]:
 
 
 df_Capacity_all.to_csv(os.path.join(resultsfolder, 'US_Historical_PV_Decomissioning_Sectorwise.csv'))
 
 
-# In[38]:
+# In[36]:
 
 
 df_Capacity_all.filter(like='DecommisionedCapacity_sim1_Residential_[MW]')#.shift(1)#.fillna(0)
@@ -360,7 +360,7 @@ df_Capacity_all.filter(like='DecommisionedCapacity_sim1_Residential_[MW]')#.shif
 # ### Pull out the 2030 and 2050 Values of interest
 # the request was for 2030 and 2050 values for decommissioning and cumulative c-Si waste, by sector. Create a table of just those results.
 
-# In[39]:
+# In[37]:
 
 
 subset_results_capacity = df_Capacity_all.filter(like='Decommisioned').loc[[2022,2030,2050]]
@@ -368,7 +368,7 @@ subset_results_capacity.T.to_csv(os.path.join(resultsfolder, 'US_Historical_PV_D
 round(subset_results_capacity.T,)
 
 
-# In[40]:
+# In[38]:
 
 
 #cumulative wastes
@@ -383,7 +383,7 @@ cSi_wastes_results = round(cSi_wastes_results,2)
 cSi_wastes_results
 
 
-# In[41]:
+# In[39]:
 
 
 power_and_allwastes = pd.concat([subset_results_capacity.T,cSi_wastes_results])
@@ -391,7 +391,7 @@ power_and_allwastes.to_csv(os.path.join(resultsfolder, 'DecommissionsAllWastes_n
 power_and_allwastes
 
 
-# In[42]:
+# In[40]:
 
 
 subset_results_waste.T.to_csv(os.path.join(resultsfolder,'US_Historical_PV_cSiWaste20302050_Sectorwise.csv'))
@@ -400,7 +400,7 @@ round(subset_results_waste.T,2)
 round(subset_results_waste_annual.T,2)
 
 
-# In[43]:
+# In[41]:
 
 
 annualdecommissioncSi = df_Capacity_all.filter(like='Annual_Decommisioned').filter(like='All Sector c-Si')
@@ -409,13 +409,13 @@ installs = df_Capacity_all.filter(like='newInstalledCapacity').filter(like='All 
 plt.plot(installs)
 
 
-# In[44]:
+# In[42]:
 
 
 annualdecommissioncSi.sum()
 
 
-# In[45]:
+# In[43]:
 
 
 installs.iloc[:,1].sum()
@@ -423,7 +423,7 @@ installs.iloc[:,1].sum()
 
 # ## Pretty Plots
 
-# In[46]:
+# In[44]:
 
 
 #all techs plot
@@ -444,7 +444,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[47]:
+# In[45]:
 
 
 #cSi plot
@@ -465,13 +465,13 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[48]:
+# In[46]:
 
 
 yearlyallPV_agg.filter(like='Decommisioned').columns
 
 
-# In[49]:
+# In[47]:
 
 
 #all techs plot
@@ -492,7 +492,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[50]:
+# In[48]:
 
 
 #cSi plot
@@ -513,7 +513,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[51]:
+# In[49]:
 
 
 cSiMatWastes_cum = uscumr1.filter(like='WasteAll').filter(like='c-Si').filter(like='All Sector')/1e6 #convert to million metric tonnes
@@ -521,18 +521,18 @@ cSiMatWastes_cum = cSiMatWastes_cum.add_suffix('_[million Tonnes]')
 cSiMatWastes_cum.columns
 
 
-# In[52]:
+# In[62]:
 
 
 #cSi plot
-plt.plot([],[],color='aqua', label='glass')
-plt.plot([],[],color='lightcoral', label='aluminium_frames')
-plt.plot([],[],color='silver', label='silver')
-plt.plot([],[],color='blue', label='silicon')
-plt.plot([],[],color='orange', label='copper')
-plt.plot([],[],color='purple', label='encapsulant')
-plt.plot([],[],color='black', label='backsheet')
-
+plt.plot([],[],color='#00bfbf', label='glass')
+plt.plot([],[],color='#1f77be', label='aluminium_frames')
+plt.plot([],[],color='#d62728', label='silver')
+plt.plot([],[],color='#ff7f0e', label='silicon')
+plt.plot([],[],color='#2ca02c', label='copper')
+plt.plot([],[],color='#9467BD', label='encapsulant')
+plt.plot([],[],color='#8C564B', label='backsheet')
+materialcolors = ['#00bfbf','#1f77be','#d62728','#ff7f0e','#2ca02c','#9467BD','#8C564B']
 
 plt.stackplot(cSiMatWastes_cum.index, 
               cSiMatWastes_cum.iloc[:,0], 
@@ -542,7 +542,7 @@ plt.stackplot(cSiMatWastes_cum.index,
               cSiMatWastes_cum.iloc[:,4],
               cSiMatWastes_cum.iloc[:,5],
               cSiMatWastes_cum.iloc[:,6],
-              colors = ['aqua','lightcoral','silver','blue','orange','purple','black'])
+              colors = materialcolors)
 plt.title('Cumulative c-Si Material Waste from All Sectors')
 plt.ylabel('Cumulative Mass Waste [million metric tonnes]')
 plt.xlim(1995,2050)
@@ -550,10 +550,34 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[53]:
+# In[60]:
 
 
-#2050 stacked bar graph of cumulative waste by Material
+#cSi plot by 2030
+plt.plot([],[],color='#00bfbf', label='glass')
+plt.plot([],[],color='#1f77be', label='aluminium_frames')
+plt.plot([],[],color='#d62728', label='silver')
+plt.plot([],[],color='#ff7f0e', label='silicon')
+plt.plot([],[],color='#2ca02c', label='copper')
+plt.plot([],[],color='#9467BD', label='encapsulant')
+plt.plot([],[],color='#8C564B', label='backsheet')
+materialcolors = ['#00bfbf','#1f77be','#d62728','#ff7f0e','#2ca02c','#9467BD','#8C564B']
+
+plt.stackplot(cSiMatWastes_cum.index, 
+              cSiMatWastes_cum.iloc[:,0], 
+              cSiMatWastes_cum.iloc[:,1],
+              cSiMatWastes_cum.iloc[:,2],
+              cSiMatWastes_cum.iloc[:,3],
+              cSiMatWastes_cum.iloc[:,4],
+              cSiMatWastes_cum.iloc[:,5],
+              cSiMatWastes_cum.iloc[:,6],
+              colors = materialcolors)
+plt.title('Cumulative c-Si End-of-life Material from All Sectors')
+plt.ylabel('Cumulative Mass Waste\n[million metric tonnes]')
+plt.xlim(1995,2030)
+plt.ylim(0,1)
+plt.legend(loc='upper left')
+plt.show()
 
 
 # In[ ]:

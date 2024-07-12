@@ -36,6 +36,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .highlight .m { color: var(--jp-mirror-editor-number-color) } /* Literal.Number */
 .highlight .s { color: var(--jp-mirror-editor-string-color) } /* Literal.String */
 .highlight .ow { color: var(--jp-mirror-editor-operator-color); font-weight: bold } /* Operator.Word */
+.highlight .pm { color: var(--jp-mirror-editor-punctuation-color) } /* Punctuation.Marker */
 .highlight .w { color: var(--jp-mirror-editor-variable-color) } /* Text.Whitespace */
 .highlight .mb { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Bin */
 .highlight .mf { color: var(--jp-mirror-editor-number-color) } /* Literal.Number.Float */
@@ -14559,12 +14560,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
                 },
                 displayAlign: 'center',
                 CommonHTML: {
-                    linebreaks: { 
-                    automatic: true 
+                    linebreaks: {
+                    automatic: true
                     }
                 }
             });
-        
+
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
     }
@@ -14597,12 +14598,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">'font.size'</span><span class="p">:</span> <span class="mi">18</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="c1">#grabs current working directory</span>
 
-<span class="n">supportMatfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span> <span class="o">/</span> <span class="s1">&#39;SupportingMaterial&#39;</span><span class="p">)</span>
-<span class="n">baselinesFolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">&#39;PV_ICE&#39;</span> <span class="o">/</span> <span class="s1">&#39;baselines&#39;</span><span class="p">)</span>
+<span class="n">supportMatfolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">'PV_ICE'</span> <span class="o">/</span> <span class="s1">'baselines'</span> <span class="o">/</span> <span class="s1">'SupportingMaterial'</span><span class="p">)</span>
+<span class="n">baselinesFolder</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s1">'PV_ICE'</span> <span class="o">/</span> <span class="s1">'baselines'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14629,8 +14630,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_mining_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">&quot;\energy-input-copper-mining.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
-<span class="n">cu_mining_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_mining_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">"\energy-input-copper-mining.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span>
+<span class="n">cu_mining_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14783,15 +14784,15 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_mining_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_mining_raw</span><span class="p">[</span><span class="s1">&#39;E_CuMining_kWhpkg&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;kWh/kg&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_mining_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_mining_raw</span><span class="p">[</span><span class="s1">'E_CuMining_kWhpkg'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'kWh/kg'</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_mining_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_mining_raw</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Percent Fuel [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_mining_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_mining_raw</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Percent Fuel [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cu_Mining_kWhpkg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Cu_Mining_kWhpkg'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -14851,11 +14852,11 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_mining_data</span> <span class="o">=</span> <span class="n">cu_mining_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,</span><span class="s1">&#39;E_CuMining_kWhpkg&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_mining_data</span> <span class="o">=</span> <span class="n">cu_mining_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,</span><span class="s1">'E_CuMining_kWhpkg'</span><span class="p">]</span>
 <span class="n">cu_mining_avg</span> <span class="o">=</span> <span class="n">cu_mining_data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">cu_mining_prctfuel</span> <span class="o">=</span> <span class="mf">20.0</span>
 <span class="n">indx_temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span><span class="mi">2051</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">cu_mining_energy</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;E_Cu_Mining_kWhpkg&#39;</span><span class="p">:</span><span class="n">cu_mining_avg</span><span class="p">,</span> <span class="s1">&#39;PrctFuel&#39;</span><span class="p">:</span><span class="n">cu_mining_prctfuel</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">indx_temp</span><span class="p">)</span>
+<span class="n">cu_mining_energy</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'E_Cu_Mining_kWhpkg'</span><span class="p">:</span><span class="n">cu_mining_avg</span><span class="p">,</span> <span class="s1">'PrctFuel'</span><span class="p">:</span><span class="n">cu_mining_prctfuel</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="n">indx_temp</span><span class="p">)</span>
 <span class="c1">#cu_mining_energy</span>
 </pre></div>
 
@@ -14901,8 +14902,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_pyro_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">&quot;\energy-input-copper-pyro.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
-<span class="n">cu_pyro_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_pyro_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">"\energy-input-copper-pyro.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span>
+<span class="n">cu_pyro_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15006,15 +15007,15 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_pyro_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_pyro_raw</span><span class="p">[</span><span class="s1">&#39;E_Pyro_Cu_kWhpkg&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;kWh/kg&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_pyro_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_pyro_raw</span><span class="p">[</span><span class="s1">'E_Pyro_Cu_kWhpkg'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'kWh/kg'</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_pyro_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_pyro_raw</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Percent Fuel [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_pyro_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_pyro_raw</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Percent Fuel [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cu Pyrometallurgy kWhpkg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Cu Pyrometallurgy kWhpkg'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -15075,11 +15076,11 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_pyro</span> <span class="o">=</span> <span class="n">cu_pyro_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">cu_pyro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2002</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-<span class="n">cu_pyro_avg_2007</span> <span class="o">=</span> <span class="n">cu_pyro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2007</span><span class="p">:</span><span class="mi">2008</span><span class="p">,</span><span class="s1">&#39;E_Pyro_Cu_kWhpkg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">cu_pyro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2007</span><span class="p">:</span><span class="mi">2008</span><span class="p">,</span><span class="s1">&#39;E_Pyro_Cu_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_pyro_avg_2007</span>
+<span class="n">cu_pyro_avg_2007</span> <span class="o">=</span> <span class="n">cu_pyro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2007</span><span class="p">:</span><span class="mi">2008</span><span class="p">,</span><span class="s1">'E_Pyro_Cu_kWhpkg'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">cu_pyro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2007</span><span class="p">:</span><span class="mi">2008</span><span class="p">,</span><span class="s1">'E_Pyro_Cu_kWhpkg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_pyro_avg_2007</span>
 
 <span class="n">cu_pyro_filled</span> <span class="o">=</span> <span class="n">cu_pyro</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
-<span class="n">cu_pyro_final</span> <span class="o">=</span> <span class="n">cu_pyro_filled</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,</span><span class="s1">&#39;E_Pyro_Cu_kWhpkg&#39;</span><span class="p">:</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span>
+<span class="n">cu_pyro_final</span> <span class="o">=</span> <span class="n">cu_pyro_filled</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,</span><span class="s1">'E_Pyro_Cu_kWhpkg'</span><span class="p">:</span><span class="s1">'PrctFuel'</span><span class="p">]</span>
 </pre></div>
 
      </div>
@@ -15098,17 +15099,17 @@ class="
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#cu_pyro_final</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cu_pyro_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">&#39;E_Pyro_Cu_kWhpkg&#39;</span><span class="p">])</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;kWh/kg&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cu_pyro_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">'E_Pyro_Cu_kWhpkg'</span><span class="p">])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'kWh/kg'</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span><span class="mi">2030</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">12</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cu_pyro_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Percent Fuel [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cu_pyro_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Percent Fuel [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cu Pyrometallurgy kWhpkg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Cu Pyrometallurgy kWhpkg'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -15165,8 +15166,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_hydro_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">&quot;\energy-input-copper-hydro.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
-<span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_hydro_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">"\energy-input-copper-hydro.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span>
+<span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15277,16 +15278,16 @@ class="
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_hydro_raw</span><span class="p">[</span><span class="s1">&#39;E_hydro_Cu_kWhpkg&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;kWh/kg&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_hydro_raw</span><span class="p">[</span><span class="s1">'E_hydro_Cu_kWhpkg'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'kWh/kg'</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_hydro_raw</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Percent Fuel [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_hydro_raw</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Percent Fuel [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cu Hydrometallurgy kWhpkg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Cu Hydrometallurgy kWhpkg'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -15345,15 +15346,15 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_hydro_post_2002</span> <span class="o">=</span> <span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2002</span><span class="p">:,</span><span class="s1">&#39;E_hydro_Cu_kWhpkg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">cu_hydro_post_2002_fuel</span> <span class="o">=</span> <span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2002</span><span class="p">:,</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_hydro_post_2002</span> <span class="o">=</span> <span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2002</span><span class="p">:,</span><span class="s1">'E_hydro_Cu_kWhpkg'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">cu_hydro_post_2002_fuel</span> <span class="o">=</span> <span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2002</span><span class="p">:,</span><span class="s1">'PrctFuel'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
 <span class="n">cu_hydro</span> <span class="o">=</span> <span class="n">cu_hydro_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">cu_hydro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2002</span><span class="p">:,</span><span class="s1">&#39;E_hydro_Cu_kWhpkg&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">cu_hydro_post_2002</span>
-<span class="n">cu_hydro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2002</span><span class="p">:,</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">cu_hydro_post_2002_fuel</span>
+<span class="n">cu_hydro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2002</span><span class="p">:,</span><span class="s1">'E_hydro_Cu_kWhpkg'</span><span class="p">]</span><span class="o">=</span><span class="n">cu_hydro_post_2002</span>
+<span class="n">cu_hydro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2002</span><span class="p">:,</span><span class="s1">'PrctFuel'</span><span class="p">]</span><span class="o">=</span><span class="n">cu_hydro_post_2002_fuel</span>
 
 <span class="n">cu_hydro_filled</span> <span class="o">=</span> <span class="n">cu_hydro</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
-<span class="n">cu_hydro_final</span> <span class="o">=</span> <span class="n">cu_hydro_filled</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">&#39;E_hydro_Cu_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]]</span>
+<span class="n">cu_hydro_final</span> <span class="o">=</span> <span class="n">cu_hydro_filled</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:,[</span><span class="s1">'E_hydro_Cu_kWhpkg'</span><span class="p">,</span><span class="s1">'PrctFuel'</span><span class="p">]]</span>
 </pre></div>
 
      </div>
@@ -15372,17 +15373,17 @@ class="
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#cu_hydro_final</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cu_hydro_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">&#39;E_hydro_Cu_kWhpkg&#39;</span><span class="p">])</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;kWh/kg&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cu_hydro_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">'E_hydro_Cu_kWhpkg'</span><span class="p">])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'kWh/kg'</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span><span class="mi">2030</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cu_hydro_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Percent Fuel [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cu_hydro_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Percent Fuel [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cu Hydrometallurgy kWhpkg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Cu Hydrometallurgy kWhpkg'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -15456,8 +15457,8 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#import marketshare</span>
-<span class="n">mrktshr_pyrohydro_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">&quot;\energy-inputs-copper-maths.xlsx&quot;</span><span class="p">),</span>
-              <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;pyrovshydro&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">mrktshr_pyrohydro_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">"\energy-inputs-copper-maths.xlsx"</span><span class="p">),</span>
+              <span class="n">sheet_name</span><span class="o">=</span><span class="s1">'pyrovshydro'</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -15473,10 +15474,10 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mrktshr_pyrohydro</span> <span class="o">=</span> <span class="n">mrktshr_pyrohydro_raw</span><span class="p">[[</span><span class="s1">&#39;% PYRO&#39;</span><span class="p">,</span><span class="s1">&#39;% HYDRO&#39;</span><span class="p">]]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mrktshr_pyrohydro</span> <span class="o">=</span> <span class="n">mrktshr_pyrohydro_raw</span><span class="p">[[</span><span class="s1">'% PYRO'</span><span class="p">,</span><span class="s1">'% HYDRO'</span><span class="p">]]</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">stackplot</span><span class="p">(</span><span class="n">mrktshr_pyrohydro</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">mrktshr_pyrohydro</span><span class="p">[</span><span class="s1">&#39;% PYRO&#39;</span><span class="p">],</span> <span class="n">mrktshr_pyrohydro</span><span class="p">[</span><span class="s1">&#39;% HYDRO&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;skyblue&#39;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">mrktshr_pyrohydro</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">stackplot</span><span class="p">(</span><span class="n">mrktshr_pyrohydro</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">mrktshr_pyrohydro</span><span class="p">[</span><span class="s1">'% PYRO'</span><span class="p">],</span> <span class="n">mrktshr_pyrohydro</span><span class="p">[</span><span class="s1">'% HYDRO'</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">'orange'</span><span class="p">,</span><span class="s1">'skyblue'</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">mrktshr_pyrohydro</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'lower right'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15548,8 +15549,8 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#calculate fuel energy</span>
-<span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">&#39;E_hydro_Cu_fuel_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">&#39;E_hydro_Cu_kWhpkg&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">&#39;E_Pyro_Cu_fuel_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">&#39;E_Pyro_Cu_kWhpkg&#39;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">'E_hydro_Cu_fuel_kWhpkg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">'E_hydro_Cu_kWhpkg'</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">'E_Pyro_Cu_fuel_kWhpkg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">'E_Pyro_Cu_kWhpkg'</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15783,10 +15784,10 @@ same for fuel</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mrktshr_pyrohydro_filled</span> <span class="o">=</span> <span class="n">mrktshr_pyrohydro</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1995</span><span class="p">:]</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span> <span class="c1">#create through 2050 (just maintained marketshare)</span>
-<span class="n">Cu_metallurgy_e</span> <span class="o">=</span> <span class="n">mrktshr_pyrohydro_filled</span><span class="p">[</span><span class="s1">&#39;% PYRO&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">&#39;E_Pyro_Cu_kWhpkg&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">mrktshr_pyrohydro_filled</span><span class="p">[</span><span class="s1">&#39;% HYDRO&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">&#39;E_hydro_Cu_kWhpkg&#39;</span><span class="p">]</span>
-<span class="n">Cu_metallurgy_e_fuel</span> <span class="o">=</span> <span class="n">mrktshr_pyrohydro_filled</span><span class="p">[</span><span class="s1">&#39;% PYRO&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">&#39;E_Pyro_Cu_fuel_kWhpkg&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">mrktshr_pyrohydro_filled</span><span class="p">[</span><span class="s1">&#39;% HYDRO&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">&#39;E_hydro_Cu_fuel_kWhpkg&#39;</span><span class="p">]</span>
+<span class="n">Cu_metallurgy_e</span> <span class="o">=</span> <span class="n">mrktshr_pyrohydro_filled</span><span class="p">[</span><span class="s1">'% PYRO'</span><span class="p">]</span><span class="o">*</span><span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">'E_Pyro_Cu_kWhpkg'</span><span class="p">]</span><span class="o">+</span><span class="n">mrktshr_pyrohydro_filled</span><span class="p">[</span><span class="s1">'% HYDRO'</span><span class="p">]</span><span class="o">*</span><span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">'E_hydro_Cu_kWhpkg'</span><span class="p">]</span>
+<span class="n">Cu_metallurgy_e_fuel</span> <span class="o">=</span> <span class="n">mrktshr_pyrohydro_filled</span><span class="p">[</span><span class="s1">'% PYRO'</span><span class="p">]</span><span class="o">*</span><span class="n">cu_pyro_final</span><span class="p">[</span><span class="s1">'E_Pyro_Cu_fuel_kWhpkg'</span><span class="p">]</span><span class="o">+</span><span class="n">mrktshr_pyrohydro_filled</span><span class="p">[</span><span class="s1">'% HYDRO'</span><span class="p">]</span><span class="o">*</span><span class="n">cu_hydro_final</span><span class="p">[</span><span class="s1">'E_hydro_Cu_fuel_kWhpkg'</span><span class="p">]</span>
 <span class="n">Cu_metallurgy_e_prctfuel</span> <span class="o">=</span> <span class="n">Cu_metallurgy_e_fuel</span><span class="o">/</span><span class="n">Cu_metallurgy_e</span><span class="o">*</span><span class="mi">100</span> <span class="c1">#back into percent fuel</span>
-<span class="n">Cu_metallurgy_energy</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">Cu_metallurgy_e</span><span class="p">,</span><span class="n">Cu_metallurgy_e_prctfuel</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_Cu_metallurgy_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">])</span>
+<span class="n">Cu_metallurgy_energy</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">Cu_metallurgy_e</span><span class="p">,</span><span class="n">Cu_metallurgy_e_prctfuel</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s1">'E_Cu_metallurgy_kWhpkg'</span><span class="p">,</span><span class="s1">'PrctFuel'</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -15919,8 +15920,8 @@ same for fuel</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_wireDraw_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">&quot;\energy-input-copper-wireDraw.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
-<span class="n">cu_wireDraw_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_wireDraw_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">"\energy-input-copper-wireDraw.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span>
+<span class="n">cu_wireDraw_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16024,16 +16025,16 @@ same for fuel</p>
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_wireDraw_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_wireDraw_raw</span><span class="p">[</span><span class="s1">&#39;E_wireDraw_kWhpkg&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;kWh/kg&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_wireDraw_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_wireDraw_raw</span><span class="p">[</span><span class="s1">'E_wireDraw_kWhpkg'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'kWh/kg'</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_wireDraw_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_wireDraw_raw</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Percent Fuel [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_wireDraw_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_wireDraw_raw</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Percent Fuel [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cu_WireDraw_kWhpkg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Cu_WireDraw_kWhpkg'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -16094,7 +16095,7 @@ class="
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_wireDraw_mod</span> <span class="o">=</span> <span class="n">cu_wireDraw_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">cu_wireDraw_mod</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2009</span><span class="p">:</span><span class="mi">2018</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 <span class="n">cu_wireDraw_mod</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">cu_wireDraw_mod</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">cu_wireDraw_mod</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">cu_wireDraw_final</span> <span class="o">=</span> <span class="n">cu_wireDraw_mod</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
 </pre></div>
 
@@ -16122,7 +16123,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[68]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Cu_MFGing_e_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">indx_temp</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;E_Cu_mfging_kWhpkg&#39;</span><span class="p">,</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Cu_MFGing_e_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">indx_temp</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'E_Cu_mfging_kWhpkg'</span><span class="p">,</span><span class="s1">'PrctFuel'</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -16139,9 +16140,9 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#percent fuel to fuel energy for each</span>
-<span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">&#39;E_Cu_mining_fuel_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">&#39;E_Cu_Mining_kWhpkg&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
-<span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">&#39;E_Cu_metallurgy_fuel_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">&#39;E_Cu_metallurgy_kWhpkg&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
-<span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">&#39;E_wireDraw_fuel_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">&#39;E_wireDraw_kWhpkg&#39;</span><span class="p">]</span><span class="o">*</span><span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">'E_Cu_mining_fuel_kWhpkg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">'E_Cu_Mining_kWhpkg'</span><span class="p">]</span><span class="o">*</span><span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">'E_Cu_metallurgy_fuel_kWhpkg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">'E_Cu_metallurgy_kWhpkg'</span><span class="p">]</span><span class="o">*</span><span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">'E_wireDraw_fuel_kWhpkg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">'E_wireDraw_kWhpkg'</span><span class="p">]</span><span class="o">*</span><span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
 </pre></div>
 
      </div>
@@ -16185,11 +16186,11 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[70]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Cu_mfging_fuel_e</span> <span class="o">=</span> <span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">&#39;E_Cu_mining_fuel_kWhpkg&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">&#39;E_Cu_metallurgy_fuel_kWhpkg&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">&#39;E_wireDraw_fuel_kWhpkg&#39;</span><span class="p">]</span>
-<span class="n">Cu_mfging_e</span> <span class="o">=</span> <span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">&#39;E_Cu_Mining_kWhpkg&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">&#39;E_Cu_metallurgy_kWhpkg&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">&#39;E_wireDraw_kWhpkg&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Cu_mfging_fuel_e</span> <span class="o">=</span> <span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">'E_Cu_mining_fuel_kWhpkg'</span><span class="p">]</span><span class="o">+</span><span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">'E_Cu_metallurgy_fuel_kWhpkg'</span><span class="p">]</span><span class="o">+</span><span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">'E_wireDraw_fuel_kWhpkg'</span><span class="p">]</span>
+<span class="n">Cu_mfging_e</span> <span class="o">=</span> <span class="n">cu_mining_energy</span><span class="p">[</span><span class="s1">'E_Cu_Mining_kWhpkg'</span><span class="p">]</span><span class="o">+</span><span class="n">Cu_metallurgy_energy</span><span class="p">[</span><span class="s1">'E_Cu_metallurgy_kWhpkg'</span><span class="p">]</span><span class="o">+</span><span class="n">cu_wireDraw_final</span><span class="p">[</span><span class="s1">'E_wireDraw_kWhpkg'</span><span class="p">]</span>
 
-<span class="n">Cu_MFGing_e_final</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">Cu_mfging_fuel_e</span><span class="o">/</span><span class="n">Cu_mfging_e</span><span class="o">*</span><span class="mi">100</span>
-<span class="n">Cu_MFGing_e_final</span><span class="p">[</span><span class="s1">&#39;E_Cu_mfging_kWhpkg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cu_mfging_e</span>
+<span class="n">Cu_MFGing_e_final</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">]</span><span class="o">=</span><span class="n">Cu_mfging_fuel_e</span><span class="o">/</span><span class="n">Cu_mfging_e</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">Cu_MFGing_e_final</span><span class="p">[</span><span class="s1">'E_Cu_mfging_kWhpkg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cu_mfging_e</span>
 </pre></div>
 
      </div>
@@ -16208,16 +16209,16 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Cu_MFGing_e_final</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Cu_MFGing_e_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">Cu_MFGing_e_final</span><span class="p">[</span><span class="s1">&#39;E_Cu_mfging_kWhpkg&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;kWh/kg&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Cu_MFGing_e_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">Cu_MFGing_e_final</span><span class="p">[</span><span class="s1">'E_Cu_mfging_kWhpkg'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'kWh/kg'</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Cu_MFGing_e_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">Cu_MFGing_e_final</span><span class="p">[</span><span class="s1">&#39;PrctFuel&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Percent Fuel [%]&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Cu_MFGing_e_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">Cu_MFGing_e_final</span><span class="p">[</span><span class="s1">'PrctFuel'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'^'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Percent Fuel [%]'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Cu_MFGing_Energy_kWhpkg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Cu_MFGing_Energy_kWhpkg'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
@@ -16264,7 +16265,7 @@ class="
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Cu_MFGing_e_final</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">Cu_MFGing_e_final</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">Cu_MFGing_e_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s1">&#39;\output_energy_Cu_Mfging.csv&#39;</span><span class="p">))</span>
+<span class="n">Cu_MFGing_e_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s1">'\output_energy_Cu_Mfging.csv'</span><span class="p">))</span>
 </pre></div>
 
      </div>
@@ -16291,8 +16292,8 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_recycle_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">&quot;\energy-input-copper-recycle.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;year&#39;</span><span class="p">)</span>
-<span class="n">cu_recycle_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cu_recycle_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supportMatfolder</span><span class="o">+</span><span class="s2">"\energy-input-copper-recycle.csv"</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">'year'</span><span class="p">)</span>
+<span class="n">cu_recycle_raw</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">'all'</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16308,7 +16309,7 @@ class="
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_recycle_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_recycle_raw</span><span class="p">[</span><span class="s1">&#39;E_recycleCu_kWhpkg&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">cu_recycle_raw</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cu_recycle_raw</span><span class="p">[</span><span class="s1">'E_recycleCu_kWhpkg'</span><span class="p">])</span>
 </pre></div>
 
      </div>

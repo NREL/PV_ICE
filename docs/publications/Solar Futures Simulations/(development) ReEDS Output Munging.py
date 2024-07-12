@@ -334,7 +334,10 @@ for scenarios in range(len(df_dc_byregion.index.levels[0])): # iterate over the 
         A.update(history) #not working yet
         #A.replace((['new_Installed_Capacity_[MW]'][1995:2020]), history, inplace=True)
         
-        header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repair,mod_MerchantTail,mod_Reuse\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
+        header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"\
+    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"\
+    "mod_Repair,mod_MerchantTail,mod_Reuse\n"\
+    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
 
         with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -410,7 +413,10 @@ for ii in range (len(df.unstack(level=2))):
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
     
     
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repair,mod_MerchantTail,mod_Reuse\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"\
+    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"\
+    "mod_Repair,mod_MerchantTail,mod_Reuse\n"\
+    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
@@ -485,7 +491,10 @@ for ii in range (len(df.unstack(level=1))):
     # Add other columns
     A = pd.concat([A, baseline.reindex(A.index)], axis=1)
    
-    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"    "mod_Repair,mod_MerchantTail,mod_Reuse\n"    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
+    header = "year,new_Installed_Capacity_[MW],mod_eff,mod_reliability_t50,mod_reliability_t90,"\
+    "mod_degradation,mod_lifetime,mod_MFG_eff,mod_EOL_collection_eff,mod_EOL_collected_recycled,"\
+    "mod_Repair,mod_MerchantTail,mod_Reuse\n"\
+    "year,MW,%,years,years,%,years,%,%,%,%,%,%\n"
 
     with open(filetitle, 'w', newline='') as ict:
     # Write the header lines, including the index variable for
