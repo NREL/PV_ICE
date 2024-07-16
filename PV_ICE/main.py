@@ -570,7 +570,7 @@ class Simulation:
         #             return
         
         
-        self.calculateMassFlow(scenarios=scenarios, materials=materials,
+        self.calculateMassFlow(scenarios=scenarios, materials_input=materials,
                                weibullInputParams=weibullInputParams,
                                bifacialityfactors=bifacialityfactors,
                                reducecapacity=reducecapacity,
@@ -582,7 +582,7 @@ class Simulation:
         
         #self.calculateCarbonFlows(scenarios=scenarios,materials=materials)
 
-    def calculateMassFlow(self, scenarios=None, materials=None,
+    def calculateMassFlow(self, scenarios=None, materials_input=None,
                           weibullInputParams=None, bifacialityfactors=None,
                           reducecapacity=False, debugflag=False,
                           installByArea=None, nameplatedeglimit=None,
@@ -1273,11 +1273,11 @@ class Simulation:
             # Material Loop#
             ################
 
-            if materials is None:
-                materials = list(self.scenario[scenarios[0]].material.keys())
+            if materials_input is None:
+                materials = list(self.scenario[scen].material.keys())           
             else:
-                if isinstance(materials, str):
-                    materials = [materials]
+                if isinstance(materials_input, str):
+                    materials = [materials_input]
 
             for mat in materials:
 
