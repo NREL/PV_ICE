@@ -150,6 +150,7 @@ CdTeRamp_full = round(CdTeRamp.interpolate(),0)
 # In[13]:
 
 
+#Modify the CdTe Scenario deployment schedule
 sim1.modifyScenario(scenarios='23_MidCase_CdTe',stage='new_Installed_Capacity_[MW]', 
                     value=CdTeRamp_full.sum(axis=1), start_year=2024) #
 
@@ -158,6 +159,7 @@ sim1.modifyScenario(scenarios='23_MidCase_CdTe',stage='new_Installed_Capacity_[M
 
 
 plt.plot(sim1.scenario['23_MidCase_CdTe'].dataIn_m.loc[:,'new_Installed_Capacity_[MW]'])
+plt.ylabel('Annual Installed Capacity\n[MWdc]')
 
 
 # In[15]:
@@ -185,13 +187,12 @@ plt.ylabel('Annual Installed Capacity\n[MWdc]')
 # In[17]:
 
 
-#deployment projection for all scenarios, using MWdc
-
+#Modify the c-Si deployment schedule
 sim1.modifyScenario(scenarios=['23_MidCase_cSi'],stage='new_Installed_Capacity_[MW]', 
                     value=mescdeploybytech['cSi_[MWdc]'], start_year=2024) #
 
 
-# In[31]:
+# In[18]:
 
 
 yeargraph = sim1.scenario['23_MidCase_cSi'].dataIn_m.loc[:,'year']
@@ -200,6 +201,60 @@ plt.plot(yeargraph,sim1.scenario['23_MidCase_CdTe'].dataIn_m.loc[:,'new_Installe
 plt.legend()
 plt.ylim(0,)
 plt.xlim(1995,2050)
+plt.ylabel('Annual Installed Capacity\n[MWdc]')
+
+
+# ### Create High recycling scenario
+# Assume high recycling = Solar Cycle ideal (Dias 2022, Renewable and Sustainable Energy Reviews)
+# - modules, 75% sent to recycling
+# - glass, 100% closed loop
+# - aluminium frames, 100% closed loop
+# - silver, 100% closed loop
+# - copper, 100% closed loop
+# - silicon, 100% LQ recycling
+# 
+# We don't need to create a high CdTe recycling scenario, already set to 100% collect and recycle.
+
+# In[19]:
+
+
+sim1.createScenario(name='23_MidCase_cSi_hiR', massmodulefile=moduleFile)
+for mat in MATERIALS:
+    materialfile = os.path.join(baselinesfolder, 'baseline_material_mass_'+str(mat)+'.csv')
+    sim1.scenario['23_MidCase_cSi_hiR'].addMaterial(mat, massmatfile=materialfile) # add all materials listed in MATERIALS
+
+#modify deployment curve as before
+sim1.modifyScenario(scenarios=['23_MidCase_cSi_hiR'],stage='new_Installed_Capacity_[MW]', 
+                    value=mescdeploybytech['cSi_[MWdc]'], start_year=2024) #
+#modify EoL recycling variables
+#module
+sim1.modifyScenario(scenarios=['23_MidCase_cSi_hiR'],stage='mod_EOL_collection_eff', value=75, start_year=2024) #collect 75%
+sim1.modifyScenario(scenarios=['23_MidCase_cSi_hiR'],stage='mod_EOL_pg4_recycled', value=100, start_year=2024) #recycle all collected
+sim1.modifyScenario(scenarios=['23_MidCase_cSi_hiR'],stage='mod_EOL_pb4_recycled', value=100, start_year=2024) #
+
+#material, all become a recycling target, and send to high quality
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('glass', 'mat_PG4_Recycling_target', 100, start_year=2024)
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('glass', 'mat_EOL_Recycled_into_HQ', 100, start_year=2024)
+
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('aluminium_frames', 'mat_PG4_Recycling_target', 100, start_year=2024)
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('aluminium_frames', 'mat_EOL_Recycled_into_HQ', 100, start_year=2024)
+
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('silver', 'mat_PG4_Recycling_target', 100, start_year=2024)
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('silver', 'mat_EOL_Recycled_into_HQ', 100, start_year=2024)
+
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('copper', 'mat_PG4_Recycling_target', 100, start_year=2024)
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('copper', 'mat_EOL_Recycled_into_HQ', 100, start_year=2024)
+
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('silicon', 'mat_PG4_Recycling_target', 100, start_year=2024)
+sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('silicon', 'mat_EOL_Recycled_into_HQ', 100, start_year=2024)
+
+
+# In[31]:
+
+
+#sim1.scenario['23_MidCase_CdTe'].dataIn_m['mod_EOL_collection_eff']
+#sim1.scenario['23_MidCase_cSi'].dataIn_m['mod_EOL_collection_eff']
+#sim1.scenario['23_MidCase_cSi_hiR'].material['glass'].matdataIn_m.keys()
 
 
 # In[ ]:
@@ -208,76 +263,100 @@ plt.xlim(1995,2050)
 
 
 
-# In[ ]:
+# # Run the scenarios
+
+# In[21]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[ ]:
+# In[22]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults()
 
 
-# In[ ]:
+# In[23]:
 
 
 sim1.plotMetricResults()
 
 
-# In[ ]:
+# In[24]:
 
 
-wasteEoL = ii_yearly['WasteEOL_Module_MESC_StdScen_23_MidCase_NoNascent_[Tonnes]']
-decomm = ii_yearly['DecommisionedCapacity_MESC_StdScen_23_MidCase_NoNascent_[MW]']
+recycled_by_mat = pd.DataFrame()
+for mats in MATERIALS:
+    recycled_by_mat[str(mats)] = sim1.scenario['23_MidCase_cSi'].material[mats].matdataOut_m['mat_EOL_Recycled_2_HQ']
+for mats in MATERIALS:
+    recycled_by_mat[str(mats+'_hiR')] = sim1.scenario['23_MidCase_cSi_hiR'].material[mats].matdataOut_m['mat_EOL_Recycled_2_HQ']
+for mats_cdte in MATERIALS_CdTe:
+    recycled_by_mat[str(mats_cdte)] = sim1.scenario['23_MidCase_CdTe'].material[mats_cdte].matdataOut_m['mat_EOL_Recycled_2_HQ']
+recycled_by_mat.index = pd.RangeIndex(start=1995,stop=2051,step=1)
+recycled_by_mat_tonnes = recycled_by_mat/1000000  # This is the ratio for grams to Metric tonnes
+#SUM and Annual 2024-2030, 
 
 
-# In[ ]:
+# In[25]:
 
 
-plt.plot(wasteEoL)
-plt.ylim(0,)
-plt.xlim(1995,2050)
-plt.title('Annual End of Life Module Waste')
-plt.ylabel('EoL Module Waste [metric tonnes]')
+recycled_by_mat_tonnes.loc[2024:2030,]
+
+
+# In[26]:
+
+
+recycled_by_mat_tonnes.loc[2024:2030,'glass':'backsheet']
+
+
+# In[41]:
+
+
+#set plot parameters
+plt.rcParams.update({'font.size': 16})
+
+
+# In[46]:
+
+
+plt.plot(recycled_by_mat_tonnes.loc[2024:2030,'glass':'backsheet'])
+plt.ylim(0,10000)
+plt.xlim(2024,2030)
+plt.title('Annual End of Life Module Materials:\nc-Si Low Recycling')
+plt.ylabel('EoL Module Materials\n[metric tonnes]')
+plt.legend(recycled_by_mat_tonnes.columns, fontsize=14)
 plt.grid()
 
 
-# So taking the peaks as peak demand for later years for recycling:
-# - around 100k metric tonnes by 2030
-# - around 300k metric tonnes by 2040
-# - around 800k metric tonnes by 2050
-# 
-# Explain the jaggedy nature of the EoL
-
-# In[ ]:
+# In[47]:
 
 
-EoLByMethod_MW = sim1.scenario['23_MidCase_NoNascent'].dataOut_m.filter(like='Yearly_Sum_Power_EOLby_')
-EoLByMethod_MW.columns
+plt.plot(recycled_by_mat_tonnes.loc[2024:2030,].filter(like='_hiR'))
+plt.ylim(0,10000)
+plt.xlim(2024,2030)
+plt.title('Annual End of Life Module Materials:\nc-Si High Recycling')
+plt.ylabel('EoL Module Materials\n[metric tonnes]')
+plt.legend(recycled_by_mat_tonnes.columns, fontsize=14)
+plt.grid()
 
 
-# In[ ]:
+# In[48]:
 
 
-#plotly plot
-fig = px.bar(EoLByMethod_MW, x=EoLByMethod_MW.index, y=EoLByMethod_MW.columns, barmode = 'stack')
-fig.show()
+plt.plot(recycled_by_mat_tonnes.loc[2024:2030,'glass_cdte':])
+plt.ylim(0,2000)
+plt.xlim(2024,2030)
+plt.title('Annual End of Life Module Materials:\nCdTe')
+plt.ylabel('EoL Module Materials\n[metric tonnes]')
+plt.legend(recycled_by_mat_tonnes.loc[2024:2030,'glass_cdte':].columns, fontsize=14)
+plt.grid()
 
 
-# Most PV failing before 2050 is due to old installations with shorter project lifetimes. 
-
-# In[ ]:
+# In[49]:
 
 
-sim1.scenario['23_MidCase_NoNascent'].dataOut_m.keys()
-
-
-# In[ ]:
-
-
-
+recycled_by_mat_tonnes.loc[2024:2030,].sum(axis=0)
 
 
 # In[ ]:
