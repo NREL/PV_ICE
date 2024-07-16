@@ -2138,19 +2138,13 @@ class Simulation:
 
         return
 
-    def aggregateResults(self, scenarios=None, materials=None):
+    def aggregateResults(self, scenarios=None, materials_input=None):
 
         if scenarios is None:
             scenarios = list(self.scenario.keys())
         else:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
-
-        if materials is None:
-            materials = list(self.scenario[scenarios[0]].material.keys())
-        else:
-            if isinstance(materials, str):
-                materials = [materials]
 
         keywds = ['mat_Virgin_Stock', 'mat_Total_Landfilled', 'mat_Total_EOL_Landfilled', 'mat_Total_MFG_Landfilled']
         nice_keywds = ['VirginStock', 'WasteAll', 'WasteEOL', 'WasteMFG']
@@ -2161,6 +2155,13 @@ class Simulation:
             for ii in range(len(keywds)):
                 keywd = keywds[ii]
                 nicekey = nice_keywds[ii]
+
+
+                if materials_input is None:
+                    materials = list(self.scenario[scen].material.keys())
+                else:
+                    if isinstance(materials_input, str):
+                        materials = [materials_input]
 
                 for mat in materials:
                     USyearly[nicekey+'_'+mat+'_'+self.name+'_'+scen] = self.scenario[scen].material[mat].matdataOut_m[keywd]
