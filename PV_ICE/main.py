@@ -548,7 +548,7 @@ class Simulation:
                 self.scenario[scen].dataIn_e.loc[selectyears, stage] = value
 
 
-    def calculateFlows(self, scenarios=None, materials=None,
+    def calculateFlows(self, scenarios=None, materials_input=None,
                        weibullInputParams=None, bifacialityfactors=None,
                        reducecapacity=True, debugflag=False,
                        installByArea=None, nameplatedeglimit=None):
@@ -1514,7 +1514,7 @@ class Simulation:
 
 
     #method to calculate energy flows as a function of mass flows and circular pathways
-    def calculateEnergyFlow(self, scenarios=None, materials=None,
+    def calculateEnergyFlow(self, scenarios=None, materials_input=None,
                             insolation = 4800, PR = 0.85):
         '''
         Function takes as input PV ICE resulting mass flow dataframes for scenarios
@@ -1559,12 +1559,6 @@ class Simulation:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
 
-        if materials is None:
-            materials = list(self.scenario[scenarios[0]].material.keys())
-        else:
-            if isinstance(materials, str):
-                materials = [materials]
-
         print("\n\n>>>> Calculating Energy Flows <<<<\n")
 
         for scen in scenarios:
@@ -1592,6 +1586,12 @@ class Simulation:
             
             self.scenario[scen].dataOut_e = de #Wh
             
+            if materials_input is None:
+                materials = list(self.scenario[scen].material.keys())
+            else:
+                if isinstance(materials_input, str):
+                    materials = [materials_input]
+                    
             for mat in materials:
                 
                 if self.scenario[scen].material[mat].matdataIn_e is None:
@@ -1624,7 +1624,7 @@ class Simulation:
     
                 self.scenario[scen].material[mat].matdataOut_e = demat #Wh
 
-    def calculateCarbonFlows(self, scenarios=None, materials=None, 
+    def calculateCarbonFlows(self, scenarios=None, materials_input=None, 
                              countrygridmixes = None, gridemissionfactors = None, 
                              materialprocesscarbon = None, modulecountrymarketshare = None, 
                              materialcountrymarketshare = None, country_deploy = 'USA'):
@@ -1634,11 +1634,7 @@ class Simulation:
             if isinstance(scenarios, str):
                 scenarios = [scenarios]
 
-        if materials is None:
-            materials = list(self.scenario[scenarios[0]].material.keys())
-        else:
-            if isinstance(materials, str):
-                materials = [materials]
+
 
         print("\n\n>>>> Calculating Carbon Flows <<<<\n")
         
@@ -1728,6 +1724,12 @@ class Simulation:
             dc['mod_Recycle_Crush_gCO2eq'] = de['mod_Recycle_Crush']*country_carbonpwh[country_deploy]
             
             self.scenario[scen].dataOut_c = dc
+            
+            if materials_input is None:
+                materials = list(self.scenario[scen].material.keys())
+            else:
+                if isinstance(materials_input, str):
+                    materials = [materials_input]
             
             for mat in materials:
                 
