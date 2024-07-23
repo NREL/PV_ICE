@@ -63,13 +63,13 @@ stdscens_evens_added_cap = stdscen_pv_evens.diff()
 stdscens_added_cap = stdscens_evens_added_cap/2
 
 
-# In[6]:
+# In[1]:
 
 
 #now make previous odds = next year evens deployment
 idx_temp = pd.RangeIndex(start=2024,stop=2051,step=1) #create the index
 stdscens_added_cap_filled = stdscens_added_cap.reindex(idx_temp, method='bfill')
-stdscens_added_cap_filled
+#stdscens_added_cap_filled
 
 
 # In[7]:
@@ -249,7 +249,25 @@ sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('silicon', 'mat_PG4_Recyclin
 sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('silicon', 'mat_EOL_Recycled_into_HQ', 100, start_year=2024)
 
 
-# In[31]:
+# In[20]:
+
+
+#create 0 recycling scenario to calculate end of life mass demand in 2030.
+sim1.createScenario(name='23_MidCase_cSi_0R', massmodulefile=moduleFile)
+for mat in MATERIALS:
+    materialfile = os.path.join(baselinesfolder, 'baseline_material_mass_'+str(mat)+'.csv')
+    sim1.scenario['23_MidCase_cSi_0R'].addMaterial(mat, massmatfile=materialfile) # add all materials listed in MATERIALS
+
+#modify deployment curve as before
+sim1.modifyScenario(scenarios=['23_MidCase_cSi_0R'],stage='new_Installed_Capacity_[MW]', 
+                    value=mescdeploybytech['cSi_[MWdc]'], start_year=2024) #
+
+#set recycling to 0, only consider EoL
+sim1.scenMod_noCircularity(scenarios='23_MidCase_cSi_0R')
+sim1.scenMod_PerfectManufacturing(scenarios='23_MidCase_cSi_0R')
+
+
+# In[21]:
 
 
 #sim1.scenario['23_MidCase_CdTe'].dataIn_m['mod_EOL_collection_eff']
@@ -265,25 +283,25 @@ sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('silicon', 'mat_EOL_Recycled
 
 # # Run the scenarios
 
-# In[21]:
+# In[22]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[22]:
+# In[23]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults()
 
 
-# In[23]:
+# In[24]:
 
 
 sim1.plotMetricResults()
 
 
-# In[24]:
+# In[25]:
 
 
 recycled_by_mat = pd.DataFrame()
@@ -298,26 +316,26 @@ recycled_by_mat_tonnes = recycled_by_mat/1000000  # This is the ratio for grams 
 #SUM and Annual 2024-2030, 
 
 
-# In[25]:
+# In[26]:
 
 
 recycled_by_mat_tonnes.loc[2024:2030,]
 
 
-# In[26]:
+# In[27]:
 
 
 recycled_by_mat_tonnes.loc[2024:2030,'glass':'backsheet']
 
 
-# In[41]:
+# In[28]:
 
 
 #set plot parameters
 plt.rcParams.update({'font.size': 16})
 
 
-# In[46]:
+# In[29]:
 
 
 plt.plot(recycled_by_mat_tonnes.loc[2024:2030,'glass':'backsheet'])
@@ -329,7 +347,7 @@ plt.legend(recycled_by_mat_tonnes.columns, fontsize=14)
 plt.grid()
 
 
-# In[47]:
+# In[30]:
 
 
 plt.plot(recycled_by_mat_tonnes.loc[2024:2030,].filter(like='_hiR'))
@@ -341,7 +359,7 @@ plt.legend(recycled_by_mat_tonnes.columns, fontsize=14)
 plt.grid()
 
 
-# In[48]:
+# In[31]:
 
 
 plt.plot(recycled_by_mat_tonnes.loc[2024:2030,'glass_cdte':])
@@ -353,10 +371,49 @@ plt.legend(recycled_by_mat_tonnes.loc[2024:2030,'glass_cdte':].columns, fontsize
 plt.grid()
 
 
-# In[49]:
+# In[32]:
 
 
 recycled_by_mat_tonnes.loc[2024:2030,].sum(axis=0)
+
+
+# ## Annual Future Demand through 2030
+# i.e. how much module mass is leaving the field each year 2024-2030, is the "total demand"
+
+# In[33]:
+
+
+sim1.scenario['23_MidCase_cSi'].dataOut_m.keys()
+
+
+# In[34]:
+
+
+sim1.scenario['23_MidCase_cSi'].material['glass'].matdataOut_m.keys()
+
+
+# In[35]:
+
+
+annualEoLModules_tonnes = ii_yearly.loc[2024:2030].filter(like='WasteEOL_Module')
+annualEoLModules_tonnes
+
+
+# In[39]:
+
+
+annualEoLModules_tonnes.max().max()
+
+
+# In[40]:
+
+
+plt.plot(annualEoLModules_tonnes)
+plt.legend(['c-Si Low Recycling','CdTe','c-Si High Recycling','c-Si No Recycling'])
+plt.ylim(0,40500)
+plt.xlim(2024,2030)
+plt.ylabel('Annual End of Life Module Mass\n[metric tonnes]', fontsize=14)
+plt.title('Annual Mass of Modules at EoL\nby Scenario')
 
 
 # In[ ]:
