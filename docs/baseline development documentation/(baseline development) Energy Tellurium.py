@@ -37,7 +37,7 @@ print(cwd)
 
 # ### Copper Refining Energy - Metallurgy
 
-# In[12]:
+# In[5]:
 
 
 skipcols = ['Source', 'Notes']
@@ -45,7 +45,7 @@ e_CuMetallurgy_raw = pd.read_csv(os.path.join(supportMatfolder, "output-energy-c
                            #, usecols=lambda x: x not in skipcols)
 
 
-# In[13]:
+# In[6]:
 
 
 e_CuMetallurgy_raw.head()
@@ -53,7 +53,7 @@ e_CuMetallurgy_raw.head()
 
 # ### Refine Te to ~3N
 
-# In[5]:
+# In[7]:
 
 
 skipcols = ['Source', 'Notes']
@@ -61,13 +61,13 @@ e_TeRefine_raw = pd.read_csv(os.path.join(supportMatfolder, "input-energy-CdTe-T
                            #, usecols=lambda x: x not in skipcols)
 
 
-# In[6]:
+# In[8]:
 
 
 e_TeRefine_raw.dropna(how='all')
 
 
-# In[8]:
+# In[9]:
 
 
 plt.plot(e_TeRefine_raw.index, e_TeRefine_raw.iloc[:,0], marker='o')
@@ -81,18 +81,29 @@ plt.title(e_TeRefine_raw.columns[0])
 # The others are hovering around 2 kWh/kg. Therefore, we will take the electrowinning of Te to achieve ~3N to be 2 kWh/kg.
 
 # ### Purify Te to Semiconductor grade
+# Literature searches reveal little to no reliable information on purifying Te and the energy consumption thereof via either vacuum distillation or zone refining. Based on the very wide range of adjacent data found, we will estimate 4 kWh/kg for vacuum distillation to purify Te to semiconductor grade.
+# 
+# Therefore, the overall Te specific energy is 6 kWh/kg on top of the required energy to extract copper precursors.
 
-# In[ ]:
-
-
-e_TePurify_raw = pd.read_csv(os.path.join(supportMatfolder, "input-energy-CdTe-ZnRefining.csv"), index_col='year')
-                           #, usecols=lambda x: x not in skipcols)
-
-
-# In[ ]:
+# In[12]:
 
 
+e_CuMetallurgy_raw.head(2)
 
+
+# In[14]:
+
+
+e_CuMetallurgy_raw['E_Te_kWhpkg'] = e_CuMetallurgy_raw.iloc[:,0]+6
+e_CuMetallurgy_raw['E_Te_fuelfract'] = e_CuMetallurgy_raw['E_Cu_metallurgy_fuel_kWhpkg']/e_CuMetallurgy_raw['E_Te_kWhpkg']*100
+e_CuMetallurgy_raw.head()
+
+
+# In[18]:
+
+
+e_Te_final = e_CuMetallurgy_raw.filter(like='_Te').round(2)
+e_Te_final.to_csv(os.path.join(supportMatfolder,'output-energy-CdTe-TeMFGingE.csv'))
 
 
 # In[ ]:
