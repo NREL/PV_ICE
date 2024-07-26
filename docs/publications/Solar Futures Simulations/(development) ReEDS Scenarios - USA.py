@@ -1390,7 +1390,6 @@ plt.show()
 # In[53]:
 
 
-
 keyw='VirginStock_'
 materials = ['glass', 'silicon', 'silver', 'copper', 'aluminum']
 
@@ -1417,6 +1416,7 @@ newdf['Copper_Ref'] = USyearly[keyw+materials[3]+'_'+SFscenarios[0]]*100/mining2
 newdf['Copper_High'] = USyearly[keyw+materials[3]+'_'+SFscenarios[2]]*100/mining2020_copper
 
 newdf.to_csv(title_Method+' Demand as Percentage of Mining.csv')
+
 
 
 # In[90]:
@@ -1602,6 +1602,7 @@ for kk in range(0, 3):
     # Loop over STATEs
     #for jj in range (1, len(STATEs)): 
      #   USyearly_Areadisp["Areadisp_"+obj] += rr.scenario[obj].data[keyword]
+
 
 
 # In[56]:

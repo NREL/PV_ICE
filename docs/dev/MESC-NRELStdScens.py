@@ -42,19 +42,22 @@ print("PV_ICE version ", PV_ICE.__version__)
 # In[3]:
 
 
-stdsceninput_raw = pd.read_csv(os.path.join(inputfolder, 'StdScen23_Mid_Case_annual_national.csv'),
+stdsceninput_raw = pd.read_csv(os.path.join(inputfolder, 'StdScen23_Mid_Case_100by2035_annual_national.csv'),
            skiprows=[0,1,2,4], header=[0], index_col=1)
 #other scenario options:
 #StdScen23_Mid_Case_NoNascent_annual_national.csv
+#StdScen23_Mid_Case_100by2035_annual_national.csv
+#StdScen23_Mid_Case_annual_national.csv
 
 
-# In[4]:
+# In[39]:
 
 
 stdscen_pv_evens = stdsceninput_raw.filter(like='(MW)').filter(like='PV')
+stdscen_pv_evens.head(2)
 
 
-# In[5]:
+# In[38]:
 
 
 #take the difference betwen even years to get annual additions from cumulative
@@ -63,7 +66,7 @@ stdscens_evens_added_cap = stdscen_pv_evens.diff()
 stdscens_added_cap = stdscens_evens_added_cap/2
 
 
-# In[1]:
+# In[6]:
 
 
 #now make previous odds = next year evens deployment
@@ -399,13 +402,13 @@ annualEoLModules_tonnes = ii_yearly.loc[2024:2030].filter(like='WasteEOL_Module'
 annualEoLModules_tonnes
 
 
-# In[39]:
+# In[36]:
 
 
 annualEoLModules_tonnes.max().max()
 
 
-# In[40]:
+# In[37]:
 
 
 plt.plot(annualEoLModules_tonnes)

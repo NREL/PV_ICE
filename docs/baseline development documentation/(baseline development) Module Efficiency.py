@@ -3,7 +3,7 @@
 
 # # Module Efficiency History and Projections
 
-# In[3]:
+# In[1]:
 
 
 import numpy as np
@@ -21,7 +21,7 @@ plt.rcParams['figure.figsize'] = (12, 8)
 
 # This journal covers the development of a historical baseline and baseline future projection of average module efficiency for each installation year.
 
-# In[67]:
+# In[2]:
 
 
 skipcols = ['Source']
@@ -30,7 +30,7 @@ mod_eff_raw = pd.read_csv(os.path.join(supportMatfolder,"module_eff.csv"),
 mod_eff_raw['mod_eff'] = pd.to_numeric(mod_eff_raw['mod_eff'])
 
 
-# In[68]:
+# In[3]:
 
 
 print(mod_eff_raw['mod_eff'][2019])
@@ -39,7 +39,7 @@ plt.plot(mod_eff_raw, marker='o')
 
 # There appears to be an "outlier" in 2003. This is from a different source. It does however, fit within the range of module efficiency specified in the prior data point (2001, avg = 13.6, min = 12, max = 16.1). For the purposes of interpolation, we will drop this single datapoint.
 
-# In[69]:
+# In[4]:
 
 
 mod_eff_raw['mod_eff'][2003]=np.nan
@@ -48,7 +48,7 @@ plt.plot(mod_eff_raw, marker='o')
 
 # Now interpolate for missing years. Going to break into 2 parts for this, a linear historical part, and an exponential decay out to 2050.
 
-# In[70]:
+# In[5]:
 
 
 df_findrecentyear = mod_eff_raw.loc[(mod_eff_raw.index<=2049)] #remove goal point
@@ -56,14 +56,14 @@ recentyear = df_findrecentyear.last_valid_index() #find most recent year of effi
 print('The most recent efficiency data is from ',recentyear)
 
 
-# In[71]:
+# In[6]:
 
 
 mod_eff_early = mod_eff_raw.loc[(mod_eff_raw.index<=recentyear)]
 mod_eff_history = mod_eff_early.interpolate(method='linear',axis=0)
 
 
-# In[72]:
+# In[7]:
 
 
 #print(mod_eff_history)
@@ -71,7 +71,7 @@ plt.plot(mod_eff_history)
 plt.ylim(0,30)
 
 
-# In[73]:
+# In[8]:
 
 
 # Import curve fitting package from scipy
@@ -81,18 +81,18 @@ def power_law(x, a, b):
     return a*np.power(x, b)
 
 
-# In[76]:
+# In[22]:
 
 
 #generae a dataset for the area in between
 mod_eff_late = mod_eff_raw.loc[(mod_eff_raw.index>=recentyear)]
-y_dummy = power_law(mod_eff_late.index-(recentyear-1), mod_eff_late['mod_eff'][recentyear], 0.0511) #17.9
+y_dummy = power_law(mod_eff_late.index-(recentyear-1), mod_eff_late['mod_eff'][recentyear], 0.042) #17.9
 #played around with the exponential until y_dummy[31] closely matched projected 25.06% value. CITE
 print(y_dummy[-1])
 plt.plot(y_dummy)
 
 
-# In[77]:
+# In[23]:
 
 
 #create a dataframe of the projection
@@ -104,14 +104,14 @@ plt.plot(mod_eff_late)
 
 # Now smash the two dataframes back together for our average module efficiency baseline.
 
-# In[78]:
+# In[24]:
 
 
 mod_eff = pd.concat([mod_eff_history, mod_eff_late.loc[mod_eff_late.index>recentyear]])
 mod_eff.to_csv(os.path.join(supportMatfolder, 'output_avg_module_eff_final.csv'), index=True)
 
 
-# In[59]:
+# In[25]:
 
 
 plt.plot(mod_eff_raw, marker='o')
@@ -120,7 +120,7 @@ plt.title('Average Module Efficiency (%)')
 plt.ylabel('Efficiency (%)')
 
 
-# In[66]:
+# In[26]:
 
 
 #graph for paper
@@ -144,7 +144,7 @@ plt.legend(frameon=False, bbox_to_anchor=(1.05, 1.0), loc='upper left')
 
 # Current procedure is to update the historical and projected factors in the baseline file, then run it through here to interpolate, and replace the file.
 
-# In[11]:
+# In[14]:
 
 
 cwd = os.getcwd() #grabs current working directory
@@ -152,7 +152,7 @@ bifi_raw = pd.read_csv(cwd+"/../../../PV_ICE/baselines/baseline_bifaciality_fact
                           index_col='Year')
 
 
-# In[12]:
+# In[ ]:
 
 
 bifi = bifi_raw.interpolate()
@@ -160,7 +160,7 @@ plt.plot(bifi)
 plt.ylim(0,1.0)
 
 
-# In[13]:
+# In[ ]:
 
 
 bifi.to_csv(cwd+'/../../../PV_ICE/baselines/baseline_bifaciality_factor.csv', index=True)
