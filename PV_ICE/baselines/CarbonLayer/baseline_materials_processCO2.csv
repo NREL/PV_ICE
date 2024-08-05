@@ -6,5 +6,5 @@ copper,1.00E-06,1.00E-06,0
 silver,0.95,1.1,0
 encapsulant,5.24,1,0
 backsheet,7.5,1,0
-cadmium,,,
-tellurium,,,
+cadmium,0.005,3.68,
+tellurium,,3.68,
