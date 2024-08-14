@@ -42,7 +42,7 @@ print("PV_ICE version ", PV_ICE.__version__)
 # In[3]:
 
 
-stdsceninput_raw = pd.read_csv(os.path.join(inputfolder, 'StdScen23_Mid_Case_100by2035_annual_national.csv'),
+stdsceninput_raw = pd.read_csv(os.path.join(inputfolder, 'StdScen23_Mid_Case_annual_national.csv'),
            skiprows=[0,1,2,4], header=[0], index_col=1)
 #other scenario options:
 #StdScen23_Mid_Case_NoNascent_annual_national.csv
@@ -50,14 +50,14 @@ stdsceninput_raw = pd.read_csv(os.path.join(inputfolder, 'StdScen23_Mid_Case_100
 #StdScen23_Mid_Case_annual_national.csv
 
 
-# In[39]:
+# In[4]:
 
 
 stdscen_pv_evens = stdsceninput_raw.filter(like='(MW)').filter(like='PV')
-stdscen_pv_evens.head(2)
+stdscen_pv_evens
 
 
-# In[38]:
+# In[5]:
 
 
 #take the difference betwen even years to get annual additions from cumulative
@@ -417,6 +417,31 @@ plt.ylim(0,40500)
 plt.xlim(2024,2030)
 plt.ylabel('Annual End of Life Module Mass\n[metric tonnes]', fontsize=14)
 plt.title('Annual Mass of Modules at EoL\nby Scenario')
+
+
+# # Glass demand projection
+
+# In[44]:
+
+
+idx_temp = pd.RangeIndex(start=2025,stop=2036,step=1) #create the index
+altreeds = pd.DataFrame(index=idx_temp)
+altreeds.loc[2025,'Annual_Si_[GWdc]'] = 30
+altreeds.loc[2030,'Annual_Si_[GWdc]'] = 40
+altreeds.loc[2035,'Annual_Si_[GWdc]'] = 50
+altreeds.interpolate().sum()
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
