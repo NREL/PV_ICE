@@ -1045,8 +1045,8 @@ class Simulation:
                 df['Yearly_Sum_Area_atEOL'] += areaEOL_degradation_all
 
                 df['Yearly_Sum_Power_atEOL'] += powerEOL_failure_notrepaired_all
-                df['Yearly_Sum_Power_atEOL'] += (
-                    powerEOL_ProjLife_all)
+                df['Yearly_Sum_Power_atEOL'] += (powerEOL_ProjLife_all)
+                df['Yearly_Sum_Power_atEOL'] += (powerEOL_degradation_all)
 
                 df['Repaired_Area'] += area_repaired_all
                 df['Repaired_[W]'] += power_repaired_all
