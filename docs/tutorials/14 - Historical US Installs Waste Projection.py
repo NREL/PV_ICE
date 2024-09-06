@@ -521,7 +521,7 @@ cSiMatWastes_cum = cSiMatWastes_cum.add_suffix('_[million Tonnes]')
 cSiMatWastes_cum.columns
 
 
-# In[62]:
+# In[50]:
 
 
 #cSi plot
@@ -550,7 +550,7 @@ plt.legend(loc='upper left')
 plt.show()
 
 
-# In[60]:
+# In[51]:
 
 
 #cSi plot by 2030
