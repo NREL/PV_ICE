@@ -67,11 +67,11 @@ emberdata_vars_perc = emberdata_vars.loc[emberdata_vars['Unit'].isin(Units)]
 emberdata_vars_perc
 
 
-# In[7]:
+# In[38]:
 
 
 #for unique values of area, do a pivot table with year on index, variable on column, and value in thingy
-#emberdata_vars_perc['Area'].unique()
+emberdata_vars_perc['Area'].unique()
 
 
 # In[8]:
