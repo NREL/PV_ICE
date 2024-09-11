@@ -5,10 +5,8 @@ Created on Wed Oct  7 10:12:46 2020
 @author: Silvana
 
 Using pytest to create unit tests for PV ICE
-to run unit tests, run pytest from the command line in the bifacial_radiance directory
-to run coverage tests, run py.test --cov-report term-missing --cov=bifacial_radiance
-
-cd C:\Users\sayala\Documents\GitHub\CircularEconomy-MassFlowCalculator\tests
+to run unit tests, run pytest from the command line in the PV_ICE directory
+to run coverage tests, run py.test --cov-report term-missing --cov=PV_ICE
 
 """
 
