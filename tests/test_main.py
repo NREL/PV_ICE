@@ -93,4 +93,4 @@ def test_landfilledArea_vs_AreafromWaste():
     A = A/20 # convert to modules if each module is 22 kg
     A = A*2 # convert to area if each module is ~2 m2
     A = A*1e-6 # Convert to km 2
-    assert (round(A,0) == (round(B,0))  
+    assert (round(A,0) == (round(B,0))) 
