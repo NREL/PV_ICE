@@ -18,7 +18,6 @@ here = path.abspath(path.dirname(__file__))
 
 import sys
 sys.path.insert(0, here)  # make sure local files are available to an isolated build
-import versioneer
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -30,10 +29,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.4.0',
-    #version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
-
+    use_scm_version={"fallback_version":"0.4.3"},
 
     description='Tool to evaluate Circular Economy',
     long_description=long_description,
@@ -43,8 +39,8 @@ setup(
     url='https://github.com/NREL/PV_ICE',
 
     # Author details
-    author='Silvana Ayala',
-    author_email='silvana.ayala@nrel.gov',
+    author='Silvana Ovaitt',
+    author_email='silvana.ovaitt@nrel.gov',
 
     # Choose your license
     license='BSD-3',
@@ -102,6 +98,8 @@ setup(
         #'test': ['coverage'],
     },
     
+    setup_requires=['setuptools_scm'],
+
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
