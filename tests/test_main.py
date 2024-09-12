@@ -31,17 +31,17 @@ MATERIALBASELINE = 'baseline_material_test.csv'
 
 def test_project_lifetime():
     r1 = PV_ICE.Simulation()
-    r1.createScenario('standard', file=MODULEBASELINE)
-    r1.scenario['standard'].addMaterial('glass', file=MATERIALBASELINE)
-    failyear = r1.scenario['standard'].data['mod_lifetime'][0] 
-    r1.calculateMassFlow()
+    r1.createScenario('standard', massmodulefile=MODULEBASELINE)
+    r1.scenario['standard'].addMaterial('glass', massmatfile=MATERIALBASELINE)
+    failyear = r1.scenario['standard'].dataIn_m['mod_lifetime'][0] 
+    r1.calculateMassFlow(debugflag=True)
     # Assert all modules go to trash at end of lifetime
-    assert r1.scenario['standard'].data['EOL_on_Year_'+str(int(failyear)+1)].iloc[0] == 0
+    assert r1.scenario['standard'].dataDebug_m['EOL_PG_Year_'+str(int(failyear)+1)].iloc[0] == 0
     # Assert that since the manufacturing process is perfect, and there is no
     # trash and recycled input on this year, euqlas 0
-    mat_massperm2 = r1.scenario['standard'].material['glass'].materialdata['mat_massperm2'].iloc[0]
-    assert (r1.scenario['standard'].data['Area'][0]*mat_massperm2-
-            r1.scenario['standard'].material['glass'].materialdata['mat_Virgin_Stock'][0]) == 0.0
+    mat_massperm2 = r1.scenario['standard'].material['glass'].matdataIn_m['mat_massperm2'].iloc[0]
+    assert (r1.scenario['standard'].dataOut_m['Area'][0]*mat_massperm2-
+            r1.scenario['standard'].material['glass'].matdataOut_m['mat_Virgin_Stock'][0]) == 0.0
     
 
 def test_infinite_Weibull():
