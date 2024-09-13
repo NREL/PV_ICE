@@ -74,7 +74,7 @@ emberdata_vars_perc
 emberdata_vars_perc['Area'].unique()
 
 
-# In[9]:
+# In[8]:
 
 
 #munge the Area strings into a more usable format (this takes a while!)
@@ -93,27 +93,27 @@ emberdata_vars_perc_rename.loc[emberdata_vars_perc['Area']=="Korea (the Democrat
 emberdata_vars_perc_rename.loc[emberdata_vars_perc['Area']=="Lao People's Democratic Republic (the)", "Area"] = "Laos"
 
 substrings = [" (the)", " (Islamic Republic of)", " (Bolivarian Republic of)", "n Federation", 
-              ", State of", "n Arab Republic", ", the United Republic of"]
+              ", State of", "n Arab Republic", ", the United Republic of", " Herzegovina"]
 for row in range(0,len(emberdata_vars_perc_rename['Area'])):
     emberdata_vars_perc_rename.iloc[row,0] = remove_substrings_regex(emberdata_vars_perc_rename.iloc[row,0], substrings)
 
 #emberdata_vars_perc['Area'].unique()
 
 
-# In[18]:
+# In[9]:
 
 
 emberdata_vars_perc_rename.loc[emberdata_vars_perc_rename['Area']=="Laos"]
 
 
-# In[15]:
+# In[10]:
 
 
 #emberdata_vars_perc.loc[emberdata_vars_perc['Area']=="Bahamas (the)"]
 emberdata_vars_perc_rename['Area'].unique()
 
 
-# In[28]:
+# In[11]:
 
 
 #for unique values of renamed area, do a pivot table with year on index, variable on column, and value in thingy
@@ -128,7 +128,7 @@ for a in range(0,len(Areas)):
 gridmix_bycountry_2000topresent
 
 
-# In[29]:
+# In[12]:
 
 
 #add in the 1995 to 2000 and present to 2050, ffill and bfill
@@ -138,15 +138,15 @@ gridmix_bycountry_1995to2050_full = gridmix_bycountry_1995to2050.fillna(method='
 gridmix_bycountry_1995to2050_full
 
 
-# In[32]:
+# In[15]:
 
 
 #emberdata_vars_perc_rename['Area'].unique()
-areaofinterest = 'Laos'
+areaofinterest = 'Bosnia'
 gridmix_bycountry_1995to2050_full.filter(like=areaofinterest).plot(kind='area', legend='reverse').legend(bbox_to_anchor=(1, 0.5))
 
 
-# In[31]:
+# In[14]:
 
 
 gridmix_bycountry_1995to2050_full.to_csv(os.path.join(baselinesFolder,'CarbonLayer','baseline_countrygridmix.csv'))

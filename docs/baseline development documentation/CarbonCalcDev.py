@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 import numpy as np
@@ -13,12 +13,14 @@ plt.rcParams.update({'font.size': 18})
 plt.rcParams['figure.figsize'] = (8, 4)
 cwd = os.getcwd() #grabs current working directory
 
-supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
-baselinesFolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines')
-carbonfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE'/ 'baselines'/ 'CarbonLayer')
+supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
+baselinesFolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines')
+carbonfolder = str(Path().resolve().parent.parent / 'PV_ICE'/ 'baselines'/ 'CarbonLayer')
+
+print(cwd)
 
 
-# In[7]:
+# In[2]:
 
 
 #df = self.scenario[scen].dataOut_m
@@ -38,7 +40,7 @@ de_in = pd.read_pickle('dataIn_e.pkl')
 
 
 
-# In[12]:
+# In[3]:
 
 
 gridemissionfactors = pd.read_csv(os.path.join(carbonfolder,'baseline_electricityemissionfactors.csv'))
@@ -47,7 +49,7 @@ countrygridmixes = pd.read_csv(os.path.join(carbonfolder, 'baseline_countrygridm
 countrymodmfg = pd.read_csv(os.path.join(carbonfolder, 'baseline_module_countrymarketshare.csv'))
 
 
-# In[13]:
+# In[4]:
 
 
 #carbon intensity of country grid mixes
@@ -62,7 +64,7 @@ final_country_carbon_int = []
 for country in countrylist:
     temp_country_carbon = []
     for fuel in fuellist: 
-        fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_gpWh_ember']
+        fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_gpWh_IPCC2006']
         fuelemitfactor = list(fuelemitfactor)[0]
         if str(country+'_'+fuel) in countrygridmixes:
             countryfuel = countrygridmixes[str(country+'_'+fuel)]
@@ -73,7 +75,7 @@ country_carbonpkwh = pd.DataFrame(final_country_carbon_int).T
 country_carbonpkwh.columns = countrylist
 
 
-# In[15]:
+# In[5]:
 
 
 fuelemitfactor
@@ -98,6 +100,18 @@ modmfg_co2eqpkwh_bycountry = pd.DataFrame(countrycarbon_modmfg_co2eqpkwh).T #
 modmfg_co2eqpkwh_bycountry['Global_kgCO2eqpkWh'] = modmfg_co2eqpkwh_bycountry.sum(axis=1) #annual carbon intensity of pv module mfg wtd by country
 
 
+# In[6]:
+
+
+de
+
+
+# In[ ]:
+
+
+modmfg_co2eqpkwh_bycountry
+
+
 # In[ ]:
 
 
@@ -105,6 +119,7 @@ modmfg_co2eqpkwh_bycountry['Global_kgCO2eqpkWh'] = modmfg_co2eqpkwh_bycountry.su
 dc = modmfg_co2eqpkwh_bycountry.mul(de['mod_MFG'], axis=0)
 dc.rename(columns={'Global_kgCO2eqpkWh':'Global'}, inplace=True)
 dc = dc.add_suffix('_mod_MFG_kgCO2eq')
+
 
 
 # In[ ]:
@@ -126,7 +141,7 @@ dc['mod_Recycle_Crush_kgCO2eq'] = de['mod_Recycle_Crush']*country_carbonpkwh[cou
 # In[ ]:
 
 
-dc.head()
+dc.tail()
 
 
 # # Material Level

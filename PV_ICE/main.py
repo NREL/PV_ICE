@@ -570,7 +570,7 @@ class Simulation:
         #             return
         
         
-        self.calculateMassFlow(scenarios=scenarios, materials_input=materials,
+        self.calculateMassFlow(scenarios=scenarios, materials_input=None,
                                weibullInputParams=weibullInputParams,
                                bifacialityfactors=bifacialityfactors,
                                reducecapacity=reducecapacity,
@@ -578,9 +578,9 @@ class Simulation:
                                installByArea=installByArea,
                                nameplatedeglimit=nameplatedeglimit)
 
-        self.calculateEnergyFlow(scenarios=scenarios, materials=materials)
+        self.calculateEnergyFlow(scenarios=scenarios, materials_input=None)
         
-        #self.calculateCarbonFlows(scenarios=scenarios,materials=materials)
+        #self.calculateCarbonFlows(scenarios=scenarios,materials_input=materials)
 
     def calculateMassFlow(self, scenarios=None, materials_input=None,
                           weibullInputParams=None, bifacialityfactors=None,
@@ -1681,6 +1681,7 @@ class Simulation:
                 temp_country_carbon = []
                 for fuel in fuellist: 
                     fuelemitfactor = gridemissionfactors[gridemissionfactors['Energy Source']==fuel]['CO2eq_gpWh_IPCC2006']
+                    #print(fuelemitfactor)
                     fuelemitfactor = list(fuelemitfactor)[0]
                     if str(country+'_'+fuel) in countrygridmixes:
                         countryfuel = countrygridmixes[str(country+'_'+fuel)]

@@ -13,23 +13,34 @@ plt.rcParams.update({'font.size': 18})
 plt.rcParams['figure.figsize'] = (8, 4)
 cwd = os.getcwd() #grabs current working directory
 
-supportMatfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
-baselinesFolder = str(Path().resolve().parent.parent.parent / 'PV_ICE' / 'baselines')
-carbonfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE'/ 'baselines'/ 'CarbonLayer')
-testfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE'/ 'TEMP')
+supportMatfolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines' / 'SupportingMaterial')
+baselinesFolder = str(Path().resolve().parent.parent / 'PV_ICE' / 'baselines')
+carbonfolder = str(Path().resolve().parent.parent / 'PV_ICE'/ 'baselines'/ 'CarbonLayer')
+testfolder = str(Path().resolve().parent.parent / 'PV_ICE'/ 'TEMP')
 
 
 # In[2]:
 
 
+#print("Working on a ", platform.system(), platform.release())
+print("Python version ", sys.version)
+print("Pandas version ", pd.__version__)
+print("pyplot ", plt.matplotlib.__version__)
+#print("PV_ICE version ", PV_ICE.__version__)
+print("CWD:", cwd)
+
+
+# In[3]:
+
+
 #creating scenarios for identical power of multiple technologies
-scennames = ['PV_ICE', 'test1']
-MATERIALS = ['silicon'] #'glass','silver',, 'copper', 'aluminium_frames','encapsulant', 'backsheet'
+scennames = ['PV_ICE']#, 'test1']
+MATERIALS = ['aluminium_frames'] #'glass','silver','silicon', 'copper', '','encapsulant', 'backsheet'
 moduleFile_m = os.path.join(baselinesFolder, 'baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(baselinesFolder, 'baseline_modules_energy.csv')
 
 
-# In[3]:
+# In[4]:
 
 
 #load in a baseline and materials for modification
@@ -44,7 +55,7 @@ for scen in scennames:
         sim1.scenario[scen].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[4]:
+# In[5]:
 
 
 #sim1.modifyScenario('test1', 'mod_EOL_collection_eff', 100.0, start_year=2022) #100% collection
@@ -53,27 +64,45 @@ for scen in scennames:
 #sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', value= global_projection['World_annual_[MWdc]'], start_year=2000)
 
 
-# In[5]:
+# In[6]:
 
 
 sim1.calculateFlows()
 
 
-# In[6]:
+# In[7]:
 
 
 sim1.calculateCarbonFlows()
 
 
-# In[7]:
+# In[13]:
 
 
-sim1.scenario['PV_ICE'].material['silicon'].matdataOut_c
+sim1.scenario['PV_ICE'].dataOut_c
+
+
+# In[12]:
+
+
+sim1.scenario['PV_ICE'].material['aluminium_frames'].matdataOut_c
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # # DUMMY TEST
 
-# In[8]:
+# In[ ]:
 
 
 import numpy as np
@@ -91,23 +120,23 @@ carbonfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE'/ 'PV_ICE'/ '
 testfolder = str(Path().resolve().parent.parent.parent / 'PV_ICE'/ 'PV_ICE'/ 'TEMP')
 
 
-# In[9]:
+# In[ ]:
 
 
 #creating scenarios for identical power of multiple technologies
 scennames = ['PV_ICE', 'test1']
-MATERIALS = ['silicon'] #'glass','silver',, 'copper', 'aluminium_frames','encapsulant', 'backsheet'
+MATERIALS = ['copper'] #'glass','silver','silicon', '', 'aluminium_frames','encapsulant', 'backsheet'
 moduleFile_m = os.path.join(carbonfolder, 'dummy_baseline_modules_mass_US.csv')
 moduleFile_e = os.path.join(carbonfolder, 'dummy_baseline_modules_energy.csv')
 
 
-# In[10]:
+# In[ ]:
 
 
 carbonfolder
 
 
-# In[11]:
+# In[ ]:
 
 
 #load in a baseline and materials for modification
@@ -122,7 +151,7 @@ for scen in scennames:
         sim1.scenario[scen].addMaterial(MATERIALS[mat], massmatfile=matbaseline_m, energymatfile=matbaseline_e)
 
 
-# In[12]:
+# In[ ]:
 
 
 #sim1.modifyScenario('test1', 'mod_EOL_collection_eff', 100.0, start_year=2022) #100% collection
@@ -131,19 +160,19 @@ for scen in scennames:
 #sim1.modifyScenario(scenarios=None,stage='new_Installed_Capacity_[MW]', value= global_projection['World_annual_[MWdc]'], start_year=2000)
 
 
-# In[13]:
+# In[ ]:
 
 
 sim1.calculateFlows()
 
 
-# In[14]:
+# In[ ]:
 
 
 sim1.calculateCarbonFlows()
 
 
-# In[16]:
+# In[ ]:
 
 
 sim1.scenario['PV_ICE'].material['silicon'].matdataOut_c['mat_Recycled_HQ_elec_gCO2eq']
