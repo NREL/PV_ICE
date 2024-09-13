@@ -64,28 +64,63 @@ emberdata_vars = emberdata.loc[emberdata['Variable'].isin(Variables)]
 #emberdata_vars['Unit'].unique()
 Units = ['%']
 emberdata_vars_perc = emberdata_vars.loc[emberdata_vars['Unit'].isin(Units)]
+emberdata_vars_perc.reset_index(drop=True, inplace=True)
 emberdata_vars_perc
 
 
-# In[38]:
+# In[7]:
 
 
-#for unique values of area, do a pivot table with year on index, variable on column, and value in thingy
 emberdata_vars_perc['Area'].unique()
 
 
-# In[8]:
+# In[9]:
 
 
-Areas = emberdata_vars_perc['Area'].unique() #an array
+#munge the Area strings into a more usable format (this takes a while!)
+import re
+def remove_substrings_regex(text, substrings):
+    pattern = '|'.join(map(re.escape, substrings))
+    return re.sub(pattern, '', text)
+
+emberdata_vars_perc_rename = emberdata_vars_perc.copy()
+
+#change specific country names to work with prior carbon name formating
+emberdata_vars_perc_rename.loc[emberdata_vars_perc['Area']=="United Arab Emirates", "Area"] = "UAE"
+emberdata_vars_perc_rename.loc[emberdata_vars_perc['Area']=="United States of America", "Area"] = "USA"
+emberdata_vars_perc_rename.loc[emberdata_vars_perc['Area']=="Congo (the Democratic Republic of the)", "Area"] = "CongoDRC"
+emberdata_vars_perc_rename.loc[emberdata_vars_perc['Area']=="Korea (the Democratic People's Republic of)", "Area"] = "North Korea"
+emberdata_vars_perc_rename.loc[emberdata_vars_perc['Area']=="Lao People's Democratic Republic (the)", "Area"] = "Laos"
+
+substrings = [" (the)", " (Islamic Republic of)", " (Bolivarian Republic of)", "n Federation", 
+              ", State of", "n Arab Republic", ", the United Republic of"]
+for row in range(0,len(emberdata_vars_perc_rename['Area'])):
+    emberdata_vars_perc_rename.iloc[row,0] = remove_substrings_regex(emberdata_vars_perc_rename.iloc[row,0], substrings)
+
+#emberdata_vars_perc['Area'].unique()
 
 
-# In[10]:
+# In[18]:
 
 
+emberdata_vars_perc_rename.loc[emberdata_vars_perc_rename['Area']=="Laos"]
+
+
+# In[15]:
+
+
+#emberdata_vars_perc.loc[emberdata_vars_perc['Area']=="Bahamas (the)"]
+emberdata_vars_perc_rename['Area'].unique()
+
+
+# In[28]:
+
+
+#for unique values of renamed area, do a pivot table with year on index, variable on column, and value in thingy
 gridmix_bycountry_2000topresent = pd.DataFrame()
+Areas = emberdata_vars_perc_rename['Area'].unique() #an array
 for a in range(0,len(Areas)):
-    tempdf = emberdata_vars_perc.loc[emberdata_vars_perc['Area'] == Areas[a]] #select each area individually
+    tempdf = emberdata_vars_perc_rename.loc[emberdata_vars_perc_rename['Area'] == Areas[a]] #select each area individually
     tempdf2 = tempdf.pivot(columns='Variable', values='Value', index='Year') #pivot table of this area
     tempdf_rename = tempdf2.add_prefix(str(Areas[a]+'_'))
     gridmix_bycountry_2000topresent = pd.concat([gridmix_bycountry_2000topresent,tempdf_rename], axis=1)
@@ -93,7 +128,7 @@ for a in range(0,len(Areas)):
 gridmix_bycountry_2000topresent
 
 
-# In[30]:
+# In[29]:
 
 
 #add in the 1995 to 2000 and present to 2050, ffill and bfill
@@ -103,15 +138,15 @@ gridmix_bycountry_1995to2050_full = gridmix_bycountry_1995to2050.fillna(method='
 gridmix_bycountry_1995to2050_full
 
 
-# In[35]:
+# In[32]:
 
 
-#emberdata_vars_perc['Area'].unique()
-areaofinterest = 'United States'
-gridmix_bycountry_1995to2050_full.filter(like=areaofinterest).plot.area()
+#emberdata_vars_perc_rename['Area'].unique()
+areaofinterest = 'Laos'
+gridmix_bycountry_1995to2050_full.filter(like=areaofinterest).plot(kind='area', legend='reverse').legend(bbox_to_anchor=(1, 0.5))
 
 
-# In[37]:
+# In[31]:
 
 
 gridmix_bycountry_1995to2050_full.to_csv(os.path.join(baselinesFolder,'CarbonLayer','baseline_countrygridmix.csv'))
