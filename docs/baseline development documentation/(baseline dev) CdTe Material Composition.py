@@ -36,22 +36,22 @@ print("pyplot ", plt.matplotlib.__version__)
 #print("PV_ICE version ", PV_ICE.__version__)
 
 
-# In[31]:
+# In[4]:
 
 
 #materials in CdTe
-MATERIALS_CdTe = ['aluminium_frames_cdte','encapsulant_cdte','glass_cdte','copper_cdte','cadmium','tellurium']
-tidynameMats_CdTe = ['aluminium_frames','encapsulant','glass','copper','cadmium','tellurium']
+MATERIALS_CdTe = ['glass_cdte','aluminium_frames_cdte','encapsulant_cdte','copper_cdte','cadmium','tellurium']
+tidynameMats_CdTe = ['glass','aluminium_frames','encapsulant','copper','cadmium','tellurium']
 
 
-# In[21]:
+# In[5]:
 
 
 pd.read_csv(os.path.join(baselinesFolder, 'baseline_material_mass_cadmium.csv'), 
             index_col = 0, usecols=['year','mat_massperm2'], skiprows=[1])
 
 
-# In[28]:
+# In[6]:
 
 
 df_component_mats = pd.DataFrame()
@@ -62,23 +62,45 @@ for mat in MATERIALS_CdTe:
     
 
 
-# In[32]:
+# In[7]:
 
 
 df_component_mats.columns = tidynameMats_CdTe
 df_component_mats
 
 
-# In[33]:
+# In[8]:
 
 
 df_component_mats['module_mass_gpm2'] = df_component_mats.sum(axis=1) #run only once
 
 
-# In[38]:
+# In[9]:
 
 
-df_component_mats/df_component_mats['module_mass_gpm2'].values
+df_percent_mats = df_component_mats.loc[:,df_component_mats.columns !='module_mass_gpm2'].div(df_component_mats['module_mass_gpm2'], axis=0)*100
+
+
+# In[21]:
+
+
+plt.rcParams.update({'font.size': 14})
+fig, ax = plt.subplots()
+ax.stackplot(df_percent_mats.index, df_percent_mats.T)
+ax.legend(df_percent_mats.columns, loc='lower left')
+plt.title('Material Composition of CdTe') 
+plt.ylabel('Material Composition by weight (%)') 
+plt.xlim(1995,2050)
+plt.ylim(75,100)
+
+fig.savefig(os.path.join(supportMatfolder,'MaterialComp_CdTeModule.png'))
+plt.show()
+
+
+# In[23]:
+
+
+
 
 
 # In[ ]:
