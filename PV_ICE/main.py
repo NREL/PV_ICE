@@ -1970,7 +1970,6 @@ class Simulation:
                         reduced = matdf.loc[(matdf['year']>=startYear) & (matdf['year']<=endYear)].copy()
                         reduced.reset_index(drop=True, inplace=True)
                         self.scenario[scen].material[mat].matdataIn_e = reduced #reassign the material data to the simulation
-        
                         if int(endYear) > int(dataEndYear): # extend data with start trimming
                             lengthtoadd = int(endYear) - int(dataEndYear)
                             newIndex = pd.RangeIndex(0,lengthtoadd,1) #create a new index to append
@@ -1981,7 +1980,7 @@ class Simulation:
                             # fix years
                             newYears = pd.Series(range(dataEndYear+1,endYear+1,1)) #create a series of years to overwrite the ffill
                             extended.loc[len(reduced):,'year'] = newYears.values
-                            
+        
                             #print(extended.tail(5))
                             self.scenario[scen].material[mat].matdataIn_e = extended #reassign to the simulation
                             
@@ -1991,23 +1990,23 @@ class Simulation:
                                   "implemented, it will just clip data to years "+
                                   "selected. Let silvana know this feature is "+
                                   "actually needed so she works on it.")
-
+    
                         #consistent year check
-                        newStartYear_e = int(self.scenario[scen0].dataIn_e.iloc[0]['year'])
-                        newEndYear_e = int(self.scenario[scen0].dataIn_e.iloc[-1]['year'])
-                        newStartYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[0]['year'])
-                        newEndYear_emat = int(self.scenario[scen0].material[mat].matdataIn_e.iloc[-1]['year'])
+                        newStartYear_e = int(self.scenario[scen].dataIn_e.iloc[0]['year'])
+                        newEndYear_e = int(self.scenario[scen].dataIn_e.iloc[-1]['year'])
+                        newStartYear_emat = int(self.scenario[scen].material[mat].matdataIn_e.iloc[0]['year'])
+                        newEndYear_emat = int(self.scenario[scen].material[mat].matdataIn_e.iloc[-1]['year'])
                         if (newStartYear_e == newStartYear_emat) & (newEndYear_e == newEndYear_emat):
                             print(scen,mat,": Data trimmed for Energy, years now encompass ", newStartYear_e, " to ", newEndYear_e) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
                         else:
-                            print('There is an issue with year modification for Energy!!')
+                            print('There is an issue with year modification for Energy')
                     except:
                         print("No material energy data loaded.")
             #consistent year check
-            newStartYear_m = int(self.scenario[scen0].dataIn_m.iloc[0]['year'])
-            newEndYear_m = int(self.scenario[scen0].dataIn_m.iloc[-1]['year'])
-            newStartYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[0]['year'])
-            newEndYear_mat = int(self.scenario[scen0].material[mat].matdataIn_m.iloc[-1]['year'])
+            newStartYear_m = int(self.scenario[scen].dataIn_m.iloc[0]['year'])
+            newEndYear_m = int(self.scenario[scen].dataIn_m.iloc[-1]['year'])
+            newStartYear_mat = int(self.scenario[scen].material[mat].matdataIn_m.iloc[0]['year'])
+            newEndYear_mat = int(self.scenario[scen].material[mat].matdataIn_m.iloc[-1]['year'])
             if (newStartYear_m == newStartYear_mat) & (newEndYear_m == newEndYear_mat):
                 print(scen,mat,": Data trimmed for Mass, years now encompass ", newStartYear_m, " to ", newEndYear_m) #modify to recheck the new data start and end year, because currently can specify a later year and it wont extend
             else:
