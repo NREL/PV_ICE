@@ -145,7 +145,7 @@ plt.plot(sim1.scenario['23_MidCase_CdTe'].dataIn_m.loc[:(2024-1995),['year','new
 idx_temp = pd.RangeIndex(start=2024,stop=2051,step=1) #create the index
 CdTeRamp = pd.DataFrame(index=idx_temp, columns=['CdTe_deploy_[MWdc]'], dtype=float)
 CdTeRamp.loc[2024] = 14000
-CdTeRamp.loc[2030] = 22000
+CdTeRamp.loc[2030] = 50000#22000
 CdTeRamp_full = round(CdTeRamp.interpolate(),0)
 #CdTeRamp_full
 
@@ -207,6 +207,30 @@ plt.xlim(1995,2050)
 plt.ylabel('Annual Installed Capacity\n[MWdc]')
 
 
+# In[19]:
+
+
+#create negative deployment check, and correct to 0 and print error
+((sim1.scenario['23_MidCase_cSi'].dataIn_m.loc[:,'new_Installed_Capacity_[MW]'].values)<0).any()
+
+
+# In[20]:
+
+
+df = sim1.scenario['23_MidCase_cSi'].dataIn_m
+
+
+# if (df['new_Installed_Capacity_[MW]'].values<0).any():
+#     print('You have at least 1 negative annual deployment! All years of negative deployment have been set to 0.')
+#     df.loc[df['new_Installed_Capacity_[MW]']<0,'new_Installed_Capacity_[MW]'] = 0.0
+#     print(df)
+
+# In[ ]:
+
+
+
+
+
 # ### Create High recycling scenario
 # Assume high recycling = Solar Cycle ideal (Dias 2022, Renewable and Sustainable Energy Reviews)
 # - modules, 75% sent to recycling
@@ -218,7 +242,7 @@ plt.ylabel('Annual Installed Capacity\n[MWdc]')
 # 
 # We don't need to create a high CdTe recycling scenario, already set to 100% collect and recycle.
 
-# In[19]:
+# In[21]:
 
 
 sim1.createScenario(name='23_MidCase_cSi_hiR', massmodulefile=moduleFile)
@@ -252,7 +276,7 @@ sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('silicon', 'mat_PG4_Recyclin
 sim1.scenario['23_MidCase_cSi_hiR'].modifyMaterials('silicon', 'mat_EOL_Recycled_into_HQ', 100, start_year=2024)
 
 
-# In[20]:
+# In[22]:
 
 
 #create 0 recycling scenario to calculate end of life mass demand in 2030.
@@ -270,7 +294,7 @@ sim1.scenMod_noCircularity(scenarios='23_MidCase_cSi_0R')
 sim1.scenMod_PerfectManufacturing(scenarios='23_MidCase_cSi_0R')
 
 
-# In[21]:
+# In[23]:
 
 
 #sim1.scenario['23_MidCase_CdTe'].dataIn_m['mod_EOL_collection_eff']
@@ -286,25 +310,25 @@ sim1.scenMod_PerfectManufacturing(scenarios='23_MidCase_cSi_0R')
 
 # # Run the scenarios
 
-# In[22]:
+# In[24]:
 
 
 sim1.calculateMassFlow()
 
 
-# In[23]:
+# In[25]:
 
 
 ii_yearly, ii_cumu = sim1.aggregateResults()
 
 
-# In[24]:
+# In[26]:
 
 
 sim1.plotMetricResults()
 
 
-# In[25]:
+# In[27]:
 
 
 recycled_by_mat = pd.DataFrame()
@@ -319,26 +343,26 @@ recycled_by_mat_tonnes = recycled_by_mat/1000000  # This is the ratio for grams 
 #SUM and Annual 2024-2030, 
 
 
-# In[26]:
+# In[28]:
 
 
 recycled_by_mat_tonnes.loc[2024:2030,]
 
 
-# In[27]:
+# In[29]:
 
 
 recycled_by_mat_tonnes.loc[2024:2030,'glass':'backsheet']
 
 
-# In[28]:
+# In[ ]:
 
 
 #set plot parameters
 plt.rcParams.update({'font.size': 16})
 
 
-# In[29]:
+# In[ ]:
 
 
 plt.plot(recycled_by_mat_tonnes.loc[2024:2030,'glass':'backsheet'])
@@ -350,7 +374,7 @@ plt.legend(recycled_by_mat_tonnes.columns, fontsize=14)
 plt.grid()
 
 
-# In[30]:
+# In[ ]:
 
 
 plt.plot(recycled_by_mat_tonnes.loc[2024:2030,].filter(like='_hiR'))
@@ -362,7 +386,7 @@ plt.legend(recycled_by_mat_tonnes.columns, fontsize=14)
 plt.grid()
 
 
-# In[31]:
+# In[ ]:
 
 
 plt.plot(recycled_by_mat_tonnes.loc[2024:2030,'glass_cdte':])
@@ -374,7 +398,7 @@ plt.legend(recycled_by_mat_tonnes.loc[2024:2030,'glass_cdte':].columns, fontsize
 plt.grid()
 
 
-# In[32]:
+# In[ ]:
 
 
 recycled_by_mat_tonnes.loc[2024:2030,].sum(axis=0)
@@ -383,32 +407,32 @@ recycled_by_mat_tonnes.loc[2024:2030,].sum(axis=0)
 # ## Annual Future Demand through 2030
 # i.e. how much module mass is leaving the field each year 2024-2030, is the "total demand"
 
-# In[33]:
+# In[ ]:
 
 
 sim1.scenario['23_MidCase_cSi'].dataOut_m.keys()
 
 
-# In[34]:
+# In[ ]:
 
 
 sim1.scenario['23_MidCase_cSi'].material['glass'].matdataOut_m.keys()
 
 
-# In[35]:
+# In[ ]:
 
 
 annualEoLModules_tonnes = ii_yearly.loc[2024:2030].filter(like='WasteEOL_Module')
 annualEoLModules_tonnes
 
 
-# In[36]:
+# In[ ]:
 
 
 annualEoLModules_tonnes.max().max()
 
 
-# In[37]:
+# In[ ]:
 
 
 plt.plot(annualEoLModules_tonnes)
@@ -421,7 +445,7 @@ plt.title('Annual Mass of Modules at EoL\nby Scenario')
 
 # # Glass demand projection
 
-# In[44]:
+# In[ ]:
 
 
 idx_temp = pd.RangeIndex(start=2025,stop=2036,step=1) #create the index

@@ -684,6 +684,11 @@ class Simulation:
 
             # Standard method to calculate Area from the Power
             else:
+                #negative deployment check, error, correct
+                if (df['new_Installed_Capacity_[MW]'].values<0).any():
+                    print('You have at least 1 negative annual deployment! All years of negative deployment have been set to 0.')
+                    df.loc[df['new_Installed_Capacity_[MW]']<0,'new_Installed_Capacity_[MW]'] = 0.0
+                
                 df['new_Installed_Capacity_[W]'] = (
                     df['new_Installed_Capacity_[MW]']*1e6)
 
