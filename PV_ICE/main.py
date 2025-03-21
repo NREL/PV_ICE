@@ -13,9 +13,12 @@ import numpy as np
 import pandas as pd
 import datetime
 import os
+import json
 import matplotlib.pyplot as plt
 import itertools
 from pathlib import Path
+import PySAM.Pvwattsv8 as pvwatts
+import PySAM.ResourceTools
 
 global DATA_PATH # path to data files including module.json.  Global context
 DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), 'baselines'))
@@ -1512,10 +1515,7 @@ class Simulation:
 
             self.scenario[scen].dataOut_m = df[df.columns.difference(initialCols)]
 
-
-    #method to calculate energy flows as a function of mass flows and circular pathways
-    def calculateEnergyFlow(self, scenarios=None, materials=None,
-                            insolation = 4800, PR = 0.85):
+    def calculateGenerationPVWatts(self, lon_lats, system_capacity, track_mode = None, tilt=None, weather_file=None, pvwatts_json=None):
         '''
         Function takes as input PV ICE resulting mass flow dataframes for scenarios
         and materials and performs the energy flow calculations.
@@ -1540,6 +1540,94 @@ class Simulation:
         PR : float
             Performance ratio, converts from DC to AC accounting for interver
             loading, necessary for EROI. Default is 0.85
+
+        Returns
+        --------
+        de: dataframe
+            Dataframe with columns for each process's energy by year (row).
+            Among other columns, ''e_out_annual_[Wh]' reflects the
+            energy generation or 'out' of the scenario, such that
+            e_out_annual_[Wh] = Insolation * ActivePower/Irradience * time * PR
+            time being 365 days for 1 year simulations.
+        de_cum: dataframe
+            Dataframe with columns for each process's cumulative energy by year (row)
+        '''
+
+
+        pv_model = pvwatts.default("PVWattsResidential")
+
+        if (pvwatts_json is not None):
+            # get the inputs from the JSON file
+            with open( pvwatts_json, 'r') as f:
+                    pv_inputs = json.load( f )
+
+            # iterate through the input key-value pairs and set the module inputs
+            for k, v in pv_inputs.items():
+                if k != 'number_inputs':
+                    pv_model.value(k, v)
+
+
+        #lon, lat = lon_lats.split()
+        if (tilt is not None):
+            pv_model.SystemDesign.tilt = tilt
+
+        if (track_mode is not None):
+            pv_model.SystemDesign.array_type = track_mode #Fixed open rack, Fixed roof mount, 1-axis trackng, 1-axis backtracking, 2-axis tracking
+        annual_energy = []
+        for cap in system_capacity:
+            pv_model.SystemDesign.system_capacity = cap
+
+            if (weather_file is None):
+                """ nsrdb_fetcher = ResourceTools.FetchResourceFiles('solar', nrel_api_key, nrel_api_email, workers=1, resource_type='psm3-tmy', resource_year='tmy', resource_interval_min=60, resource_height=100, resource_dir=None, verbose=True)
+                # --- List of (lon, lat) tuples or Shapely points ---
+                nsrdbfetcher.fetch(lon_lats)
+                # --- Get resource data file path ---
+                nsrdb_path_dict = nsrdbfetcher.resource_file_paths_dict
+                nsrdb_fp = wtk_path_dict[lon_lats] """
+                print("Weather file is required to run PVWatts. Please download weather data such as that from the NSRDB (https://developer.nrel.gov/docs/solar/nsrdb/nsrdb_data_query/)")
+                
+                
+                return
+            else:
+                pv_model.SolarResource.solar_resource_file = weather_file
+            
+            pv_model.execute()
+            annual_energy.append(pv_model.Outputs.annual_energy * 1000.0) #Wh
+        print("Annual energy (Wh)", annual_energy ) #Wh
+        return annual_energy #Wh
+
+        
+        
+
+    #method to calculate energy flows as a function of mass flows and circular pathways
+    def calculateEnergyFlow(self, scenarios=None, materials=None,
+                            insolation = 4800, PR = 0.85, model_type = 0, tilt=None, track_mode=None, weather_file=None, pvwatts_json = None):
+        '''
+        Function takes as input PV ICE resulting mass flow dataframes for scenarios
+        and materials and performs the energy flow calculations.
+
+        Parameters
+        ------------
+        scenarios : None
+            string with the scenario name or list of strings with
+            scenarios names to loop over. Must exist on the PV ICE object and
+            already have undergone the mass flow calculations.
+        materials : None
+            string with the material name or list of strings with the
+            materials names to loop over. Must exists on the PV ICE object
+            scenario(s) modeled and already have undergone the mass flow
+            calculations.
+        insolation : float
+            Insolation received in the location modeled during the time period
+            modeled. i.e. for 1 year, the average insolation in the US is
+            4800 Wh/m2-year. Used to calculate energy-out of the system
+            from the installed capacity calculated in the mass flows which already
+            considers degradation and decommissions from the fleet.
+        PR : float
+            Performance ratio, converts from DC to AC accounting for interver
+            loading, necessary for EROI. Default is 0.85
+        model_type : int
+            0 for basic insolation calculation, 1 for SAM PVWatts calculation
 
         Returns
         --------
@@ -1588,7 +1676,15 @@ class Simulation:
             de['mod_Recycle_Crush'] = df['P4_recycled']*modEnergy['e_mod_Recycle_Crush']
 
             #Energy Generation, Energy_out = Insolation (adjusted for bifi) * ActivePower/Irradience * time * PR
-            de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Effective_Capacity_[W]']/1000) * 365 * PR
+            if (model_type == 0):
+                de['e_out_annual_[Wh]'] = insolation*(df['irradiance_stc']/1000) * (df['Effective_Capacity_[W]']/1000) * 365 * PR
+                print("Annual Energy (Wh)", de['e_out_annual_[Wh]'].values)
+            else:
+                print(df['Effective_Capacity_[W]'].values)
+                de['e_out_annual_[Wh]'] = self.calculateGenerationPVWatts(lon_lats=[-105.22, 39.75], 
+                                            system_capacity=(df['Effective_Capacity_[W]']/1000), track_mode=track_mode, tilt=tilt, weather_file=weather_file, pvwatts_json=pvwatts_json)
+
+            #def calculateGenerationPVWatts(self, lon_lats, system_capacity, nrel_api_key, nrel_api_email, tilt=None, weather_file=None):
             
             self.scenario[scen].dataOut_e = de #Wh
             
