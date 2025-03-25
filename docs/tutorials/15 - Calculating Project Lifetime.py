@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[1]:
 
 
 import numpy as np
@@ -13,7 +13,7 @@ import PV_ICE
 cwd = os.getcwd() #grabs current working directory
 
 
-# In[5]:
+# In[2]:
 
 
 #print("Working on a ", platform.system(), platform.release())
@@ -32,7 +32,7 @@ print("PV_ICE version ", PV_ICE.__version__)
 
 # Define functions for calculating module lifetime
 
-# In[6]:
+# In[3]:
 
 
 def alphabeta2T10T50T90(alpha,beta):
@@ -60,7 +60,7 @@ def projectlife2T50T90(projectlife, N=10, plot=True):
     return T50,T90
 
 
-# In[12]:
+# In[4]:
 
 
 T50 = pd.Series([16,19,20,21,24,25,28,33,40])
@@ -75,7 +75,7 @@ for row in inputsdf.index:
 inputsdf
 
 
-# In[9]:
+# In[5]:
 
 
 params = PV_ICE.weibull_params({44.83: 0.50, 49: 0.90})
@@ -83,16 +83,16 @@ T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
 
-# In[10]:
-
-
-alphabeta2T10(5.692,29.697)
-
-
 # In[11]:
 
 
-alphabeta2T10T50T90(2.810,100)
+alphabeta2T10(2.4928,30)
+
+
+# In[14]:
+
+
+alphabeta2T10T50T90(5.692,40)
 
 
 # In[8]:
@@ -101,7 +101,7 @@ alphabeta2T10T50T90(2.810,100)
 projectlife2T50T90(29)
 
 
-# In[ ]:
+# In[9]:
 
 
 df_t50t90 = pd.DataFrame()
@@ -111,4 +111,16 @@ for row in life.index:
     df_t50t90.loc[row,'T90'] = T90
     
 pd.concat([round(life,0),df_t50t90],axis=1)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
