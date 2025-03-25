@@ -137,6 +137,12 @@ sim1.scenario['Resi_repower'].dataIn_m.loc[2024-1995, 'mod_eff'] = resi_sys2_eff
 sim1.trim_Years(2010,2060)
 
 
+# In[28]:
+
+
+sim1.scenario['Resi_keep'].dataIn_m
+
+
 # In[10]:
 
 
@@ -264,13 +270,13 @@ cumu_metrics.loc['Wastes [tonnes]', 'Repower'] = modwaste_repower
 round(cumu_metrics,2)
 
 
-# In[24]:
+# In[26]:
 
 
 sim1.calculateCarbonFlows()
 
 
-# In[25]:
+# In[27]:
 
 
 sim1.scenario['Resi_keep'].dataOut_c.head(60) 
