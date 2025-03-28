@@ -147,3 +147,10 @@ plt.ylabel('grams/m$^2$')
 plt.ylim(7000,14000)
 plt.legend()
 
+
+# In[106]:
+
+
+output_glass_gmp2_baselines = pd.DataFrame([avg_module_glassMass,g_b_glassMass,g_g_glassMass], index=['market_avg_module','G-B','G-G']).T
+output_glass_gmp2_baselines.to_csv(os.path.join(supportMatfolder, 'output_glass_gmp2_baselines.csv'))
+
