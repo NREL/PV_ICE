@@ -43,7 +43,7 @@ print(supportMatfolder)
 #         average silver per cell = 0.95*(average of monofacial and bifacial p-type) + 0.05*(average of n-type)
 #         
 # This math was completed in the google spreadsheet of raw data
-# <https://docs.google.com/spreadsheets/d/1WV54lNAdA2uP6a0g5wMOOE9bu8nbwvnQDgLj3GuGojE/edit?usp=sharing>
+# <https://docs.google.com/spreadsheets/d/1Ec5JRBSN2NFXjEABgUp1ch-EG6uQao8j5Rk1MLuZZYI/edit?usp=sharing>
 # then copied to a csv and is uploaded here.
 
 # In[3]:
