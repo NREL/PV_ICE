@@ -60,11 +60,11 @@ def projectlife2T50T90(projectlife, N=10, plot=True):
     return T50,T90
 
 
-# In[4]:
+# In[10]:
 
 
-T50 = pd.Series([16,19,20,21,24,25,28,33,40])
-T90 = pd.Series([21,23,25,26,29,30,33,38,44])
+T50 = pd.Series([12,16,19,20,21,24,25,28,33,40])
+T90 = pd.Series([17,21,23,25,26,29,30,33,38,44])
 inputsdf = pd.concat([T50,T90],axis=1, keys=['T50','T90'])
 
 for row in inputsdf.index:
@@ -83,13 +83,13 @@ T10 = alphabeta2T10(params['alpha'],params['beta'])
 T10
 
 
-# In[11]:
+# In[6]:
 
 
 alphabeta2T10(2.4928,30)
 
 
-# In[14]:
+# In[7]:
 
 
 alphabeta2T10T50T90(5.692,40)
