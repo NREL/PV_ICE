@@ -1,0 +1,25 @@
+,2024,2035,2045,2050
+DecommisionedCapacity_sim1_Arizona_[MW],362.4389612412142,2345.927683243217,4471.522991335874,6239.109670119928
+DecommisionedCapacity_sim1_California_[MW],2029.0789138739055,8496.381939626299,23778.482213057716,34726.97002820576
+DecommisionedCapacity_sim1_Florida_[MW],365.80150523498014,2195.123935827767,4053.831725726839,9344.73113770577
+DecommisionedCapacity_sim1_Nevada_[MW],250.7612753311223,1258.0428338005831,3238.886142039022,4638.141033592155
+DecommisionedCapacity_sim1_North Carolina_[MW],427.7283135075759,1454.2334930878897,4637.879997908486,7875.573863769591
+DecommisionedCapacity_sim1_Texas_[MW],595.9717341261348,4653.767730003863,8867.040101029917,15497.209998203078
+Annual_DecommisionedCapacity_sim1_Arizona_[MW],57.484171845951096,574.6885540121057,64.29224935074399,446.87261267699796
+Annual_DecommisionedCapacity_sim1_California_[MW],359.0704407588855,1175.6954248187612,302.18670377581657,3111.7114830402134
+Annual_DecommisionedCapacity_sim1_Florida_[MW],101.73131112132614,162.80191518940046,152.69993468470057,2364.6534046728975
+Annual_DecommisionedCapacity_sim1_Nevada_[MW],45.51021755892543,191.44793242736978,53.41117075880902,288.69880187083163
+Annual_DecommisionedCapacity_sim1_North Carolina_[MW],68.70426675624913,161.5029067487376,68.00355619821039,801.7247593972033
+Annual_DecommisionedCapacity_sim1_Texas_[MW],221.0650557994777,388.6644861314635,341.2516128697898,2793.4144480942123
+WasteAll_Module_sim1_Arizona_[Tonnes]_[million Tonnes],0.0,0.1,0.23,0.34
+WasteAll_Module_sim1_California_[Tonnes]_[million Tonnes],0.01,0.22,1.23,1.99
+WasteAll_Module_sim1_Florida_[Tonnes]_[million Tonnes],0.0,0.02,0.05,0.41
+WasteAll_Module_sim1_Nevada_[Tonnes]_[million Tonnes],0.0,0.03,0.15,0.24
+WasteAll_Module_sim1_North Carolina_[Tonnes]_[million Tonnes],0.0,0.02,0.24,0.47
+WasteAll_Module_sim1_Texas_[Tonnes]_[million Tonnes],0.0,0.01,0.08,0.47
+Annual_WasteAll_Module_sim1_Arizona_[Tonnes],151.3,45234.91,790.54,29786.49
+Annual_WasteAll_Module_sim1_California_[Tonnes],3000.21,73736.51,5196.94,217079.31
+Annual_WasteAll_Module_sim1_Florida_[Tonnes],6.77,1556.56,1648.61,166768.34
+Annual_WasteAll_Module_sim1_Nevada_[Tonnes],43.83,11976.27,814.73,18798.49
+Annual_WasteAll_Module_sim1_North Carolina_[Tonnes],27.57,8573.33,2067.19,57571.94
+Annual_WasteAll_Module_sim1_Texas_[Tonnes],11.12,3400.42,1721.08,185149.17
