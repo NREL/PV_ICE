@@ -60,14 +60,14 @@ moduleFile_e = os.path.join(baselinesfolder, 'baseline_modules_energy.csv')
 
 
 #residential system parameters
-resi_sys1_size = 0.00552 #MW, first system on roof (degrades to 5 kW in 2024 after 9 years (2024-2015))
-resi_sys1_deg = 1.1 #%/yr, corresponds to 20 yr life
+resi_sys1_size = 0.00523 #MW, first system on roof (degrades to 5 kW in 2024 after 9 years (2024-2015))
+resi_sys1_deg = 0.5 #%/yr, corresponds to 20 yr life, SAM default is 0.5%, Po = Pt / (1-r)^t
 resi_sys1_life = 20 #years of life
 resi_sys1_life_repower = 9 #years of life but remove for repowering
 resi_sys1_eff = 19.02 #from SAM, PV ICE 2015 eff = 17%
 
 resi_sys2_size = 0.0073 #MW, 2nd system on roof
-resi_sys2_deg = 0.7 #%/yr, corresponds to 30 yr life
+resi_sys2_deg = 0.5 #%/yr, corresponds to 30 yr life
 resi_sys2_life = 30 #years of life
 resi_sys2_eff = 20.57 #from SAM, PV ICE 2024 eff = 22.4%
 

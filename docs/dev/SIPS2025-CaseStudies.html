@@ -14735,14 +14735,14 @@ Baseline folder directed to default:  C:\Users\hmirletz\Documents\GitHub\PV_ICE\
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#residential system parameters</span>
-<span class="n">resi_sys1_size</span> <span class="o">=</span> <span class="mf">0.00552</span> <span class="c1">#MW, first system on roof (degrades to 5 kW in 2024 after 9 years (2024-2015))</span>
-<span class="n">resi_sys1_deg</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="c1">#%/yr, corresponds to 20 yr life</span>
+<span class="n">resi_sys1_size</span> <span class="o">=</span> <span class="mf">0.00523</span> <span class="c1">#MW, first system on roof (degrades to 5 kW in 2024 after 9 years (2024-2015))</span>
+<span class="n">resi_sys1_deg</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1">#%/yr, corresponds to 20 yr life, SAM default is 0.5%, Po = Pt / (1-r)^t</span>
 <span class="n">resi_sys1_life</span> <span class="o">=</span> <span class="mi">20</span> <span class="c1">#years of life</span>
 <span class="n">resi_sys1_life_repower</span> <span class="o">=</span> <span class="mi">9</span> <span class="c1">#years of life but remove for repowering</span>
 <span class="n">resi_sys1_eff</span> <span class="o">=</span> <span class="mf">19.02</span> <span class="c1">#from SAM, PV ICE 2015 eff = 17%</span>
 
 <span class="n">resi_sys2_size</span> <span class="o">=</span> <span class="mf">0.0073</span> <span class="c1">#MW, 2nd system on roof</span>
-<span class="n">resi_sys2_deg</span> <span class="o">=</span> <span class="mf">0.7</span> <span class="c1">#%/yr, corresponds to 30 yr life</span>
+<span class="n">resi_sys2_deg</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1">#%/yr, corresponds to 30 yr life</span>
 <span class="n">resi_sys2_life</span> <span class="o">=</span> <span class="mi">30</span> <span class="c1">#years of life</span>
 <span class="n">resi_sys2_eff</span> <span class="o">=</span> <span class="mf">20.57</span> <span class="c1">#from SAM, PV ICE 2024 eff = 22.4%</span>
 </pre></div>
