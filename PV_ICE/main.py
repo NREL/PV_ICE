@@ -548,6 +548,76 @@ class Simulation:
                 self.scenario[scen].dataIn_e.loc[selectyears, stage] = value
 
 
+    def sample_hail_sizes(N, hazard_zone):
+        """
+        Sample hail diameters (mm) for one calendar year in a given hazard zone.
+    
+        hazard_zone: string or int that encodes the environment
+                     e.g. "HighHail", "ModerateHail", "LowHail"
+        """
+        if hazard_zone == "HighHail":
+            # Very rough example: mostly small, some large
+            probs = np.array([0.70, 0.20, 0.07, 0.02, 0.01])
+            sizes = np.array([15,   25,   35,   45,   60])  # mm
+        elif hazard_zone == "ModerateHail":
+            probs = np.array([0.85, 0.10, 0.03, 0.01, 0.01])
+            sizes = np.array([15,   25,   35,   45,   55])
+        elif hazard_zone == "LowHail":
+            probs = np.array([0.97, 0.02, 0.005, 0.003, 0.002])
+            sizes = np.array([15,   25,   35,   45,   55])
+        else:
+            # default: almost no damaging hail
+            probs = np.array([0.99, 0.01])
+            sizes = np.array([15,   25])
+    
+        probs = probs / probs.sum()
+        return np.random.choice(sizes, size=N, p=probs)
+
+    def hail_fragility_prob(diameter_mm, S50_mm, k):
+        """
+        Logistic fragility curve in hail diameter.
+    
+        diameter_mm: hailstone diameter [mm]
+        S50_mm:     diameter where P(fail) = 0.5
+        k:          slope parameter (larger k = sharper transition)
+        """
+        return 1.0 / (1.0 + np.exp(-k * (diameter_mm - S50_mm)))
+        
+    def get_fragility_params_for_generation(row):
+        """
+        Extract fragility parameters from df row, with sensible defaults.
+        """
+        S50 = row.get('hail_S50_mm', 28.0)   # mm (standard)
+        k   = row.get('hail_k',       0.5)
+        return S50, k
+
+    def compute_p_cat_for_generation(row, hazard_zone, ages, N_mc=5000):
+        """
+        Compute annual catastrophic failure probabilities p_cat[age]
+        for a given generation (cohort) in a given hazard zone.
+    
+        ages: list/array of cohort ages (e.g. 0..max_age)
+        """
+        S50, k = get_fragility_params_for_generation(row)
+        p_cat = [0.0] * len(ages)
+    
+        for i, age in enumerate(ages):
+            if age <= 0:
+                p_cat[i] = 0.0
+                continue
+    
+            # Sample hail sizes for this calendar year & hazard zone
+            hail_sizes = sample_hail_sizes(N=N_mc, hazard_zone=hazard_zone)
+    
+            # Compute failure probability if the "big storm of the year" hits
+            # Here we assume at most one "relevant" storm per year; you can refine later.
+            probs = hail_fragility_prob(hail_sizes, S50, k)
+    
+            # Expected annual catastrophic failure probability for this cohort this year
+            p_cat[i] = float(np.mean(probs))
+    
+        return p_cat
+
     def calculateFlows(self, scenarios=None, materials_input=None,
                        weibullInputParams=None, bifacialityfactors=None,
                        reducecapacity=True, debugflag=False,
@@ -764,12 +834,62 @@ class Simulation:
 
                 weibullParamList.append(weibullIParams)
 
-                x = np.clip(df.index - generation, 0, np.inf)
+                x = np.clip(df.index - generation, 0, np.inf)                
                 cdf = list(map(f, x))
-                # TODO: Check this line, does it need commas or remove space
-                # for linting?
-                pdf = [0] + [j - i for i, j in zip(cdf[:-1], cdf[1:])]
+                
+                
+                # --- From your current code ---
+                f = weibull_cdf(weibullIParams['alpha'],
+                                weibullIParams['beta'])
+                
+                x = np.clip(df.index - generation, 0, np.inf)   # cohort ages
+                cdf = list(map(f, x))                           # F_rel(t) = P(intrinsic fail by t)
+                
+                # --- 1. Reliability-only survival from Weibull ---
+                S_rel = [1.0 - c for c in cdf]   # S_rel(t) = survival from non-catastrophic causes
+                
+                # --- 2. Extreme weather: per-age catastrophic failure probs ---
+                ages = x.tolist()
+                p_cat = compute_p_cat_for_generation(
+                    row,
+                    hazard_zone=row['hazard_zone'],
+                    ages=ages
+                )
+                # p_cat[age] = P(catastrophic failure in that year | alive at start of year, from cats)
+                
+                # --- 3. Cause-specific hazards ---
+                # h_rel(t) = conditional intrinsic failure probability in year t
+                h_rel = [0.0] * len(ages)
+                for i in range(1, len(ages)):
+                    if S_rel[i-1] > 0:
+                        h_rel[i] = 1.0 - S_rel[i] / S_rel[i-1]
+                    else:
+                        h_rel[i] = 0.0
+                
+                # h_cat(t) = p_cat[t] from your MC (already a conditional per-year prob for cats)
+                h_cat = p_cat[:]   # just rename for clarity
+                
+                # --- 4. Evolve total survival and cause-specific PDFs ---
+                S_total   = [1.0] * len(ages)
+                pdf_rel   = [0.0] * len(ages)
+                pdf_cat   = [0.0] * len(ages)
+                pdf_total = [0.0] * len(ages)
+                
+                for ixi in range(1, len(ages)):
+                    # Probability of catastrophic failure this year
+                    pdf_cat[i] = S_total[ixi-1] * h_cat[ixi]
+                
+                    # Probability of intrinsic (reliability) failure this year, for those not killed by cat
+                    pdf_rel[ixi] = S_total[ixi-1] * (1.0 - h_cat[ixi]) * h_rel[ixi]
+                
+                    # Total failures this year
+                    pdf_total[ixi] = pdf_cat[ixi] + pdf_rel[ixi]
+                
+                    # Update total survival
+                    S_total[ixi] = S_total[ixi-1] - pdf_total[ixi]
 
+
+                # Continuing with Area calculations
                 activearea = row['Area']
                 if np.isnan(activearea):
                     activearea = 0
@@ -780,6 +900,9 @@ class Simulation:
                 areaEOL_failure_notrepaired_all = []
                 powerEOL_failure_notrepaired_all = []
 
+                areaEOL_reliability_all = []
+                areaEOL_extreme_all = []
+                
                 areaEOL_ProjLife_all = []
                 powerEOL_ProjLife_all = []
 
@@ -807,6 +930,7 @@ class Simulation:
                 active = 0
                 secondlife = False
 
+                # Age Loop
                 for age in range(len(cdf)):
                     
                     if x[age] == 0.0:
@@ -937,23 +1061,48 @@ class Simulation:
                             powerEOL_ProjLife = (
                                 areaEOL_ProjLife*poweragegen)
     
-                        # 2. Calculate failures
-                        activeareaprev = activearea
-                        failures = row['Area']*pdf[age]
     
+
+                        # 2. Calculate failures
+    
+                                            
+                        activeareaprev = activearea
+                        
+                        
+                        # UPDATING With Extrmee Area Failures                    
+                        # Fraction of original cohort failing this year by cause
+                        frac_fail_rel = pdf_rel[age]
+                        frac_fail_cat = pdf_cat[age]
+                        frac_fail_tot = pdf_total[age]
+                
+                        # Convert to areas
+                        failures_rel = row['Area'] * frac_fail_rel
+                        failures_cat = row['Area'] * frac_fail_cat
+                        failures     = row['Area'] * frac_fail_tot
+                
                         if failures > activearea:
                             failures = activearea
-    
-    
-                        area_repaired = (failures *
-                                          df.iloc[age]['mod_Repair']*0.01)
-                        power_repaired = area_repaired*poweragegen
-    
-                        areaEOL_Failures_notrepaired = failures-area_repaired
-                        powerEOL_Failures_notrepaired = areaEOL_Failures_notrepaired*poweragegen
-    
-                        activearea = activeareaprev-areaEOL_Failures_notrepaired
-    
+                            # you can choose how to cap rel vs cat if this ever happens; usually hazards are small enough it doesn’t matter
+                        
+                        # If repairs treat both causes the same:
+                        area_repaired = failures * df.iloc[age]['mod_Repair'] * 0.01
+                        power_repaired = area_repaired * poweragegen
+                    
+                        areaEOL_Failures_notrepaired = failures - area_repaired
+                        powerEOL_Failures_notrepaired = areaEOL_Failures_notrepaired * poweragegen
+                    
+                        activearea = activeareaprev - areaEOL_Failures_notrepaired
+                    
+                        # Tracking EOL by cause separately:
+                        areaEOL_rel = failures_rel * (1.0 - df.iloc[age]['mod_Repair'] * 0.01)
+                        areaEOL_cat = failures_cat * (1.0 - df.iloc[age]['mod_Repair'] * 0.01)
+                    
+                        areaEOL_reliability_all.append(areaEOL_rel)   # intrinsic/reliability
+                        areaEOL_extreme_all.append(areaEOL_cat)       # new list for extreme weather
+                        
+                        powerEOL_reliability_all.append(areaEOL_rel*poweragegen)   # intrinsic/reliability
+                        powerEOL_extreme_all.append(areaEOL_cat*poweragegen)   
+                        
     
                         # Start appending the yearly age values
     
@@ -1066,6 +1215,7 @@ class Simulation:
                 df['Yearly_Sum_Area_PathsBad'] += areaEOL_failure_notrepaired_all
                 df['Yearly_Sum_Power_PathsBad'] += powerEOL_failure_notrepaired_all
 
+                
                 df['Yearly_Sum_Area_PathsGood'] += areaEOL_ProjLife_collected_PG_3to5_all
                 df['Yearly_Sum_Power_PathsGood'] += powerEOL_ProjLife_collected_PG_3to5_all
 
