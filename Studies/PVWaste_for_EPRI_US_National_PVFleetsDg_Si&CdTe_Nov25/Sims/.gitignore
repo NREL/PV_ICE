@@ -1,0 +1,11 @@
+# Ignore everything in this directory
+#*
+
+# Ignore specific subdirectories
+figures/
+input/
+output/
+raw/
+
+# Except this file
+!.gitignore
