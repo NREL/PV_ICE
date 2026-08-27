@@ -2683,33 +2683,38 @@ class Material:
     def __init__(self, materialname, massmatfile, energymatfile=None):
         self.materialname = materialname
 
+        # Load mass material file
         if massmatfile is None:
             try:
-                massmatfile = _interactive_load('Select material baseline ' +
-                                                'file')
-            except:
-                raise Exception('Interactive load failed. Tkinter not ' +
-                                'supported on this system. Try installing ' +
-                                'X-Quartz and reloading')
+                massmatfile = _interactive_load('Select material baseline file')
+            except Exception:
+                raise RuntimeError('Interactive load failed. Tkinter not supported. '
+                                   'Try installing XQuartz (macOS) and reloading.')
 
         data, meta = _readPVICEFile(massmatfile)
-
         self.massmatfile = massmatfile
         self.matmetdataIn_m = meta
         self.matdataIn_m = data
 
-        # SAVING A COPY TO RAW
-        # Joining the metdata back in
-        foometa = pd.DataFrame(meta, index=[0])
-        foodata = pd.concat([foometa, data], axis=0)
-        # Removing the path to just get the filename
-        # TODO - find fancy python way, this will probably break on a mac
+        # Save a copy to /raw/ folder
         try:
-            foomassmatfile = massmatfile.split('\\')[-1]
-            foodata.to_csv(os.path.join('raw', materialname + '_' +
-                                        foomassmatfile))
-        except:
-            print("Can't save raw files on macs yet.")
+            raw_dir = Path("raw")
+            raw_dir.mkdir(exist_ok=True)  # Create directory if it doesn't exist
+
+            # Get filename only, regardless of OS
+            foomassmatfile = Path(massmatfile).name
+
+            # Combine meta and data into one DataFrame
+            foometa = pd.DataFrame(meta, index=[0])
+            foodata = pd.concat([foometa, data], axis=0)
+
+            # Construct output path and save
+            output_path = raw_dir / f"{materialname}_{foomassmatfile}"
+            foodata.to_csv(output_path, index=False)
+        except Exception as e:
+            print(f"[Warning] Could not save raw material file: {e}")
+
+        # Optional energy file
         if energymatfile is not None:
             self.addEnergytoMaterial(energymatfile)
         else:
